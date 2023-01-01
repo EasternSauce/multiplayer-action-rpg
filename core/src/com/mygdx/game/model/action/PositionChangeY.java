@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(staticName = "of")
 @Data
 @Builder
-public class PositionChangeY  implements GameStateAction{
+public class PositionChangeY implements GameStateAction {
     private CreatureId playerId;
     private float y;
 

@@ -49,9 +49,8 @@ public class MyGdxGameServer extends MyGdxGame {
                         AddPlayer action = (AddPlayer) gameStateAction;
                         creatureSprites.put(action.getPlayerId(), new Sprite(img, 64, 64));
                     } else if (gameStateAction instanceof RemovePlayer) {
-//        AddPlayer action = (AddPlayer) gameStateAction;
-//        creatureSprites.put(action.getPlayerId(), new Sprite(img, 64, 64));
-
+                        RemovePlayer action = (RemovePlayer) gameStateAction;
+                        creatureSprites.remove(action.getPlayerId());
                     }
                 }
         );
@@ -119,7 +118,12 @@ public class MyGdxGameServer extends MyGdxGame {
 
                     tickActions.add(addPlayer);
 
+                    System.out.println("sending initial state");
                     connection.sendTCP(InitialState.of(gameState));
+                } else if (object instanceof AskDeletePlayer) {
+                    AskDeletePlayer command = (AskDeletePlayer) object;
+                    RemovePlayer removePlayer = RemovePlayer.of(command.getPlayerId());
+                    tickActions.add(removePlayer);
                 }
             }
         });

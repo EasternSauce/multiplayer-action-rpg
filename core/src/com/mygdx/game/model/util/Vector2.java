@@ -1,6 +1,9 @@
 package com.mygdx.game.model.util;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @AllArgsConstructor(staticName = "of")

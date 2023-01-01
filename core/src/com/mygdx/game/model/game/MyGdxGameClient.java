@@ -16,6 +16,7 @@ import com.mygdx.game.model.message.*;
 import java.io.IOException;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class MyGdxGameClient extends MyGdxGame {
     Client _endPoint = new Client();
@@ -77,15 +78,15 @@ public class MyGdxGameClient extends MyGdxGame {
                         gameStateAction.applyToGameState(gameState);
                     });
 
+
                     actions.forEach(gameStateAction -> {
                         if (gameStateAction instanceof AddPlayer) {
                             AddPlayer action = (AddPlayer) gameStateAction;
                             creatureSprites.put(action.getPlayerId(), new Sprite(img, 64, 64));
 
                         } else if (gameStateAction instanceof RemovePlayer) {
-//        AddPlayer action = (AddPlayer) gameStateAction;
-//        creatureSprites.put(action.getPlayerId(), new Sprite(img, 64, 64));
-
+                            RemovePlayer action = (RemovePlayer) gameStateAction;
+                            creatureSprites.remove(action.getPlayerId());
                         }
                     });
 
@@ -97,13 +98,11 @@ public class MyGdxGameClient extends MyGdxGame {
 //                            playerSprites = playerSprites.removed(playerId)
 //                        case _ =>
 //                    }
-                }
-
-                if (object instanceof InitialState) {
-                    InitialState initialState = (InitialState) object;
-                    gameState = initialState.getGameState();
-                    //            playerSprites = gameState.players.map { case (playerId, _) => (playerId, new Sprite(img, 64, 64)) }
-
+                } else if (object instanceof InitialState) {
+                    InitialState action = (InitialState) object;
+                    gameState = action.getGameState();
+                    System.out.println("game state contains players: " + gameState.getCreatures().size());
+                    creatureSprites = gameState.getCreatures().values().stream().collect(Collectors.toMap(entry -> entry.getParams().getCreatureId(), entry -> new Sprite(img, 64, 64)));
                 }
 //                obj match {
 //                    case newGameState: GameState =>
@@ -135,6 +134,11 @@ public class MyGdxGameClient extends MyGdxGame {
                 AskInitPlayer.of(thisPlayerId, Math.abs(rand.nextInt()) % 300, Math.abs(rand.nextInt()) % 300)
         );
 
+    }
+
+    @Override
+    public void dispose() {
+        endPoint().sendTCP(AskDeletePlayer.of(thisPlayerId));
     }
 
 }

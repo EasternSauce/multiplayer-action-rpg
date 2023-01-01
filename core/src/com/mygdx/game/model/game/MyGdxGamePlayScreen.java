@@ -11,9 +11,9 @@ import com.mygdx.game.Constants;
 public class MyGdxGamePlayScreen implements Screen {
     MyGdxGame game;
 
-public MyGdxGamePlayScreen(MyGdxGame game) {
-    this.game = game;
-}
+    public MyGdxGamePlayScreen(MyGdxGame game) {
+        this.game = game;
+    }
 
     World world;
     Box2DDebugRenderer debugRenderer;
@@ -82,8 +82,8 @@ public MyGdxGamePlayScreen(MyGdxGame game) {
         Integer camX = 0; // TODO
         Integer camY = 0;
 
-        camPosition.x = (float)(Math.floor(camX * 100) / 100);
-        camPosition.y = (float)(Math.floor(camY * 100) / 100);
+        camPosition.x = (float) (Math.floor(camX * 100) / 100);
+        camPosition.y = (float) (Math.floor(camY * 100) / 100);
 
         worldCamera.update();
 
