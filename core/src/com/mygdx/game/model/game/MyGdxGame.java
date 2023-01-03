@@ -2,24 +2,20 @@ package com.mygdx.game.model.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.esotericsoftware.kryonet.EndPoint;
 import com.mygdx.game.model.area.AreaId;
-import com.mygdx.game.model.creature.CreatureId;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 public abstract class MyGdxGame extends Game {
+    GameRenderer renderer = GameRenderer.of();
 
-    public MyGdxGamePlayScreen playScreen = new MyGdxGamePlayScreen(this);
-    Map<CreatureId, Sprite> creatureSprites;
+    MyGdxGamePlayScreen playScreen = MyGdxGamePlayScreen.of();
 
-    SpriteBatch batch;
     Texture img;
+
+    TextureAtlas atlas;
 
     public EndPoint _endPoint = null;
 
@@ -29,7 +25,6 @@ public abstract class MyGdxGame extends Game {
         return _endPoint;
     }
 
-    ;
 
     @Override
     public void create() {
@@ -37,10 +32,9 @@ public abstract class MyGdxGame extends Game {
                 .defaultAreaId(AreaId.of("zzz"))
                 .build();
 
-        batch = new SpriteBatch();
         img = new Texture("badlogic.jpg");
 
-        creatureSprites = new HashMap<>();
+        atlas = new TextureAtlas("assets/atlas/packed_atlas.atlas");
 
         try {
             establishConnection();
@@ -48,39 +42,15 @@ public abstract class MyGdxGame extends Game {
             throw new RuntimeException(e);
         }
 
+        playScreen.init(this);
 
-        playScreen.init();
-
+        setScreen(playScreen);
     }
 
     @Override
     public void dispose() {
-        batch.dispose();
+//        batch.dispose();
         img.dispose();
-    }
-
-    public void onRender() {
-
-
-        creatureSprites.forEach((creatureId, sprite) -> {
-            if (gameState.getCreatures().containsKey(creatureId)) {
-                sprite.setPosition(gameState.getCreatures().get(creatureId).getParams().getPos().getX(), gameState.getCreatures().get(creatureId).getParams().getPos().getY());
-            }
-        });
-        ScreenUtils.clear(1, 0, 0, 1);
-        batch.begin();
-
-//        if (!gameState.getCreatures().isEmpty()) {
-//            CreatureId id = (CreatureId) (gameState.getCreatures().keySet().toArray()[0]);
-//            Creature creature = gameState.getCreatures().get(id);
-//            batch.draw(img, creature.getParams().getPos().getX(), creature.getParams().getPos().getY());
-//        }
-
-        creatureSprites.forEach((creatureId, sprite) -> {
-            sprite.draw(batch);
-        });
-
-        batch.end();
     }
 
     abstract public void onUpdate();

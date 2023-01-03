@@ -13,32 +13,21 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class MyGdxGameServer extends MyGdxGame {
+    private static MyGdxGameServer instance;
 
     Server _endPoint = new Server();
 
-    public MyGdxGameServer() {
+    private MyGdxGameServer() {
         _endPoint.getKryo().setRegistrationRequired(false);
     }
 
     Thread broadcastThread;
 
-    private List<GameStateAction> tickActions = new LinkedList<>();
+    volatile private List<GameStateAction> tickActions = new LinkedList<>();
 
     @Override
     public Server endPoint() {
         return _endPoint;
-    }
-
-    @Override
-    public void create() {
-        super.create();
-        setScreen(playScreen);
-    }
-
-    @Override
-    public void render() {
-        super.render();
-
     }
 
     @Override
@@ -47,10 +36,10 @@ public class MyGdxGameServer extends MyGdxGame {
 
                     if (gameStateAction instanceof AddPlayer) {
                         AddPlayer action = (AddPlayer) gameStateAction;
-                        creatureSprites.put(action.getPlayerId(), new Sprite(img, 64, 64));
+                        renderer.getCreatureSprites().put(action.getPlayerId(), new Sprite(img, 64, 64));
                     } else if (gameStateAction instanceof RemovePlayer) {
                         RemovePlayer action = (RemovePlayer) gameStateAction;
-                        creatureSprites.remove(action.getPlayerId());
+                        renderer.getCreatureSprites().remove(action.getPlayerId());
                     }
                 }
         );
@@ -59,7 +48,8 @@ public class MyGdxGameServer extends MyGdxGame {
             gameStateAction.applyToGameState(gameState);
         });
 
-        endPoint().sendToAllTCP(ActionsWrapper.of(tickActions));
+        // needs a list copy here for some reason, otherwise its concurrent modification
+        endPoint().sendToAllTCP(ActionsWrapper.of(new LinkedList<>(tickActions)));
 
         tickActions.clear();
     }
@@ -114,7 +104,8 @@ public class MyGdxGameServer extends MyGdxGame {
                     tickActions.add(posChange);
                 } else if (object instanceof AskInitPlayer) {
                     AskInitPlayer command = (AskInitPlayer) object;
-                    AddPlayer addPlayer = AddPlayer.of(command.getPlayerId(), Vector2.of(command.getX(), command.getY()));
+                    AddPlayer addPlayer =
+                            AddPlayer.of(command.getPlayerId(), Vector2.of(command.getX(), command.getY()));
 
                     tickActions.add(addPlayer);
 
@@ -143,5 +134,10 @@ public class MyGdxGameServer extends MyGdxGame {
         broadcastThread.interrupt();
 
 
+    }
+
+    public static MyGdxGameServer getInstance() {
+        if (instance == null) return new MyGdxGameServer();
+        return instance;
     }
 }

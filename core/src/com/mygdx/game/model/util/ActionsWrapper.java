@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@NoArgsConstructor
+@NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
 @Builder

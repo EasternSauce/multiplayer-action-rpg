@@ -17,6 +17,6 @@ public class HtmlServerLauncher extends GwtApplication {
 
     @Override
     public ApplicationListener createApplicationListener() {
-        return new MyGdxGameServer();
+        return MyGdxGameServer.getInstance();
     }
 }

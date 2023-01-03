@@ -9,7 +9,7 @@ import lombok.*;
 import java.util.HashMap;
 import java.util.Map;
 
-@NoArgsConstructor
+@NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
 @Builder

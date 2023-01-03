@@ -11,7 +11,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
+@NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
 @Builder

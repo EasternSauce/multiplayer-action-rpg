@@ -19,9 +19,12 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 public class MyGdxGameClient extends MyGdxGame {
+
+    private static MyGdxGameClient instance;
+
     Client _endPoint = new Client();
 
-    public MyGdxGameClient() {
+    private MyGdxGameClient() {
         _endPoint.getKryo().setRegistrationRequired(false);
     }
 
@@ -33,12 +36,6 @@ public class MyGdxGameClient extends MyGdxGame {
     }
 
     CreatureId thisPlayerId = CreatureId.of("Player " + rand.nextInt());
-
-    @Override
-    public void create() {
-        super.create();
-        setScreen(playScreen);
-    }
 
     @Override
     public void onUpdate() {
@@ -82,56 +79,30 @@ public class MyGdxGameClient extends MyGdxGame {
                     actions.forEach(gameStateAction -> {
                         if (gameStateAction instanceof AddPlayer) {
                             AddPlayer action = (AddPlayer) gameStateAction;
-                            creatureSprites.put(action.getPlayerId(), new Sprite(img, 64, 64));
+                            renderer.getCreatureSprites().put(action.getPlayerId(), new Sprite(img, 64, 64));
 
                         } else if (gameStateAction instanceof RemovePlayer) {
                             RemovePlayer action = (RemovePlayer) gameStateAction;
-                            creatureSprites.remove(action.getPlayerId());
+                            renderer.getCreatureSprites().remove(action.getPlayerId());
                         }
                     });
 
 
-//                    tickActions.foreach {
-//                        case AddPlayer(playerId, _, _) =>
-//                            playerSprites = playerSprites.updated(playerId, new Sprite(img, 64, 64))
-//                        case RemovePlayer(playerId) =>
-//                            playerSprites = playerSprites.removed(playerId)
-//                        case _ =>
-//                    }
                 } else if (object instanceof InitialState) {
                     InitialState action = (InitialState) object;
                     gameState = action.getGameState();
                     System.out.println("game state contains players: " + gameState.getCreatures().size());
-                    creatureSprites = gameState.getCreatures().values().stream().collect(Collectors.toMap(entry -> entry.getParams().getCreatureId(), entry -> new Sprite(img, 64, 64)));
+                    renderer.setCreatureSprites(gameState.getCreatures().values().stream().collect(
+                            Collectors.toMap(entry -> entry.getParams().getCreatureId(),
+                                    entry -> new Sprite(img, 64, 64))));
                 }
-//                obj match {
-//                    case newGameState: GameState =>
-//                        gameState = newGameState
-//                    case ActionsWrapper(tickActions) =>
-//                        val newGameState =
-//                                tickActions.foldLeft(gameState)((gameState, action) => action.applyToGameState(gameState))
-//
-//                        tickActions.foreach {
-//                        case AddPlayer(playerId, _, _) =>
-//                            creatureSprites = creatureSprites.updated(playerId, new Sprite(img, 64, 64))
-//                        case RemovePlayer(playerId) =>
-//                            creatureSprites = creatureSprites.removed(playerId)
-//                        case _ =>
-//                    }
-//
-//                    gameState = newGameState
-//                    case InitialState(initGameState) =>
-//                        gameState = initGameState
-//                        println("initial game state")
-//                        creatureSprites = gameState.creatures.map { case (playerId, _) => (playerId, new Sprite(img, 64, 64)) }
-//                    case _ =>
-//                }
+
             }
 
         });
 
         endPoint().sendTCP(
-                AskInitPlayer.of(thisPlayerId, Math.abs(rand.nextInt()) % 300, Math.abs(rand.nextInt()) % 300)
+                AskInitPlayer.of(thisPlayerId, Math.abs(rand.nextInt()) % 5, Math.abs(rand.nextInt()) % 5)
         );
 
     }
@@ -141,4 +112,8 @@ public class MyGdxGameClient extends MyGdxGame {
         endPoint().sendTCP(AskDeletePlayer.of(thisPlayerId));
     }
 
+    public static MyGdxGameClient getInstance() {
+        if (instance == null) return new MyGdxGameClient();
+        return instance;
+    }
 }
