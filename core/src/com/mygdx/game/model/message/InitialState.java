@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class InitialState {
-    private GameState gameState;
+    GameState gameState;
 }

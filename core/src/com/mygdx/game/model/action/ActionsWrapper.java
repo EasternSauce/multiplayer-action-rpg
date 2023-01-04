@@ -12,5 +12,5 @@ import java.util.List;
 @Data
 @Builder
 public class ActionsWrapper {
-    private List<GameStateAction> actions;
+    List<GameStateAction> actions;
 }

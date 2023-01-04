@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class AskDeletePlayer {
-    private CreatureId playerId;
+    CreatureId playerId;
 }

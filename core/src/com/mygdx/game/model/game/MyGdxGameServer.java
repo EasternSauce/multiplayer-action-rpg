@@ -23,7 +23,7 @@ public class MyGdxGameServer extends MyGdxGame {
 
     Thread broadcastThread;
 
-    volatile private List<GameStateAction> tickActions = new LinkedList<>();
+    private final List<GameStateAction> tickActions = new LinkedList<>();
 
     @Override
     public Server endPoint() {
@@ -36,10 +36,10 @@ public class MyGdxGameServer extends MyGdxGame {
 
                     if (gameStateAction instanceof AddPlayer) {
                         AddPlayer action = (AddPlayer) gameStateAction;
-                        renderer.getCreatureSprites().put(action.getPlayerId(), new Sprite(img, 64, 64));
+                        renderer.creatureSprites().put(action.playerId(), new Sprite(img, 64, 64));
                     } else if (gameStateAction instanceof RemovePlayer) {
                         RemovePlayer action = (RemovePlayer) gameStateAction;
-                        renderer.getCreatureSprites().remove(action.getPlayerId());
+                        renderer.creatureSprites().remove(action.playerId());
                     }
                 }
         );
@@ -84,28 +84,28 @@ public class MyGdxGameServer extends MyGdxGame {
             public void received(Connection connection, Object object) {
                 if (object instanceof MovementCommandUp) {
                     MovementCommandUp command = (MovementCommandUp) object;
-                    float y = gameState.getCreatures().get(command.getPlayerId()).getParams().getPos().getY();
-                    PositionChangeY posChange = PositionChangeY.of(command.getPlayerId(), y + 1);
+                    float y = gameState.creatures().get(command.playerId()).params().pos().y();
+                    PositionChangeY posChange = PositionChangeY.of(command.playerId(), y + 1);
                     tickActions.add(posChange);
                 } else if (object instanceof MovementCommandDown) {
                     MovementCommandDown command = (MovementCommandDown) object;
-                    float y = gameState.getCreatures().get(command.getPlayerId()).getParams().getPos().getY();
-                    PositionChangeY posChange = PositionChangeY.of(command.getPlayerId(), y - 1);
+                    float y = gameState.creatures().get(command.playerId()).params().pos().y();
+                    PositionChangeY posChange = PositionChangeY.of(command.playerId(), y - 1);
                     tickActions.add(posChange);
                 } else if (object instanceof MovementCommandLeft) {
                     MovementCommandLeft command = (MovementCommandLeft) object;
-                    float x = gameState.getCreatures().get(command.getPlayerId()).getParams().getPos().getX();
-                    PositionChangeX posChange = PositionChangeX.of(command.getPlayerId(), x - 1);
+                    float x = gameState.creatures().get(command.playerId()).params().pos().x();
+                    PositionChangeX posChange = PositionChangeX.of(command.playerId(), x - 1);
                     tickActions.add(posChange);
                 } else if (object instanceof MovementCommandRight) {
                     MovementCommandRight command = (MovementCommandRight) object;
-                    float x = gameState.getCreatures().get(command.getPlayerId()).getParams().getPos().getX();
-                    PositionChangeX posChange = PositionChangeX.of(command.getPlayerId(), x + 1);
+                    float x = gameState.creatures().get(command.playerId()).params().pos().x();
+                    PositionChangeX posChange = PositionChangeX.of(command.playerId(), x + 1);
                     tickActions.add(posChange);
                 } else if (object instanceof AskInitPlayer) {
                     AskInitPlayer command = (AskInitPlayer) object;
                     AddPlayer addPlayer =
-                            AddPlayer.of(command.getPlayerId(), Vector2.of(command.getX(), command.getY()));
+                            AddPlayer.of(command.playerId(), Vector2.of(command.x(), command.y()));
 
                     tickActions.add(addPlayer);
 
@@ -113,7 +113,7 @@ public class MyGdxGameServer extends MyGdxGame {
                     connection.sendTCP(InitialState.of(gameState));
                 } else if (object instanceof AskDeletePlayer) {
                     AskDeletePlayer command = (AskDeletePlayer) object;
-                    RemovePlayer removePlayer = RemovePlayer.of(command.getPlayerId());
+                    RemovePlayer removePlayer = RemovePlayer.of(command.playerId());
                     tickActions.add(removePlayer);
                 }
             }

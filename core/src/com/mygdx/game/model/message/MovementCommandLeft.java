@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class MovementCommandLeft implements MovementCommand {
-    private CreatureId playerId;
+    CreatureId playerId;
 
 }

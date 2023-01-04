@@ -12,11 +12,11 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class PositionChangeX implements GameStateAction {
-    private CreatureId playerId;
-    private float x;
+    CreatureId playerId;
+    float x;
 
     @Override
     public void applyToGameState(GameState gameState) {
-        gameState.getCreatures().get(playerId).getParams().getPos().setX(x);
+        gameState.creatures().get(playerId).params().pos().x(x);
     }
 }

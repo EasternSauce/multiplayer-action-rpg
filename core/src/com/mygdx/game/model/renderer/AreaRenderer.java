@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class AreaRenderer {
 
-    private OrthogonalTiledMapRenderer tiledMapRenderer;
+    OrthogonalTiledMapRenderer tiledMapRenderer;
 
     public void init(TiledMap map, float mapScale) {
         tiledMapRenderer = new OrthogonalTiledMapRenderer(map, mapScale / Constants.PPM);

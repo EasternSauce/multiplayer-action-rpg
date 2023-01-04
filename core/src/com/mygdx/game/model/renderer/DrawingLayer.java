@@ -25,7 +25,7 @@ public class DrawingLayer {
     final ShapeDrawer shapeDrawer = new ShapeDrawer(spriteBatch, createTextureAndRegion());
 
 
-    private Texture texture;
+    Texture texture;
 
     public void begin() {
         spriteBatch.begin();
@@ -43,7 +43,7 @@ public class DrawingLayer {
         spriteBatch.setProjectionMatrix(projection);
     }
 
-    private TextureRegion createTextureAndRegion() {
+    TextureRegion createTextureAndRegion() {
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
         pixmap.setColor(Color.WHITE);
         pixmap.drawPixel(0, 0);

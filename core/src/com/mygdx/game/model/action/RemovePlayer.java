@@ -12,10 +12,10 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class RemovePlayer implements GameStateAction {
-    private CreatureId playerId;
+    CreatureId playerId;
 
     @Override
     public void applyToGameState(GameState gameState) {
-        gameState.getCreatures().remove(playerId);
+        gameState.creatures().remove(playerId);
     }
 }

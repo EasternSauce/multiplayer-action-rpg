@@ -2,7 +2,9 @@ package com.mygdx.game.model.creature;
 
 public interface Creature {
 
-    CreatureParams getParams();
+    CreatureParams params();
 
-    void setParams(CreatureParams params);
+    Creature params(CreatureParams params);
+
+
 }

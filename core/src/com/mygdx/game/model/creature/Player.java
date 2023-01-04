@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class Player implements Creature {
-    private CreatureParams params;
+    CreatureParams params;
 
 }

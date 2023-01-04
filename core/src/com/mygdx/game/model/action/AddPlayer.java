@@ -16,13 +16,13 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class AddPlayer implements GameStateAction {
-    private CreatureId playerId;
-    private Vector2 pos;
+    CreatureId playerId;
+    Vector2 pos;
 
     @Override
     public void applyToGameState(GameState gameState) {
         Creature player = Player.of(CreatureParams.builder().creatureId(playerId).pos(pos).build());
 
-        gameState.getCreatures().put(playerId, player);
+        gameState.creatures().put(playerId, player);
     }
 }

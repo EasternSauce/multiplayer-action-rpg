@@ -9,7 +9,7 @@ import lombok.*;
 @Builder
 public class CreatureParams {
     @NonNull
-    private CreatureId creatureId;
+    CreatureId creatureId;
     @NonNull
-    private Vector2 pos;
+    Vector2 pos;
 }

@@ -26,6 +26,8 @@ public class MyGdxGameClient extends MyGdxGame {
 
     private MyGdxGameClient() {
         _endPoint.getKryo().setRegistrationRequired(false);
+
+        thisPlayerId = CreatureId.of("Player " + rand.nextInt());
     }
 
     Random rand = new Random();
@@ -34,8 +36,6 @@ public class MyGdxGameClient extends MyGdxGame {
     public Client endPoint() {
         return _endPoint;
     }
-
-    CreatureId thisPlayerId = CreatureId.of("Player " + rand.nextInt());
 
     @Override
     public void onUpdate() {
@@ -69,7 +69,7 @@ public class MyGdxGameClient extends MyGdxGame {
                 if (object instanceof ActionsWrapper) {
                     ActionsWrapper actionsWrapper = (ActionsWrapper) object;
 
-                    List<GameStateAction> actions = actionsWrapper.getActions();
+                    List<GameStateAction> actions = actionsWrapper.actions();
 
                     actions.forEach(gameStateAction -> {
                         gameStateAction.applyToGameState(gameState);
@@ -79,21 +79,21 @@ public class MyGdxGameClient extends MyGdxGame {
                     actions.forEach(gameStateAction -> {
                         if (gameStateAction instanceof AddPlayer) {
                             AddPlayer action = (AddPlayer) gameStateAction;
-                            renderer.getCreatureSprites().put(action.getPlayerId(), new Sprite(img, 64, 64));
+                            renderer.creatureSprites().put(action.playerId(), new Sprite(img, 64, 64));
 
                         } else if (gameStateAction instanceof RemovePlayer) {
                             RemovePlayer action = (RemovePlayer) gameStateAction;
-                            renderer.getCreatureSprites().remove(action.getPlayerId());
+                            renderer.creatureSprites().remove(action.playerId());
                         }
                     });
 
 
                 } else if (object instanceof InitialState) {
                     InitialState action = (InitialState) object;
-                    gameState = action.getGameState();
-                    System.out.println("game state contains players: " + gameState.getCreatures().size());
-                    renderer.setCreatureSprites(gameState.getCreatures().values().stream().collect(
-                            Collectors.toMap(entry -> entry.getParams().getCreatureId(),
+                    gameState = action.gameState();
+                    System.out.println("game state contains players: " + gameState.creatures().size());
+                    renderer.creatureSprites(gameState.creatures().values().stream().collect(
+                            Collectors.toMap(entry -> entry.params().creatureId(),
                                     entry -> new Sprite(img, 64, 64))));
                 }
 

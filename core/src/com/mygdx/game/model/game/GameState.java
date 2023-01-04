@@ -16,11 +16,11 @@ import java.util.Map;
 public class GameState {
     @Builder.Default
     @NonNull
-    private Map<CreatureId, Creature> creatures = new HashMap<>();
+    Map<CreatureId, Creature> creatures = new HashMap<>();
     @Builder.Default
     @NonNull
-    private Map<AreaId, Area> areas = new HashMap<>();
-    private AreaId currentAreaId;
+    Map<AreaId, Area> areas = new HashMap<>();
+    AreaId currentAreaId;
     @NonNull
-    private AreaId defaultAreaId;
+    AreaId defaultAreaId;
 }

@@ -5,18 +5,20 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.esotericsoftware.kryonet.EndPoint;
 import com.mygdx.game.model.area.AreaId;
+import com.mygdx.game.model.creature.CreatureId;
 
 import java.io.IOException;
 
 public abstract class MyGdxGame extends Game {
-    GameRenderer renderer = GameRenderer.of();
+    protected GameRenderer renderer = GameRenderer.of();
 
     MyGdxGamePlayScreen playScreen = MyGdxGamePlayScreen.of();
 
-    Texture img;
+    protected Texture img;
 
     TextureAtlas atlas;
 
+    protected CreatureId thisPlayerId = null;
     public EndPoint _endPoint = null;
 
     public GameState gameState;

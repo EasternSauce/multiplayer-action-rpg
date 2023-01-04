@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class Vector2 {
-    private float x;
-    private float y;
+    float x;
+    float y;
 }

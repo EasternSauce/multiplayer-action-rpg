@@ -21,26 +21,26 @@ import java.util.Map;
 @Data
 @Builder
 public class GameRenderer {
-    private OrthographicCamera worldCamera;
-    private OrthographicCamera hudCamera;
+    OrthographicCamera worldCamera;
+    OrthographicCamera hudCamera;
 
-    private Viewport worldViewport;
+    Viewport worldViewport;
 
-    private Viewport hudViewport;
+    Viewport hudViewport;
 
-    private DrawingLayer worldDrawingLayer;
-    private DrawingLayer hudDrawingLayer;
+    DrawingLayer worldDrawingLayer;
+    DrawingLayer hudDrawingLayer;
 
-    private Map<CreatureId, Sprite> creatureSprites;
+    Map<CreatureId, Sprite> creatureSprites;
 
 
-    private OrthogonalTiledMapRenderer tiledMapRenderer;
+    OrthogonalTiledMapRenderer tiledMapRenderer;
 
-    private Map<AreaId, String> mapsToLoad;
+    Map<AreaId, String> mapsToLoad;
 
-    private Map<AreaId, TiledMap> maps;
+    Map<AreaId, TiledMap> maps;
 
-    private float mapScale;
+    float mapScale;
 
-    private TmxMapLoader mapLoader;
+    TmxMapLoader mapLoader;
 }

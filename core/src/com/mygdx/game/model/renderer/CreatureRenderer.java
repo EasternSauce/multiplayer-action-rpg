@@ -16,15 +16,15 @@
 //@Data
 //@Builder
 //public class CreatureRenderer {
-//    private CreatureId creatureId;
+//    CreatureId creatureId;
 //
-//    private Sprite sprite;
+//    Sprite sprite;
 //
-//    private TextureRegion[] facingTextures;
+//    TextureRegion[] facingTextures;
 //
-//    private Animation<TextureRegion>[] runningAnimations;
+//    Animation<TextureRegion>[] runningAnimations;
 //
-//    private TextureRegion textureRegion;
+//    TextureRegion textureRegion;
 //
 //    public void init(TextureAtlas atlas, GameState gameState) {
 //        sprite = new Sprite();

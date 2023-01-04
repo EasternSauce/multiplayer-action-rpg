@@ -16,10 +16,10 @@
 //@Data
 //@Builder
 //public class RendererController {
-//    private Map<AreaId, AreaRenderer> areaRenderers;
-////    private Map<CreatureId, CreatureRenderer> creatureRenderers;
+//    Map<AreaId, AreaRenderer> areaRenderers;
+////    Map<CreatureId, CreatureRenderer> creatureRenderers;
 //
-//    private TextureAtlas atlas;
+//    TextureAtlas atlas;
 //
 //    public void init(TextureAtlas atlas, Map<AreaId, TiledMap> maps, float mapScale) {
 //        areaRenderers = maps

@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class AreaId {
-    private String value;
+    String value;
 }

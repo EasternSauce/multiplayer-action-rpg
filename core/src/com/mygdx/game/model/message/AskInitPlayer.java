@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class AskInitPlayer {
-    private CreatureId playerId;
-    private float x;
-    private float y;
+    CreatureId playerId;
+    float x;
+    float y;
 }
