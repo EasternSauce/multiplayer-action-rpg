@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
@@ -31,51 +33,60 @@ public class MyGdxGamePlayScreen implements Screen {
 
     //    Box2DDebugRenderer debugRenderer;
 
-    GameRenderer renderer;
+    GameRenderer gameRenderer;
+
+    protected Texture img;
+
 
     public void init(MyGdxGame game) {
         this.game = game;
-        this.renderer = game.renderer;
+        this.gameRenderer = game.gameRenderer;
 //        world = new World(new com.badlogic.gdx.math.Vector2(0, 0), true);
 //        debugRenderer = new Box2DDebugRenderer();
 
-        renderer.worldCamera(new OrthographicCamera());
+        gameRenderer.worldCamera(new OrthographicCamera());
 
-        renderer.hudCamera(new OrthographicCamera());
-        renderer.hudCamera().position.set(Constants.WindowWidth / 2f, Constants.WindowHeight / 2f, 0);
+        gameRenderer.hudCamera(new OrthographicCamera());
+        gameRenderer.hudCamera().position.set(Constants.WindowWidth / 2f, Constants.WindowHeight / 2f, 0);
 
-        renderer.worldViewport(new FitViewport(
+        gameRenderer.worldViewport(new FitViewport(
                 Constants.ViewpointWorldWidth / Constants.PPM,
                 Constants.ViewpointWorldHeight / Constants.PPM,
-                renderer.worldCamera()
+                gameRenderer.worldCamera()
         ));
 
-        renderer.hudViewport(
+        gameRenderer.hudViewport(
                 new FitViewport((float) Constants.WindowWidth, (float) Constants.WindowHeight,
-                        renderer.hudCamera()));
+                        gameRenderer.hudCamera()));
 
 
-        renderer.creatureSprites(new HashMap<>());
+//        gameRenderer.creatureSprites(new HashMap<>());
 
-        renderer.mapLoader(new TmxMapLoader());
+        gameRenderer.mapLoader(new TmxMapLoader());
 
         Map<AreaId, String> mapsToLoad = new HashMap<>();
         mapsToLoad.put(AreaId.of("area1"), "assets/areas/area1");
         mapsToLoad.put(AreaId.of("area2"), "assets/areas/area2");
         mapsToLoad.put(AreaId.of("area3"), "assets/areas/area3");
-        renderer.mapsToLoad(mapsToLoad);
+        gameRenderer.mapsToLoad(mapsToLoad);
 
-        renderer.maps(mapsToLoad.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
-                entry -> renderer.mapLoader().load(entry.getValue() + "/tile_map.tmx"))));
+        gameRenderer.maps(mapsToLoad.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
+                entry -> gameRenderer.mapLoader().load(entry.getValue() + "/tile_map.tmx"))));
 
-        renderer.mapScale(4.0f);
+        gameRenderer.mapScale(4.0f);
 
-        renderer.tiledMapRenderer(new OrthogonalTiledMapRenderer(renderer.maps().get(AreaId.of("area1")),
-                renderer.mapScale() / Constants.PPM));
+        gameRenderer.tiledMapRenderer(new OrthogonalTiledMapRenderer(gameRenderer.maps().get(AreaId.of("area1")),
+                gameRenderer.mapScale() / Constants.PPM));
 
 
-        renderer.worldDrawingLayer(DrawingLayer.of());
-        renderer.hudDrawingLayer(DrawingLayer.of());
+        gameRenderer.worldDrawingLayer(DrawingLayer.of());
+        gameRenderer.hudDrawingLayer(DrawingLayer.of());
+
+        gameRenderer.atlas(new TextureAtlas("assets/atlas/packed_atlas.atlas"));
+
+        gameRenderer.creatureAnimations(new HashMap<>());
+
+        img = new Texture("badlogic.jpg");
 
 
 //        gameState = AtomicSTRef(
@@ -97,6 +108,8 @@ public class MyGdxGamePlayScreen implements Screen {
 //        processExternalEvents(events)(
 //                gameState.aref.get()
 //        ) // process all queued events after init and before game loop starts
+
+
     }
 
     @Override
@@ -115,7 +128,14 @@ public class MyGdxGamePlayScreen implements Screen {
 //        RendererController.update()
 //        PhysicsEngineController.update()
 
-        renderer.tiledMapRenderer().setView(renderer.worldCamera());
+        gameRenderer.creatureAnimations()
+                .forEach((creatureId, creatureAnimation) -> creatureAnimation.update(game.gameState));
+
+        //update gamestate
+
+        game.gameState.creatures().forEach((creatureId, creature) -> creature.update(delta));
+
+        gameRenderer.tiledMapRenderer().setView(gameRenderer.worldCamera());
 
 
         updateCamera();
@@ -128,8 +148,8 @@ public class MyGdxGamePlayScreen implements Screen {
     public void render(float delta) {
         update(delta);
 
-        renderer.worldDrawingLayer().setProjectionMatrix(renderer.worldCamera().combined);
-        renderer.hudDrawingLayer().setProjectionMatrix(renderer.hudCamera().combined);
+        gameRenderer.worldDrawingLayer().setProjectionMatrix(gameRenderer.worldCamera().combined);
+        gameRenderer.hudDrawingLayer().setProjectionMatrix(gameRenderer.hudCamera().combined);
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
 
@@ -139,31 +159,36 @@ public class MyGdxGamePlayScreen implements Screen {
 
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | coverageBuffer);
 
-        renderer.tiledMapRenderer().render(new int[]{0, 1, 2, 3});
+        gameRenderer.tiledMapRenderer().render(new int[]{0, 1, 2, 3});
 
 //        ScreenUtils.clear(1, 0, 0, 1);
-        renderer.worldDrawingLayer().spriteBatch().begin();
+        gameRenderer.worldDrawingLayer().spriteBatch().begin();
 
 
 //        renderer.worldDrawingLayer().spriteBatch().draw(game.img, 0, 0, 5,5);
 
 
-        renderer.creatureSprites().forEach((creatureId, sprite) -> {
-            if (game.gameState.creatures().containsKey(creatureId)) {
-                sprite.setPosition(game.gameState.creatures().get(creatureId).params().pos().x(),
-                        game.gameState.creatures().get(creatureId).params().pos().y());
-                sprite.setSize(2.5f, 2.5f);
-                sprite.draw(renderer.worldDrawingLayer().spriteBatch());
-            }
-        });
+        gameRenderer.creatureAnimations()
+                .forEach((creatureId, creatureAnimation) -> creatureAnimation.render(gameRenderer.worldDrawingLayer()));
 
-        renderer.worldDrawingLayer().spriteBatch().end();
+//        renderer.creatureSprites().forEach((creatureId, sprite) -> {
+//            if (game.gameState.creatures().containsKey(creatureId)) {
+//                sprite.setPosition(game.gameState.creatures().get(creatureId).params().pos().x(),
+//                        game.gameState.creatures().get(creatureId).params().pos().y());
+//                sprite.setSize(2.5f, 2.5f);
+//                sprite.draw(renderer.worldDrawingLayer().spriteBatch());
+//            }
+//        });
+
+//        gameRenderer.worldDrawingLayer().spriteBatch().draw(img, 10, 10);
+
+        gameRenderer.worldDrawingLayer().spriteBatch().end();
     }
 
     @Override
     public void resize(int width, int height) {
-        renderer.worldViewport().update(width, height);
-        renderer.hudViewport().update(width, height);
+        gameRenderer.worldViewport().update(width, height);
+        gameRenderer.hudViewport().update(width, height);
     }
 
     @Override
@@ -187,28 +212,31 @@ public class MyGdxGamePlayScreen implements Screen {
     }
 
     public void updateCamera() {
+        Creature player = game.gameState.creatures().get(game.thisPlayerId);
 
-        int camX;
-        int camY;
+        if (player != null) {
+            float camX;
+            float camY;
 
-        if (game.thisPlayerId != null) {
-            Creature player = game.gameState.creatures().get(game.thisPlayerId);
+            if (game.thisPlayerId != null) {
 
-            camX = (int) player.params().pos().x();
-            camY = (int) player.params().pos().y();
+                camX = player.params().pos().x();
+                camY = player.params().pos().y();
 
-        } else {
-            camX = 0;
-            camY = 0;
+            } else {
+                camX = 0;
+                camY = 0;
+            }
+
+            Vector3 camPosition = gameRenderer.worldCamera().position;
+
+
+            camPosition.x = (float) (Math.floor(camX * 100) / 100);
+            camPosition.y = (float) (Math.floor(camY * 100) / 100);
+
+            gameRenderer.worldCamera().update();
         }
 
-        Vector3 camPosition = renderer.worldCamera().position;
-
-
-        camPosition.x = (float) (Math.floor(camX * 100) / 100);
-        camPosition.y = (float) (Math.floor(camY * 100) / 100);
-
-        renderer.worldCamera().update();
 
     }
 

@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(staticName = "of")
 @Data
 @Builder
-public class MovementCommandDown implements MovementCommand {
+public class MovementCommandDown implements PlayerInputCommand {
     CreatureId playerId;
 }

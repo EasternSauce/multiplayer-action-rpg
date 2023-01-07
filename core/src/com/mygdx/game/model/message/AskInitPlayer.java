@@ -14,4 +14,5 @@ public class AskInitPlayer {
     CreatureId playerId;
     float x;
     float y;
+    String textureName;
 }

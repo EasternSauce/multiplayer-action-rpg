@@ -1,6 +1,5 @@
 package com.mygdx.game.model.game;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
@@ -15,7 +14,7 @@ import java.util.List;
 public class MyGdxGameServer extends MyGdxGame {
     private static MyGdxGameServer instance;
 
-    Server _endPoint = new Server();
+    final Server _endPoint = new Server();
 
     private MyGdxGameServer() {
         _endPoint.getKryo().setRegistrationRequired(false);
@@ -32,21 +31,23 @@ public class MyGdxGameServer extends MyGdxGame {
 
     @Override
     public void onUpdate() {
-        tickActions.forEach(gameStateAction -> {
+//        tickActions.forEach(gameStateAction -> {
+//
+//                    if (gameStateAction instanceof AddPlayer) {
+//                        AddPlayer action = (AddPlayer) gameStateAction;
+////                        renderer.creatureSprites().put(action.playerId(), new Sprite(img, 64, 64));
+//                        CreatureAnimation creatureAnimation = CreatureAnimation.of(action.playerId());
+//                        creatureAnimation.init(gameRenderer.atlas(), gameState);
+//                        gameRenderer.creatureAnimations().put(action.playerId(), creatureAnimation);
+//                    } else if (gameStateAction instanceof RemovePlayer) {
+//                        RemovePlayer action = (RemovePlayer) gameStateAction;
+//                        gameRenderer.creatureAnimations().remove(action.playerId());
+////                        renderer.creatureSprites().remove(action.playerId());
+//                    }
+//                }
+//        );
 
-                    if (gameStateAction instanceof AddPlayer) {
-                        AddPlayer action = (AddPlayer) gameStateAction;
-                        renderer.creatureSprites().put(action.playerId(), new Sprite(img, 64, 64));
-                    } else if (gameStateAction instanceof RemovePlayer) {
-                        RemovePlayer action = (RemovePlayer) gameStateAction;
-                        renderer.creatureSprites().remove(action.playerId());
-                    }
-                }
-        );
-
-        tickActions.forEach(gameStateAction -> {
-            gameStateAction.applyToGameState(gameState);
-        });
+        tickActions.forEach(gameStateAction -> gameStateAction.applyToGameState(gameState, gameRenderer));
 
         // needs a list copy here for some reason, otherwise its concurrent modification
         endPoint().sendToAllTCP(ActionsWrapper.of(new LinkedList<>(tickActions)));
@@ -102,19 +103,23 @@ public class MyGdxGameServer extends MyGdxGame {
                     float x = gameState.creatures().get(command.playerId()).params().pos().x();
                     PositionChangeX posChange = PositionChangeX.of(command.playerId(), x + 1);
                     tickActions.add(posChange);
+                } else if (object instanceof MouseMovementCommand) {
+                    MouseMovementCommand command = (MouseMovementCommand) object;
+                    MoveTowardsTargetAction move = MoveTowardsTargetAction.of(command.playerId(), command.mousePos());
+                    tickActions.add(move);
                 } else if (object instanceof AskInitPlayer) {
                     AskInitPlayer command = (AskInitPlayer) object;
-                    AddPlayer addPlayer =
-                            AddPlayer.of(command.playerId(), Vector2.of(command.x(), command.y()));
+                    AddPlayerAction addPlayerAction =
+                            AddPlayerAction.of(command.playerId(), Vector2.of(command.x(), command.y()),
+                                    command.textureName());
 
-                    tickActions.add(addPlayer);
+                    tickActions.add(addPlayerAction);
 
-                    System.out.println("sending initial state");
-                    connection.sendTCP(InitialState.of(gameState));
+                    connection.sendTCP(WrappedState.of(gameState, true));
                 } else if (object instanceof AskDeletePlayer) {
                     AskDeletePlayer command = (AskDeletePlayer) object;
-                    RemovePlayer removePlayer = RemovePlayer.of(command.playerId());
-                    tickActions.add(removePlayer);
+                    RemovePlayerAction removePlayerAction = RemovePlayerAction.of(command.playerId());
+                    tickActions.add(removePlayerAction);
                 }
             }
         });
@@ -123,7 +128,7 @@ public class MyGdxGameServer extends MyGdxGame {
     public void broadcastGameState() throws InterruptedException {
         while (true) {
             Thread.sleep(3000);
-            endPoint().sendToAllTCP(gameState);
+            endPoint().sendToAllTCP(WrappedState.of(gameState, false));
         }
     }
 
@@ -137,7 +142,7 @@ public class MyGdxGameServer extends MyGdxGame {
     }
 
     public static MyGdxGameServer getInstance() {
-        if (instance == null) return new MyGdxGameServer();
+        if (instance == null) instance = new MyGdxGameServer();
         return instance;
     }
 }

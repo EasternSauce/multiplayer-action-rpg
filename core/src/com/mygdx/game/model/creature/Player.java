@@ -1,15 +1,13 @@
 package com.mygdx.game.model.creature;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Builder
-public class Player implements Creature {
+public class Player extends Creature {
     CreatureParams params;
 
 }
