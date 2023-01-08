@@ -21,8 +21,12 @@ public class RemovePlayerAction implements GameStateAction {
         gameState.creatures().remove(playerId);
 
         renderer.creatureAnimations().remove(playerId);
-        physics.creatureBodies().get(playerId).onRemove();
-        physics.creatureBodies().remove(playerId);
+
+        if (physics.creatureBodies().containsKey(playerId)) {
+            physics.creatureBodies().get(playerId).onRemove();
+            physics.creatureBodies().remove(playerId);
+        }
+
 
     }
 }

@@ -140,8 +140,12 @@ public class MyGdxGamePlayScreen implements Screen {
 
         // set gamestate position based on b2body position
         game.gameState.creatures().forEach(
-                (creatureId, creature) -> creature.params()
-                        .pos(gamePhysics.creatureBodies().get(creatureId).pos()));
+                (creatureId, creature) -> {
+                    if (gamePhysics.creatureBodies().containsKey(creatureId)) {
+                        creature.params().pos(gamePhysics.creatureBodies().get(creatureId).pos());
+                    }
+
+                });
 
         gameRenderer.creatureAnimations()
                 .forEach((creatureId, creatureAnimation) -> creatureAnimation.update(game.gameState));
