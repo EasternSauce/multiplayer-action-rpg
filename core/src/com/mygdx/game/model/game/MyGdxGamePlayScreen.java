@@ -127,7 +127,9 @@ public class MyGdxGamePlayScreen implements Screen {
     }
 
     public void update(float delta) {
-        game.onUpdate();
+
+        if (game().isInitialized()) {
+            game.onUpdate();
 
 //        PhysicsEngineController.physicsEventQueue.clear()
 //        processExternalEvents(events)
@@ -135,29 +137,32 @@ public class MyGdxGamePlayScreen implements Screen {
 //        PhysicsEngineController.update()
 
 
-        gamePhysics.creatureBodies().forEach((creatureId, creatureBody) -> creatureBody.update(game.gameState));
+            gamePhysics.creatureBodies().forEach((creatureId, creatureBody) -> creatureBody.update(game.gameState));
 
-        // set gamestate position based on b2body position
-        game.gameState.creatures().forEach(
-                (creatureId, creature) -> creature.params().pos(gamePhysics.creatureBodies().get(creatureId).pos()));
+            // set gamestate position based on b2body position
+            game.gameState.creatures().forEach(
+                    (creatureId, creature) -> creature.params()
+                            .pos(gamePhysics.creatureBodies().get(creatureId).pos()));
 
-        gameRenderer.creatureAnimations()
-                .forEach((creatureId, creatureAnimation) -> creatureAnimation.update(game.gameState));
-
-
-        //update gamestate
-
-        game.gameState.creatures().forEach((creatureId, creature) -> creature.update(delta));
-
-        gameRenderer.tiledMapRenderer().setView(gameRenderer.worldCamera());
+            gameRenderer.creatureAnimations()
+                    .forEach((creatureId, creatureAnimation) -> creatureAnimation.update(game.gameState));
 
 
-        updateCamera();
+            //update gamestate
+
+            game.gameState.creatures().forEach((creatureId, creature) -> creature.update(delta));
+
+            gameRenderer.tiledMapRenderer().setView(gameRenderer.worldCamera());
+
+
+            updateCamera();
 
 
 //        game.onRender();
 
-        gamePhysics.world().step(1 / 60f, 6, 2);
+            gamePhysics.world().step(1 / 60f, 6, 2);
+        }
+
 
     }
 

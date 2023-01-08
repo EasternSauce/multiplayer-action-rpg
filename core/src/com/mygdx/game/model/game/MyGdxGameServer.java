@@ -84,7 +84,7 @@ public class MyGdxGameServer extends MyGdxGame {
 
     public void runServer() throws IOException {
         endPoint().start();
-        endPoint().bind(54555, 54777);
+        endPoint().bind(20445, 20445);
 
         endPoint().addListener(new Listener() {
             @Override

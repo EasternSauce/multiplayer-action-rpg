@@ -25,6 +25,9 @@ public abstract class MyGdxGame extends Game {
         return _endPoint;
     }
 
+    public boolean isInitialized() {
+        return true;
+    }
 
     @Override
     public void create() {

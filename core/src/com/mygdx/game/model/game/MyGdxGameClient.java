@@ -24,6 +24,9 @@ public class MyGdxGameClient extends MyGdxGame {
     private static MyGdxGameClient instance;
 
     final Client _endPoint = new Client();
+    final Random rand = new Random();
+
+    boolean isInitialized = false;
 
     private MyGdxGameClient() {
         _endPoint.getKryo().setRegistrationRequired(false);
@@ -31,11 +34,15 @@ public class MyGdxGameClient extends MyGdxGame {
         thisPlayerId = CreatureId.of("Player " + Math.abs(rand.nextInt()));
     }
 
-    final Random rand = new Random();
 
     @Override
     public Client endPoint() {
         return _endPoint;
+    }
+
+    @Override
+    public boolean isInitialized() {
+        return isInitialized;
     }
 
     @Override
@@ -67,7 +74,7 @@ public class MyGdxGameClient extends MyGdxGame {
     public void establishConnection() throws IOException {
 
         endPoint().start();
-        endPoint().connect(5000, "127.0.0.1", 54555, 54777);
+        endPoint().connect(5000, "192.168.0.185", 20445, 20446);
 
         endPoint().addListener(new Listener() {
             @Override
@@ -128,6 +135,8 @@ public class MyGdxGameClient extends MyGdxGame {
                                 gamePhysics.creatureBodies().put(creatureId, creatureBody);
                             }
                         });
+
+                        isInitialized = true;
 
                     }
 
