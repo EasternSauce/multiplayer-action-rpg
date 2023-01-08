@@ -108,7 +108,9 @@ public class CreatureAnimation {
 
 
     public void render(DrawingLayer drawingLayer) {
-        sprite.draw(drawingLayer.spriteBatch());
+        if (sprite.getTexture() != null) {
+            sprite.draw(drawingLayer.spriteBatch());
+        }
     }
 
     public static CreatureAnimation of(CreatureId creatureId) {

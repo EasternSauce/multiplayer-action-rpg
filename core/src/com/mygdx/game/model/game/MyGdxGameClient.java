@@ -143,7 +143,11 @@ public class MyGdxGameClient extends MyGdxGame {
                     // TODO: update ALL bodies positions here based on gameState!
                     if (!gamePhysics.world().isLocked()) {
                         gameState.creatures().forEach((creatureId, creature) ->
-                                gamePhysics.creatureBodies().get(creatureId).pos(creature.params().pos()));
+                        {
+                            if (gamePhysics.creatureBodies().containsKey(creatureId)) {
+                                gamePhysics.creatureBodies().get(creatureId).pos(creature.params().pos());
+                            }
+                        });
 
                     }
 
