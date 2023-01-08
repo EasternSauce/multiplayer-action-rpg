@@ -4,11 +4,15 @@ import com.badlogic.gdx.Game;
 import com.esotericsoftware.kryonet.EndPoint;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.CreatureId;
+import com.mygdx.game.model.physics.GamePhysics;
+import com.mygdx.game.model.renderer.GameRenderer;
 
 import java.io.IOException;
 
 public abstract class MyGdxGame extends Game {
     protected GameRenderer gameRenderer = GameRenderer.of();
+
+    protected GamePhysics gamePhysics = GamePhysics.of();
 
     final MyGdxGamePlayScreen playScreen = MyGdxGamePlayScreen.of();
 

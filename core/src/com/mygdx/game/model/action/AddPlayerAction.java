@@ -4,10 +4,12 @@ import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.creature.CreatureParams;
 import com.mygdx.game.model.creature.Player;
-import com.mygdx.game.model.game.CreatureAnimation;
-import com.mygdx.game.model.game.CreatureAnimationConfig;
-import com.mygdx.game.model.game.GameRenderer;
 import com.mygdx.game.model.game.GameState;
+import com.mygdx.game.model.physics.CreatureBody;
+import com.mygdx.game.model.physics.GamePhysics;
+import com.mygdx.game.model.renderer.CreatureAnimation;
+import com.mygdx.game.model.renderer.CreatureAnimationConfig;
+import com.mygdx.game.model.renderer.GameRenderer;
 import com.mygdx.game.model.util.SimpleTimer;
 import com.mygdx.game.model.util.Vector2;
 import lombok.*;
@@ -25,8 +27,8 @@ public class AddPlayerAction implements GameStateAction {
     @NonNull
     String textureName;
 
-    @Override
-    public void applyToGameState(GameState gameState, GameRenderer gameRenderer) {
+    public void applyToGame(GameState gameState, GameRenderer renderer, GamePhysics physics) {
+
         Creature player = Player.of(CreatureParams.builder()
                 .creatureId(playerId)
                 .pos(pos)
@@ -36,15 +38,17 @@ public class AddPlayerAction implements GameStateAction {
                 .movementCommandTargetPos(Vector2.of(0, 0))
                 .reachedTargetPos(true)
                 .isMoving(false)
+                .speed(10f)
                 .build());
 
         gameState.creatures().put(playerId, player);
 
         CreatureAnimation creatureAnimation = CreatureAnimation.of(playerId);
-        creatureAnimation.init(gameRenderer.atlas(), gameState);
-        gameRenderer.creatureAnimations().put(playerId, creatureAnimation);
-        System.out.println("adding player " + playerId);
-
+        creatureAnimation.init(renderer.atlas(), gameState);
+        renderer.creatureAnimations().put(playerId, creatureAnimation);
+        CreatureBody creatureBody = CreatureBody.of(playerId);
+        creatureBody.init(physics.world(), gameState);
+        physics.creatureBodies().put(playerId, creatureBody);
 
     }
 }

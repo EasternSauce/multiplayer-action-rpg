@@ -1,4 +1,4 @@
-package com.mygdx.game.model.game;
+package com.mygdx.game.model.renderer;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
-import com.mygdx.game.model.renderer.DrawingLayer;
+import com.mygdx.game.model.game.GameState;
 import com.mygdx.game.model.util.WorldDirection;
 import lombok.Data;
 import lombok.NoArgsConstructor;

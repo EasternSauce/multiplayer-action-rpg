@@ -11,6 +11,8 @@ import com.mygdx.game.model.action.ActionsWrapper;
 import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.message.*;
+import com.mygdx.game.model.physics.CreatureBody;
+import com.mygdx.game.model.renderer.CreatureAnimation;
 import com.mygdx.game.model.util.Vector2;
 
 import java.io.IOException;
@@ -75,7 +77,8 @@ public class MyGdxGameClient extends MyGdxGame {
 
                     List<GameStateAction> actions = actionsWrapper.actions();
 
-                    actions.forEach(gameStateAction -> gameStateAction.applyToGameState(gameState, gameRenderer));
+                    actions.forEach(
+                            gameStateAction -> gameStateAction.applyToGame(gameState, gameRenderer, gamePhysics));
 
 
 //                    actions.forEach(gameStateAction -> {
@@ -98,19 +101,42 @@ public class MyGdxGameClient extends MyGdxGame {
 
                 } else if (object instanceof WrappedState) {
                     WrappedState action = (WrappedState) object;
+
+//                    System.out.println("received gamestate, overriding...");
+
+//                    if (gameState.creatures().isEmpty() == false) System.out.println("old player pos: " + gameState.creatures().get(thisPlayerId).params().pos());
+
+//                    if (action.gameState().creatures().isEmpty()) {
+//                        System.out.println("WARNING: received gamestate contains no creatures!");
+//                    }
+
                     gameState = action.gameState();
+
+//                    if (gameState.creatures().isEmpty() == false) System.out.println("new player pos: " + gameState.creatures().get(thisPlayerId).params().pos());
 
                     if (action.initial()) {
 
                         gameState.creatures().forEach((creatureId, creature) -> {
-                            CreatureAnimation creatureAnimation = CreatureAnimation.of(creatureId);
-                            creatureAnimation.init(gameRenderer.atlas(), gameState);
-                            gameRenderer.creatureAnimations().putIfAbsent(creatureId, creatureAnimation);
+                            if (!gameRenderer.creatureAnimations().containsKey(creatureId)) {
+                                CreatureAnimation creatureAnimation = CreatureAnimation.of(creatureId);
+                                creatureAnimation.init(gameRenderer.atlas(), gameState);
+                                gameRenderer.creatureAnimations().put(creatureId, creatureAnimation);
+                            }
+                            if (!gamePhysics.creatureBodies().containsKey(creatureId)) {
+                                CreatureBody creatureBody = CreatureBody.of(creatureId);
+                                creatureBody.init(gamePhysics.world(), gameState);
+                                gamePhysics.creatureBodies().put(creatureId, creatureBody);
+                            }
                         });
 
                     }
 
-                    System.out.println("received gamestate, overriding...");
+                    // TODO: update ALL bodies positions here based on gameState!
+//                    while()
+                    gameState.creatures().forEach((creatureId, creature) ->
+                            gamePhysics.creatureBodies().get(creatureId).pos(creature.params().pos()));
+
+
 //                    gameRenderer.creatureSprites(gameState.creatures().values().stream().collect(
 //                            Collectors.toMap(entry -> entry.params().creatureId(),
 //                                    entry -> new Sprite(img, 64, 64))));

@@ -1,4 +1,4 @@
-package com.mygdx.game.model.game;
+package com.mygdx.game.model.renderer;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -8,7 +8,6 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.CreatureId;
-import com.mygdx.game.model.renderer.DrawingLayer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -47,4 +46,5 @@ public class GameRenderer {
     TextureAtlas atlas;
 
     Map<CreatureId, CreatureAnimation> creatureAnimations;
+
 }

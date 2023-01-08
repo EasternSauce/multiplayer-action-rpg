@@ -1,8 +1,9 @@
 package com.mygdx.game.model.action;
 
 import com.mygdx.game.model.creature.CreatureId;
-import com.mygdx.game.model.game.GameRenderer;
 import com.mygdx.game.model.game.GameState;
+import com.mygdx.game.model.physics.GamePhysics;
+import com.mygdx.game.model.renderer.GameRenderer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +18,7 @@ public class PositionChangeY implements GameStateAction {
     float y;
 
     @Override
-    public void applyToGameState(GameState gameState, GameRenderer gameRenderer) {
+    public void applyToGame(GameState gameState, GameRenderer renderer, GamePhysics physics) {
         gameState.creatures().get(playerId).params().pos().y(y);
     }
 }

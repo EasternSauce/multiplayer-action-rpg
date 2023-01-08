@@ -8,7 +8,7 @@ import com.mygdx.game.model.message.*;
 import com.mygdx.game.model.util.Vector2;
 
 import java.io.IOException;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MyGdxGameServer extends MyGdxGame {
@@ -22,7 +22,7 @@ public class MyGdxGameServer extends MyGdxGame {
 
     Thread broadcastThread;
 
-    private final List<GameStateAction> tickActions = new LinkedList<>();
+    private final List<GameStateAction> tickActions = new ArrayList<>();
 
     @Override
     public Server endPoint() {
@@ -47,12 +47,18 @@ public class MyGdxGameServer extends MyGdxGame {
 //                }
 //        );
 
-        tickActions.forEach(gameStateAction -> gameStateAction.applyToGameState(gameState, gameRenderer));
+        synchronized (tickActions) {
 
-        // needs a list copy here for some reason, otherwise its concurrent modification
-        endPoint().sendToAllTCP(ActionsWrapper.of(new LinkedList<>(tickActions)));
+            ArrayList<GameStateAction> tickActionsCopy = new ArrayList<>(tickActions);
 
-        tickActions.clear();
+            tickActionsCopy.forEach(
+                    gameStateAction -> gameStateAction.applyToGame(gameState, gameRenderer, gamePhysics));
+
+            endPoint().sendToAllTCP(ActionsWrapper.of(tickActionsCopy));
+
+            tickActions.clear();
+        }
+
     }
 
     @Override
@@ -83,43 +89,46 @@ public class MyGdxGameServer extends MyGdxGame {
         endPoint().addListener(new Listener() {
             @Override
             public void received(Connection connection, Object object) {
-                if (object instanceof MovementCommandUp) {
-                    MovementCommandUp command = (MovementCommandUp) object;
-                    float y = gameState.creatures().get(command.playerId()).params().pos().y();
-                    PositionChangeY posChange = PositionChangeY.of(command.playerId(), y + 1);
-                    tickActions.add(posChange);
-                } else if (object instanceof MovementCommandDown) {
-                    MovementCommandDown command = (MovementCommandDown) object;
-                    float y = gameState.creatures().get(command.playerId()).params().pos().y();
-                    PositionChangeY posChange = PositionChangeY.of(command.playerId(), y - 1);
-                    tickActions.add(posChange);
-                } else if (object instanceof MovementCommandLeft) {
-                    MovementCommandLeft command = (MovementCommandLeft) object;
-                    float x = gameState.creatures().get(command.playerId()).params().pos().x();
-                    PositionChangeX posChange = PositionChangeX.of(command.playerId(), x - 1);
-                    tickActions.add(posChange);
-                } else if (object instanceof MovementCommandRight) {
-                    MovementCommandRight command = (MovementCommandRight) object;
-                    float x = gameState.creatures().get(command.playerId()).params().pos().x();
-                    PositionChangeX posChange = PositionChangeX.of(command.playerId(), x + 1);
-                    tickActions.add(posChange);
-                } else if (object instanceof MouseMovementCommand) {
-                    MouseMovementCommand command = (MouseMovementCommand) object;
-                    MoveTowardsTargetAction move = MoveTowardsTargetAction.of(command.playerId(), command.mousePos());
-                    tickActions.add(move);
-                } else if (object instanceof AskInitPlayer) {
-                    AskInitPlayer command = (AskInitPlayer) object;
-                    AddPlayerAction addPlayerAction =
-                            AddPlayerAction.of(command.playerId(), Vector2.of(command.x(), command.y()),
-                                    command.textureName());
+                synchronized (tickActions) {
+                    if (object instanceof MovementCommandUp) {
+                        MovementCommandUp command = (MovementCommandUp) object;
+                        float y = gameState.creatures().get(command.playerId()).params().pos().y();
+                        PositionChangeY posChange = PositionChangeY.of(command.playerId(), y + 1);
+                        tickActions.add(posChange);
+                    } else if (object instanceof MovementCommandDown) {
+                        MovementCommandDown command = (MovementCommandDown) object;
+                        float y = gameState.creatures().get(command.playerId()).params().pos().y();
+                        PositionChangeY posChange = PositionChangeY.of(command.playerId(), y - 1);
+                        tickActions.add(posChange);
+                    } else if (object instanceof MovementCommandLeft) {
+                        MovementCommandLeft command = (MovementCommandLeft) object;
+                        float x = gameState.creatures().get(command.playerId()).params().pos().x();
+                        PositionChangeX posChange = PositionChangeX.of(command.playerId(), x - 1);
+                        tickActions.add(posChange);
+                    } else if (object instanceof MovementCommandRight) {
+                        MovementCommandRight command = (MovementCommandRight) object;
+                        float x = gameState.creatures().get(command.playerId()).params().pos().x();
+                        PositionChangeX posChange = PositionChangeX.of(command.playerId(), x + 1);
+                        tickActions.add(posChange);
+                    } else if (object instanceof MouseMovementCommand) {
+                        MouseMovementCommand command = (MouseMovementCommand) object;
+                        MoveTowardsTargetAction move =
+                                MoveTowardsTargetAction.of(command.playerId(), command.mousePos());
+                        tickActions.add(move);
+                    } else if (object instanceof AskInitPlayer) {
+                        AskInitPlayer command = (AskInitPlayer) object;
+                        AddPlayerAction addPlayerAction =
+                                AddPlayerAction.of(command.playerId(), Vector2.of(command.x(), command.y()),
+                                        command.textureName());
 
-                    tickActions.add(addPlayerAction);
+                        tickActions.add(addPlayerAction);
 
-                    connection.sendTCP(WrappedState.of(gameState, true));
-                } else if (object instanceof AskDeletePlayer) {
-                    AskDeletePlayer command = (AskDeletePlayer) object;
-                    RemovePlayerAction removePlayerAction = RemovePlayerAction.of(command.playerId());
-                    tickActions.add(removePlayerAction);
+                        connection.sendTCP(WrappedState.of(gameState, true));
+                    } else if (object instanceof AskDeletePlayer) {
+                        AskDeletePlayer command = (AskDeletePlayer) object;
+                        RemovePlayerAction removePlayerAction = RemovePlayerAction.of(command.playerId());
+                        tickActions.add(removePlayerAction);
+                    }
                 }
             }
         });
@@ -127,7 +136,7 @@ public class MyGdxGameServer extends MyGdxGame {
 
     public void broadcastGameState() throws InterruptedException {
         while (true) {
-            Thread.sleep(3000);
+            Thread.sleep(250);
             endPoint().sendToAllTCP(WrappedState.of(gameState, false));
         }
     }

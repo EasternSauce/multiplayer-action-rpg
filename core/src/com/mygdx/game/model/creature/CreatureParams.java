@@ -1,6 +1,6 @@
 package com.mygdx.game.model.creature;
 
-import com.mygdx.game.model.game.CreatureAnimationConfig;
+import com.mygdx.game.model.renderer.CreatureAnimationConfig;
 import com.mygdx.game.model.util.SimpleTimer;
 import com.mygdx.game.model.util.Vector2;
 import lombok.*;
@@ -33,5 +33,8 @@ public class CreatureParams {
 
     @NonNull
     Boolean isMoving;
+
+    @NonNull
+    Float speed;
 
 }

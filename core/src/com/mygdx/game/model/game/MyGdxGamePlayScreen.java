@@ -9,11 +9,15 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.game.Constants;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
+import com.mygdx.game.model.physics.GamePhysics;
 import com.mygdx.game.model.renderer.DrawingLayer;
+import com.mygdx.game.model.renderer.GameRenderer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -35,14 +39,17 @@ public class MyGdxGamePlayScreen implements Screen {
 
     GameRenderer gameRenderer;
 
+    GamePhysics gamePhysics;
+
     protected Texture img;
 
 
     public void init(MyGdxGame game) {
         this.game = game;
         this.gameRenderer = game.gameRenderer;
-//        world = new World(new com.badlogic.gdx.math.Vector2(0, 0), true);
-//        debugRenderer = new Box2DDebugRenderer();
+        this.gamePhysics = game.gamePhysics;
+        gamePhysics.world(new World(new com.badlogic.gdx.math.Vector2(0, 0), true));
+        gamePhysics.debugRenderer(new Box2DDebugRenderer());
 
         gameRenderer.worldCamera(new OrthographicCamera());
 
@@ -86,6 +93,8 @@ public class MyGdxGamePlayScreen implements Screen {
 
         gameRenderer.creatureAnimations(new HashMap<>());
 
+        gamePhysics.creatureBodies(new HashMap<>());
+
         img = new Texture("badlogic.jpg");
 
 
@@ -118,9 +127,6 @@ public class MyGdxGamePlayScreen implements Screen {
     }
 
     public void update(float delta) {
-//        world.step(1 / 60f, 6, 2);
-//        debugRenderer.render(world, worldCamera.combined);
-
         game.onUpdate();
 
 //        PhysicsEngineController.physicsEventQueue.clear()
@@ -128,8 +134,16 @@ public class MyGdxGamePlayScreen implements Screen {
 //        RendererController.update()
 //        PhysicsEngineController.update()
 
+
+        gamePhysics.creatureBodies().forEach((creatureId, creatureBody) -> creatureBody.update(game.gameState));
+
+        // set gamestate position based on b2body position
+        game.gameState.creatures().forEach(
+                (creatureId, creature) -> creature.params().pos(gamePhysics.creatureBodies().get(creatureId).pos()));
+
         gameRenderer.creatureAnimations()
                 .forEach((creatureId, creatureAnimation) -> creatureAnimation.update(game.gameState));
+
 
         //update gamestate
 
@@ -142,6 +156,9 @@ public class MyGdxGamePlayScreen implements Screen {
 
 
 //        game.onRender();
+
+        gamePhysics.world().step(1 / 60f, 6, 2);
+
     }
 
     @Override
@@ -183,6 +200,8 @@ public class MyGdxGamePlayScreen implements Screen {
 //        gameRenderer.worldDrawingLayer().spriteBatch().draw(img, 10, 10);
 
         gameRenderer.worldDrawingLayer().spriteBatch().end();
+
+        gamePhysics.debugRenderer().render(gamePhysics.world(), gameRenderer.worldCamera().combined);
     }
 
     @Override
