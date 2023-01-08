@@ -141,10 +141,11 @@ public class MyGdxGameClient extends MyGdxGame {
                     }
 
                     // TODO: update ALL bodies positions here based on gameState!
-//                    while()
-                    gameState.creatures().forEach((creatureId, creature) ->
-                            gamePhysics.creatureBodies().get(creatureId).pos(creature.params().pos()));
+                    if (!gamePhysics.world().isLocked()) {
+                        gameState.creatures().forEach((creatureId, creature) ->
+                                gamePhysics.creatureBodies().get(creatureId).pos(creature.params().pos()));
 
+                    }
 
 //                    gameRenderer.creatureSprites(gameState.creatures().values().stream().collect(
 //                            Collectors.toMap(entry -> entry.params().creatureId(),
@@ -153,6 +154,11 @@ public class MyGdxGameClient extends MyGdxGame {
 
             }
 
+            @Override
+            public void disconnected(Connection connection) {
+                System.out.println("LOST CONNECTION");
+                System.exit(-1);
+            }
         });
 
         endPoint().sendTCP(

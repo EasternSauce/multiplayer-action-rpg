@@ -4,12 +4,15 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.mygdx.game.model.action.*;
+import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.message.*;
 import com.mygdx.game.model.util.Vector2;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MyGdxGameServer extends MyGdxGame {
     private static MyGdxGameServer instance;
@@ -24,6 +27,8 @@ public class MyGdxGameServer extends MyGdxGame {
 
     private final List<GameStateAction> tickActions = new ArrayList<>();
 
+    private final Map<Integer, CreatureId> connections = new HashMap<>();
+
     @Override
     public Server endPoint() {
         return _endPoint;
@@ -31,21 +36,6 @@ public class MyGdxGameServer extends MyGdxGame {
 
     @Override
     public void onUpdate() {
-//        tickActions.forEach(gameStateAction -> {
-//
-//                    if (gameStateAction instanceof AddPlayer) {
-//                        AddPlayer action = (AddPlayer) gameStateAction;
-////                        renderer.creatureSprites().put(action.playerId(), new Sprite(img, 64, 64));
-//                        CreatureAnimation creatureAnimation = CreatureAnimation.of(action.playerId());
-//                        creatureAnimation.init(gameRenderer.atlas(), gameState);
-//                        gameRenderer.creatureAnimations().put(action.playerId(), creatureAnimation);
-//                    } else if (gameStateAction instanceof RemovePlayer) {
-//                        RemovePlayer action = (RemovePlayer) gameStateAction;
-//                        gameRenderer.creatureAnimations().remove(action.playerId());
-////                        renderer.creatureSprites().remove(action.playerId());
-//                    }
-//                }
-//        );
 
         synchronized (tickActions) {
 
@@ -87,6 +77,7 @@ public class MyGdxGameServer extends MyGdxGame {
         endPoint().bind(20445, 20445);
 
         endPoint().addListener(new Listener() {
+
             @Override
             public void received(Connection connection, Object object) {
                 synchronized (tickActions) {
@@ -124,11 +115,23 @@ public class MyGdxGameServer extends MyGdxGame {
                         tickActions.add(addPlayerAction);
 
                         connection.sendTCP(WrappedState.of(gameState, true));
+
+                        connections.put(connection.getID(), command.playerId());
                     } else if (object instanceof AskDeletePlayer) {
                         AskDeletePlayer command = (AskDeletePlayer) object;
                         RemovePlayerAction removePlayerAction = RemovePlayerAction.of(command.playerId());
                         tickActions.add(removePlayerAction);
                     }
+                }
+            }
+
+            @Override
+            public void disconnected(Connection connection) {
+                synchronized (tickActions) {
+                    CreatureId disconnectedCreatureId = connections.get(connection.getID());
+
+                    RemovePlayerAction removePlayerAction = RemovePlayerAction.of(disconnectedCreatureId);
+                    tickActions.add(removePlayerAction);
                 }
             }
         });
