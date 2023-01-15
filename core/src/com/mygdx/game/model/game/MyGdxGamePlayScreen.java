@@ -6,11 +6,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.game.Constants;
 import com.mygdx.game.model.area.AreaId;
@@ -41,14 +41,17 @@ public class MyGdxGamePlayScreen implements Screen {
 
     GamePhysics gamePhysics;
 
-    protected Texture img;
+    GameState gameState;
 
+    protected Texture img;
+    Map<AreaId, TiledMap> maps;
 
     public void init(MyGdxGame game) {
         this.game = game;
         this.gameRenderer = game.gameRenderer;
         this.gamePhysics = game.gamePhysics;
-        gamePhysics.world(new World(new com.badlogic.gdx.math.Vector2(0, 0), true));
+        this.gameState = game.gameState;
+
         gamePhysics.debugRenderer(new Box2DDebugRenderer());
 
         gameRenderer.worldCamera(new OrthographicCamera());
@@ -77,12 +80,12 @@ public class MyGdxGamePlayScreen implements Screen {
         mapsToLoad.put(AreaId.of("area3"), "assets/areas/area3");
         gameRenderer.mapsToLoad(mapsToLoad);
 
-        gameRenderer.maps(mapsToLoad.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
+        maps(mapsToLoad.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
                 entry -> gameRenderer.mapLoader().load(entry.getValue() + "/tile_map.tmx"))));
 
         gameRenderer.mapScale(4.0f);
 
-        gameRenderer.tiledMapRenderer(new OrthogonalTiledMapRenderer(gameRenderer.maps().get(AreaId.of("area1")),
+        gameRenderer.tiledMapRenderer(new OrthogonalTiledMapRenderer(maps().get(AreaId.of("area1")),
                 gameRenderer.mapScale() / Constants.PPM));
 
 
@@ -92,6 +95,8 @@ public class MyGdxGamePlayScreen implements Screen {
         gameRenderer.atlas(new TextureAtlas("assets/atlas/packed_atlas.atlas"));
 
         gameRenderer.creatureAnimations(new HashMap<>());
+
+        gamePhysics.init(maps, gameState);
 
         gamePhysics.creatureBodies(new HashMap<>());
 
@@ -163,7 +168,7 @@ public class MyGdxGamePlayScreen implements Screen {
 
 //        game.onRender();
 
-        gamePhysics.world().step(1 / 60f, 6, 2);
+        gamePhysics.physicsWorlds().get(gameState.currentAreaId()).b2world().step(1 / 60f, 6, 2);
 
 
     }
@@ -211,7 +216,8 @@ public class MyGdxGamePlayScreen implements Screen {
 
             gameRenderer.worldDrawingLayer().spriteBatch().end();
 
-            gamePhysics.debugRenderer().render(gamePhysics.world(), gameRenderer.worldCamera().combined);
+            gamePhysics.debugRenderer().render(gamePhysics.physicsWorlds().get(gameState.currentAreaId()).b2world(),
+                    gameRenderer.worldCamera().combined);
         }
     }
 

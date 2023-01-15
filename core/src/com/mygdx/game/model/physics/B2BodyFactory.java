@@ -10,13 +10,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 public class B2BodyFactory {
-    public static Body createB2Body(World world, Vector2 pos, BodyType bodyType, Object userData, BodyShape shape,
+    public static Body createB2Body(PhysicsWorld world, Vector2 pos, BodyType bodyType, Object userData,
+                                    BodyShape shape,
                                     Boolean isSensor, Boolean sleepingAllowed, Float linearDamping, Float mass) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = bodyType;
         bodyDef.position.set(pos.x(), pos.y());
 
-        Body b2body = world.createBody(bodyDef);
+        Body b2body = world.b2world().createBody(bodyDef);
 
         b2body.setUserData(userData);
 
@@ -39,7 +40,18 @@ public class B2BodyFactory {
         return b2body;
     }
 
-    public static Body createCreatureB2Body(World world, CreatureBody creatureBody, Creature creature) {
+
+    public static Body createTerrainTileB2body(PhysicsWorld world, TerrainTileBody terrainTileBody) {
+        return createB2Body(world,
+                Vector2.of(terrainTileBody.pos().x() * terrainTileBody.tileWidth() + terrainTileBody.tileWidth() / 2,
+                        terrainTileBody.pos().y() * terrainTileBody.tileHeight() + terrainTileBody.tileHeight() / 2),
+                BodyType.StaticBody,
+                terrainTileBody, Rectangle.of(terrainTileBody.tileWidth(), terrainTileBody.tileHeight()), false, null,
+                null, null);
+
+    }
+
+    public static Body createCreatureB2Body(PhysicsWorld world, CreatureBody creatureBody, Creature creature) {
         return createB2Body(world, creature.params().pos(), BodyType.DynamicBody, creatureBody,
                 Circle.of(creature.params().animationConfig().spriteWidth() / 2f), false, false, 10f, 1000f);
     }

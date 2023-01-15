@@ -74,7 +74,7 @@ public class MyGdxGameClient extends MyGdxGame {
     public void establishConnection() throws IOException {
 
         endPoint().start();
-        endPoint().connect(5000, "192.168.0.185", 20445, 20446);
+        endPoint().connect(5000, "localhost", 20445, 20445);
 
         endPoint().addListener(new Listener() {
             @Override
@@ -131,7 +131,7 @@ public class MyGdxGameClient extends MyGdxGame {
                             }
                             if (!gamePhysics.creatureBodies().containsKey(creatureId)) {
                                 CreatureBody creatureBody = CreatureBody.of(creatureId);
-                                creatureBody.init(gamePhysics.world(), gameState);
+                                creatureBody.init(gamePhysics, gameState);
                                 gamePhysics.creatureBodies().put(creatureId, creatureBody);
                             }
                         });
@@ -141,7 +141,7 @@ public class MyGdxGameClient extends MyGdxGame {
                     }
 
                     // TODO: update ALL bodies positions here based on gameState!
-                    if (!gamePhysics.world().isLocked()) {
+                    if (!gamePhysics.physicsWorlds().get(gameState.currentAreaId()).b2world().isLocked()) {
                         gameState.creatures().forEach((creatureId, creature) ->
                         {
                             if (gamePhysics.creatureBodies().containsKey(creatureId)) {
@@ -166,7 +166,7 @@ public class MyGdxGameClient extends MyGdxGame {
         });
 
         endPoint().sendTCP(
-                AskInitPlayer.of(thisPlayerId, /*Math.abs(rand.nextInt()) % 5, Math.abs(rand.nextInt()) % 5*/0, 0,
+                AskInitPlayer.of(thisPlayerId, /*Math.abs(rand.nextInt()) % 5, Math.abs(rand.nextInt()) % 5*/15, 10,
                         "male1")
         );
 

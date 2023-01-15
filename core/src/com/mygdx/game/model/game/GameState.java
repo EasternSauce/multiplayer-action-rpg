@@ -4,9 +4,11 @@ import com.mygdx.game.model.area.Area;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @NoArgsConstructor(staticName = "of")
@@ -14,13 +16,11 @@ import java.util.Map;
 @Data
 @Builder
 public class GameState {
-    @Builder.Default
-    @NonNull
-    Map<CreatureId, Creature> creatures = new HashMap<>();
-    @Builder.Default
-    @NonNull
-    Map<AreaId, Area> areas = new HashMap<>();
+
+    Map<CreatureId, Creature> creatures;
+
+    Map<AreaId, Area> areas;
     AreaId currentAreaId;
-    @NonNull
+
     AreaId defaultAreaId;
 }

@@ -8,18 +8,20 @@ import com.mygdx.game.model.physics.GamePhysics;
 import com.mygdx.game.model.renderer.GameRenderer;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 public abstract class MyGdxGame extends Game {
     protected GameRenderer gameRenderer = GameRenderer.of();
 
     protected GamePhysics gamePhysics = GamePhysics.of();
 
+    protected GameState gameState = GameState.of();
+
     final MyGdxGamePlayScreen playScreen = MyGdxGamePlayScreen.of();
 
     protected CreatureId thisPlayerId = null;
     public EndPoint _endPoint = null;
 
-    public GameState gameState;
 
     public EndPoint endPoint() {
         return _endPoint;
@@ -31,9 +33,10 @@ public abstract class MyGdxGame extends Game {
 
     @Override
     public void create() {
-        gameState = GameState.builder()
-                .defaultAreaId(AreaId.of("zzz"))
-                .build();
+        gameState.creatures(new HashMap<>());
+        gameState.areas(new HashMap<>());
+        gameState.defaultAreaId(AreaId.of("area1"));
+        gameState.currentAreaId(AreaId.of("area1"));
 
         playScreen.init(this);
 

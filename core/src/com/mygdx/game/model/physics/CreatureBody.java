@@ -1,7 +1,6 @@
 package com.mygdx.game.model.physics;
 
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.game.GameState;
@@ -18,17 +17,18 @@ public class CreatureBody {
 
     Boolean bodyCreated;
 
-    World world;
+    PhysicsWorld world;
 
-    public void init(World world, GameState gameState) { // TODO: get world by area id
+    public void init(GamePhysics gamePhysics, GameState gameState) { // TODO: get world by area id
         Creature creature = gameState.creatures().get(creatureId);
+
+        world = gamePhysics.physicsWorlds().get(creature.params().areaId());
+
         b2Body = B2BodyFactory.createCreatureB2Body(world, this, creature);
 
         if (!creature.isAlive()) b2Body.getFixtureList().get(0).setSensor(true);
 
         bodyCreated = true;
-
-        this.world = world;
     }
 
     public void update(GameState gameState) {
@@ -66,7 +66,7 @@ public class CreatureBody {
     }
 
     public void onRemove() {
-        world.destroyBody(b2Body);
+        world.b2world().destroyBody(b2Body);
     }
 
     public static CreatureBody of(CreatureId creatureId) {

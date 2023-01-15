@@ -31,6 +31,7 @@ public class AddPlayerAction implements GameStateAction {
 
         Creature player = Player.of(CreatureParams.builder()
                 .creatureId(playerId)
+                .areaId(gameState.defaultAreaId())
                 .pos(pos)
                 .animationConfig(CreatureAnimationConfig.configs.get(textureName))
                 .animationTimer(SimpleTimer.builder().isRunning(true).build())
@@ -47,7 +48,7 @@ public class AddPlayerAction implements GameStateAction {
         creatureAnimation.init(renderer.atlas(), gameState);
         renderer.creatureAnimations().put(playerId, creatureAnimation);
         CreatureBody creatureBody = CreatureBody.of(playerId);
-        creatureBody.init(physics.world(), gameState);
+        creatureBody.init(physics, gameState);
         physics.creatureBodies().put(playerId, creatureBody);
 
     }

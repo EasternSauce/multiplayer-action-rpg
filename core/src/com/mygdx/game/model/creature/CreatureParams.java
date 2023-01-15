@@ -1,5 +1,6 @@
 package com.mygdx.game.model.creature;
 
+import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.renderer.CreatureAnimationConfig;
 import com.mygdx.game.model.util.SimpleTimer;
 import com.mygdx.game.model.util.Vector2;
@@ -12,6 +13,9 @@ import lombok.*;
 public class CreatureParams {
     @NonNull
     CreatureId creatureId;
+
+    @NonNull
+    AreaId areaId;
 
     @NonNull
     Vector2 pos;
