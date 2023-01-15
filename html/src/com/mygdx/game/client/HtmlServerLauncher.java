@@ -3,7 +3,7 @@ package com.mygdx.game.client;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
-import com.mygdx.game.model.game.MyGdxGameServer;
+import com.mygdx.game.game.MyGdxGameServer;
 
 public class HtmlServerLauncher extends GwtApplication {
 

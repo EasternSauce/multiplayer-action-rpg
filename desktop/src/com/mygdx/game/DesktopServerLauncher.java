@@ -2,7 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.mygdx.game.model.game.MyGdxGameServer;
+import com.mygdx.game.game.MyGdxGameServer;
 
 public class DesktopServerLauncher {
     public static void main(String[] arg) {

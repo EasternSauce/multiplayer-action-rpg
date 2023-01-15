@@ -1,7 +1,7 @@
 package com.mygdx.game.model.creature;
 
-import com.mygdx.game.model.util.Vector2;
-import com.mygdx.game.model.util.WorldDirection;
+import com.mygdx.game.util.Vector2;
+import com.mygdx.game.util.WorldDirection;
 
 public abstract class Creature {
 

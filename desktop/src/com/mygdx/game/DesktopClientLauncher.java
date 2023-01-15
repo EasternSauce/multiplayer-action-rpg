@@ -2,7 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.mygdx.game.model.game.MyGdxGameClient;
+import com.mygdx.game.game.MyGdxGameClient;
 
 public class DesktopClientLauncher {
     public static void main(String[] arg) {

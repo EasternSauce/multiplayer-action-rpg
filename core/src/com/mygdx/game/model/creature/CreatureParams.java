@@ -1,9 +1,9 @@
 package com.mygdx.game.model.creature;
 
 import com.mygdx.game.model.area.AreaId;
-import com.mygdx.game.model.renderer.CreatureAnimationConfig;
-import com.mygdx.game.model.util.SimpleTimer;
-import com.mygdx.game.model.util.Vector2;
+import com.mygdx.game.renderer.CreatureAnimationConfig;
+import com.mygdx.game.util.SimpleTimer;
+import com.mygdx.game.util.Vector2;
 import lombok.*;
 
 @NoArgsConstructor(staticName = "of")
