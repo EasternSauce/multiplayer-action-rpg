@@ -9,19 +9,15 @@ import com.esotericsoftware.kryonet.Listener;
 import com.mygdx.game.Constants;
 import com.mygdx.game.action.ActionsWrapper;
 import com.mygdx.game.action.GameStateAction;
-import com.mygdx.game.chat.ChatMessage;
-import com.mygdx.game.message.AskDeletePlayer;
-import com.mygdx.game.message.AskInitPlayer;
-import com.mygdx.game.message.MouseMovementCommand;
-import com.mygdx.game.message.WrappedState;
+import com.mygdx.game.message.*;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.physics.CreatureBody;
 import com.mygdx.game.renderer.CreatureAnimation;
 import com.mygdx.game.util.Vector2;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class MyGdxGameClient extends MyGdxGame {
@@ -58,18 +54,11 @@ public class MyGdxGameClient extends MyGdxGame {
             } else {
                 chat.isTyping(false);
                 if (!chat.currentMessage().isEmpty()) {
-                    if (chat.messages().size() < 6) {
-                        chat.messages().add(ChatMessage.of(gameState.generalTimer().time(), thisPlayerId.value(),
-                                chat.currentMessage()));
-                    } else {
-                        List<ChatMessage> newMessages = new ArrayList<>();
-                        for (int i = 0; i < 5; i++) {
-                            newMessages.add(chat.messages().get(i + 1));
-                        }
-                        chat.messages(newMessages);
-                        chat.messages().add(ChatMessage.of(gameState.generalTimer().time(), thisPlayerId.value(),
-                                chat.currentMessage()));
-                    }
+                    endPoint().sendTCP(AskSendChatMessage.of(thisPlayerId.value(),
+                            chat.currentMessage()));
+
+                    chat.sendMessage(gameState, thisPlayerId.value(), chat.currentMessage());
+
                     chat.currentMessage("");
                 }
             }
@@ -165,6 +154,13 @@ public class MyGdxGameClient extends MyGdxGame {
 //                    gameRenderer.creatureSprites(gameState.creatures().values().stream().collect(
 //                            Collectors.toMap(entry -> entry.params().creatureId(),
 //                                    entry -> new Sprite(img, 64, 64))));
+                } else if (object instanceof SendChatMessage) {
+                    SendChatMessage action = (SendChatMessage) object;
+
+                    if (!Objects.equals(action.poster(), thisPlayerId.value())) {
+                        chat.sendMessage(gameState, action.poster(), action.text());
+                    }
+
                 }
 
             }

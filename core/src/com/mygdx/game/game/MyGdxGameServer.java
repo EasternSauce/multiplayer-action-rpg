@@ -4,10 +4,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.mygdx.game.action.*;
-import com.mygdx.game.message.AskDeletePlayer;
-import com.mygdx.game.message.AskInitPlayer;
-import com.mygdx.game.message.MouseMovementCommand;
-import com.mygdx.game.message.WrappedState;
+import com.mygdx.game.message.*;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.util.Vector2;
 
@@ -104,6 +101,10 @@ public class MyGdxGameServer extends MyGdxGame {
                         AskDeletePlayer command = (AskDeletePlayer) object;
                         RemovePlayerAction removePlayerAction = RemovePlayerAction.of(command.playerId());
                         tickActions.add(removePlayerAction);
+                    } else if (object instanceof AskSendChatMessage) {
+                        AskSendChatMessage command = (AskSendChatMessage) object;
+
+                        endPoint().sendToAllTCP(SendChatMessage.of(command.poster(), command.text()));
                     }
                 }
             }
