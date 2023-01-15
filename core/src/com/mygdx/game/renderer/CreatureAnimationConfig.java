@@ -1,7 +1,10 @@
 package com.mygdx.game.renderer;
 
 import com.mygdx.game.util.WorldDirection;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +12,6 @@ import java.util.Map;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-@Builder
 public class CreatureAnimationConfig {
     @NonNull
     String textureName;

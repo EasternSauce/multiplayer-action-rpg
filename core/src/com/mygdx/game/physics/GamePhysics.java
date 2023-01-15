@@ -6,7 +6,6 @@ import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.CreatureId;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,7 +15,6 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-@Builder
 public class GamePhysics {
 
     Map<AreaId, PhysicsWorld> physicsWorlds;

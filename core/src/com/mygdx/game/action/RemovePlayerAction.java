@@ -5,14 +5,12 @@ import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.physics.GamePhysics;
 import com.mygdx.game.renderer.GameRenderer;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-@Builder
 public class RemovePlayerAction implements GameStateAction {
     CreatureId playerId;
 

@@ -10,7 +10,7 @@ import com.mygdx.game.util.Vector2;
 
 public class Assets {
 
-    static String youngSerifFontPath = "assets/font/YoungSerif-Regular.ttf";
+    static String youngSerifFontPath = "assets/font/Helvetica 400.ttf";
 
     static BitmapFont defaultFont;
 
@@ -25,9 +25,9 @@ public class Assets {
         return font;
     }
 
-    public static void drawFont(BitmapFont font, DrawingLayer drawingLayer, String text, Vector2 pos, Color color) {
-        font.setColor(color);
-        font.draw(drawingLayer.spriteBatch(), text, pos.x(), pos.y());
+    public static void drawFont(DrawingLayer drawingLayer, String text, Vector2 pos, Color color) {
+        defaultFont.setColor(color);
+        defaultFont.draw(drawingLayer.spriteBatch(), text, pos.x(), pos.y());
     }
 
     static {

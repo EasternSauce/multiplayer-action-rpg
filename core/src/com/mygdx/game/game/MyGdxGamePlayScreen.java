@@ -2,6 +2,7 @@ package com.mygdx.game.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -13,14 +14,15 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.game.Constants;
+import com.mygdx.game.assets.Assets;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.physics.GamePhysics;
 import com.mygdx.game.renderer.DrawingLayer;
 import com.mygdx.game.renderer.GameRenderer;
+import com.mygdx.game.util.Vector2;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -31,7 +33,6 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-@Builder
 public class MyGdxGamePlayScreen implements Screen {
 
     MyGdxGame game;
@@ -141,6 +142,7 @@ public class MyGdxGamePlayScreen implements Screen {
 //        RendererController.update()
 //        PhysicsEngineController.update()
 
+        game.gameState.generalTimer().update(delta);
 
         gamePhysics.creatureBodies().forEach((creatureId, creatureBody) -> creatureBody.update(game.gameState));
 
@@ -219,6 +221,23 @@ public class MyGdxGamePlayScreen implements Screen {
 
             gamePhysics.debugRenderer().render(gamePhysics.physicsWorlds().get(gameState.currentAreaId()).b2world(),
                     gameRenderer.worldCamera().combined);
+
+            gameRenderer.hudDrawingLayer().spriteBatch().begin();
+
+
+            for (int i = 0; i < Math.min(game.chat.messages().size(), 6); i++) {
+                Assets.drawFont(gameRenderer.hudDrawingLayer(),
+                        game.chat.messages().get(i).poster() + ": " + game.chat.messages().get(i).text(),
+                        Vector2.of(30, 180 - 20 * i), Color.PURPLE);
+            }
+
+            Assets.drawFont(gameRenderer.hudDrawingLayer(),
+                    (game.chat.isTyping() ? "> " : "") + game.chat.currentMessage(), Vector2.of(30, 30), Color.PURPLE);
+
+
+            gameRenderer.hudDrawingLayer().spriteBatch().end();
+
+
         }
     }
 

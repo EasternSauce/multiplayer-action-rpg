@@ -12,12 +12,14 @@ import com.mygdx.game.renderer.CreatureAnimationConfig;
 import com.mygdx.game.renderer.GameRenderer;
 import com.mygdx.game.util.SimpleTimer;
 import com.mygdx.game.util.Vector2;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-@Builder
 public class AddPlayerAction implements GameStateAction {
     @NonNull
     CreatureId playerId;
@@ -34,7 +36,7 @@ public class AddPlayerAction implements GameStateAction {
                 .areaId(gameState.defaultAreaId())
                 .pos(pos)
                 .animationConfig(CreatureAnimationConfig.configs.get(textureName))
-                .animationTimer(SimpleTimer.builder().isRunning(true).build())
+                .animationTimer(SimpleTimer.of(0, true))
                 .movingVector(Vector2.of())
                 .movementCommandTargetPos(Vector2.of(0, 0))
                 .reachedTargetPos(true)

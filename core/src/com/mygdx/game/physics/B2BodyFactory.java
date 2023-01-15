@@ -5,7 +5,6 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.util.Vector2;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -64,7 +63,6 @@ interface BodyShape {
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-@Builder
 class Circle implements BodyShape {
     float radius;
 
@@ -79,7 +77,6 @@ class Circle implements BodyShape {
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-@Builder
 class Rectangle implements BodyShape {
     float width;
     float height;
@@ -95,7 +92,6 @@ class Rectangle implements BodyShape {
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-@Builder
 class Polygon implements BodyShape {
     float[] vertices;
 

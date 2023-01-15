@@ -7,14 +7,12 @@ import com.mygdx.game.physics.GamePhysics;
 import com.mygdx.game.renderer.GameRenderer;
 import com.mygdx.game.util.Vector2;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-@Builder
 public class MoveTowardsTargetAction implements GameStateAction {
 
     CreatureId playerId;

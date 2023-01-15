@@ -9,6 +9,7 @@ import com.esotericsoftware.kryonet.Listener;
 import com.mygdx.game.Constants;
 import com.mygdx.game.action.ActionsWrapper;
 import com.mygdx.game.action.GameStateAction;
+import com.mygdx.game.chat.ChatMessage;
 import com.mygdx.game.message.AskDeletePlayer;
 import com.mygdx.game.message.AskInitPlayer;
 import com.mygdx.game.message.MouseMovementCommand;
@@ -19,6 +20,7 @@ import com.mygdx.game.renderer.CreatureAnimation;
 import com.mygdx.game.util.Vector2;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -50,6 +52,28 @@ public class MyGdxGameClient extends MyGdxGame {
 
     @Override
     public void onUpdate() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+            if (!chat.isTyping()) {
+                chat.isTyping(true);
+            } else {
+                chat.isTyping(false);
+                if (!chat.currentMessage().isEmpty()) {
+                    if (chat.messages().size() < 6) {
+                        chat.messages().add(ChatMessage.of(gameState.generalTimer().time(), thisPlayerId.value(),
+                                chat.currentMessage()));
+                    } else {
+                        List<ChatMessage> newMessages = new ArrayList<>();
+                        for (int i = 0; i < 5; i++) {
+                            newMessages.add(chat.messages().get(i + 1));
+                        }
+                        chat.messages(newMessages);
+                        chat.messages().add(ChatMessage.of(gameState.generalTimer().time(), thisPlayerId.value(),
+                                chat.currentMessage()));
+                    }
+                    chat.currentMessage("");
+                }
+            }
+        }
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
             Vector2 mousePos = mousePosRelativeToCenter();
 
