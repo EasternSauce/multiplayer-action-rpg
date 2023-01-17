@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -19,9 +20,11 @@ public class GamePhysics {
 
     Map<AreaId, PhysicsWorld> physicsWorlds;
 
-    Map<CreatureId, CreatureBody> creatureBodies;
+    Map<CreatureId, CreatureBody> creatureBodies = new HashMap<>();
 
     Box2DDebugRenderer debugRenderer;
+
+    Boolean forceUpdateCreaturePositions = false;
 
     public void init(Map<AreaId, TiledMap> maps, GameState gameState) {
         physicsWorlds = maps.entrySet().stream()

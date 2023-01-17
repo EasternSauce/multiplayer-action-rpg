@@ -57,12 +57,15 @@ public class CreatureBody {
         b2Body.setLinearVelocity(new com.badlogic.gdx.math.Vector2(velocity.x(), velocity.y()));
     }
 
-    public Vector2 pos() {
+    public Vector2 setTransform() {
         return Vector2.of(b2Body.getWorldCenter().x, b2Body.getWorldCenter().y);
     }
 
-    public void pos(Vector2 vector) {
-        b2Body.setTransform(vector.x(), vector.y(), b2Body.getAngle());
+    public void setTransform(Vector2 vector) {
+        if (!world.b2world().isLocked()) {
+            b2Body.setTransform(vector.x(), vector.y(), b2Body.getAngle());
+        }
+
     }
 
     public void onRemove() {

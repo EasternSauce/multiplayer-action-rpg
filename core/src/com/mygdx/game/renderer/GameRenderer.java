@@ -11,14 +11,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
 public class GameRenderer {
-    OrthographicCamera worldCamera;
-    OrthographicCamera hudCamera;
+    OrthographicCamera worldCamera = new OrthographicCamera();
+    OrthographicCamera hudCamera = new OrthographicCamera();
 
     Viewport worldViewport;
 
@@ -36,10 +37,10 @@ public class GameRenderer {
 
     float mapScale;
 
-    TmxMapLoader mapLoader;
+    TmxMapLoader mapLoader = new TmxMapLoader();
 
     TextureAtlas atlas;
 
-    Map<CreatureId, CreatureAnimation> creatureAnimations;
+    Map<CreatureId, CreatureAnimation> creatureAnimations = new HashMap<>();
 
 }

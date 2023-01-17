@@ -3,33 +3,34 @@ package com.mygdx.game.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.InputProcessor;
 import com.esotericsoftware.kryonet.EndPoint;
 import com.mygdx.game.chat.Chat;
 import com.mygdx.game.model.GameState;
-import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.CreatureId;
+import com.mygdx.game.model.creature.CreatureParams;
+import com.mygdx.game.model.creature.Enemy;
 import com.mygdx.game.physics.GamePhysics;
 import com.mygdx.game.renderer.GameRenderer;
-import com.mygdx.game.util.SimpleTimer;
+import com.mygdx.game.util.GameStateHolder;
+import com.mygdx.game.util.Vector2;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.Random;
 
 public abstract class MyGdxGame extends Game {
     protected GameRenderer gameRenderer = GameRenderer.of();
 
     protected GamePhysics gamePhysics = GamePhysics.of();
 
-    protected GameState gameState = GameState.of();
+    final protected GameStateHolder gameStateHolder = GameStateHolder.of(GameState.of());
 
+    public final Random rand = new Random();
     final MyGdxGamePlayScreen playScreen = MyGdxGamePlayScreen.of();
 
     protected CreatureId thisPlayerId = null;
     public EndPoint _endPoint = null;
 
     public Chat chat = Chat.of();
-
 
     public EndPoint endPoint() {
         return _endPoint;
@@ -41,11 +42,6 @@ public abstract class MyGdxGame extends Game {
 
     @Override
     public void create() {
-        gameState.creatures(new HashMap<>());
-        gameState.areas(new HashMap<>());
-        gameState.defaultAreaId(AreaId.of("area1"));
-        gameState.currentAreaId(AreaId.of("area1"));
-        gameState.generalTimer(SimpleTimer.of(0, true));
 
         playScreen.init(this);
 
@@ -58,7 +54,7 @@ public abstract class MyGdxGame extends Game {
 
         setScreen(playScreen);
 
-        InputProcessor inputProcessor = new InputAdapter() {
+        Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean keyTyped(char character) {
                 if (chat.isTyping() && character != '\n') {
@@ -67,9 +63,13 @@ public abstract class MyGdxGame extends Game {
 
                 return true;
             }
-        };
+        });
 
-        Gdx.input.setInputProcessor(inputProcessor);
+        System.out.println("adding enemy");
+        CreatureId enemyId = CreatureId.of("Enemy_" + Math.abs(rand.nextInt()));
+        gameStateHolder.gameState().creatures().put(enemyId, Enemy.of(
+                CreatureParams.of(enemyId, gameStateHolder.gameState().defaultAreaId(), Vector2.of(18, 10),
+                        "skeleton")));
 
     }
 

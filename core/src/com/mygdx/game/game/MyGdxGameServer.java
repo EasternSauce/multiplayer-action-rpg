@@ -6,6 +6,7 @@ import com.esotericsoftware.kryonet.Server;
 import com.mygdx.game.action.*;
 import com.mygdx.game.message.*;
 import com.mygdx.game.model.creature.CreatureId;
+import com.mygdx.game.util.GameStateHolder;
 import com.mygdx.game.util.Vector2;
 
 import java.io.IOException;
@@ -36,13 +37,13 @@ public class MyGdxGameServer extends MyGdxGame {
 
     @Override
     public void onUpdate() {
-
         synchronized (tickActions) {
 
             ArrayList<GameStateAction> tickActionsCopy = new ArrayList<>(tickActions);
 
             tickActionsCopy.forEach(
-                    gameStateAction -> gameStateAction.applyToGame(gameState, gameRenderer, gamePhysics));
+                    gameStateAction -> gameStateAction.applyToGame(gameStateHolder.gameState(), gameRenderer,
+                            gamePhysics));
 
             endPoint().sendToAllTCP(ActionsWrapper.of(tickActionsCopy));
 
@@ -94,7 +95,7 @@ public class MyGdxGameServer extends MyGdxGame {
 
                         tickActions.add(addPlayerAction);
 
-                        connection.sendTCP(WrappedState.of(gameState, true));
+                        connection.sendTCP(GameStateHolder.of(gameStateHolder.gameState(), true));
 
                         connections.put(connection.getID(), command.playerId());
                     } else if (object instanceof AskDeletePlayer) {
@@ -124,7 +125,7 @@ public class MyGdxGameServer extends MyGdxGame {
     public void broadcastGameState() throws InterruptedException {
         while (true) {
             Thread.sleep(250);
-            endPoint().sendToAllTCP(WrappedState.of(gameState, false));
+            endPoint().sendToAllTCP(GameStateHolder.of(gameStateHolder.gameState(), false));
         }
     }
 

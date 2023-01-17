@@ -7,13 +7,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Player extends Creature {
+public class Enemy extends Creature {
     CreatureParams params;
 
-    public static Player of(CreatureParams params) {
-        Player player = Player.of();
-        player.params = params;
-        return player;
+    public static Enemy of(CreatureParams params) {
+        Enemy enemy = Enemy.of();
+        enemy.params = params;
+        return enemy;
     }
-
 }

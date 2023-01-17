@@ -4,23 +4,21 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.game.Constants;
 import com.mygdx.game.assets.Assets;
-import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.physics.GamePhysics;
 import com.mygdx.game.renderer.DrawingLayer;
 import com.mygdx.game.renderer.GameRenderer;
+import com.mygdx.game.util.GameStateHolder;
 import com.mygdx.game.util.Vector2;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -43,7 +41,7 @@ public class MyGdxGamePlayScreen implements Screen {
 
     GamePhysics gamePhysics;
 
-    GameState gameState;
+    GameStateHolder gameStateHolder;
 
     protected Texture img;
     Map<AreaId, TiledMap> maps;
@@ -52,13 +50,10 @@ public class MyGdxGamePlayScreen implements Screen {
         this.game = game;
         this.gameRenderer = game.gameRenderer;
         this.gamePhysics = game.gamePhysics;
-        this.gameState = game.gameState;
+        this.gameStateHolder = game.gameStateHolder;
 
         gamePhysics.debugRenderer(new Box2DDebugRenderer());
 
-        gameRenderer.worldCamera(new OrthographicCamera());
-
-        gameRenderer.hudCamera(new OrthographicCamera());
         gameRenderer.hudCamera().position.set(Constants.WindowWidth / 2f, Constants.WindowHeight / 2f, 0);
 
         gameRenderer.worldViewport(new FitViewport(
@@ -70,11 +65,6 @@ public class MyGdxGamePlayScreen implements Screen {
         gameRenderer.hudViewport(
                 new FitViewport((float) Constants.WindowWidth, (float) Constants.WindowHeight,
                         gameRenderer.hudCamera()));
-
-
-//        gameRenderer.creatureSprites(new HashMap<>());
-
-        gameRenderer.mapLoader(new TmxMapLoader());
 
         Map<AreaId, String> mapsToLoad = new HashMap<>();
         mapsToLoad.put(AreaId.of("area1"), "assets/areas/area1");
@@ -96,35 +86,9 @@ public class MyGdxGamePlayScreen implements Screen {
 
         gameRenderer.atlas(new TextureAtlas("assets/atlas/packed_atlas.atlas"));
 
-        gameRenderer.creatureAnimations(new HashMap<>());
-
-        gamePhysics.init(maps, gameState);
-
-        gamePhysics.creatureBodies(new HashMap<>());
+        gamePhysics.init(maps, gameStateHolder.gameState());
 
         img = new Texture("badlogic.jpg");
-
-
-//        gameState = AtomicSTRef(
-//                GameState(
-//                        creatures = Map(
-//                                CreatureId("player") -> Player(id = CreatureId("player"), areaId = AreaId("area1"), pos = Vec2(8, 61)),
-//                CreatureId("skellie") -> Skeleton(id = CreatureId("skellie"), areaId = AreaId("area1"), pos = Vec2(24, 4))
-//        ),
-//        currentPlayerId = CreatureId("player"),
-//                currentAreaId = AreaId("area1")
-//      )
-//    )
-//
-//        implicit val (_, events) = gameState.commit(GameState.init(mapsToLoad.keys.toList)(gameState.aref.get()))
-//
-//        RendererController.init(atlas, maps, areaGates, mapScale)(gameState.aref.get())
-//        PhysicsEngineController.init(maps)(gameState.aref.get())
-//
-//        processExternalEvents(events)(
-//                gameState.aref.get()
-//        ) // process all queued events after init and before game loop starts
-
 
     }
 
@@ -135,33 +99,47 @@ public class MyGdxGamePlayScreen implements Screen {
 
     public void update(float delta) {
 
+        gamePhysics.physicsWorlds().get(gameStateHolder.gameState().currentAreaId()).b2world().step(1 / 60f, 6, 2);
+
+        if (gamePhysics.forceUpdateCreaturePositions()) {
+            gamePhysics.forceUpdateCreaturePositions(false);
+
+            gameStateHolder.gameState().creatures().forEach((creatureId, creature) ->
+            {
+                System.out.println("updating...");
+                System.out.println(
+                        "contains " + creatureId + "? " + gamePhysics.creatureBodies().containsKey(creatureId));
+                if (gamePhysics.creatureBodies().containsKey(creatureId)) {
+                    System.out.println("setting transform to " + creature.params().pos() + " for creature " +
+                            creature.params().creatureId());
+                    gamePhysics.creatureBodies().get(creatureId).setTransform(creature.params().pos());
+                }
+            });
+        }
+
         game.onUpdate();
 
-//        PhysicsEngineController.physicsEventQueue.clear()
-//        processExternalEvents(events)
-//        RendererController.update()
-//        PhysicsEngineController.update()
+        game.gameStateHolder.gameState().generalTimer().update(delta);
 
-        game.gameState.generalTimer().update(delta);
-
-        gamePhysics.creatureBodies().forEach((creatureId, creatureBody) -> creatureBody.update(game.gameState));
+        gamePhysics.creatureBodies()
+                .forEach((creatureId, creatureBody) -> creatureBody.update(game.gameStateHolder.gameState()));
 
         // set gamestate position based on b2body position
-        game.gameState.creatures().forEach(
+        game.gameStateHolder.gameState().creatures().forEach(
                 (creatureId, creature) -> {
                     if (gamePhysics.creatureBodies().containsKey(creatureId)) {
-                        creature.params().pos(gamePhysics.creatureBodies().get(creatureId).pos());
+                        creature.params().pos(gamePhysics.creatureBodies().get(creatureId).setTransform());
                     }
 
                 });
 
         gameRenderer.creatureAnimations()
-                .forEach((creatureId, creatureAnimation) -> creatureAnimation.update(game.gameState));
+                .forEach((creatureId, creatureAnimation) -> creatureAnimation.update(game.gameStateHolder.gameState()));
 
 
         //update gamestate
 
-        game.gameState.creatures().forEach((creatureId, creature) -> creature.update(delta));
+        game.gameStateHolder.gameState().creatures().forEach((creatureId, creature) -> creature.update(delta));
 
         gameRenderer.tiledMapRenderer().setView(gameRenderer.worldCamera());
 
@@ -170,8 +148,6 @@ public class MyGdxGamePlayScreen implements Screen {
 
 
 //        game.onRender();
-
-        gamePhysics.physicsWorlds().get(gameState.currentAreaId()).b2world().step(1 / 60f, 6, 2);
 
 
     }
@@ -219,8 +195,9 @@ public class MyGdxGamePlayScreen implements Screen {
 
             gameRenderer.worldDrawingLayer().spriteBatch().end();
 
-            gamePhysics.debugRenderer().render(gamePhysics.physicsWorlds().get(gameState.currentAreaId()).b2world(),
-                    gameRenderer.worldCamera().combined);
+            gamePhysics.debugRenderer()
+                    .render(gamePhysics.physicsWorlds().get(gameStateHolder.gameState().currentAreaId()).b2world(),
+                            gameRenderer.worldCamera().combined);
 
             gameRenderer.hudDrawingLayer().spriteBatch().begin();
 
@@ -268,7 +245,7 @@ public class MyGdxGamePlayScreen implements Screen {
     }
 
     public void updateCamera() {
-        Creature player = game.gameState.creatures().get(game.thisPlayerId);
+        Creature player = game.gameStateHolder.gameState().creatures().get(game.thisPlayerId);
 
         if (player != null) {
             float camX;

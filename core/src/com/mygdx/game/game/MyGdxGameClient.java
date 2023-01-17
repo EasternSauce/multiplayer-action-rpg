@@ -13,26 +13,24 @@ import com.mygdx.game.message.*;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.physics.CreatureBody;
 import com.mygdx.game.renderer.CreatureAnimation;
+import com.mygdx.game.util.GameStateHolder;
 import com.mygdx.game.util.Vector2;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 
 public class MyGdxGameClient extends MyGdxGame {
 
     private static MyGdxGameClient instance;
 
     final Client _endPoint = new Client();
-    final Random rand = new Random();
-
     boolean isInitialized = false;
 
     private MyGdxGameClient() {
         _endPoint.getKryo().setRegistrationRequired(false);
 
-        thisPlayerId = CreatureId.of("Player " + Math.abs(rand.nextInt()));
+        thisPlayerId = CreatureId.of("Player_" + Math.abs(rand.nextInt()));
     }
 
 
@@ -57,7 +55,7 @@ public class MyGdxGameClient extends MyGdxGame {
                     endPoint().sendTCP(AskSendChatMessage.of(thisPlayerId.value(),
                             chat.currentMessage()));
 
-                    chat.sendMessage(gameState, thisPlayerId.value(), chat.currentMessage());
+                    chat.sendMessage(gameStateHolder.gameState(), thisPlayerId.value(), chat.currentMessage());
 
                     chat.currentMessage("");
                 }
@@ -85,80 +83,44 @@ public class MyGdxGameClient extends MyGdxGame {
                     List<GameStateAction> actions = actionsWrapper.actions();
 
                     actions.forEach(
-                            gameStateAction -> gameStateAction.applyToGame(gameState, gameRenderer, gamePhysics));
+                            gameStateAction -> gameStateAction.applyToGame(gameStateHolder.gameState(), gameRenderer,
+                                    gamePhysics));
 
 
-//                    actions.forEach(gameStateAction -> {
-//                        if (gameStateAction instanceof AddPlayer) {
-//                            AddPlayer action = (AddPlayer) gameStateAction;
-//                            System.out.println("adding player animation");
-//                            CreatureAnimation creatureAnimation = CreatureAnimation.of(action.playerId());
-//                            creatureAnimation.init(gameRenderer.atlas(), gameState);
-//                            gameRenderer.creatureAnimations().put(action.playerId(), creatureAnimation);
-////                            renderer.creatureSprites().put(action.playerId(), new Sprite(img, 64, 64));
-//
-//
-//                        } else if (gameStateAction instanceof RemovePlayer) {
-//                            RemovePlayer action = (RemovePlayer) gameStateAction;
-//                            gameRenderer.creatureAnimations().remove(action.playerId());
-////                            renderer.creatureSprites().remove(action.playerId());
-//                        }
-//                    });
+                } else if (object instanceof GameStateHolder) {
+                    GameStateHolder action = (GameStateHolder) object;
 
-
-                } else if (object instanceof WrappedState) {
-                    WrappedState action = (WrappedState) object;
-
-//                    System.out.println("received gamestate, overriding...");
-
-//                    if (gameState.creatures().isEmpty() == false) System.out.println("old player pos: " + gameState.creatures().get(thisPlayerId).params().pos());
-
-//                    if (action.gameState().creatures().isEmpty()) {
-//                        System.out.println("WARNING: received gamestate contains no creatures!");
-//                    }
-
-                    gameState = action.gameState();
-
-//                    if (gameState.creatures().isEmpty() == false) System.out.println("new player pos: " + gameState.creatures().get(thisPlayerId).params().pos());
+                    gameStateHolder.gameState(action.gameState());
 
                     if (action.initial()) {
 
-                        gameState.creatures().forEach((creatureId, creature) -> {
-                            if (!gameRenderer.creatureAnimations().containsKey(creatureId)) {
-                                CreatureAnimation creatureAnimation = CreatureAnimation.of(creatureId);
-                                creatureAnimation.init(gameRenderer.atlas(), gameState);
-                                gameRenderer.creatureAnimations().put(creatureId, creatureAnimation);
-                            }
-                            if (!gamePhysics.creatureBodies().containsKey(creatureId)) {
-                                CreatureBody creatureBody = CreatureBody.of(creatureId);
-                                creatureBody.init(gamePhysics, gameState);
-                                gamePhysics.creatureBodies().put(creatureId, creatureBody);
-                            }
-                        });
+                        synchronized (gameStateHolder) {
+                            gameStateHolder.gameState().creatures().forEach((creatureId, creature) -> {
+                                if (!gameRenderer.creatureAnimations().containsKey(creatureId)) {
+                                    CreatureAnimation creatureAnimation = CreatureAnimation.of(creatureId);
+                                    creatureAnimation.init(gameRenderer.atlas(), gameStateHolder.gameState());
+                                    gameRenderer.creatureAnimations().put(creatureId, creatureAnimation);
+                                }
+                                if (!gamePhysics.creatureBodies().containsKey(creatureId)) {
+                                    CreatureBody creatureBody = CreatureBody.of(creatureId);
+                                    creatureBody.init(gamePhysics,
+                                            gameStateHolder.gameState()); // TODO: differentiate between player and enemy
+                                    gamePhysics.creatureBodies().put(creatureId, creatureBody);
+                                }
+                            });
+                        }
 
                         isInitialized = true;
 
                     }
 
-                    // TODO: update ALL bodies positions here based on gameState!
-                    if (!gamePhysics.physicsWorlds().get(gameState.currentAreaId()).b2world().isLocked()) {
-                        gameState.creatures().forEach((creatureId, creature) ->
-                        {
-                            if (gamePhysics.creatureBodies().containsKey(creatureId)) {
-                                gamePhysics.creatureBodies().get(creatureId).pos(creature.params().pos());
-                            }
-                        });
+                    gamePhysics.forceUpdateCreaturePositions(true);
 
-                    }
-
-//                    gameRenderer.creatureSprites(gameState.creatures().values().stream().collect(
-//                            Collectors.toMap(entry -> entry.params().creatureId(),
-//                                    entry -> new Sprite(img, 64, 64))));
                 } else if (object instanceof SendChatMessage) {
                     SendChatMessage action = (SendChatMessage) object;
 
                     if (!Objects.equals(action.poster(), thisPlayerId.value())) {
-                        chat.sendMessage(gameState, action.poster(), action.text());
+                        chat.sendMessage(gameStateHolder.gameState(), action.poster(), action.text());
                     }
 
                 }

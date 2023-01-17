@@ -4,7 +4,6 @@ import com.mygdx.game.util.WorldDirection;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,31 +12,22 @@ import java.util.Map;
 @AllArgsConstructor(staticName = "of")
 @Data
 public class CreatureAnimationConfig {
-    @NonNull
     String textureName;
 
-    @NonNull
     Integer neutralStanceFrame;
 
-    @NonNull
     Integer spriteWidth;
 
-    @NonNull
     Integer spriteHeight;
 
-    @NonNull
     Integer textureWidth;
 
-    @NonNull
     Integer textureHeight;
 
-    @NonNull
     Integer frameCount;
 
-    @NonNull
     Float frameDuration;
 
-    @NonNull
     Map<WorldDirection, Integer> dirMap;
 
     public static Map<String, CreatureAnimationConfig> configs = new HashMap<>();
@@ -49,6 +39,13 @@ public class CreatureAnimationConfig {
         male1DirMap.put(WorldDirection.LEFT, 1);
         male1DirMap.put(WorldDirection.RIGHT, 2);
         configs.put("male1", CreatureAnimationConfig.of("male1", 1, 2, 2, 32, 32, 3, 0.1f, male1DirMap));
+        Map<WorldDirection, Integer> skeletonDirMap = new HashMap<>();
+        skeletonDirMap.put(WorldDirection.UP, 0);
+        skeletonDirMap.put(WorldDirection.DOWN, 2);
+        skeletonDirMap.put(WorldDirection.LEFT, 1);
+        skeletonDirMap.put(WorldDirection.RIGHT, 3);
+        configs.put("skeleton", CreatureAnimationConfig.of("skeleton", 0, 2, 2, 64, 64, 9, 0.05f, skeletonDirMap));
+
     }
 }
 

@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @NoArgsConstructor(staticName = "of")
@@ -16,12 +17,12 @@ import java.util.Map;
 @Data
 public class GameState {
 
-    Map<CreatureId, Creature> creatures;
+    Map<CreatureId, Creature> creatures = new HashMap<>();
 
-    Map<AreaId, Area> areas;
-    AreaId currentAreaId;
+    Map<AreaId, Area> areas = new HashMap<>();
+    AreaId currentAreaId = AreaId.of("area1");
 
-    AreaId defaultAreaId;
+    AreaId defaultAreaId = AreaId.of("area1");
 
-    SimpleTimer generalTimer;
+    SimpleTimer generalTimer = SimpleTimer.of(0, true);
 }

@@ -4,41 +4,39 @@ import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.renderer.CreatureAnimationConfig;
 import com.mygdx.game.util.SimpleTimer;
 import com.mygdx.game.util.Vector2;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-@AllArgsConstructor(staticName = "of")
 @Data
-@Builder
 public class CreatureParams {
-    @NonNull
     CreatureId creatureId;
 
-    @NonNull
     AreaId areaId;
 
-    @NonNull
     Vector2 pos;
 
-    @NonNull
     CreatureAnimationConfig animationConfig;
 
-    @NonNull
-    SimpleTimer animationTimer;
+    SimpleTimer animationTimer = SimpleTimer.of(0, true);
 
-    @NonNull
-    Vector2 movingVector;
+    Vector2 movingVector = Vector2.of(0, 0);
 
-    @NonNull
-    Vector2 movementCommandTargetPos;
+    Vector2 movementCommandTargetPos = Vector2.of(0, 0);
 
-    @NonNull
-    Boolean reachedTargetPos;
+    Boolean reachedTargetPos = true;
 
-    @NonNull
-    Boolean isMoving;
+    Boolean isMoving = false;
 
-    @NonNull
-    Float speed;
+    Float speed = 10f;
+
+    public static CreatureParams of(CreatureId creatureId, AreaId areaId, Vector2 pos, String textureName) {
+        CreatureParams params = CreatureParams.of();
+        params.creatureId = creatureId;
+        params.areaId = areaId;
+        params.pos = pos;
+        params.animationConfig = CreatureAnimationConfig.configs.get(textureName);
+        return params;
+    }
 
 }
