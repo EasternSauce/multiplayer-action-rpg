@@ -1,6 +1,7 @@
 package com.mygdx.game.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -24,6 +25,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -89,6 +91,25 @@ public class MyGdxGamePlayScreen implements Screen {
         gamePhysics.init(maps, gameStateHolder.gameState());
 
         img = new Texture("badlogic.jpg");
+
+        Gdx.input.setInputProcessor(new InputAdapter() {
+            @Override
+            public boolean keyTyped(char character) {
+                if (game.chat.isTyping() && character != '\n') {
+                    game.chat.currentMessage(game.chat.currentMessage() + character);
+                }
+
+                return true;
+            }
+        });
+
+        try {
+            game.establishConnection();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        game.initState();
 
     }
 

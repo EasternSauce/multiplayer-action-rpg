@@ -4,8 +4,12 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.mygdx.game.action.*;
-import com.mygdx.game.message.*;
+import com.mygdx.game.command.*;
 import com.mygdx.game.model.creature.CreatureId;
+import com.mygdx.game.model.creature.CreatureParams;
+import com.mygdx.game.model.creature.Enemy;
+import com.mygdx.game.physics.CreatureBody;
+import com.mygdx.game.renderer.CreatureAnimation;
 import com.mygdx.game.util.GameStateHolder;
 import com.mygdx.game.util.Vector2;
 
@@ -54,28 +58,14 @@ public class MyGdxGameServer extends MyGdxGame {
 
     @Override
     public void establishConnection() {
-        new Thread(() -> {
-            try {
-                runServer();
-            } catch (IOException e) {
-                // do nothing
-            }
-        }).start();
 
-        broadcastThread = new Thread(() -> {
-            try {
-                broadcastGameState();
-            } catch (InterruptedException e) {
-                // do nothing
-            }
-        });
-        broadcastThread.start();
-
-    }
-
-    public void runServer() throws IOException {
         endPoint().start();
-        endPoint().bind(20445, 20445);
+
+        try {
+            endPoint().bind(20445, 20445);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         endPoint().addListener(new Listener() {
 
@@ -87,8 +77,8 @@ public class MyGdxGameServer extends MyGdxGame {
                         MoveTowardsTargetAction move =
                                 MoveTowardsTargetAction.of(command.playerId(), command.mousePos());
                         tickActions.add(move);
-                    } else if (object instanceof AskInitPlayer) {
-                        AskInitPlayer command = (AskInitPlayer) object;
+                    } else if (object instanceof InitPlayerCommand) {
+                        InitPlayerCommand command = (InitPlayerCommand) object;
                         AddPlayerAction addPlayerAction =
                                 AddPlayerAction.of(command.playerId(), Vector2.of(command.x(), command.y()),
                                         command.textureName());
@@ -98,14 +88,14 @@ public class MyGdxGameServer extends MyGdxGame {
                         connection.sendTCP(GameStateHolder.of(gameStateHolder.gameState(), true));
 
                         connections.put(connection.getID(), command.playerId());
-                    } else if (object instanceof AskDeletePlayer) {
-                        AskDeletePlayer command = (AskDeletePlayer) object;
+                    } else if (object instanceof DeletePlayerCommand) {
+                        DeletePlayerCommand command = (DeletePlayerCommand) object;
                         RemovePlayerAction removePlayerAction = RemovePlayerAction.of(command.playerId());
                         tickActions.add(removePlayerAction);
-                    } else if (object instanceof AskSendChatMessage) {
-                        AskSendChatMessage command = (AskSendChatMessage) object;
+                    } else if (object instanceof SendChatMessageCommand) {
+                        SendChatMessageCommand command = (SendChatMessageCommand) object;
 
-                        endPoint().sendToAllTCP(SendChatMessage.of(command.poster(), command.text()));
+                        endPoint().sendToAllTCP(SendChatMessageCommand.of(command.poster(), command.text()));
                     }
                 }
             }
@@ -120,21 +110,44 @@ public class MyGdxGameServer extends MyGdxGame {
                 }
             }
         });
+
+        broadcastThread = new Thread(() -> {
+            try {
+                while (true) {
+                    Thread.sleep(350);
+                    endPoint().sendToAllTCP(GameStateHolder.of(gameStateHolder.gameState(), false));
+                }
+            } catch (InterruptedException e) {
+                // do nothing
+            }
+        });
+        broadcastThread.start();
+
     }
 
-    public void broadcastGameState() throws InterruptedException {
-        while (true) {
-            Thread.sleep(250);
-            endPoint().sendToAllTCP(GameStateHolder.of(gameStateHolder.gameState(), false));
-        }
+    @Override
+    public void initState() {
+        spawnEnemy(Vector2.of(18, 10));
+    }
+
+    public void spawnEnemy(Vector2 pos) {
+        // TODO: extract common code to "spawnCreature"
+        CreatureId enemyId = CreatureId.of("Enemy_" + Math.abs(rand.nextInt()));
+        gameStateHolder.gameState().creatures().put(enemyId,
+                Enemy.of(CreatureParams.of(enemyId, gameStateHolder.gameState().defaultAreaId(), pos, "skeleton")));
+        CreatureBody creatureBody = CreatureBody.of(enemyId);
+        creatureBody.init(gamePhysics, gameStateHolder.gameState());
+        gamePhysics.creatureBodies().put(enemyId, creatureBody);
+        CreatureAnimation creatureAnimation = CreatureAnimation.of(enemyId);
+        creatureAnimation.init(gameRenderer.atlas(), gameStateHolder.gameState());
+        gameRenderer.creatureAnimations().put(enemyId, creatureAnimation);
+        endPoint().sendToAllTCP(SpawnEnemyCommand.of(enemyId, "skeleton", pos));
     }
 
     @Override
     public void dispose() {
-
         endPoint().stop();
         broadcastThread.interrupt();
-
 
     }
 

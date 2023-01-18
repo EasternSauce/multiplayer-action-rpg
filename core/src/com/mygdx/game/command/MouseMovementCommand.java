@@ -1,6 +1,7 @@
-package com.mygdx.game.message;
+package com.mygdx.game.command;
 
 import com.mygdx.game.model.creature.CreatureId;
+import com.mygdx.game.util.Vector2;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,9 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-public class AskInitPlayer {
+public class MouseMovementCommand implements GameCommand {
     CreatureId playerId;
-    float x;
-    float y;
-    String textureName;
+    Vector2 mousePos;
 }

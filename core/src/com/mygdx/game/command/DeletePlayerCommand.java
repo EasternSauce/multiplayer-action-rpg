@@ -1,5 +1,6 @@
-package com.mygdx.game.message;
+package com.mygdx.game.command;
 
+import com.mygdx.game.model.creature.CreatureId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,8 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-public class SendChatMessage {
-    String poster;
-    String text;
+public class DeletePlayerCommand implements GameCommand {
+    CreatureId playerId;
 }
-

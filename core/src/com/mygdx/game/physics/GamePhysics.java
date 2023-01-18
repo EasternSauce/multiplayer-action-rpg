@@ -35,6 +35,6 @@ public class GamePhysics {
             // TODO: create contact listener...
 
         });
-        // TODO: init bodies existing in gamestate...
+
     }
 }
