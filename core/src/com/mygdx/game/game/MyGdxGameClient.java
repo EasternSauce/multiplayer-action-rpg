@@ -9,13 +9,10 @@ import com.esotericsoftware.kryonet.Listener;
 import com.mygdx.game.Constants;
 import com.mygdx.game.action.ActionsWrapper;
 import com.mygdx.game.action.GameStateAction;
-import com.mygdx.game.command.DeletePlayerCommand;
 import com.mygdx.game.command.InitPlayerCommand;
 import com.mygdx.game.command.MouseMovementCommand;
 import com.mygdx.game.command.SendChatMessageCommand;
 import com.mygdx.game.model.creature.CreatureId;
-import com.mygdx.game.physics.CreatureBody;
-import com.mygdx.game.renderer.CreatureAnimation;
 import com.mygdx.game.util.GameStateHolder;
 import com.mygdx.game.util.Vector2;
 
@@ -58,7 +55,7 @@ public class MyGdxGameClient extends MyGdxGame {
                     endPoint().sendTCP(SendChatMessageCommand.of(thisPlayerId.value(),
                             chat.currentMessage()));
 
-                    chat.sendMessage(gameStateHolder.gameState(), thisPlayerId.value(), chat.currentMessage());
+                    chat.sendMessage(gameState(), thisPlayerId.value(), chat.currentMessage());
 
                     chat.currentMessage("");
                 }
@@ -85,9 +82,7 @@ public class MyGdxGameClient extends MyGdxGame {
 
                     List<GameStateAction> actions = actionsWrapper.actions();
 
-                    actions.forEach(
-                            gameStateAction -> gameStateAction.applyToGame(gameStateHolder.gameState(), gameRenderer,
-                                    gamePhysics));
+                    actions.forEach(gameStateAction -> gameStateAction.applyToGame(MyGdxGameClient.this));
 
 
                 } else if (object instanceof GameStateHolder) {
@@ -98,18 +93,8 @@ public class MyGdxGameClient extends MyGdxGame {
                     if (action.initial()) {
 
                         synchronized (gameStateHolder) {
-                            gameStateHolder.gameState().creatures().forEach((creatureId, creature) -> {
-                                if (!gameRenderer.creatureAnimations().containsKey(creatureId)) {
-                                    CreatureAnimation creatureAnimation = CreatureAnimation.of(creatureId);
-                                    creatureAnimation.init(gameRenderer.atlas(), gameStateHolder.gameState());
-                                    gameRenderer.creatureAnimations().put(creatureId, creatureAnimation);
-                                }
-                                if (!gamePhysics.creatureBodies().containsKey(creatureId)) {
-                                    CreatureBody creatureBody = CreatureBody.of(creatureId);
-                                    creatureBody.init(gamePhysics,
-                                            gameStateHolder.gameState()); // TODO: differentiate between player and enemy
-                                    gamePhysics.creatureBodies().put(creatureId, creatureBody);
-                                }
+                            gameState().creatures().forEach((creatureId, creature) -> {
+                                createCreatureBodyAndAnimation(creatureId);
                             });
                         }
 
@@ -123,7 +108,7 @@ public class MyGdxGameClient extends MyGdxGame {
                     SendChatMessageCommand action = (SendChatMessageCommand) object;
 
                     if (!Objects.equals(action.poster(), thisPlayerId.value())) {
-                        chat.sendMessage(gameStateHolder.gameState(), action.poster(), action.text());
+                        chat.sendMessage(gameState(), action.poster(), action.text());
                     }
 
                 }
@@ -132,8 +117,8 @@ public class MyGdxGameClient extends MyGdxGame {
 
             @Override
             public void disconnected(Connection connection) {
-                System.out.println("LOST CONNECTION");
-                System.exit(-1);
+                System.out.println("Disconnecting...");
+                System.exit(0);
             }
         });
 
@@ -151,7 +136,6 @@ public class MyGdxGameClient extends MyGdxGame {
 
     @Override
     public void dispose() {
-        endPoint().sendTCP(DeletePlayerCommand.of(thisPlayerId));
         endPoint().stop();
     }
 

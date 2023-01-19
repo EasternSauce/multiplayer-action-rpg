@@ -4,12 +4,13 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.mygdx.game.action.*;
-import com.mygdx.game.command.*;
+import com.mygdx.game.command.InitPlayerCommand;
+import com.mygdx.game.command.MouseMovementCommand;
+import com.mygdx.game.command.SendChatMessageCommand;
+import com.mygdx.game.command.SpawnEnemyCommand;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.creature.CreatureParams;
 import com.mygdx.game.model.creature.Enemy;
-import com.mygdx.game.physics.CreatureBody;
-import com.mygdx.game.renderer.CreatureAnimation;
 import com.mygdx.game.util.GameStateHolder;
 import com.mygdx.game.util.Vector2;
 
@@ -46,8 +47,7 @@ public class MyGdxGameServer extends MyGdxGame {
             ArrayList<GameStateAction> tickActionsCopy = new ArrayList<>(tickActions);
 
             tickActionsCopy.forEach(
-                    gameStateAction -> gameStateAction.applyToGame(gameStateHolder.gameState(), gameRenderer,
-                            gamePhysics));
+                    gameStateAction -> gameStateAction.applyToGame(this));
 
             endPoint().sendToAllTCP(ActionsWrapper.of(tickActionsCopy));
 
@@ -85,13 +85,9 @@ public class MyGdxGameServer extends MyGdxGame {
 
                         tickActions.add(addPlayerAction);
 
-                        connection.sendTCP(GameStateHolder.of(gameStateHolder.gameState(), true));
+                        connection.sendTCP(GameStateHolder.of(gameState(), true));
 
                         connections.put(connection.getID(), command.playerId());
-                    } else if (object instanceof DeletePlayerCommand) {
-                        DeletePlayerCommand command = (DeletePlayerCommand) object;
-                        RemovePlayerAction removePlayerAction = RemovePlayerAction.of(command.playerId());
-                        tickActions.add(removePlayerAction);
                     } else if (object instanceof SendChatMessageCommand) {
                         SendChatMessageCommand command = (SendChatMessageCommand) object;
 
@@ -115,7 +111,7 @@ public class MyGdxGameServer extends MyGdxGame {
             try {
                 while (true) {
                     Thread.sleep(350);
-                    endPoint().sendToAllTCP(GameStateHolder.of(gameStateHolder.gameState(), false));
+                    endPoint().sendToAllTCP(GameStateHolder.of(gameState(), false));
                 }
             } catch (InterruptedException e) {
                 // do nothing
@@ -133,14 +129,9 @@ public class MyGdxGameServer extends MyGdxGame {
     public void spawnEnemy(Vector2 pos) {
         // TODO: extract common code to "spawnCreature"
         CreatureId enemyId = CreatureId.of("Enemy_" + Math.abs(rand.nextInt()));
-        gameStateHolder.gameState().creatures().put(enemyId,
-                Enemy.of(CreatureParams.of(enemyId, gameStateHolder.gameState().defaultAreaId(), pos, "skeleton")));
-        CreatureBody creatureBody = CreatureBody.of(enemyId);
-        creatureBody.init(gamePhysics, gameStateHolder.gameState());
-        gamePhysics.creatureBodies().put(enemyId, creatureBody);
-        CreatureAnimation creatureAnimation = CreatureAnimation.of(enemyId);
-        creatureAnimation.init(gameRenderer.atlas(), gameStateHolder.gameState());
-        gameRenderer.creatureAnimations().put(enemyId, creatureAnimation);
+        gameState().creatures().put(enemyId,
+                Enemy.of(CreatureParams.of(enemyId, gameState().defaultAreaId(), pos, "skeleton")));
+        createCreatureBodyAndAnimation(enemyId);
         endPoint().sendToAllTCP(SpawnEnemyCommand.of(enemyId, "skeleton", pos));
     }
 

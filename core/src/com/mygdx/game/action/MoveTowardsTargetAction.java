@@ -1,10 +1,9 @@
 package com.mygdx.game.action;
 
 import com.mygdx.game.Constants;
+import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.creature.CreatureId;
-import com.mygdx.game.physics.GamePhysics;
-import com.mygdx.game.renderer.GameRenderer;
 import com.mygdx.game.util.Vector2;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,7 +19,9 @@ public class MoveTowardsTargetAction implements GameStateAction {
     Vector2 mousePos;
 
     @Override
-    public void applyToGame(GameState gameState, GameRenderer renderer, GamePhysics physics) {
+    public void applyToGame(MyGdxGame game) {
+        GameState gameState = game.gameState();
+
         Vector2 pos = gameState.creatures().get(playerId).params().pos();
 
         float viewportRatioX = Constants.ViewpointWorldWidth / Constants.WindowWidth;

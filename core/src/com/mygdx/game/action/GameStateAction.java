@@ -1,9 +1,7 @@
 package com.mygdx.game.action;
 
-import com.mygdx.game.model.GameState;
-import com.mygdx.game.physics.GamePhysics;
-import com.mygdx.game.renderer.GameRenderer;
+import com.mygdx.game.game.MyGdxGame;
 
 public interface GameStateAction {
-    void applyToGame(GameState gameState, GameRenderer renderer, GamePhysics physics);
+    void applyToGame(MyGdxGame game);
 }
