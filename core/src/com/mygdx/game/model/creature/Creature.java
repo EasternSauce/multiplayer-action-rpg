@@ -10,6 +10,7 @@ public abstract class Creature {
     public abstract Creature params(CreatureParams params);
 
     public void update(float delta) {
+        System.out.println(params().pos());
         if (!params().reachedTargetPos()) {
             moveTowardsTarget();
         }

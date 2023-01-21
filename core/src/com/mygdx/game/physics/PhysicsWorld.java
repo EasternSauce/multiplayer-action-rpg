@@ -1,13 +1,18 @@
 package com.mygdx.game.physics;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.Constants;
+import com.mygdx.game.pathing.Astar;
+import com.mygdx.game.pathing.PathingNode;
+import com.mygdx.game.util.Vector2;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
 @Data
@@ -32,6 +37,8 @@ public class PhysicsWorld {
     List<TerrainTileBody> terrainTiles = new LinkedList<>();
     List<TerrainTileBody> terrainBorders = new LinkedList<>();
 
+    Map<TilePos, PathingNode> pathingGraph;
+
     public Integer widthInTiles() {
         return layer.getWidth();
     }
@@ -39,6 +46,28 @@ public class PhysicsWorld {
     public Integer heightInTiles() {
         return layer.getHeight();
     }
+
+    public Float tileWidth() {
+        return tileWidth;
+    }
+
+    public Float tileHeight() {
+        return tileHeight;
+    }
+
+    public Map<TilePos, PathingNode> pathingGraph() {
+        return pathingGraph;
+    }
+
+    public Vector2 getTileCenter(TilePos pos) {
+
+        return Vector2.of(pos.x() * tileWidth + tileWidth / 2, pos.y() * tileHeight + tileHeight / 2);
+    }
+
+    public TilePos getClosestTile(Vector2 pos) {
+        return TilePos.of((int) (pos.x() / tileWidth), (int) (pos.y() / tileHeight));
+    }
+
 
     public void init() {
         layer = (TiledMapTileLayer) map.getLayers().get(0);
@@ -68,6 +97,8 @@ public class PhysicsWorld {
 
         createTerrainTiles();
         createBorders();
+
+        pathingGraph = Astar.generatePathingGraph(this);
     }
 
     private Boolean tileExists(Integer x, Integer y) {
@@ -126,6 +157,8 @@ public class PhysicsWorld {
                 }
             }
         }
+
+        calculateClearances(traversables);
     }
 
     public void createBorders() {
@@ -149,6 +182,66 @@ public class PhysicsWorld {
             terrainBorders.add(tile2);
         }
 
+
+    }
+
+    public void tryAddClearance(TilePos pos, Integer level) {
+        if (!clearances.containsKey(pos) && pos.x() >= 0 && pos.y() >= 0 && pos.x() < widthInTiles() &&
+                pos.y() < heightInTiles() && traversables.get(pos)) {
+            clearances.put(pos, level);
+        }
+    }
+
+    public void calculateClearances(Map<TilePos, Boolean> traversables) {
+        clearances = new HashMap<>();
+
+        for (int y = 0; y < heightInTiles(); y++) {
+            for (int x = 0; x < widthInTiles(); x++) {
+                if (!traversables.get(TilePos.of(x, y))) {
+                    tryAddClearance(TilePos.of(x - 1, y - 1), 1);
+                    tryAddClearance(TilePos.of(x, y - 1), 1);
+                    tryAddClearance(TilePos.of(x + 1, y - 1), 1);
+                    tryAddClearance(TilePos.of(x - 1, y + 1), 1);
+                    tryAddClearance(TilePos.of(x, y + 1), 1);
+                    tryAddClearance(TilePos.of(x + 1, y + 1), 1);
+                    tryAddClearance(TilePos.of(x - 1, y), 1);
+                    tryAddClearance(TilePos.of(x + 1, y), 1);
+                }
+            }
+        }
+
+        int currentLevel = 2;
+
+        while (traversables.values().stream().filter(isTraversable -> isTraversable).count() != clearances.size()) {
+
+            final int level = currentLevel;
+
+            List<TilePos> lowerLevelClearances =
+                    clearances.entrySet().stream().filter(entry -> entry.getValue() == level - 1)
+                            .map(Map.Entry::getKey).collect(Collectors.toList());
+
+
+            lowerLevelClearances.forEach(pos -> {
+                int x = pos.x();
+                int y = pos.y();
+
+                tryAddClearance(TilePos.of(x - 1, y - 1), level);
+                tryAddClearance(TilePos.of(x, y - 1), level);
+                tryAddClearance(TilePos.of(x + 1, y - 1), level);
+                tryAddClearance(TilePos.of(x - 1, y + 1), level);
+                tryAddClearance(TilePos.of(x, y + 1), level);
+                tryAddClearance(TilePos.of(x + 1, y + 1), level);
+                tryAddClearance(TilePos.of(x - 1, y), level);
+                tryAddClearance(TilePos.of(x + 1, y), level);
+            });
+
+            currentLevel++;
+        }
+
+    }
+
+    public void step() {
+        b2world.step(Math.min(Gdx.graphics.getDeltaTime(), 0.15f), 6, 2);
     }
 
 
@@ -159,4 +252,5 @@ public class PhysicsWorld {
 
         return world;
     }
+
 }

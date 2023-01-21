@@ -108,7 +108,7 @@ public class MyGdxGamePlayScreen implements Screen {
 
     public void update(float delta) {
 
-        game.physics().physicsWorlds().get(game.gameState().currentAreaId()).b2world().step(1 / 60f, 6, 2);
+        game.physics().physicsWorlds().get(game.gameState().currentAreaId()).step();
 
         if (game.physics().forceUpdateCreaturePositions()) {
             game.physics().forceUpdateCreaturePositions(false);
