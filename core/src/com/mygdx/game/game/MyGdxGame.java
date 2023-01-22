@@ -15,19 +15,16 @@ import java.io.IOException;
 import java.util.Random;
 
 public abstract class MyGdxGame extends Game {
-    final protected GameRenderer gameRenderer = GameRenderer.of();
-
-    final protected GamePhysics gamePhysics = GamePhysics.of();
-
-    final protected GameStateHolder gameStateHolder = GameStateHolder.of(GameState.of());
-
     public final Random rand = new Random();
+    public final Object lock = new Object();
+    final protected GameRenderer gameRenderer = GameRenderer.of();
+    final protected GamePhysics gamePhysics = GamePhysics.of();
+    final protected GameStateHolder gameStateHolder = GameStateHolder.of(GameState.of());
     final MyGdxGamePlayScreen playScreen = MyGdxGamePlayScreen.of();
-
-    protected CreatureId thisPlayerId = null;
     public EndPoint _endPoint = null;
 
     public Chat chat = Chat.of();
+    protected CreatureId thisPlayerId = null;
 
     public GameRenderer renderer() {
         return gameRenderer;
@@ -71,11 +68,14 @@ public abstract class MyGdxGame extends Game {
     abstract public void initState();
 
     public void removeCreatureBodyAndAnimation(CreatureId playerId) {
+        System.out.println("3!");
         gameState().creatures().remove(playerId);
 
         renderer().creatureAnimations().remove(playerId);
 
-        physics().creatureBodies().get(playerId).onRemove();
-        physics().creatureBodies().remove(playerId);
+        if (physics().creatureBodies().containsKey(playerId)) {
+            physics().creatureBodies().get(playerId).onRemove();
+            physics().creatureBodies().remove(playerId);
+        }
     }
 }

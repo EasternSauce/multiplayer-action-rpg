@@ -19,12 +19,13 @@ import com.mygdx.game.util.Vector2;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class MyGdxGameClient extends MyGdxGame {
 
     private static MyGdxGameClient instance;
 
-    final Client _endPoint = new Client();
+    final Client _endPoint = new Client(81920, 20480);
     boolean isInitialized = false;
 
     private MyGdxGameClient() {
@@ -33,6 +34,10 @@ public class MyGdxGameClient extends MyGdxGame {
         thisPlayerId = CreatureId.of("Player_" + Math.abs(rand.nextInt()));
     }
 
+    public static MyGdxGameClient getInstance() {
+        if (instance == null) instance = new MyGdxGameClient();
+        return instance;
+    }
 
     @Override
     public Client endPoint() {
@@ -66,13 +71,21 @@ public class MyGdxGameClient extends MyGdxGame {
 
             endPoint().sendTCP(MouseMovementCommand.of(thisPlayerId, mousePos));
         }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.N)) {
+
+            CreatureId zzz = gameState().creatures().keySet().stream()
+                    .filter(creatureId -> creatureId.value().startsWith("Player")).collect(
+                            Collectors.toList()).get(0);
+            Vector2 pos = gameState().creatures().get(zzz).params().pos();
+            System.out.println("Vector2.of(" + pos.x() + "f, " + pos.y() + "f),");
+        }
     }
 
     @Override
     public void establishConnection() throws IOException {
 
         endPoint().start();
-        endPoint().connect(5000, "localhost", 20445, 20445);
+        endPoint().connect(12000, "89.79.23.118", 20445, 20445);
 
         endPoint().addListener(new Listener() {
             @Override
@@ -81,6 +94,7 @@ public class MyGdxGameClient extends MyGdxGame {
                     ActionsWrapper actionsWrapper = (ActionsWrapper) object;
 
                     List<GameStateAction> actions = actionsWrapper.actions();
+
 
                     actions.forEach(gameStateAction -> gameStateAction.applyToGame(MyGdxGameClient.this));
 
@@ -92,7 +106,8 @@ public class MyGdxGameClient extends MyGdxGame {
 
                     if (action.initial()) {
 
-                        synchronized (gameStateHolder) {
+
+                        synchronized (lock) {
                             gameState().creatures().forEach((creatureId, creature) -> {
                                 createCreatureBodyAndAnimation(creatureId);
                             });
@@ -143,10 +158,5 @@ public class MyGdxGameClient extends MyGdxGame {
         Vector3 v = new Vector3((float) Gdx.input.getX(), (float) Gdx.input.getY(), 0f);
         gameRenderer.hudCamera().unproject(v);
         return Vector2.of(v.x - Constants.WindowWidth / 2f, v.y - Constants.WindowHeight / 2f);
-    }
-
-    public static MyGdxGameClient getInstance() {
-        if (instance == null) instance = new MyGdxGameClient();
-        return instance;
     }
 }

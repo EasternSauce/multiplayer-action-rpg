@@ -27,6 +27,12 @@ public class CreatureAnimation {
 
     TextureRegion textureRegion;
 
+    public static CreatureAnimation of(CreatureId creatureId) {
+        CreatureAnimation anim = new CreatureAnimation();
+        anim.creatureId(creatureId);
+        return anim;
+    }
+
     public void init(TextureAtlas atlas, GameState gameState) {
         sprite = new Sprite();
 
@@ -81,8 +87,9 @@ public class CreatureAnimation {
         return facingTextures().get(creature.params().animationConfig().dirMap().get(currentDirection));
     }
 
-
     public void update(GameState gameState) {
+        if (!gameState.creatures().containsKey(creatureId)) return;
+
         Creature creature = gameState.creatures().get(creatureId);
 
         sprite.setCenter(creature.params().pos().x(), creature.params().pos().y());
@@ -106,17 +113,10 @@ public class CreatureAnimation {
         }
     }
 
-
     public void render(DrawingLayer drawingLayer) {
         if (sprite.getTexture() != null) {
             sprite.draw(drawingLayer.spriteBatch());
         }
-    }
-
-    public static CreatureAnimation of(CreatureId creatureId) {
-        CreatureAnimation anim = new CreatureAnimation();
-        anim.creatureId(creatureId);
-        return anim;
     }
 
 }

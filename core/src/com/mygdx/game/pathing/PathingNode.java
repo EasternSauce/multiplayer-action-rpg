@@ -16,18 +16,18 @@ public class PathingNode {
     Integer clearance;
     List<PathingEdge> outgoingEdges = new ArrayList<>();
 
-    public PathingNode withEdge(Float weight, PathingNode node) {
-        PathingEdge newEdge = PathingEdge.of(weight, node.pos());
-        ArrayList<PathingEdge> newOutgoingEdges = new ArrayList<>(outgoingEdges);
-        newOutgoingEdges.add(0, newEdge);
-        return PathingNode.of(pos, clearance, newOutgoingEdges);
-    }
-
     public static PathingNode of(TilePos pos, Integer clearance) {
         PathingNode pathingNode = new PathingNode();
         pathingNode.pos(pos);
         pathingNode.clearance(clearance);
         return pathingNode;
+    }
+
+    public PathingNode withEdge(Float weight, PathingNode node) {
+        PathingEdge newEdge = PathingEdge.of(weight, node.pos());
+        ArrayList<PathingEdge> newOutgoingEdges = new ArrayList<>(outgoingEdges);
+        newOutgoingEdges.add(0, newEdge);
+        return PathingNode.of(pos, clearance, newOutgoingEdges);
     }
 }
 

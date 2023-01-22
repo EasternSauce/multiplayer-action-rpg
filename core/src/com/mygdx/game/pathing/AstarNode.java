@@ -15,13 +15,13 @@ public class AstarNode {
     Double g = Double.MAX_VALUE;
     Double h = Double.MAX_VALUE;
 
-    public TilePos pos() {
-        return pathingNode.pos();
-    }
-
     public static AstarNode of(PathingNode pathingNode) {
         AstarNode astarNode = AstarNode.of();
         astarNode.pathingNode = pathingNode;
         return astarNode;
+    }
+
+    public TilePos pos() {
+        return pathingNode.pos();
     }
 }

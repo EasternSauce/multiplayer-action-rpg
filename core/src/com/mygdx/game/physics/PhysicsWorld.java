@@ -3,6 +3,7 @@ package com.mygdx.game.physics;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.Constants;
 import com.mygdx.game.pathing.Astar;
@@ -39,6 +40,14 @@ public class PhysicsWorld {
 
     Map<TilePos, PathingNode> pathingGraph;
 
+    public static PhysicsWorld of(TiledMap map) {
+        PhysicsWorld world = PhysicsWorld.of();
+
+        world.map = map;
+
+        return world;
+    }
+
     public Integer widthInTiles() {
         return layer.getWidth();
     }
@@ -67,7 +76,6 @@ public class PhysicsWorld {
     public TilePos getClosestTile(Vector2 pos) {
         return TilePos.of((int) (pos.x() / tileWidth), (int) (pos.y() / tileHeight));
     }
-
 
     public void init() {
         layer = (TiledMapTileLayer) map.getLayers().get(0);
@@ -244,13 +252,28 @@ public class PhysicsWorld {
         b2world.step(Math.min(Gdx.graphics.getDeltaTime(), 0.15f), 6, 2);
     }
 
+    public Boolean isLineOfSight(Vector2 fromPos, Vector2 toPos) {
+        float lineWidth = 0.3f;
+        com.badlogic.gdx.math.Polygon lineOfSightRect = new com.badlogic.gdx.math.Polygon(new float[]{
+                fromPos.x(),
+                fromPos.y(),
+                fromPos.x() + lineWidth,
+                fromPos.y() + lineWidth,
+                toPos.x() + lineWidth,
+                toPos.y() + lineWidth,
+                toPos.x(),
+                toPos.y()
+        });
 
-    public static PhysicsWorld of(TiledMap map) {
-        PhysicsWorld world = PhysicsWorld.of();
+        List<com.badlogic.gdx.math.Polygon> polygons =
+                terrainTiles.stream().map(TerrainTileBody::polygon).collect(Collectors.toList());
 
-        world.map = map;
+        boolean overlaps = false;
 
-        return world;
+        for (com.badlogic.gdx.math.Polygon polygon : polygons) {
+            if (Intersector.overlapConvexPolygons(polygon, lineOfSightRect)) overlaps = true;
+        }
+
+        return !overlaps;
     }
-
 }

@@ -14,6 +14,10 @@ public class Assets {
 
     static BitmapFont defaultFont;
 
+    static {
+        defaultFont = loadFont(Assets.youngSerifFontPath, 16);
+    }
+
     public static BitmapFont loadFont(String fontPath, int size) {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(fontPath));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -28,9 +32,5 @@ public class Assets {
     public static void drawFont(DrawingLayer drawingLayer, String text, Vector2 pos, Color color) {
         defaultFont.setColor(color);
         defaultFont.draw(drawingLayer.spriteBatch(), text, pos.x(), pos.y());
-    }
-
-    static {
-        defaultFont = loadFont(Assets.youngSerifFontPath, 16);
     }
 }

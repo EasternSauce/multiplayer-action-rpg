@@ -80,7 +80,7 @@ public class Astar {
                     AstarState.of(astarState.astarGraph(), astarState.openSet(), astarState.closedSet(),
                             astarState.finishPos(), astarState.foundPath());
 
-            if (currentNode.pos() == finishTilePos) {
+            if (currentNode.pos().equals(finishTilePos)) {
                 resultingAstarState.foundPath(true);
             } else {
                 HashSet<TilePos> modifiedOpenSet = new HashSet<>(resultingAstarState.openSet());

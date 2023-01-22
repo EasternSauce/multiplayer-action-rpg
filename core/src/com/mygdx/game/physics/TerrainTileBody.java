@@ -12,6 +12,8 @@ public class TerrainTileBody {
     Float tileHeight;
     Integer layer;
     Boolean flyover;
+    Body b2Body;
+    com.badlogic.gdx.math.Polygon polygon;
 
     public static TerrainTileBody of(TilePos pos,
                                      Float tileWidth,
@@ -27,15 +29,13 @@ public class TerrainTileBody {
         return body;
     }
 
-    Body b2Body;
-    Polygon polygon;
-
     public void init(PhysicsWorld world) {
         b2Body = B2BodyFactory.createTerrainTileB2body(world, this);
 
-        polygon = Polygon.of(new float[]{pos.x() * tileWidth, pos.y() * tileWidth, pos.x() * tileWidth + tileWidth,
-                pos.y() * tileHeight,
-                pos.x() * tileWidth + tileWidth, pos.y() * tileHeight + tileHeight, pos.x() * tileWidth,
-                pos.y() * tileHeight + tileHeight});
+        polygon = new com.badlogic.gdx.math.Polygon(
+                new float[]{pos.x() * tileWidth, pos.y() * tileWidth, pos.x() * tileWidth + tileWidth,
+                        pos.y() * tileHeight,
+                        pos.x() * tileWidth + tileWidth, pos.y() * tileHeight + tileHeight, pos.x() * tileWidth,
+                        pos.y() * tileHeight + tileHeight});
     }
 }

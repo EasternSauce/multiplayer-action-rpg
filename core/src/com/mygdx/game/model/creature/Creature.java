@@ -1,5 +1,7 @@
 package com.mygdx.game.model.creature;
 
+import com.mygdx.game.model.GameState;
+import com.mygdx.game.physics.GamePhysics;
 import com.mygdx.game.util.Vector2;
 import com.mygdx.game.util.WorldDirection;
 
@@ -9,12 +11,12 @@ public abstract class Creature {
 
     public abstract Creature params(CreatureParams params);
 
-    public void update(float delta) {
-        System.out.println(params().pos());
+    public void update(float delta, GameState gameState, GamePhysics physics) {
         if (!params().reachedTargetPos()) {
             moveTowardsTarget();
         }
 
+        updateAutomaticControls(gameState, physics); // TODO: move this to playscreen?
         updateTimers(delta);
 
     }
@@ -59,7 +61,7 @@ public abstract class Creature {
 
     public void updateTimers(float delta) {
         params().animationTimer().update(delta);
-
+        params().pathCalculationCooldownTimer().update(delta);
         // add other timers here...
     }
 
@@ -78,6 +80,18 @@ public abstract class Creature {
         } else {
             return WorldDirection.RIGHT;
         }
+
+    }
+
+    public Integer capability() {
+        Float width = params().animationConfig().spriteWidth();
+        if (width >= 0 && width < 2) return 1;
+        else if (width >= 2 && width <= 4) return 2;
+        else if (width >= 4 && width <= 6) return 3;
+        return 4;
+    }
+
+    public void updateAutomaticControls(GameState gameState, GamePhysics physics) {
 
     }
 }

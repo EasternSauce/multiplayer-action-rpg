@@ -12,24 +12,6 @@ import java.util.Map;
 @AllArgsConstructor(staticName = "of")
 @Data
 public class CreatureAnimationConfig {
-    String textureName;
-
-    Integer neutralStanceFrame;
-
-    Integer spriteWidth;
-
-    Integer spriteHeight;
-
-    Integer textureWidth;
-
-    Integer textureHeight;
-
-    Integer frameCount;
-
-    Float frameDuration;
-
-    Map<WorldDirection, Integer> dirMap;
-
     public static Map<String, CreatureAnimationConfig> configs = new HashMap<>();
 
     static {
@@ -38,14 +20,24 @@ public class CreatureAnimationConfig {
         male1DirMap.put(WorldDirection.DOWN, 0);
         male1DirMap.put(WorldDirection.LEFT, 1);
         male1DirMap.put(WorldDirection.RIGHT, 2);
-        configs.put("male1", CreatureAnimationConfig.of("male1", 1, 2, 2, 32, 32, 3, 0.1f, male1DirMap));
+        configs.put("male1", CreatureAnimationConfig.of("male1", 1, 2f, 2f, 32, 32, 3, 0.1f, male1DirMap));
         Map<WorldDirection, Integer> skeletonDirMap = new HashMap<>();
         skeletonDirMap.put(WorldDirection.UP, 0);
         skeletonDirMap.put(WorldDirection.DOWN, 2);
         skeletonDirMap.put(WorldDirection.LEFT, 1);
         skeletonDirMap.put(WorldDirection.RIGHT, 3);
-        configs.put("skeleton", CreatureAnimationConfig.of("skeleton", 0, 2, 2, 64, 64, 9, 0.05f, skeletonDirMap));
+        configs.put("skeleton", CreatureAnimationConfig.of("skeleton", 0, 2f, 2f, 64, 64, 9, 0.05f, skeletonDirMap));
 
     }
+
+    String textureName;
+    Integer neutralStanceFrame;
+    Float spriteWidth;
+    Float spriteHeight;
+    Integer textureWidth;
+    Integer textureHeight;
+    Integer frameCount;
+    Float frameDuration;
+    Map<WorldDirection, Integer> dirMap;
 }
 

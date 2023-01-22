@@ -7,6 +7,8 @@ import com.mygdx.game.util.Vector2;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @NoArgsConstructor(staticName = "of")
 @Data
 public class CreatureParams {
@@ -29,6 +31,18 @@ public class CreatureParams {
     Boolean isMoving = false;
 
     Float speed = 10f;
+
+    CreatureId targetCreatureId = null;
+
+    Boolean forcePathCalculation = false;
+    SimpleTimer pathCalculationCooldownTimer = SimpleTimer.of();
+
+    List<Vector2> pathTowardsTarget = null;
+
+    Float life = 100f;
+    Float maxLife = 100f;
+    Float stamina = 100f;
+    Float maxStamina = 100f;
 
     public static CreatureParams of(CreatureId creatureId, AreaId areaId, Vector2 pos, String textureName) {
         CreatureParams params = CreatureParams.of();

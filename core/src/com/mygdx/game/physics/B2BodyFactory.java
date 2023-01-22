@@ -8,6 +8,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+interface BodyShape {
+    Shape b2Shape();
+}
+
 public class B2BodyFactory {
     public static Body createB2Body(PhysicsWorld world, Vector2 pos, BodyType bodyType, Object userData,
                                     BodyShape shape,
@@ -54,10 +58,6 @@ public class B2BodyFactory {
         return createB2Body(world, creature.params().pos(), BodyType.DynamicBody, creatureBody,
                 Circle.of(creature.params().animationConfig().spriteWidth() / 2f), false, false, 10f, 1000f);
     }
-}
-
-interface BodyShape {
-    Shape b2Shape();
 }
 
 @NoArgsConstructor(staticName = "of")

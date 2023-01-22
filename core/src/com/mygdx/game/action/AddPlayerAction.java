@@ -25,9 +25,12 @@ public class AddPlayerAction implements GameStateAction {
 
         Creature player = Player.of(CreatureParams.of(playerId, gameState.defaultAreaId(), pos, textureName));
 
-        gameState.creatures().put(playerId, player);
+        synchronized (game.lock) {
+            gameState.creatures().put(playerId, player);
 
-        game.createCreatureBodyAndAnimation(playerId);
+            game.createCreatureBodyAndAnimation(playerId);
+        }
+
 
     }
 }

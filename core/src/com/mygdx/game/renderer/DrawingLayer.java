@@ -19,11 +19,8 @@ import space.earlygrey.shapedrawer.ShapeDrawer;
 public class DrawingLayer {
 
     final SpriteBatch spriteBatch = new SpriteBatch();
-
-    final ShapeDrawer shapeDrawer = new ShapeDrawer(spriteBatch, createTextureAndRegion());
-
-
     Texture texture;
+    final ShapeDrawer shapeDrawer = new ShapeDrawer(spriteBatch, createTextureAndRegion());
 
     public void begin() {
         spriteBatch.begin();

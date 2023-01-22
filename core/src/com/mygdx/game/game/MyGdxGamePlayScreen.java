@@ -5,7 +5,6 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -36,8 +35,9 @@ public class MyGdxGamePlayScreen implements Screen {
 
     //    Box2DDebugRenderer debugRenderer;
 
-    protected Texture img;
     Map<AreaId, TiledMap> maps;
+
+    private boolean debug = false;
 
     public void init(MyGdxGame game) {
         this.game = game;
@@ -77,8 +77,6 @@ public class MyGdxGamePlayScreen implements Screen {
         game.renderer().atlas(new TextureAtlas("assets/atlas/packed_atlas.atlas"));
 
         game.physics().init(maps, game.gameState());
-
-        img = new Texture("badlogic.jpg");
 
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
@@ -143,7 +141,11 @@ public class MyGdxGamePlayScreen implements Screen {
 
         //update gamestate
 
-        game.gameState().creatures().forEach((creatureId, creature) -> creature.update(delta));
+// TODO URGENT: concurrent modification exception - were editing state while it is iterated?!
+        synchronized (game.lock) {
+            game.gameState().creatures()
+                    .forEach((creatureId, creature) -> creature.update(delta, game().gameState(), game().physics()));
+        }
 
         game.renderer().tiledMapRenderer().setView(game.renderer().worldCamera());
 
@@ -199,9 +201,11 @@ public class MyGdxGamePlayScreen implements Screen {
 
             game.renderer().worldDrawingLayer().spriteBatch().end();
 
-            game.physics().debugRenderer()
-                    .render(game.physics().physicsWorlds().get(game.gameState().currentAreaId()).b2world(),
-                            game.renderer().worldCamera().combined);
+            if (debug) {
+                game.physics().debugRenderer()
+                        .render(game.physics().physicsWorlds().get(game.gameState().currentAreaId()).b2world(),
+                                game.renderer().worldCamera().combined);
+            }
 
             game.renderer().hudDrawingLayer().spriteBatch().begin();
 

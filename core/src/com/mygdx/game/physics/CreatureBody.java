@@ -19,11 +19,24 @@ public class CreatureBody {
 
     PhysicsWorld world;
 
+    public static CreatureBody of(CreatureId creatureId) {
+        CreatureBody creatureBody = new CreatureBody();
+        creatureBody.creatureId = creatureId;
+        return creatureBody;
+    }
+
     public void init(GamePhysics gamePhysics, GameState gameState) { // TODO: get world by area id
         Creature creature = gameState.creatures().get(creatureId);
 
         world = gamePhysics.physicsWorlds().get(creature.params().areaId());
 
+        while (world.b2world().isLocked()) {
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
         b2Body = B2BodyFactory.createCreatureB2Body(world, this, creature);
 
         if (!creature.isAlive()) b2Body.getFixtureList().get(0).setSensor(true);
@@ -32,6 +45,8 @@ public class CreatureBody {
     }
 
     public void update(GameState gameState) {
+        if (!gameState.creatures().containsKey(creatureId)) return;
+
         Creature creature = gameState.creatures().get(creatureId);
 
         float v = creature.params().speed();
@@ -70,12 +85,6 @@ public class CreatureBody {
 
     public void onRemove() {
         world.b2world().destroyBody(b2Body);
-    }
-
-    public static CreatureBody of(CreatureId creatureId) {
-        CreatureBody creatureBody = new CreatureBody();
-        creatureBody.creatureId = creatureId;
-        return creatureBody;
     }
 
 

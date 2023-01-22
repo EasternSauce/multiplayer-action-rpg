@@ -21,6 +21,16 @@ public class Vector2 {
         return (float) Math.sqrt(x * x + y * y);
     }
 
+    public Float distance(Vector2 v) {
+        final float x_d = v.x - x;
+        final float y_d = v.y - y;
+        return (float) Math.sqrt(x_d * x_d + y_d * y_d);
+    }
+
+    public Vector2 vectorTowards(Vector2 point) {
+        return Vector2.of(point.x() - x, point.y() - y).normalized();
+    }
+
     public Vector2 normalized() {
         float len = len();
         Vector2 newVector = Vector2.of(x, y);
