@@ -30,13 +30,13 @@ public class CreatureBody {
 
         world = gamePhysics.physicsWorlds().get(creature.params().areaId());
 
-        while (world.b2world().isLocked()) {
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
+//        while (world.b2world().isLocked()) {
+//            try {
+//                Thread.sleep(10);
+//            } catch (InterruptedException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
         b2Body = B2BodyFactory.createCreatureB2Body(world, this, creature);
 
         if (!creature.isAlive()) b2Body.getFixtureList().get(0).setSensor(true);
@@ -72,16 +72,17 @@ public class CreatureBody {
         b2Body.setLinearVelocity(new com.badlogic.gdx.math.Vector2(velocity.x(), velocity.y()));
     }
 
-    public Vector2 setTransform() {
+    public Vector2 getBodyPos() {
         return Vector2.of(b2Body.getWorldCenter().x, b2Body.getWorldCenter().y);
     }
 
-    public void setTransform(Vector2 vector) {
+    public void trySetTransform(Vector2 vector) {
         if (!world.b2world().isLocked()) {
             b2Body.setTransform(vector.x(), vector.y(), b2Body.getAngle());
         }
 
     }
+
 
     public void onRemove() {
         world.b2world().destroyBody(b2Body);

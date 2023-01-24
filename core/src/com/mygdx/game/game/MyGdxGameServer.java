@@ -20,7 +20,7 @@ import java.util.*;
 public class MyGdxGameServer extends MyGdxGame {
     private static MyGdxGameServer instance;
 
-    final Server _endPoint = new Server(163840, 20480);
+    final Server _endPoint = new Server(1638400, 204800);
     private final List<GameStateAction> tickActions = new ArrayList<>();
     private final Map<Integer, CreatureId> connections = new HashMap<>();
     Thread broadcastThread;
@@ -48,7 +48,7 @@ public class MyGdxGameServer extends MyGdxGame {
             tickActionsCopy.forEach(
                     gameStateAction -> gameStateAction.applyToGame(this));
 
-            endPoint().sendToAllTCP(ActionsWrapper.of(tickActionsCopy));
+            endPoint().sendToAllTCP(ActionsHolder.of(tickActionsCopy));
 
             tickActions.clear();
         }
@@ -177,11 +177,13 @@ public class MyGdxGameServer extends MyGdxGame {
     }
 
     public void spawnEnemy(Vector2 pos) {
-        CreatureId enemyId = CreatureId.of("Enemy_" + Math.abs(rand.nextInt()));
-        System.out.println("2!");
+        CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 100000));
         gameState().creatures().put(enemyId,
                 Enemy.of(CreatureParams.of(enemyId, gameState().defaultAreaId(), pos, "skeleton").speed(5f)));
-        createCreatureBodyAndAnimation(enemyId);
+        synchronized (creaturesToBeCreated()) {
+            creaturesToBeCreated().add(enemyId);
+
+        }
         endPoint().sendToAllTCP(SpawnEnemyCommand.of(enemyId, "skeleton", pos));
     }
 

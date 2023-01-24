@@ -21,6 +21,18 @@ public class CreatureAnimationConfig {
         male1DirMap.put(WorldDirection.LEFT, 1);
         male1DirMap.put(WorldDirection.RIGHT, 2);
         configs.put("male1", CreatureAnimationConfig.of("male1", 1, 2f, 2f, 32, 32, 3, 0.1f, male1DirMap));
+        Map<WorldDirection, Integer> male2DirMap = new HashMap<>();
+        male2DirMap.put(WorldDirection.UP, 3);
+        male2DirMap.put(WorldDirection.DOWN, 0);
+        male2DirMap.put(WorldDirection.LEFT, 1);
+        male2DirMap.put(WorldDirection.RIGHT, 2);
+        configs.put("male2", CreatureAnimationConfig.of("male2", 1, 2f, 2f, 32, 32, 3, 0.1f, male2DirMap));
+        Map<WorldDirection, Integer> female1DirMap = new HashMap<>();
+        female1DirMap.put(WorldDirection.UP, 3);
+        female1DirMap.put(WorldDirection.DOWN, 0);
+        female1DirMap.put(WorldDirection.LEFT, 1);
+        female1DirMap.put(WorldDirection.RIGHT, 2);
+        configs.put("female1", CreatureAnimationConfig.of("female1", 1, 2f, 2f, 32, 32, 3, 0.1f, female1DirMap));
         Map<WorldDirection, Integer> skeletonDirMap = new HashMap<>();
         skeletonDirMap.put(WorldDirection.UP, 0);
         skeletonDirMap.put(WorldDirection.DOWN, 2);

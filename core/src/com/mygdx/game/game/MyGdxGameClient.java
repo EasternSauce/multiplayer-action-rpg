@@ -7,7 +7,7 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.mygdx.game.Constants;
-import com.mygdx.game.action.ActionsWrapper;
+import com.mygdx.game.action.ActionsHolder;
 import com.mygdx.game.action.GameStateAction;
 import com.mygdx.game.command.InitPlayerCommand;
 import com.mygdx.game.command.MouseMovementCommand;
@@ -31,7 +31,7 @@ public class MyGdxGameClient extends MyGdxGame {
     private MyGdxGameClient() {
         _endPoint.getKryo().setRegistrationRequired(false);
 
-        thisPlayerId = CreatureId.of("Player_" + Math.abs(rand.nextInt()));
+        thisPlayerId = CreatureId.of("Player_" + (int) (Math.random() * 100000));
     }
 
     public static MyGdxGameClient getInstance() {
@@ -66,6 +66,18 @@ public class MyGdxGameClient extends MyGdxGame {
                 }
             }
         }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE)) {
+            if (chat.isTyping()) {
+                System.out.println("is typing...");
+                System.out.println("curr message = " + chat.currentMessage());
+                System.out.println("length = " + chat.currentMessage().length());
+                System.out.println("is empty = " + chat.currentMessage().isEmpty());
+                if (!chat.currentMessage().isEmpty()) {
+                    System.out.println("removing...");
+                    chat.currentMessage(chat.currentMessage().substring(0, chat.currentMessage().length() - 1));
+                }
+            }
+        }
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
             Vector2 mousePos = mousePosRelativeToCenter();
 
@@ -90,10 +102,10 @@ public class MyGdxGameClient extends MyGdxGame {
         endPoint().addListener(new Listener() {
             @Override
             public void received(Connection connection, Object object) {
-                if (object instanceof ActionsWrapper) {
-                    ActionsWrapper actionsWrapper = (ActionsWrapper) object;
+                if (object instanceof ActionsHolder) {
+                    ActionsHolder actionsHolder = (ActionsHolder) object;
 
-                    List<GameStateAction> actions = actionsWrapper.actions();
+                    List<GameStateAction> actions = actionsHolder.actions();
 
 
                     actions.forEach(gameStateAction -> gameStateAction.applyToGame(MyGdxGameClient.this));
@@ -106,11 +118,8 @@ public class MyGdxGameClient extends MyGdxGame {
 
                     if (action.initial()) {
 
-
-                        synchronized (lock) {
-                            gameState().creatures().forEach((creatureId, creature) -> {
-                                createCreatureBodyAndAnimation(creatureId);
-                            });
+                        synchronized (creaturesToBeCreated()) {
+                            gameState().creatures().forEach((creatureId, creature) -> creaturesToBeCreated().add(creatureId));
                         }
 
                         isInitialized = true;
@@ -137,10 +146,13 @@ public class MyGdxGameClient extends MyGdxGame {
             }
         });
 
+        String[] textures = new String[]{"male1", "male2", "female1"};
+
         endPoint().sendTCP(
-                InitPlayerCommand.of(thisPlayerId, /*Math.abs(rand.nextInt()) % 5, Math.abs(rand.nextInt()) % 5*/15, 10,
-                        "male1")
-        );
+                InitPlayerCommand.of(thisPlayerId, (float) ((Math.random() * (28 - 18)) + 18),
+                        (float) ((Math.random() * (12 - 6)) + 6),
+                        textures[((int) (Math.random() * 100) % 3)]
+                ));
 
     }
 

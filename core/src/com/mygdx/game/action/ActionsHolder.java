@@ -9,6 +9,6 @@ import java.util.List;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-public class ActionsWrapper {
+public class ActionsHolder {
     List<GameStateAction> actions;
 }

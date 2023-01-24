@@ -81,7 +81,8 @@ public class MyGdxGamePlayScreen implements Screen {
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean keyTyped(char character) {
-                if (game.chat.isTyping() && character != '\n') {
+                if (game.chat.isTyping() && character != '\b' &&
+                        (character == ' ' || !(Character.isWhitespace(character)))) {
                     game.chat.currentMessage(game.chat.currentMessage() + character);
                 }
 
@@ -113,10 +114,19 @@ public class MyGdxGamePlayScreen implements Screen {
 
             game.gameState().creatures().forEach((creatureId, creature) ->
             {
-                if (game.physics().creatureBodies().containsKey(creatureId)) {
-                    game.physics().creatureBodies().get(creatureId).setTransform(creature.params().pos());
+                if (game.physics().creatureBodies().containsKey(creatureId) &&
+                        game.physics().creatureBodies().get(creatureId)
+                                .getBodyPos().distance(creature.params().pos()) >
+                                0.05f // only setTransform if positions are far apart
+                ) {
+                    game.physics().creatureBodies().get(creatureId).trySetTransform(creature.params().pos());
                 }
             });
+        }
+
+        synchronized (game.creaturesToBeCreated()) {
+            game.creaturesToBeCreated().forEach(creatureId -> game.createCreatureBodyAndAnimation(creatureId));
+            game.creaturesToBeCreated().clear();
         }
 
         game.onUpdate();
@@ -130,7 +140,7 @@ public class MyGdxGamePlayScreen implements Screen {
         game.gameState().creatures().forEach(
                 (creatureId, creature) -> {
                     if (game.physics().creatureBodies().containsKey(creatureId)) {
-                        creature.params().pos(game.physics().creatureBodies().get(creatureId).setTransform());
+                        creature.params().pos(game.physics().creatureBodies().get(creatureId).getBodyPos());
                     }
 
                 });
@@ -141,8 +151,7 @@ public class MyGdxGamePlayScreen implements Screen {
 
         //update gamestate
 
-// TODO URGENT: concurrent modification exception - were editing state while it is iterated?!
-        synchronized (game.lock) {
+        synchronized (game.creaturesLock) {
             game.gameState().creatures()
                     .forEach((creatureId, creature) -> creature.update(delta, game().gameState(), game().physics()));
         }
@@ -219,6 +228,10 @@ public class MyGdxGamePlayScreen implements Screen {
             Assets.drawFont(game.renderer().hudDrawingLayer(),
                     (game.chat.isTyping() ? "> " : "") + game.chat.currentMessage(), Vector2.of(30, 30), Color.PURPLE);
 
+
+            float fps = Gdx.graphics.getFramesPerSecond();
+            Assets.drawFont(game.renderer().hudDrawingLayer(), fps + " fps", Vector2.of(3, Constants.WindowHeight - 3),
+                    Color.WHITE);
 
             game.renderer().hudDrawingLayer().spriteBatch().end();
 

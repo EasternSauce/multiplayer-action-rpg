@@ -12,11 +12,11 @@ import com.mygdx.game.renderer.GameRenderer;
 import com.mygdx.game.util.GameStateHolder;
 
 import java.io.IOException;
-import java.util.Random;
+import java.util.LinkedList;
+import java.util.List;
 
 public abstract class MyGdxGame extends Game {
-    public final Random rand = new Random();
-    public final Object lock = new Object();
+    public final Object creaturesLock = new Object();
     final protected GameRenderer gameRenderer = GameRenderer.of();
     final protected GamePhysics gamePhysics = GamePhysics.of();
     final protected GameStateHolder gameStateHolder = GameStateHolder.of(GameState.of());
@@ -25,6 +25,12 @@ public abstract class MyGdxGame extends Game {
 
     public Chat chat = Chat.of();
     protected CreatureId thisPlayerId = null;
+
+    final List<CreatureId> creaturesToBeCreated = new LinkedList<>();
+
+    public List<CreatureId> creaturesToBeCreated() {
+        return creaturesToBeCreated;
+    }
 
     public GameRenderer renderer() {
         return gameRenderer;
