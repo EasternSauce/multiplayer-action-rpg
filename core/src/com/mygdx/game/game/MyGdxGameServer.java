@@ -5,9 +5,10 @@ import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.mygdx.game.action.*;
 import com.mygdx.game.command.InitPlayerCommand;
-import com.mygdx.game.command.MouseMovementCommand;
+import com.mygdx.game.command.PlayerMovementCommand;
 import com.mygdx.game.command.SendChatMessageCommand;
-import com.mygdx.game.command.SpawnEnemyCommand;
+import com.mygdx.game.command.SpawnAbilityCommand;
+import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.creature.CreatureParams;
 import com.mygdx.game.model.creature.Enemy;
@@ -71,8 +72,8 @@ public class MyGdxGameServer extends MyGdxGame {
             @Override
             public void received(Connection connection, Object object) {
                 synchronized (tickActions) {
-                    if (object instanceof MouseMovementCommand) {
-                        MouseMovementCommand command = (MouseMovementCommand) object;
+                    if (object instanceof PlayerMovementCommand) {
+                        PlayerMovementCommand command = (PlayerMovementCommand) object;
                         MoveTowardsTargetAction move =
                                 MoveTowardsTargetAction.of(command.playerId(), command.mousePos());
                         tickActions.add(move);
@@ -90,7 +91,17 @@ public class MyGdxGameServer extends MyGdxGame {
                     } else if (object instanceof SendChatMessageCommand) {
                         SendChatMessageCommand command = (SendChatMessageCommand) object;
 
-                        endPoint().sendToAllTCP(SendChatMessageCommand.of(command.poster(), command.text()));
+                        endPoint().sendToAllTCP(command);
+                    } else if (object instanceof SpawnAbilityCommand) {
+                        SpawnAbilityCommand command = (SpawnAbilityCommand) object;
+
+                        AddAbilityAction action =
+                                AddAbilityAction.of(command.abilityId(), command.creatureId(), command.pos(),
+                                        command.abilityType());
+
+                        tickActions.add(action);
+
+                        endPoint().sendToAllTCP(command);
                     }
                 }
             }
@@ -122,6 +133,8 @@ public class MyGdxGameServer extends MyGdxGame {
 
     @Override
     public void initState() {
+        AreaId areaId = gameState().defaultAreaId();
+
         List<Vector2> spawnPositions = Arrays.asList(
                 Vector2.of(46.081165f, 15.265114f),
                 Vector2.of(72.060196f, 31.417873f),
@@ -173,18 +186,18 @@ public class MyGdxGameServer extends MyGdxGame {
 
         );
 
-        spawnPositions.forEach(this::spawnEnemy);
+        spawnPositions.forEach(pos -> spawnEnemy(areaId, pos));
     }
 
-    public void spawnEnemy(Vector2 pos) {
+    public void spawnEnemy(AreaId areaId, Vector2 pos) {
         CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 100000));
         gameState().creatures().put(enemyId,
-                Enemy.of(CreatureParams.of(enemyId, gameState().defaultAreaId(), pos, "skeleton").speed(5f)));
+                Enemy.of(CreatureParams.of(enemyId, areaId, pos, "skeleton").speed(5f)));
         synchronized (creaturesToBeCreated()) {
             creaturesToBeCreated().add(enemyId);
 
         }
-        endPoint().sendToAllTCP(SpawnEnemyCommand.of(enemyId, "skeleton", pos));
+        //endPoint().sendToAllTCP(SpawnEnemyCommand.of(enemyId, areaId, "skeleton", pos));
     }
 
     @Override

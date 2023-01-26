@@ -4,11 +4,13 @@ import com.mygdx.game.model.GameState;
 import com.mygdx.game.physics.GamePhysics;
 import com.mygdx.game.renderer.AbilityAnimationConfig;
 import com.mygdx.game.util.Vector2;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-public abstract class Ability {
-    public abstract AbilityParams params();
-
-    public abstract Ability params(AbilityParams params);
+@NoArgsConstructor(staticName = "of")
+@Data
+public class Ability {
+    AbilityParams params;
 
     public void update(Float delta, GameState gameState, GamePhysics physics) {
         AbilityState state = params().state();
@@ -31,6 +33,12 @@ public abstract class Ability {
         }
 
         updateTimers(delta);
+    }
+
+    public static Ability of(AbilityParams params) {
+        Ability ability = Ability.of();
+        ability.params = params;
+        return ability;
     }
 
     private void onChannelUpdate() {

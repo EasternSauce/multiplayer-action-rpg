@@ -7,11 +7,16 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.mygdx.game.Constants;
+import com.mygdx.game.ability.Ability;
+import com.mygdx.game.ability.AbilityId;
+import com.mygdx.game.ability.AbilityParams;
 import com.mygdx.game.action.ActionsHolder;
 import com.mygdx.game.action.GameStateAction;
 import com.mygdx.game.command.InitPlayerCommand;
-import com.mygdx.game.command.MouseMovementCommand;
+import com.mygdx.game.command.PlayerMovementCommand;
 import com.mygdx.game.command.SendChatMessageCommand;
+import com.mygdx.game.command.SpawnAbilityCommand;
+import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.util.GameStateHolder;
 import com.mygdx.game.util.Vector2;
@@ -68,12 +73,7 @@ public class MyGdxGameClient extends MyGdxGame {
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE)) {
             if (chat.isTyping()) {
-                System.out.println("is typing...");
-                System.out.println("curr message = " + chat.currentMessage());
-                System.out.println("length = " + chat.currentMessage().length());
-                System.out.println("is empty = " + chat.currentMessage().isEmpty());
                 if (!chat.currentMessage().isEmpty()) {
-                    System.out.println("removing...");
                     chat.currentMessage(chat.currentMessage().substring(0, chat.currentMessage().length() - 1));
                 }
             }
@@ -81,7 +81,7 @@ public class MyGdxGameClient extends MyGdxGame {
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
             Vector2 mousePos = mousePosRelativeToCenter();
 
-            endPoint().sendTCP(MouseMovementCommand.of(thisPlayerId, mousePos));
+            endPoint().sendTCP(PlayerMovementCommand.of(thisPlayerId, mousePos));
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.N)) {
 
@@ -90,6 +90,13 @@ public class MyGdxGameClient extends MyGdxGame {
                             Collectors.toList()).get(0);
             Vector2 pos = gameState().creatures().get(zzz).params().pos();
             System.out.println("Vector2.of(" + pos.x() + "f, " + pos.y() + "f),");
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.B)) {
+            AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 100000));
+
+            Vector2 pos = gameState().creatures().get(thisPlayerId).params().pos();
+
+            endPoint().sendTCP(SpawnAbilityCommand.of(abilityId, AreaId.of("area1"), thisPlayerId, "slash", pos));
         }
     }
 
@@ -135,6 +142,24 @@ public class MyGdxGameClient extends MyGdxGame {
                     if (!Objects.equals(action.poster(), thisPlayerId.value())) {
                         chat.sendMessage(gameState(), action.poster(), action.text());
                     }
+
+                } else if (object instanceof SpawnAbilityCommand) {
+                    SpawnAbilityCommand command = (SpawnAbilityCommand) object;
+
+                    Ability ability = Ability.of(
+                            AbilityParams.of(command.abilityId(), gameState().defaultAreaId(), command.pos(), 2f, 2f,
+                                    command.abilityType()));
+                    ability.start(Vector2.of(0, 0));
+
+                    synchronized (lock) {
+                        gameState().abilities().put(command.abilityId(), ability);
+
+                    }
+
+                    synchronized (abilitiesToBeCreated()) {
+                        abilitiesToBeCreated().add(command.abilityId());
+                    }
+
 
                 }
 

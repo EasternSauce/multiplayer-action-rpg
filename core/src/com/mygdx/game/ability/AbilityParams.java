@@ -14,6 +14,8 @@ public class AbilityParams {
     AreaId areaId;
     AbilityState state = AbilityState.INACTIVE;
     Vector2 pos;
+    Float width;
+    Float height;
     CreatureId creatureId;
     SimpleTimer stateTimer = SimpleTimer.of(Float.MAX_VALUE, false);
     Vector2 dirVector;
@@ -25,11 +27,14 @@ public class AbilityParams {
     Boolean isChannelAnimationLooping = false;
     Boolean isActiveAnimationLooping = false;
 
-    public static AbilityParams of(AbilityId abilityId, AreaId areaId, Vector2 pos, String abilityType) {
+    public static AbilityParams of(AbilityId abilityId, AreaId areaId, Vector2 pos, Float width, Float height,
+                                   String abilityType) {
         AbilityParams params = AbilityParams.of();
         params.id = abilityId;
         params.areaId = areaId;
         params.pos = pos;
+        params.width = width;
+        params.height = height;
         params.abilityType = abilityType;
 
         return params;

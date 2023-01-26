@@ -78,7 +78,7 @@ public class AbilityAnimation {
         AbilityAnimationConfig config = ability.animationConfig();
 
         sprite.setRegion(texture);
-        sprite.setSize(config.textureWidth(), config.textureHeight());
+        sprite.setSize(ability.params().width(), ability.params().height());
         sprite.setCenter(ability.params().pos().x(), ability.params().pos().y());
         sprite.setOriginCenter();
         sprite.setRotation(ability.params().rotationAngle());

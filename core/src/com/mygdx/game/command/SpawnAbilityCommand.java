@@ -1,5 +1,7 @@
 package com.mygdx.game.command;
 
+import com.mygdx.game.ability.AbilityId;
+import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.util.Vector2;
 import lombok.AllArgsConstructor;
@@ -9,7 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-public class MouseMovementCommand implements GameCommand {
-    CreatureId playerId;
-    Vector2 mousePos;
+public class SpawnAbilityCommand implements GameCommand {
+    AbilityId abilityId;
+    AreaId areaId;
+    CreatureId creatureId;
+    String abilityType;
+    Vector2 pos;
 }
