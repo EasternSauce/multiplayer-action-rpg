@@ -12,6 +12,15 @@ import java.util.Map;
 @AllArgsConstructor(staticName = "of")
 @Data
 public class CreatureAnimationConfig {
+    String textureName;
+    Integer neutralStanceFrame;
+    Float spriteWidth;
+    Float spriteHeight;
+    Integer textureWidth;
+    Integer textureHeight;
+    Integer frameCount;
+    Float frameDuration;
+    Map<WorldDirection, Integer> dirMap;
     public static Map<String, CreatureAnimationConfig> configs = new HashMap<>();
 
     static {
@@ -42,14 +51,6 @@ public class CreatureAnimationConfig {
 
     }
 
-    String textureName;
-    Integer neutralStanceFrame;
-    Float spriteWidth;
-    Float spriteHeight;
-    Integer textureWidth;
-    Integer textureHeight;
-    Integer frameCount;
-    Float frameDuration;
-    Map<WorldDirection, Integer> dirMap;
+
 }
 

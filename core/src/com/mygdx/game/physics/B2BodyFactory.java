@@ -56,7 +56,7 @@ public class B2BodyFactory {
 
     public static Body createCreatureB2Body(PhysicsWorld world, CreatureBody creatureBody, Creature creature) {
         return createB2Body(world, creature.params().pos(), BodyType.DynamicBody, creatureBody,
-                Circle.of(creature.params().animationConfig().spriteWidth() / 2f), false, false, 10f, 1000f);
+                Circle.of(creature.animationConfig().spriteWidth() / 2f), false, false, 10f, 1000f);
     }
 }
 

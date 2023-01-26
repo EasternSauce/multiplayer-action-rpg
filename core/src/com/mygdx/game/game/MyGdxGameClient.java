@@ -119,7 +119,8 @@ public class MyGdxGameClient extends MyGdxGame {
                     if (action.initial()) {
 
                         synchronized (creaturesToBeCreated()) {
-                            gameState().creatures().forEach((creatureId, creature) -> creaturesToBeCreated().add(creatureId));
+                            gameState().creatures()
+                                    .forEach((creatureId, creature) -> creaturesToBeCreated().add(creatureId));
                         }
 
                         isInitialized = true;

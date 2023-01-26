@@ -1,5 +1,7 @@
 package com.mygdx.game.model;
 
+import com.mygdx.game.ability.Ability;
+import com.mygdx.game.ability.AbilityId;
 import com.mygdx.game.model.area.Area;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
@@ -18,6 +20,8 @@ import java.util.Map;
 public class GameState {
 
     Map<CreatureId, Creature> creatures = new HashMap<>();
+    Map<AbilityId, Ability> abilities = new HashMap<>();
+
 
     Map<AreaId, Area> areas = new HashMap<>();
     AreaId currentAreaId = AreaId.of("area1");

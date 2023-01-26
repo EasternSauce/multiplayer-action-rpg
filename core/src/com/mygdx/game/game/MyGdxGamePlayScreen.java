@@ -129,6 +129,11 @@ public class MyGdxGamePlayScreen implements Screen {
             game.creaturesToBeCreated().clear();
         }
 
+        synchronized (game.abilitiesToBeCreated()) {
+            game.abilitiesToBeCreated().forEach(abilityId -> game.createAbilityBodyAndAnimation(abilityId));
+            game.abilitiesToBeCreated().clear();
+        }
+
         game.onUpdate();
 
         game.gameState().generalTimer().update(delta);
@@ -148,12 +153,19 @@ public class MyGdxGamePlayScreen implements Screen {
         game.renderer().creatureAnimations()
                 .forEach((creatureId, creatureAnimation) -> creatureAnimation.update(game.gameState()));
 
+        game.renderer().abilityAnimations()
+                .forEach((creatureId, creatureAnimation) -> creatureAnimation.update(game.gameState()));
+
 
         //update gamestate
 
-        synchronized (game.creaturesLock) {
+        synchronized (game.lock) {
             game.gameState().creatures()
                     .forEach((creatureId, creature) -> creature.update(delta, game().gameState(), game().physics()));
+
+            game.gameState().abilities()
+                    .forEach((abilityId, ability) -> ability.update(delta, game().gameState(), game().physics()));
+
         }
 
         game.renderer().tiledMapRenderer().setView(game.renderer().worldCamera());
@@ -196,6 +208,10 @@ public class MyGdxGamePlayScreen implements Screen {
             game.renderer().creatureAnimations()
                     .forEach((creatureId, creatureAnimation) -> creatureAnimation.render(
                             game.renderer().worldDrawingLayer()));
+
+            game.renderer().abilityAnimations()
+                    .forEach((abilityId, abilityAnimation) -> abilityAnimation.render(
+                            game.renderer().worldDrawingLayer(), game.gameState()));
 
 //        renderer.creatureSprites().forEach((creatureId, sprite) -> {
 //            if (game.gameState.creatures().containsKey(creatureId)) {

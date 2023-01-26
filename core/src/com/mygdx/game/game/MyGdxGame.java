@@ -2,11 +2,13 @@ package com.mygdx.game.game;
 
 import com.badlogic.gdx.Game;
 import com.esotericsoftware.kryonet.EndPoint;
+import com.mygdx.game.ability.AbilityId;
 import com.mygdx.game.chat.Chat;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.physics.CreatureBody;
 import com.mygdx.game.physics.GamePhysics;
+import com.mygdx.game.renderer.AbilityAnimation;
 import com.mygdx.game.renderer.CreatureAnimation;
 import com.mygdx.game.renderer.GameRenderer;
 import com.mygdx.game.util.GameStateHolder;
@@ -16,7 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public abstract class MyGdxGame extends Game {
-    public final Object creaturesLock = new Object();
+    public final Object lock = new Object();
     final protected GameRenderer gameRenderer = GameRenderer.of();
     final protected GamePhysics gamePhysics = GamePhysics.of();
     final protected GameStateHolder gameStateHolder = GameStateHolder.of(GameState.of());
@@ -27,9 +29,14 @@ public abstract class MyGdxGame extends Game {
     protected CreatureId thisPlayerId = null;
 
     final List<CreatureId> creaturesToBeCreated = new LinkedList<>();
+    final List<AbilityId> abilitiesToBeCreated = new LinkedList<>();
 
     public List<CreatureId> creaturesToBeCreated() {
         return creaturesToBeCreated;
+    }
+
+    public List<AbilityId> abilitiesToBeCreated() {
+        return abilitiesToBeCreated;
     }
 
     public GameRenderer renderer() {
@@ -67,6 +74,15 @@ public abstract class MyGdxGame extends Game {
         gamePhysics.creatureBodies().put(creatureId, creatureBody);
     }
 
+    public void createAbilityBodyAndAnimation(AbilityId abilityId) {
+        AbilityAnimation abilityAnimation = AbilityAnimation.of(abilityId);
+        abilityAnimation.init(gameRenderer.atlas(), gameState());
+        gameRenderer.abilityAnimations().put(abilityId, abilityAnimation);
+//        AbilityBody abilityBody = AbilityBody.of(abilityId);
+//        abilityBody.init(gamePhysics, gameState());
+//        gamePhysics.abilityBodies().put(abilityId, abilityBody);
+    }
+
     abstract public void onUpdate();
 
     abstract public void establishConnection() throws IOException;
@@ -84,4 +100,5 @@ public abstract class MyGdxGame extends Game {
             physics().creatureBodies().remove(playerId);
         }
     }
+
 }

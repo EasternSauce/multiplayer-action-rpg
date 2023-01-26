@@ -2,6 +2,7 @@ package com.mygdx.game.model.creature;
 
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.physics.GamePhysics;
+import com.mygdx.game.renderer.CreatureAnimationConfig;
 import com.mygdx.game.util.Vector2;
 import com.mygdx.game.util.WorldDirection;
 
@@ -36,22 +37,7 @@ public abstract class Creature {
 
             Vector2 dirVector = vectorBetween.normalized();
 
-//            float newX = currentPos.x() + dirVector.x() * delta * params().speed();
-//            float newY = currentPos.y() + dirVector.y() * delta * params().speed();
-//
             params().movingVector(dirVector);
-
-//            if (dirVector.x() >= 0) {
-//                params().pos().x(Math.min(newX, targetPos.x()));
-//            } else {
-//                params().pos().x(Math.max(newX, targetPos.x()));
-//            }
-//
-//            if (dirVector.y() >= 0) {
-//                params().pos().y(Math.min(newY, targetPos.y()));
-//            } else {
-//                params().pos().y(Math.max(newY, targetPos.y()));
-//            }
 
             params().isMoving(true);
 
@@ -84,7 +70,7 @@ public abstract class Creature {
     }
 
     public Integer capability() {
-        Float width = params().animationConfig().spriteWidth();
+        Float width = animationConfig().spriteWidth();
         if (width >= 0 && width < 2) return 1;
         else if (width >= 2 && width <= 4) return 2;
         else if (width >= 4 && width <= 6) return 3;
@@ -93,5 +79,9 @@ public abstract class Creature {
 
     public void updateAutomaticControls(GameState gameState, GamePhysics physics) {
 
+    }
+
+    public CreatureAnimationConfig animationConfig() {
+        return CreatureAnimationConfig.configs.get(params().textureName());
     }
 }

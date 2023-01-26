@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @NoArgsConstructor(staticName = "of")
 @Data
@@ -21,9 +22,9 @@ public class CreatureAnimation {
 
     Sprite sprite;
 
-    ArrayList<TextureRegion> facingTextures;
+    List<TextureRegion> facingTextures;
 
-    ArrayList<Animation<TextureRegion>> runningAnimations;
+    List<Animation<TextureRegion>> runningAnimations;
 
     TextureRegion textureRegion;
 
@@ -44,7 +45,7 @@ public class CreatureAnimation {
 
         Creature creature = gameState.creatures().get(creatureId);
 
-        CreatureAnimationConfig animationConfig = creature.params().animationConfig();
+        CreatureAnimationConfig animationConfig = creature.animationConfig();
 
         textureRegion = atlas.findRegion(animationConfig.textureName());
 
@@ -77,14 +78,14 @@ public class CreatureAnimation {
     public TextureRegion runningAnimation(WorldDirection currentDirection, GameState gameState) {
         Creature creature = gameState.creatures().get(creatureId);
 
-        return runningAnimations.get(creature.params().animationConfig().dirMap().get(currentDirection))
+        return runningAnimations.get(creature.animationConfig().dirMap().get(currentDirection))
                 .getKeyFrame(creature.params().animationTimer().time(), true);
     }
 
     public TextureRegion pickFacingTexture(WorldDirection currentDirection, GameState gameState) {
         Creature creature = gameState.creatures().get(creatureId);
 
-        return facingTextures().get(creature.params().animationConfig().dirMap().get(currentDirection));
+        return facingTextures().get(creature.animationConfig().dirMap().get(currentDirection));
     }
 
     public void update(GameState gameState) {
@@ -93,8 +94,8 @@ public class CreatureAnimation {
         Creature creature = gameState.creatures().get(creatureId);
 
         sprite.setCenter(creature.params().pos().x(), creature.params().pos().y());
-        sprite.setSize(creature.params().animationConfig().spriteWidth(),
-                creature.params().animationConfig().spriteHeight());
+        sprite.setSize(creature.animationConfig().spriteWidth(),
+                creature.animationConfig().spriteHeight());
 
         if (creature.isAlive()) {
             TextureRegion texture;

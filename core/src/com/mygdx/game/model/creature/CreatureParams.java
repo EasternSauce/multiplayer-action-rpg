@@ -1,7 +1,6 @@
 package com.mygdx.game.model.creature;
 
 import com.mygdx.game.model.area.AreaId;
-import com.mygdx.game.renderer.CreatureAnimationConfig;
 import com.mygdx.game.util.SimpleTimer;
 import com.mygdx.game.util.Vector2;
 import lombok.Data;
@@ -12,13 +11,11 @@ import java.util.List;
 @NoArgsConstructor(staticName = "of")
 @Data
 public class CreatureParams {
-    CreatureId creatureId;
+    CreatureId id;
 
     AreaId areaId;
 
     Vector2 pos;
-
-    CreatureAnimationConfig animationConfig;
 
     SimpleTimer animationTimer = SimpleTimer.of(0, true);
 
@@ -44,13 +41,16 @@ public class CreatureParams {
     Float stamina = 100f;
     Float maxStamina = 100f;
 
+    String textureName;
+
     public static CreatureParams of(CreatureId creatureId, AreaId areaId, Vector2 pos, String textureName) {
         CreatureParams params = CreatureParams.of();
-        params.creatureId = creatureId;
+        params.id = creatureId;
         params.areaId = areaId;
         params.pos = pos;
-        params.animationConfig = CreatureAnimationConfig.configs.get(textureName);
+        params.textureName = textureName;
         return params;
     }
+
 
 }

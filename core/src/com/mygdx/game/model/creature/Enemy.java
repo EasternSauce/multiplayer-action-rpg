@@ -48,7 +48,7 @@ public class Enemy extends Creature {
 
         });
 
-        return result.params().creatureId();
+        return result.params().id();
 
     }
 
