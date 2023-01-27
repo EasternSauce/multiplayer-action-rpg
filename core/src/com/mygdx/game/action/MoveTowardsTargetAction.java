@@ -37,6 +37,11 @@ public class MoveTowardsTargetAction implements GameStateAction {
                             pos.y() + mousePos.y() * viewportRatioY / Constants.PPM))
                     .reachedTargetPos(false);
 
+
+            creature.params().previousPos(creature.params().pos());
+            creature.params().isStillMovingTimer().restart();
+
+
             creature.params().movementCommandsPerSecondLimitTimer().restart();
         }
 

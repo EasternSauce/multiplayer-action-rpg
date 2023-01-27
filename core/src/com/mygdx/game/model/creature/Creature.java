@@ -18,6 +18,14 @@ public abstract class Creature {
             moveTowardsTarget();
         }
 
+        if (params().isStillMovingTimer().time() > 0.02f) {
+            if (params().isMoving() && params().pos().distance(params().previousPos()) < 0.005f) {
+                stopMoving();
+            }
+            params().previousPos(params().pos());
+            params().isStillMovingTimer().restart();
+        }
+
         updateAutomaticControls(gameState, physics); // TODO: move this to playscreen?
         updateTimers(delta);
 
@@ -52,6 +60,7 @@ public abstract class Creature {
         params().pathCalculationCooldownTimer().update(delta);
         params().attackCommandsPerSecondLimitTimer().update(delta);
         params().movementCommandsPerSecondLimitTimer().update(delta);
+        params().isStillMovingTimer().update(delta);
         // add other timers here...
     }
 
