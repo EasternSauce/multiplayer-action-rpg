@@ -66,7 +66,7 @@ public class Astar {
 
     public static AstarState traverse(AstarState astarState, TilePos finishTilePos, PhysicsWorld world,
                                       Integer capability) {
-        if (!astarState.openSet().isEmpty() && !astarState.foundPath()) {
+        if (!astarState.gaveUp() && !astarState.openSet().isEmpty() && !astarState.foundPath()) {
             TilePos minimumTile = Collections.min(astarState.openSet(),
                     (o1, o2) -> {
                         if (Objects.equals(astarState.astarGraph().get(o1).f(), astarState.astarGraph().get(o2).f()))
@@ -78,7 +78,11 @@ public class Astar {
 
             AstarState resultingAstarState =
                     AstarState.of(astarState.astarGraph(), astarState.openSet(), astarState.closedSet(),
-                            astarState.finishPos(), astarState.foundPath());
+                            astarState.finishPos(), astarState.foundPath(), false);
+
+            if (astarState.closedSet().size() > 70) { // give up once you process enough tiles [PERFORMANCE SAVER]
+                resultingAstarState.gaveUp(true);
+            }
 
             if (currentNode.pos().equals(finishTilePos)) {
                 resultingAstarState.foundPath(true);
@@ -143,7 +147,7 @@ public class Astar {
 
             AstarState updatedAstarState =
                     AstarState.of(astarState.astarGraph(), astarState.openSet(), astarState.closedSet(),
-                            astarState.finishPos(), astarState.foundPath());
+                            astarState.finishPos(), astarState.foundPath(), astarState.gaveUp());
 
             Map<TilePos, AstarNode> updatedAstarGraph = new HashMap<>(astarState.astarGraph());
             updatedAstarGraph.put(neighborNode.pos(), updatedNode);
@@ -163,7 +167,7 @@ public class Astar {
 
             AstarState updatedAstarState =
                     AstarState.of(astarState.astarGraph(), astarState.openSet(), astarState.closedSet(),
-                            astarState.finishPos(), astarState.foundPath());
+                            astarState.finishPos(), astarState.foundPath(), astarState.gaveUp());
 
             Map<TilePos, AstarNode> updatedAstarGraph = new HashMap<>(astarState.astarGraph());
             updatedAstarGraph.put(neighborNode.pos(), updatedNode);
@@ -185,7 +189,7 @@ public class Astar {
 
         AstarState astarState =
                 AstarState.of(freshAstarGraph, new HashSet<>(Collections.singletonList(startTilePos)), new HashSet<>(),
-                        finishTilePos, false);
+                        finishTilePos, false, false);
 
         AstarState result = traverse(astarState, finishTilePos, world, capability);
 

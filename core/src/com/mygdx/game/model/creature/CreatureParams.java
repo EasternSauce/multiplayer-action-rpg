@@ -40,8 +40,12 @@ public class CreatureParams {
     Float maxLife = 100f;
     Float stamina = 100f;
     Float maxStamina = 100f;
+    Float armor = 0f;
 
     String textureName;
+
+    SimpleTimer attackCommandsPerSecondLimitTimer = SimpleTimer.of(Float.MAX_VALUE, false);
+    SimpleTimer movementCommandsPerSecondLimitTimer = SimpleTimer.of(Float.MAX_VALUE, false);
 
     public static CreatureParams of(CreatureId creatureId, AreaId areaId, Vector2 pos, String textureName) {
         CreatureParams params = CreatureParams.of();

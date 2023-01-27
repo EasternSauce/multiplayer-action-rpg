@@ -16,6 +16,10 @@ public class Ability {
         AbilityState state = params().state();
         AbilityAnimationConfig animationConfig = animationConfig();
 
+        if (state == AbilityState.CHANNEL || state == AbilityState.ACTIVE) {
+            updatePosition(gameState);
+        }
+
         if (state == AbilityState.INACTIVE) {
             // do nothing?
         } else if (state == AbilityState.CHANNEL) {
@@ -33,6 +37,25 @@ public class Ability {
         }
 
         updateTimers(delta);
+    }
+
+    private void updatePosition(GameState gameState) {
+        Vector2 dirVector = null;
+        if (params.dirVector().len() <= 0) dirVector = Vector2.of(1, 0).normalized();
+        else dirVector = params.dirVector();
+
+        Float theta = dirVector.angleDeg();
+
+        float attackShiftX = dirVector.normalized().x() * params.range();
+        float attackShiftY = dirVector.normalized().y() * params.range();
+
+        Vector2 creaturePos = gameState.creatures().get(params.creatureId()).params().pos();
+
+        float attackRectX = attackShiftX + creaturePos.x();
+        float attackRectY = attackShiftY + creaturePos.y();
+
+        params.pos(Vector2.of(attackRectX, attackRectY));
+        params.rotationAngle(theta);
     }
 
     public static Ability of(AbilityParams params) {
@@ -68,8 +91,10 @@ public class Ability {
         params().stateTimer().restart();
     }
 
-    public void start(Vector2 dir) {
+    public void start(Vector2 dir, GameState gameState) {
         params().dirVector(dir);
+
+        updatePosition(gameState);
 
         progressStateToChannel();
 

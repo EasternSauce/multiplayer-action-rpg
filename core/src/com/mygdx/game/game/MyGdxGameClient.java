@@ -7,16 +7,12 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.mygdx.game.Constants;
-import com.mygdx.game.ability.Ability;
 import com.mygdx.game.ability.AbilityId;
-import com.mygdx.game.ability.AbilityParams;
 import com.mygdx.game.action.ActionsHolder;
 import com.mygdx.game.action.GameStateAction;
-import com.mygdx.game.command.InitPlayerCommand;
-import com.mygdx.game.command.PlayerMovementCommand;
-import com.mygdx.game.command.SendChatMessageCommand;
-import com.mygdx.game.command.SpawnAbilityCommand;
+import com.mygdx.game.command.*;
 import com.mygdx.game.model.area.AreaId;
+import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.util.GameStateHolder;
 import com.mygdx.game.util.Vector2;
@@ -81,22 +77,39 @@ public class MyGdxGameClient extends MyGdxGame {
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
             Vector2 mousePos = mousePosRelativeToCenter();
 
-            endPoint().sendTCP(PlayerMovementCommand.of(thisPlayerId, mousePos));
+            Creature creature = gameState().creatures().get(thisPlayerId);
+
+            if (creature.params().movementCommandsPerSecondLimitTimer().time() > 0.1f) {
+                endPoint().sendTCP(PlayerMovementCommand.of(thisPlayerId, mousePos));
+            }
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.N)) {
 
-            CreatureId zzz = gameState().creatures().keySet().stream()
-                    .filter(creatureId -> creatureId.value().startsWith("Player")).collect(
-                            Collectors.toList()).get(0);
-            Vector2 pos = gameState().creatures().get(zzz).params().pos();
+            CreatureId creatureId = gameState().creatures().keySet().stream()
+                    .filter(cId -> cId.value().startsWith("Player")).collect(Collectors.toList()).get(0);
+            Vector2 pos = gameState().creatures().get(creatureId).params().pos();
             System.out.println("Vector2.of(" + pos.x() + "f, " + pos.y() + "f),");
         }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.B)) {
+        if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
             AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 100000));
 
             Vector2 pos = gameState().creatures().get(thisPlayerId).params().pos();
 
-            endPoint().sendTCP(SpawnAbilityCommand.of(abilityId, AreaId.of("area1"), thisPlayerId, "slash", pos));
+            Creature player = gameState().creatures().get(thisPlayerId);
+
+            if (player.params().attackCommandsPerSecondLimitTimer().time() > 0.4f) {
+                float mouseX = Gdx.input.getX();
+                float mouseY = Gdx.input.getY();
+
+                float centerX = Gdx.graphics.getWidth() / 2f;
+                float centerY = Gdx.graphics.getHeight() / 2f;
+
+                Vector2 mouseDirVector =
+                        Vector2.of(mouseX - centerX, (Gdx.graphics.getHeight() - mouseY) - centerY).normalized();
+
+                endPoint().sendTCP(SpawnAbilityCommand.of(abilityId, AreaId.of("area1"), thisPlayerId, "slash", pos,
+                        mouseDirVector));
+            }
         }
     }
 
@@ -143,24 +156,31 @@ public class MyGdxGameClient extends MyGdxGame {
                         chat.sendMessage(gameState(), action.poster(), action.text());
                     }
 
-                } else if (object instanceof SpawnAbilityCommand) {
-                    SpawnAbilityCommand command = (SpawnAbilityCommand) object;
+//                } else if (object instanceof SpawnAbilityCommand) {
+//                    SpawnAbilityCommand command = (SpawnAbilityCommand) object;
+//
+//                    Creature creature = gameState().creatures().get(command.creatureId());
+//
+//                    Ability ability = Ability.of(
+//                            AbilityParams.of(command.abilityId(), gameState().defaultAreaId(), command.pos(), 2f, 2f,
+//                                    1.8f, command.abilityType()));
+//                    ability.params().creatureId(command.creatureId());
+//                    ability.start(creature.params().movingVector());
+//
+//                    synchronized (lock) {
+//                        gameState().abilities().put(command.abilityId(), ability);
+//
+//                    }
+//
+//                    synchronized (abilitiesToBeCreated()) {
+//                        abilitiesToBeCreated().add(command.abilityId());
+//                    }
 
-                    Ability ability = Ability.of(
-                            AbilityParams.of(command.abilityId(), gameState().defaultAreaId(), command.pos(), 2f, 2f,
-                                    command.abilityType()));
-                    ability.start(Vector2.of(0, 0));
 
-                    synchronized (lock) {
-                        gameState().abilities().put(command.abilityId(), ability);
+                } else if (object instanceof SpawnEnemyCommand) {
+                    SpawnEnemyCommand command = (SpawnEnemyCommand) object;
 
-                    }
-
-                    synchronized (abilitiesToBeCreated()) {
-                        abilitiesToBeCreated().add(command.abilityId());
-                    }
-
-
+                    spawnEnemy(command.creatureId(), command.areaId(), command.pos(), command.enemyType());
                 }
 
             }

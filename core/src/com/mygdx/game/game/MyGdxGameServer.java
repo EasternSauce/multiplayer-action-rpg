@@ -3,15 +3,11 @@ package com.mygdx.game.game;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
+import com.mygdx.game.ability.AbilityState;
 import com.mygdx.game.action.*;
-import com.mygdx.game.command.InitPlayerCommand;
-import com.mygdx.game.command.PlayerMovementCommand;
-import com.mygdx.game.command.SendChatMessageCommand;
-import com.mygdx.game.command.SpawnAbilityCommand;
+import com.mygdx.game.command.*;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.CreatureId;
-import com.mygdx.game.model.creature.CreatureParams;
-import com.mygdx.game.model.creature.Enemy;
 import com.mygdx.game.util.GameStateHolder;
 import com.mygdx.game.util.Vector2;
 
@@ -43,6 +39,11 @@ public class MyGdxGameServer extends MyGdxGame {
     @Override
     public void onUpdate() {
         synchronized (tickActions) {
+
+            // remove expired abilities
+            gameState().abilities().entrySet().stream()
+                    .filter(entry -> entry.getValue().params().state() == AbilityState.INACTIVE)
+                    .forEach(entry -> tickActions.add(RemoveAbilityAction.of(entry.getKey())));
 
             ArrayList<GameStateAction> tickActionsCopy = new ArrayList<>(tickActions);
 
@@ -97,11 +98,12 @@ public class MyGdxGameServer extends MyGdxGame {
 
                         AddAbilityAction action =
                                 AddAbilityAction.of(command.abilityId(), command.creatureId(), command.pos(),
+                                        command.dirVector(),
                                         command.abilityType());
 
                         tickActions.add(action);
 
-                        endPoint().sendToAllTCP(command);
+//                        endPoint().sendToAllTCP(command);
                     }
                 }
             }
@@ -186,18 +188,11 @@ public class MyGdxGameServer extends MyGdxGame {
 
         );
 
-        spawnPositions.forEach(pos -> spawnEnemy(areaId, pos));
-    }
-
-    public void spawnEnemy(AreaId areaId, Vector2 pos) {
-        CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 100000));
-        gameState().creatures().put(enemyId,
-                Enemy.of(CreatureParams.of(enemyId, areaId, pos, "skeleton").speed(5f)));
-        synchronized (creaturesToBeCreated()) {
-            creaturesToBeCreated().add(enemyId);
-
-        }
-        //endPoint().sendToAllTCP(SpawnEnemyCommand.of(enemyId, areaId, "skeleton", pos));
+        spawnPositions.forEach(pos -> {
+            CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 100000));
+            spawnEnemy(enemyId, areaId, pos, "skeleton");
+            endPoint().sendToAllTCP(SpawnEnemyCommand.of(enemyId, areaId, "skeleton", pos));
+        });
     }
 
     @Override

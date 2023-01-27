@@ -128,10 +128,9 @@ public class Enemy extends Creature {
             }
         } else {
             // stop moving
-            this.params().movementCommandTargetPos(this.params().pos());
+            stopMoving();
         }
     }
-
 
     public void handleAttackTarget(Creature potentialTarget, Vector2 vectorTowardsTarget) {
         if (potentialTarget.params().pos().distance(this.params().pos()) < 3f) {
@@ -147,6 +146,6 @@ public class Enemy extends Creature {
 
     public void handleTargetLost() {
         this.params.targetCreatureId(null);
-        this.params().movementCommandTargetPos(this.params().pos());
+        stopMoving();
     }
 }

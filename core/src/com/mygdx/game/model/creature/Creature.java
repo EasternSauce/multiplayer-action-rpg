@@ -13,12 +13,14 @@ public abstract class Creature {
     public abstract Creature params(CreatureParams params);
 
     public void update(float delta, GameState gameState, GamePhysics physics) {
+
         if (!params().reachedTargetPos()) {
             moveTowardsTarget();
         }
 
         updateAutomaticControls(gameState, physics); // TODO: move this to playscreen?
         updateTimers(delta);
+
 
     }
 
@@ -48,11 +50,13 @@ public abstract class Creature {
     public void updateTimers(float delta) {
         params().animationTimer().update(delta);
         params().pathCalculationCooldownTimer().update(delta);
+        params().attackCommandsPerSecondLimitTimer().update(delta);
+        params().movementCommandsPerSecondLimitTimer().update(delta);
         // add other timers here...
     }
 
     public boolean isAlive() {
-        return true;
+        return params().life() > 0f;
     }
 
     public WorldDirection facingDirection() {
@@ -81,7 +85,36 @@ public abstract class Creature {
 
     }
 
+    public void stopMoving() {
+        this.params().movementCommandTargetPos(this.params().pos());
+    }
+
+    public void takeDamage(float damage, GamePhysics physics) {
+        float beforeLife = params().life();
+
+        float actualDamage = damage * 100f / (100f + params().armor());
+
+        if (params().life() - actualDamage > 0) {
+            params().life(params().life() - actualDamage);
+        } else {
+            params().life(0f);
+        }
+
+        if (beforeLife > 0f && params().life() <= 0f) {
+            stopMoving();
+            physics.setBodyToSensor(params().id());
+            onDeath();
+        }
+
+        //playsound on getting hit
+    }
+
+    private void onDeath() {
+
+    }
+
     public CreatureAnimationConfig animationConfig() {
         return CreatureAnimationConfig.configs.get(params().textureName());
     }
+
 }

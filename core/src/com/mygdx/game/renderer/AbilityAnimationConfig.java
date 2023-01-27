@@ -27,7 +27,7 @@ public class AbilityAnimationConfig {
 
     static {
         configs.put("slash",
-                AbilityAnimationConfig.of(40, 40, 0.3f, 0.3f, "slash_windup2", "slash2", 6, 6, 0.05f, 0.05f, 1.4f));
+                AbilityAnimationConfig.of(40, 40, 0.3f, 0.0f, "slash_windup2", "slash2", 6, 6, 0.05f, 0.05f, 1.4f));
 
     }
 }

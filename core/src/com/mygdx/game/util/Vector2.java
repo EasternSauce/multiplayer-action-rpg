@@ -40,4 +40,12 @@ public class Vector2 {
         }
         return newVector;
     }
+
+    public Vector2 multiplyBy(float value) {
+        return Vector2.of(x * value, y * value);
+    }
+
+    public Vector2 add(Vector2 vector) {
+        return Vector2.of(x + vector.x(), y + vector.y());
+    }
 }

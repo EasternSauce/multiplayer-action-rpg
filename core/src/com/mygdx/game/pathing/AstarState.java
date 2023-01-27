@@ -17,4 +17,5 @@ public class AstarState {
     Set<TilePos> closedSet;
     TilePos finishPos;
     Boolean foundPath;
+    Boolean gaveUp;
 }

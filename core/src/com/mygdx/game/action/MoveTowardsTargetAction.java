@@ -3,6 +3,7 @@ package com.mygdx.game.action;
 import com.mygdx.game.Constants;
 import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.model.GameState;
+import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.util.Vector2;
 import lombok.AllArgsConstructor;
@@ -22,14 +23,22 @@ public class MoveTowardsTargetAction implements GameStateAction {
     public void applyToGame(MyGdxGame game) {
         GameState gameState = game.gameState();
 
-        Vector2 pos = gameState.creatures().get(playerId).params().pos();
+        Creature creature = gameState.creatures().get(playerId);
 
-        float viewportRatioX = Constants.ViewpointWorldWidth / Constants.WindowWidth;
-        float viewportRatioY = Constants.ViewpointWorldHeight / Constants.WindowHeight;
-        gameState.creatures().get(playerId).params()
-                .movementCommandTargetPos(Vector2.of(
-                        pos.x() + mousePos.x() * viewportRatioX / Constants.PPM,
-                        pos.y() + mousePos.y() * viewportRatioY / Constants.PPM))
-                .reachedTargetPos(false);
+        if (creature.isAlive()) {
+            Vector2 pos = creature.params().pos();
+
+            float viewportRatioX = Constants.ViewpointWorldWidth / Constants.WindowWidth;
+            float viewportRatioY = Constants.ViewpointWorldHeight / Constants.WindowHeight;
+
+            creature.params()
+                    .movementCommandTargetPos(Vector2.of(
+                            pos.x() + mousePos.x() * viewportRatioX / Constants.PPM,
+                            pos.y() + mousePos.y() * viewportRatioY / Constants.PPM))
+                    .reachedTargetPos(false);
+
+            creature.params().movementCommandsPerSecondLimitTimer().restart();
+        }
+
     }
 }

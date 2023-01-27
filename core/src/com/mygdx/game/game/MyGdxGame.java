@@ -5,13 +5,18 @@ import com.esotericsoftware.kryonet.EndPoint;
 import com.mygdx.game.ability.AbilityId;
 import com.mygdx.game.chat.Chat;
 import com.mygdx.game.model.GameState;
+import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.CreatureId;
+import com.mygdx.game.model.creature.CreatureParams;
+import com.mygdx.game.model.creature.Enemy;
+import com.mygdx.game.physics.AbilityBody;
 import com.mygdx.game.physics.CreatureBody;
 import com.mygdx.game.physics.GamePhysics;
-import com.mygdx.game.renderer.AbilityAnimation;
-import com.mygdx.game.renderer.CreatureAnimation;
+import com.mygdx.game.renderer.AbilityRenderer;
+import com.mygdx.game.renderer.CreatureRenderer;
 import com.mygdx.game.renderer.GameRenderer;
 import com.mygdx.game.util.GameStateHolder;
+import com.mygdx.game.util.Vector2;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -31,6 +36,10 @@ public abstract class MyGdxGame extends Game {
     final List<CreatureId> creaturesToBeCreated = new LinkedList<>();
     final List<AbilityId> abilitiesToBeCreated = new LinkedList<>();
 
+    final List<CreatureId> creaturesToBeRemoved = new LinkedList<>();
+    final List<AbilityId> abilitiesToBeRemoved = new LinkedList<>();
+
+
     public List<CreatureId> creaturesToBeCreated() {
         return creaturesToBeCreated;
     }
@@ -38,6 +47,15 @@ public abstract class MyGdxGame extends Game {
     public List<AbilityId> abilitiesToBeCreated() {
         return abilitiesToBeCreated;
     }
+
+    public List<CreatureId> creaturesToBeRemoved() {
+        return creaturesToBeRemoved;
+    }
+
+    public List<AbilityId> abilitiesToBeRemoved() {
+        return abilitiesToBeRemoved;
+    }
+
 
     public GameRenderer renderer() {
         return gameRenderer;
@@ -66,21 +84,31 @@ public abstract class MyGdxGame extends Game {
     }
 
     public void createCreatureBodyAndAnimation(CreatureId creatureId) {
-        CreatureAnimation creatureAnimation = CreatureAnimation.of(creatureId);
-        creatureAnimation.init(gameRenderer.atlas(), gameState());
-        gameRenderer.creatureAnimations().put(creatureId, creatureAnimation);
+        CreatureRenderer creatureRenderer = CreatureRenderer.of(creatureId);
+        creatureRenderer.init(gameRenderer.atlas(), gameState());
+        gameRenderer.creatureRenderers().put(creatureId, creatureRenderer);
         CreatureBody creatureBody = CreatureBody.of(creatureId);
         creatureBody.init(gamePhysics, gameState());
         gamePhysics.creatureBodies().put(creatureId, creatureBody);
     }
 
     public void createAbilityBodyAndAnimation(AbilityId abilityId) {
-        AbilityAnimation abilityAnimation = AbilityAnimation.of(abilityId);
-        abilityAnimation.init(gameRenderer.atlas(), gameState());
-        gameRenderer.abilityAnimations().put(abilityId, abilityAnimation);
-//        AbilityBody abilityBody = AbilityBody.of(abilityId);
-//        abilityBody.init(gamePhysics, gameState());
-//        gamePhysics.abilityBodies().put(abilityId, abilityBody);
+
+        AbilityRenderer abilityRenderer = AbilityRenderer.of(abilityId);
+        abilityRenderer.init(gameRenderer.atlas(), gameState());
+        gameRenderer.abilityRenderers().put(abilityId, abilityRenderer);
+        AbilityBody abilityBody = AbilityBody.of(abilityId);
+        abilityBody.init(gamePhysics, gameState());
+        gamePhysics.abilityBodies().put(abilityId, abilityBody);
+    }
+
+    public void spawnEnemy(CreatureId creatureId, AreaId areaId, Vector2 pos, String enemyType) {
+        gameState().creatures().put(creatureId,
+                Enemy.of(CreatureParams.of(creatureId, areaId, pos, enemyType).speed(5f)));
+        synchronized (creaturesToBeCreated()) {
+            creaturesToBeCreated().add(creatureId);
+
+        }
     }
 
     abstract public void onUpdate();
@@ -89,15 +117,25 @@ public abstract class MyGdxGame extends Game {
 
     abstract public void initState();
 
-    public void removeCreatureBodyAndAnimation(CreatureId playerId) {
-        System.out.println("3!");
-        gameState().creatures().remove(playerId);
+    public void removeCreatureBodyAndAnimation(CreatureId creatureId) {
+        gameState().creatures().remove(creatureId);
 
-        renderer().creatureAnimations().remove(playerId);
+        renderer().creatureRenderers().remove(creatureId);
 
-        if (physics().creatureBodies().containsKey(playerId)) {
-            physics().creatureBodies().get(playerId).onRemove();
-            physics().creatureBodies().remove(playerId);
+        if (physics().creatureBodies().containsKey(creatureId)) {
+            physics().creatureBodies().get(creatureId).onRemove();
+            physics().creatureBodies().remove(creatureId);
+        }
+    }
+
+    public void removeAbilityBodyAndAnimation(AbilityId abilityId) {
+        gameState().abilities().remove(abilityId);
+
+        renderer().abilityRenderers().remove(abilityId);
+
+        if (physics().abilityBodies().containsKey(abilityId)) {
+            physics().abilityBodies().get(abilityId).onRemove();
+            physics().abilityBodies().remove(abilityId);
         }
     }
 

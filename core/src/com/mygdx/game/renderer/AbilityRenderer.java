@@ -8,13 +8,12 @@ import com.mygdx.game.ability.Ability;
 import com.mygdx.game.ability.AbilityId;
 import com.mygdx.game.ability.AbilityState;
 import com.mygdx.game.model.GameState;
-import com.mygdx.game.util.SimpleTimer;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @Data
-public class AbilityAnimation {
+public class AbilityRenderer {
     AbilityId abilityId;
 
     Sprite sprite;
@@ -27,8 +26,8 @@ public class AbilityAnimation {
 
     String textureName;
 
-    public static AbilityAnimation of(AbilityId abilityId) {
-        AbilityAnimation anim = new AbilityAnimation();
+    public static AbilityRenderer of(AbilityId abilityId) {
+        AbilityRenderer anim = new AbilityRenderer();
         anim.abilityId(abilityId);
         return anim;
     }
@@ -86,25 +85,34 @@ public class AbilityAnimation {
     }
 
     public void update(GameState gameState) {
-        AbilityState state = gameState.abilities().get(abilityId).params().state();
-        SimpleTimer stateTimer = gameState.abilities().get(abilityId).params().stateTimer();
-        Boolean isChannelAnimationLooping = gameState.abilities().get(abilityId).params().isChannelAnimationLooping();
-        Boolean isActiveAnimationLooping = gameState.abilities().get(abilityId).params().isActiveAnimationLooping();
 
-        if (state == AbilityState.CHANNEL) {
-            TextureRegion texture = channelAnimation().getKeyFrame(stateTimer.time(), isChannelAnimationLooping);
+        Ability ability = gameState.abilities().get(abilityId);
+        AbilityAnimationConfig config = ability.animationConfig();
+
+        if (config.channelTime() > 0f && ability.params().state() == AbilityState.CHANNEL) {
+            TextureRegion texture = channelAnimation().getKeyFrame(ability.params().stateTimer().time(),
+                    ability.params().isChannelAnimationLooping());
             updateSprite(texture, gameState);
-        } else if (state == AbilityState.ACTIVE) {
-            TextureRegion texture = activeAnimation().getKeyFrame(stateTimer.time(), isActiveAnimationLooping);
+        } else if (config.activeTime() > 0f && ability.params().state() == AbilityState.ACTIVE) {
+            TextureRegion texture = activeAnimation().getKeyFrame(ability.params().stateTimer().time(),
+                    ability.params().isActiveAnimationLooping());
             updateSprite(texture, gameState);
         }
     }
 
     public void render(DrawingLayer drawingLayer, GameState gameState) {
-        AbilityState state = gameState.abilities().get(abilityId).params().state();
+        Ability ability = gameState.abilities().get(abilityId);
+        AbilityAnimationConfig config = ability.animationConfig();
 
-        if (state == AbilityState.CHANNEL || state == AbilityState.ACTIVE) {
+        if (sprite.getTexture() != null && config.channelTime() > 0f &&
+                ability.params().state() == AbilityState.CHANNEL) {
+            sprite.draw(drawingLayer.spriteBatch());
+        }
+        if (sprite.getTexture() != null && config.activeTime() > 0f &&
+                ability.params().state() == AbilityState.ACTIVE) {
             sprite.draw(drawingLayer.spriteBatch());
         }
     }
+
+
 }

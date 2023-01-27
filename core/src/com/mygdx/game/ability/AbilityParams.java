@@ -7,6 +7,9 @@ import com.mygdx.game.util.Vector2;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @NoArgsConstructor(staticName = "of")
 @Data
 public class AbilityParams {
@@ -27,7 +30,12 @@ public class AbilityParams {
     Boolean isChannelAnimationLooping = false;
     Boolean isActiveAnimationLooping = false;
 
+    Float range;
+
+    Set<CreatureId> creaturesAlreadyHit = new HashSet<>();
+
     public static AbilityParams of(AbilityId abilityId, AreaId areaId, Vector2 pos, Float width, Float height,
+                                   Float range,
                                    String abilityType) {
         AbilityParams params = AbilityParams.of();
         params.id = abilityId;
@@ -35,6 +43,7 @@ public class AbilityParams {
         params.pos = pos;
         params.width = width;
         params.height = height;
+        params.range = range;
         params.abilityType = abilityType;
 
         return params;

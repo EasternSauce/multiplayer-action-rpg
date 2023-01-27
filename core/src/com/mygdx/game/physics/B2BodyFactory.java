@@ -58,6 +58,11 @@ public class B2BodyFactory {
         return createB2Body(world, creature.params().pos(), BodyType.DynamicBody, creatureBody,
                 Circle.of(creature.animationConfig().spriteWidth() / 2f), false, false, 10f, 1000f);
     }
+
+    public static Body createAbilityB2Body(PhysicsWorld world, AbilityBody abilityBody, Vector2 pos, float[] vertices) {
+        return createB2Body(world, pos, BodyType.KinematicBody, abilityBody, Polygon.of(vertices), true, false, null,
+                null);
+    }
 }
 
 @NoArgsConstructor(staticName = "of")

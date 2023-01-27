@@ -12,9 +12,11 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.game.Constants;
+import com.mygdx.game.ability.Ability;
 import com.mygdx.game.assets.Assets;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
+import com.mygdx.game.physics.event.AbilityHitsCreature;
 import com.mygdx.game.renderer.DrawingLayer;
 import com.mygdx.game.util.Vector2;
 import lombok.AllArgsConstructor;
@@ -37,7 +39,7 @@ public class MyGdxGamePlayScreen implements Screen {
 
     Map<AreaId, TiledMap> maps;
 
-    private boolean debug = false;
+    private boolean debug = true;
 
     public void init(MyGdxGame game) {
         this.game = game;
@@ -109,7 +111,7 @@ public class MyGdxGamePlayScreen implements Screen {
 
         game.physics().physicsWorlds().get(game.gameState().currentAreaId()).step();
 
-        if (game.physics().forceUpdateCreaturePositions()) {
+        if (game.physics().forceUpdateCreaturePositions()) { // only runs after receiving game state update
             game.physics().forceUpdateCreaturePositions(false);
 
             game.gameState().creatures().forEach((creatureId, creature) ->
@@ -120,6 +122,17 @@ public class MyGdxGamePlayScreen implements Screen {
                                 0.05f // only setTransform if positions are far apart
                 ) {
                     game.physics().creatureBodies().get(creatureId).trySetTransform(creature.params().pos());
+                }
+            });
+
+            game.gameState().abilities().forEach((abilityId, ability) ->
+            {
+                if (game.physics().abilityBodies().containsKey(abilityId) &&
+                        game.physics().abilityBodies().get(abilityId)
+                                .getBodyPos().distance(ability.params().pos()) >
+                                0.05f // only setTransform if positions are far apart
+                ) {
+                    game.physics().abilityBodies().get(abilityId).trySetTransform(ability.params().pos());
                 }
             });
         }
@@ -134,12 +147,26 @@ public class MyGdxGamePlayScreen implements Screen {
             game.abilitiesToBeCreated().clear();
         }
 
+        synchronized (game.creaturesToBeRemoved()) {
+            game.creaturesToBeRemoved().forEach(creatureId -> game.removeCreatureBodyAndAnimation(creatureId));
+            game.creaturesToBeRemoved().clear();
+        }
+
+        synchronized (game.abilitiesToBeRemoved()) {
+            game.abilitiesToBeRemoved().forEach(abilityId -> game.removeAbilityBodyAndAnimation(abilityId));
+            game.abilitiesToBeRemoved().clear();
+        }
+
         game.onUpdate();
 
         game.gameState().generalTimer().update(delta);
 
         game.physics().creatureBodies()
                 .forEach((creatureId, creatureBody) -> creatureBody.update(game.gameState()));
+
+        game.physics().abilityBodies()
+                .forEach((abilityId, abilityBody) -> abilityBody.update(game.gameState()));
+
 
         // set gamestate position based on b2body position
         game.gameState().creatures().forEach(
@@ -150,10 +177,18 @@ public class MyGdxGamePlayScreen implements Screen {
 
                 });
 
-        game.renderer().creatureAnimations()
+        game.gameState().abilities().forEach(
+                (abilityId, ability) -> {
+                    if (game.physics().abilityBodies().containsKey(abilityId)) {
+                        ability.params().pos(game.physics().abilityBodies().get(abilityId).getBodyPos());
+                    }
+
+                });
+
+        game.renderer().creatureRenderers()
                 .forEach((creatureId, creatureAnimation) -> creatureAnimation.update(game.gameState()));
 
-        game.renderer().abilityAnimations()
+        game.renderer().abilityRenderers()
                 .forEach((creatureId, creatureAnimation) -> creatureAnimation.update(game.gameState()));
 
 
@@ -166,6 +201,29 @@ public class MyGdxGamePlayScreen implements Screen {
             game.gameState().abilities()
                     .forEach((abilityId, ability) -> ability.update(delta, game().gameState(), game().physics()));
 
+        }
+
+        // process physics queue
+
+        synchronized (game.physics().physicsEventQueue()) {
+            game.physics().physicsEventQueue().forEach(physicsEvent -> {
+                if (physicsEvent instanceof AbilityHitsCreature) {
+                    AbilityHitsCreature event = (AbilityHitsCreature) physicsEvent;
+
+                    Creature attackedCreature = game.gameState().creatures().get(event.attackedCreatureId());
+
+                    Ability ability = game.gameState().abilities().get(event.abilityId());
+
+                    if (ability != null) {
+                        if (!ability.params().creaturesAlreadyHit().contains(event.attackedCreatureId())) {
+                            attackedCreature.takeDamage(30f, game.physics());
+                        }
+
+                        ability.params().creaturesAlreadyHit().add(event.attackedCreatureId());
+                    }
+
+                }
+            });
         }
 
         game.renderer().tiledMapRenderer().setView(game.renderer().worldCamera());
@@ -205,13 +263,12 @@ public class MyGdxGamePlayScreen implements Screen {
 //        renderer.worldDrawingLayer().spriteBatch().draw(game.img, 0, 0, 5,5);
 
 
-            game.renderer().creatureAnimations()
-                    .forEach((creatureId, creatureAnimation) -> creatureAnimation.render(
-                            game.renderer().worldDrawingLayer()));
-
-            game.renderer().abilityAnimations()
+            game.renderer().abilityRenderers()
                     .forEach((abilityId, abilityAnimation) -> abilityAnimation.render(
                             game.renderer().worldDrawingLayer(), game.gameState()));
+
+            game.renderer().renderDeadCreatures(game.renderer().worldDrawingLayer(), game.gameState());
+            game.renderer().renderAliveCreatures(game.renderer().worldDrawingLayer(), game.gameState());
 
 //        renderer.creatureSprites().forEach((creatureId, sprite) -> {
 //            if (game.gameState.creatures().containsKey(creatureId)) {
