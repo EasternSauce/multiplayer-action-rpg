@@ -106,16 +106,23 @@ public class AbilityRenderer {
 
     public void render(DrawingLayer drawingLayer, GameState gameState) {
         Ability ability = gameState.abilities().get(abilityId);
-        AbilityAnimationConfig config = ability.animationConfig();
 
-        if (sprite.getTexture() != null && config.channelTime() > 0f &&
-                ability.params().state() == AbilityState.CHANNEL) {
-            sprite.draw(drawingLayer.spriteBatch());
+        if (ability != null) {
+            AbilityAnimationConfig config = ability.animationConfig();
+
+            if (sprite.getTexture() != null) {
+                if (config.channelTime() > 0f &&
+                        ability.params().state() == AbilityState.CHANNEL) {
+                    sprite.draw(drawingLayer.spriteBatch());
+                }
+                if (config.activeTime() > 0f &&
+                        ability.params().state() == AbilityState.ACTIVE) {
+                    sprite.draw(drawingLayer.spriteBatch());
+                }
+            }
         }
-        if (sprite.getTexture() != null && config.activeTime() > 0f &&
-                ability.params().state() == AbilityState.ACTIVE) {
-            sprite.draw(drawingLayer.spriteBatch());
-        }
+
+
     }
 
 

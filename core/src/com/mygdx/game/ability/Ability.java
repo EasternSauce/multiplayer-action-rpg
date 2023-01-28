@@ -13,9 +13,8 @@ import lombok.NoArgsConstructor;
 public class Ability {
     AbilityParams params;
 
-    public void update(Float delta, GameState gameState, GamePhysics physics) {
+    public void update(Float delta, GameState gameState) {
         AbilityState state = params().state();
-        AbilityAnimationConfig animationConfig = animationConfig();
 
         if (state == AbilityState.CHANNEL || state == AbilityState.ACTIVE) {
             updatePosition(gameState);

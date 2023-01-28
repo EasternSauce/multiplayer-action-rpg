@@ -199,7 +199,7 @@ public class MyGdxGamePlayScreen implements Screen {
                     .forEach((creatureId, creature) -> creature.update(delta, game));
 
             game.gameState().abilities()
-                    .forEach((abilityId, ability) -> ability.update(delta, game().gameState(), game().physics()));
+                    .forEach((abilityId, ability) -> ability.update(delta, game().gameState()));
 
         }
 
