@@ -17,7 +17,6 @@ public class RespawnCreatureAction implements GameStateAction {
     Vector2 pos;
 
     public void applyToGame(MyGdxGame game) {
-        System.out.println("respawning...");
         GameState gameState = game.gameState();
 
         Creature creature = gameState.creatures().get(creatureId);

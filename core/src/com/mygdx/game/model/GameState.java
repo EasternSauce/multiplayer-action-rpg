@@ -11,19 +11,19 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
 public class GameState {
 
-    Map<CreatureId, Creature> creatures = new HashMap<>();
-    Map<AbilityId, Ability> abilities = new HashMap<>();
+    Map<CreatureId, Creature> creatures = new ConcurrentHashMap<>();
+    Map<AbilityId, Ability> abilities = new ConcurrentHashMap<>();
 
 
-    Map<AreaId, Area> areas = new HashMap<>();
+    Map<AreaId, Area> areas = new ConcurrentHashMap<>();
     AreaId currentAreaId = AreaId.of("area1");
 
     AreaId defaultAreaId = AreaId.of("area1");

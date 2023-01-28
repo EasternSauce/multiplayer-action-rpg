@@ -1,7 +1,6 @@
 package com.mygdx.game.model.creature;
 
 import com.mygdx.game.game.MyGdxGame;
-import com.mygdx.game.model.GameState;
 import com.mygdx.game.pathing.Astar;
 import com.mygdx.game.physics.PhysicsWorld;
 import com.mygdx.game.util.Vector2;
@@ -29,12 +28,13 @@ public class Enemy extends Creature {
         return enemy;
     }
 
-    public CreatureId findTarget(GameState gameState) {
-        List<Creature> potentialTargets = gameState.creatures().values().stream().filter(creature ->
+    public CreatureId findTarget(MyGdxGame game) {
+        List<Creature> potentialTargets = game.gameState().creatures().values().stream().filter(creature ->
                         creature.isAlive() && creature.params().areaId().equals(this.params().areaId()) &&
                                 creature instanceof Player &&
                                 creature.params().pos().distance(this.params().pos()) < enemySearchDistance)
                 .collect(Collectors.toList());
+
 
         if (potentialTargets.isEmpty()) return null;
 
@@ -56,19 +56,12 @@ public class Enemy extends Creature {
 
     @Override
     public void updateAutomaticControls(MyGdxGame game) {
-        CreatureId potentialTargetId = findTarget(game.gameState());
-
-        if (potentialTargetId != null) {
-            Creature creature = game.gameState().creatures().get(potentialTargetId);
-            System.out.println("found target, life is " + creature.params().life() + " distance is " +
-                    this.params.pos().distance(creature.params().pos()));
-        }
+        CreatureId potentialTargetId = findTarget(game);
 
         Creature potentialTarget = null;
         if (potentialTargetId != null) potentialTarget = game.gameState().creatures().get(potentialTargetId);
 
         if (potentialTargetId != null && this.isAlive() && potentialTarget.isAlive()) {
-            System.out.println("about to attack");
             Vector2 vectorTowardsTarget = this.params().pos().vectorTowards(potentialTarget.params().pos());
 
             handleNewTarget(potentialTargetId);
@@ -144,8 +137,6 @@ public class Enemy extends Creature {
         if (potentialTarget.params().pos().distance(this.params().pos()) < 4f) {
 
             game.handleAttackTarget(params().id(), vectorTowardsTarget, "slash");
-
-            System.out.println("attacked");
 
         }
     }

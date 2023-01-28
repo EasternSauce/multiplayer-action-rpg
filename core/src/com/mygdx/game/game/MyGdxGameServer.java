@@ -41,25 +41,24 @@ public class MyGdxGameServer extends MyGdxGame {
 
     @Override
     public void onUpdate() {
-        synchronized (lock) {
-            synchronized (tickActions) {
-                gameState().creatures().forEach((creatureId, creature) -> { // handle deaths server side
-                    if (creature.params().lastFrameLife() > 0f && creature.params().life() <= 0f) { // death condition
-                        CreatureDeathAction action = CreatureDeathAction.of(creatureId);
-                        tickActions.add(action);
-                    } else if (creature instanceof Player && !creature.isAlive() && // handle respawns server side
-                            creature.params().respawnTimer().time() > creature.params().respawnTime()) {
-                        Vector2 pos = Vector2.of((float) ((Math.random() * (28 - 18)) + 18),
-                                (float) ((Math.random() * (12 - 6)) + 6));
-                        RespawnCreatureAction action =
-                                RespawnCreatureAction.of(creatureId, pos);
+        synchronized (tickActions) {
+            gameState().creatures().forEach((creatureId, creature) -> { // handle deaths server side
+                if (creature.params().lastFrameLife() > 0f && creature.params().life() <= 0f) { // death condition
+                    CreatureDeathAction action = CreatureDeathAction.of(creatureId);
+                    tickActions.add(action);
+                } else if (creature instanceof Player && !creature.isAlive() && // handle respawns server side
+                        creature.params().respawnTimer().time() > creature.params().respawnTime()) {
+                    Vector2 pos = Vector2.of((float) ((Math.random() * (28 - 18)) + 18),
+                            (float) ((Math.random() * (12 - 6)) + 6));
+                    RespawnCreatureAction action =
+                            RespawnCreatureAction.of(creatureId, pos);
 
-                        tickActions.add(action);
-                    }
+                    tickActions.add(action);
+                }
 
-                });
-            }
+            });
         }
+
 
         //playsound on getting hit
 
@@ -122,6 +121,12 @@ public class MyGdxGameServer extends MyGdxGame {
                         SpawnAbilityCommand command = (SpawnAbilityCommand) object;
 
                         trySpawningAbility(command);
+
+                    } else if (object instanceof SpawnEnemyCommand) {
+                        SpawnEnemyCommand command = (SpawnEnemyCommand) object;
+                        spawnEnemy(command.creatureId(), command.areaId(), command.pos(), "skeleton");
+
+                        endPoint().sendToAllTCP(command);
 
                     }
                 }

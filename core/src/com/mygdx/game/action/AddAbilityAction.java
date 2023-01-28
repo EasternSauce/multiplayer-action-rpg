@@ -46,9 +46,8 @@ public class AddAbilityAction implements GameStateAction {
             creature.params().movementCommandTargetPos(creature.params().pos().add(movementVector));
         }
 
-        synchronized (game.lock) {
-            gameState.abilities().put(abilityId, ability);
-        }
+        gameState.abilities().put(abilityId, ability);
+
 
         synchronized (game.abilitiesToBeCreated()) {
             game.abilitiesToBeCreated().add(abilityId);

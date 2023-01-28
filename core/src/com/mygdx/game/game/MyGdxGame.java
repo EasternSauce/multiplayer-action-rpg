@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class MyGdxGame extends Game {
-    public final Object lock = new Object();
     final protected GameRenderer gameRenderer = GameRenderer.of();
     final protected GamePhysics gamePhysics = GamePhysics.of();
     final protected GameStateHolder gameStateHolder = GameStateHolder.of(GameState.of());
@@ -123,6 +122,7 @@ public abstract class MyGdxGame extends Game {
     public void spawnEnemy(CreatureId creatureId, AreaId areaId, Vector2 pos, String enemyType) {
         gameState().creatures().put(creatureId,
                 Enemy.of(CreatureParams.of(creatureId, areaId, pos, enemyType).speed(5f)));
+
         synchronized (creaturesToBeCreated()) {
             creaturesToBeCreated().add(creatureId);
 

@@ -15,7 +15,6 @@ public class CreatureDeathAction implements GameStateAction {
 
 
     public void applyToGame(MyGdxGame game) {
-        System.out.println("creature death action");
         Creature creature = game.gameState().creatures().get(creatureId);
 
         creature.params().lastFrameLife(0f);

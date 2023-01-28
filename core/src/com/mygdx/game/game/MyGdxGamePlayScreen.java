@@ -16,6 +16,7 @@ import com.mygdx.game.ability.Ability;
 import com.mygdx.game.assets.Assets;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
+import com.mygdx.game.model.creature.Player;
 import com.mygdx.game.physics.event.AbilityHitsCreature;
 import com.mygdx.game.renderer.DrawingLayer;
 import com.mygdx.game.util.Vector2;
@@ -205,14 +206,13 @@ public class MyGdxGamePlayScreen implements Screen {
 
         //update gamestate
 
-        synchronized (game.lock) {
-            game.gameState().creatures()
-                    .forEach((creatureId, creature) -> creature.update(delta, game));
 
-            game.gameState().abilities()
-                    .forEach((abilityId, ability) -> ability.update(delta, game().gameState()));
+        game.gameState().creatures()
+                .forEach((creatureId, creature) -> creature.update(delta, game));
 
-        }
+        game.gameState().abilities()
+                .forEach((abilityId, ability) -> ability.update(delta, game().gameState()));
+
 
         // process physics queue
 
@@ -223,10 +223,17 @@ public class MyGdxGamePlayScreen implements Screen {
 
                     Creature attackedCreature = game.gameState().creatures().get(event.attackedCreatureId());
 
+                    Creature attackingCreature = game.gameState().creatures().get(event.attackingCreatureId());
+
+                    boolean attackedIsPlayer = (attackedCreature instanceof Player);
+                    boolean attackingIsPlayer = (attackingCreature instanceof Player);
+                    System.out.println(attackedIsPlayer + " zzz " + attackingIsPlayer);
+
                     Ability ability = game.gameState().abilities().get(event.abilityId());
 
                     if (ability != null) {
-                        if (!ability.params().creaturesAlreadyHit().contains(event.attackedCreatureId())) {
+                        if ((attackedIsPlayer || attackingIsPlayer) &&
+                                !ability.params().creaturesAlreadyHit().contains(event.attackedCreatureId())) {
                             attackedCreature.takeDamage(30f);
                         }
 
@@ -235,6 +242,7 @@ public class MyGdxGamePlayScreen implements Screen {
 
                 }
             });
+            game.physics().physicsEventQueue().clear();
         }
 
         game.renderer().tiledMapRenderer().setView(game.renderer().worldCamera());
@@ -365,7 +373,9 @@ public class MyGdxGamePlayScreen implements Screen {
     }
 
     public void updateCamera() {
-        Creature player = game.gameState().creatures().get(game.thisPlayerId);
+        Creature player = null;
+
+        if (game.thisPlayerId != null) player = game.gameState().creatures().get(game.thisPlayerId);
 
         if (player != null) {
             float camX;
