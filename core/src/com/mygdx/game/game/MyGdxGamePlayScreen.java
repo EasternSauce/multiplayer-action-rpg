@@ -25,6 +25,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -137,6 +138,8 @@ public class MyGdxGamePlayScreen implements Screen {
             });
         }
 
+        game.onUpdate();
+
         synchronized (game.creaturesToBeCreated()) {
             game.creaturesToBeCreated().forEach(creatureId -> game.createCreatureBodyAndAnimation(creatureId));
             game.creaturesToBeCreated().clear();
@@ -157,7 +160,15 @@ public class MyGdxGamePlayScreen implements Screen {
             game.abilitiesToBeRemoved().clear();
         }
 
-        game.onUpdate();
+        synchronized (game.creaturesToTeleport()) {
+            game.creaturesToTeleport().forEach((creatureId, pos) -> {
+                game.physics().creatureBodies().get(creatureId).forceSetTransform(pos);
+                game.physics().setBodySensor(creatureId, false);
+            });
+
+
+            game.creaturesToTeleport().clear();
+        }
 
         game.gameState().generalTimer().update(delta);
 
@@ -216,7 +227,7 @@ public class MyGdxGamePlayScreen implements Screen {
 
                     if (ability != null) {
                         if (!ability.params().creaturesAlreadyHit().contains(event.attackedCreatureId())) {
-                            attackedCreature.takeDamage(30f, game.physics());
+                            attackedCreature.takeDamage(30f);
                         }
 
                         ability.params().creaturesAlreadyHit().add(event.attackedCreatureId());
@@ -305,6 +316,21 @@ public class MyGdxGamePlayScreen implements Screen {
             float fps = Gdx.graphics.getFramesPerSecond();
             Assets.drawFont(game.renderer().hudDrawingLayer(), fps + " fps", Vector2.of(3, Constants.WindowHeight - 3),
                     Color.WHITE);
+
+            if (game.thisPlayerId != null) {
+                Creature creature = game.gameState().creatures().get(game.thisPlayerId);
+
+                if (creature != null && !creature.isAlive()) {
+                    if (creature.params().respawnTimer().time() < creature.params().respawnTime()) {
+                        Assets.drawLargeFont(game.renderer().hudDrawingLayer(), "You are dead!\nRespawning...\n" +
+                                        String.format(Locale.US, "%.2f",
+                                                (creature.params().respawnTime() - creature.params().respawnTimer().time())),
+                                Vector2.of(Constants.WindowWidth / 2f - Constants.WindowWidth / 8f,
+                                        Constants.WindowHeight / 2f + Constants.WindowHeight / 5f),
+                                Color.RED);
+                    }
+                }
+            }
 
             game.renderer().hudDrawingLayer().spriteBatch().end();
 

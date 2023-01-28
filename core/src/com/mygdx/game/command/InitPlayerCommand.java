@@ -1,6 +1,7 @@
 package com.mygdx.game.command;
 
 import com.mygdx.game.model.creature.CreatureId;
+import com.mygdx.game.util.Vector2;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,6 @@ import lombok.NoArgsConstructor;
 @Data
 public class InitPlayerCommand implements GameCommand {
     CreatureId playerId;
-    float x;
-    float y;
+    Vector2 pos;
     String textureName;
 }

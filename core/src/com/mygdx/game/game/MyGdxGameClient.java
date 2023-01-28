@@ -95,6 +95,8 @@ public class MyGdxGameClient extends MyGdxGame {
             Creature player = gameState().creatures().get(thisPlayerId);
 
             if (player.params().attackCommandsPerSecondLimitTimer().time() > 0.2f) { // TODO: move cooldown to param?
+                player.params().attackCooldownTimer().restart();
+
                 AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 100000));
 
                 float mouseX = Gdx.input.getX();
@@ -194,8 +196,8 @@ public class MyGdxGameClient extends MyGdxGame {
         String[] textures = new String[]{"male1", "male2", "female1"};
 
         endPoint().sendTCP(
-                InitPlayerCommand.of(thisPlayerId, (float) ((Math.random() * (28 - 18)) + 18),
-                        (float) ((Math.random() * (12 - 6)) + 6),
+                InitPlayerCommand.of(thisPlayerId, Vector2.of((float) ((Math.random() * (28 - 18)) + 18),
+                                (float) ((Math.random() * (12 - 6)) + 6)),
                         textures[((int) (Math.random() * 100) % 3)]
                 ));
 

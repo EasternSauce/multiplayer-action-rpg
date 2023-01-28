@@ -1,7 +1,6 @@
 package com.mygdx.game.model.creature;
 
 import com.mygdx.game.game.MyGdxGame;
-import com.mygdx.game.physics.GamePhysics;
 import com.mygdx.game.renderer.CreatureAnimationConfig;
 import com.mygdx.game.util.Vector2;
 import com.mygdx.game.util.WorldDirection;
@@ -61,6 +60,7 @@ public abstract class Creature {
         params().movementCommandsPerSecondLimitTimer().update(delta);
         params().isStillMovingTimer().update(delta);
         params().attackCooldownTimer().update(delta);
+        params().respawnTimer().update(delta);
         // add other timers here...
     }
 
@@ -98,8 +98,8 @@ public abstract class Creature {
         this.params().movementCommandTargetPos(this.params().pos());
     }
 
-    public void takeDamage(float damage, GamePhysics physics) {
-        float beforeLife = params().life();
+    public void takeDamage(float damage) {
+        params().lastFrameLife(params().life());
 
         float actualDamage = damage * 100f / (100f + params().armor());
 
@@ -108,17 +108,9 @@ public abstract class Creature {
         } else {
             params().life(0f);
         }
-
-        if (beforeLife > 0f && params().life() <= 0f) {
-            stopMoving();
-            physics.setBodyToSensor(params().id());
-            onDeath();
-        }
-
-        //playsound on getting hit
     }
 
-    private void onDeath() {
+    public void onDeath() {
 
     }
 

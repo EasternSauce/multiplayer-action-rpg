@@ -31,7 +31,8 @@ public class Enemy extends Creature {
 
     public CreatureId findTarget(GameState gameState) {
         List<Creature> potentialTargets = gameState.creatures().values().stream().filter(creature ->
-                        creature.params().areaId().equals(this.params().areaId()) && creature instanceof Player &&
+                        creature.isAlive() && creature.params().areaId().equals(this.params().areaId()) &&
+                                creature instanceof Player &&
                                 creature.params().pos().distance(this.params().pos()) < enemySearchDistance)
                 .collect(Collectors.toList());
 
@@ -57,11 +58,17 @@ public class Enemy extends Creature {
     public void updateAutomaticControls(MyGdxGame game) {
         CreatureId potentialTargetId = findTarget(game.gameState());
 
+        if (potentialTargetId != null) {
+            Creature creature = game.gameState().creatures().get(potentialTargetId);
+            System.out.println("found target, life is " + creature.params().life() + " distance is " +
+                    this.params.pos().distance(creature.params().pos()));
+        }
 
         Creature potentialTarget = null;
         if (potentialTargetId != null) potentialTarget = game.gameState().creatures().get(potentialTargetId);
 
         if (potentialTargetId != null && this.isAlive() && potentialTarget.isAlive()) {
+            System.out.println("about to attack");
             Vector2 vectorTowardsTarget = this.params().pos().vectorTowards(potentialTarget.params().pos());
 
             handleNewTarget(potentialTargetId);
@@ -137,6 +144,8 @@ public class Enemy extends Creature {
         if (potentialTarget.params().pos().distance(this.params().pos()) < 4f) {
 
             game.handleAttackTarget(params().id(), vectorTowardsTarget, "slash");
+
+            System.out.println("attacked");
 
         }
     }

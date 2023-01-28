@@ -59,8 +59,8 @@ public class GamePhysics {
         }
     }
 
-    public void setBodyToSensor(CreatureId creatureId) {
-        creatureBodies.get(creatureId).b2Body().getFixtureList().get(0).setSensor(true);
+    public void setBodySensor(CreatureId creatureId, boolean value) {
+        creatureBodies.get(creatureId).b2Body().getFixtureList().get(0).setSensor(value);
 
     }
 

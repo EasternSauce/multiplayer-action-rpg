@@ -100,6 +100,7 @@ public class CreatureRenderer {
                 creature.animationConfig().spriteHeight());
 
         if (creature.isAlive()) {
+
             TextureRegion texture;
             if (!creature.params().isMoving()) {
                 texture = pickFacingTexture(creature.facingDirection(), gameState);
@@ -107,6 +108,7 @@ public class CreatureRenderer {
                 texture = runningAnimation(creature.facingDirection(), gameState);
             }
 
+            sprite.setRotation(0f);
             sprite.setRegion(texture);
 
             sprite.setColor(1, 1, 1, 1); // TODO: immunity frames visual

@@ -2,7 +2,6 @@ package com.mygdx.game.ability;
 
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.creature.Creature;
-import com.mygdx.game.physics.GamePhysics;
 import com.mygdx.game.renderer.AbilityAnimationConfig;
 import com.mygdx.game.util.Vector2;
 import lombok.Data;

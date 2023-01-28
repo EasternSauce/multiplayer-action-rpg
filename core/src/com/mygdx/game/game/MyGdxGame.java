@@ -2,10 +2,12 @@ package com.mygdx.game.game;
 
 import com.badlogic.gdx.Game;
 import com.esotericsoftware.kryonet.EndPoint;
+import com.mygdx.game.ability.Ability;
 import com.mygdx.game.ability.AbilityId;
 import com.mygdx.game.chat.Chat;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.area.AreaId;
+import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.creature.CreatureParams;
 import com.mygdx.game.model.creature.Enemy;
@@ -19,8 +21,10 @@ import com.mygdx.game.util.GameStateHolder;
 import com.mygdx.game.util.Vector2;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public abstract class MyGdxGame extends Game {
     public final Object lock = new Object();
@@ -39,6 +43,8 @@ public abstract class MyGdxGame extends Game {
     final List<CreatureId> creaturesToBeRemoved = new LinkedList<>();
     final List<AbilityId> abilitiesToBeRemoved = new LinkedList<>();
 
+    final Map<CreatureId, Vector2> creaturesToTeleport = new HashMap<>();
+
 
     public List<CreatureId> creaturesToBeCreated() {
         return creaturesToBeCreated;
@@ -54,6 +60,10 @@ public abstract class MyGdxGame extends Game {
 
     public List<AbilityId> abilitiesToBeRemoved() {
         return abilitiesToBeRemoved;
+    }
+
+    public Map<CreatureId, Vector2> creaturesToTeleport() {
+        return creaturesToTeleport;
     }
 
 
@@ -84,22 +94,30 @@ public abstract class MyGdxGame extends Game {
     }
 
     public void createCreatureBodyAndAnimation(CreatureId creatureId) {
-        CreatureRenderer creatureRenderer = CreatureRenderer.of(creatureId);
-        creatureRenderer.init(gameRenderer.atlas(), gameState());
-        gameRenderer.creatureRenderers().put(creatureId, creatureRenderer);
-        CreatureBody creatureBody = CreatureBody.of(creatureId);
-        creatureBody.init(gamePhysics, gameState());
-        gamePhysics.creatureBodies().put(creatureId, creatureBody);
+        Creature creature = gameState().creatures().get(creatureId);
+
+        if (creature != null) {
+            CreatureRenderer creatureRenderer = CreatureRenderer.of(creatureId);
+            creatureRenderer.init(gameRenderer.atlas(), gameState());
+            gameRenderer.creatureRenderers().put(creatureId, creatureRenderer);
+            CreatureBody creatureBody = CreatureBody.of(creatureId);
+            creatureBody.init(gamePhysics, gameState());
+            gamePhysics.creatureBodies().put(creatureId, creatureBody);
+        }
     }
 
     public void createAbilityBodyAndAnimation(AbilityId abilityId) {
+        Ability ability = gameState().abilities().get(abilityId);
 
-        AbilityRenderer abilityRenderer = AbilityRenderer.of(abilityId);
-        abilityRenderer.init(gameRenderer.atlas(), gameState());
-        gameRenderer.abilityRenderers().put(abilityId, abilityRenderer);
-        AbilityBody abilityBody = AbilityBody.of(abilityId);
-        abilityBody.init(gamePhysics, gameState());
-        gamePhysics.abilityBodies().put(abilityId, abilityBody);
+        if (ability != null) {
+            AbilityRenderer abilityRenderer = AbilityRenderer.of(abilityId);
+            abilityRenderer.init(gameRenderer.atlas(), gameState());
+            gameRenderer.abilityRenderers().put(abilityId, abilityRenderer);
+            AbilityBody abilityBody = AbilityBody.of(abilityId);
+            abilityBody.init(gamePhysics, gameState());
+            gamePhysics.abilityBodies().put(abilityId, abilityBody);
+        }
+
     }
 
     public void spawnEnemy(CreatureId creatureId, AreaId areaId, Vector2 pos, String enemyType) {

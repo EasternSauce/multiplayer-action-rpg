@@ -13,9 +13,11 @@ public class Assets {
     static String youngSerifFontPath = "assets/font/Helvetica 400.ttf";
 
     static BitmapFont defaultFont;
+    static BitmapFont largeFont;
 
     static {
         defaultFont = loadFont(Assets.youngSerifFontPath, 16);
+        largeFont = loadFont(Assets.youngSerifFontPath, 64);
     }
 
     public static BitmapFont loadFont(String fontPath, int size) {
@@ -32,5 +34,10 @@ public class Assets {
     public static void drawFont(DrawingLayer drawingLayer, String text, Vector2 pos, Color color) {
         defaultFont.setColor(color);
         defaultFont.draw(drawingLayer.spriteBatch(), text, pos.x(), pos.y());
+    }
+
+    public static void drawLargeFont(DrawingLayer drawingLayer, String text, Vector2 pos, Color color) {
+        largeFont.setColor(color);
+        largeFont.draw(drawingLayer.spriteBatch(), text, pos.x(), pos.y());
     }
 }

@@ -8,7 +8,9 @@ import com.mygdx.game.ability.AbilityState;
 import com.mygdx.game.action.*;
 import com.mygdx.game.command.*;
 import com.mygdx.game.model.area.AreaId;
+import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
+import com.mygdx.game.model.creature.Player;
 import com.mygdx.game.util.GameStateHolder;
 import com.mygdx.game.util.Vector2;
 
@@ -39,6 +41,28 @@ public class MyGdxGameServer extends MyGdxGame {
 
     @Override
     public void onUpdate() {
+        synchronized (lock) {
+            synchronized (tickActions) {
+                gameState().creatures().forEach((creatureId, creature) -> { // handle deaths server side
+                    if (creature.params().lastFrameLife() > 0f && creature.params().life() <= 0f) { // death condition
+                        CreatureDeathAction action = CreatureDeathAction.of(creatureId);
+                        tickActions.add(action);
+                    } else if (creature instanceof Player && !creature.isAlive() && // handle respawns server side
+                            creature.params().respawnTimer().time() > creature.params().respawnTime()) {
+                        Vector2 pos = Vector2.of((float) ((Math.random() * (28 - 18)) + 18),
+                                (float) ((Math.random() * (12 - 6)) + 6));
+                        RespawnCreatureAction action =
+                                RespawnCreatureAction.of(creatureId, pos);
+
+                        tickActions.add(action);
+                    }
+
+                });
+            }
+        }
+
+        //playsound on getting hit
+
         synchronized (tickActions) {
 
             // remove expired abilities
@@ -82,7 +106,7 @@ public class MyGdxGameServer extends MyGdxGame {
                     } else if (object instanceof InitPlayerCommand) {
                         InitPlayerCommand command = (InitPlayerCommand) object;
                         AddPlayerAction addPlayerAction =
-                                AddPlayerAction.of(command.playerId(), Vector2.of(command.x(), command.y()),
+                                AddPlayerAction.of(command.playerId(), command.pos(),
                                         command.textureName());
 
                         tickActions.add(addPlayerAction);
@@ -97,15 +121,8 @@ public class MyGdxGameServer extends MyGdxGame {
                     } else if (object instanceof SpawnAbilityCommand) {
                         SpawnAbilityCommand command = (SpawnAbilityCommand) object;
 
-                        AddAbilityAction action =
-                                AddAbilityAction.of(command.abilityId(), command.creatureId(),
-                                        command.dirVector(),
-                                        command.abilityType());
+                        trySpawningAbility(command);
 
-                        tickActions.add(action);
-
-
-//                        endPoint().sendToAllTCP(command);
                     }
                 }
             }
@@ -135,6 +152,20 @@ public class MyGdxGameServer extends MyGdxGame {
 
     }
 
+    private void trySpawningAbility(SpawnAbilityCommand command) {
+        Creature creature = gameState().creatures().get(command.creatureId());
+
+        if (creature.isAlive() &&
+                creature.params().attackCooldownTimer().time() > creature.params().attackCooldownTime()) {
+            AddAbilityAction action =
+                    AddAbilityAction.of(command.abilityId(), command.creatureId(),
+                            command.dirVector(),
+                            command.abilityType());
+
+            tickActions.add(action);
+        }
+    }
+
     @Override
     public void initState() {
         AreaId areaId = gameState().defaultAreaId();
@@ -149,7 +180,7 @@ public class MyGdxGameServer extends MyGdxGame {
                 Vector2.of(27.440567f, 32.387764f),
                 Vector2.of(23.27239f, 31.570148f),
                 Vector2.of(17.861256f, 29.470364f),
-                Vector2.of(19.642681f, 23.934418f),
+//                Vector2.of(19.642681f, 23.934418f),
                 Vector2.of(7.6982408f, 38.85155f),
                 Vector2.of(7.5632095f, 51.08941f),
                 Vector2.of(14.64726f, 65.53082f),
@@ -200,12 +231,14 @@ public class MyGdxGameServer extends MyGdxGame {
     @Override
     public void handleAttackTarget(CreatureId attackingCreatureId, Vector2 vectorTowardsTarget,
                                    String abilityType) {
+
+        Creature attackingCreature = gameState().creatures().get(attackingCreatureId);
+
         AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 100000));
+        trySpawningAbility(
+                SpawnAbilityCommand.of(abilityId, attackingCreature.params().areaId(), attackingCreature.params().id(),
+                        abilityType, vectorTowardsTarget));
 
-        AddAbilityAction action =
-                AddAbilityAction.of(abilityId, attackingCreatureId, vectorTowardsTarget, abilityType);
-
-        tickActions.add(action);
     }
 
     @Override

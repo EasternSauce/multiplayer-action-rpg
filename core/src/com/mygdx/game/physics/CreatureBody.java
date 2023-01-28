@@ -78,11 +78,15 @@ public class CreatureBody {
 
     public void trySetTransform(Vector2 vector) {
         if (!world.b2world().isLocked()) {
-            b2Body.setTransform(vector.x(), vector.y(), b2Body.getAngle());
+            forceSetTransform(vector);
         }
 
     }
 
+
+    public void forceSetTransform(Vector2 vector) {
+        b2Body.setTransform(vector.x(), vector.y(), b2Body.getAngle());
+    }
 
     public void onRemove() {
         world.b2world().destroyBody(b2Body);
