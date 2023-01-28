@@ -34,13 +34,12 @@ public class AbilityParams {
 
     Set<CreatureId> creaturesAlreadyHit = new HashSet<>();
 
-    public static AbilityParams of(AbilityId abilityId, AreaId areaId, Vector2 pos, Float width, Float height,
+    public static AbilityParams of(AbilityId abilityId, AreaId areaId, Float width, Float height,
                                    Float range,
                                    String abilityType) {
         AbilityParams params = AbilityParams.of();
         params.id = abilityId;
         params.areaId = areaId;
-        params.pos = pos;
         params.width = width;
         params.height = height;
         params.range = range;

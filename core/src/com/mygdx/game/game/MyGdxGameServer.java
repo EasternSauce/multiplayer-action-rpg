@@ -3,6 +3,7 @@ package com.mygdx.game.game;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
+import com.mygdx.game.ability.AbilityId;
 import com.mygdx.game.ability.AbilityState;
 import com.mygdx.game.action.*;
 import com.mygdx.game.command.*;
@@ -97,11 +98,12 @@ public class MyGdxGameServer extends MyGdxGame {
                         SpawnAbilityCommand command = (SpawnAbilityCommand) object;
 
                         AddAbilityAction action =
-                                AddAbilityAction.of(command.abilityId(), command.creatureId(), command.pos(),
+                                AddAbilityAction.of(command.abilityId(), command.creatureId(),
                                         command.dirVector(),
                                         command.abilityType());
 
                         tickActions.add(action);
+
 
 //                        endPoint().sendToAllTCP(command);
                     }
@@ -193,6 +195,17 @@ public class MyGdxGameServer extends MyGdxGame {
             spawnEnemy(enemyId, areaId, pos, "skeleton");
             endPoint().sendToAllTCP(SpawnEnemyCommand.of(enemyId, areaId, "skeleton", pos));
         });
+    }
+
+    @Override
+    public void handleAttackTarget(CreatureId attackingCreatureId, Vector2 vectorTowardsTarget,
+                                   String abilityType) {
+        AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 100000));
+
+        AddAbilityAction action =
+                AddAbilityAction.of(abilityId, attackingCreatureId, vectorTowardsTarget, abilityType);
+
+        tickActions.add(action);
     }
 
     @Override

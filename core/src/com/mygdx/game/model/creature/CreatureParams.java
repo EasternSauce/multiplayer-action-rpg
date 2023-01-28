@@ -45,10 +45,12 @@ public class CreatureParams {
 
     String textureName;
 
-    SimpleTimer attackCommandsPerSecondLimitTimer = SimpleTimer.of(Float.MAX_VALUE, false);
     SimpleTimer movementCommandsPerSecondLimitTimer = SimpleTimer.of(Float.MAX_VALUE, false);
+    SimpleTimer attackCommandsPerSecondLimitTimer = SimpleTimer.of(Float.MAX_VALUE, false);
 
     SimpleTimer isStillMovingTimer = SimpleTimer.of(Float.MAX_VALUE, false);
+
+    SimpleTimer attackCooldownTimer = SimpleTimer.of(Float.MAX_VALUE, false);
 
     public static CreatureParams of(CreatureId creatureId, AreaId areaId, Vector2 pos, String textureName) {
         CreatureParams params = CreatureParams.of();

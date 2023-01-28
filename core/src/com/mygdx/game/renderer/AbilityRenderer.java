@@ -74,7 +74,7 @@ public class AbilityRenderer {
     private void updateSprite(TextureRegion texture, GameState gameState) {
 
         Ability ability = gameState.abilities().get(abilityId);
-        AbilityAnimationConfig config = ability.animationConfig();
+//        AbilityAnimationConfig config = ability.animationConfig();
 
         sprite.setRegion(texture);
         sprite.setSize(ability.params().width(), ability.params().height());
@@ -87,17 +87,21 @@ public class AbilityRenderer {
     public void update(GameState gameState) {
 
         Ability ability = gameState.abilities().get(abilityId);
-        AbilityAnimationConfig config = ability.animationConfig();
 
-        if (config.channelTime() > 0f && ability.params().state() == AbilityState.CHANNEL) {
-            TextureRegion texture = channelAnimation().getKeyFrame(ability.params().stateTimer().time(),
-                    ability.params().isChannelAnimationLooping());
-            updateSprite(texture, gameState);
-        } else if (config.activeTime() > 0f && ability.params().state() == AbilityState.ACTIVE) {
-            TextureRegion texture = activeAnimation().getKeyFrame(ability.params().stateTimer().time(),
-                    ability.params().isActiveAnimationLooping());
-            updateSprite(texture, gameState);
+        if (ability != null) {
+            AbilityAnimationConfig config = ability.animationConfig();
+
+            if (config.channelTime() > 0f && ability.params().state() == AbilityState.CHANNEL) {
+                TextureRegion texture = channelAnimation().getKeyFrame(ability.params().stateTimer().time(),
+                        ability.params().isChannelAnimationLooping());
+                updateSprite(texture, gameState);
+            } else if (config.activeTime() > 0f && ability.params().state() == AbilityState.ACTIVE) {
+                TextureRegion texture = activeAnimation().getKeyFrame(ability.params().stateTimer().time(),
+                        ability.params().isActiveAnimationLooping());
+                updateSprite(texture, gameState);
+            }
         }
+
     }
 
     public void render(DrawingLayer drawingLayer, GameState gameState) {

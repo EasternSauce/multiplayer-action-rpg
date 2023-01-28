@@ -139,4 +139,9 @@ public abstract class MyGdxGame extends Game {
         }
     }
 
+    public void handleAttackTarget(CreatureId attackingCreatureId, Vector2 vectorTowardsTarget,
+                                   String abilityType) {
+    }
+
+    ;
 }

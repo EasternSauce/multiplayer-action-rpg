@@ -1,6 +1,7 @@
 package com.mygdx.game.ability;
 
 import com.mygdx.game.model.GameState;
+import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.physics.GamePhysics;
 import com.mygdx.game.renderer.AbilityAnimationConfig;
 import com.mygdx.game.util.Vector2;
@@ -49,13 +50,17 @@ public class Ability {
         float attackShiftX = dirVector.normalized().x() * params.range();
         float attackShiftY = dirVector.normalized().y() * params.range();
 
-        Vector2 creaturePos = gameState.creatures().get(params.creatureId()).params().pos();
+        Creature creature = gameState.creatures().get(params.creatureId());
 
-        float attackRectX = attackShiftX + creaturePos.x();
-        float attackRectY = attackShiftY + creaturePos.y();
+        if (creature != null) {
+            Vector2 creaturePos = creature.params().pos();
 
-        params.pos(Vector2.of(attackRectX, attackRectY));
-        params.rotationAngle(theta);
+            float attackRectX = attackShiftX + creaturePos.x();
+            float attackRectY = attackShiftY + creaturePos.y();
+
+            params.pos(Vector2.of(attackRectX, attackRectY));
+            params.rotationAngle(theta);
+        }
     }
 
     public static Ability of(AbilityParams params) {

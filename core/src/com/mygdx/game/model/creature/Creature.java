@@ -1,6 +1,6 @@
 package com.mygdx.game.model.creature;
 
-import com.mygdx.game.model.GameState;
+import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.physics.GamePhysics;
 import com.mygdx.game.renderer.CreatureAnimationConfig;
 import com.mygdx.game.util.Vector2;
@@ -12,7 +12,7 @@ public abstract class Creature {
 
     public abstract Creature params(CreatureParams params);
 
-    public void update(float delta, GameState gameState, GamePhysics physics) {
+    public void update(float delta, MyGdxGame game) {
 
         if (!params().reachedTargetPos()) {
             moveTowardsTarget();
@@ -26,7 +26,7 @@ public abstract class Creature {
             params().isStillMovingTimer().restart();
         }
 
-        updateAutomaticControls(gameState, physics); // TODO: move this to playscreen?
+        updateAutomaticControls(game); // TODO: move this to playscreen?
         updateTimers(delta);
 
 
@@ -58,9 +58,9 @@ public abstract class Creature {
     public void updateTimers(float delta) {
         params().animationTimer().update(delta);
         params().pathCalculationCooldownTimer().update(delta);
-        params().attackCommandsPerSecondLimitTimer().update(delta);
         params().movementCommandsPerSecondLimitTimer().update(delta);
         params().isStillMovingTimer().update(delta);
+        params().attackCooldownTimer().update(delta);
         // add other timers here...
     }
 
@@ -90,7 +90,7 @@ public abstract class Creature {
         return 4;
     }
 
-    public void updateAutomaticControls(GameState gameState, GamePhysics physics) {
+    public void updateAutomaticControls(MyGdxGame game) {
 
     }
 

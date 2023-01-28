@@ -91,13 +91,12 @@ public class MyGdxGameClient extends MyGdxGame {
             System.out.println("Vector2.of(" + pos.x() + "f, " + pos.y() + "f),");
         }
         if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
-            AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 100000));
-
-            Vector2 pos = gameState().creatures().get(thisPlayerId).params().pos();
 
             Creature player = gameState().creatures().get(thisPlayerId);
 
-            if (player.params().attackCommandsPerSecondLimitTimer().time() > 0.4f) {
+            if (player.params().attackCommandsPerSecondLimitTimer().time() > 0.2f) { // TODO: move cooldown to param?
+                AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 100000));
+
                 float mouseX = Gdx.input.getX();
                 float mouseY = Gdx.input.getY();
 
@@ -107,7 +106,7 @@ public class MyGdxGameClient extends MyGdxGame {
                 Vector2 mouseDirVector =
                         Vector2.of(mouseX - centerX, (Gdx.graphics.getHeight() - mouseY) - centerY).normalized();
 
-                endPoint().sendTCP(SpawnAbilityCommand.of(abilityId, AreaId.of("area1"), thisPlayerId, "slash", pos,
+                endPoint().sendTCP(SpawnAbilityCommand.of(abilityId, AreaId.of("area1"), thisPlayerId, "slash",
                         mouseDirVector));
             }
         }

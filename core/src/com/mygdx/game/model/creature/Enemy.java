@@ -1,8 +1,8 @@
 package com.mygdx.game.model.creature;
 
+import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.pathing.Astar;
-import com.mygdx.game.physics.GamePhysics;
 import com.mygdx.game.physics.PhysicsWorld;
 import com.mygdx.game.util.Vector2;
 import lombok.Data;
@@ -54,34 +54,35 @@ public class Enemy extends Creature {
 
 
     @Override
-    public void updateAutomaticControls(GameState gameState, GamePhysics physics) {
-        CreatureId potentialTargetId = findTarget(gameState);
+    public void updateAutomaticControls(MyGdxGame game) {
+        CreatureId potentialTargetId = findTarget(game.gameState());
 
 
         Creature potentialTarget = null;
-        if (potentialTargetId != null) potentialTarget = gameState.creatures().get(potentialTargetId);
+        if (potentialTargetId != null) potentialTarget = game.gameState().creatures().get(potentialTargetId);
 
         if (potentialTargetId != null && this.isAlive() && potentialTarget.isAlive()) {
             Vector2 vectorTowardsTarget = this.params().pos().vectorTowards(potentialTarget.params().pos());
 
             handleNewTarget(potentialTargetId);
             handleMovement(potentialTarget);
-            handleAttackTarget(potentialTarget, vectorTowardsTarget);
+            handleAttackTarget(potentialTarget, vectorTowardsTarget, game);
             handleAbilityUsage(potentialTarget);
 
         } else {
             handleTargetLost();
         }
 
-        processPathfinding(gameState, physics);
+        processPathfinding(game);
 
     }
 
-    private void processPathfinding(GameState gameState, GamePhysics physics) {
-        if (this.params().areaId().equals(gameState.currentAreaId()) && this.params().targetCreatureId() != null &&
+    private void processPathfinding(MyGdxGame game) {
+        if (this.params().areaId().equals(game.gameState().currentAreaId()) &&
+                this.params().targetCreatureId() != null &&
                 (this.params().forcePathCalculation() || this.params().pathCalculationCooldownTimer().time() > 1f)) {
-            Creature target = gameState.creatures().get(this.params.targetCreatureId());
-            PhysicsWorld world = physics.physicsWorlds().get(this.params().areaId());
+            Creature target = game.gameState().creatures().get(this.params.targetCreatureId());
+            PhysicsWorld world = game.physics().physicsWorlds().get(this.params().areaId());
 
             Boolean isLineOfSight = world.isLineOfSight(this.params().pos(), target.params().pos());
 
@@ -132,10 +133,11 @@ public class Enemy extends Creature {
         }
     }
 
-    public void handleAttackTarget(Creature potentialTarget, Vector2 vectorTowardsTarget) {
-        if (potentialTarget.params().pos().distance(this.params().pos()) < 3f) {
-//            System.out.println(this.params().creatureId().value() + " attacking " +
-//                    potentialTarget.params().creatureId().value()); // TODO
+    public void handleAttackTarget(Creature potentialTarget, Vector2 vectorTowardsTarget, MyGdxGame game) {
+        if (potentialTarget.params().pos().distance(this.params().pos()) < 4f) {
+
+            game.handleAttackTarget(params().id(), vectorTowardsTarget, "slash");
+
         }
     }
 

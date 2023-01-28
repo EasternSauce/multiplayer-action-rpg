@@ -119,7 +119,7 @@ public class MyGdxGamePlayScreen implements Screen {
                 if (game.physics().creatureBodies().containsKey(creatureId) &&
                         game.physics().creatureBodies().get(creatureId)
                                 .getBodyPos().distance(creature.params().pos()) >
-                                0.05f // only setTransform if positions are far apart
+                                0.2f // only setTransform if positions are far apart
                 ) {
                     game.physics().creatureBodies().get(creatureId).trySetTransform(creature.params().pos());
                 }
@@ -130,7 +130,7 @@ public class MyGdxGamePlayScreen implements Screen {
                 if (game.physics().abilityBodies().containsKey(abilityId) &&
                         game.physics().abilityBodies().get(abilityId)
                                 .getBodyPos().distance(ability.params().pos()) >
-                                0.05f // only setTransform if positions are far apart
+                                0.2f // only setTransform if positions are far apart
                 ) {
                     game.physics().abilityBodies().get(abilityId).trySetTransform(ability.params().pos());
                 }
@@ -196,7 +196,7 @@ public class MyGdxGamePlayScreen implements Screen {
 
         synchronized (game.lock) {
             game.gameState().creatures()
-                    .forEach((creatureId, creature) -> creature.update(delta, game().gameState(), game().physics()));
+                    .forEach((creatureId, creature) -> creature.update(delta, game));
 
             game.gameState().abilities()
                     .forEach((abilityId, ability) -> ability.update(delta, game().gameState(), game().physics()));
