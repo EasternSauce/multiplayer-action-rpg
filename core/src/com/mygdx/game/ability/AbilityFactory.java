@@ -36,6 +36,7 @@ public class AbilityFactory {
             ability.params().creatureId(creatureId);
             ability.params().damage(20f);
             ability.params().isActiveAnimationLooping(false);
+            ability.params().attackWithoutMoving(true);
             ability.start(dirVector, gameState);
 
             return ability;

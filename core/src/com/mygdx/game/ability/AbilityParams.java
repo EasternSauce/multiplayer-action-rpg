@@ -42,6 +42,8 @@ public class AbilityParams {
     Float channelTime;
     Float activeTime;
 
+    Boolean attackWithoutMoving = false;
+
     public static AbilityParams of(AbilityId abilityId, AreaId areaId, Float width, Float height, Float channelTime,
                                    Float activeTime,
 
