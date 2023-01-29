@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -24,6 +25,7 @@ import com.mygdx.game.util.Vector2;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import space.earlygrey.shapedrawer.ShapeDrawer;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -234,7 +236,7 @@ public class MyGdxGamePlayScreen implements Screen {
                     if (ability != null && attackedCreature.isAlive()) {
                         if ((attackedIsPlayer || attackingIsPlayer) &&
                                 !ability.params().creaturesAlreadyHit().contains(event.attackedCreatureId())) {
-                            attackedCreature.takeDamage(ability.params().damage());
+                            attackedCreature.takeLifeDamage(ability.params().damage());
                         }
 
                         ability.params().creaturesAlreadyHit().add(event.attackedCreatureId());
@@ -338,8 +340,9 @@ public class MyGdxGamePlayScreen implements Screen {
 
             if (game.thisPlayerId != null) {
                 Creature creature = game.gameState().creatures().get(game.thisPlayerId);
+                assert creature != null;
 
-                if (creature != null && !creature.isAlive()) {
+                if (!creature.isAlive()) {
                     if (creature.params().respawnTimer().time() < creature.params().respawnTime()) {
                         Assets.drawLargeFont(game.renderer().hudDrawingLayer(), "You are dead!\nRespawning...\n" +
                                         String.format(Locale.US, "%.2f",
@@ -349,6 +352,19 @@ public class MyGdxGamePlayScreen implements Screen {
                                 Color.RED);
                     }
                 }
+
+                ShapeDrawer shapeDrawer = game.renderer().hudDrawingLayer().shapeDrawer();
+
+                shapeDrawer.filledRectangle(new Rectangle(10, 40, 100, 10), Color.ORANGE);
+                shapeDrawer.filledRectangle(new Rectangle(10, 40,
+                        100 * creature.params().life() / creature.params().maxLife(), 10), Color.RED);
+                shapeDrawer.filledRectangle(new Rectangle(10, 25, 100, 10), Color.ORANGE);
+                shapeDrawer.filledRectangle(new Rectangle(10, 25,
+                        100 * creature.params().stamina() / creature.params().maxStamina(), 10), Color.GREEN);
+                shapeDrawer.filledRectangle(new Rectangle(10, 10, 100, 10), Color.ORANGE);
+                shapeDrawer.filledRectangle(new Rectangle(10, 10,
+                        100 * creature.params().mana() / creature.params().maxMana(), 10), Color.BLUE);
+
             }
 
             game.renderer().hudDrawingLayer().spriteBatch().end();

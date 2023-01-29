@@ -87,6 +87,9 @@ public abstract class Ability {
         if (isPositionManipulated()) updatePosition(gameState);
         else params().pos(creature.params().pos());
 
+        creature.takeManaDamage(params().manaCost());
+        creature.takeStaminaDamage(params().staminaCost());
+
         progressStateToChannel();
 
         //take stamina damage

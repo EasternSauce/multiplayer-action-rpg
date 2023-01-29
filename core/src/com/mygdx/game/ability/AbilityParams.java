@@ -44,11 +44,11 @@ public class AbilityParams {
 
     Boolean attackWithoutMoving = false;
 
-    public static AbilityParams of(AbilityId abilityId, AreaId areaId, Float width, Float height, Float channelTime,
-                                   Float activeTime,
+    Float manaCost = 0f;
+    Float staminaCost = 0f;
 
-                                   Float range,
-                                   String textureName) {
+    public static AbilityParams of(AbilityId abilityId, AreaId areaId, Float width, Float height, Float channelTime,
+                                   Float activeTime, Float range, String textureName) {
         AbilityParams params = AbilityParams.of();
         params.id = abilityId;
         params.areaId = areaId;

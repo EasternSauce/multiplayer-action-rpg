@@ -43,7 +43,8 @@ public class AddAbilityAction implements GameStateAction {
                             .vectorTowards(creature.params().movementCommandTargetPos()).normalized()
                             .multiplyBy(0.15f);
             // move slightly forward if attacking while moving
-            if (!ability.params().attackWithoutMoving()) creature.params().movementCommandTargetPos(creature.params().pos().add(movementVector));
+            if (!ability.params().attackWithoutMoving())
+                creature.params().movementCommandTargetPos(creature.params().pos().add(movementVector));
         }
 
         gameState.abilities().put(abilityId, ability);

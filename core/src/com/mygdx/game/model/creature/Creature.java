@@ -1,5 +1,6 @@
 package com.mygdx.game.model.creature;
 
+import com.mygdx.game.ability.AbilityFactory;
 import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.renderer.CreatureAnimationConfig;
 import com.mygdx.game.util.Vector2;
@@ -98,7 +99,7 @@ public abstract class Creature {
         this.params().movementCommandTargetPos(this.params().pos());
     }
 
-    public void takeDamage(float damage) {
+    public void takeLifeDamage(float damage) {
         float beforeLife = params().life();
 
         float actualDamage = damage * 100f / (100f + params().armor());
@@ -112,6 +113,22 @@ public abstract class Creature {
         if (beforeLife > 0f && params().life() <= 0f) params().justDied(true);
     }
 
+    public void takeManaDamage(Float manaCost) {
+        if (params().mana() - manaCost > 0) {
+            params().mana(params().mana() - manaCost);
+        } else {
+            params().mana(0f);
+        }
+    }
+
+    public void takeStaminaDamage(Float staminaCost) {
+        if (params().stamina() - staminaCost > 0) {
+            params().stamina(params().stamina() - staminaCost);
+        } else {
+            params().stamina(0f);
+        }
+    }
+
     public void onDeath() {
 
     }
@@ -120,4 +137,10 @@ public abstract class Creature {
         return CreatureAnimationConfig.configs.get(params().textureName());
     }
 
+
+    public boolean canPerformAbility(String abilityType, boolean ignoreCooldown) {
+        return isAlive() && AbilityFactory.staminaCosts.getOrDefault(abilityType, 0f) <= params().stamina() &&
+                AbilityFactory.manaCosts.getOrDefault(abilityType, 0f) <= params().mana() &&
+                (ignoreCooldown || params().attackCooldownTimer().time() > params().attackCooldownTime());
+    }
 }

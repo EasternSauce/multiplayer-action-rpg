@@ -41,6 +41,8 @@ public class CreatureParams {
     Float maxLife = 100f;
     Float stamina = 100f;
     Float maxStamina = 100f;
+    Float mana = 100f;
+    Float maxMana = 100f;
     Float armor = 0f;
 
     String textureName;

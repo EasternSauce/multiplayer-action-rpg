@@ -162,9 +162,7 @@ public class MyGdxGameServer extends MyGdxGame {
     private void trySpawningAbility(SpawnAbilityCommand command, boolean ignoreCooldown) {
         Creature creature = gameState().creatures().get(command.creatureId());
 
-        if (creature.isAlive() &&
-                (ignoreCooldown ||
-                        creature.params().attackCooldownTimer().time() > creature.params().attackCooldownTime())) {
+        if (creature.canPerformAbility(command.abilityType(), ignoreCooldown)) {
             AddAbilityAction action =
                     AddAbilityAction.of(command.abilityId(), command.creatureId(), command.pos(),
                             command.dirVector(),
