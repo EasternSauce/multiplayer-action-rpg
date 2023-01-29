@@ -17,7 +17,8 @@ import com.mygdx.game.assets.Assets;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.Player;
-import com.mygdx.game.physics.event.AbilityHitsCreature;
+import com.mygdx.game.physics.event.AbilityHitsCreatureEvent;
+import com.mygdx.game.physics.event.AbilityHitsTerrainEvent;
 import com.mygdx.game.renderer.DrawingLayer;
 import com.mygdx.game.util.Vector2;
 import lombok.AllArgsConstructor;
@@ -211,15 +212,15 @@ public class MyGdxGamePlayScreen implements Screen {
                 .forEach((creatureId, creature) -> creature.update(delta, game));
 
         game.gameState().abilities()
-                .forEach((abilityId, ability) -> ability.update(delta, game().gameState()));
+                .forEach((abilityId, ability) -> ability.update(delta, game));
 
 
         // process physics queue
 
         synchronized (game.physics().physicsEventQueue()) {
             game.physics().physicsEventQueue().forEach(physicsEvent -> {
-                if (physicsEvent instanceof AbilityHitsCreature) {
-                    AbilityHitsCreature event = (AbilityHitsCreature) physicsEvent;
+                if (physicsEvent instanceof AbilityHitsCreatureEvent) {
+                    AbilityHitsCreatureEvent event = (AbilityHitsCreatureEvent) physicsEvent;
 
                     Creature attackedCreature = game.gameState().creatures().get(event.attackedCreatureId());
 
@@ -227,17 +228,27 @@ public class MyGdxGamePlayScreen implements Screen {
 
                     boolean attackedIsPlayer = (attackedCreature instanceof Player);
                     boolean attackingIsPlayer = (attackingCreature instanceof Player);
-                    System.out.println(attackedIsPlayer + " zzz " + attackingIsPlayer);
+
+                    Ability ability = game.gameState().abilities().get(event.abilityId());
+
+                    if (ability != null && attackedCreature.isAlive()) {
+                        if ((attackedIsPlayer || attackingIsPlayer) &&
+                                !ability.params().creaturesAlreadyHit().contains(event.attackedCreatureId())) {
+                            attackedCreature.takeDamage(ability.params().damage());
+                        }
+
+                        ability.params().creaturesAlreadyHit().add(event.attackedCreatureId());
+                        ability.onCreatureHit();
+                    }
+
+                }
+                if (physicsEvent instanceof AbilityHitsTerrainEvent) {
+                    AbilityHitsTerrainEvent event = (AbilityHitsTerrainEvent) physicsEvent;
 
                     Ability ability = game.gameState().abilities().get(event.abilityId());
 
                     if (ability != null) {
-                        if ((attackedIsPlayer || attackingIsPlayer) &&
-                                !ability.params().creaturesAlreadyHit().contains(event.attackedCreatureId())) {
-                            attackedCreature.takeDamage(30f);
-                        }
-
-                        ability.params().creaturesAlreadyHit().add(event.attackedCreatureId());
+                        ability.onTerrainHit();
                     }
 
                 }

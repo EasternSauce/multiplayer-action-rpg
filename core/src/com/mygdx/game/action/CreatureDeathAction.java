@@ -17,11 +17,13 @@ public class CreatureDeathAction implements GameStateAction {
     public void applyToGame(MyGdxGame game) {
         Creature creature = game.gameState().creatures().get(creatureId);
 
-        creature.params().lastFrameLife(0f);
         creature.params().life(0f); // just to make sure its dead on client side
+        creature.params().justDied(false);
+        creature.params().isDead(true);
         creature.stopMoving();
         game.physics().setBodySensor(creatureId, true);
         creature.params().respawnTimer().restart();
+        creature.params().awaitingRespawn(true);
         creature.onDeath();
 
     }

@@ -40,6 +40,10 @@ public class B2BodyFactory {
             b2body.setMassData(massData);
         }
 
+        if (sleepingAllowed != null) {
+            b2body.setSleepingAllowed(sleepingAllowed);
+        }
+
         return b2body;
     }
 
@@ -49,7 +53,7 @@ public class B2BodyFactory {
                 Vector2.of(terrainTileBody.pos().x() * terrainTileBody.tileWidth() + terrainTileBody.tileWidth() / 2,
                         terrainTileBody.pos().y() * terrainTileBody.tileHeight() + terrainTileBody.tileHeight() / 2),
                 BodyType.StaticBody,
-                terrainTileBody, Rectangle.of(terrainTileBody.tileWidth(), terrainTileBody.tileHeight()), false, null,
+                terrainTileBody, Rectangle.of(terrainTileBody.tileWidth(), terrainTileBody.tileHeight()), false, false,
                 null, null);
 
     }
@@ -60,7 +64,7 @@ public class B2BodyFactory {
     }
 
     public static Body createAbilityB2Body(PhysicsWorld world, AbilityBody abilityBody, Vector2 pos, float[] vertices) {
-        return createB2Body(world, pos, BodyType.KinematicBody, abilityBody, Polygon.of(vertices), true, false, null,
+        return createB2Body(world, pos, BodyType.DynamicBody, abilityBody, Polygon.of(vertices), true, false, null,
                 null);
     }
 }

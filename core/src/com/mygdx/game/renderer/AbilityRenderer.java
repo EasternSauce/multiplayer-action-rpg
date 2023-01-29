@@ -89,13 +89,11 @@ public class AbilityRenderer {
         Ability ability = gameState.abilities().get(abilityId);
 
         if (ability != null) {
-            AbilityAnimationConfig config = ability.animationConfig();
-
-            if (config.channelTime() > 0f && ability.params().state() == AbilityState.CHANNEL) {
+            if (ability.params().channelTime() > 0f && ability.params().state() == AbilityState.CHANNEL) {
                 TextureRegion texture = channelAnimation().getKeyFrame(ability.params().stateTimer().time(),
                         ability.params().isChannelAnimationLooping());
                 updateSprite(texture, gameState);
-            } else if (config.activeTime() > 0f && ability.params().state() == AbilityState.ACTIVE) {
+            } else if (ability.params().activeTime() > 0f && ability.params().state() == AbilityState.ACTIVE) {
                 TextureRegion texture = activeAnimation().getKeyFrame(ability.params().stateTimer().time(),
                         ability.params().isActiveAnimationLooping());
                 updateSprite(texture, gameState);
@@ -108,14 +106,12 @@ public class AbilityRenderer {
         Ability ability = gameState.abilities().get(abilityId);
 
         if (ability != null) {
-            AbilityAnimationConfig config = ability.animationConfig();
-
             if (sprite.getTexture() != null) {
-                if (config.channelTime() > 0f &&
+                if (ability.params().channelTime() > 0f &&
                         ability.params().state() == AbilityState.CHANNEL) {
                     sprite.draw(drawingLayer.spriteBatch());
                 }
-                if (config.activeTime() > 0f &&
+                if (ability.params().activeTime() > 0f &&
                         ability.params().state() == AbilityState.ACTIVE) {
                     sprite.draw(drawingLayer.spriteBatch());
                 }

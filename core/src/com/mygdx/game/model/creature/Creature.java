@@ -65,7 +65,7 @@ public abstract class Creature {
     }
 
     public boolean isAlive() {
-        return params().life() > 0f;
+        return !params().isDead();
     }
 
     public WorldDirection facingDirection() {
@@ -99,7 +99,7 @@ public abstract class Creature {
     }
 
     public void takeDamage(float damage) {
-        params().lastFrameLife(params().life());
+        float beforeLife = params().life();
 
         float actualDamage = damage * 100f / (100f + params().armor());
 
@@ -108,6 +108,8 @@ public abstract class Creature {
         } else {
             params().life(0f);
         }
+
+        if (beforeLife > 0f && params().life() <= 0f) params().justDied(true);
     }
 
     public void onDeath() {

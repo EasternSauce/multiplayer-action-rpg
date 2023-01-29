@@ -16,5 +16,6 @@ public class SpawnAbilityCommand implements GameCommand {
     AreaId areaId;
     CreatureId creatureId;
     String abilityType;
+    Vector2 pos;
     Vector2 dirVector;
 }

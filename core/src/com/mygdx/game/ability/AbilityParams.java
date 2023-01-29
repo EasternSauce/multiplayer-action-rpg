@@ -22,7 +22,7 @@ public class AbilityParams {
     CreatureId creatureId;
     SimpleTimer stateTimer = SimpleTimer.of(Float.MAX_VALUE, false);
     Vector2 dirVector;
-    String abilityType;
+    String textureName;
 //    AbilityRect rect;
 
     Float rotationAngle = 0f;
@@ -30,20 +30,32 @@ public class AbilityParams {
     Boolean isChannelAnimationLooping = false;
     Boolean isActiveAnimationLooping = false;
 
-    Float range;
+    Float range = null;
 
     Set<CreatureId> creaturesAlreadyHit = new HashSet<>();
 
-    public static AbilityParams of(AbilityId abilityId, AreaId areaId, Float width, Float height,
+    Vector2 velocity = null;
+    Float speed = null;
+
+    Float damage = null;
+
+    Float channelTime;
+    Float activeTime;
+
+    public static AbilityParams of(AbilityId abilityId, AreaId areaId, Float width, Float height, Float channelTime,
+                                   Float activeTime,
+
                                    Float range,
-                                   String abilityType) {
+                                   String textureName) {
         AbilityParams params = AbilityParams.of();
         params.id = abilityId;
         params.areaId = areaId;
         params.width = width;
         params.height = height;
+        params.channelTime = channelTime;
+        params.activeTime = activeTime;
         params.range = range;
-        params.abilityType = abilityType;
+        params.textureName = textureName;
 
         return params;
     }

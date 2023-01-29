@@ -81,7 +81,7 @@ public class Enemy extends Creature {
         if (this.params().areaId().equals(game.gameState().currentAreaId()) &&
                 this.params().targetCreatureId() != null &&
                 (this.params().forcePathCalculation() || this.params().pathCalculationCooldownTimer().time() > 1f)) {
-            Creature target = game.gameState().creatures().get(this.params.targetCreatureId());
+            Creature target = game.gameState().creatures().get(this.params().targetCreatureId());
             PhysicsWorld world = game.physics().physicsWorlds().get(this.params().areaId());
 
             Boolean isLineOfSight = world.isLineOfSight(this.params().pos(), target.params().pos());
@@ -113,12 +113,12 @@ public class Enemy extends Creature {
                 potentialTarget.params().pos().distance(this.params().pos()) < enemySearchDistance) {
             if (this.params().pathTowardsTarget() != null &&
                     !this.params().pathTowardsTarget().isEmpty()) {
-                List<Vector2> path = this.params.pathTowardsTarget();
+                List<Vector2> path = this.params().pathTowardsTarget();
                 Vector2 nextNodeOnPath = path.get(0);
                 if (this.params().pos().distance(nextNodeOnPath) < 2f) {
                     List<Vector2> changedPath = new LinkedList<>(path);
                     changedPath.remove(0);
-                    this.params.pathTowardsTarget(changedPath);
+                    this.params().pathTowardsTarget(changedPath);
                 } else {
                     this.params().movementCommandTargetPos(nextNodeOnPath);
                     this.params().reachedTargetPos(false);
@@ -147,7 +147,7 @@ public class Enemy extends Creature {
 
 
     public void handleTargetLost() {
-        this.params.targetCreatureId(null);
+        this.params().targetCreatureId(null);
         stopMoving();
     }
 }

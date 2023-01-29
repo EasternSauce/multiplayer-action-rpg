@@ -1,8 +1,8 @@
 package com.mygdx.game.action;
 
 import com.mygdx.game.ability.Ability;
+import com.mygdx.game.ability.AbilityFactory;
 import com.mygdx.game.ability.AbilityId;
-import com.mygdx.game.ability.AbilityParams;
 import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.creature.Creature;
@@ -17,7 +17,9 @@ import lombok.NoArgsConstructor;
 @Data
 public class AddAbilityAction implements GameStateAction {
     AbilityId abilityId;
-    CreatureId playerId;
+    CreatureId creatureId;
+
+    Vector2 pos;
     Vector2 dirVector;
 
     String abilityType;
@@ -26,16 +28,14 @@ public class AddAbilityAction implements GameStateAction {
     public void applyToGame(MyGdxGame game) {
         GameState gameState = game.gameState();
 
-        Creature creature = gameState.creatures().get(playerId);
-
+        Creature creature = gameState.creatures().get(creatureId);
 
         creature.params().attackCooldownTimer().restart();
 
         Ability ability =
-                Ability.of(AbilityParams.of(abilityId, gameState.defaultAreaId(), 2f, 2f, 1.8f, abilityType));
-        ability.params().creatureId(playerId);
-        ability.start(dirVector, gameState);
-
+                AbilityFactory.produceAbility(abilityType, abilityId, creature.params().areaId(), creatureId, gameState,
+                        dirVector);
+        if (pos != null) ability.params().pos(pos);
 
         if (creature.params().isMoving()) { // TODO: should this logic happen as part of this action? or elsewhere?
             Vector2 movementVector =

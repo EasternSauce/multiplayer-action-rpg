@@ -37,7 +37,6 @@ public class CreatureParams {
 
     List<Vector2> pathTowardsTarget = null;
 
-    Float lastFrameLife = 100f;
     Float life = 100f;
     Float maxLife = 100f;
     Float stamina = 100f;
@@ -57,6 +56,10 @@ public class CreatureParams {
     Float respawnTime = 5f;
 
     Float attackCooldownTime = 0.7f;
+
+    Boolean justDied = false;
+    Boolean isDead = false;
+    Boolean awaitingRespawn = false;
 
     public static CreatureParams of(CreatureId creatureId, AreaId areaId, Vector2 pos, String textureName) {
         CreatureParams params = CreatureParams.of();

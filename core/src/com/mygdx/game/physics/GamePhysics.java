@@ -6,7 +6,8 @@ import com.mygdx.game.ability.AbilityId;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.CreatureId;
-import com.mygdx.game.physics.event.AbilityHitsCreature;
+import com.mygdx.game.physics.event.AbilityHitsCreatureEvent;
+import com.mygdx.game.physics.event.AbilityHitsTerrainEvent;
 import com.mygdx.game.physics.event.PhysicsEvent;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -40,7 +41,6 @@ public class GamePhysics {
 
         physicsWorlds.forEach((areaId, physicsWorld) -> {
             physicsWorld.init();
-            // TODO: create contact listener...
             createContactListener(physicsWorld);
         });
 
@@ -52,10 +52,19 @@ public class GamePhysics {
             AbilityBody abilityBody = (AbilityBody) objB;
             if (!abilityBody.creatureId().equals(creatureBody.creatureId())) {
                 synchronized (physicsEventQueue) {
-                    physicsEventQueue.add(AbilityHitsCreature.of(abilityBody.creatureId(), creatureBody.creatureId(),
-                            abilityBody.abilityId()));
+                    physicsEventQueue.add(
+                            AbilityHitsCreatureEvent.of(abilityBody.creatureId(), creatureBody.creatureId(),
+                                    abilityBody.abilityId()));
                 }
             }
+        }
+        if (objA instanceof TerrainTileBody && objB instanceof AbilityBody) {
+//            TerrainTileBody terrainTileBody = (TerrainTileBody) objA;
+            AbilityBody abilityBody = (AbilityBody) objB;
+            synchronized (physicsEventQueue) {
+                physicsEventQueue.add(AbilityHitsTerrainEvent.of(abilityBody.abilityId()));
+            }
+
         }
     }
 

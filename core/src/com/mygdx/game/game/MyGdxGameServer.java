@@ -3,6 +3,7 @@ package com.mygdx.game.game;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
+import com.mygdx.game.ability.Ability;
 import com.mygdx.game.ability.AbilityId;
 import com.mygdx.game.ability.AbilityState;
 import com.mygdx.game.action.*;
@@ -43,10 +44,11 @@ public class MyGdxGameServer extends MyGdxGame {
     public void onUpdate() {
         synchronized (tickActions) {
             gameState().creatures().forEach((creatureId, creature) -> { // handle deaths server side
-                if (creature.params().lastFrameLife() > 0f && creature.params().life() <= 0f) { // death condition
+                if (creature.params().justDied()) { // death condition
                     CreatureDeathAction action = CreatureDeathAction.of(creatureId);
                     tickActions.add(action);
-                } else if (creature instanceof Player && !creature.isAlive() && // handle respawns server side
+                } else if (creature.params().awaitingRespawn() && creature instanceof Player &&
+                        // handle respawns server side
                         creature.params().respawnTimer().time() > creature.params().respawnTime()) {
                     Vector2 pos = Vector2.of((float) ((Math.random() * (28 - 18)) + 18),
                             (float) ((Math.random() * (12 - 6)) + 6));
@@ -120,7 +122,7 @@ public class MyGdxGameServer extends MyGdxGame {
                     } else if (object instanceof SpawnAbilityCommand) {
                         SpawnAbilityCommand command = (SpawnAbilityCommand) object;
 
-                        trySpawningAbility(command);
+                        trySpawningAbility(command, false);
 
                     } else if (object instanceof SpawnEnemyCommand) {
                         SpawnEnemyCommand command = (SpawnEnemyCommand) object;
@@ -157,13 +159,14 @@ public class MyGdxGameServer extends MyGdxGame {
 
     }
 
-    private void trySpawningAbility(SpawnAbilityCommand command) {
+    private void trySpawningAbility(SpawnAbilityCommand command, boolean ignoreCooldown) {
         Creature creature = gameState().creatures().get(command.creatureId());
 
         if (creature.isAlive() &&
-                creature.params().attackCooldownTimer().time() > creature.params().attackCooldownTime()) {
+                (ignoreCooldown ||
+                        creature.params().attackCooldownTimer().time() > creature.params().attackCooldownTime())) {
             AddAbilityAction action =
-                    AddAbilityAction.of(command.abilityId(), command.creatureId(),
+                    AddAbilityAction.of(command.abilityId(), command.creatureId(), command.pos(),
                             command.dirVector(),
                             command.abilityType());
 
@@ -240,10 +243,22 @@ public class MyGdxGameServer extends MyGdxGame {
         Creature attackingCreature = gameState().creatures().get(attackingCreatureId);
 
         AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 100000));
-        trySpawningAbility(
+        SpawnAbilityCommand command =
                 SpawnAbilityCommand.of(abilityId, attackingCreature.params().areaId(), attackingCreature.params().id(),
-                        abilityType, vectorTowardsTarget));
+                        abilityType, null, vectorTowardsTarget);
+        trySpawningAbility(command, false);
 
+    }
+
+    @Override
+    public void chainAbility(Ability ability, String chainIntoAbilityType) {
+        System.out.println("chaining ability");
+        AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 100000));
+        SpawnAbilityCommand command =
+                SpawnAbilityCommand.of(abilityId, ability.params().areaId(), ability.params().creatureId(),
+                        chainIntoAbilityType, ability.params().pos(), ability.params().dirVector());
+
+        trySpawningAbility(command, true);
     }
 
     @Override

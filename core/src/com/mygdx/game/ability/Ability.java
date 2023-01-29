@@ -1,77 +1,65 @@
 package com.mygdx.game.ability;
 
+import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.renderer.AbilityAnimationConfig;
 import com.mygdx.game.util.Vector2;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(staticName = "of")
 @Data
-public class Ability {
+public abstract class Ability {
     AbilityParams params;
 
-    public void update(Float delta, GameState gameState) {
+    public Boolean isPositionManipulated() {
+        return false;
+    }
+
+
+    public void update(Float delta, MyGdxGame game) {
         AbilityState state = params().state();
 
         if (state == AbilityState.CHANNEL || state == AbilityState.ACTIVE) {
-            updatePosition(gameState);
+            if (isPositionManipulated()) updatePosition(game.gameState());
+            else {
+                if (params().speed() != null) {
+                    params().velocity(params().dirVector().normalized().multiplyBy(params().speed()));
+                }
+                params().rotationAngle(params().dirVector().angleDeg());
+            }
+
         }
 
-        if (state == AbilityState.INACTIVE) {
-            // do nothing?
-        } else if (state == AbilityState.CHANNEL) {
+        if (state == AbilityState.CHANNEL) {
             onChannelUpdate();
 
-            if (params().stateTimer().time() > animationConfig().channelTime()) {
+            if (params().stateTimer().time() > params().channelTime()) {
                 progressStateToActive();
             }
         } else if (state == AbilityState.ACTIVE) {
             onActiveUpdate();
 
-            if (params().stateTimer().time() > animationConfig().activeTime()) {
+            if (params().stateTimer().time() > params().activeTime()) {
                 progressStateToInactive();
+                gameActionOnComplete(game);
             }
         }
 
         updateTimers(delta);
     }
 
-    private void updatePosition(GameState gameState) {
-        Vector2 dirVector = null;
-        if (params.dirVector().len() <= 0) dirVector = Vector2.of(1, 0).normalized();
-        else dirVector = params.dirVector();
-
-        Float theta = dirVector.angleDeg();
-
-        float attackShiftX = dirVector.normalized().x() * params.range();
-        float attackShiftY = dirVector.normalized().y() * params.range();
-
-        Creature creature = gameState.creatures().get(params.creatureId());
-
-        if (creature != null) {
-            Vector2 creaturePos = creature.params().pos();
-
-            float attackRectX = attackShiftX + creaturePos.x();
-            float attackRectY = attackShiftY + creaturePos.y();
-
-            params.pos(Vector2.of(attackRectX, attackRectY));
-            params.rotationAngle(theta);
-        }
+    protected void gameActionOnComplete(MyGdxGame game) {
     }
 
-    public static Ability of(AbilityParams params) {
-        Ability ability = Ability.of();
-        ability.params = params;
-        return ability;
-    }
-
-    private void onChannelUpdate() {
+    protected void updatePosition(GameState gameState) {
 
     }
 
-    private void onActiveUpdate() {
+    protected void onChannelUpdate() {
+
+    }
+
+    protected void onActiveUpdate() {
 
     }
 
@@ -85,8 +73,6 @@ public class Ability {
     private void progressStateToInactive() {
         params().state(AbilityState.INACTIVE);
         params().stateTimer().restart();
-
-        //deactivate body?
     }
 
     private void progressStateToChannel() {
@@ -97,7 +83,9 @@ public class Ability {
     public void start(Vector2 dir, GameState gameState) {
         params().dirVector(dir);
 
-        updatePosition(gameState);
+        Creature creature = gameState.creatures().get(params().creatureId());
+        if (isPositionManipulated()) updatePosition(gameState);
+        else params().pos(creature.params().pos());
 
         progressStateToChannel();
 
@@ -110,6 +98,14 @@ public class Ability {
     }
 
     public AbilityAnimationConfig animationConfig() {
-        return AbilityAnimationConfig.configs.get(params().abilityType());
+        return AbilityAnimationConfig.configs.get(params().textureName());
+    }
+
+    public void onCreatureHit() {
+
+    }
+
+    public void onTerrainHit() {
+
     }
 }

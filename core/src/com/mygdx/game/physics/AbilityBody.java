@@ -43,6 +43,10 @@ public class AbilityBody {
                 vertices[16]};
     }
 
+    public void setVelocity(Vector2 velocity) {
+        b2Body.setLinearVelocity(new com.badlogic.gdx.math.Vector2(velocity.x(), velocity.y()));
+    }
+
     public Vector2 getBodyPos() {
         return Vector2.of(b2Body.getWorldCenter().x, b2Body.getWorldCenter().y);
     }
@@ -67,9 +71,18 @@ public class AbilityBody {
     public void update(GameState gameState) {
         Ability ability = gameState.abilities().get(abilityId);
 
-        if (ability != null &&
-                (ability.params().state() == AbilityState.CHANNEL || ability.params().state() == AbilityState.ACTIVE)) {
-            b2Body.setTransform(ability.params().pos().x(), ability.params().pos().y(), 0f);
+        if (ability != null) {
+            if (ability.isPositionManipulated() &&
+                    (ability.params().state() == AbilityState.CHANNEL ||
+                            ability.params().state() == AbilityState.ACTIVE)) {
+                b2Body.setTransform(ability.params().pos().x(), ability.params().pos().y(), 0f);
+            }
+
+            if (ability.params().velocity() != null) {
+                setVelocity(ability.params().velocity());
+            }
+
+
         }
     }
 

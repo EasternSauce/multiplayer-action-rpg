@@ -21,6 +21,8 @@ public class RespawnCreatureAction implements GameStateAction {
 
         Creature creature = gameState.creatures().get(creatureId);
 
+        creature.params().awaitingRespawn(false);
+        creature.params().isDead(false);
         creature.params().life(creature.params().maxLife());
 
         creature.params().pos(pos);

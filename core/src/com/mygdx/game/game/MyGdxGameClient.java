@@ -109,8 +109,31 @@ public class MyGdxGameClient extends MyGdxGame {
                 Vector2 mouseDirVector =
                         Vector2.of(mouseX - centerX, (Gdx.graphics.getHeight() - mouseY) - centerY).normalized();
 
-                endPoint().sendTCP(SpawnAbilityCommand.of(abilityId, AreaId.of("area1"), thisPlayerId, "slash",
+                endPoint().sendTCP(SpawnAbilityCommand.of(abilityId, AreaId.of("area1"), thisPlayerId, "slash", null,
                         mouseDirVector));
+            }
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
+
+            Creature player = gameState().creatures().get(thisPlayerId);
+
+            if (player.params().attackCommandsPerSecondLimitTimer().time() > 0.2f) { // TODO: move cooldown to param?
+                player.params().attackCooldownTimer().restart();
+
+                AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 100000));
+
+                float mouseX = Gdx.input.getX();
+                float mouseY = Gdx.input.getY();
+
+                float centerX = Gdx.graphics.getWidth() / 2f;
+                float centerY = Gdx.graphics.getHeight() / 2f;
+
+                Vector2 mouseDirVector =
+                        Vector2.of(mouseX - centerX, (Gdx.graphics.getHeight() - mouseY) - centerY).normalized();
+
+                endPoint().sendTCP(SpawnAbilityCommand.of(abilityId, AreaId.of("area1"), thisPlayerId, "fireball",
+                        null, mouseDirVector));
             }
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.F11)) {

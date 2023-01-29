@@ -161,4 +161,7 @@ public abstract class MyGdxGame extends Game {
                                    String abilityType) {
     }
 
+    public void chainAbility(Ability ability, String abilityType) {
+
+    }
 }
