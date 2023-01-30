@@ -86,6 +86,10 @@ public abstract class MyGdxGame extends Game {
         return true;
     }
 
+    public boolean isRenderingAllowed() {
+        return true;
+    }
+
     @Override
     public void create() {
         playScreen.init(this);
@@ -96,12 +100,16 @@ public abstract class MyGdxGame extends Game {
         Creature creature = gameState().creatures().get(creatureId);
 
         if (creature != null) {
-            CreatureRenderer creatureRenderer = CreatureRenderer.of(creatureId);
-            creatureRenderer.init(gameRenderer.atlas(), gameState());
-            gameRenderer.creatureRenderers().put(creatureId, creatureRenderer);
-            CreatureBody creatureBody = CreatureBody.of(creatureId);
-            creatureBody.init(gamePhysics, gameState());
-            gamePhysics.creatureBodies().put(creatureId, creatureBody);
+            if (!gameRenderer.creatureRenderers().containsKey(creatureId)) {
+                CreatureRenderer creatureRenderer = CreatureRenderer.of(creatureId);
+                creatureRenderer.init(gameRenderer.atlas(), gameState());
+                gameRenderer.creatureRenderers().put(creatureId, creatureRenderer);
+            }
+            if (!gamePhysics.creatureBodies().containsKey(creatureId)) {
+                CreatureBody creatureBody = CreatureBody.of(creatureId);
+                creatureBody.init(gamePhysics, gameState());
+                gamePhysics.creatureBodies().put(creatureId, creatureBody);
+            }
         }
     }
 
@@ -109,12 +117,16 @@ public abstract class MyGdxGame extends Game {
         Ability ability = gameState().abilities().get(abilityId);
 
         if (ability != null) {
-            AbilityRenderer abilityRenderer = AbilityRenderer.of(abilityId);
-            abilityRenderer.init(gameRenderer.atlas(), gameState());
-            gameRenderer.abilityRenderers().put(abilityId, abilityRenderer);
-            AbilityBody abilityBody = AbilityBody.of(abilityId);
-            abilityBody.init(gamePhysics, gameState());
-            gamePhysics.abilityBodies().put(abilityId, abilityBody);
+            if (!gameRenderer.abilityRenderers().containsKey(abilityId)) {
+                AbilityRenderer abilityRenderer = AbilityRenderer.of(abilityId);
+                abilityRenderer.init(gameRenderer.atlas(), gameState());
+                gameRenderer.abilityRenderers().put(abilityId, abilityRenderer);
+            }
+            if (!gamePhysics.abilityBodies().containsKey(abilityId)) {
+                AbilityBody abilityBody = AbilityBody.of(abilityId);
+                abilityBody.init(gamePhysics, gameState());
+                gamePhysics.abilityBodies().put(abilityId, abilityBody);
+            }
         }
 
     }
@@ -164,4 +176,6 @@ public abstract class MyGdxGame extends Game {
     public void chainAbility(Ability ability, String abilityType) {
 
     }
+
+    public abstract void updateCreaturesAndAbilites(float delta, MyGdxGame game);
 }

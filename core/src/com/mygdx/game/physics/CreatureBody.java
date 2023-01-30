@@ -49,6 +49,8 @@ public class CreatureBody {
 
         Creature creature = gameState.creatures().get(creatureId);
 
+        setSensor(!creature.isAlive());
+
         float v = creature.params().speed();
 
         Vector2 normalMovingVector = creature.params().movingVector();
@@ -93,4 +95,7 @@ public class CreatureBody {
     }
 
 
+    public void setSensor(boolean sensor) {
+        b2Body.getFixtureList().get(0).setSensor(sensor);
+    }
 }

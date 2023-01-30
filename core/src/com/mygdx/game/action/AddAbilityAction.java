@@ -25,10 +25,17 @@ public class AddAbilityAction implements GameStateAction {
     String abilityType;
 
     @Override
+    public Vector2 actionObjectPos(GameState gameState) {
+        return pos;
+    }
+
+    @Override
     public void applyToGame(MyGdxGame game) {
         GameState gameState = game.gameState();
 
         Creature creature = gameState.creatures().get(creatureId);
+
+        if (creature == null) return;
 
         creature.params().attackCooldownTimer().restart();
 

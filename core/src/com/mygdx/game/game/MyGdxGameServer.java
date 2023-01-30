@@ -3,27 +3,33 @@ package com.mygdx.game.game;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
+import com.mygdx.game.Constants;
 import com.mygdx.game.ability.Ability;
 import com.mygdx.game.ability.AbilityId;
 import com.mygdx.game.ability.AbilityState;
 import com.mygdx.game.action.*;
 import com.mygdx.game.command.*;
+import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.creature.Player;
+import com.mygdx.game.physics.event.AbilityHitsCreatureEvent;
+import com.mygdx.game.physics.event.AbilityHitsTerrainEvent;
 import com.mygdx.game.util.GameStateHolder;
 import com.mygdx.game.util.Vector2;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.ConcurrentMap;
+import java.util.stream.Collectors;
 
 public class MyGdxGameServer extends MyGdxGame {
     private static MyGdxGameServer instance;
 
     final Server _endPoint = new Server(1638400, 204800);
     private final List<GameStateAction> tickActions = new ArrayList<>();
-    private final Map<Integer, CreatureId> connections = new HashMap<>();
+    private final Map<Integer, CreatureId> clientCreatures = new HashMap<>();
     Thread broadcastThread;
 
     private MyGdxGameServer() {
@@ -33,6 +39,11 @@ public class MyGdxGameServer extends MyGdxGame {
     public static MyGdxGameServer getInstance() {
         if (instance == null) instance = new MyGdxGameServer();
         return instance;
+    }
+
+    @Override
+    public boolean isRenderingAllowed() {
+        return false;
     }
 
     @Override
@@ -76,7 +87,17 @@ public class MyGdxGameServer extends MyGdxGame {
             tickActionsCopy.forEach(
                     gameStateAction -> gameStateAction.applyToGame(this));
 
-            endPoint().sendToAllTCP(ActionsHolder.of(tickActionsCopy));
+            Connection[] connections = endPoint().getConnections();
+            for (Connection connection : connections) {
+                if (!clientCreatures.containsKey(connection.getID())) continue;// TODO: why is this needed?
+                Creature creature = gameState().creatures().get(clientCreatures.get(connection.getID()));
+                List<GameStateAction> personalizedTickActions = tickActionsCopy.stream().filter(action ->
+                {
+                    return action.actionObjectPos(gameState()).distance(creature.params().pos()) <
+                            Constants.ClientGameUpdateRange;
+                }).collect(Collectors.toList());
+                connection.sendTCP(ActionsHolder.of(personalizedTickActions));
+            }
 
             tickActions.clear();
         }
@@ -114,7 +135,7 @@ public class MyGdxGameServer extends MyGdxGame {
 
                         connection.sendTCP(GameStateHolder.of(gameState(), true));
 
-                        connections.put(connection.getID(), command.playerId());
+                        clientCreatures.put(connection.getID(), command.playerId());
                     } else if (object instanceof SendChatMessageCommand) {
                         SendChatMessageCommand command = (SendChatMessageCommand) object;
 
@@ -137,7 +158,7 @@ public class MyGdxGameServer extends MyGdxGame {
             @Override
             public void disconnected(Connection connection) {
                 synchronized (tickActions) {
-                    CreatureId disconnectedCreatureId = connections.get(connection.getID());
+                    CreatureId disconnectedCreatureId = clientCreatures.get(connection.getID());
 
                     RemovePlayerAction removePlayerAction = RemovePlayerAction.of(disconnectedCreatureId);
                     tickActions.add(removePlayerAction);
@@ -149,7 +170,31 @@ public class MyGdxGameServer extends MyGdxGame {
             try {
                 while (true) {
                     Thread.sleep(350);
-                    endPoint().sendToAllTCP(GameStateHolder.of(gameState(), false));
+
+                    Connection[] connections = endPoint().getConnections();
+                    for (Connection connection : connections) {
+                        if (!clientCreatures.containsKey(connection.getID())) continue;// TODO: why is this needed?
+                        Creature creature = gameState().creatures().get(clientCreatures.get(connection.getID()));
+
+                        GameState personalizedGameState = GameState.of(gameState());
+                        ConcurrentMap<CreatureId, Creature> personalizedCreatures =
+                                personalizedGameState.creatures().entrySet().stream().filter(entry ->
+                                        entry.getValue().params().pos().distance(creature.params().pos()) <
+                                                Constants.ClientGameUpdateRange).collect(
+                                        Collectors.toConcurrentMap(Map.Entry::getKey, Map.Entry::getValue));
+                        personalizedGameState.creatures(personalizedCreatures);
+                        ConcurrentMap<AbilityId, Ability> personalizedAbilities =
+                                personalizedGameState.abilities().entrySet().stream().filter(entry ->
+                                        entry.getValue().params().pos().distance(creature.params().pos()) <
+                                                Constants.ClientGameUpdateRange).collect(
+                                        Collectors.toConcurrentMap(Map.Entry::getKey, Map.Entry::getValue));
+                        personalizedGameState.abilities(personalizedAbilities);
+                        
+                        personalizedGameState.existingCreatureIds(new HashSet<>(gameState().creatures().keySet()));
+                        personalizedGameState.existingAbilityIds(new HashSet<>(gameState().abilities().keySet()));
+
+                        connection.sendTCP(GameStateHolder.of(personalizedGameState, false));
+                    }
                 }
             } catch (InterruptedException e) {
                 // do nothing
@@ -186,7 +231,6 @@ public class MyGdxGameServer extends MyGdxGame {
                 Vector2.of(27.440567f, 32.387764f),
                 Vector2.of(23.27239f, 31.570148f),
                 Vector2.of(17.861256f, 29.470364f),
-//                Vector2.of(19.642681f, 23.934418f),
                 Vector2.of(7.6982408f, 38.85155f),
                 Vector2.of(7.5632095f, 51.08941f),
                 Vector2.of(14.64726f, 65.53082f),
@@ -243,20 +287,99 @@ public class MyGdxGameServer extends MyGdxGame {
         AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 100000));
         SpawnAbilityCommand command =
                 SpawnAbilityCommand.of(abilityId, attackingCreature.params().areaId(), attackingCreature.params().id(),
-                        abilityType, null, vectorTowardsTarget);
+                        abilityType, attackingCreature.params().pos(), vectorTowardsTarget);
         trySpawningAbility(command, false);
 
     }
 
     @Override
     public void chainAbility(Ability ability, String chainIntoAbilityType) {
-        System.out.println("chaining ability");
         AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 100000));
         SpawnAbilityCommand command =
                 SpawnAbilityCommand.of(abilityId, ability.params().areaId(), ability.params().creatureId(),
                         chainIntoAbilityType, ability.params().pos(), ability.params().dirVector());
 
         trySpawningAbility(command, true);
+    }
+
+    @Override
+    public void updateCreaturesAndAbilites(float delta, MyGdxGame game) {
+        game.physics().creatureBodies()
+                .forEach((creatureId, creatureBody) -> creatureBody.update(game.gameState()));
+
+        game.physics().abilityBodies()
+                .forEach((abilityId, abilityBody) -> abilityBody.update(game.gameState()));
+
+
+        // set gamestate position based on b2body position
+        game.gameState().creatures().forEach(
+                (creatureId, creature) -> {
+                    if (game.physics().creatureBodies().containsKey(creatureId)) {
+                        creature.params().pos(game.physics().creatureBodies().get(creatureId).getBodyPos());
+                    }
+
+                });
+
+        game.gameState().abilities().forEach(
+                (abilityId, ability) -> {
+                    if (game.physics().abilityBodies().containsKey(abilityId)) {
+                        ability.params().pos(game.physics().abilityBodies().get(abilityId).getBodyPos());
+                    }
+
+                });
+
+        game.renderer().creatureRenderers()
+                .forEach((creatureId, creatureAnimation) -> creatureAnimation.update(game.gameState()));
+
+        game.renderer().abilityRenderers()
+                .forEach((abilityId, abilityAnimation) -> abilityAnimation.update(game.gameState()));
+
+
+        game.gameState().creatures()
+                .forEach((creatureId, creature) -> creature.update(delta, game));
+
+        game.gameState().abilities()
+                .forEach((abilityId, ability) -> ability.update(delta, game));
+
+        synchronized (game.physics().physicsEventQueue()) {
+            game.physics().physicsEventQueue().forEach(physicsEvent -> {
+                if (physicsEvent instanceof AbilityHitsCreatureEvent) {
+                    AbilityHitsCreatureEvent event = (AbilityHitsCreatureEvent) physicsEvent;
+
+                    Creature attackedCreature = game.gameState().creatures().get(event.attackedCreatureId());
+
+                    Creature attackingCreature = game.gameState().creatures().get(event.attackingCreatureId());
+
+                    boolean attackedIsPlayer = (attackedCreature instanceof Player);
+                    boolean attackingIsPlayer = (attackingCreature instanceof Player);
+
+                    Ability ability = game.gameState().abilities().get(event.abilityId());
+
+                    if (ability != null && attackedCreature.isAlive()) {
+                        if ((attackedIsPlayer || attackingIsPlayer) &&
+                                !ability.params().creaturesAlreadyHit().contains(event.attackedCreatureId())) {
+                            attackedCreature.takeLifeDamage(ability.params().damage());
+                        }
+
+                        ability.params().creaturesAlreadyHit().add(event.attackedCreatureId());
+                        ability.onCreatureHit();
+                    }
+
+                }
+                if (physicsEvent instanceof AbilityHitsTerrainEvent) {
+                    AbilityHitsTerrainEvent event = (AbilityHitsTerrainEvent) physicsEvent;
+
+                    Ability ability = game.gameState().abilities().get(event.abilityId());
+
+                    if (ability != null) {
+                        ability.onTerrainHit();
+                    }
+
+                }
+            });
+            game.physics().physicsEventQueue().clear();
+        }
+
     }
 
     @Override

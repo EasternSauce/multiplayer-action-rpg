@@ -68,11 +68,6 @@ public class GamePhysics {
         }
     }
 
-    public void setBodySensor(CreatureId creatureId, boolean value) {
-        creatureBodies.get(creatureId).b2Body().getFixtureList().get(0).setSensor(value);
-
-    }
-
 
     private void createContactListener(PhysicsWorld physicsWorld) {
         World b2World = physicsWorld.b2world();

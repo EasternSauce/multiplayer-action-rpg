@@ -1,7 +1,9 @@
 package com.mygdx.game.action;
 
 import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.creature.CreatureId;
+import com.mygdx.game.util.Vector2;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,12 +12,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(staticName = "of")
 @Data
 public class RemovePlayerAction implements GameStateAction {
-    CreatureId playerId;
+    CreatureId creatureId;
+
+    @Override
+    public Vector2 actionObjectPos(GameState gameState) {
+        return gameState.creatures().get(creatureId).params().pos();
+    }
 
     @Override
     public void applyToGame(MyGdxGame game) {
         synchronized (game.creaturesToBeRemoved()) {
-            game.creaturesToBeRemoved().add(playerId);
+            game.creaturesToBeRemoved().add(creatureId);
         }
     }
 }

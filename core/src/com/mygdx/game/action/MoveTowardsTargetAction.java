@@ -15,15 +15,20 @@ import lombok.NoArgsConstructor;
 @Data
 public class MoveTowardsTargetAction implements GameStateAction {
 
-    CreatureId playerId;
+    CreatureId creatureId;
 
     Vector2 mousePos;
+
+    @Override
+    public Vector2 actionObjectPos(GameState gameState) {
+        return gameState.creatures().get(creatureId).params().pos();
+    }
 
     @Override
     public void applyToGame(MyGdxGame game) {
         GameState gameState = game.gameState();
 
-        Creature creature = gameState.creatures().get(playerId);
+        Creature creature = gameState.creatures().get(creatureId);
 
         if (creature.isAlive()) {
             Vector2 pos = creature.params().pos();

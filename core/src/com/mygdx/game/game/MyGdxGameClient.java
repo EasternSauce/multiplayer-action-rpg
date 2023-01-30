@@ -7,20 +7,23 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.mygdx.game.Constants;
+import com.mygdx.game.ability.Ability;
 import com.mygdx.game.ability.AbilityId;
 import com.mygdx.game.action.ActionsHolder;
 import com.mygdx.game.action.GameStateAction;
 import com.mygdx.game.command.*;
+import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
+import com.mygdx.game.model.creature.Player;
+import com.mygdx.game.physics.event.AbilityHitsCreatureEvent;
+import com.mygdx.game.physics.event.AbilityHitsTerrainEvent;
 import com.mygdx.game.util.GameStateHolder;
 import com.mygdx.game.util.Vector2;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class MyGdxGameClient extends MyGdxGame {
@@ -109,7 +112,8 @@ public class MyGdxGameClient extends MyGdxGame {
                 Vector2 mouseDirVector =
                         Vector2.of(mouseX - centerX, (Gdx.graphics.getHeight() - mouseY) - centerY).normalized();
 
-                endPoint().sendTCP(SpawnAbilityCommand.of(abilityId, AreaId.of("area1"), thisPlayerId, "slash", null,
+                endPoint().sendTCP(SpawnAbilityCommand.of(abilityId, AreaId.of("area1"), thisPlayerId, "slash",
+                        player.params().pos(),
                         mouseDirVector));
             }
         }
@@ -133,7 +137,7 @@ public class MyGdxGameClient extends MyGdxGame {
                         Vector2.of(mouseX - centerX, (Gdx.graphics.getHeight() - mouseY) - centerY).normalized();
 
                 endPoint().sendTCP(SpawnAbilityCommand.of(abilityId, AreaId.of("area1"), thisPlayerId, "fireball",
-                        null, mouseDirVector));
+                        player.params().pos(), mouseDirVector));
             }
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.F11)) {
@@ -148,7 +152,6 @@ public class MyGdxGameClient extends MyGdxGame {
                     Vector2.of(27.440567f, 32.387764f),
                     Vector2.of(23.27239f, 31.570148f),
                     Vector2.of(17.861256f, 29.470364f),
-//                Vector2.of(19.642681f, 23.934418f),
                     Vector2.of(7.6982408f, 38.85155f),
                     Vector2.of(7.5632095f, 51.08941f),
                     Vector2.of(14.64726f, 65.53082f),
@@ -219,9 +222,9 @@ public class MyGdxGameClient extends MyGdxGame {
                 } else if (object instanceof GameStateHolder) {
                     GameStateHolder action = (GameStateHolder) object;
 
-                    gameStateHolder.gameState(action.gameState());
 
                     if (action.initial()) {
+                        gameStateHolder.gameState(action.gameState());
 
                         synchronized (creaturesToBeCreated()) {
                             gameState().creatures()
@@ -229,6 +232,43 @@ public class MyGdxGameClient extends MyGdxGame {
                         }
 
                         isInitialized = true;
+
+                    } else {
+                        GameState oldGameState = gameState();
+                        GameState newGameState = action.gameState();
+
+                        Set<CreatureId> oldCreatureIds = oldGameState.creatures().keySet();
+                        Set<CreatureId> newCreatureIds = newGameState.existingCreatureIds();
+
+                        Set<CreatureId> creaturesAdded = new HashSet<>(newCreatureIds);
+                        creaturesAdded.removeAll(oldCreatureIds);
+
+                        Set<CreatureId> creaturesRemoved = new HashSet<>(oldCreatureIds);
+                        creaturesRemoved.removeAll(newCreatureIds);
+
+                        Set<AbilityId> oldAbilityIds = oldGameState.abilities().keySet();
+                        Set<AbilityId> newAbilityIds = newGameState.existingAbilityIds();
+
+                        Set<AbilityId> abilitiesAdded = new HashSet<>(newAbilityIds);
+                        abilitiesAdded.removeAll(oldAbilityIds);
+
+                        Set<AbilityId> abilitiesRemoved = new HashSet<>(oldAbilityIds);
+                        abilitiesRemoved.removeAll(newAbilityIds);
+
+                        synchronized (creaturesToBeCreated()) {
+                            creaturesToBeCreated().addAll(creaturesAdded);
+                        }
+                        synchronized (creaturesToBeRemoved()) {
+                            creaturesToBeRemoved().addAll(creaturesRemoved);
+                        }
+                        synchronized (abilitiesToBeCreated()) {
+                            abilitiesToBeCreated().addAll(abilitiesAdded);
+                        }
+                        synchronized (abilitiesToBeRemoved()) {
+                            abilitiesToBeRemoved().addAll(abilitiesRemoved);
+                        }
+
+                        gameStateHolder.gameState(newGameState);
 
                     }
 
@@ -269,6 +309,115 @@ public class MyGdxGameClient extends MyGdxGame {
     @Override
     public void initState() {
 
+    }
+
+    @Override
+    public void updateCreaturesAndAbilites(float delta, MyGdxGame game) {
+        Creature player = gameState().creatures().get(thisPlayerId);
+
+        Set<CreatureId> creaturesToUpdate = gameState().creatures().keySet().stream().filter(creatureId -> {
+            Creature creature = gameState().creatures().get(creatureId);
+            return creature.params().pos().distance(player.params().pos()) < Constants.ClientGameUpdateRange;
+        }).collect(Collectors.toSet());
+
+        Set<AbilityId> abilitiesToUpdate = gameState().abilities().keySet().stream().filter(abilityId -> {
+            Ability ability = gameState().abilities().get(abilityId);
+            return ability.params().pos().distance(player.params().pos()) < Constants.ClientGameUpdateRange;
+        }).collect(Collectors.toSet());
+
+
+        creaturesToUpdate.forEach(
+                creatureId -> {
+                    if (game.physics().creatureBodies().containsKey(creatureId)) {
+                        game.physics().creatureBodies().get(creatureId).update(game.gameState());
+                    }
+                });
+
+        abilitiesToUpdate
+                .forEach(abilityId -> {
+                    if (game.physics().abilityBodies().containsKey(abilityId)) {
+                        game.physics().abilityBodies().get(abilityId).update(game.gameState());
+                    }
+                });
+
+
+        // set gamestate position based on b2body position
+        creaturesToUpdate.forEach(
+                creatureId -> {
+                    if (game.physics().creatureBodies().containsKey(creatureId)) {
+                        game.gameState().creatures().get(creatureId).params()
+                                .pos(game.physics().creatureBodies().get(creatureId).getBodyPos());
+                    }
+
+                });
+
+        abilitiesToUpdate.forEach(
+                abilityId -> {
+                    if (game.physics().abilityBodies().containsKey(abilityId)) {
+                        game.gameState().abilities().get(abilityId).params()
+                                .pos(game.physics().abilityBodies().get(abilityId).getBodyPos());
+                    }
+
+                });
+
+        creaturesToUpdate
+                .forEach(creatureId -> {
+                    if (game.renderer().creatureRenderers().containsKey(creatureId)) {
+                        game.renderer().creatureRenderers().get(creatureId).update(game.gameState());
+                    }
+                });
+
+        abilitiesToUpdate
+                .forEach(abilityId -> {
+                    if (game.renderer().abilityRenderers().containsKey(abilityId)) {
+                        game.renderer().abilityRenderers().get(abilityId).update(game.gameState());
+                    }
+                });
+
+
+        creaturesToUpdate.forEach(creatureId -> game.gameState().creatures().get(creatureId).update(delta, game));
+
+        abilitiesToUpdate.forEach(abilityId -> game.gameState().abilities().get(abilityId).update(delta, game));
+
+        synchronized (game.physics().physicsEventQueue()) {
+            game.physics().physicsEventQueue().forEach(physicsEvent -> {
+                if (physicsEvent instanceof AbilityHitsCreatureEvent) {
+                    AbilityHitsCreatureEvent event = (AbilityHitsCreatureEvent) physicsEvent;
+
+                    Creature attackedCreature = game.gameState().creatures().get(event.attackedCreatureId());
+
+                    Creature attackingCreature = game.gameState().creatures().get(event.attackingCreatureId());
+
+                    boolean attackedIsPlayer = (attackedCreature instanceof Player);
+                    boolean attackingIsPlayer = (attackingCreature instanceof Player);
+
+                    Ability ability = game.gameState().abilities().get(event.abilityId());
+
+                    if (ability != null && creaturesToUpdate.contains(event.attackedCreatureId()) &&
+                            abilitiesToUpdate.contains(event.abilityId()) && attackedCreature.isAlive()) {
+                        if ((attackedIsPlayer || attackingIsPlayer) &&
+                                !ability.params().creaturesAlreadyHit().contains(event.attackedCreatureId())) {
+                            attackedCreature.takeLifeDamage(ability.params().damage());
+                        }
+
+                        ability.params().creaturesAlreadyHit().add(event.attackedCreatureId());
+                        ability.onCreatureHit();
+                    }
+
+                }
+                if (physicsEvent instanceof AbilityHitsTerrainEvent) {
+                    AbilityHitsTerrainEvent event = (AbilityHitsTerrainEvent) physicsEvent;
+
+                    Ability ability = game.gameState().abilities().get(event.abilityId());
+
+                    if (ability != null) {
+                        ability.onTerrainHit();
+                    }
+
+                }
+            });
+            game.physics().physicsEventQueue().clear();
+        }
     }
 
     @Override

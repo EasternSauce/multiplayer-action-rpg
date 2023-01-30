@@ -12,6 +12,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 @NoArgsConstructor(staticName = "of")
@@ -29,4 +30,20 @@ public class GameState {
     AreaId defaultAreaId = AreaId.of("area1");
 
     SimpleTimer generalTimer = SimpleTimer.of(0, true);
+
+    Set<CreatureId> existingCreatureIds;
+    Set<AbilityId> existingAbilityIds;
+
+    public static GameState of(GameState gameState) {
+        GameState newGameState = GameState.of();
+        newGameState.creatures(new ConcurrentHashMap<>(gameState.creatures));
+        newGameState.abilities(new ConcurrentHashMap<>(gameState.abilities));
+        newGameState.areas(new ConcurrentHashMap<>(gameState.areas));
+        newGameState.currentAreaId(gameState.currentAreaId);
+        newGameState.defaultAreaId(gameState.defaultAreaId);
+        newGameState.generalTimer(gameState.generalTimer);
+        newGameState.existingCreatureIds(gameState.existingCreatureIds);
+        newGameState.existingAbilityIds(gameState.existingAbilityIds);
+        return newGameState;
+    }
 }

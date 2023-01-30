@@ -16,16 +16,26 @@ public class RespawnCreatureAction implements GameStateAction {
     CreatureId creatureId;
     Vector2 pos;
 
+    @Override
+    public Vector2 actionObjectPos(GameState gameState) {
+        return pos;
+    }
+
     public void applyToGame(MyGdxGame game) {
         GameState gameState = game.gameState();
 
         Creature creature = gameState.creatures().get(creatureId);
 
-        creature.params().awaitingRespawn(false);
-        creature.params().isDead(false);
-        creature.params().life(creature.params().maxLife());
+        if (creature != null) {
+            creature.params().awaitingRespawn(false);
+            creature.params().isDead(false);
+            creature.params().life(creature.params().maxLife());
+            creature.params().stamina(creature.params().maxStamina());
+            creature.params().mana(creature.params().maxMana());
 
-        creature.params().pos(pos);
-        game.creaturesToTeleport().put(creatureId, pos);
+            creature.params().pos(pos);
+            game.creaturesToTeleport().put(creatureId, pos);
+        }
+
     }
 }

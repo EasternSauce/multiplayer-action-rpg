@@ -20,6 +20,11 @@ public class AddPlayerAction implements GameStateAction {
 
     String textureName;
 
+    @Override
+    public Vector2 actionObjectPos(GameState gameState) {
+        return pos;
+    }
+
     public void applyToGame(MyGdxGame game) {
         GameState gameState = game.gameState();
 

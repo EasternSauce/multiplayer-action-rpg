@@ -1,8 +1,10 @@
 package com.mygdx.game.action;
 
 import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
+import com.mygdx.game.util.Vector2;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,6 +16,11 @@ public class CreatureDeathAction implements GameStateAction {
     CreatureId creatureId;
 
 
+    @Override
+    public Vector2 actionObjectPos(GameState gameState) {
+        return gameState.creatures().get(creatureId).params().pos();
+    }
+
     public void applyToGame(MyGdxGame game) {
         Creature creature = game.gameState().creatures().get(creatureId);
 
@@ -21,7 +28,6 @@ public class CreatureDeathAction implements GameStateAction {
         creature.params().justDied(false);
         creature.params().isDead(true);
         creature.stopMoving();
-        game.physics().setBodySensor(creatureId, true);
         creature.params().respawnTimer().restart();
         creature.params().awaitingRespawn(true);
         creature.onDeath();
