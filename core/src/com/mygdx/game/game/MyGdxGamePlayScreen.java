@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -70,14 +69,12 @@ public class MyGdxGamePlayScreen implements Screen {
 
         game.renderer().mapScale(4.0f);
 
-        game.renderer().tiledMapRenderer(new OrthogonalTiledMapRenderer(maps().get(AreaId.of("area1")),
-                game.renderer().mapScale() / Constants.PPM));
-
-
         game.renderer().worldDrawingLayer(DrawingLayer.of());
         game.renderer().hudDrawingLayer(DrawingLayer.of());
 
         game.renderer().atlas(new TextureAtlas("assets/atlas/packed_atlas.atlas"));
+
+        game.renderer().init(maps);
 
         game.physics().init(maps, game.gameState());
 
@@ -177,7 +174,7 @@ public class MyGdxGamePlayScreen implements Screen {
         // process physics queue
 
 
-        game.renderer().tiledMapRenderer().setView(game.renderer().worldCamera());
+        game.renderer().areaRenderers().get(game.gameState().currentAreaId()).setView(game.renderer().worldCamera());
 
 
         updateCamera();
@@ -207,7 +204,7 @@ public class MyGdxGamePlayScreen implements Screen {
 
                 Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | coverageBuffer);
 
-                game.renderer().tiledMapRenderer().render(new int[]{0, 1, 2, 3});
+                game.renderer().areaRenderers().get(game.gameState().currentAreaId()).render(new int[]{0, 1});
 
 //        ScreenUtils.clear(1, 0, 0, 1);
                 game.renderer().worldDrawingLayer().spriteBatch().begin();
@@ -235,6 +232,8 @@ public class MyGdxGamePlayScreen implements Screen {
 //        game.renderer().worldDrawingLayer().spriteBatch().draw(img, 10, 10);
 
                 game.renderer().worldDrawingLayer().spriteBatch().end();
+
+                game.renderer().areaRenderers().get(game.gameState().currentAreaId()).render(new int[]{2, 3});
 
                 if (debug) {
                     game.physics().debugRenderer()

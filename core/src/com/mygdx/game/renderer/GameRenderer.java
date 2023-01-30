@@ -2,8 +2,8 @@ package com.mygdx.game.renderer;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.ability.AbilityId;
 import com.mygdx.game.model.GameState;
@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
@@ -33,8 +34,6 @@ public class GameRenderer {
 //    Map<CreatureId, Sprite> creatureSprites;
 //
 
-    OrthogonalTiledMapRenderer tiledMapRenderer;
-
     Map<AreaId, String> mapsToLoad;
 
     float mapScale;
@@ -45,6 +44,12 @@ public class GameRenderer {
 
     Map<CreatureId, CreatureRenderer> creatureRenderers = new HashMap<>();
     Map<AbilityId, AbilityRenderer> abilityRenderers = new HashMap<>();
+    Map<AreaId, AreaRenderer> areaRenderers = new HashMap<>();
+
+    public void init(Map<AreaId, TiledMap> maps) {
+        areaRenderers = maps.keySet().stream().collect(Collectors.toMap(areaId -> areaId, AreaRenderer::of));
+        areaRenderers.forEach((areaId, areaRenderer) -> areaRenderer.init(maps.get(areaId), mapScale));
+    }
 
     public void renderAliveCreatures(DrawingLayer drawingLayer, GameState gameState) {
         gameState.creatures().entrySet().stream().filter(entry -> entry.getValue().isAlive()).forEach(entry -> {

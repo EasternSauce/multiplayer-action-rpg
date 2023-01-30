@@ -14,6 +14,8 @@ public abstract class Creature {
 
     public void update(float delta, MyGdxGame game) {
 
+        regenerateStamina();
+
         if (!params().reachedTargetPos()) {
             moveTowardsTarget();
         }
@@ -30,6 +32,15 @@ public abstract class Creature {
         updateTimers(delta);
 
 
+    }
+
+    private void regenerateStamina() {
+        if (params().staminaRegenerationTimer().time() > params().staminaRegenerationTickTime()) {
+            float afterRegeneration = params().stamina() + params().staminaRegeneration();
+            params().stamina(Math.min(afterRegeneration, params().maxStamina()));
+            params().staminaRegenerationTimer().restart();
+
+        }
     }
 
     private void moveTowardsTarget() {
@@ -62,6 +73,7 @@ public abstract class Creature {
         params().isStillMovingTimer().update(delta);
         params().attackCooldownTimer().update(delta);
         params().respawnTimer().update(delta);
+        params().staminaRegenerationTimer().update(delta);
         // add other timers here...
     }
 

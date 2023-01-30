@@ -22,8 +22,6 @@ public class GameState {
 
     Map<CreatureId, Creature> creatures = new ConcurrentHashMap<>();
     Map<AbilityId, Ability> abilities = new ConcurrentHashMap<>();
-
-
     Map<AreaId, Area> areas = new ConcurrentHashMap<>();
     AreaId currentAreaId = AreaId.of("area1");
 

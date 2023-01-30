@@ -63,6 +63,10 @@ public class CreatureParams {
     Boolean isDead = false;
     Boolean awaitingRespawn = false;
 
+    SimpleTimer staminaRegenerationTimer = SimpleTimer.of(0, true);
+    Float staminaRegenerationTickTime = 0.02f;
+    Float staminaRegeneration = 0.35f;
+
     public static CreatureParams of(CreatureId creatureId, AreaId areaId, Vector2 pos, String textureName) {
         CreatureParams params = CreatureParams.of();
         params.id = creatureId;

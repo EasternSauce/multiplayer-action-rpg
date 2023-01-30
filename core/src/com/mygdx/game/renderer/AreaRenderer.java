@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.mygdx.game.Constants;
+import com.mygdx.game.model.area.AreaId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class AreaRenderer {
 
+    AreaId id;
     OrthogonalTiledMapRenderer tiledMapRenderer;
 
     public void init(TiledMap map, float mapScale) {
@@ -30,4 +32,11 @@ public class AreaRenderer {
     public void dispose() {
         tiledMapRenderer.dispose();
     }
+
+    public static AreaRenderer of(AreaId id) {
+        AreaRenderer areaRenderer = AreaRenderer.of();
+        areaRenderer.id(id);
+        return areaRenderer;
+    }
+
 }

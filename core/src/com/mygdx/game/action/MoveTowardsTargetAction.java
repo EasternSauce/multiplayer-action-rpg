@@ -30,7 +30,7 @@ public class MoveTowardsTargetAction implements GameStateAction {
 
         Creature creature = gameState.creatures().get(creatureId);
 
-        if (creature.isAlive()) {
+        if (creature != null && creature.isAlive()) {
             Vector2 pos = creature.params().pos();
 
             float viewportRatioX = Constants.ViewpointWorldWidth / Constants.WindowWidth;
