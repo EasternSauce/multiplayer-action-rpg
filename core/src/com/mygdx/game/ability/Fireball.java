@@ -1,6 +1,7 @@
 package com.mygdx.game.ability;
 
 import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.model.GameState;
 import com.mygdx.game.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -33,7 +34,12 @@ public class Fireball extends Projectile {
     }
 
     @Override
-    protected void onActiveUpdate() {
+    protected void onActiveUpdate(GameState gameState) {
+        if (params().speed() != null) {
+            params().velocity(params().dirVector().normalized().multiplyBy(params().speed()));
+        }
+        params().rotationAngle(params().dirVector().angleDeg());
+
         if (params().stateTimer().time() < 2f) {
             params().speed(5f + (params().stateTimer().time() / 2f) * 40f);
         } else {
@@ -42,8 +48,13 @@ public class Fireball extends Projectile {
     }
 
     @Override
-    protected void gameActionOnComplete(MyGdxGame game) {
+    protected void onAbilityCompleted(MyGdxGame game) {
         game.chainAbility(this, "fireball_explosion");
+    }
+
+    @Override
+    void updatePosition(GameState gameState) {
+
     }
 
 }

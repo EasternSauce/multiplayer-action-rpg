@@ -1,5 +1,6 @@
 package com.mygdx.game.ability;
 
+import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.util.Vector2;
@@ -17,6 +18,11 @@ public class Attack extends Ability {
     @Override
     public Boolean isPositionManipulated() {
         return true;
+    }
+
+    @Override
+    void onAbilityCompleted(MyGdxGame game) {
+
     }
 
     ;
@@ -43,6 +49,28 @@ public class Attack extends Ability {
             params().pos(Vector2.of(attackRectX, attackRectY));
             params().rotationAngle(theta);
         }
+    }
+
+    @Override
+    void onChannelUpdate(GameState gameState) {
+        if (isPositionManipulated()) updatePosition(gameState);
+
+    }
+
+    @Override
+    void onActiveUpdate(GameState gameState) {
+        if (isPositionManipulated()) updatePosition(gameState);
+
+    }
+
+    @Override
+    public void onCreatureHit() {
+
+    }
+
+    @Override
+    public void onTerrainHit() {
+
     }
 
     public static Attack of(AbilityParams params) {

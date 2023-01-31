@@ -1,5 +1,7 @@
 package com.mygdx.game.ability;
 
+import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.model.GameState;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -16,4 +18,33 @@ public class FireballExplosion extends Ability {
         return ability;
     }
 
+    @Override
+    void onAbilityCompleted(MyGdxGame game) {
+
+    }
+
+    @Override
+    void updatePosition(GameState gameState) {
+
+    }
+
+    @Override
+    void onChannelUpdate(GameState gameState) {
+
+    }
+
+    @Override
+    void onActiveUpdate(GameState gameState) {
+
+    }
+
+    @Override
+    public void onCreatureHit() {
+
+    }
+
+    @Override
+    public void onTerrainHit() {
+
+    }
 }

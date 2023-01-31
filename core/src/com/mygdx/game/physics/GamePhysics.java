@@ -31,7 +31,7 @@ public class GamePhysics {
 
     Box2DDebugRenderer debugRenderer;
 
-    Boolean forceUpdateCreaturePositions = false;
+    Boolean forceUpdateBodyPositions = false;
 
     final List<PhysicsEvent> physicsEventQueue = new LinkedList<>();
 

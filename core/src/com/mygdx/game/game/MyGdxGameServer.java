@@ -14,8 +14,6 @@ import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.creature.Player;
-import com.mygdx.game.physics.event.AbilityHitsCreatureEvent;
-import com.mygdx.game.physics.event.AbilityHitsTerrainEvent;
 import com.mygdx.game.util.GameStateHolder;
 import com.mygdx.game.util.Vector2;
 
@@ -341,38 +339,11 @@ public class MyGdxGameServer extends MyGdxGame {
         game.gameState().abilities()
                 .forEach((abilityId, ability) -> ability.update(delta, game));
 
-        synchronized (game.physics().physicsEventQueue()) {
-            game.physics().physicsEventQueue().forEach(physicsEvent -> {
-                if (physicsEvent instanceof AbilityHitsCreatureEvent) {
-                    AbilityHitsCreatureEvent event = (AbilityHitsCreatureEvent) physicsEvent;
-
-                    Creature attackedCreature = game.gameState().creatures().get(event.attackedCreatureId());
-
-                    Creature attackingCreature = game.gameState().creatures().get(event.attackingCreatureId());
-
-                    boolean attackedIsPlayer = (attackedCreature instanceof Player);
-                    boolean attackingIsPlayer = (attackingCreature instanceof Player);
-
-                    Ability ability = game.gameState().abilities().get(event.abilityId());
-
-                    handleCreatureAttacked(event, attackedCreature, attackedIsPlayer, attackingIsPlayer, ability);
-
-                }
-                if (physicsEvent instanceof AbilityHitsTerrainEvent) {
-                    AbilityHitsTerrainEvent event = (AbilityHitsTerrainEvent) physicsEvent;
-
-                    Ability ability = game.gameState().abilities().get(event.abilityId());
-
-                    if (ability != null) {
-                        ability.onTerrainHit();
-                    }
-
-                }
-            });
-            game.physics().physicsEventQueue().clear();
-        }
+        PhysicsHelper.processPhysicsEventQueue(game, gameState().creatures().keySet(),
+                gameState().abilities().keySet());
 
     }
+
 
     @Override
     public void dispose() {

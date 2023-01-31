@@ -3,28 +3,20 @@ package com.mygdx.game.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.game.Constants;
-import com.mygdx.game.assets.Assets;
 import com.mygdx.game.model.area.AreaId;
-import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.renderer.DrawingLayer;
-import com.mygdx.game.util.Vector2;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import space.earlygrey.shapedrawer.ShapeDrawer;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -38,8 +30,6 @@ public class MyGdxGamePlayScreen implements Screen {
     //    Box2DDebugRenderer debugRenderer;
 
     Map<AreaId, TiledMap> maps;
-
-    private boolean debug = true;
 
     public void init(MyGdxGame game) {
         this.game = game;
@@ -109,31 +99,7 @@ public class MyGdxGamePlayScreen implements Screen {
 
         game.physics().physicsWorlds().get(game.gameState().currentAreaId()).step();
 
-        if (game.physics().forceUpdateCreaturePositions()) { // only runs after receiving game state update
-            game.physics().forceUpdateCreaturePositions(false);
-
-            game.gameState().creatures().forEach((creatureId, creature) ->
-            {
-                if (game.physics().creatureBodies().containsKey(creatureId) &&
-                        game.physics().creatureBodies().get(creatureId)
-                                .getBodyPos().distance(creature.params().pos()) >
-                                0.2f // only setTransform if positions are far apart
-                ) {
-                    game.physics().creatureBodies().get(creatureId).trySetTransform(creature.params().pos());
-                }
-            });
-
-            game.gameState().abilities().forEach((abilityId, ability) ->
-            {
-                if (game.physics().abilityBodies().containsKey(abilityId) &&
-                        game.physics().abilityBodies().get(abilityId)
-                                .getBodyPos().distance(ability.params().pos()) >
-                                0.2f // only setTransform if positions are far apart
-                ) {
-                    game.physics().abilityBodies().get(abilityId).trySetTransform(ability.params().pos());
-                }
-            });
-        }
+        PhysicsHelper.handleForceUpdateBodyPositions(game);
 
         game.onUpdate();
 
@@ -177,7 +143,7 @@ public class MyGdxGamePlayScreen implements Screen {
         game.renderer().areaRenderers().get(game.gameState().currentAreaId()).setView(game.renderer().worldCamera());
 
 
-        updateCamera();
+        RendererHelper.updateCamera(game);
 
 
 //        game.onRender();
@@ -192,7 +158,6 @@ public class MyGdxGamePlayScreen implements Screen {
         if (game().isInitialized()) {
             update(delta);
             if (game().isRenderingAllowed()) {
-
                 game.renderer().worldDrawingLayer().setProjectionMatrix(game.renderer().worldCamera().combined);
                 game.renderer().hudDrawingLayer().setProjectionMatrix(game.renderer().hudCamera().combined);
 
@@ -204,99 +169,16 @@ public class MyGdxGamePlayScreen implements Screen {
 
                 Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | coverageBuffer);
 
-                game.renderer().areaRenderers().get(game.gameState().currentAreaId()).render(new int[]{0, 1});
+                RendererHelper.drawWorld(game);
 
-//        ScreenUtils.clear(1, 0, 0, 1);
-                game.renderer().worldDrawingLayer().spriteBatch().begin();
-
-
-//        renderer.worldDrawingLayer().spriteBatch().draw(game.img, 0, 0, 5,5);
-
-
-                game.renderer().abilityRenderers()
-                        .forEach((abilityId, abilityAnimation) -> abilityAnimation.render(
-                                game.renderer().worldDrawingLayer(), game.gameState()));
-
-                game.renderer().renderDeadCreatures(game.renderer().worldDrawingLayer(), game.gameState());
-                game.renderer().renderAliveCreatures(game.renderer().worldDrawingLayer(), game.gameState());
-
-//        renderer.creatureSprites().forEach((creatureId, sprite) -> {
-//            if (game.gameState.creatures().containsKey(creatureId)) {
-//                sprite.setPosition(game.gameState.creatures().get(creatureId).params().pos().x(),
-//                        game.gameState.creatures().get(creatureId).params().pos().y());
-//                sprite.setSize(2.5f, 2.5f);
-//                sprite.draw(renderer.worldDrawingLayer().spriteBatch());
-//            }
-//        });
-
-//        game.renderer().worldDrawingLayer().spriteBatch().draw(img, 10, 10);
-
-                game.renderer().worldDrawingLayer().spriteBatch().end();
-
-                game.renderer().areaRenderers().get(game.gameState().currentAreaId()).render(new int[]{2, 3});
-
-                if (debug) {
-                    game.physics().debugRenderer()
-                            .render(game.physics().physicsWorlds().get(game.gameState().currentAreaId()).b2world(),
-                                    game.renderer().worldCamera().combined);
-                }
-
-                game.renderer().hudDrawingLayer().spriteBatch().begin();
-
-
-                for (int i = 0; i < Math.min(game.chat.messages().size(), 6); i++) {
-                    Assets.drawFont(game.renderer().hudDrawingLayer(),
-                            game.chat.messages().get(i).poster() + ": " + game.chat.messages().get(i).text(),
-                            Vector2.of(30, 180 - 20 * i), Color.PURPLE);
-                }
-
-                Assets.drawFont(game.renderer().hudDrawingLayer(),
-                        (game.chat.isTyping() ? "> " : "") + game.chat.currentMessage(), Vector2.of(30, 30),
-                        Color.PURPLE);
-
-
-                float fps = Gdx.graphics.getFramesPerSecond();
-                Assets.drawFont(game.renderer().hudDrawingLayer(), fps + " fps",
-                        Vector2.of(3, Constants.WindowHeight - 3),
-                        Color.WHITE);
-
-                if (game.thisPlayerId != null) {
-                    Creature creature = game.gameState().creatures().get(game.thisPlayerId);
-                    assert creature != null;
-
-                    if (!creature.isAlive()) {
-                        if (creature.params().respawnTimer().time() < creature.params().respawnTime()) {
-                            Assets.drawLargeFont(game.renderer().hudDrawingLayer(), "You are dead!\nRespawning...\n" +
-                                            String.format(Locale.US, "%.2f",
-                                                    (creature.params().respawnTime() -
-                                                            creature.params().respawnTimer().time())),
-                                    Vector2.of(Constants.WindowWidth / 2f - Constants.WindowWidth / 8f,
-                                            Constants.WindowHeight / 2f + Constants.WindowHeight / 5f),
-                                    Color.RED);
-                        }
-                    }
-
-                    ShapeDrawer shapeDrawer = game.renderer().hudDrawingLayer().shapeDrawer();
-
-                    shapeDrawer.filledRectangle(new Rectangle(10, 40, 100, 10), Color.ORANGE);
-                    shapeDrawer.filledRectangle(new Rectangle(10, 40,
-                            100 * creature.params().life() / creature.params().maxLife(), 10), Color.RED);
-                    shapeDrawer.filledRectangle(new Rectangle(10, 25, 100, 10), Color.ORANGE);
-                    shapeDrawer.filledRectangle(new Rectangle(10, 25,
-                            100 * creature.params().stamina() / creature.params().maxStamina(), 10), Color.GREEN);
-                    shapeDrawer.filledRectangle(new Rectangle(10, 10, 100, 10), Color.ORANGE);
-                    shapeDrawer.filledRectangle(new Rectangle(10, 10,
-                            100 * creature.params().mana() / creature.params().maxMana(), 10), Color.BLUE);
-
-                }
-
-                game.renderer().hudDrawingLayer().spriteBatch().end();
+                RendererHelper.drawHud(game);
 
 
             }
         }
 
     }
+
 
     @Override
     public void resize(int width, int height) {
@@ -324,35 +206,5 @@ public class MyGdxGamePlayScreen implements Screen {
 
     }
 
-    public void updateCamera() {
-        Creature player = null;
-
-        if (game.thisPlayerId != null) player = game.gameState().creatures().get(game.thisPlayerId);
-
-        if (player != null) {
-            float camX;
-            float camY;
-
-            if (game.thisPlayerId != null) {
-
-                camX = player.params().pos().x();
-                camY = player.params().pos().y();
-
-            } else {
-                camX = 0;
-                camY = 0;
-            }
-
-            Vector3 camPosition = game.renderer().worldCamera().position;
-
-
-            camPosition.x = (float) (Math.floor(camX * 100) / 100);
-            camPosition.y = (float) (Math.floor(camY * 100) / 100);
-
-            game.renderer().worldCamera().update();
-        }
-
-
-    }
 
 }

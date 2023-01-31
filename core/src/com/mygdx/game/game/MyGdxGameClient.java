@@ -16,9 +16,6 @@ import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
-import com.mygdx.game.model.creature.Player;
-import com.mygdx.game.physics.event.AbilityHitsCreatureEvent;
-import com.mygdx.game.physics.event.AbilityHitsTerrainEvent;
 import com.mygdx.game.util.GameStateHolder;
 import com.mygdx.game.util.Vector2;
 
@@ -272,7 +269,7 @@ public class MyGdxGameClient extends MyGdxGame {
 
                     }
 
-                    gamePhysics.forceUpdateCreaturePositions(true);
+                    gamePhysics.forceUpdateBodyPositions(true);
 
                 } else if (object instanceof SendChatMessageCommand) {
                     SendChatMessageCommand action = (SendChatMessageCommand) object;
@@ -379,38 +376,7 @@ public class MyGdxGameClient extends MyGdxGame {
 
         abilitiesToUpdate.forEach(abilityId -> game.gameState().abilities().get(abilityId).update(delta, game));
 
-        synchronized (game.physics().physicsEventQueue()) {
-            game.physics().physicsEventQueue().forEach(physicsEvent -> {
-                if (physicsEvent instanceof AbilityHitsCreatureEvent) {
-                    AbilityHitsCreatureEvent event = (AbilityHitsCreatureEvent) physicsEvent;
-
-                    Creature attackedCreature = game.gameState().creatures().get(event.attackedCreatureId());
-
-                    Creature attackingCreature = game.gameState().creatures().get(event.attackingCreatureId());
-
-                    boolean attackedIsPlayer = (attackedCreature instanceof Player);
-                    boolean attackingIsPlayer = (attackingCreature instanceof Player);
-
-                    Ability ability = game.gameState().abilities().get(event.abilityId());
-
-                    if (creaturesToUpdate.contains(event.attackedCreatureId()) &&
-                            abilitiesToUpdate.contains(event.abilityId())) {
-                        handleCreatureAttacked(event, attackedCreature, attackedIsPlayer, attackingIsPlayer, ability);
-                    }
-                }
-                if (physicsEvent instanceof AbilityHitsTerrainEvent) {
-                    AbilityHitsTerrainEvent event = (AbilityHitsTerrainEvent) physicsEvent;
-
-                    Ability ability = game.gameState().abilities().get(event.abilityId());
-
-                    if (ability != null) {
-                        ability.onTerrainHit();
-                    }
-
-                }
-            });
-            game.physics().physicsEventQueue().clear();
-        }
+        PhysicsHelper.processPhysicsEventQueue(game, creaturesToUpdate, abilitiesToUpdate);
     }
 
     @Override

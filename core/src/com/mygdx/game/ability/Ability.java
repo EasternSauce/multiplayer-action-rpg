@@ -21,59 +21,37 @@ public abstract class Ability {
 
         if (state == AbilityState.CHANNEL || state == AbilityState.ACTIVE) {
             if (isPositionManipulated()) updatePosition(game.gameState());
-            else {
-                if (params().speed() != null) {
-                    params().velocity(params().dirVector().normalized().multiplyBy(params().speed()));
-                }
-                params().rotationAngle(params().dirVector().angleDeg());
-            }
+
 
         }
 
         if (state == AbilityState.CHANNEL) {
-            onChannelUpdate();
+            onChannelUpdate(game.gameState());
 
             if (params().stateTimer().time() > params().channelTime()) {
-                progressStateToActive();
+                params().state(AbilityState.ACTIVE);
+                params().stateTimer().restart();
             }
         } else if (state == AbilityState.ACTIVE) {
-            onActiveUpdate();
+            onActiveUpdate(game.gameState());
 
             if (params().stateTimer().time() > params().activeTime()) {
-                progressStateToInactive();
-                gameActionOnComplete(game);
+                params().state(AbilityState.INACTIVE);
+                params().stateTimer().restart();
+                onAbilityCompleted(game);
             }
         }
 
         updateTimers(delta);
     }
 
-    protected void gameActionOnComplete(MyGdxGame game) {
-    }
+    abstract void onAbilityCompleted(MyGdxGame game);
 
-    protected void updatePosition(GameState gameState) {
+    abstract void updatePosition(GameState gameState);
 
-    }
+    abstract void onChannelUpdate(GameState gameState);
 
-    protected void onChannelUpdate() {
-
-    }
-
-    protected void onActiveUpdate() {
-
-    }
-
-    private void progressStateToActive() {
-        params().state(AbilityState.ACTIVE);
-        params().stateTimer().restart();
-
-        //make sound
-    }
-
-    private void progressStateToInactive() {
-        params().state(AbilityState.INACTIVE);
-        params().stateTimer().restart();
-    }
+    abstract void onActiveUpdate(GameState gameState);
 
     private void progressStateToChannel() {
         params().state(AbilityState.CHANNEL);
@@ -104,11 +82,7 @@ public abstract class Ability {
         return AbilityAnimationConfig.configs.get(params().textureName());
     }
 
-    public void onCreatureHit() {
+    public abstract void onCreatureHit();
 
-    }
-
-    public void onTerrainHit() {
-
-    }
+    public abstract void onTerrainHit();
 }
