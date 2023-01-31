@@ -189,7 +189,7 @@ public class MyGdxGameServer extends MyGdxGame {
                                                 Constants.ClientGameUpdateRange).collect(
                                         Collectors.toConcurrentMap(Map.Entry::getKey, Map.Entry::getValue));
                         personalizedGameState.abilities(personalizedAbilities);
-                        
+
                         personalizedGameState.existingCreatureIds(new HashSet<>(gameState().creatures().keySet()));
                         personalizedGameState.existingAbilityIds(new HashSet<>(gameState().abilities().keySet()));
 
@@ -355,15 +355,7 @@ public class MyGdxGameServer extends MyGdxGame {
 
                     Ability ability = game.gameState().abilities().get(event.abilityId());
 
-                    if (ability != null && attackedCreature.isAlive()) {
-                        if ((attackedIsPlayer || attackingIsPlayer) &&
-                                !ability.params().creaturesAlreadyHit().contains(event.attackedCreatureId())) {
-                            attackedCreature.takeLifeDamage(ability.params().damage());
-                        }
-
-                        ability.params().creaturesAlreadyHit().add(event.attackedCreatureId());
-                        ability.onCreatureHit();
-                    }
+                    handleCreatureAttacked(event, attackedCreature, attackedIsPlayer, attackingIsPlayer, ability);
 
                 }
                 if (physicsEvent instanceof AbilityHitsTerrainEvent) {

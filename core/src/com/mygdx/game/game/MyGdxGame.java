@@ -14,6 +14,7 @@ import com.mygdx.game.model.creature.Enemy;
 import com.mygdx.game.physics.AbilityBody;
 import com.mygdx.game.physics.CreatureBody;
 import com.mygdx.game.physics.GamePhysics;
+import com.mygdx.game.physics.event.AbilityHitsCreatureEvent;
 import com.mygdx.game.renderer.AbilityRenderer;
 import com.mygdx.game.renderer.CreatureRenderer;
 import com.mygdx.game.renderer.GameRenderer;
@@ -172,6 +173,23 @@ public abstract class MyGdxGame extends Game {
     public void handleAttackTarget(CreatureId attackingCreatureId, Vector2 vectorTowardsTarget,
                                    String abilityType) {
     }
+
+
+    protected void handleCreatureAttacked(AbilityHitsCreatureEvent event, Creature attackedCreature,
+                                          boolean attackedIsPlayer,
+                                          boolean attackingIsPlayer, Ability ability) {
+        if (ability != null && attackedCreature.isAlive()) {
+            if ((attackedIsPlayer || attackingIsPlayer) &&
+                    !ability.params().creaturesAlreadyHit().contains(event.attackedCreatureId())) {
+                attackedCreature.handleBeingAttacked(ability.params().damage(),
+                        event.attackingCreatureId());
+            }
+
+            ability.params().creaturesAlreadyHit().add(event.attackedCreatureId());
+            ability.onCreatureHit();
+        }
+    }
+
 
     public void chainAbility(Ability ability, String abilityType) {
 

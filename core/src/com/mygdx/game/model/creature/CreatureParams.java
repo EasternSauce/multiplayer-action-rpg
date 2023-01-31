@@ -67,6 +67,12 @@ public class CreatureParams {
     Float staminaRegenerationTickTime = 0.02f;
     Float staminaRegeneration = 0.35f;
 
+    SimpleTimer aggroTimer = SimpleTimer.of(Float.MAX_VALUE, false);
+    Float loseAggroTime = 7f;
+    CreatureId aggroedCreatureId = null;
+
+    CreatureId attackedByCreatureId = null;
+
     public static CreatureParams of(CreatureId creatureId, AreaId areaId, Vector2 pos, String textureName) {
         CreatureParams params = CreatureParams.of();
         params.id = creatureId;

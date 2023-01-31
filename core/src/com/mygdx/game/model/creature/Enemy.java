@@ -30,19 +30,19 @@ public class Enemy extends Creature {
 
     public CreatureId findTarget(MyGdxGame game) {
         List<Creature> potentialTargets = game.gameState().creatures().values().stream().filter(creature ->
-                        creature.isAlive() && creature.params().areaId().equals(this.params().areaId()) &&
+                        creature.isAlive() && creature.params().areaId().equals(params().areaId()) &&
                                 creature instanceof Player &&
-                                creature.params().pos().distance(this.params().pos()) < enemySearchDistance)
+                                creature.params().pos().distance(params().pos()) < enemySearchDistance)
                 .collect(Collectors.toList());
 
 
         if (potentialTargets.isEmpty()) return null;
 
         Creature result = Collections.min(potentialTargets, (o1, o2) -> {
-            if (Objects.equals(o1.params().pos().distance(this.params().pos()),
-                    o2.params().pos().distance(this.params().pos())))
+            if (Objects.equals(o1.params().pos().distance(params().pos()),
+                    o2.params().pos().distance(params().pos())))
                 return 0;
-            if (o1.params().pos().distance(this.params().pos()) >= o2.params().pos().distance(this.params().pos()))
+            if (o1.params().pos().distance(params().pos()) >= o2.params().pos().distance(params().pos()))
                 return 1;
             return -1;
 
@@ -56,21 +56,37 @@ public class Enemy extends Creature {
 
     @Override
     public void updateAutomaticControls(MyGdxGame game) {
-        CreatureId potentialTargetId = findTarget(game);
+
+        if (params().attackedByCreatureId() != null) {
+            // TODO: separate timer that makes attacks take aggro regardless?
+            params.aggroedCreatureId(params().attackedByCreatureId());
+        } else {
+            CreatureId foundTargetId = findTarget(game);
+
+            if (foundTargetId != null) {
+                params().aggroTimer().restart();
+                params.aggroedCreatureId(foundTargetId);
+            }
+        }
 
         Creature potentialTarget = null;
-        if (potentialTargetId != null) potentialTarget = game.gameState().creatures().get(potentialTargetId);
+        if (params().aggroedCreatureId() != null) {
+            potentialTarget = game.gameState().creatures().get(params().aggroedCreatureId());
+        }
 
-        if (potentialTargetId != null && this.isAlive() && potentialTarget.isAlive()) {
-            Vector2 vectorTowardsTarget = this.params().pos().vectorTowards(potentialTarget.params().pos());
+        if (params().aggroTimer().time() < params.loseAggroTime() && potentialTarget != null &&
+                potentialTarget.isAlive() && this.isAlive()) {
 
-            handleNewTarget(potentialTargetId);
+            Vector2 vectorTowardsTarget = params().pos().vectorTowards(potentialTarget.params().pos());
+
+            handleNewTarget(potentialTarget.params().id());
             handleMovement(potentialTarget);
             handleAttackTarget(potentialTarget, vectorTowardsTarget, game);
             handleAbilityUsage(potentialTarget);
 
         } else {
             handleTargetLost();
+
         }
 
         processPathfinding(game);
@@ -78,63 +94,63 @@ public class Enemy extends Creature {
     }
 
     private void processPathfinding(MyGdxGame game) {
-        if (this.params().areaId().equals(game.gameState().currentAreaId()) &&
-                this.params().targetCreatureId() != null &&
-                (this.params().forcePathCalculation() || this.params().pathCalculationCooldownTimer().time() > 1f)) {
-            Creature target = game.gameState().creatures().get(this.params().targetCreatureId());
-            PhysicsWorld world = game.physics().physicsWorlds().get(this.params().areaId());
+        if (params().areaId().equals(game.gameState().currentAreaId()) &&
+                params().targetCreatureId() != null &&
+                (params().forcePathCalculation() || params().pathCalculationCooldownTimer().time() > 1f)) {
+            Creature target = game.gameState().creatures().get(params().targetCreatureId());
+            PhysicsWorld world = game.physics().physicsWorlds().get(params().areaId());
 
-            Boolean isLineOfSight = world.isLineOfSight(this.params().pos(), target.params().pos());
+            Boolean isLineOfSight = world.isLineOfSight(params().pos(), target.params().pos());
 
             if (!isLineOfSight) {
                 List<Vector2> path =
-                        Astar.findPath(world, this.params().pos(), target.params().pos(), this.capability());
+                        Astar.findPath(world, params().pos(), target.params().pos(), this.capability());
 
-                this.params().pathTowardsTarget(path);
-                this.params().pathCalculationCooldownTimer().restart();
-                this.params().forcePathCalculation(false);
+                params().pathTowardsTarget(path);
+                params().pathCalculationCooldownTimer().restart();
+                params().forcePathCalculation(false);
             } else {
-                this.params().pathTowardsTarget(null);
+                params().pathTowardsTarget(null);
             }
         }
     }
 
     public void handleNewTarget(CreatureId potentialTargetId) {
-        if (this.params().targetCreatureId() == null || !this.params().targetCreatureId().equals(potentialTargetId)) {
-            this.params().forcePathCalculation(true);
-            this.params().targetCreatureId(potentialTargetId);
-            this.params().pathTowardsTarget(null);
+        if (params().targetCreatureId() == null || !params().targetCreatureId().equals(potentialTargetId)) {
+            params().forcePathCalculation(true);
+            params().targetCreatureId(potentialTargetId);
+            params().pathTowardsTarget(null);
         }
     }
 
 
     public void handleMovement(Creature potentialTarget) {
-        if (potentialTarget.params().pos().distance(this.params().pos()) > 3f &&
-                potentialTarget.params().pos().distance(this.params().pos()) < enemySearchDistance) {
-            if (this.params().pathTowardsTarget() != null &&
-                    !this.params().pathTowardsTarget().isEmpty()) {
-                List<Vector2> path = this.params().pathTowardsTarget();
-                Vector2 nextNodeOnPath = path.get(0);
-                if (this.params().pos().distance(nextNodeOnPath) < 2f) {
-                    List<Vector2> changedPath = new LinkedList<>(path);
-                    changedPath.remove(0);
-                    this.params().pathTowardsTarget(changedPath);
-                } else {
-                    this.params().movementCommandTargetPos(nextNodeOnPath);
-                    this.params().reachedTargetPos(false);
-                }
+//        if (potentialTarget.params().pos().distance(params().pos()) > 3f &&
+//                potentialTarget.params().pos().distance(params().pos()) < enemySearchDistance) {
+        if (params().pathTowardsTarget() != null &&
+                !params().pathTowardsTarget().isEmpty()) {
+            List<Vector2> path = params().pathTowardsTarget();
+            Vector2 nextNodeOnPath = path.get(0);
+            if (params().pos().distance(nextNodeOnPath) < 2f) {
+                List<Vector2> changedPath = new LinkedList<>(path);
+                changedPath.remove(0);
+                params().pathTowardsTarget(changedPath);
             } else {
-                this.params().movementCommandTargetPos(potentialTarget.params().pos());
-                this.params().reachedTargetPos(false);
+                params().movementCommandTargetPos(nextNodeOnPath);
+                params().reachedTargetPos(false);
             }
         } else {
-            // stop moving
-            stopMoving();
+            params().movementCommandTargetPos(potentialTarget.params().pos());
+            params().reachedTargetPos(false);
         }
+        //} else {
+//            // stop moving
+//            stopMoving();
+//        }
     }
 
     public void handleAttackTarget(Creature potentialTarget, Vector2 vectorTowardsTarget, MyGdxGame game) {
-        if (potentialTarget.params().pos().distance(this.params().pos()) < 4f) {
+        if (potentialTarget.params().pos().distance(params().pos()) < 4f) {
 
             game.handleAttackTarget(params().id(), vectorTowardsTarget, "slash");
 
@@ -147,7 +163,8 @@ public class Enemy extends Creature {
 
 
     public void handleTargetLost() {
-        this.params().targetCreatureId(null);
+        params().targetCreatureId(null);
+        params().attackedByCreatureId(null);
         stopMoving();
     }
 }

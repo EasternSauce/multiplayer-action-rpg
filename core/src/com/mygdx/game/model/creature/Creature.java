@@ -74,6 +74,7 @@ public abstract class Creature {
         params().attackCooldownTimer().update(delta);
         params().respawnTimer().update(delta);
         params().staminaRegenerationTimer().update(delta);
+        params().aggroTimer().update(delta);
         // add other timers here...
     }
 
@@ -108,7 +109,7 @@ public abstract class Creature {
     }
 
     public void stopMoving() {
-        this.params().movementCommandTargetPos(this.params().pos());
+        params().movementCommandTargetPos(params().pos());
     }
 
     public void takeLifeDamage(float damage) {
@@ -123,6 +124,13 @@ public abstract class Creature {
         }
 
         if (beforeLife > 0f && params().life() <= 0f) params().justDied(true);
+    }
+
+    public void handleBeingAttacked(float damage, CreatureId attackerId) {
+        takeLifeDamage(damage);
+        params().attackedByCreatureId();
+        params().aggroedCreatureId(attackerId);
+        params().aggroTimer().restart();
     }
 
     public void takeManaDamage(Float manaCost) {

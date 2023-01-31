@@ -393,17 +393,10 @@ public class MyGdxGameClient extends MyGdxGame {
 
                     Ability ability = game.gameState().abilities().get(event.abilityId());
 
-                    if (ability != null && creaturesToUpdate.contains(event.attackedCreatureId()) &&
-                            abilitiesToUpdate.contains(event.abilityId()) && attackedCreature.isAlive()) {
-                        if ((attackedIsPlayer || attackingIsPlayer) &&
-                                !ability.params().creaturesAlreadyHit().contains(event.attackedCreatureId())) {
-                            attackedCreature.takeLifeDamage(ability.params().damage());
-                        }
-
-                        ability.params().creaturesAlreadyHit().add(event.attackedCreatureId());
-                        ability.onCreatureHit();
+                    if (creaturesToUpdate.contains(event.attackedCreatureId()) &&
+                            abilitiesToUpdate.contains(event.abilityId())) {
+                        handleCreatureAttacked(event, attackedCreature, attackedIsPlayer, attackingIsPlayer, ability);
                     }
-
                 }
                 if (physicsEvent instanceof AbilityHitsTerrainEvent) {
                     AbilityHitsTerrainEvent event = (AbilityHitsTerrainEvent) physicsEvent;
