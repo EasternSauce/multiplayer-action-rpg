@@ -12,4 +12,5 @@ public class Constants {
     public static final float ClientGameUpdateRange = 40f;
 
     public static final float MapScale = 4.0f;
+    public static float MovementCommandCooldown = 0.05f;
 }

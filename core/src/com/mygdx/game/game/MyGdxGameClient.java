@@ -80,7 +80,7 @@ public class MyGdxGameClient extends MyGdxGame {
 
             Creature creature = gameState().creatures().get(thisPlayerId);
 
-            if (creature.params().movementCommandsPerSecondLimitTimer().time() > 0.1f) {
+            if (creature.params().movementCommandsPerSecondLimitTimer().time() > Constants.MovementCommandCooldown) {
                 endPoint().sendTCP(PlayerMovementCommand.of(thisPlayerId, mousePos));
             }
         }
@@ -309,74 +309,25 @@ public class MyGdxGameClient extends MyGdxGame {
     }
 
     @Override
-    public void updateCreaturesAndAbilites(float delta, MyGdxGame game) {
+    public Set<CreatureId> creaturesToUpdate() {
         Creature player = gameState().creatures().get(thisPlayerId);
 
-        Set<CreatureId> creaturesToUpdate = gameState().creatures().keySet().stream().filter(creatureId -> {
+        return gameState().creatures().keySet().stream().filter(creatureId -> {
             Creature creature = gameState().creatures().get(creatureId);
             return creature.params().pos().distance(player.params().pos()) < Constants.ClientGameUpdateRange;
         }).collect(Collectors.toSet());
 
-        Set<AbilityId> abilitiesToUpdate = gameState().abilities().keySet().stream().filter(abilityId -> {
+
+    }
+
+    @Override
+    public Set<AbilityId> abilitiesToUpdate() {
+        Creature player = gameState().creatures().get(thisPlayerId);
+
+        return gameState().abilities().keySet().stream().filter(abilityId -> {
             Ability ability = gameState().abilities().get(abilityId);
             return ability.params().pos().distance(player.params().pos()) < Constants.ClientGameUpdateRange;
         }).collect(Collectors.toSet());
-
-
-        creaturesToUpdate.forEach(
-                creatureId -> {
-                    if (game.physics().creatureBodies().containsKey(creatureId)) {
-                        game.physics().creatureBodies().get(creatureId).update(game.gameState());
-                    }
-                });
-
-        abilitiesToUpdate
-                .forEach(abilityId -> {
-                    if (game.physics().abilityBodies().containsKey(abilityId)) {
-                        game.physics().abilityBodies().get(abilityId).update(game.gameState());
-                    }
-                });
-
-
-        // set gamestate position based on b2body position
-        creaturesToUpdate.forEach(
-                creatureId -> {
-                    if (game.physics().creatureBodies().containsKey(creatureId)) {
-                        game.gameState().creatures().get(creatureId).params()
-                                .pos(game.physics().creatureBodies().get(creatureId).getBodyPos());
-                    }
-
-                });
-
-        abilitiesToUpdate.forEach(
-                abilityId -> {
-                    if (game.physics().abilityBodies().containsKey(abilityId)) {
-                        game.gameState().abilities().get(abilityId).params()
-                                .pos(game.physics().abilityBodies().get(abilityId).getBodyPos());
-                    }
-
-                });
-
-        creaturesToUpdate
-                .forEach(creatureId -> {
-                    if (game.renderer().creatureRenderers().containsKey(creatureId)) {
-                        game.renderer().creatureRenderers().get(creatureId).update(game.gameState());
-                    }
-                });
-
-        abilitiesToUpdate
-                .forEach(abilityId -> {
-                    if (game.renderer().abilityRenderers().containsKey(abilityId)) {
-                        game.renderer().abilityRenderers().get(abilityId).update(game.gameState());
-                    }
-                });
-
-
-        creaturesToUpdate.forEach(creatureId -> game.gameState().creatures().get(creatureId).update(delta, game));
-
-        abilitiesToUpdate.forEach(abilityId -> game.gameState().abilities().get(abilityId).update(delta, game));
-
-        PhysicsHelper.processPhysicsEventQueue(game, creaturesToUpdate, abilitiesToUpdate);
     }
 
     @Override

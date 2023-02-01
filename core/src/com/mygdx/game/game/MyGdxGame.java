@@ -21,10 +21,7 @@ import com.mygdx.game.util.GameStateHolder;
 import com.mygdx.game.util.Vector2;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public abstract class MyGdxGame extends Game {
     final protected GameRenderer gameRenderer = GameRenderer.of();
@@ -105,7 +102,7 @@ public abstract class MyGdxGame extends Game {
         setScreen(playScreen);
     }
 
-    public void createCreatureBodyAndAnimation(CreatureId creatureId) {
+    public void createCreature(CreatureId creatureId) {
         Creature creature = gameState().creatures().get(creatureId);
 
         if (creature != null) {
@@ -122,7 +119,7 @@ public abstract class MyGdxGame extends Game {
         }
     }
 
-    public void createAbilityBodyAndAnimation(AbilityId abilityId) {
+    public void createAbility(AbilityId abilityId) {
         Ability ability = gameState().abilities().get(abilityId);
 
         if (ability != null) {
@@ -156,7 +153,11 @@ public abstract class MyGdxGame extends Game {
 
     abstract public void initState();
 
-    public void removeCreatureBodyAndAnimation(CreatureId creatureId) {
+    abstract public Set<CreatureId> creaturesToUpdate();
+
+    abstract public Set<AbilityId> abilitiesToUpdate();
+
+    public void removeCreature(CreatureId creatureId) {
         gameState().creatures().remove(creatureId);
 
         renderer().creatureRenderers().remove(creatureId);
@@ -167,7 +168,7 @@ public abstract class MyGdxGame extends Game {
         }
     }
 
-    public void removeAbilityBodyAndAnimation(AbilityId abilityId) {
+    public void removeAbility(AbilityId abilityId) {
         gameState().abilities().remove(abilityId);
 
         renderer().abilityRenderers().remove(abilityId);
@@ -187,5 +188,67 @@ public abstract class MyGdxGame extends Game {
 
     }
 
-    public abstract void updateCreaturesAndAbilites(float delta, MyGdxGame game);
+
+    public void updateCreatures(float delta, MyGdxGame game) {
+        Set<CreatureId> creaturesToUpdate = creaturesToUpdate();
+
+        creaturesToUpdate.forEach(
+                creatureId -> {
+                    if (game.physics().creatureBodies().containsKey(creatureId)) {
+                        game.physics().creatureBodies().get(creatureId).update(game.gameState());
+                    }
+                });
+
+        // set gamestate position based on b2body position
+        creaturesToUpdate.forEach(
+                creatureId -> {
+                    if (game.physics().creatureBodies().containsKey(creatureId)) {
+                        game.gameState().creatures().get(creatureId).params()
+                                .pos(game.physics().creatureBodies().get(creatureId).getBodyPos());
+                    }
+
+                });
+
+        creaturesToUpdate
+                .forEach(creatureId -> {
+                    if (game.renderer().creatureRenderers().containsKey(creatureId)) {
+                        game.renderer().creatureRenderers().get(creatureId).update(game.gameState());
+                    }
+                });
+
+        creaturesToUpdate.forEach(creatureId -> game.gameState().creatures().get(creatureId).update(delta, game));
+
+    }
+
+    public void updateAbilities(float delta, MyGdxGame game) {
+        Set<AbilityId> abilitiesToUpdate = abilitiesToUpdate();
+
+        abilitiesToUpdate
+                .forEach(abilityId -> {
+                    if (game.physics().abilityBodies().containsKey(abilityId)) {
+                        game.physics().abilityBodies().get(abilityId).update(game.gameState());
+                    }
+                });
+
+        abilitiesToUpdate.forEach(
+                abilityId -> {
+                    if (game.physics().abilityBodies().containsKey(abilityId)) {
+                        game.gameState().abilities().get(abilityId).params()
+                                .pos(game.physics().abilityBodies().get(abilityId).getBodyPos());
+                    }
+
+                });
+
+        abilitiesToUpdate
+                .forEach(abilityId -> {
+                    if (game.renderer().abilityRenderers().containsKey(abilityId)) {
+                        game.renderer().abilityRenderers().get(abilityId).update(game.gameState());
+                    }
+                });
+
+
+        abilitiesToUpdate.forEach(abilityId -> game.gameState().abilities().get(abilityId).update(delta, game));
+
+
+    }
 }

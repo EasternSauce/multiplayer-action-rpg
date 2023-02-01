@@ -12,8 +12,7 @@ import java.util.Set;
 
 public class PhysicsHelper {
 
-    public static void processPhysicsEventQueue(MyGdxGame game, Set<CreatureId> creaturesToUpdate,
-                                                Set<AbilityId> abilitiesToUpdate) {
+    public static void processPhysicsEventQueue(MyGdxGame game) {
         synchronized (game.physics().physicsEventQueue()) {
             game.physics().physicsEventQueue().forEach(physicsEvent -> {
                 if (physicsEvent instanceof AbilityHitsCreatureEvent) {
@@ -28,8 +27,8 @@ public class PhysicsHelper {
 
                     Ability ability = game.gameState().abilities().get(event.abilityId());
 
-                    if (creaturesToUpdate.contains(event.attackedCreatureId()) &&
-                            abilitiesToUpdate.contains(event.abilityId())) {
+                    if (game.creaturesToUpdate().contains(event.attackedCreatureId()) &&
+                            game.abilitiesToUpdate().contains(event.abilityId())) {
                         handleCreatureAttacked(event, attackedCreature, attackedIsPlayer, attackingIsPlayer, ability);
                     }
                 }
@@ -72,7 +71,7 @@ public class PhysicsHelper {
                 if (game.physics().creatureBodies().containsKey(creatureId) &&
                         game.physics().creatureBodies().get(creatureId)
                                 .getBodyPos().distance(creature.params().pos()) >
-                                0.2f // only setTransform if positions are far apart
+                                0.05f // only setTransform if positions are far apart
                 ) {
                     game.physics().creatureBodies().get(creatureId).trySetTransform(creature.params().pos());
                 }
@@ -83,7 +82,7 @@ public class PhysicsHelper {
                 if (game.physics().abilityBodies().containsKey(abilityId) &&
                         game.physics().abilityBodies().get(abilityId)
                                 .getBodyPos().distance(ability.params().pos()) >
-                                0.2f // only setTransform if positions are far apart
+                                0.05f // only setTransform if positions are far apart
                 ) {
                     game.physics().abilityBodies().get(abilityId).trySetTransform(ability.params().pos());
                 }

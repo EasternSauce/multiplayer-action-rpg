@@ -277,6 +277,16 @@ public class MyGdxGameServer extends MyGdxGame {
     }
 
     @Override
+    public Set<CreatureId> creaturesToUpdate() {
+        return gameState().creatures().keySet();
+    }
+
+    @Override
+    public Set<AbilityId> abilitiesToUpdate() {
+        return gameState().abilities().keySet();
+    }
+
+    @Override
     public void handleAttackTarget(CreatureId attackingCreatureId, Vector2 vectorTowardsTarget,
                                    String abilityType) {
 
@@ -298,50 +308,6 @@ public class MyGdxGameServer extends MyGdxGame {
                         chainIntoAbilityType, ability.params().pos(), ability.params().dirVector());
 
         trySpawningAbility(command, true);
-    }
-
-    @Override
-    public void updateCreaturesAndAbilites(float delta, MyGdxGame game) {
-        game.physics().creatureBodies()
-                .forEach((creatureId, creatureBody) -> creatureBody.update(game.gameState()));
-
-        game.physics().abilityBodies()
-                .forEach((abilityId, abilityBody) -> abilityBody.update(game.gameState()));
-
-
-        // set gamestate position based on b2body position
-        game.gameState().creatures().forEach(
-                (creatureId, creature) -> {
-                    if (game.physics().creatureBodies().containsKey(creatureId)) {
-                        creature.params().pos(game.physics().creatureBodies().get(creatureId).getBodyPos());
-                    }
-
-                });
-
-        game.gameState().abilities().forEach(
-                (abilityId, ability) -> {
-                    if (game.physics().abilityBodies().containsKey(abilityId)) {
-                        ability.params().pos(game.physics().abilityBodies().get(abilityId).getBodyPos());
-                    }
-
-                });
-
-        game.renderer().creatureRenderers()
-                .forEach((creatureId, creatureAnimation) -> creatureAnimation.update(game.gameState()));
-
-        game.renderer().abilityRenderers()
-                .forEach((abilityId, abilityAnimation) -> abilityAnimation.update(game.gameState()));
-
-
-        game.gameState().creatures()
-                .forEach((creatureId, creature) -> creature.update(delta, game));
-
-        game.gameState().abilities()
-                .forEach((abilityId, ability) -> ability.update(delta, game));
-
-        PhysicsHelper.processPhysicsEventQueue(game, gameState().creatures().keySet(),
-                gameState().abilities().keySet());
-
     }
 
 

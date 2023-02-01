@@ -9,7 +9,9 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.game.Constants;
+import com.mygdx.game.ability.AbilityId;
 import com.mygdx.game.model.area.AreaId;
+import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.renderer.DrawingLayer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,6 +20,7 @@ import lombok.NoArgsConstructor;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
@@ -104,22 +107,22 @@ public class MyGdxGamePlayScreen implements Screen {
         game.onUpdate();
 
         synchronized (game.creaturesToBeCreated()) {
-            game.creaturesToBeCreated().forEach(creatureId -> game.createCreatureBodyAndAnimation(creatureId));
+            game.creaturesToBeCreated().forEach(creatureId -> game.createCreature(creatureId));
             game.creaturesToBeCreated().clear();
         }
 
         synchronized (game.abilitiesToBeCreated()) {
-            game.abilitiesToBeCreated().forEach(abilityId -> game.createAbilityBodyAndAnimation(abilityId));
+            game.abilitiesToBeCreated().forEach(abilityId -> game.createAbility(abilityId));
             game.abilitiesToBeCreated().clear();
         }
 
         synchronized (game.creaturesToBeRemoved()) {
-            game.creaturesToBeRemoved().forEach(creatureId -> game.removeCreatureBodyAndAnimation(creatureId));
+            game.creaturesToBeRemoved().forEach(creatureId -> game.removeCreature(creatureId));
             game.creaturesToBeRemoved().clear();
         }
 
         synchronized (game.abilitiesToBeRemoved()) {
-            game.abilitiesToBeRemoved().forEach(abilityId -> game.removeAbilityBodyAndAnimation(abilityId));
+            game.abilitiesToBeRemoved().forEach(abilityId -> game.removeAbility(abilityId));
             game.abilitiesToBeRemoved().clear();
         }
 
@@ -134,20 +137,14 @@ public class MyGdxGamePlayScreen implements Screen {
 
         game.gameState().generalTimer().update(delta);
 
+        game.updateCreatures(delta, game);
+        game.updateAbilities(delta, game);
 
-        game.updateCreaturesAndAbilites(delta, game);
-
-        // process physics queue
-
+        PhysicsHelper.processPhysicsEventQueue(game);
 
         game.renderer().areaRenderers().get(game.gameState().currentAreaId()).setView(game.renderer().worldCamera());
 
-
         RendererHelper.updateCamera(game);
-
-
-//        game.onRender();
-
 
     }
 
