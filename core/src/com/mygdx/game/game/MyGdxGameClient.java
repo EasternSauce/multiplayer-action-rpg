@@ -27,7 +27,7 @@ public class MyGdxGameClient extends MyGdxGame {
 
     private static MyGdxGameClient instance;
 
-    final Client _endPoint = new Client(819200, 204800);
+    final Client _endPoint = new Client(8192000, 2048000);
     boolean isInitialized = false;
 
     private MyGdxGameClient() {

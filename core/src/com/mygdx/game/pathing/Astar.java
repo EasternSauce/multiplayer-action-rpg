@@ -97,7 +97,7 @@ public class Astar {
                                                            astarState.foundPath(),
                                                            false);
 
-            if (astarState.closedSet().size() > 50) { // give up once you process enough tiles [PERFORMANCE SAVER]
+            if (astarState.closedSet().size() > 35) { // give up once you process enough tiles [PERFORMANCE SAVER]
                 resultingAstarState.gaveUp(true);
             }
 
@@ -212,7 +212,7 @@ public class Astar {
 
     }
 
-    public static List<Vector2> findPath(PhysicsWorld world, Vector2 startPos, Vector2 finishPos, Integer capability) {
+    public static AstarResult findPath(PhysicsWorld world, Vector2 startPos, Vector2 finishPos, Integer capability) {
         TilePos startTilePos = world.getClosestTile(startPos);
         TilePos finishTilePos = world.getClosestTile(finishPos);
 
@@ -235,7 +235,9 @@ public class Astar {
 
         Collections.reverse(path);
 
-        return path.stream().map(world::getTileCenter).collect(Collectors.toList());
+        List<Vector2> resultPath = path.stream().map(world::getTileCenter).collect(Collectors.toList());
+
+        return AstarResult.of(resultPath, result.gaveUp());
     }
 
     public static Map<TilePos, AstarNode> getAstarGraph(Map<TilePos, PathingNode> pathingGraph) {

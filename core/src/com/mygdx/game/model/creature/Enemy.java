@@ -2,17 +2,16 @@ package com.mygdx.game.model.creature;
 
 import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.pathing.Astar;
+import com.mygdx.game.pathing.AstarResult;
 import com.mygdx.game.physics.PhysicsWorld;
 import com.mygdx.game.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 @NoArgsConstructor(staticName = "of")
 @Data
@@ -29,36 +28,23 @@ public class Enemy extends Creature {
     }
 
     public CreatureId findTarget(MyGdxGame game) {
-        List<Creature> potentialTargets = game.gameState().creatures().values().stream()
-                                              .filter(creature -> creature.isAlive() &&
-                                                                  creature.params().areaId()
-                                                                          .equals(params().areaId()) &&
-                                                                  creature instanceof Player &&
-                                                                  creature.params().pos().distance(params().pos()) <
-                                                                  enemySearchDistance).collect(Collectors.toList());
+        Float minDistance = Float.MAX_VALUE;
+        CreatureId minCreatureId = null;
+        for (Map.Entry<CreatureId, Creature> entry : game.gameState().creatures().entrySet()) {
+            Creature creature = entry.getValue();
+            boolean condition = creature.isAlive() &&
+                                creature.params().areaId().value().equals(params().areaId().value()) &&
+                                creature instanceof Player &&
+                                creature.params().pos().distance(params().pos()) < enemySearchDistance;
 
-
-        if (potentialTargets.isEmpty()) {
-            return null;
+            if (condition && params().pos().distance(creature.params().pos()) < minDistance) {
+                minCreatureId = entry.getKey();
+                minDistance = params().pos().distance(entry.getValue().params().pos());
+            }
         }
-
-        Creature result = Collections.min(potentialTargets, (o1, o2) -> {
-            if (Objects.equals(o1.params().pos().distance(params().pos()),
-                               o2.params().pos().distance(params().pos()))) {
-                return 0;
-            }
-            if (o1.params().pos().distance(params().pos()) >= o2.params().pos().distance(params().pos())) {
-                return 1;
-            }
-            return -1;
-
-
-        });
-
-        return result.params().id();
+        return minCreatureId;
 
     }
-
 
     @Override
     public void updateAutomaticControls(MyGdxGame game) {
@@ -68,7 +54,13 @@ public class Enemy extends Creature {
             params.aggroedCreatureId(params().attackedByCreatureId());
         }
         else {
-            CreatureId foundTargetId = findTarget(game);
+            CreatureId foundTargetId = params().lastFoundTargetId();
+
+            if (params().findTargetTimer().time() > params().findTargetCooldown()) {
+                foundTargetId = findTarget(game);
+                params().lastFoundTargetId(foundTargetId);
+                params().findTargetTimer().restart();
+            }
 
             if (foundTargetId != null) {
                 params().aggroTimer().restart();
@@ -103,20 +95,29 @@ public class Enemy extends Creature {
     }
 
     private void processPathfinding(MyGdxGame game) {
-        if (params().areaId().equals(game.gameState().currentAreaId()) &&
-            params().targetCreatureId() != null &&
-            (params().forcePathCalculation() || params().pathCalculationCooldownTimer().time() > 1f)) {
+        boolean condition = params().areaId().equals(game.gameState().currentAreaId()) &&
+                            params().targetCreatureId() != null &&
+                            (params().forcePathCalculation() ||
+                             params().pathCalculationCooldownTimer().time() > params().pathCalculationCooldown()) &&
+                            params().pathCalculationFailurePenaltyTimer().time() >
+                            params().pathCalculationFailurePenalty();
+
+        if (condition) {
             Creature target = game.gameState().creatures().get(params().targetCreatureId());
             PhysicsWorld world = game.physics().physicsWorlds().get(params().areaId());
 
             Boolean isLineOfSight = world.isLineOfSight(params().pos(), target.params().pos());
 
             if (!isLineOfSight) {
-                List<Vector2> path = Astar.findPath(world, params().pos(), target.params().pos(), this.capability());
+                AstarResult result = Astar.findPath(world, params().pos(), target.params().pos(), this.capability());
 
-                params().pathTowardsTarget(path);
+                params().pathTowardsTarget(result.path());
                 params().pathCalculationCooldownTimer().restart();
                 params().forcePathCalculation(false);
+
+                if (result.gaveUp()) {
+                    params().pathCalculationFailurePenaltyTimer().restart();
+                }
             }
             else {
                 params().pathTowardsTarget(null);

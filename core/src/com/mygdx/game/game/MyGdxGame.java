@@ -30,7 +30,7 @@ public abstract class MyGdxGame extends Game {
     final MyGdxGamePlayScreen playScreen = MyGdxGamePlayScreen.of();
     public EndPoint _endPoint = null;
 
-    private final boolean debug = true;
+    private final boolean debug = false;
     public Chat chat = Chat.of();
     protected CreatureId thisPlayerId = null;
 
@@ -203,7 +203,11 @@ public abstract class MyGdxGame extends Game {
                 game.gameState().creatures().get(creatureId).params()
                     .pos(game.physics().creatureBodies().get(creatureId).getBodyPos());
             }
+        });
 
+        // if creature is to be updated, then body should be active, otherwise it should be inactive
+        game.gamePhysics.creatureBodies().forEach((key, value) -> {
+            game.gamePhysics.creatureBodies().get(key).setActive(creaturesToUpdate.contains(key));
         });
 
         creaturesToUpdate.forEach(creatureId -> {
@@ -212,7 +216,11 @@ public abstract class MyGdxGame extends Game {
             }
         });
 
-        creaturesToUpdate.forEach(creatureId -> game.gameState().creatures().get(creatureId).update(delta, game));
+        creaturesToUpdate.forEach(creatureId -> {
+            if (game.gameState().creatures().containsKey(creatureId)) {
+                game.gameState().creatures().get(creatureId).update(delta, game);
+            }
+        });
 
     }
 

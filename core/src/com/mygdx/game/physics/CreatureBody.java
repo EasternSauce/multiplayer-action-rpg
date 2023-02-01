@@ -5,11 +5,10 @@ import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.util.Vector2;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-@Data
+
 public class CreatureBody {
     CreatureId creatureId;
 
@@ -23,6 +22,10 @@ public class CreatureBody {
         CreatureBody creatureBody = new CreatureBody();
         creatureBody.creatureId = creatureId;
         return creatureBody;
+    }
+
+    public CreatureId creatureId() {
+        return creatureId;
     }
 
     public void init(GamePhysics gamePhysics, GameState gameState) { // TODO: get world by area id
@@ -102,5 +105,9 @@ public class CreatureBody {
 
     public void setSensor(boolean sensor) {
         b2Body.getFixtureList().get(0).setSensor(sensor);
+    }
+
+    public void setActive(boolean isActive) {
+        b2Body.setActive(isActive);
     }
 }

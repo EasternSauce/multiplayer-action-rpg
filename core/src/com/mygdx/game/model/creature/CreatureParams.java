@@ -1,6 +1,7 @@
 package com.mygdx.game.model.creature;
 
 import com.mygdx.game.model.area.AreaId;
+import com.mygdx.game.util.RandomHelper;
 import com.mygdx.game.util.SimpleTimer;
 import com.mygdx.game.util.Vector2;
 import lombok.Data;
@@ -34,6 +35,9 @@ public class CreatureParams {
 
     Boolean forcePathCalculation = false;
     SimpleTimer pathCalculationCooldownTimer = SimpleTimer.of();
+    Float pathCalculationCooldown;
+    SimpleTimer pathCalculationFailurePenaltyTimer = SimpleTimer.of(Float.MAX_VALUE, false);
+    Float pathCalculationFailurePenalty;
 
     List<Vector2> pathTowardsTarget = null;
 
@@ -73,12 +77,19 @@ public class CreatureParams {
 
     CreatureId attackedByCreatureId = null;
 
+    CreatureId lastFoundTargetId = null;
+    SimpleTimer findTargetTimer = SimpleTimer.of(Float.MAX_VALUE, false);
+    Float findTargetCooldown;
+
     public static CreatureParams of(CreatureId creatureId, AreaId areaId, Vector2 pos, String textureName) {
         CreatureParams params = CreatureParams.of();
         params.id = creatureId;
         params.areaId = areaId;
         params.pos = pos;
         params.textureName = textureName;
+        params.findTargetCooldown = 0.5f + RandomHelper.seededRandomFloat(creatureId);
+        params.pathCalculationFailurePenalty = 10f + 5f * RandomHelper.seededRandomFloat(creatureId);
+        params.pathCalculationCooldown = 2f + 2f * RandomHelper.seededRandomFloat(creatureId);
         return params;
     }
 

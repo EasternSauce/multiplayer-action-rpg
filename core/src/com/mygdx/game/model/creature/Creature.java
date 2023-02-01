@@ -76,6 +76,8 @@ public abstract class Creature {
         params().respawnTimer().update(delta);
         params().staminaRegenerationTimer().update(delta);
         params().aggroTimer().update(delta);
+        params().findTargetTimer().update(delta);
+        params().pathCalculationFailurePenaltyTimer().update(delta);
         // add other timers here...
     }
 
