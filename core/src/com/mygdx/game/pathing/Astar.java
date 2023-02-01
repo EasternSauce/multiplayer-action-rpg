@@ -78,12 +78,14 @@ public class Astar {
                                       TilePos finishTilePos,
                                       PhysicsWorld world,
                                       Integer capability) {
-        if (!astarState.gaveUp() && !astarState.openSet().isEmpty() && !astarState.foundPath()) {
+        while (!astarState.gaveUp() && !astarState.openSet().isEmpty() && !astarState.foundPath()) {
+            AstarState finalAstarState = astarState;
             TilePos minimumTile = Collections.min(astarState.openSet(), (o1, o2) -> {
-                if (Objects.equals(astarState.astarGraph().get(o1).f(), astarState.astarGraph().get(o2).f())) {
+                if (Objects.equals(finalAstarState.astarGraph().get(o1).f(),
+                                   finalAstarState.astarGraph().get(o2).f())) {
                     return 0;
                 }
-                if (astarState.astarGraph().get(o1).f() >= astarState.astarGraph().get(o2).f()) {
+                if (finalAstarState.astarGraph().get(o1).f() >= finalAstarState.astarGraph().get(o2).f()) {
                     return 1;
                 }
                 return -1;
@@ -124,7 +126,7 @@ public class Astar {
 
             }
 
-            return traverse(resultingAstarState, finishTilePos, world, capability);
+            astarState = resultingAstarState;
         }
         return astarState;
     }
