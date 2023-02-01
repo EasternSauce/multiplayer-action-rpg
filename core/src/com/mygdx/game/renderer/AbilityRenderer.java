@@ -42,18 +42,20 @@ public class AbilityRenderer {
         channelTextureRegion = atlas.findRegion(animationConfig.channelSpriteType());
         activeTextureRegion = atlas.findRegion(animationConfig.activeSpriteType());
 
-        if (channelTextureRegion == null)
+        if (channelTextureRegion == null) {
             throw new RuntimeException("region missing for " + animationConfig.channelSpriteType());
-        if (activeTextureRegion == null)
+        }
+        if (activeTextureRegion == null) {
             throw new RuntimeException("region missing for " + animationConfig.activeSpriteType());
+        }
 
         TextureRegion[] channelFrames = new TextureRegion[animationConfig.channelFrameCount()];
         for (int i = 0; i < animationConfig.channelFrameCount(); i++) {
             channelFrames[i] = new TextureRegion(channelTextureRegion,
-                    i * animationConfig.textureWidth(),
-                    0,
-                    animationConfig.textureWidth(),
-                    animationConfig.textureHeight());
+                                                 i * animationConfig.textureWidth(),
+                                                 0,
+                                                 animationConfig.textureWidth(),
+                                                 animationConfig.textureHeight());
         }
 
         channelAnimation = new Animation<>(animationConfig.channelFrameDuration(), channelFrames);
@@ -61,10 +63,10 @@ public class AbilityRenderer {
         TextureRegion[] activeFrames = new TextureRegion[animationConfig.activeFrameCount()];
         for (int i = 0; i < animationConfig.activeFrameCount(); i++) {
             activeFrames[i] = new TextureRegion(activeTextureRegion,
-                    i * animationConfig.textureWidth(),
-                    0,
-                    animationConfig.textureWidth(),
-                    animationConfig.textureHeight());
+                                                i * animationConfig.textureWidth(),
+                                                0,
+                                                animationConfig.textureWidth(),
+                                                animationConfig.textureHeight());
         }
 
         activeAnimation = new Animation<>(animationConfig.activeFrameDuration(), activeFrames);
@@ -74,7 +76,7 @@ public class AbilityRenderer {
     private void updateSprite(TextureRegion texture, GameState gameState) {
 
         Ability ability = gameState.abilities().get(abilityId);
-//        AbilityAnimationConfig config = ability.animationConfig();
+        //        AbilityAnimationConfig config = ability.animationConfig();
 
         sprite.setRegion(texture);
         sprite.setSize(ability.params().width(), ability.params().height());
@@ -91,11 +93,12 @@ public class AbilityRenderer {
         if (ability != null) {
             if (ability.params().channelTime() > 0f && ability.params().state() == AbilityState.CHANNEL) {
                 TextureRegion texture = channelAnimation().getKeyFrame(ability.params().stateTimer().time(),
-                        ability.params().isChannelAnimationLooping());
+                                                                       ability.params().isChannelAnimationLooping());
                 updateSprite(texture, gameState);
-            } else if (ability.params().activeTime() > 0f && ability.params().state() == AbilityState.ACTIVE) {
+            }
+            else if (ability.params().activeTime() > 0f && ability.params().state() == AbilityState.ACTIVE) {
                 TextureRegion texture = activeAnimation().getKeyFrame(ability.params().stateTimer().time(),
-                        ability.params().isActiveAnimationLooping());
+                                                                      ability.params().isActiveAnimationLooping());
                 updateSprite(texture, gameState);
             }
         }
@@ -107,12 +110,10 @@ public class AbilityRenderer {
 
         if (ability != null) {
             if (sprite.getTexture() != null) {
-                if (ability.params().channelTime() > 0f &&
-                        ability.params().state() == AbilityState.CHANNEL) {
+                if (ability.params().channelTime() > 0f && ability.params().state() == AbilityState.CHANNEL) {
                     sprite.draw(drawingLayer.spriteBatch());
                 }
-                if (ability.params().activeTime() > 0f &&
-                        ability.params().state() == AbilityState.ACTIVE) {
+                if (ability.params().activeTime() > 0f && ability.params().state() == AbilityState.ACTIVE) {
                     sprite.draw(drawingLayer.spriteBatch());
                 }
             }

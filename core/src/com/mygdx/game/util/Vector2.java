@@ -13,7 +13,9 @@ public class Vector2 {
 
     public float angleDeg() {
         float angle = (float) Math.atan2(y, x) * 180f / 3.141592653589793f;
-        if (angle < 0) angle += 360;
+        if (angle < 0) {
+            angle += 360;
+        }
         return angle;
     }
 

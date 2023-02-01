@@ -52,23 +52,22 @@ public class CreatureRenderer {
         textureRegion = atlas.findRegion(animationConfig.textureName());
 
         for (int i = 0; i < 4; i++) {
-            facingTextures.set(i, new TextureRegion(
-                    textureRegion,
-                    animationConfig.neutralStanceFrame() * animationConfig.textureWidth(),
-                    i * animationConfig.textureHeight(),
-                    animationConfig.textureWidth(),
-                    animationConfig.textureHeight()
-            ));
+            facingTextures.set(i,
+                               new TextureRegion(textureRegion,
+                                                 animationConfig.neutralStanceFrame() * animationConfig.textureWidth(),
+                                                 i * animationConfig.textureHeight(),
+                                                 animationConfig.textureWidth(),
+                                                 animationConfig.textureHeight()));
         }
 
         for (int i = 0; i < 4; i++) {
             TextureRegion[] frames = new TextureRegion[animationConfig.frameCount()];
             for (int j = 0; j < animationConfig.frameCount(); j++) {
                 frames[j] = (new TextureRegion(textureRegion,
-                        j * animationConfig.textureWidth(),
-                        i * animationConfig.textureHeight(),
-                        animationConfig.textureWidth(),
-                        animationConfig.textureHeight()));
+                                               j * animationConfig.textureWidth(),
+                                               i * animationConfig.textureHeight(),
+                                               animationConfig.textureWidth(),
+                                               animationConfig.textureHeight()));
             }
 
 
@@ -81,7 +80,7 @@ public class CreatureRenderer {
         Creature creature = gameState.creatures().get(creatureId);
 
         return runningAnimations.get(creature.animationConfig().dirMap().get(currentDirection))
-                .getKeyFrame(creature.params().animationTimer().time(), true);
+                                .getKeyFrame(creature.params().animationTimer().time(), true);
     }
 
     public TextureRegion pickFacingTexture(WorldDirection currentDirection, GameState gameState) {
@@ -91,20 +90,22 @@ public class CreatureRenderer {
     }
 
     public void update(GameState gameState) {
-        if (!gameState.creatures().containsKey(creatureId)) return;
+        if (!gameState.creatures().containsKey(creatureId)) {
+            return;
+        }
 
         Creature creature = gameState.creatures().get(creatureId);
 
         sprite.setCenter(creature.params().pos().x(), creature.params().pos().y());
-        sprite.setSize(creature.animationConfig().spriteWidth(),
-                creature.animationConfig().spriteHeight());
+        sprite.setSize(creature.animationConfig().spriteWidth(), creature.animationConfig().spriteHeight());
 
         if (creature.isAlive()) {
 
             TextureRegion texture;
             if (!creature.params().isMoving()) {
                 texture = pickFacingTexture(creature.facingDirection(), gameState);
-            } else {
+            }
+            else {
                 texture = runningAnimation(creature.facingDirection(), gameState);
             }
 
@@ -112,7 +113,8 @@ public class CreatureRenderer {
             sprite.setRegion(texture);
 
             sprite.setColor(1, 1, 1, 1); // TODO: immunity frames visual
-        } else {
+        }
+        else {
             TextureRegion texture = pickFacingTexture(WorldDirection.RIGHT, gameState);
             sprite.setRegion(texture);
 
@@ -136,14 +138,14 @@ public class CreatureRenderer {
         float barPosX = creature.params().pos().x() - lifeBarWidth / 2;
         float barPosY = creature.params().pos().y() + sprite.getWidth() / 2 + 0.3125f;
 
-        drawingLayer
-                .filledRectangle(new Rectangle(barPosX, barPosY, lifeBarWidth, lifeBarHeight), Color.ORANGE);
-        if (creature.params().life() <= creature.params().maxLife())
-            drawingLayer
-                    .filledRectangle(new Rectangle(barPosX, barPosY, currentLifeBarWidth, lifeBarHeight), Color.RED);
-        else
-            drawingLayer
-                    .filledRectangle(new Rectangle(barPosX, barPosY, lifeBarWidth, lifeBarHeight), Color.ROYAL);
+        drawingLayer.filledRectangle(new Rectangle(barPosX, barPosY, lifeBarWidth, lifeBarHeight), Color.ORANGE);
+        if (creature.params().life() <= creature.params().maxLife()) {
+            drawingLayer.filledRectangle(new Rectangle(barPosX, barPosY, currentLifeBarWidth, lifeBarHeight),
+                                         Color.RED);
+        }
+        else {
+            drawingLayer.filledRectangle(new Rectangle(barPosX, barPosY, lifeBarWidth, lifeBarHeight), Color.ROYAL);
+        }
 
     }
 

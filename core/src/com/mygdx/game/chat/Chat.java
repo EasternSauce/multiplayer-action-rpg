@@ -21,7 +21,8 @@ public class Chat {
     public void sendMessage(GameState gameState, String posterId, String message) {
         if (messages().size() < 6) {
             messages().add(ChatMessage.of(gameState.generalTimer().time(), posterId, message));
-        } else {
+        }
+        else {
             List<ChatMessage> newMessages = new ArrayList<>();
             for (int i = 0; i < 5; i++) {
                 newMessages.add(messages().get(i + 1));

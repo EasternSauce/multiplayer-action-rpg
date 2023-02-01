@@ -39,8 +39,7 @@ public class AbilityBody {
 
         float[] vertices = sprite.getVertices();
 
-        return new float[]{vertices[0], vertices[1], vertices[5], vertices[6], vertices[10], vertices[11], vertices[15],
-                vertices[16]};
+        return new float[]{vertices[0], vertices[1], vertices[5], vertices[6], vertices[10], vertices[11], vertices[15], vertices[16]};
     }
 
     public void setVelocity(Vector2 velocity) {
@@ -73,8 +72,7 @@ public class AbilityBody {
 
         if (ability != null) {
             if (ability.isPositionManipulated() &&
-                    (ability.params().state() == AbilityState.CHANNEL ||
-                            ability.params().state() == AbilityState.ACTIVE)) {
+                (ability.params().state() == AbilityState.CHANNEL || ability.params().state() == AbilityState.ACTIVE)) {
                 b2Body.setTransform(ability.params().pos().x(), ability.params().pos().y(), 0f);
             }
 

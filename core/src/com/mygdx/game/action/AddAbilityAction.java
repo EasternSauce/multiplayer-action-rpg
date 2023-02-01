@@ -35,23 +35,29 @@ public class AddAbilityAction implements GameStateAction {
 
         Creature creature = gameState.creatures().get(creatureId);
 
-        if (creature == null) return;
+        if (creature == null) {
+            return;
+        }
 
         creature.params().attackCooldownTimer().restart();
 
-        Ability ability =
-                AbilityFactory.produceAbility(abilityType, abilityId, creature.params().areaId(), creatureId, gameState,
-                        dirVector);
-        if (pos != null) ability.params().pos(pos);
+        Ability ability = AbilityFactory.produceAbility(abilityType,
+                                                        abilityId,
+                                                        creature.params().areaId(),
+                                                        creatureId,
+                                                        gameState,
+                                                        dirVector);
+        if (pos != null) {
+            ability.params().pos(pos);
+        }
 
         if (creature.params().isMoving()) { // TODO: should this logic happen as part of this action? or elsewhere?
-            Vector2 movementVector =
-                    creature.params().pos()
-                            .vectorTowards(creature.params().movementCommandTargetPos()).normalized()
-                            .multiplyBy(0.15f);
+            Vector2 movementVector = creature.params().pos().vectorTowards(creature.params().movementCommandTargetPos())
+                                             .normalized().multiplyBy(0.15f);
             // move slightly forward if attacking while moving
-            if (!ability.params().attackWithoutMoving())
+            if (!ability.params().attackWithoutMoving()) {
                 creature.params().movementCommandTargetPos(creature.params().pos().add(movementVector));
+            }
         }
 
         gameState.abilities().put(abilityId, ability);

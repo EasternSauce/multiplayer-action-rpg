@@ -3,7 +3,6 @@ package com.mygdx.game.physics;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.game.ability.AbilityId;
-import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.physics.event.AbilityHitsCreatureEvent;
@@ -35,9 +34,9 @@ public class GamePhysics {
 
     final List<PhysicsEvent> physicsEventQueue = new LinkedList<>();
 
-    public void init(Map<AreaId, TiledMap> maps, GameState gameState) {
+    public void init(Map<AreaId, TiledMap> maps) {
         physicsWorlds = maps.entrySet().stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, entry -> PhysicsWorld.of(entry.getValue())));
+                            .collect(Collectors.toMap(Map.Entry::getKey, entry -> PhysicsWorld.of(entry.getValue())));
 
         physicsWorlds.forEach((areaId, physicsWorld) -> {
             physicsWorld.init();
@@ -52,14 +51,14 @@ public class GamePhysics {
             AbilityBody abilityBody = (AbilityBody) objB;
             if (!abilityBody.creatureId().equals(creatureBody.creatureId())) {
                 synchronized (physicsEventQueue) {
-                    physicsEventQueue.add(
-                            AbilityHitsCreatureEvent.of(abilityBody.creatureId(), creatureBody.creatureId(),
-                                    abilityBody.abilityId()));
+                    physicsEventQueue.add(AbilityHitsCreatureEvent.of(abilityBody.creatureId(),
+                                                                      creatureBody.creatureId(),
+                                                                      abilityBody.abilityId()));
                 }
             }
         }
         if (objA instanceof TerrainTileBody && objB instanceof AbilityBody) {
-//            TerrainTileBody terrainTileBody = (TerrainTileBody) objA;
+            //            TerrainTileBody terrainTileBody = (TerrainTileBody) objA;
             AbilityBody abilityBody = (AbilityBody) objB;
             synchronized (physicsEventQueue) {
                 physicsEventQueue.add(AbilityHitsTerrainEvent.of(abilityBody.abilityId()));

@@ -42,7 +42,8 @@ public class Fireball extends Projectile {
 
         if (params().stateTimer().time() < 2f) {
             params().speed(5f + (params().stateTimer().time() / 2f) * 40f);
-        } else {
+        }
+        else {
             params().speed(45f);
         }
     }

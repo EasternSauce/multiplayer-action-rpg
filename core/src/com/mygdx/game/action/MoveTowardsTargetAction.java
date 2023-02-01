@@ -37,9 +37,8 @@ public class MoveTowardsTargetAction implements GameStateAction {
             float viewportRatioY = Constants.ViewpointWorldHeight / Constants.WindowHeight;
 
             creature.params()
-                    .movementCommandTargetPos(Vector2.of(
-                            pos.x() + mousePos.x() * viewportRatioX / Constants.PPM,
-                            pos.y() + mousePos.y() * viewportRatioY / Constants.PPM))
+                    .movementCommandTargetPos(Vector2.of(pos.x() + mousePos.x() * viewportRatioX / Constants.PPM,
+                                                         pos.y() + mousePos.y() * viewportRatioY / Constants.PPM))
                     .reachedTargetPos(false);
 
 

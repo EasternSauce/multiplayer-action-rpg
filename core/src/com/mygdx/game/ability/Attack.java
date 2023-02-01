@@ -25,13 +25,15 @@ public class Attack extends Ability {
 
     }
 
-    ;
-
     @Override
     protected void updatePosition(GameState gameState) {
         Vector2 dirVector;
-        if (params().dirVector().len() <= 0) dirVector = Vector2.of(1, 0).normalized();
-        else dirVector = params().dirVector();
+        if (params().dirVector().len() <= 0) {
+            dirVector = Vector2.of(1, 0).normalized();
+        }
+        else {
+            dirVector = params().dirVector();
+        }
 
         Float theta = dirVector.angleDeg();
 
@@ -53,13 +55,17 @@ public class Attack extends Ability {
 
     @Override
     void onChannelUpdate(GameState gameState) {
-        if (isPositionManipulated()) updatePosition(gameState);
+        if (isPositionManipulated()) {
+            updatePosition(gameState);
+        }
 
     }
 
     @Override
     void onActiveUpdate(GameState gameState) {
-        if (isPositionManipulated()) updatePosition(gameState);
+        if (isPositionManipulated()) {
+            updatePosition(gameState);
+        }
 
     }
 

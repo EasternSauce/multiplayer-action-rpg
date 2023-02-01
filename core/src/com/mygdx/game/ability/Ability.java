@@ -20,7 +20,9 @@ public abstract class Ability {
         AbilityState state = params().state();
 
         if (state == AbilityState.CHANNEL || state == AbilityState.ACTIVE) {
-            if (isPositionManipulated()) updatePosition(game.gameState());
+            if (isPositionManipulated()) {
+                updatePosition(game.gameState());
+            }
 
 
         }
@@ -32,7 +34,8 @@ public abstract class Ability {
                 params().state(AbilityState.ACTIVE);
                 params().stateTimer().restart();
             }
-        } else if (state == AbilityState.ACTIVE) {
+        }
+        else if (state == AbilityState.ACTIVE) {
             onActiveUpdate(game.gameState());
 
             if (params().stateTimer().time() > params().activeTime()) {
@@ -62,15 +65,18 @@ public abstract class Ability {
         params().dirVector(dir);
 
         Creature creature = gameState.creatures().get(params().creatureId());
-        if (isPositionManipulated()) updatePosition(gameState);
-        else params().pos(creature.params().pos());
+        if (isPositionManipulated()) {
+            updatePosition(gameState);
+        }
+        else {
+            params().pos(creature.params().pos());
+        }
 
         creature.takeManaDamage(params().manaCost());
         creature.takeStaminaDamage(params().staminaCost());
 
         progressStateToChannel();
 
-        //take stamina damage
     }
 
 

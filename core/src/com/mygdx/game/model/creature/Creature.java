@@ -54,7 +54,8 @@ public abstract class Creature {
 
         if (vectorBetween.len() < 0.1f) {
             params().reachedTargetPos(true);
-        } else {
+        }
+        else {
 
             Vector2 dirVector = vectorBetween.normalized();
 
@@ -86,11 +87,14 @@ public abstract class Creature {
         float deg = params().movingVector().angleDeg();
         if (deg >= 45 && deg < 135) {
             return WorldDirection.UP;
-        } else if (deg >= 135 && deg < 225) {
+        }
+        else if (deg >= 135 && deg < 225) {
             return WorldDirection.LEFT;
-        } else if (deg >= 225 && deg < 315) {
+        }
+        else if (deg >= 225 && deg < 315) {
             return WorldDirection.DOWN;
-        } else {
+        }
+        else {
             return WorldDirection.RIGHT;
         }
 
@@ -98,9 +102,15 @@ public abstract class Creature {
 
     public Integer capability() {
         Float width = animationConfig().spriteWidth();
-        if (width >= 0 && width < 2) return 1;
-        else if (width >= 2 && width <= 4) return 2;
-        else if (width >= 4 && width <= 6) return 3;
+        if (width >= 0 && width < 2) {
+            return 1;
+        }
+        else if (width >= 2 && width <= 4) {
+            return 2;
+        }
+        else if (width >= 4 && width <= 6) {
+            return 3;
+        }
         return 4;
     }
 
@@ -119,11 +129,14 @@ public abstract class Creature {
 
         if (params().life() - actualDamage > 0) {
             params().life(params().life() - actualDamage);
-        } else {
+        }
+        else {
             params().life(0f);
         }
 
-        if (beforeLife > 0f && params().life() <= 0f) params().justDied(true);
+        if (beforeLife > 0f && params().life() <= 0f) {
+            params().justDied(true);
+        }
     }
 
     public void handleBeingAttacked(float damage, CreatureId attackerId) {
@@ -136,7 +149,8 @@ public abstract class Creature {
     public void takeManaDamage(Float manaCost) {
         if (params().mana() - manaCost > 0) {
             params().mana(params().mana() - manaCost);
-        } else {
+        }
+        else {
             params().mana(0f);
         }
     }
@@ -144,7 +158,8 @@ public abstract class Creature {
     public void takeStaminaDamage(Float staminaCost) {
         if (params().stamina() - staminaCost > 0) {
             params().stamina(params().stamina() - staminaCost);
-        } else {
+        }
+        else {
             params().stamina(0f);
         }
     }
@@ -159,8 +174,9 @@ public abstract class Creature {
 
 
     public boolean canPerformAbility(String abilityType, boolean ignoreCooldown) {
-        return isAlive() && AbilityFactory.staminaCosts.getOrDefault(abilityType, 0f) <= params().stamina() &&
-                AbilityFactory.manaCosts.getOrDefault(abilityType, 0f) <= params().mana() &&
-                (ignoreCooldown || params().attackCooldownTimer().time() > params().attackCooldownTime());
+        return isAlive() &&
+               AbilityFactory.staminaCosts.getOrDefault(abilityType, 0f) <= params().stamina() &&
+               AbilityFactory.manaCosts.getOrDefault(abilityType, 0f) <= params().mana() &&
+               (ignoreCooldown || params().attackCooldownTimer().time() > params().attackCooldownTime());
     }
 }

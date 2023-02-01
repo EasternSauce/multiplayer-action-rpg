@@ -13,9 +13,15 @@ interface BodyShape {
 }
 
 public class B2BodyFactory {
-    public static Body createB2Body(PhysicsWorld world, Vector2 pos, BodyType bodyType, Object userData,
+    public static Body createB2Body(PhysicsWorld world,
+                                    Vector2 pos,
+                                    BodyType bodyType,
+                                    Object userData,
                                     BodyShape shape,
-                                    Boolean isSensor, Boolean sleepingAllowed, Float linearDamping, Float mass) {
+                                    Boolean isSensor,
+                                    Boolean sleepingAllowed,
+                                    Float linearDamping,
+                                    Float mass) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = bodyType;
         bodyDef.position.set(pos.x(), pos.y());
@@ -50,22 +56,42 @@ public class B2BodyFactory {
 
     public static Body createTerrainTileB2body(PhysicsWorld world, TerrainTileBody terrainTileBody) {
         return createB2Body(world,
-                Vector2.of(terrainTileBody.pos().x() * terrainTileBody.tileWidth() + terrainTileBody.tileWidth() / 2,
-                        terrainTileBody.pos().y() * terrainTileBody.tileHeight() + terrainTileBody.tileHeight() / 2),
-                BodyType.StaticBody,
-                terrainTileBody, Rectangle.of(terrainTileBody.tileWidth(), terrainTileBody.tileHeight()), false, false,
-                null, null);
+                            Vector2.of(terrainTileBody.pos().x() * terrainTileBody.tileWidth() +
+                                       terrainTileBody.tileWidth() / 2,
+                                       terrainTileBody.pos().y() * terrainTileBody.tileHeight() +
+                                       terrainTileBody.tileHeight() / 2),
+                            BodyType.StaticBody,
+                            terrainTileBody,
+                            Rectangle.of(terrainTileBody.tileWidth(), terrainTileBody.tileHeight()),
+                            false,
+                            false,
+                            null,
+                            null);
 
     }
 
     public static Body createCreatureB2Body(PhysicsWorld world, CreatureBody creatureBody, Creature creature) {
-        return createB2Body(world, creature.params().pos(), BodyType.DynamicBody, creatureBody,
-                Circle.of(creature.animationConfig().spriteWidth() / 2f), false, false, 10f, 1000f);
+        return createB2Body(world,
+                            creature.params().pos(),
+                            BodyType.DynamicBody,
+                            creatureBody,
+                            Circle.of(creature.animationConfig().spriteWidth() / 2f),
+                            false,
+                            false,
+                            10f,
+                            1000f);
     }
 
     public static Body createAbilityB2Body(PhysicsWorld world, AbilityBody abilityBody, Vector2 pos, float[] vertices) {
-        return createB2Body(world, pos, BodyType.DynamicBody, abilityBody, Polygon.of(vertices), true, false, null,
-                null);
+        return createB2Body(world,
+                            pos,
+                            BodyType.DynamicBody,
+                            abilityBody,
+                            Polygon.of(vertices),
+                            true,
+                            false,
+                            null,
+                            null);
     }
 }
 

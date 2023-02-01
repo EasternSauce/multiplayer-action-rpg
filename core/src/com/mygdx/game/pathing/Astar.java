@@ -8,7 +8,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Astar {
-    public static void tryAddEdge(Map<TilePos, PathingNode> pathingNodes, PhysicsWorld world, TilePos fromPos,
+    public static void tryAddEdge(Map<TilePos, PathingNode> pathingNodes,
+                                  PhysicsWorld world,
+                                  TilePos fromPos,
                                   TilePos toPos,
                                   Float weight) {
         if (0 <= toPos.y() && toPos.y() < world.heightInTiles() && 0 <= toPos.x() && toPos.x() < world.widthInTiles()) {
@@ -23,8 +25,9 @@ public class Astar {
         Map<TilePos, PathingNode> pathingNodes = new HashMap<>();
         for (int y = 0; y < world.heightInTiles(); y++) {
             for (int x = 0; x < world.widthInTiles(); x++) {
-                pathingNodes.put(TilePos.of(x, y), PathingNode.of(TilePos.of(x, y),
-                        world.clearances().getOrDefault(TilePos.of(x, y), Integer.MAX_VALUE)));
+                pathingNodes.put(TilePos.of(x, y),
+                                 PathingNode.of(TilePos.of(x, y),
+                                                world.clearances().getOrDefault(TilePos.of(x, y), Integer.MAX_VALUE)));
             }
         }
 
@@ -39,24 +42,31 @@ public class Astar {
                 tryAddEdge(pathingNodes, world, TilePos.of(x, y), TilePos.of(x, y - 1), straightWeight);
                 tryAddEdge(pathingNodes, world, TilePos.of(x, y), TilePos.of(x, y + 1), straightWeight);
 
-                if (x - 1 >= 0 && y - 1 >= 0 && world.traversables().get(TilePos.of(x - 1, y)) &&
-                        world.traversables().get(TilePos.of(x, y - 1))) {
+                if (x - 1 >= 0 &&
+                    y - 1 >= 0 &&
+                    world.traversables().get(TilePos.of(x - 1, y)) &&
+                    world.traversables().get(TilePos.of(x, y - 1))) {
                     tryAddEdge(pathingNodes, world, TilePos.of(x, y), TilePos.of(x - 1, y - 1), diagonalWeight);
                 }
 
-                if (x + 1 < world.widthInTiles() && y - 1 >= 0 && world.traversables().get(TilePos.of(x + 1, y)) &&
-                        world.traversables().get(TilePos.of(x, y - 1))) {
+                if (x + 1 < world.widthInTiles() &&
+                    y - 1 >= 0 &&
+                    world.traversables().get(TilePos.of(x + 1, y)) &&
+                    world.traversables().get(TilePos.of(x, y - 1))) {
                     tryAddEdge(pathingNodes, world, TilePos.of(x, y), TilePos.of(x + 1, y - 1), diagonalWeight);
                 }
 
-                if (x - 1 >= 0 && y + 1 < world.heightInTiles() && world.traversables().get(TilePos.of(x - 1, y)) &&
-                        world.traversables().get(TilePos.of(x, y + 1))) {
+                if (x - 1 >= 0 &&
+                    y + 1 < world.heightInTiles() &&
+                    world.traversables().get(TilePos.of(x - 1, y)) &&
+                    world.traversables().get(TilePos.of(x, y + 1))) {
                     tryAddEdge(pathingNodes, world, TilePos.of(x, y), TilePos.of(x - 1, y + 1), diagonalWeight);
                 }
 
-                if (x + 1 < world.widthInTiles() && y + 1 < world.heightInTiles() &&
-                        world.traversables().get(TilePos.of(x + 1, y)) &&
-                        world.traversables().get(TilePos.of(x, y + 1))) {
+                if (x + 1 < world.widthInTiles() &&
+                    y + 1 < world.heightInTiles() &&
+                    world.traversables().get(TilePos.of(x + 1, y)) &&
+                    world.traversables().get(TilePos.of(x, y + 1))) {
                     tryAddEdge(pathingNodes, world, TilePos.of(x, y), TilePos.of(x + 1, y + 1), diagonalWeight);
                 }
             }
@@ -64,21 +74,28 @@ public class Astar {
         return pathingNodes;
     }
 
-    public static AstarState traverse(AstarState astarState, TilePos finishTilePos, PhysicsWorld world,
+    public static AstarState traverse(AstarState astarState,
+                                      TilePos finishTilePos,
+                                      PhysicsWorld world,
                                       Integer capability) {
         if (!astarState.gaveUp() && !astarState.openSet().isEmpty() && !astarState.foundPath()) {
-            TilePos minimumTile = Collections.min(astarState.openSet(),
-                    (o1, o2) -> {
-                        if (Objects.equals(astarState.astarGraph().get(o1).f(), astarState.astarGraph().get(o2).f()))
-                            return 0;
-                        if (astarState.astarGraph().get(o1).f() >= astarState.astarGraph().get(o2).f()) return 1;
-                        return -1;
-                    });
+            TilePos minimumTile = Collections.min(astarState.openSet(), (o1, o2) -> {
+                if (Objects.equals(astarState.astarGraph().get(o1).f(), astarState.astarGraph().get(o2).f())) {
+                    return 0;
+                }
+                if (astarState.astarGraph().get(o1).f() >= astarState.astarGraph().get(o2).f()) {
+                    return 1;
+                }
+                return -1;
+            });
             AstarNode currentNode = astarState.astarGraph().get(minimumTile);
 
-            AstarState resultingAstarState =
-                    AstarState.of(astarState.astarGraph(), astarState.openSet(), astarState.closedSet(),
-                            astarState.finishPos(), astarState.foundPath(), false);
+            AstarState resultingAstarState = AstarState.of(astarState.astarGraph(),
+                                                           astarState.openSet(),
+                                                           astarState.closedSet(),
+                                                           astarState.finishPos(),
+                                                           astarState.foundPath(),
+                                                           false);
 
             if (astarState.closedSet().size() > 50) { // give up once you process enough tiles [PERFORMANCE SAVER]
                 resultingAstarState.gaveUp(true);
@@ -86,7 +103,8 @@ public class Astar {
 
             if (currentNode.pos().equals(finishTilePos)) {
                 resultingAstarState.foundPath(true);
-            } else {
+            }
+            else {
                 HashSet<TilePos> modifiedOpenSet = new HashSet<>(resultingAstarState.openSet());
                 modifiedOpenSet.remove(currentNode.pos());
                 HashSet<TilePos> modifiedClosedSet = new HashSet<>(resultingAstarState.closedSet());
@@ -96,10 +114,12 @@ public class Astar {
 
                 for (int i = 0; i < currentNode.pathingNode().outgoingEdges().size(); i++) {
                     PathingEdge pathingEdge = currentNode.pathingNode().outgoingEdges().get(i);
-                    resultingAstarState =
-                            processNeighbor(resultingAstarState, currentNode.pos(), pathingEdge, pathingEdge.weight(),
-                                    world,
-                                    capability);
+                    resultingAstarState = processNeighbor(resultingAstarState,
+                                                          currentNode.pos(),
+                                                          pathingEdge,
+                                                          pathingEdge.weight(),
+                                                          world,
+                                                          capability);
                 }
 
             }
@@ -122,11 +142,15 @@ public class Astar {
         return new LinkedList<>();
     }
 
-    public static AstarState processNeighbor(AstarState astarState, TilePos originNodePos, PathingEdge pathingEdge,
-                                             Float distanceBetweenNodes, PhysicsWorld world, Integer capability) {
+    public static AstarState processNeighbor(AstarState astarState,
+                                             TilePos originNodePos,
+                                             PathingEdge pathingEdge,
+                                             Float distanceBetweenNodes,
+                                             PhysicsWorld world,
+                                             Integer capability) {
         if (astarState.closedSet().contains(pathingEdge.neighborPos()) ||
-                Astar.calculateHeuristic(originNodePos, astarState.finishPos()) >= 60 &&
-                        world.clearances().get(pathingEdge.neighborPos()) < capability) {
+            Astar.calculateHeuristic(originNodePos, astarState.finishPos()) >= 60 &&
+            world.clearances().get(pathingEdge.neighborPos()) < capability) {
             return astarState;
         }
 
@@ -135,9 +159,11 @@ public class Astar {
 
         Double tentativeGScore = originNode.g() + distanceBetweenNodes;
 
-        AstarNode updatedNode =
-                AstarNode.of(neighborNode.pathingNode(), neighborNode.parent(), neighborNode.f(), neighborNode.g(),
-                        neighborNode.h());
+        AstarNode updatedNode = AstarNode.of(neighborNode.pathingNode(),
+                                             neighborNode.parent(),
+                                             neighborNode.f(),
+                                             neighborNode.g(),
+                                             neighborNode.h());
 
         if (!astarState.openSet().contains(neighborNode.pos())) {
             updatedNode.h(Astar.calculateHeuristic(neighborNode.pos(), astarState.finishPos()));
@@ -145,9 +171,12 @@ public class Astar {
             updatedNode.g(tentativeGScore);
             updatedNode.f(updatedNode.g() + updatedNode.h());
 
-            AstarState updatedAstarState =
-                    AstarState.of(astarState.astarGraph(), astarState.openSet(), astarState.closedSet(),
-                            astarState.finishPos(), astarState.foundPath(), astarState.gaveUp());
+            AstarState updatedAstarState = AstarState.of(astarState.astarGraph(),
+                                                         astarState.openSet(),
+                                                         astarState.closedSet(),
+                                                         astarState.finishPos(),
+                                                         astarState.foundPath(),
+                                                         astarState.gaveUp());
 
             Map<TilePos, AstarNode> updatedAstarGraph = new HashMap<>(astarState.astarGraph());
             updatedAstarGraph.put(neighborNode.pos(), updatedNode);
@@ -165,9 +194,12 @@ public class Astar {
             updatedNode.g(tentativeGScore);
             updatedNode.f(updatedNode.g() + updatedNode.h());
 
-            AstarState updatedAstarState =
-                    AstarState.of(astarState.astarGraph(), astarState.openSet(), astarState.closedSet(),
-                            astarState.finishPos(), astarState.foundPath(), astarState.gaveUp());
+            AstarState updatedAstarState = AstarState.of(astarState.astarGraph(),
+                                                         astarState.openSet(),
+                                                         astarState.closedSet(),
+                                                         astarState.finishPos(),
+                                                         astarState.foundPath(),
+                                                         astarState.gaveUp());
 
             Map<TilePos, AstarNode> updatedAstarGraph = new HashMap<>(astarState.astarGraph());
             updatedAstarGraph.put(neighborNode.pos(), updatedNode);
@@ -187,9 +219,12 @@ public class Astar {
         Map<TilePos, AstarNode> freshAstarGraph = Astar.getAstarGraph(world.pathingGraph());
         freshAstarGraph.get(startTilePos).g(0.0);
 
-        AstarState astarState =
-                AstarState.of(freshAstarGraph, new HashSet<>(Collections.singletonList(startTilePos)), new HashSet<>(),
-                        finishTilePos, false, false);
+        AstarState astarState = AstarState.of(freshAstarGraph,
+                                              new HashSet<>(Collections.singletonList(startTilePos)),
+                                              new HashSet<>(),
+                                              finishTilePos,
+                                              false,
+                                              false);
 
         AstarState result = traverse(astarState, finishTilePos, world, capability);
 
@@ -205,6 +240,6 @@ public class Astar {
 
     public static Map<TilePos, AstarNode> getAstarGraph(Map<TilePos, PathingNode> pathingGraph) {
         return pathingGraph.entrySet().stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, stuff -> AstarNode.of(stuff.getValue())));
+                           .collect(Collectors.toMap(Map.Entry::getKey, stuff -> AstarNode.of(stuff.getValue())));
     }
 }

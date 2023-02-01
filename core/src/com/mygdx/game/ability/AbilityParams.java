@@ -23,7 +23,7 @@ public class AbilityParams {
     SimpleTimer stateTimer = SimpleTimer.of(Float.MAX_VALUE, false);
     Vector2 dirVector;
     String textureName;
-//    AbilityRect rect;
+    //    AbilityRect rect;
 
     Float rotationAngle = 0f;
 
@@ -47,8 +47,14 @@ public class AbilityParams {
     Float manaCost = 0f;
     Float staminaCost = 0f;
 
-    public static AbilityParams of(AbilityId abilityId, AreaId areaId, Float width, Float height, Float channelTime,
-                                   Float activeTime, Float range, String textureName) {
+    public static AbilityParams of(AbilityId abilityId,
+                                   AreaId areaId,
+                                   Float width,
+                                   Float height,
+                                   Float channelTime,
+                                   Float activeTime,
+                                   Float range,
+                                   String textureName) {
         AbilityParams params = AbilityParams.of();
         params.id = abilityId;
         params.areaId = areaId;

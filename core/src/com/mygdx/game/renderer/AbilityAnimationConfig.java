@@ -24,17 +24,13 @@ public class AbilityAnimationConfig {
     public static Map<String, AbilityAnimationConfig> configs = new HashMap<>();
 
     static {
-        configs.put("slash",
-                AbilityAnimationConfig.of(40, 40, "slash_windup2", "slash2", 0, 6, 0f, 0.05f, 1.4f));
+        configs.put("slash", AbilityAnimationConfig.of(40, 40, "slash_windup2", "slash2", 0, 6, 0f, 0.05f, 1.4f));
 
-        configs.put("bubble",
-                AbilityAnimationConfig.of(64, 64, "bubble", "bubble", 0, 2, 0f, 0.3f, 1.7f));
+        configs.put("bubble", AbilityAnimationConfig.of(64, 64, "bubble", "bubble", 0, 2, 0f, 0.3f, 1.7f));
 
-        configs.put("fireball",
-                AbilityAnimationConfig.of(64, 64, "fireball2", "fireball2", 0, 45, 0f, 0.01f, 1.7f));
+        configs.put("fireball", AbilityAnimationConfig.of(64, 64, "fireball2", "fireball2", 0, 45, 0f, 0.01f, 1.7f));
 
-        configs.put("explosion",
-                AbilityAnimationConfig.of(64, 64, "explosion", "explosion", 0, 12, 0f, 0.042f, 1.7f));
+        configs.put("explosion", AbilityAnimationConfig.of(64, 64, "explosion", "explosion", 0, 12, 0f, 0.042f, 1.7f));
 
     }
 }

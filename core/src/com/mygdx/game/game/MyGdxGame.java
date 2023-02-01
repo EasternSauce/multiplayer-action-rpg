@@ -30,7 +30,7 @@ public abstract class MyGdxGame extends Game {
     final MyGdxGamePlayScreen playScreen = MyGdxGamePlayScreen.of();
     public EndPoint _endPoint = null;
 
-    private boolean debug = true;
+    private final boolean debug = true;
     public Chat chat = Chat.of();
     protected CreatureId thisPlayerId = null;
 
@@ -138,8 +138,8 @@ public abstract class MyGdxGame extends Game {
     }
 
     public void spawnEnemy(CreatureId creatureId, AreaId areaId, Vector2 pos, String enemyType) {
-        gameState().creatures().put(creatureId,
-                Enemy.of(CreatureParams.of(creatureId, areaId, pos, enemyType).speed(5f)));
+        gameState().creatures()
+                   .put(creatureId, Enemy.of(CreatureParams.of(creatureId, areaId, pos, enemyType).speed(5f)));
 
         synchronized (creaturesToBeCreated()) {
             creaturesToBeCreated().add(creatureId);
@@ -179,8 +179,7 @@ public abstract class MyGdxGame extends Game {
         }
     }
 
-    public void handleAttackTarget(CreatureId attackingCreatureId, Vector2 vectorTowardsTarget,
-                                   String abilityType) {
+    public void handleAttackTarget(CreatureId attackingCreatureId, Vector2 vectorTowardsTarget, String abilityType) {
     }
 
 
@@ -192,29 +191,26 @@ public abstract class MyGdxGame extends Game {
     public void updateCreatures(float delta, MyGdxGame game) {
         Set<CreatureId> creaturesToUpdate = creaturesToUpdate();
 
-        creaturesToUpdate.forEach(
-                creatureId -> {
-                    if (game.physics().creatureBodies().containsKey(creatureId)) {
-                        game.physics().creatureBodies().get(creatureId).update(game.gameState());
-                    }
-                });
+        creaturesToUpdate.forEach(creatureId -> {
+            if (game.physics().creatureBodies().containsKey(creatureId)) {
+                game.physics().creatureBodies().get(creatureId).update(game.gameState());
+            }
+        });
 
         // set gamestate position based on b2body position
-        creaturesToUpdate.forEach(
-                creatureId -> {
-                    if (game.physics().creatureBodies().containsKey(creatureId)) {
-                        game.gameState().creatures().get(creatureId).params()
-                                .pos(game.physics().creatureBodies().get(creatureId).getBodyPos());
-                    }
+        creaturesToUpdate.forEach(creatureId -> {
+            if (game.physics().creatureBodies().containsKey(creatureId)) {
+                game.gameState().creatures().get(creatureId).params()
+                    .pos(game.physics().creatureBodies().get(creatureId).getBodyPos());
+            }
 
-                });
+        });
 
-        creaturesToUpdate
-                .forEach(creatureId -> {
-                    if (game.renderer().creatureRenderers().containsKey(creatureId)) {
-                        game.renderer().creatureRenderers().get(creatureId).update(game.gameState());
-                    }
-                });
+        creaturesToUpdate.forEach(creatureId -> {
+            if (game.renderer().creatureRenderers().containsKey(creatureId)) {
+                game.renderer().creatureRenderers().get(creatureId).update(game.gameState());
+            }
+        });
 
         creaturesToUpdate.forEach(creatureId -> game.gameState().creatures().get(creatureId).update(delta, game));
 
@@ -223,28 +219,25 @@ public abstract class MyGdxGame extends Game {
     public void updateAbilities(float delta, MyGdxGame game) {
         Set<AbilityId> abilitiesToUpdate = abilitiesToUpdate();
 
-        abilitiesToUpdate
-                .forEach(abilityId -> {
-                    if (game.physics().abilityBodies().containsKey(abilityId)) {
-                        game.physics().abilityBodies().get(abilityId).update(game.gameState());
-                    }
-                });
+        abilitiesToUpdate.forEach(abilityId -> {
+            if (game.physics().abilityBodies().containsKey(abilityId)) {
+                game.physics().abilityBodies().get(abilityId).update(game.gameState());
+            }
+        });
 
-        abilitiesToUpdate.forEach(
-                abilityId -> {
-                    if (game.physics().abilityBodies().containsKey(abilityId)) {
-                        game.gameState().abilities().get(abilityId).params()
-                                .pos(game.physics().abilityBodies().get(abilityId).getBodyPos());
-                    }
+        abilitiesToUpdate.forEach(abilityId -> {
+            if (game.physics().abilityBodies().containsKey(abilityId)) {
+                game.gameState().abilities().get(abilityId).params()
+                    .pos(game.physics().abilityBodies().get(abilityId).getBodyPos());
+            }
 
-                });
+        });
 
-        abilitiesToUpdate
-                .forEach(abilityId -> {
-                    if (game.renderer().abilityRenderers().containsKey(abilityId)) {
-                        game.renderer().abilityRenderers().get(abilityId).update(game.gameState());
-                    }
-                });
+        abilitiesToUpdate.forEach(abilityId -> {
+            if (game.renderer().abilityRenderers().containsKey(abilityId)) {
+                game.renderer().abilityRenderers().get(abilityId).update(game.gameState());
+            }
+        });
 
 
         abilitiesToUpdate.forEach(abilityId -> game.gameState().abilities().get(abilityId).update(delta, game));

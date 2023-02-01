@@ -30,22 +30,26 @@ public class CreatureBody {
 
         world = gamePhysics.physicsWorlds().get(creature.params().areaId());
 
-//        while (world.b2world().isLocked()) {
-//            try {
-//                Thread.sleep(10);
-//            } catch (InterruptedException e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
+        //        while (world.b2world().isLocked()) {
+        //            try {
+        //                Thread.sleep(10);
+        //            } catch (InterruptedException e) {
+        //                throw new RuntimeException(e);
+        //            }
+        //        }
         b2Body = B2BodyFactory.createCreatureB2Body(world, this, creature);
 
-        if (!creature.isAlive()) b2Body.getFixtureList().get(0).setSensor(true);
+        if (!creature.isAlive()) {
+            b2Body.getFixtureList().get(0).setSensor(true);
+        }
 
         bodyCreated = true;
     }
 
     public void update(GameState gameState) {
-        if (!gameState.creatures().containsKey(creatureId)) return;
+        if (!gameState.creatures().containsKey(creatureId)) {
+            return;
+        }
 
         Creature creature = gameState.creatures().get(creatureId);
 
@@ -62,7 +66,8 @@ public class CreatureBody {
             //TODO: knockback
             if (creature.params().isMoving()) {
                 setVelocity(Vector2.of(vectorX, vectorY));
-            } else {
+            }
+            else {
                 setVelocity(Vector2.of(0, 0));
             }
 

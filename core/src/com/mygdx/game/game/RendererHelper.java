@@ -37,8 +37,8 @@ public class RendererHelper {
 
         if (game.debug()) {
             game.physics().debugRenderer()
-                    .render(game.physics().physicsWorlds().get(game.gameState().currentAreaId()).b2world(),
-                            renderer.worldCamera().combined);
+                .render(game.physics().physicsWorlds().get(game.gameState().currentAreaId()).b2world(),
+                        renderer.worldCamera().combined);
         }
     }
 
@@ -67,7 +67,9 @@ public class RendererHelper {
     public static void updateCamera(MyGdxGame game) {
         Creature player = null;
 
-        if (game.thisPlayerId() != null) player = game.gameState().creatures().get(game.thisPlayerId());
+        if (game.thisPlayerId() != null) {
+            player = game.gameState().creatures().get(game.thisPlayerId());
+        }
 
         if (player != null) {
             float camX;
@@ -78,7 +80,8 @@ public class RendererHelper {
                 camX = player.params().pos().x();
                 camY = player.params().pos().y();
 
-            } else {
+            }
+            else {
                 camX = 0;
                 camY = 0;
             }
@@ -97,21 +100,21 @@ public class RendererHelper {
 
     private static void drawFpsCounter(DrawingLayer drawingLayer) {
         float fps = Gdx.graphics.getFramesPerSecond();
-        Assets.drawFont(drawingLayer, fps + " fps",
-                Vector2.of(3, Constants.WindowHeight - 3),
-                Color.WHITE);
+        Assets.drawFont(drawingLayer, fps + " fps", Vector2.of(3, Constants.WindowHeight - 3), Color.WHITE);
     }
 
     private static void drawRespawnMessage(Creature creature, DrawingLayer drawingLayer) {
         if (!creature.isAlive()) {
             if (creature.params().respawnTimer().time() < creature.params().respawnTime()) {
-                Assets.drawLargeFont(drawingLayer, "You are dead!\nRespawning...\n" +
-                                String.format(Locale.US, "%.2f",
-                                        (creature.params().respawnTime() -
-                                                creature.params().respawnTimer().time())),
-                        Vector2.of(Constants.WindowWidth / 2f - Constants.WindowWidth / 8f,
-                                Constants.WindowHeight / 2f + Constants.WindowHeight / 5f),
-                        Color.RED);
+                Assets.drawLargeFont(drawingLayer,
+                                     "You are dead!\nRespawning...\n" +
+                                     String.format(Locale.US,
+                                                   "%.2f",
+                                                   (creature.params().respawnTime() -
+                                                    creature.params().respawnTimer().time())),
+                                     Vector2.of(Constants.WindowWidth / 2f - Constants.WindowWidth / 8f,
+                                                Constants.WindowHeight / 2f + Constants.WindowHeight / 5f),
+                                     Color.RED);
             }
         }
     }
@@ -120,26 +123,34 @@ public class RendererHelper {
         ShapeDrawer shapeDrawer = drawingLayer.shapeDrawer();
 
         shapeDrawer.filledRectangle(new Rectangle(10, 40, 100, 10), Color.ORANGE);
-        shapeDrawer.filledRectangle(new Rectangle(10, 40,
-                100 * creature.params().life() / creature.params().maxLife(), 10), Color.RED);
+        shapeDrawer.filledRectangle(new Rectangle(10,
+                                                  40,
+                                                  100 * creature.params().life() / creature.params().maxLife(),
+                                                  10), Color.RED);
         shapeDrawer.filledRectangle(new Rectangle(10, 25, 100, 10), Color.ORANGE);
-        shapeDrawer.filledRectangle(new Rectangle(10, 25,
-                100 * creature.params().stamina() / creature.params().maxStamina(), 10), Color.GREEN);
+        shapeDrawer.filledRectangle(new Rectangle(10,
+                                                  25,
+                                                  100 * creature.params().stamina() / creature.params().maxStamina(),
+                                                  10), Color.GREEN);
         shapeDrawer.filledRectangle(new Rectangle(10, 10, 100, 10), Color.ORANGE);
-        shapeDrawer.filledRectangle(new Rectangle(10, 10,
-                100 * creature.params().mana() / creature.params().maxMana(), 10), Color.BLUE);
+        shapeDrawer.filledRectangle(new Rectangle(10,
+                                                  10,
+                                                  100 * creature.params().mana() / creature.params().maxMana(),
+                                                  10), Color.BLUE);
     }
 
     private static void drawChat(Chat chat, DrawingLayer drawingLayer) {
         for (int i = 0; i < Math.min(chat.messages().size(), 6); i++) {
             Assets.drawFont(drawingLayer,
-                    chat.messages().get(i).poster() + ": " + chat.messages().get(i).text(),
-                    Vector2.of(30, 180 - 20 * i), Color.PURPLE);
+                            chat.messages().get(i).poster() + ": " + chat.messages().get(i).text(),
+                            Vector2.of(30, 180 - 20 * i),
+                            Color.PURPLE);
         }
 
         Assets.drawFont(drawingLayer,
-                (chat.isTyping() ? "> " : "") + chat.currentMessage(), Vector2.of(30, 30),
-                Color.PURPLE);
+                        (chat.isTyping() ? "> " : "") + chat.currentMessage(),
+                        Vector2.of(30, 30),
+                        Color.PURPLE);
     }
 
 }
