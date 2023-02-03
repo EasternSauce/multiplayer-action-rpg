@@ -21,6 +21,16 @@ public class Attack extends Ability {
     }
 
     @Override
+    void onAbilityStarted(MyGdxGame game) {
+
+    }
+
+    @Override
+    void onDelayedAction(MyGdxGame game) {
+
+    }
+
+    @Override
     void onAbilityCompleted(MyGdxGame game) {
 
     }
@@ -29,7 +39,7 @@ public class Attack extends Ability {
     protected void updatePosition(GameState gameState) {
         Vector2 dirVector;
         if (params().dirVector().len() <= 0) {
-            dirVector = Vector2.of(1, 0).normalized();
+            dirVector = Vector2.of(1, 0);
         }
         else {
             dirVector = params().dirVector();

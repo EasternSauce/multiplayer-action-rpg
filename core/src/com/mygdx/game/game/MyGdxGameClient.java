@@ -9,6 +9,7 @@ import com.esotericsoftware.kryonet.Listener;
 import com.mygdx.game.Constants;
 import com.mygdx.game.ability.Ability;
 import com.mygdx.game.ability.AbilityId;
+import com.mygdx.game.ability.AbilityType;
 import com.mygdx.game.action.ActionsHolder;
 import com.mygdx.game.action.GameStateAction;
 import com.mygdx.game.command.*;
@@ -33,7 +34,7 @@ public class MyGdxGameClient extends MyGdxGame {
     private MyGdxGameClient() {
         _endPoint.getKryo().setRegistrationRequired(false);
 
-        thisPlayerId = CreatureId.of("Player_" + (int) (Math.random() * 100000));
+        thisPlayerId = CreatureId.of("Player_" + (int) (Math.random() * 10000000));
     }
 
     public static MyGdxGameClient getInstance() {
@@ -88,9 +89,9 @@ public class MyGdxGameClient extends MyGdxGame {
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.N)) {
 
-            CreatureId creatureId = gameState().creatures().keySet().stream()
-                                               .filter(cId -> cId.value().startsWith("Player"))
-                                               .collect(Collectors.toList()).get(0);
+            CreatureId creatureId =
+                    gameState().creatures().keySet().stream().filter(cId -> cId.value().startsWith("Player"))
+                               .collect(Collectors.toList()).get(0);
             Vector2 pos = gameState().creatures().get(creatureId).params().pos();
             System.out.println("Vector2.of(" + pos.x() + "f, " + pos.y() + "f),");
         }
@@ -99,9 +100,9 @@ public class MyGdxGameClient extends MyGdxGame {
             Creature player = gameState().creatures().get(thisPlayerId);
 
             if (player.params().attackCommandsPerSecondLimitTimer().time() > 0.2f) { // TODO: move cooldown to param?
-                player.params().attackCooldownTimer().restart();
+                player.params().actionCooldownTimer().restart();
 
-                AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 100000));
+                AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
 
                 float mouseX = Gdx.input.getX();
                 float mouseY = Gdx.input.getY();
@@ -109,13 +110,15 @@ public class MyGdxGameClient extends MyGdxGame {
                 float centerX = Gdx.graphics.getWidth() / 2f;
                 float centerY = Gdx.graphics.getHeight() / 2f;
 
-                Vector2 mouseDirVector = Vector2.of(mouseX - centerX, (Gdx.graphics.getHeight() - mouseY) - centerY)
-                                                .normalized();
+                Vector2 mouseDirVector =
+                        Vector2.of(mouseX - centerX, (Gdx.graphics.getHeight() - mouseY) - centerY).normalized();
 
                 endPoint().sendTCP(SpawnAbilityCommand.of(abilityId,
                                                           AreaId.of("area1"),
                                                           thisPlayerId,
-                                                          "slash",
+                                                          AbilityType.SLASH,
+                                                          new HashSet<>(),
+                                                          null,
                                                           player.params().pos(),
                                                           mouseDirVector));
             }
@@ -126,9 +129,37 @@ public class MyGdxGameClient extends MyGdxGame {
             Creature player = gameState().creatures().get(thisPlayerId);
 
             if (player.params().attackCommandsPerSecondLimitTimer().time() > 0.2f) { // TODO: move cooldown to param?
-                player.params().attackCooldownTimer().restart();
+                player.params().actionCooldownTimer().restart();
 
-                AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 100000));
+                AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
+
+                float mouseX = Gdx.input.getX(); // TODO: duplicate code (use mouse pos method?)
+                float mouseY = Gdx.input.getY();
+
+                float centerX = Gdx.graphics.getWidth() / 2f;
+                float centerY = Gdx.graphics.getHeight() / 2f;
+
+                Vector2 mouseDirVector =
+                        Vector2.of(mouseX - centerX, (Gdx.graphics.getHeight() - mouseY) - centerY).normalized();
+
+                endPoint().sendTCP(SpawnAbilityCommand.of(abilityId,
+                                                          AreaId.of("area1"),
+                                                          thisPlayerId,
+                                                          AbilityType.FIREBALL,
+                                                          new HashSet<>(),
+                                                          null,
+                                                          player.params().pos(),
+                                                          mouseDirVector));
+            }
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
+
+            Creature player = gameState().creatures().get(thisPlayerId);
+
+            if (player.params().attackCommandsPerSecondLimitTimer().time() > 0.2f) { // TODO: move cooldown to param?
+                player.params().actionCooldownTimer().restart();
+
+                AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
 
                 float mouseX = Gdx.input.getX();
                 float mouseY = Gdx.input.getY();
@@ -136,14 +167,27 @@ public class MyGdxGameClient extends MyGdxGame {
                 float centerX = Gdx.graphics.getWidth() / 2f;
                 float centerY = Gdx.graphics.getHeight() / 2f;
 
-                Vector2 mouseDirVector = Vector2.of(mouseX - centerX, (Gdx.graphics.getHeight() - mouseY) - centerY)
-                                                .normalized();
+                float offCenterX = mouseX - centerX;
+                float offCenterY = (Gdx.graphics.getHeight() - mouseY) - centerY;
+
+                Vector2 mouseDirVector = Vector2.of(offCenterX, offCenterY).normalized();
+
+                Vector2 mousePos = mousePosRelativeToCenter();
+
+                float viewportRatioX = Constants.ViewpointWorldWidth / Constants.WindowWidth;
+                float viewportRatioY = Constants.ViewpointWorldHeight / Constants.WindowHeight; // TODO: duplicate code
+
 
                 endPoint().sendTCP(SpawnAbilityCommand.of(abilityId,
                                                           AreaId.of("area1"),
                                                           thisPlayerId,
-                                                          "fireball",
-                                                          player.params().pos(),
+                                                          AbilityType.LIGHTNING_SPARK,
+                                                          new HashSet<>(),
+                                                          null,
+                                                          Vector2.of(player.params().pos()
+                                                                           .x() + mousePos.x() * viewportRatioX / Constants.PPM,
+                                                                     player.params().pos()
+                                                                           .y() + mousePos.y() * viewportRatioY / Constants.PPM),
                                                           mouseDirVector));
             }
         }
@@ -199,7 +243,7 @@ public class MyGdxGameClient extends MyGdxGame {
             AreaId areaId = gameState().defaultAreaId();
 
             spawnPositions.forEach(pos -> {
-                CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 100000));
+                CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 10000000));
                 endPoint().sendTCP(SpawnEnemyCommand.of(enemyId,
                                                         areaId,
                                                         "skeleton",
@@ -329,7 +373,12 @@ public class MyGdxGameClient extends MyGdxGame {
 
         return gameState().creatures().keySet().stream().filter(creatureId -> {
             Creature creature = gameState().creatures().get(creatureId);
-            return creature.params().pos().distance(player.params().pos()) < Constants.ClientGameUpdateRange;
+            if (creature != null) {
+                return creature.params().pos().distance(player.params().pos()) < Constants.ClientGameUpdateRange;
+            }
+
+            return false;
+
         }).collect(Collectors.toSet());
 
 
@@ -341,8 +390,19 @@ public class MyGdxGameClient extends MyGdxGame {
 
         return gameState().abilities().keySet().stream().filter(abilityId -> {
             Ability ability = gameState().abilities().get(abilityId);
-            return ability.params().pos().distance(player.params().pos()) < Constants.ClientGameUpdateRange;
+            if (ability != null) {
+                return ability.params().pos().distance(player.params().pos()) < Constants.ClientGameUpdateRange;
+            }
+            return false;
         }).collect(Collectors.toSet());
+    }
+
+    @Override
+    public void chainAbility(Ability chainFromAbility,
+                             AbilityType abilityType,
+                             Vector2 chainToPos,
+                             CreatureId creatureId) {
+        // do nothing
     }
 
     @Override

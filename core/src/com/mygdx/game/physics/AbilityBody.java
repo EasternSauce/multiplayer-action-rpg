@@ -23,6 +23,8 @@ public class AbilityBody {
 
     PhysicsWorld world;
 
+    Boolean inactiveBody = false;
+
     public static AbilityBody of(AbilityId abilityId) {
         AbilityBody abilityBody = new AbilityBody();
         abilityBody.abilityId = abilityId;
@@ -57,22 +59,32 @@ public class AbilityBody {
 
     }
 
-    public void init(GamePhysics physics, GameState gameState) {
+    public void init(GamePhysics physics, GameState gameState, boolean inactiveBody) {
         Ability ability = gameState.abilities().get(abilityId);
 
-        world = physics.physicsWorlds().get(ability.params().areaId());
+        if (!inactiveBody && ability != null) {
+            if (ability.params().inactiveBody()) {
+                return;
+            }
 
-        creatureId = ability.params().creatureId();
+            world = physics.physicsWorlds().get(ability.params().areaId());
 
-        b2Body = B2BodyFactory.createAbilityB2Body(world, this, ability.params().pos(), hitboxVertices(gameState));
+            creatureId = ability.params().creatureId();
+
+            b2Body = B2BodyFactory.createAbilityB2Body(world, this, ability.params().pos(), hitboxVertices(gameState));
+        }
+        else {
+            this.inactiveBody = true;
+        }
+
     }
 
     public void update(GameState gameState) {
         Ability ability = gameState.abilities().get(abilityId);
 
-        if (ability != null) {
-            if (ability.isPositionManipulated() &&
-                (ability.params().state() == AbilityState.CHANNEL || ability.params().state() == AbilityState.ACTIVE)) {
+        if (!inactiveBody && ability != null) {
+            if (ability.isPositionManipulated() && (ability.params().state() == AbilityState.CHANNEL || ability.params()
+                                                                                                               .state() == AbilityState.ACTIVE)) {
                 b2Body.setTransform(ability.params().pos().x(), ability.params().pos().y(), 0f);
             }
 
@@ -85,7 +97,9 @@ public class AbilityBody {
     }
 
     public void onRemove() {
-        world.b2world().destroyBody(b2Body);
-    }
+        if (!inactiveBody) {
+            world.b2world().destroyBody(b2Body);
+        }
 
+    }
 }

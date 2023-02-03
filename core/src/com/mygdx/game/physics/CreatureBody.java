@@ -18,6 +18,8 @@ public class CreatureBody {
 
     PhysicsWorld world;
 
+    Boolean isActive = true;
+
     public static CreatureBody of(CreatureId creatureId) {
         CreatureBody creatureBody = new CreatureBody();
         creatureBody.creatureId = creatureId;
@@ -108,6 +110,9 @@ public class CreatureBody {
     }
 
     public void setActive(boolean isActive) {
-        b2Body.setActive(isActive);
+        if (this.isActive != isActive) {
+            this.isActive = isActive;
+            b2Body.setActive(isActive);
+        }
     }
 }

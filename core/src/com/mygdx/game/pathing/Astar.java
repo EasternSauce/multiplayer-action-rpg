@@ -42,31 +42,28 @@ public class Astar {
                 tryAddEdge(pathingNodes, world, TilePos.of(x, y), TilePos.of(x, y - 1), straightWeight);
                 tryAddEdge(pathingNodes, world, TilePos.of(x, y), TilePos.of(x, y + 1), straightWeight);
 
-                if (x - 1 >= 0 &&
-                    y - 1 >= 0 &&
-                    world.traversables().get(TilePos.of(x - 1, y)) &&
-                    world.traversables().get(TilePos.of(x, y - 1))) {
+                if (x - 1 >= 0 && y - 1 >= 0 && world.traversables().get(TilePos.of(x - 1, y)) && world.traversables()
+                                                                                                       .get(TilePos.of(x,
+                                                                                                                       y - 1))) {
                     tryAddEdge(pathingNodes, world, TilePos.of(x, y), TilePos.of(x - 1, y - 1), diagonalWeight);
                 }
 
-                if (x + 1 < world.widthInTiles() &&
-                    y - 1 >= 0 &&
-                    world.traversables().get(TilePos.of(x + 1, y)) &&
-                    world.traversables().get(TilePos.of(x, y - 1))) {
+                if (x + 1 < world.widthInTiles() && y - 1 >= 0 && world.traversables()
+                                                                       .get(TilePos.of(x + 1, y)) && world
+                            .traversables().get(TilePos.of(x, y - 1))) {
                     tryAddEdge(pathingNodes, world, TilePos.of(x, y), TilePos.of(x + 1, y - 1), diagonalWeight);
                 }
 
-                if (x - 1 >= 0 &&
-                    y + 1 < world.heightInTiles() &&
-                    world.traversables().get(TilePos.of(x - 1, y)) &&
-                    world.traversables().get(TilePos.of(x, y + 1))) {
+                if (x - 1 >= 0 && y + 1 < world.heightInTiles() && world.traversables()
+                                                                        .get(TilePos.of(x - 1, y)) && world
+                            .traversables().get(TilePos.of(x, y + 1))) {
                     tryAddEdge(pathingNodes, world, TilePos.of(x, y), TilePos.of(x - 1, y + 1), diagonalWeight);
                 }
 
-                if (x + 1 < world.widthInTiles() &&
-                    y + 1 < world.heightInTiles() &&
-                    world.traversables().get(TilePos.of(x + 1, y)) &&
-                    world.traversables().get(TilePos.of(x, y + 1))) {
+                if (x + 1 < world.widthInTiles() && y + 1 < world.heightInTiles() && world.traversables()
+                                                                                          .get(TilePos.of(x + 1,
+                                                                                                          y)) && world
+                            .traversables().get(TilePos.of(x, y + 1))) {
                     tryAddEdge(pathingNodes, world, TilePos.of(x, y), TilePos.of(x + 1, y + 1), diagonalWeight);
                 }
             }
@@ -150,9 +147,10 @@ public class Astar {
                                              Float distanceBetweenNodes,
                                              PhysicsWorld world,
                                              Integer capability) {
-        if (astarState.closedSet().contains(pathingEdge.neighborPos()) ||
-            Astar.calculateHeuristic(originNodePos, astarState.finishPos()) >= 60 &&
-            world.clearances().get(pathingEdge.neighborPos()) < capability) {
+        if (astarState.closedSet().contains(pathingEdge.neighborPos()) || Astar.calculateHeuristic(originNodePos,
+                                                                                                   astarState.finishPos()) >= 60 && world
+                                                                                                                                            .clearances()
+                                                                                                                                            .get(pathingEdge.neighborPos()) < capability) {
             return astarState;
         }
 

@@ -19,24 +19,31 @@ public abstract class Ability {
     public void update(Float delta, MyGdxGame game) {
         AbilityState state = params().state();
 
-        if (state == AbilityState.CHANNEL || state == AbilityState.ACTIVE) {
+        if (state == AbilityState.CHANNEL) {
+            onChannelUpdate(game.gameState());
+
             if (isPositionManipulated()) {
                 updatePosition(game.gameState());
             }
 
-
-        }
-
-        if (state == AbilityState.CHANNEL) {
-            onChannelUpdate(game.gameState());
-
             if (params().stateTimer().time() > params().channelTime()) {
                 params().state(AbilityState.ACTIVE);
+                onAbilityStarted(game);
                 params().stateTimer().restart();
             }
         }
         else if (state == AbilityState.ACTIVE) {
             onActiveUpdate(game.gameState());
+
+            if (isPositionManipulated()) {
+                updatePosition(game.gameState());
+            }
+
+            if (!params().delayedActionCompleted() && params().stateTimer().time() > params().delayedActionTime()) {
+                params().delayedActionCompleted(true);
+                onDelayedAction(game);
+            }
+
 
             if (params().stateTimer().time() > params().activeTime()) {
                 params().state(AbilityState.INACTIVE);
@@ -47,6 +54,10 @@ public abstract class Ability {
 
         updateTimers(delta);
     }
+
+    abstract void onAbilityStarted(MyGdxGame game);
+
+    abstract void onDelayedAction(MyGdxGame game);
 
     abstract void onAbilityCompleted(MyGdxGame game);
 
@@ -61,19 +72,16 @@ public abstract class Ability {
         params().stateTimer().restart();
     }
 
-    public void start(Vector2 dir, GameState gameState) {
+    public void start(Vector2 dir, GameState gameState, AbilityType abilityType) {
         params().dirVector(dir);
 
         Creature creature = gameState.creatures().get(params().creatureId());
         if (isPositionManipulated()) {
             updatePosition(gameState);
         }
-        else {
-            params().pos(creature.params().pos());
-        }
 
-        creature.takeManaDamage(params().manaCost());
-        creature.takeStaminaDamage(params().staminaCost());
+        creature.takeManaDamage(abilityType.manaCost);
+        creature.takeStaminaDamage(abilityType.staminaCost);
 
         progressStateToChannel();
 

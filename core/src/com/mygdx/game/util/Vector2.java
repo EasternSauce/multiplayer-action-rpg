@@ -30,7 +30,7 @@ public class Vector2 {
     }
 
     public Vector2 vectorTowards(Vector2 point) {
-        return Vector2.of(point.x() - x, point.y() - y).normalized();
+        return Vector2.of(point.x() - x, point.y() - y);
     }
 
     public Vector2 normalized() {
@@ -49,5 +49,9 @@ public class Vector2 {
 
     public Vector2 add(Vector2 vector) {
         return Vector2.of(x + vector.x(), y + vector.y());
+    }
+
+    public Vector2 midpointTowards(Vector2 vector) {
+        return Vector2.of(this.x() + 0.5f * (vector.x() - this.x()), this.y() + 0.5f * (vector.y() - this.y()));
     }
 }

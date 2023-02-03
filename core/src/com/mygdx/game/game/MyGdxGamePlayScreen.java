@@ -54,8 +54,7 @@ public class MyGdxGamePlayScreen implements Screen {
 
         maps(mapsToLoad.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
                                                                      entry -> game.renderer().mapLoader()
-                                                                                  .load(entry.getValue() +
-                                                                                        "/tile_map.tmx"))));
+                                                                                  .load(entry.getValue() + "/tile_map.tmx"))));
 
         game.renderer().mapScale(4.0f);
 
@@ -71,9 +70,7 @@ public class MyGdxGamePlayScreen implements Screen {
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean keyTyped(char character) {
-                if (game.chat.isTyping() &&
-                    character != '\b' &&
-                    (character == ' ' || !(Character.isWhitespace(character)))) {
+                if (game.chat.isTyping() && character != '\b' && (character == ' ' || !(Character.isWhitespace(character)))) {
                     game.chat.currentMessage(game.chat.currentMessage() + character);
                 }
 

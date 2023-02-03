@@ -175,11 +175,8 @@ public class PhysicsWorld {
             TerrainTileBody tile1 = TerrainTileBody.of(TilePos.of(x, -1), tileWidth, tileHeight, null, null);
             tile1.init(this);
             terrainBorders.add(tile1);
-            TerrainTileBody tile2 = TerrainTileBody.of(TilePos.of(x, heightInTiles()),
-                                                       tileWidth,
-                                                       tileHeight,
-                                                       null,
-                                                       null);
+            TerrainTileBody tile2 =
+                    TerrainTileBody.of(TilePos.of(x, heightInTiles()), tileWidth, tileHeight, null, null);
             tile2.init(this);
             terrainBorders.add(tile2);
         }
@@ -187,11 +184,8 @@ public class PhysicsWorld {
             TerrainTileBody tile1 = TerrainTileBody.of(TilePos.of(-1, y), tileWidth, tileHeight, null, null);
             tile1.init(this);
             terrainBorders.add(tile1);
-            TerrainTileBody tile2 = TerrainTileBody.of(TilePos.of(widthInTiles(), y),
-                                                       tileWidth,
-                                                       tileHeight,
-                                                       null,
-                                                       null);
+            TerrainTileBody tile2 =
+                    TerrainTileBody.of(TilePos.of(widthInTiles(), y), tileWidth, tileHeight, null, null);
             tile2.init(this);
             terrainBorders.add(tile2);
         }
@@ -200,12 +194,8 @@ public class PhysicsWorld {
     }
 
     public void tryAddClearance(TilePos pos, Integer level) {
-        if (!clearances.containsKey(pos) &&
-            pos.x() >= 0 &&
-            pos.y() >= 0 &&
-            pos.x() < widthInTiles() &&
-            pos.y() < heightInTiles() &&
-            traversables.get(pos)) {
+        if (!clearances.containsKey(pos) && pos.x() >= 0 && pos.y() >= 0 && pos.x() < widthInTiles() && pos.y() < heightInTiles() && traversables.get(
+                pos)) {
             clearances.put(pos, level);
         }
     }
@@ -234,9 +224,9 @@ public class PhysicsWorld {
 
             final int level = currentLevel;
 
-            List<TilePos> lowerLevelClearances = clearances.entrySet().stream()
-                                                           .filter(entry -> entry.getValue() == level - 1)
-                                                           .map(Map.Entry::getKey).collect(Collectors.toList());
+            List<TilePos> lowerLevelClearances =
+                    clearances.entrySet().stream().filter(entry -> entry.getValue() == level - 1).map(Map.Entry::getKey)
+                              .collect(Collectors.toList());
 
 
             lowerLevelClearances.forEach(pos -> {
@@ -264,13 +254,11 @@ public class PhysicsWorld {
 
     public Boolean isLineOfSight(Vector2 fromPos, Vector2 toPos) {
         float lineWidth = 0.3f;
-        com.badlogic.gdx.math.Polygon lineOfSightRect = new com.badlogic.gdx.math.Polygon(new float[]{fromPos.x(), fromPos.y(),
-                fromPos.x() +
-                lineWidth, fromPos.y() + lineWidth, toPos.x() + lineWidth, toPos.y() +
-                                                                           lineWidth, toPos.x(), toPos.y()});
+        com.badlogic.gdx.math.Polygon lineOfSightRect =
+                new com.badlogic.gdx.math.Polygon(new float[]{fromPos.x(), fromPos.y(), fromPos.x() + lineWidth, fromPos.y() + lineWidth, toPos.x() + lineWidth, toPos.y() + lineWidth, toPos.x(), toPos.y()});
 
-        List<com.badlogic.gdx.math.Polygon> polygons = terrainTiles.stream().map(TerrainTileBody::polygon)
-                                                                   .collect(Collectors.toList());
+        List<com.badlogic.gdx.math.Polygon> polygons =
+                terrainTiles.stream().map(TerrainTileBody::polygon).collect(Collectors.toList());
 
         boolean overlaps = false;
 

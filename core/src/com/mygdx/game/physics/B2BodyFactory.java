@@ -56,10 +56,10 @@ public class B2BodyFactory {
 
     public static Body createTerrainTileB2body(PhysicsWorld world, TerrainTileBody terrainTileBody) {
         return createB2Body(world,
-                            Vector2.of(terrainTileBody.pos().x() * terrainTileBody.tileWidth() +
-                                       terrainTileBody.tileWidth() / 2,
-                                       terrainTileBody.pos().y() * terrainTileBody.tileHeight() +
-                                       terrainTileBody.tileHeight() / 2),
+                            Vector2.of(terrainTileBody.pos()
+                                                      .x() * terrainTileBody.tileWidth() + terrainTileBody.tileWidth() / 2,
+                                       terrainTileBody.pos()
+                                                      .y() * terrainTileBody.tileHeight() + terrainTileBody.tileHeight() / 2),
                             BodyType.StaticBody,
                             terrainTileBody,
                             Rectangle.of(terrainTileBody.tileWidth(), terrainTileBody.tileHeight()),

@@ -1,5 +1,6 @@
 package com.mygdx.game.model.creature;
 
+import com.mygdx.game.ability.AbilityType;
 import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.pathing.Astar;
 import com.mygdx.game.pathing.AstarResult;
@@ -32,10 +33,12 @@ public class Enemy extends Creature {
         CreatureId minCreatureId = null;
         for (Map.Entry<CreatureId, Creature> entry : game.gameState().creatures().entrySet()) {
             Creature creature = entry.getValue();
-            boolean condition = creature.isAlive() &&
-                                creature.params().areaId().value().equals(params().areaId().value()) &&
-                                creature instanceof Player &&
-                                creature.params().pos().distance(params().pos()) < enemySearchDistance;
+            boolean condition = creature.isAlive() && creature.params().areaId().value().equals(params().areaId()
+                                                                                                        .value()) && creature instanceof Player && creature
+                                                                                                                                                           .params()
+                                                                                                                                                           .pos()
+                                                                                                                                                           .distance(
+                                                                                                                                                                   params().pos()) < enemySearchDistance;
 
             if (condition && params().pos().distance(creature.params().pos()) < minDistance) {
                 minCreatureId = entry.getKey();
@@ -73,10 +76,8 @@ public class Enemy extends Creature {
             potentialTarget = game.gameState().creatures().get(params().aggroedCreatureId());
         }
 
-        if (params().aggroTimer().time() < params.loseAggroTime() &&
-            potentialTarget != null &&
-            potentialTarget.isAlive() &&
-            this.isAlive()) {
+        if (params().aggroTimer()
+                    .time() < params.loseAggroTime() && potentialTarget != null && potentialTarget.isAlive() && this.isAlive()) {
 
             Vector2 vectorTowardsTarget = params().pos().vectorTowards(potentialTarget.params().pos());
 
@@ -95,12 +96,12 @@ public class Enemy extends Creature {
     }
 
     private void processPathfinding(MyGdxGame game) {
-        boolean condition = params().areaId().equals(game.gameState().currentAreaId()) &&
-                            params().targetCreatureId() != null &&
-                            (params().forcePathCalculation() ||
-                             params().pathCalculationCooldownTimer().time() > params().pathCalculationCooldown()) &&
-                            params().pathCalculationFailurePenaltyTimer().time() >
-                            params().pathCalculationFailurePenalty();
+        boolean condition = params().areaId().equals(game.gameState()
+                                                         .currentAreaId()) && params().targetCreatureId() != null && (params().forcePathCalculation() || params()
+                                                                                                                                                                 .pathCalculationCooldownTimer()
+                                                                                                                                                                 .time() > params().pathCalculationCooldown()) && params()
+                                                                                                                                                                                                                          .pathCalculationFailurePenaltyTimer()
+                                                                                                                                                                                                                          .time() > params().pathCalculationFailurePenalty();
 
         if (condition) {
             Creature target = game.gameState().creatures().get(params().targetCreatureId());
@@ -163,7 +164,7 @@ public class Enemy extends Creature {
     public void handleAttackTarget(Creature potentialTarget, Vector2 vectorTowardsTarget, MyGdxGame game) {
         if (potentialTarget.params().pos().distance(params().pos()) < 4f) {
 
-            game.handleAttackTarget(params().id(), vectorTowardsTarget, "slash");
+            game.handleAttackTarget(params().id(), vectorTowardsTarget, AbilityType.SLASH);
 
         }
     }

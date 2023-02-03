@@ -49,8 +49,18 @@ public class Fireball extends Projectile {
     }
 
     @Override
+    void onAbilityStarted(MyGdxGame game) {
+
+    }
+
+    @Override
+    void onDelayedAction(MyGdxGame game) {
+
+    }
+
+    @Override
     protected void onAbilityCompleted(MyGdxGame game) {
-        game.chainAbility(this, "fireball_explosion");
+        game.chainAbility(this, AbilityType.FIREBALL_EXPLOSION, null, null);
     }
 
     @Override

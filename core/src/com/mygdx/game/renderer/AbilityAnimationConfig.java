@@ -32,5 +32,10 @@ public class AbilityAnimationConfig {
 
         configs.put("explosion", AbilityAnimationConfig.of(64, 64, "explosion", "explosion", 0, 12, 0f, 0.042f, 1.7f));
 
+        configs.put("lightning", AbilityAnimationConfig.of(64, 64, "lightning", "lightning", 0, 4, 0f, 0.1f, 1.7f));
+
+        configs.put("lightning_chain",
+                    AbilityAnimationConfig.of(64, 192, "lightning_chain", "lightning_chain", 0, 6, 0f, 0.1f, 1.7f));
+
     }
 }

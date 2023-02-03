@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class FireballExplosion extends Ability {
+public class LightningChain extends Ability {
     AbilityParams params;
 
-    public static FireballExplosion of(AbilityParams params) {
-        FireballExplosion ability = FireballExplosion.of();
+    public static LightningChain of(AbilityParams params) {
+        LightningChain ability = LightningChain.of();
         ability.params = params;
         return ability;
     }

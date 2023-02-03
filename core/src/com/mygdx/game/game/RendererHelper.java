@@ -25,11 +25,12 @@ public class RendererHelper {
 
         drawingLayer.spriteBatch().begin();
 
+        renderer.renderDeadCreatures(drawingLayer, game.gameState());
+        renderer.renderAliveCreatures(drawingLayer, game.gameState());
+
         renderer.abilityRenderers()
                 .forEach((abilityId, abilityAnimation) -> abilityAnimation.render(drawingLayer, game.gameState()));
 
-        renderer.renderDeadCreatures(drawingLayer, game.gameState());
-        renderer.renderAliveCreatures(drawingLayer, game.gameState());
 
         drawingLayer.spriteBatch().end();
 
@@ -107,11 +108,12 @@ public class RendererHelper {
         if (!creature.isAlive()) {
             if (creature.params().respawnTimer().time() < creature.params().respawnTime()) {
                 Assets.drawLargeFont(drawingLayer,
-                                     "You are dead!\nRespawning...\n" +
-                                     String.format(Locale.US,
-                                                   "%.2f",
-                                                   (creature.params().respawnTime() -
-                                                    creature.params().respawnTimer().time())),
+                                     "You are dead!\nRespawning...\n" + String.format(Locale.US,
+                                                                                      "%.2f",
+                                                                                      (creature.params()
+                                                                                               .respawnTime() - creature
+                                                                                               .params().respawnTimer()
+                                                                                               .time())),
                                      Vector2.of(Constants.WindowWidth / 2f - Constants.WindowWidth / 8f,
                                                 Constants.WindowHeight / 2f + Constants.WindowHeight / 5f),
                                      Color.RED);

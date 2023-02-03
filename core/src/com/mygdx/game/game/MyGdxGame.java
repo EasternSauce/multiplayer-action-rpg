@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.esotericsoftware.kryonet.EndPoint;
 import com.mygdx.game.ability.Ability;
 import com.mygdx.game.ability.AbilityId;
+import com.mygdx.game.ability.AbilityType;
 import com.mygdx.game.chat.Chat;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.area.AreaId;
@@ -130,7 +131,7 @@ public abstract class MyGdxGame extends Game {
             }
             if (!gamePhysics.abilityBodies().containsKey(abilityId)) {
                 AbilityBody abilityBody = AbilityBody.of(abilityId);
-                abilityBody.init(gamePhysics, gameState());
+                abilityBody.init(gamePhysics, gameState(), ability.params().inactiveBody());
                 gamePhysics.abilityBodies().put(abilityId, abilityBody);
             }
         }
@@ -179,13 +180,16 @@ public abstract class MyGdxGame extends Game {
         }
     }
 
-    public void handleAttackTarget(CreatureId attackingCreatureId, Vector2 vectorTowardsTarget, String abilityType) {
+    public void handleAttackTarget(CreatureId attackingCreatureId,
+                                   Vector2 vectorTowardsTarget,
+                                   AbilityType abilityType) {
     }
 
 
-    public void chainAbility(Ability ability, String abilityType) {
-
-    }
+    abstract public void chainAbility(Ability chainFromAbility,
+                                      AbilityType abilityType,
+                                      Vector2 chainToPos,
+                                      CreatureId creatureId);
 
 
     public void updateCreatures(float delta, MyGdxGame game) {
@@ -199,7 +203,8 @@ public abstract class MyGdxGame extends Game {
 
         // set gamestate position based on b2body position
         creaturesToUpdate.forEach(creatureId -> {
-            if (game.physics().creatureBodies().containsKey(creatureId)) {
+            if (game.gameState().creatures().containsKey(creatureId) && game.physics().creatureBodies()
+                                                                            .containsKey(creatureId)) {
                 game.gameState().creatures().get(creatureId).params()
                     .pos(game.physics().creatureBodies().get(creatureId).getBodyPos());
             }
@@ -235,8 +240,11 @@ public abstract class MyGdxGame extends Game {
 
         abilitiesToUpdate.forEach(abilityId -> {
             if (game.physics().abilityBodies().containsKey(abilityId)) {
-                game.gameState().abilities().get(abilityId).params()
-                    .pos(game.physics().abilityBodies().get(abilityId).getBodyPos());
+                Ability ability = game.gameState().abilities().get(abilityId);
+                if (!ability.params().inactiveBody()) {
+                    ability.params().pos(game.physics().abilityBodies().get(abilityId).getBodyPos());
+                }
+
             }
 
         });
@@ -251,5 +259,20 @@ public abstract class MyGdxGame extends Game {
         abilitiesToUpdate.forEach(abilityId -> game.gameState().abilities().get(abilityId).update(delta, game));
 
 
+    }
+
+    public CreatureId aliveCreatureClosestTo(Vector2 pos, float maxRange, Set<CreatureId> excluded) {
+
+        CreatureId minCreatureId = null;
+        float minDistance = Float.MAX_VALUE;
+        for (CreatureId creatureId : creaturesToUpdate()) {
+            Creature creature = gameState().creatures().get(creatureId);
+            float distance = pos.distance(creature.params().pos());
+            if (creature.isAlive() && distance < minDistance && distance < maxRange && !excluded.contains(creatureId)) {
+                minDistance = distance;
+                minCreatureId = creatureId;
+            }
+        }
+        return minCreatureId;
     }
 }

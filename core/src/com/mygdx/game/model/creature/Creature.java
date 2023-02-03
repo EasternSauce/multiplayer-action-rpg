@@ -1,6 +1,6 @@
 package com.mygdx.game.model.creature;
 
-import com.mygdx.game.ability.AbilityFactory;
+import com.mygdx.game.ability.AbilityType;
 import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.renderer.CreatureAnimationConfig;
 import com.mygdx.game.util.Vector2;
@@ -72,12 +72,14 @@ public abstract class Creature {
         params().pathCalculationCooldownTimer().update(delta);
         params().movementCommandsPerSecondLimitTimer().update(delta);
         params().isStillMovingTimer().update(delta);
-        params().attackCooldownTimer().update(delta);
+        params().actionCooldownTimer().update(delta);
         params().respawnTimer().update(delta);
         params().staminaRegenerationTimer().update(delta);
         params().aggroTimer().update(delta);
         params().findTargetTimer().update(delta);
         params().pathCalculationFailurePenaltyTimer().update(delta);
+
+        params().abilityCooldowns().forEach((abilityType, simpleTimer) -> simpleTimer.update(delta));
         // add other timers here...
     }
 
@@ -124,7 +126,7 @@ public abstract class Creature {
         params().movementCommandTargetPos(params().pos());
     }
 
-    public void takeLifeDamage(float damage) {
+    private void takeLifeDamage(float damage) {
         float beforeLife = params().life();
 
         float actualDamage = damage * 100f / (100f + params().armor());
@@ -175,10 +177,12 @@ public abstract class Creature {
     }
 
 
-    public boolean canPerformAbility(String abilityType, boolean ignoreCooldown) {
-        return isAlive() &&
-               AbilityFactory.staminaCosts.getOrDefault(abilityType, 0f) <= params().stamina() &&
-               AbilityFactory.manaCosts.getOrDefault(abilityType, 0f) <= params().mana() &&
-               (ignoreCooldown || params().attackCooldownTimer().time() > params().attackCooldownTime());
+    public boolean canPerformAbility(AbilityType abilityType) {
+        return isAlive() && abilityType.staminaCost <= params().stamina() && abilityType.manaCost <= params().mana() && (!abilityType.performableByCreature || (params()
+                                                                                                                                                                        .actionCooldownTimer()
+                                                                                                                                                                        .time() > params().actionCooldown() && params()
+                                                                                                                                                                                                                       .abilityCooldowns()
+                                                                                                                                                                                                                       .get(abilityType)
+                                                                                                                                                                                                                       .time() > abilityType.cooldown));
     }
 }

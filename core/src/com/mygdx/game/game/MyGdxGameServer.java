@@ -7,6 +7,7 @@ import com.mygdx.game.Constants;
 import com.mygdx.game.ability.Ability;
 import com.mygdx.game.ability.AbilityId;
 import com.mygdx.game.ability.AbilityState;
+import com.mygdx.game.ability.AbilityType;
 import com.mygdx.game.action.*;
 import com.mygdx.game.command.*;
 import com.mygdx.game.model.GameState;
@@ -98,8 +99,7 @@ public class MyGdxGameServer extends MyGdxGame {
                                                                                                                   .distance(
                                                                                                                           creature
                                                                                                                                   .params()
-                                                                                                                                  .pos()) <
-                                                                                                          Constants.ClientGameUpdateRange)
+                                                                                                                                  .pos()) < Constants.ClientGameUpdateRange)
                                                                                .collect(Collectors.toList());
                 connection.sendTCP(ActionsHolder.of(personalizedTickActions));
             }
@@ -127,15 +127,14 @@ public class MyGdxGameServer extends MyGdxGame {
                 synchronized (tickActions) {
                     if (object instanceof PlayerMovementCommand) {
                         PlayerMovementCommand command = (PlayerMovementCommand) object;
-                        MoveTowardsTargetAction move = MoveTowardsTargetAction.of(command.playerId(),
-                                                                                  command.mousePos());
+                        MoveTowardsTargetAction move =
+                                MoveTowardsTargetAction.of(command.playerId(), command.mousePos());
                         tickActions.add(move);
                     }
                     else if (object instanceof InitPlayerCommand) {
                         InitPlayerCommand command = (InitPlayerCommand) object;
-                        AddPlayerAction addPlayerAction = AddPlayerAction.of(command.playerId(),
-                                                                             command.pos(),
-                                                                             command.textureName());
+                        AddPlayerAction addPlayerAction =
+                                AddPlayerAction.of(command.playerId(), command.pos(), command.textureName());
 
                         tickActions.add(addPlayerAction);
 
@@ -151,7 +150,7 @@ public class MyGdxGameServer extends MyGdxGame {
                     else if (object instanceof SpawnAbilityCommand) {
                         SpawnAbilityCommand command = (SpawnAbilityCommand) object;
 
-                        trySpawningAbility(command, false);
+                        trySpawningAbility(command);
 
                     }
                     else if (object instanceof SpawnEnemyCommand) {
@@ -188,41 +187,21 @@ public class MyGdxGameServer extends MyGdxGame {
                         Creature creature = gameState().creatures().get(clientCreatures.get(connection.getID()));
 
                         GameState personalizedGameState = GameState.of(gameState());
-                        ConcurrentMap<CreatureId, Creature> personalizedCreatures = personalizedGameState.creatures()
-                                                                                                         .entrySet()
-                                                                                                         .stream()
-                                                                                                         .filter(entry ->
-                                                                                                                         entry
-                                                                                                                                 .getValue()
-                                                                                                                                 .params()
-                                                                                                                                 .pos()
-                                                                                                                                 .distance(
-                                                                                                                                         creature
-                                                                                                                                                 .params()
-                                                                                                                                                 .pos()) <
-                                                                                                                         Constants.ClientGameUpdateRange)
-                                                                                                         .collect(
-                                                                                                                 Collectors.toConcurrentMap(
-                                                                                                                         Map.Entry::getKey,
-                                                                                                                         Map.Entry::getValue));
+                        ConcurrentMap<CreatureId, Creature> personalizedCreatures =
+                                personalizedGameState.creatures().entrySet().stream()
+                                                     .filter(entry -> entry.getValue().params().pos()
+                                                                           .distance(creature.params()
+                                                                                             .pos()) < Constants.ClientGameUpdateRange)
+                                                     .collect(Collectors.toConcurrentMap(Map.Entry::getKey,
+                                                                                         Map.Entry::getValue));
                         personalizedGameState.creatures(personalizedCreatures);
-                        ConcurrentMap<AbilityId, Ability> personalizedAbilities = personalizedGameState.abilities()
-                                                                                                       .entrySet()
-                                                                                                       .stream()
-                                                                                                       .filter(entry ->
-                                                                                                                       entry
-                                                                                                                               .getValue()
-                                                                                                                               .params()
-                                                                                                                               .pos()
-                                                                                                                               .distance(
-                                                                                                                                       creature
-                                                                                                                                               .params()
-                                                                                                                                               .pos()) <
-                                                                                                                       Constants.ClientGameUpdateRange)
-                                                                                                       .collect(
-                                                                                                               Collectors.toConcurrentMap(
-                                                                                                                       Map.Entry::getKey,
-                                                                                                                       Map.Entry::getValue));
+                        ConcurrentMap<AbilityId, Ability> personalizedAbilities =
+                                personalizedGameState.abilities().entrySet().stream()
+                                                     .filter(entry -> entry.getValue().params().pos()
+                                                                           .distance(creature.params()
+                                                                                             .pos()) < Constants.ClientGameUpdateRange)
+                                                     .collect(Collectors.toConcurrentMap(Map.Entry::getKey,
+                                                                                         Map.Entry::getValue));
                         personalizedGameState.abilities(personalizedAbilities);
 
                         personalizedGameState.existingCreatureIds(new HashSet<>(gameState().creatures().keySet()));
@@ -239,15 +218,17 @@ public class MyGdxGameServer extends MyGdxGame {
 
     }
 
-    private void trySpawningAbility(SpawnAbilityCommand command, boolean ignoreCooldown) {
+    private void trySpawningAbility(SpawnAbilityCommand command) {
         Creature creature = gameState().creatures().get(command.creatureId());
 
-        if (creature.canPerformAbility(command.abilityType(), ignoreCooldown)) {
+        if (creature != null && creature.canPerformAbility(command.abilityType())) {
             AddAbilityAction action = AddAbilityAction.of(command.abilityId(),
                                                           command.creatureId(),
+                                                          command.chainFromPos(),
                                                           command.pos(),
                                                           command.dirVector(),
-                                                          command.abilityType());
+                                                          command.abilityType(),
+                                                          command.creaturesAlreadyHit());
 
             tickActions.add(action);
         }
@@ -307,7 +288,7 @@ public class MyGdxGameServer extends MyGdxGame {
                                                     );
 
         spawnPositions.forEach(pos -> {
-            CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 100000));
+            CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 10000000));
             spawnEnemy(enemyId, areaId, pos, "skeleton");
             endPoint().sendToAllTCP(SpawnEnemyCommand.of(enemyId, areaId, "skeleton", pos));
         });
@@ -315,41 +296,93 @@ public class MyGdxGameServer extends MyGdxGame {
 
     @Override
     public Set<CreatureId> creaturesToUpdate() {
-        return gameState().creatures().keySet();
+        Set<CreatureId> creaturesToUpdate = new HashSet<>();
+
+        for (CreatureId clientCreatureId : clientCreatures.values()) {
+            Creature player = gameState().creatures().get(clientCreatureId);
+            if (player == null) {
+                continue;
+            }
+
+            Set<CreatureId> creaturesToAdd = gameState().creatures().keySet().stream().filter(creatureId -> {
+                Creature creature = gameState().creatures().get(creatureId);
+                return creature.params().pos().distance(player.params().pos()) < Constants.ClientGameUpdateRange;
+            }).collect(Collectors.toSet());
+            creaturesToUpdate.addAll(creaturesToAdd);
+        }
+
+        return creaturesToUpdate;
     }
 
     @Override
     public Set<AbilityId> abilitiesToUpdate() {
-        return gameState().abilities().keySet();
+        Set<AbilityId> abilitiesToUpdate = new HashSet<>();
+
+        for (CreatureId clientCreatureId : clientCreatures.values()) {
+            Creature player = gameState().creatures().get(clientCreatureId);
+            if (player == null) {
+                continue;
+            }
+
+            Set<AbilityId> abilitiesToAdd = gameState().abilities().keySet().stream().filter(abilityId -> {
+                Ability ability = gameState().abilities().get(abilityId);
+                return ability.params().pos().distance(player.params().pos()) < Constants.ClientGameUpdateRange;
+            }).collect(Collectors.toSet());
+            abilitiesToUpdate.addAll(abilitiesToAdd);
+        }
+
+        return abilitiesToUpdate;
     }
 
     @Override
-    public void handleAttackTarget(CreatureId attackingCreatureId, Vector2 vectorTowardsTarget, String abilityType) {
+    public void handleAttackTarget(CreatureId attackingCreatureId,
+                                   Vector2 vectorTowardsTarget,
+                                   AbilityType abilityType) {
 
         Creature attackingCreature = gameState().creatures().get(attackingCreatureId);
 
-        AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 100000));
+        AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
         SpawnAbilityCommand command = SpawnAbilityCommand.of(abilityId,
                                                              attackingCreature.params().areaId(),
                                                              attackingCreature.params().id(),
                                                              abilityType,
+                                                             new HashSet<>(),
+                                                             null,
                                                              attackingCreature.params().pos(),
                                                              vectorTowardsTarget);
-        trySpawningAbility(command, false);
+        trySpawningAbility(command);
 
     }
 
     @Override
-    public void chainAbility(Ability ability, String chainIntoAbilityType) {
-        AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 100000));
-        SpawnAbilityCommand command = SpawnAbilityCommand.of(abilityId,
-                                                             ability.params().areaId(),
-                                                             ability.params().creatureId(),
-                                                             chainIntoAbilityType,
-                                                             ability.params().pos(),
-                                                             ability.params().dirVector());
+    public void chainAbility(Ability chainFromAbility,
+                             AbilityType chainIntoAbilityType,
+                             Vector2 pos,
+                             CreatureId creatureId) {
+        AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
+        Vector2 chainToPos = pos;
 
-        trySpawningAbility(command, true);
+        if (pos == null) {
+            chainToPos = chainFromAbility.params().pos();
+        }
+        if (creatureId != null) {
+            chainFromAbility.params().creaturesAlreadyHit().add(creatureId);
+        }
+        Set<CreatureId> creaturesAlreadyHit = new HashSet<>(chainFromAbility.params().creaturesAlreadyHit());
+
+        Vector2 chainFromPos = chainFromAbility.params().pos();
+
+        SpawnAbilityCommand command = SpawnAbilityCommand.of(abilityId,
+                                                             chainFromAbility.params().areaId(),
+                                                             chainFromAbility.params().creatureId(),
+                                                             chainIntoAbilityType,
+                                                             creaturesAlreadyHit,
+                                                             chainFromPos,
+                                                             chainToPos,
+                                                             chainFromAbility.params().dirVector());
+
+
+        trySpawningAbility(command);
     }
 
 

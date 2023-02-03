@@ -1,5 +1,6 @@
 package com.mygdx.game.model.creature;
 
+import com.mygdx.game.ability.AbilityType;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.util.RandomHelper;
 import com.mygdx.game.util.SimpleTimer;
@@ -7,7 +8,12 @@ import com.mygdx.game.util.Vector2;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
 @Data
@@ -56,12 +62,12 @@ public class CreatureParams {
 
     SimpleTimer isStillMovingTimer = SimpleTimer.of(Float.MAX_VALUE, false);
 
-    SimpleTimer attackCooldownTimer = SimpleTimer.of(Float.MAX_VALUE, false);
+    SimpleTimer actionCooldownTimer = SimpleTimer.of(Float.MAX_VALUE, false);
 
     SimpleTimer respawnTimer = SimpleTimer.of(Float.MAX_VALUE, false);
     Float respawnTime = 5f;
 
-    Float attackCooldownTime = 0.7f;
+    Float actionCooldown = 0.7f;
 
     Boolean justDied = false;
     Boolean isDead = false;
@@ -81,6 +87,8 @@ public class CreatureParams {
     SimpleTimer findTargetTimer = SimpleTimer.of(Float.MAX_VALUE, false);
     Float findTargetCooldown;
 
+    Map<AbilityType, SimpleTimer> abilityCooldowns = new HashMap<>();
+
     public static CreatureParams of(CreatureId creatureId, AreaId areaId, Vector2 pos, String textureName) {
         CreatureParams params = CreatureParams.of();
         params.id = creatureId;
@@ -90,6 +98,12 @@ public class CreatureParams {
         params.findTargetCooldown = 0.5f + RandomHelper.seededRandomFloat(creatureId);
         params.pathCalculationFailurePenalty = 10f + 5f * RandomHelper.seededRandomFloat(creatureId);
         params.pathCalculationCooldown = 2f + 2f * RandomHelper.seededRandomFloat(creatureId);
+
+        params.abilityCooldowns = Arrays.stream(AbilityType.values()).collect(Collectors.toMap(Function.identity(),
+                                                                                               abilityType -> SimpleTimer.of(
+                                                                                                       Float.MAX_VALUE,
+                                                                                                       false)));
+
         return params;
     }
 

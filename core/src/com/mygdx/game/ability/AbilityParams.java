@@ -47,6 +47,16 @@ public class AbilityParams {
     Float manaCost = 0f;
     Float staminaCost = 0f;
 
+    Float delayedActionTime = 0.001f;
+
+    Boolean delayedActionCompleted = false;
+
+    Float maxPlacementRange;
+
+    Boolean inactiveBody = false;
+
+    Float rotationShift = 0f;
+
     public static AbilityParams of(AbilityId abilityId,
                                    AreaId areaId,
                                    Float width,

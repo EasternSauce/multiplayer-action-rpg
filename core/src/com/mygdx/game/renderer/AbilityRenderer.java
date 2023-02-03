@@ -82,7 +82,7 @@ public class AbilityRenderer {
         sprite.setSize(ability.params().width(), ability.params().height());
         sprite.setCenter(ability.params().pos().x(), ability.params().pos().y());
         sprite.setOriginCenter();
-        sprite.setRotation(ability.params().rotationAngle());
+        sprite.setRotation(ability.params().rotationAngle() + ability.params().rotationShift());
 
     }
 
