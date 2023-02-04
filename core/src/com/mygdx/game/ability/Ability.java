@@ -23,7 +23,7 @@ public abstract class Ability {
             onChannelUpdate(game.gameState());
 
             if (isPositionManipulated()) {
-                updatePosition(game.gameState());
+                onUpdatePosition(game.gameState());
             }
 
             if (params().stateTimer().time() > params().channelTime()) {
@@ -36,7 +36,7 @@ public abstract class Ability {
             onActiveUpdate(game.gameState());
 
             if (isPositionManipulated()) {
-                updatePosition(game.gameState());
+                onUpdatePosition(game.gameState());
             }
 
             if (!params().delayedActionCompleted() && params().stateTimer().time() > params().delayedActionTime()) {
@@ -61,15 +61,25 @@ public abstract class Ability {
 
     abstract void onAbilityCompleted(MyGdxGame game);
 
-    abstract void updatePosition(GameState gameState);
+    abstract void onUpdatePosition(GameState gameState);
 
     abstract void onChannelUpdate(GameState gameState);
 
     abstract void onActiveUpdate(GameState gameState);
 
-    private void progressStateToChannel() {
+    public void init(MyGdxGame game) {
+
+        if (isPositionManipulated()) {
+            onUpdatePosition(game.gameState());
+        }
+        Creature creature = game.gameState().creatures().get(params().creatureId());
+
+        creature.takeManaDamage(params().manaCost());
+        creature.takeStaminaDamage(params().staminaCost());
+
         params().state(AbilityState.CHANNEL);
         params().stateTimer().restart();
+
     }
 
     public void start(Vector2 dir, GameState gameState, AbilityType abilityType) {
@@ -77,13 +87,14 @@ public abstract class Ability {
 
         Creature creature = gameState.creatures().get(params().creatureId());
         if (isPositionManipulated()) {
-            updatePosition(gameState);
+            onUpdatePosition(gameState);
         }
 
         creature.takeManaDamage(abilityType.manaCost);
         creature.takeStaminaDamage(abilityType.staminaCost);
 
-        progressStateToChannel();
+        params().state(AbilityState.CHANNEL);
+        params().stateTimer().restart();
 
     }
 

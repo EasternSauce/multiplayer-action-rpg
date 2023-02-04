@@ -89,9 +89,12 @@ public class MyGdxGameClient extends MyGdxGame {
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.N)) {
 
-            CreatureId creatureId =
-                    gameState().creatures().keySet().stream().filter(cId -> cId.value().startsWith("Player"))
-                               .collect(Collectors.toList()).get(0);
+            CreatureId creatureId = gameState().creatures()
+                                               .keySet()
+                                               .stream()
+                                               .filter(cId -> cId.value().startsWith("Player"))
+                                               .collect(Collectors.toList())
+                                               .get(0);
             Vector2 pos = gameState().creatures().get(creatureId).params().pos();
             System.out.println("Vector2.of(" + pos.x() + "f, " + pos.y() + "f),");
         }
@@ -184,9 +187,11 @@ public class MyGdxGameClient extends MyGdxGame {
                                                           AbilityType.LIGHTNING_SPARK,
                                                           new HashSet<>(),
                                                           null,
-                                                          Vector2.of(player.params().pos()
+                                                          Vector2.of(player.params()
+                                                                           .pos()
                                                                            .x() + mousePos.x() * viewportRatioX / Constants.PPM,
-                                                                     player.params().pos()
+                                                                     player.params()
+                                                                           .pos()
                                                                            .y() + mousePos.y() * viewportRatioY / Constants.PPM),
                                                           mouseDirVector));
             }

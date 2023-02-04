@@ -1,5 +1,6 @@
 package com.mygdx.game.ability;
 
+import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
@@ -19,22 +20,18 @@ public class AbilityFactory {
                                          Vector2 dirVector,
                                          Vector2 chainFromPos,
                                          Vector2 pos,
-                                         Set<CreatureId> creaturesAlreadyHit) {
+                                         Set<CreatureId> creaturesAlreadyHit,
+                                         MyGdxGame game) {
         if (abilityType == AbilityType.SLASH) {
-            Ability ability = Attack.of(AbilityParams.of(abilityId, areaId, 2f, 2f, 0f, 0.3f, 1.8f, "slash"));
-            ability.params().creatureId(creatureId);
-            ability.params().damage(22f);
-            ability.params().pos(pos);
-            ability.params().creaturesAlreadyHit(creaturesAlreadyHit);
-            ability.start(dirVector, gameState, abilityType);
-
+            Ability ability = Attack.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit);
+            ability.init(game);
             return ability;
         }
 
         if (abilityType == AbilityType.FIREBALL) {
             Ability ability = Fireball.of(AbilityParams.of(abilityId, areaId, 1.5f, 1.5f, 0f, 30f, null, "fireball"));
             ability.params().creatureId(creatureId);
-            ability.params().damage(15f);
+            ability.params().damage(40f);
             ability.params().isActiveAnimationLooping(true);
             ability.params().pos(pos);
             ability.params().creaturesAlreadyHit(creaturesAlreadyHit);
@@ -48,7 +45,7 @@ public class AbilityFactory {
             Ability ability =
                     FireballExplosion.of(AbilityParams.of(abilityId, areaId, 9f, 9f, 0f, 0.35f, null, "explosion"));
             ability.params().creatureId(creatureId);
-            ability.params().damage(20f);
+            ability.params().damage(28f);
             ability.params().isActiveAnimationLooping(false);
             ability.params().attackWithoutMoving(true);
             ability.params().pos(pos);

@@ -34,7 +34,7 @@ public class FireballExplosion extends Ability {
     }
 
     @Override
-    void updatePosition(GameState gameState) {
+    void onUpdatePosition(GameState gameState) {
 
     }
 

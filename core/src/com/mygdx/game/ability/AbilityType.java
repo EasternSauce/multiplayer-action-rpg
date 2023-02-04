@@ -2,7 +2,7 @@ package com.mygdx.game.ability;
 
 public enum AbilityType {
     SLASH(22f, 0f, 0.7f, true),
-    FIREBALL(0f, 16f, 0.5f, true),
+    FIREBALL(0f, 16f, 0.35f, true),
     FIREBALL_EXPLOSION(0f, 0f, 0f, false),
     LIGHTNING_SPARK(0f, 20f, 1.0f, true),
     LIGHTNING_NODE(0f, 0f, 0f, false),

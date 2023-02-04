@@ -134,7 +134,8 @@ public class PhysicsWorld {
                             final int _x = x;
                             final int _y = y;
 
-                            combinations.stream().filter(pos -> tileExists(_x + pos.x(), _y + pos.y()))
+                            combinations.stream()
+                                        .filter(pos -> tileExists(_x + pos.x(), _y + pos.y()))
                                         .forEach(tilePos -> traversablesWithMargins.put(TilePos.of(_x + tilePos.x(),
                                                                                                    _y + tilePos.y()),
                                                                                         false));
@@ -224,9 +225,11 @@ public class PhysicsWorld {
 
             final int level = currentLevel;
 
-            List<TilePos> lowerLevelClearances =
-                    clearances.entrySet().stream().filter(entry -> entry.getValue() == level - 1).map(Map.Entry::getKey)
-                              .collect(Collectors.toList());
+            List<TilePos> lowerLevelClearances = clearances.entrySet()
+                                                           .stream()
+                                                           .filter(entry -> entry.getValue() == level - 1)
+                                                           .map(Map.Entry::getKey)
+                                                           .collect(Collectors.toList());
 
 
             lowerLevelClearances.forEach(pos -> {

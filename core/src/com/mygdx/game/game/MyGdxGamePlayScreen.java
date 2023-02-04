@@ -38,13 +38,15 @@ public class MyGdxGamePlayScreen implements Screen {
 
         game.renderer().hudCamera().position.set(Constants.WindowWidth / 2f, Constants.WindowHeight / 2f, 0);
 
-        game.renderer().worldViewport(new FitViewport(Constants.ViewpointWorldWidth / Constants.PPM,
-                                                      Constants.ViewpointWorldHeight / Constants.PPM,
-                                                      game.renderer().worldCamera()));
+        game.renderer()
+            .worldViewport(new FitViewport(Constants.ViewpointWorldWidth / Constants.PPM,
+                                           Constants.ViewpointWorldHeight / Constants.PPM,
+                                           game.renderer().worldCamera()));
 
-        game.renderer().hudViewport(new FitViewport((float) Constants.WindowWidth,
-                                                    (float) Constants.WindowHeight,
-                                                    game.renderer().hudCamera()));
+        game.renderer()
+            .hudViewport(new FitViewport((float) Constants.WindowWidth,
+                                         (float) Constants.WindowHeight,
+                                         game.renderer().hudCamera()));
 
         Map<AreaId, String> mapsToLoad = new HashMap<>();
         mapsToLoad.put(AreaId.of("area1"), "assets/areas/area1");
@@ -52,9 +54,12 @@ public class MyGdxGamePlayScreen implements Screen {
         mapsToLoad.put(AreaId.of("area3"), "assets/areas/area3");
         game.renderer().mapsToLoad(mapsToLoad);
 
-        maps(mapsToLoad.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
-                                                                     entry -> game.renderer().mapLoader()
-                                                                                  .load(entry.getValue() + "/tile_map.tmx"))));
+        maps(mapsToLoad.entrySet()
+                       .stream()
+                       .collect(Collectors.toMap(Map.Entry::getKey,
+                                                 entry -> game.renderer()
+                                                              .mapLoader()
+                                                              .load(entry.getValue() + "/tile_map.tmx"))));
 
         game.renderer().mapScale(4.0f);
 

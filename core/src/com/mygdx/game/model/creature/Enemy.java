@@ -33,12 +33,14 @@ public class Enemy extends Creature {
         CreatureId minCreatureId = null;
         for (Map.Entry<CreatureId, Creature> entry : game.gameState().creatures().entrySet()) {
             Creature creature = entry.getValue();
-            boolean condition = creature.isAlive() && creature.params().areaId().value().equals(params().areaId()
-                                                                                                        .value()) && creature instanceof Player && creature
-                                                                                                                                                           .params()
-                                                                                                                                                           .pos()
-                                                                                                                                                           .distance(
-                                                                                                                                                                   params().pos()) < enemySearchDistance;
+            boolean condition = creature.isAlive() && creature.params()
+                                                              .areaId()
+                                                              .value()
+                                                              .equals(params().areaId()
+                                                                              .value()) && creature instanceof Player && creature.params()
+                                                                                                                                 .pos()
+                                                                                                                                 .distance(
+                                                                                                                                         params().pos()) < enemySearchDistance;
 
             if (condition && params().pos().distance(creature.params().pos()) < minDistance) {
                 minCreatureId = entry.getKey();
@@ -96,12 +98,11 @@ public class Enemy extends Creature {
     }
 
     private void processPathfinding(MyGdxGame game) {
-        boolean condition = params().areaId().equals(game.gameState()
-                                                         .currentAreaId()) && params().targetCreatureId() != null && (params().forcePathCalculation() || params()
-                                                                                                                                                                 .pathCalculationCooldownTimer()
-                                                                                                                                                                 .time() > params().pathCalculationCooldown()) && params()
-                                                                                                                                                                                                                          .pathCalculationFailurePenaltyTimer()
-                                                                                                                                                                                                                          .time() > params().pathCalculationFailurePenalty();
+        boolean condition = params().areaId()
+                                    .equals(game.gameState()
+                                                .currentAreaId()) && params().targetCreatureId() != null && (params().forcePathCalculation() || params().pathCalculationCooldownTimer()
+                                                                                                                                                        .time() > params().pathCalculationCooldown()) && params().pathCalculationFailurePenaltyTimer()
+                                                                                                                                                                                                                 .time() > params().pathCalculationFailurePenalty();
 
         if (condition) {
             Creature target = game.gameState().creatures().get(params().targetCreatureId());

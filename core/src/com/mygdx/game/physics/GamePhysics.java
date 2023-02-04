@@ -35,7 +35,8 @@ public class GamePhysics {
     final List<PhysicsEvent> physicsEventQueue = new LinkedList<>();
 
     public void init(Map<AreaId, TiledMap> maps) {
-        physicsWorlds = maps.entrySet().stream()
+        physicsWorlds = maps.entrySet()
+                            .stream()
                             .collect(Collectors.toMap(Map.Entry::getKey, entry -> PhysicsWorld.of(entry.getValue())));
 
         physicsWorlds.forEach((areaId, physicsWorld) -> {

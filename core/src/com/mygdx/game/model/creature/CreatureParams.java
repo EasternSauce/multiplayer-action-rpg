@@ -99,10 +99,10 @@ public class CreatureParams {
         params.pathCalculationFailurePenalty = 10f + 5f * RandomHelper.seededRandomFloat(creatureId);
         params.pathCalculationCooldown = 2f + 2f * RandomHelper.seededRandomFloat(creatureId);
 
-        params.abilityCooldowns = Arrays.stream(AbilityType.values()).collect(Collectors.toMap(Function.identity(),
-                                                                                               abilityType -> SimpleTimer.of(
-                                                                                                       Float.MAX_VALUE,
-                                                                                                       false)));
+        params.abilityCooldowns = Arrays.stream(AbilityType.values())
+                                        .collect(Collectors.toMap(Function.identity(),
+                                                                  abilityType -> SimpleTimer.of(Float.MAX_VALUE,
+                                                                                                false)));
 
         return params;
     }

@@ -58,13 +58,16 @@ public class AddAbilityAction implements GameStateAction {
                                                         dirVector,
                                                         chainFromPos,
                                                         pos,
-                                                        creaturesAlreadyHit);
+                                                        creaturesAlreadyHit,
+                                                        game);
 
 
         if (creature.params().isMoving()) { // TODO: should this logic happen as part of this action? or elsewhere?
-            Vector2 movementVector =
-                    creature.params().pos().vectorTowards(creature.params().movementCommandTargetPos()).normalized()
-                            .multiplyBy(0.15f);
+            Vector2 movementVector = creature.params()
+                                             .pos()
+                                             .vectorTowards(creature.params().movementCommandTargetPos())
+                                             .normalized()
+                                             .multiplyBy(0.15f);
             // move slightly forward if attacking while moving
             if (!ability.params().attackWithoutMoving()) {
                 creature.params().movementCommandTargetPos(creature.params().pos().add(movementVector));

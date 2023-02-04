@@ -10,10 +10,10 @@ import com.mygdx.game.util.Vector2;
 
 public class Assets {
 
-    static String youngSerifFontPath = "assets/font/Helvetica 400.ttf";
+    final static String youngSerifFontPath = "assets/font/Helvetica 400.ttf";
 
-    static BitmapFont defaultFont;
-    static BitmapFont largeFont;
+    final static BitmapFont defaultFont;
+    final static BitmapFont largeFont;
 
     static {
         defaultFont = loadFont(Assets.youngSerifFontPath, 16);

@@ -29,10 +29,10 @@ public abstract class MyGdxGame extends Game {
     final protected GamePhysics gamePhysics = GamePhysics.of();
     final protected GameStateHolder gameStateHolder = GameStateHolder.of(GameState.of());
     final MyGdxGamePlayScreen playScreen = MyGdxGamePlayScreen.of();
-    public EndPoint _endPoint = null;
-
+    final public EndPoint _endPoint = null;
+    @SuppressWarnings("FieldCanBeLocal")
     private final boolean debug = false;
-    public Chat chat = Chat.of();
+    public final Chat chat = Chat.of();
     protected CreatureId thisPlayerId = null;
 
     final List<CreatureId> creaturesToBeCreated = new LinkedList<>();
@@ -203,17 +203,22 @@ public abstract class MyGdxGame extends Game {
 
         // set gamestate position based on b2body position
         creaturesToUpdate.forEach(creatureId -> {
-            if (game.gameState().creatures().containsKey(creatureId) && game.physics().creatureBodies()
+            if (game.gameState().creatures().containsKey(creatureId) && game.physics()
+                                                                            .creatureBodies()
                                                                             .containsKey(creatureId)) {
-                game.gameState().creatures().get(creatureId).params()
+                game.gameState()
+                    .creatures()
+                    .get(creatureId)
+                    .params()
                     .pos(game.physics().creatureBodies().get(creatureId).getBodyPos());
             }
         });
 
         // if creature is to be updated, then body should be active, otherwise it should be inactive
-        game.gamePhysics.creatureBodies().forEach((key, value) -> {
-            game.gamePhysics.creatureBodies().get(key).setActive(creaturesToUpdate.contains(key));
-        });
+        game.gamePhysics.creatureBodies()
+                        .forEach((key, value) -> game.gamePhysics.creatureBodies()
+                                                                 .get(key)
+                                                                 .setActive(creaturesToUpdate.contains(key)));
 
         creaturesToUpdate.forEach(creatureId -> {
             if (game.renderer().creatureRenderers().containsKey(creatureId)) {

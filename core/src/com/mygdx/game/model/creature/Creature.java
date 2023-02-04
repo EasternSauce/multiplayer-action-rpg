@@ -178,10 +178,8 @@ public abstract class Creature {
 
 
     public boolean canPerformAbility(AbilityType abilityType) {
-        return isAlive() && abilityType.staminaCost <= params().stamina() && abilityType.manaCost <= params().mana() && (!abilityType.performableByCreature || (params()
-                                                                                                                                                                        .actionCooldownTimer()
-                                                                                                                                                                        .time() > params().actionCooldown() && params()
-                                                                                                                                                                                                                       .abilityCooldowns()
+        return isAlive() && abilityType.staminaCost <= params().stamina() && abilityType.manaCost <= params().mana() && (!abilityType.performableByCreature || (params().actionCooldownTimer()
+                                                                                                                                                                        .time() > params().actionCooldown() && params().abilityCooldowns()
                                                                                                                                                                                                                        .get(abilityType)
                                                                                                                                                                                                                        .time() > abilityType.cooldown));
     }

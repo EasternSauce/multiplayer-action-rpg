@@ -2,11 +2,15 @@ package com.mygdx.game.ability;
 
 import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.model.GameState;
+import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
+import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
+import java.util.Set;
 
 @NoArgsConstructor(staticName = "of")
 @Data
@@ -36,7 +40,7 @@ public class Attack extends Ability {
     }
 
     @Override
-    protected void updatePosition(GameState gameState) {
+    protected void onUpdatePosition(GameState gameState) {
         Vector2 dirVector;
         if (params().dirVector().len() <= 0) {
             dirVector = Vector2.of(1, 0);
@@ -66,7 +70,7 @@ public class Attack extends Ability {
     @Override
     void onChannelUpdate(GameState gameState) {
         if (isPositionManipulated()) {
-            updatePosition(gameState);
+            onUpdatePosition(gameState);
         }
 
     }
@@ -74,7 +78,7 @@ public class Attack extends Ability {
     @Override
     void onActiveUpdate(GameState gameState) {
         if (isPositionManipulated()) {
-            updatePosition(gameState);
+            onUpdatePosition(gameState);
         }
 
     }
@@ -89,9 +93,30 @@ public class Attack extends Ability {
 
     }
 
-    public static Attack of(AbilityParams params) {
+    public static Attack of(AbilityId abilityId,
+                            AreaId areaId,
+                            CreatureId creatureId,
+                            Vector2 pos,
+                            Vector2 dirVector,
+                            Set<CreatureId> creaturesAlreadyHit) {
         Attack ability = Attack.of();
-        ability.params = params;
+        ability.params = AbilityParams.of()
+                                      .id(abilityId)
+                                      .areaId(areaId)
+                                      .width(2f)
+                                      .height(2f)
+                                      .channelTime(0f)
+                                      .activeTime(0.3f)
+                                      .range(1.8f)
+                                      .textureName("slash")
+                                      .creatureId(creatureId)
+                                      .damage(22f)
+                                      .pos(pos)
+                                      .creaturesAlreadyHit(creaturesAlreadyHit)
+                                      .manaCost(22f)
+                                      .staminaCost(0f)
+                                      .performableByCreature(true)
+                                      .dirVector(dirVector);
         return ability;
     }
 }

@@ -30,22 +30,22 @@ public class AbilityParams {
     Boolean isChannelAnimationLooping = false;
     Boolean isActiveAnimationLooping = false;
 
-    Float range = null;
+    Float range;
 
     Set<CreatureId> creaturesAlreadyHit = new HashSet<>();
 
-    Vector2 velocity = null;
-    Float speed = null;
+    Vector2 velocity;
+    Float speed;
 
-    Float damage = null;
+    Float damage;
 
     Float channelTime;
     Float activeTime;
 
     Boolean attackWithoutMoving = false;
 
-    Float manaCost = 0f;
-    Float staminaCost = 0f;
+    Float manaCost;
+    Float staminaCost;
 
     Float delayedActionTime = 0.001f;
 
@@ -56,6 +56,10 @@ public class AbilityParams {
     Boolean inactiveBody = false;
 
     Float rotationShift = 0f;
+
+    Float cooldown = 0f;
+
+    Boolean performableByCreature;
 
     public static AbilityParams of(AbilityId abilityId,
                                    AreaId areaId,

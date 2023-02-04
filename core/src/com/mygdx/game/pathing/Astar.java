@@ -49,21 +49,27 @@ public class Astar {
                 }
 
                 if (x + 1 < world.widthInTiles() && y - 1 >= 0 && world.traversables()
-                                                                       .get(TilePos.of(x + 1, y)) && world
-                            .traversables().get(TilePos.of(x, y - 1))) {
+                                                                       .get(TilePos.of(x + 1,
+                                                                                       y)) && world.traversables()
+                                                                                                   .get(TilePos.of(x,
+                                                                                                                   y - 1))) {
                     tryAddEdge(pathingNodes, world, TilePos.of(x, y), TilePos.of(x + 1, y - 1), diagonalWeight);
                 }
 
                 if (x - 1 >= 0 && y + 1 < world.heightInTiles() && world.traversables()
-                                                                        .get(TilePos.of(x - 1, y)) && world
-                            .traversables().get(TilePos.of(x, y + 1))) {
+                                                                        .get(TilePos.of(x - 1,
+                                                                                        y)) && world.traversables()
+                                                                                                    .get(TilePos.of(x,
+                                                                                                                    y + 1))) {
                     tryAddEdge(pathingNodes, world, TilePos.of(x, y), TilePos.of(x - 1, y + 1), diagonalWeight);
                 }
 
                 if (x + 1 < world.widthInTiles() && y + 1 < world.heightInTiles() && world.traversables()
                                                                                           .get(TilePos.of(x + 1,
-                                                                                                          y)) && world
-                            .traversables().get(TilePos.of(x, y + 1))) {
+                                                                                                          y)) && world.traversables()
+                                                                                                                      .get(TilePos.of(
+                                                                                                                              x,
+                                                                                                                              y + 1))) {
                     tryAddEdge(pathingNodes, world, TilePos.of(x, y), TilePos.of(x + 1, y + 1), diagonalWeight);
                 }
             }
@@ -148,9 +154,8 @@ public class Astar {
                                              PhysicsWorld world,
                                              Integer capability) {
         if (astarState.closedSet().contains(pathingEdge.neighborPos()) || Astar.calculateHeuristic(originNodePos,
-                                                                                                   astarState.finishPos()) >= 60 && world
-                                                                                                                                            .clearances()
-                                                                                                                                            .get(pathingEdge.neighborPos()) < capability) {
+                                                                                                   astarState.finishPos()) >= 60 && world.clearances()
+                                                                                                                                         .get(pathingEdge.neighborPos()) < capability) {
             return astarState;
         }
 
@@ -241,7 +246,8 @@ public class Astar {
     }
 
     public static Map<TilePos, AstarNode> getAstarGraph(Map<TilePos, PathingNode> pathingGraph) {
-        return pathingGraph.entrySet().stream()
+        return pathingGraph.entrySet()
+                           .stream()
                            .collect(Collectors.toMap(Map.Entry::getKey, stuff -> AstarNode.of(stuff.getValue())));
     }
 }

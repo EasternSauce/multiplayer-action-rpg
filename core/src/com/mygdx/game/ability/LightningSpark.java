@@ -54,7 +54,7 @@ public class LightningSpark extends Ability {
     }
 
     @Override
-    void updatePosition(GameState gameState) {
+    void onUpdatePosition(GameState gameState) {
 
     }
 

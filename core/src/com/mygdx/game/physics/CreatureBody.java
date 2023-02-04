@@ -35,13 +35,6 @@ public class CreatureBody {
 
         world = gamePhysics.physicsWorlds().get(creature.params().areaId());
 
-        //        while (world.b2world().isLocked()) {
-        //            try {
-        //                Thread.sleep(10);
-        //            } catch (InterruptedException e) {
-        //                throw new RuntimeException(e);
-        //            }
-        //        }
         b2Body = B2BodyFactory.createCreatureB2Body(world, this, creature);
 
         if (!creature.isAlive()) {

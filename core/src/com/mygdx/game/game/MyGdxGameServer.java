@@ -79,7 +79,9 @@ public class MyGdxGameServer extends MyGdxGame {
         synchronized (tickActions) {
 
             // remove expired abilities
-            gameState().abilities().entrySet().stream()
+            gameState().abilities()
+                       .entrySet()
+                       .stream()
                        .filter(entry -> entry.getValue().params().state() == AbilityState.INACTIVE)
                        .forEach(entry -> tickActions.add(RemoveAbilityAction.of(entry.getKey())));
 
@@ -93,13 +95,12 @@ public class MyGdxGameServer extends MyGdxGame {
                     continue;// TODO: why is this needed?
                 }
                 Creature creature = gameState().creatures().get(clientCreatures.get(connection.getID()));
-                List<GameStateAction> personalizedTickActions = tickActionsCopy.stream().filter(action -> action
-                                                                                                                  .actionObjectPos(
-                                                                                                                          gameState())
-                                                                                                                  .distance(
-                                                                                                                          creature
-                                                                                                                                  .params()
-                                                                                                                                  .pos()) < Constants.ClientGameUpdateRange)
+                List<GameStateAction> personalizedTickActions = tickActionsCopy.stream()
+                                                                               .filter(action -> action.actionObjectPos(
+                                                                                                               gameState())
+                                                                                                       .distance(
+                                                                                                               creature.params()
+                                                                                                                       .pos()) < Constants.ClientGameUpdateRange)
                                                                                .collect(Collectors.toList());
                 connection.sendTCP(ActionsHolder.of(personalizedTickActions));
             }
@@ -177,6 +178,7 @@ public class MyGdxGameServer extends MyGdxGame {
         broadcastThread = new Thread(() -> {
             try {
                 while (true) {
+                    //noinspection BusyWait
                     Thread.sleep(350);
 
                     Connection[] connections = endPoint().getConnections();
@@ -187,21 +189,33 @@ public class MyGdxGameServer extends MyGdxGame {
                         Creature creature = gameState().creatures().get(clientCreatures.get(connection.getID()));
 
                         GameState personalizedGameState = GameState.of(gameState());
-                        ConcurrentMap<CreatureId, Creature> personalizedCreatures =
-                                personalizedGameState.creatures().entrySet().stream()
-                                                     .filter(entry -> entry.getValue().params().pos()
-                                                                           .distance(creature.params()
-                                                                                             .pos()) < Constants.ClientGameUpdateRange)
-                                                     .collect(Collectors.toConcurrentMap(Map.Entry::getKey,
-                                                                                         Map.Entry::getValue));
+                        ConcurrentMap<CreatureId, Creature> personalizedCreatures = personalizedGameState.creatures()
+                                                                                                         .entrySet()
+                                                                                                         .stream()
+                                                                                                         .filter(entry -> entry.getValue()
+                                                                                                                               .params()
+                                                                                                                               .pos()
+                                                                                                                               .distance(
+                                                                                                                                       creature.params()
+                                                                                                                                               .pos()) < Constants.ClientGameUpdateRange)
+                                                                                                         .collect(
+                                                                                                                 Collectors.toConcurrentMap(
+                                                                                                                         Map.Entry::getKey,
+                                                                                                                         Map.Entry::getValue));
                         personalizedGameState.creatures(personalizedCreatures);
-                        ConcurrentMap<AbilityId, Ability> personalizedAbilities =
-                                personalizedGameState.abilities().entrySet().stream()
-                                                     .filter(entry -> entry.getValue().params().pos()
-                                                                           .distance(creature.params()
-                                                                                             .pos()) < Constants.ClientGameUpdateRange)
-                                                     .collect(Collectors.toConcurrentMap(Map.Entry::getKey,
-                                                                                         Map.Entry::getValue));
+                        ConcurrentMap<AbilityId, Ability> personalizedAbilities = personalizedGameState.abilities()
+                                                                                                       .entrySet()
+                                                                                                       .stream()
+                                                                                                       .filter(entry -> entry.getValue()
+                                                                                                                             .params()
+                                                                                                                             .pos()
+                                                                                                                             .distance(
+                                                                                                                                     creature.params()
+                                                                                                                                             .pos()) < Constants.ClientGameUpdateRange)
+                                                                                                       .collect(
+                                                                                                               Collectors.toConcurrentMap(
+                                                                                                                       Map.Entry::getKey,
+                                                                                                                       Map.Entry::getValue));
                         personalizedGameState.abilities(personalizedAbilities);
 
                         personalizedGameState.existingCreatureIds(new HashSet<>(gameState().creatures().keySet()));

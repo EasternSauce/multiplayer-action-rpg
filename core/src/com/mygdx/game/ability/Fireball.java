@@ -64,7 +64,7 @@ public class Fireball extends Projectile {
     }
 
     @Override
-    void updatePosition(GameState gameState) {
+    void onUpdatePosition(GameState gameState) {
 
     }
 

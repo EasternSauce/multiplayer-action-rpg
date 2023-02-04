@@ -53,7 +53,9 @@ public class GameRenderer {
 
     public void renderAliveCreatures(DrawingLayer drawingLayer, GameState gameState) {
         gameState.creatures().entrySet().stream().filter(entry -> entry.getValue().isAlive()).forEach(entry -> {
-            if (creatureRenderers().containsKey(entry.getKey()) && entry.getValue().params().areaId()
+            if (creatureRenderers().containsKey(entry.getKey()) && entry.getValue()
+                                                                        .params()
+                                                                        .areaId()
                                                                         .equals(gameState.currentAreaId())) {
                 creatureRenderers.get(entry.getKey()).render(drawingLayer);
 
@@ -61,7 +63,9 @@ public class GameRenderer {
         });
 
         gameState.creatures().entrySet().stream().filter(entry -> entry.getValue().isAlive()).forEach(entry -> {
-            if (creatureRenderers().containsKey(entry.getKey()) && entry.getValue().params().areaId()
+            if (creatureRenderers().containsKey(entry.getKey()) && entry.getValue()
+                                                                        .params()
+                                                                        .areaId()
                                                                         .equals(gameState.currentAreaId())) {
                 creatureRenderers.get(entry.getKey()).renderLifeBar(drawingLayer, gameState);
 
@@ -71,7 +75,9 @@ public class GameRenderer {
 
     public void renderDeadCreatures(DrawingLayer drawingLayer, GameState gameState) {
         gameState.creatures().entrySet().stream().filter(entry -> !entry.getValue().isAlive()).forEach(entry -> {
-            if (creatureRenderers().containsKey(entry.getKey()) && entry.getValue().params().areaId()
+            if (creatureRenderers().containsKey(entry.getKey()) && entry.getValue()
+                                                                        .params()
+                                                                        .areaId()
                                                                         .equals(gameState.currentAreaId())) {
                 creatureRenderers.get(entry.getKey()).render(drawingLayer);
 

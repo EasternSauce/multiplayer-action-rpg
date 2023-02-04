@@ -37,7 +37,8 @@ public class RendererHelper {
         renderer.areaRenderers().get(game.gameState().currentAreaId()).render(new int[]{2, 3});
 
         if (game.debug()) {
-            game.physics().debugRenderer()
+            game.physics()
+                .debugRenderer()
                 .render(game.physics().physicsWorlds().get(game.gameState().currentAreaId()).b2world(),
                         renderer.worldCamera().combined);
         }
@@ -111,9 +112,9 @@ public class RendererHelper {
                                      "You are dead!\nRespawning...\n" + String.format(Locale.US,
                                                                                       "%.2f",
                                                                                       (creature.params()
-                                                                                               .respawnTime() - creature
-                                                                                               .params().respawnTimer()
-                                                                                               .time())),
+                                                                                               .respawnTime() - creature.params()
+                                                                                                                        .respawnTimer()
+                                                                                                                        .time())),
                                      Vector2.of(Constants.WindowWidth / 2f - Constants.WindowWidth / 8f,
                                                 Constants.WindowHeight / 2f + Constants.WindowHeight / 5f),
                                      Color.RED);
