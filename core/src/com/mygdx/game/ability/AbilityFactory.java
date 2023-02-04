@@ -1,7 +1,6 @@
 package com.mygdx.game.ability;
 
 import com.mygdx.game.game.MyGdxGame;
-import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.util.Vector2;
@@ -15,7 +14,6 @@ public class AbilityFactory {
                                          AbilityId abilityId,
                                          AreaId areaId,
                                          CreatureId creatureId,
-                                         GameState gameState,
                                          Vector2 dirVector,
                                          Vector2 chainFromPos,
                                          Vector2 pos,
@@ -48,51 +46,15 @@ public class AbilityFactory {
         }
 
         if (abilityType == AbilityType.LIGHTNING_NODE) {
-            Ability ability = LightningNode.of(AbilityParams.of(abilityId, areaId, 3f, 3f, 0f, 0.4f, null,
-                                                                // TODO: move range out of constructor
-                                                                "lightning"));
-            ability.params().creatureId(creatureId);
-            ability.params().damage(0f);
-            ability.params().isActiveAnimationLooping(true);
-            ability.params().attackWithoutMoving(true);
-            ability.params().pos(pos);
-            ability.params().creaturesAlreadyHit(creaturesAlreadyHit);
-            ability.params().inactiveBody(true);
-
-            ability.start(dirVector, gameState, abilityType); // set pos from mouse pos
-
+            Ability ability = LightningNode.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit);
+            ability.init(game);
             return ability;
         }
 
         if (abilityType == AbilityType.LIGHTNING_CHAIN) {
-            Ability ability = LightningChain.of(AbilityParams.of(abilityId, areaId, 1f, 3f, 0f, 0.4f, null,
-                                                                 // TODO: move range out of constructor
-                                                                 "lightning_chain"));
-            ability.params().creatureId(creatureId);
-            ability.params().damage(0f);
-            ability.params().isActiveAnimationLooping(true);
-            ability.params().attackWithoutMoving(true);
-
-            ability.params().creaturesAlreadyHit(creaturesAlreadyHit);
-            ability.params().inactiveBody(true);
-
-            ability.params().rotationShift(90f);
-
-            Vector2 lightningDirVector = pos.vectorTowards(chainFromPos);
-
-            Float theta = lightningDirVector.angleDeg();
-
-            float attackShiftX = lightningDirVector.normalized().x() * chainFromPos.distance(pos) / 2;
-            float attackShiftY = lightningDirVector.normalized().y() * chainFromPos.distance(pos) / 2;
-
-            ability.params().pos(Vector2.of(pos.x() + attackShiftX, pos.y() + attackShiftY));
-
-            ability.params().height(chainFromPos.distance(pos));
-
-            ability.params().rotationAngle(theta);
-
-            ability.start(dirVector, gameState, abilityType); // set pos from mouse pos
-
+            Ability ability =
+                    LightningChain.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit, chainFromPos);
+            ability.init(game);
             return ability;
         }
 

@@ -54,7 +54,6 @@ public class AddAbilityAction implements GameStateAction {
                                                         abilityId,
                                                         creature.params().areaId(),
                                                         creatureId,
-                                                        gameState,
                                                         dirVector,
                                                         chainFromPos,
                                                         pos,

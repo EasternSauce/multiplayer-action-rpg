@@ -116,11 +116,13 @@ public class Attack extends Ability {
                                       .creaturesAlreadyHit(creaturesAlreadyHit)
                                       .manaCost(22f)
                                       .staminaCost(0f)
+                                      .cooldown(0.7f)
                                       .performableByCreature(true)
                                       .dirVector(dirVector)
                                       .isChannelAnimationLooping(false)
                                       .isActiveAnimationLooping(false)
-                                      .creaturesAlreadyHit(new HashSet<>());
+                                      .creaturesAlreadyHit(new HashSet<>())
+                                      .rotationShift(0f);
         return ability;
     }
 }

@@ -54,9 +54,9 @@ public class AbilityParams {
 
     Boolean inactiveBody = false;
 
-    Float rotationShift = 0f;
+    Float rotationShift;
 
-    Float cooldown = 0f;
+    Float cooldown;
 
     Boolean performableByCreature;
 

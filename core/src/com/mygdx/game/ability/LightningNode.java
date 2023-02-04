@@ -2,8 +2,10 @@ package com.mygdx.game.ability;
 
 import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.model.GameState;
+import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
+import com.mygdx.game.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -16,12 +18,6 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 public class LightningNode extends Ability {
     AbilityParams params;
-
-    public static LightningNode of(AbilityParams params) {
-        LightningNode ability = LightningNode.of();
-        ability.params = params;
-        return ability;
-    }
 
     @Override
     void onAbilityStarted(MyGdxGame game) {
@@ -77,5 +73,36 @@ public class LightningNode extends Ability {
     @Override
     public void onTerrainHit() {
 
+    }
+
+    public static LightningNode of(AbilityId abilityId,
+                                   AreaId areaId,
+                                   CreatureId creatureId,
+                                   Vector2 pos,
+                                   Vector2 dirVector,
+                                   Set<CreatureId> creaturesAlreadyHit) {
+        LightningNode ability = LightningNode.of();
+        ability.params = AbilityParams.of()
+                                      .id(abilityId)
+                                      .areaId(areaId)
+                                      .width(3f)
+                                      .height(3f)
+                                      .channelTime(0f)
+                                      .activeTime(0.4f)
+                                      .textureName("lightning")
+                                      .creatureId(creatureId)
+                                      .damage(0f)
+                                      .isActiveAnimationLooping(true)
+                                      .attackWithoutMoving(true)
+                                      .pos(pos)
+                                      .creaturesAlreadyHit(creaturesAlreadyHit)
+                                      .manaCost(0f)
+                                      .staminaCost(0f)
+                                      .cooldown(1.0f)
+                                      .performableByCreature(true)
+                                      .inactiveBody(true)
+                                      .dirVector(dirVector)
+                                      .rotationShift(0f);
+        return ability;
     }
 }

@@ -80,14 +80,16 @@ public class FireballExplosion extends Ability {
                                       .creaturesAlreadyHit(creaturesAlreadyHit)
                                       .manaCost(22f)
                                       .staminaCost(0f)
+                                      .cooldown(0f)
                                       .performableByCreature(false)
                                       .dirVector(dirVector)
                                       .cooldown(0f)
                                       .isChannelAnimationLooping(false)
                                       .isActiveAnimationLooping(false)
                                       .attackWithoutMoving(true)
-                                      .creaturesAlreadyHit(new HashSet<>());
-        ;
+                                      .creaturesAlreadyHit(new HashSet<>())
+                                      .rotationShift(0f);
+
         return ability;
     }
 
