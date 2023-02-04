@@ -7,7 +7,6 @@ import com.mygdx.game.util.Vector2;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @NoArgsConstructor(staticName = "of")
@@ -27,12 +26,12 @@ public class AbilityParams {
 
     Float rotationAngle = 0f;
 
-    Boolean isChannelAnimationLooping = false;
-    Boolean isActiveAnimationLooping = false;
+    Boolean isChannelAnimationLooping;
+    Boolean isActiveAnimationLooping;
 
     Float range;
 
-    Set<CreatureId> creaturesAlreadyHit = new HashSet<>();
+    Set<CreatureId> creaturesAlreadyHit;
 
     Vector2 velocity;
     Float speed;

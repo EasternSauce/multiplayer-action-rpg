@@ -2,10 +2,15 @@ package com.mygdx.game.ability;
 
 import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.model.GameState;
+import com.mygdx.game.model.area.AreaId;
+import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @NoArgsConstructor(staticName = "of")
 @Data
@@ -13,11 +18,6 @@ import lombok.NoArgsConstructor;
 public class Fireball extends Projectile {
     AbilityParams params;
 
-    public static Fireball of(AbilityParams params) {
-        Fireball ability = Fireball.of();
-        ability.params = params;
-        return ability;
-    }
 
     @Override
     public void onCreatureHit() {
@@ -68,4 +68,34 @@ public class Fireball extends Projectile {
 
     }
 
+    public static Fireball of(AbilityId abilityId,
+                              AreaId areaId,
+                              CreatureId creatureId,
+                              Vector2 pos,
+                              Vector2 dirVector,
+                              Set<CreatureId> creaturesAlreadyHit) {
+        Fireball ability = Fireball.of();
+        ability.params = AbilityParams.of()
+                                      .id(abilityId)
+                                      .areaId(areaId)
+                                      .width(1.5f)
+                                      .height(1.5f)
+                                      .channelTime(0f)
+                                      .activeTime(30f)
+                                      .textureName("fireball")
+                                      .creatureId(creatureId)
+                                      .damage(40f)
+                                      .pos(pos)
+                                      .creaturesAlreadyHit(creaturesAlreadyHit)
+                                      .manaCost(22f)
+                                      .staminaCost(0f)
+                                      .performableByCreature(true)
+                                      .dirVector(dirVector)
+                                      .isChannelAnimationLooping(false)
+                                      .isActiveAnimationLooping(true)
+                                      .creaturesAlreadyHit(new HashSet<>());
+
+
+        return ability;
+    }
 }

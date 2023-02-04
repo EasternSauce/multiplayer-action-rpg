@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @NoArgsConstructor(staticName = "of")
@@ -116,7 +117,10 @@ public class Attack extends Ability {
                                       .manaCost(22f)
                                       .staminaCost(0f)
                                       .performableByCreature(true)
-                                      .dirVector(dirVector);
+                                      .dirVector(dirVector)
+                                      .isChannelAnimationLooping(false)
+                                      .isActiveAnimationLooping(false)
+                                      .creaturesAlreadyHit(new HashSet<>());
         return ability;
     }
 }

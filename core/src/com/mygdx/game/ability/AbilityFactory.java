@@ -3,7 +3,6 @@ package com.mygdx.game.ability;
 import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.area.AreaId;
-import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.util.Vector2;
 
@@ -29,57 +28,22 @@ public class AbilityFactory {
         }
 
         if (abilityType == AbilityType.FIREBALL) {
-            Ability ability = Fireball.of(AbilityParams.of(abilityId, areaId, 1.5f, 1.5f, 0f, 30f, null, "fireball"));
-            ability.params().creatureId(creatureId);
-            ability.params().damage(40f);
-            ability.params().isActiveAnimationLooping(true);
-            ability.params().pos(pos);
-            ability.params().creaturesAlreadyHit(creaturesAlreadyHit);
-            ability.start(dirVector, gameState, abilityType);
-
-
+            Ability ability = Fireball.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit);
+            ability.init(game);
             return ability;
         }
 
         if (abilityType == AbilityType.FIREBALL_EXPLOSION) {
-            Ability ability =
-                    FireballExplosion.of(AbilityParams.of(abilityId, areaId, 9f, 9f, 0f, 0.35f, null, "explosion"));
-            ability.params().creatureId(creatureId);
-            ability.params().damage(28f);
-            ability.params().isActiveAnimationLooping(false);
-            ability.params().attackWithoutMoving(true);
-            ability.params().pos(pos);
-            ability.params().creaturesAlreadyHit(creaturesAlreadyHit);
-            ability.start(dirVector, gameState, abilityType);
-
+            Ability ability = FireballExplosion.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit);
+            ability.init(game);
             return ability;
         }
 
         if (abilityType == AbilityType.LIGHTNING_SPARK) {
-            Ability ability = LightningSpark.of(AbilityParams.of(abilityId, areaId, 3f, 3f, 0f, 0.4f, null,
-                                                                 // TODO: move range out of constructor
-                                                                 "lightning"));
-            ability.params().creatureId(creatureId);
-            ability.params().damage(0f);
-            ability.params().isActiveAnimationLooping(true);
-            ability.params().attackWithoutMoving(true);
-
-            Creature creature = gameState.creatures().get(ability.params().creatureId());
-
-            Vector2 vectorTowards = creature.params().pos().vectorTowards(pos);
-
-            float maxRange = 5f;
-            if (vectorTowards.len() > maxRange) {
-                ability.params().pos(creature.params().pos().add(vectorTowards.normalized().multiplyBy(maxRange)));
-            }
-            else {
-                ability.params().pos(pos);
-            }
-
-            ability.params().creaturesAlreadyHit(creaturesAlreadyHit);
-            ability.params().inactiveBody(true);
-            ability.start(dirVector, gameState, abilityType); // set pos from mouse pos
-
+            Vector2 creaturePos = game.gameState().creatures().get(creatureId).params().pos();
+            Ability ability =
+                    LightningSpark.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit, creaturePos);
+            ability.init(game);
             return ability;
         }
 
