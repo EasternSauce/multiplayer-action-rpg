@@ -70,7 +70,8 @@ public class PhysicsHelper {
                                                                                    .get(creatureId)
                                                                                    .getBodyPos()
                                                                                    .distance(creature.params()
-                                                                                                     .pos()) > 0.05f // only setTransform if positions are far apart
+                                                                                                     .pos()) >
+                                                                               0.05f // only setTransform if positions are far apart
                 ) {
                     game.physics().creatureBodies().get(creatureId).trySetTransform(creature.params().pos());
                 }
@@ -84,7 +85,8 @@ public class PhysicsHelper {
                                                                                                             .getBodyPos()
                                                                                                             .distance(
                                                                                                                     ability.params()
-                                                                                                                           .pos()) > 0.05f // only setTransform if positions are far apart
+                                                                                                                           .pos()) >
+                                                                                                        0.05f // only setTransform if positions are far apart
                 ) {
                     game.physics().abilityBodies().get(abilityId).trySetTransform(ability.params().pos());
                 }

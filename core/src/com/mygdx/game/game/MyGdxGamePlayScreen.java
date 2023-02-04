@@ -75,7 +75,9 @@ public class MyGdxGamePlayScreen implements Screen {
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean keyTyped(char character) {
-                if (game.chat.isTyping() && character != '\b' && (character == ' ' || !(Character.isWhitespace(character)))) {
+                if (game.chat.isTyping() &&
+                    character != '\b' &&
+                    (character == ' ' || !(Character.isWhitespace(character)))) {
                     game.chat.currentMessage(game.chat.currentMessage() + character);
                 }
 

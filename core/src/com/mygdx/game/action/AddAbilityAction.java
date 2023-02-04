@@ -1,65 +1,40 @@
 package com.mygdx.game.action;
 
 import com.mygdx.game.ability.Ability;
-import com.mygdx.game.ability.AbilityFactory;
-import com.mygdx.game.ability.AbilityId;
-import com.mygdx.game.ability.AbilityType;
 import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.creature.Creature;
-import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.util.Vector2;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
-
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
 public class AddAbilityAction implements GameStateAction {
-    AbilityId abilityId;
-    CreatureId creatureId;
 
-    Vector2 chainFromPos;
-    Vector2 pos;
-    Vector2 dirVector;
-
-    AbilityType abilityType;
-
-    Set<CreatureId> creaturesAlreadyHit;
+    Ability ability;
 
     @Override
     public Vector2 actionObjectPos(GameState gameState) {
-        return pos;
+        return ability.params().pos();
     }
 
     @Override
     public void applyToGame(MyGdxGame game) {
         GameState gameState = game.gameState();
 
-        Creature creature = gameState.creatures().get(creatureId);
+        Creature creature = gameState.creatures().get(ability.params().creatureId());
 
         if (creature == null) {
             return;
         }
 
-        if (abilityType.performableByCreature) {
+        if (ability.params().performableByCreature()) {
             creature.params().actionCooldownTimer().restart();
         }
-        creature.params().abilityCooldowns().get(abilityType).restart();
-
-        Ability ability = AbilityFactory.produceAbility(abilityType,
-                                                        abilityId,
-                                                        creature.params().areaId(),
-                                                        creatureId,
-                                                        dirVector,
-                                                        chainFromPos,
-                                                        pos,
-                                                        creaturesAlreadyHit,
-                                                        game);
-
+        creature.params().abilityCooldowns().get(ability.type()).restart();
 
         if (creature.params().isMoving()) { // TODO: should this logic happen as part of this action? or elsewhere?
             Vector2 movementVector = creature.params()
@@ -73,12 +48,14 @@ public class AddAbilityAction implements GameStateAction {
             }
         }
 
-        gameState.abilities().put(abilityId, ability);
+        gameState.abilities().put(ability.params().id(), ability);
 
 
         synchronized (game.abilitiesToBeCreated()) {
-            game.abilitiesToBeCreated().add(abilityId);
+            game.abilitiesToBeCreated().add(ability.params().id());
         }
+
+        ability.init(game);
 
     }
 }

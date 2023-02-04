@@ -49,6 +49,11 @@ public class Fireball extends Projectile {
     }
 
     @Override
+    public AbilityType type() {
+        return AbilityType.FIREBALL;
+    }
+
+    @Override
     void onAbilityStarted(MyGdxGame game) {
 
     }

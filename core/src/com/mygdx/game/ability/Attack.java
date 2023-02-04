@@ -26,6 +26,11 @@ public class Attack extends Ability {
     }
 
     @Override
+    public AbilityType type() {
+        return AbilityType.SLASH;
+    }
+
+    @Override
     void onAbilityStarted(MyGdxGame game) {
 
     }
@@ -114,8 +119,8 @@ public class Attack extends Ability {
                                       .damage(22f)
                                       .pos(pos)
                                       .creaturesAlreadyHit(creaturesAlreadyHit)
-                                      .manaCost(22f)
-                                      .staminaCost(0f)
+                                      .manaCost(0f)
+                                      .staminaCost(22f)
                                       .cooldown(0.7f)
                                       .performableByCreature(true)
                                       .dirVector(dirVector)

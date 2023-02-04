@@ -4,7 +4,6 @@ import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.renderer.AbilityAnimationConfig;
-import com.mygdx.game.util.Vector2;
 import lombok.Data;
 
 @Data
@@ -15,6 +14,7 @@ public abstract class Ability {
         return false;
     }
 
+    public abstract AbilityType type();
 
     public void update(Float delta, MyGdxGame game) {
         AbilityState state = params().state();
@@ -81,23 +81,6 @@ public abstract class Ability {
         params().stateTimer().restart();
 
     }
-
-    public void start(Vector2 dir, GameState gameState, AbilityType abilityType) {
-        params().dirVector(dir);
-
-        Creature creature = gameState.creatures().get(params().creatureId());
-        if (isPositionManipulated()) {
-            onUpdatePosition(gameState);
-        }
-
-        creature.takeManaDamage(abilityType.manaCost);
-        creature.takeStaminaDamage(abilityType.staminaCost);
-
-        params().state(AbilityState.CHANNEL);
-        params().stateTimer().restart();
-
-    }
-
 
     public void updateTimers(float delta) {
         params().stateTimer().update(delta);

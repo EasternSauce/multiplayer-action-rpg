@@ -20,6 +20,11 @@ public class LightningNode extends Ability {
     AbilityParams params;
 
     @Override
+    public AbilityType type() {
+        return AbilityType.LIGHTNING_NODE;
+    }
+
+    @Override
     void onAbilityStarted(MyGdxGame game) {
 
     }
@@ -99,7 +104,7 @@ public class LightningNode extends Ability {
                                       .manaCost(0f)
                                       .staminaCost(0f)
                                       .cooldown(1.0f)
-                                      .performableByCreature(true)
+                                      .performableByCreature(false)
                                       .inactiveBody(true)
                                       .dirVector(dirVector)
                                       .rotationShift(0f);

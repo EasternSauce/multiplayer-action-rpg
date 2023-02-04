@@ -22,6 +22,11 @@ public class LightningSpark extends Ability {
 
 
     @Override
+    public AbilityType type() {
+        return AbilityType.LIGHTNING_SPARK;
+    }
+
+    @Override
     void onAbilityStarted(MyGdxGame game) {
 
     }

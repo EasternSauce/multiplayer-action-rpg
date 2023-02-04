@@ -189,10 +189,12 @@ public class MyGdxGameClient extends MyGdxGame {
                                                           null,
                                                           Vector2.of(player.params()
                                                                            .pos()
-                                                                           .x() + mousePos.x() * viewportRatioX / Constants.PPM,
+                                                                           .x() +
+                                                                     mousePos.x() * viewportRatioX / Constants.PPM,
                                                                      player.params()
                                                                            .pos()
-                                                                           .y() + mousePos.y() * viewportRatioY / Constants.PPM),
+                                                                           .y() +
+                                                                     mousePos.y() * viewportRatioY / Constants.PPM),
                                                           mouseDirVector));
             }
         }

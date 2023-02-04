@@ -84,7 +84,8 @@ public class AbilityBody {
 
         if (!inactiveBody && ability != null) {
             if (ability.isPositionManipulated() && (ability.params().state() == AbilityState.CHANNEL || ability.params()
-                                                                                                               .state() == AbilityState.ACTIVE)) {
+                                                                                                               .state() ==
+                                                                                                        AbilityState.ACTIVE)) {
                 b2Body.setTransform(ability.params().pos().x(), ability.params().pos().y(), 0f);
             }
 

@@ -20,42 +20,28 @@ public class AbilityFactory {
                                          Set<CreatureId> creaturesAlreadyHit,
                                          MyGdxGame game) {
         if (abilityType == AbilityType.SLASH) {
-            Ability ability = Attack.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit);
-            ability.init(game);
-            return ability;
+            return Attack.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit);
         }
 
         if (abilityType == AbilityType.FIREBALL) {
-            Ability ability = Fireball.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit);
-            ability.init(game);
-            return ability;
+            return Fireball.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit);
         }
 
         if (abilityType == AbilityType.FIREBALL_EXPLOSION) {
-            Ability ability = FireballExplosion.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit);
-            ability.init(game);
-            return ability;
+            return FireballExplosion.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit);
         }
 
         if (abilityType == AbilityType.LIGHTNING_SPARK) {
             Vector2 creaturePos = game.gameState().creatures().get(creatureId).params().pos();
-            Ability ability =
-                    LightningSpark.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit, creaturePos);
-            ability.init(game);
-            return ability;
+            return LightningSpark.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit, creaturePos);
         }
 
         if (abilityType == AbilityType.LIGHTNING_NODE) {
-            Ability ability = LightningNode.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit);
-            ability.init(game);
-            return ability;
+            return LightningNode.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit);
         }
 
         if (abilityType == AbilityType.LIGHTNING_CHAIN) {
-            Ability ability =
-                    LightningChain.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit, chainFromPos);
-            ability.init(game);
-            return ability;
+            return LightningChain.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit, chainFromPos);
         }
 
         throw new RuntimeException("ability type not found");

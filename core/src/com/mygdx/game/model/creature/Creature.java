@@ -1,6 +1,6 @@
 package com.mygdx.game.model.creature;
 
-import com.mygdx.game.ability.AbilityType;
+import com.mygdx.game.ability.Ability;
 import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.renderer.CreatureAnimationConfig;
 import com.mygdx.game.util.Vector2;
@@ -177,10 +177,12 @@ public abstract class Creature {
     }
 
 
-    public boolean canPerformAbility(AbilityType abilityType) {
-        return isAlive() && abilityType.staminaCost <= params().stamina() && abilityType.manaCost <= params().mana() && (!abilityType.performableByCreature || (params().actionCooldownTimer()
-                                                                                                                                                                        .time() > params().actionCooldown() && params().abilityCooldowns()
-                                                                                                                                                                                                                       .get(abilityType)
-                                                                                                                                                                                                                       .time() > abilityType.cooldown));
+    public boolean canPerformAbility(Ability ability) {
+        return isAlive() &&
+               ability.params().staminaCost() <= params().stamina() &&
+               ability.params().manaCost() <= params().mana() &&
+               (!ability.params().performableByCreature() ||
+                (params().actionCooldownTimer().time() > params().actionCooldown() &&
+                 params().abilityCooldowns().get(ability.type()).time() > ability.params().cooldown()));
     }
 }

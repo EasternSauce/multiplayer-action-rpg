@@ -19,6 +19,11 @@ public class LightningChain extends Ability {
 
 
     @Override
+    public AbilityType type() {
+        return AbilityType.LIGHTNING_CHAIN;
+    }
+
+    @Override
     void onAbilityStarted(MyGdxGame game) {
 
     }
@@ -84,7 +89,7 @@ public class LightningChain extends Ability {
                                       .manaCost(0f)
                                       .staminaCost(0f)
                                       .cooldown(0f)
-                                      .performableByCreature(true)
+                                      .performableByCreature(false)
                                       .inactiveBody(true)
                                       .dirVector(dirVector)
                                       .rotationShift(90f);

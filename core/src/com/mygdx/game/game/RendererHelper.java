@@ -112,9 +112,10 @@ public class RendererHelper {
                                      "You are dead!\nRespawning...\n" + String.format(Locale.US,
                                                                                       "%.2f",
                                                                                       (creature.params()
-                                                                                               .respawnTime() - creature.params()
-                                                                                                                        .respawnTimer()
-                                                                                                                        .time())),
+                                                                                               .respawnTime() -
+                                                                                       creature.params()
+                                                                                               .respawnTimer()
+                                                                                               .time())),
                                      Vector2.of(Constants.WindowWidth / 2f - Constants.WindowWidth / 8f,
                                                 Constants.WindowHeight / 2f + Constants.WindowHeight / 5f),
                                      Color.RED);

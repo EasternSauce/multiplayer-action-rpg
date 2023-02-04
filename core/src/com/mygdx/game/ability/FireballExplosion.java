@@ -20,6 +20,11 @@ public class FireballExplosion extends Ability {
 
 
     @Override
+    public AbilityType type() {
+        return AbilityType.FIREBALL_EXPLOSION;
+    }
+
+    @Override
     void onAbilityStarted(MyGdxGame game) {
 
     }

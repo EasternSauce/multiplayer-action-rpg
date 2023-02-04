@@ -195,8 +195,13 @@ public class PhysicsWorld {
     }
 
     public void tryAddClearance(TilePos pos, Integer level) {
-        if (!clearances.containsKey(pos) && pos.x() >= 0 && pos.y() >= 0 && pos.x() < widthInTiles() && pos.y() < heightInTiles() && traversables.get(
-                pos)) {
+        if (!clearances.containsKey(pos) &&
+            pos.x() >= 0 &&
+            pos.y() >= 0 &&
+            pos.x() < widthInTiles() &&
+            pos.y() < heightInTiles() &&
+            traversables.get(
+                    pos)) {
             clearances.put(pos, level);
         }
     }
@@ -258,7 +263,12 @@ public class PhysicsWorld {
     public Boolean isLineOfSight(Vector2 fromPos, Vector2 toPos) {
         float lineWidth = 0.3f;
         com.badlogic.gdx.math.Polygon lineOfSightRect =
-                new com.badlogic.gdx.math.Polygon(new float[]{fromPos.x(), fromPos.y(), fromPos.x() + lineWidth, fromPos.y() + lineWidth, toPos.x() + lineWidth, toPos.y() + lineWidth, toPos.x(), toPos.y()});
+                new com.badlogic.gdx.math.Polygon(new float[]{fromPos.x(), fromPos.y(), fromPos.x() +
+                                                                                        lineWidth, fromPos.y() +
+                                                                                                   lineWidth, toPos.x() +
+                                                                                                              lineWidth,
+                        toPos.y() +
+                        lineWidth, toPos.x(), toPos.y()});
 
         List<com.badlogic.gdx.math.Polygon> polygons =
                 terrainTiles.stream().map(TerrainTileBody::polygon).collect(Collectors.toList());
