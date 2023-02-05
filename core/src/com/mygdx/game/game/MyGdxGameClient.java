@@ -287,10 +287,9 @@ public class MyGdxGameClient extends MyGdxGame {
                     if (action.initial()) {
                         gameStateHolder.gameState(action.gameState());
 
-                        synchronized (creaturesToBeCreated()) {
-                            gameState().creatures()
-                                       .forEach((creatureId, creature) -> creaturesToBeCreated().add(creatureId));
-                        }
+                        gameState().creatures()
+                                   .forEach((creatureId, creature) -> creaturesToBeCreated().add(creatureId));
+
 
                         isInitialized = true;
 
@@ -317,18 +316,14 @@ public class MyGdxGameClient extends MyGdxGame {
                         Set<AbilityId> abilitiesRemoved = new HashSet<>(oldAbilityIds);
                         abilitiesRemoved.removeAll(newAbilityIds);
 
-                        synchronized (creaturesToBeCreated()) {
-                            creaturesToBeCreated().addAll(creaturesAdded);
-                        }
-                        synchronized (creaturesToBeRemoved()) {
-                            creaturesToBeRemoved().addAll(creaturesRemoved);
-                        }
-                        synchronized (abilitiesToBeCreated()) {
-                            abilitiesToBeCreated().addAll(abilitiesAdded);
-                        }
-                        synchronized (abilitiesToBeRemoved()) {
-                            abilitiesToBeRemoved().addAll(abilitiesRemoved);
-                        }
+                        creaturesToBeCreated().addAll(creaturesAdded);
+
+                        creaturesToBeRemoved().addAll(creaturesRemoved);
+
+                        abilitiesToBeCreated().addAll(abilitiesAdded);
+
+                        abilitiesToBeRemoved().addAll(abilitiesRemoved);
+
 
                         gameStateHolder.gameState(newGameState);
 

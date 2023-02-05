@@ -172,6 +172,18 @@ public abstract class Creature {
 
     }
 
+    public void onAbilityPerformed(Ability ability) {
+        if (!ability.params().attackWithoutMoving() && params().isMoving()) {
+            Vector2 movementVector = params()
+                    .pos()
+                    .vectorTowards(params().movementCommandTargetPos())
+                    .normalized()
+                    .multiplyBy(0.15f);
+            // move slightly forward if attacking while moving
+            params().movementCommandTargetPos(params().pos().add(movementVector));
+        }
+    }
+
     public CreatureAnimationConfig animationConfig() {
         return CreatureAnimationConfig.configs.get(params().textureName());
     }

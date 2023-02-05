@@ -108,33 +108,28 @@ public class MyGdxGamePlayScreen implements Screen {
 
         game.onUpdate();
 
-        synchronized (game.creaturesToBeCreated()) {
-            game.creaturesToBeCreated().forEach(creatureId -> game.createCreature(creatureId));
-            game.creaturesToBeCreated().clear();
-        }
-
-        synchronized (game.abilitiesToBeCreated()) {
-            game.abilitiesToBeCreated().forEach(abilityId -> game.createAbility(abilityId));
-            game.abilitiesToBeCreated().clear();
-        }
-
-        synchronized (game.creaturesToBeRemoved()) {
-            game.creaturesToBeRemoved().forEach(creatureId -> game.removeCreature(creatureId));
-            game.creaturesToBeRemoved().clear();
-        }
-
-        synchronized (game.abilitiesToBeRemoved()) {
-            game.abilitiesToBeRemoved().forEach(abilityId -> game.removeAbility(abilityId));
-            game.abilitiesToBeRemoved().clear();
-        }
-
-        synchronized (game.creaturesToTeleport()) {
-            game.creaturesToTeleport()
-                .forEach((creatureId, pos) -> game.physics().creatureBodies().get(creatureId).forceSetTransform(pos));
+        game.creaturesToBeCreated().forEach(creatureId -> game.createCreature(creatureId));
+        game.creaturesToBeCreated().clear();
 
 
-            game.creaturesToTeleport().clear();
-        }
+        game.abilitiesToBeCreated().forEach(abilityId -> game.createAbility(abilityId));
+        game.abilitiesToBeCreated().clear();
+
+
+        game.creaturesToBeRemoved().forEach(creatureId -> game.removeCreature(creatureId));
+        game.creaturesToBeRemoved().clear();
+
+
+        game.abilitiesToBeRemoved().forEach(abilityId -> game.removeAbility(abilityId));
+        game.abilitiesToBeRemoved().clear();
+
+
+        game.creaturesToTeleport()
+            .forEach((creatureId, pos) -> game.physics().creatureBodies().get(creatureId).forceSetTransform(pos));
+
+
+        game.creaturesToTeleport().clear();
+
 
         game.gameState().generalTimer().update(delta);
 

@@ -35,11 +35,11 @@ public abstract class MyGdxGame extends Game {
     public final Chat chat = Chat.of();
     protected CreatureId thisPlayerId = null;
 
-    final List<CreatureId> creaturesToBeCreated = new LinkedList<>();
-    final List<AbilityId> abilitiesToBeCreated = new LinkedList<>();
+    final List<CreatureId> creaturesToBeCreated = Collections.synchronizedList(new ArrayList<>());
+    final List<AbilityId> abilitiesToBeCreated = Collections.synchronizedList(new ArrayList<>());
 
-    final List<CreatureId> creaturesToBeRemoved = new LinkedList<>();
-    final List<AbilityId> abilitiesToBeRemoved = new LinkedList<>();
+    final List<CreatureId> creaturesToBeRemoved = Collections.synchronizedList(new ArrayList<>());
+    final List<AbilityId> abilitiesToBeRemoved = Collections.synchronizedList(new ArrayList<>());
 
     final Map<CreatureId, Vector2> creaturesToTeleport = new HashMap<>();
 
@@ -142,10 +142,9 @@ public abstract class MyGdxGame extends Game {
         gameState().creatures()
                    .put(creatureId, Enemy.of(CreatureParams.of(creatureId, areaId, pos, enemyType).speed(5f)));
 
-        synchronized (creaturesToBeCreated()) {
-            creaturesToBeCreated().add(creatureId);
+        creaturesToBeCreated().add(creatureId);
 
-        }
+
     }
 
     abstract public void onUpdate();

@@ -35,9 +35,8 @@ public class AddPlayerAction implements GameStateAction {
         player.params().maxMana(350f);
         gameState.creatures().put(playerId, player);
 
-        synchronized (game.creaturesToBeCreated()) {
-            game.creaturesToBeCreated().add(playerId);
-        }
+        game.creaturesToBeCreated().add(playerId);
+
 
     }
 }

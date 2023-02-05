@@ -9,38 +9,37 @@ import com.mygdx.game.physics.event.AbilityHitsTerrainEvent;
 public class PhysicsHelper {
 
     public static void processPhysicsEventQueue(MyGdxGame game) {
-        synchronized (game.physics().physicsEventQueue()) {
-            game.physics().physicsEventQueue().forEach(physicsEvent -> {
-                if (physicsEvent instanceof AbilityHitsCreatureEvent) {
-                    AbilityHitsCreatureEvent event = (AbilityHitsCreatureEvent) physicsEvent;
+        game.physics().physicsEventQueue().forEach(physicsEvent -> {
+            if (physicsEvent instanceof AbilityHitsCreatureEvent) {
+                AbilityHitsCreatureEvent event = (AbilityHitsCreatureEvent) physicsEvent;
 
-                    Creature attackedCreature = game.gameState().creatures().get(event.attackedCreatureId());
+                Creature attackedCreature = game.gameState().creatures().get(event.attackedCreatureId());
 
-                    Creature attackingCreature = game.gameState().creatures().get(event.attackingCreatureId());
+                Creature attackingCreature = game.gameState().creatures().get(event.attackingCreatureId());
 
-                    boolean attackedIsPlayer = (attackedCreature instanceof Player);
-                    boolean attackingIsPlayer = (attackingCreature instanceof Player);
+                boolean attackedIsPlayer = (attackedCreature instanceof Player);
+                boolean attackingIsPlayer = (attackingCreature instanceof Player);
 
-                    Ability ability = game.gameState().abilities().get(event.abilityId());
+                Ability ability = game.gameState().abilities().get(event.abilityId());
 
-                    if (game.creaturesToUpdate().contains(event.attackedCreatureId()) && game.abilitiesToUpdate()
-                                                                                             .contains(event.abilityId())) {
-                        handleCreatureAttacked(event, attackedCreature, attackedIsPlayer, attackingIsPlayer, ability);
-                    }
+                if (game.creaturesToUpdate().contains(event.attackedCreatureId()) && game.abilitiesToUpdate()
+                                                                                         .contains(event.abilityId())) {
+                    handleCreatureAttacked(event, attackedCreature, attackedIsPlayer, attackingIsPlayer, ability);
                 }
-                if (physicsEvent instanceof AbilityHitsTerrainEvent) {
-                    AbilityHitsTerrainEvent event = (AbilityHitsTerrainEvent) physicsEvent;
+            }
+            if (physicsEvent instanceof AbilityHitsTerrainEvent) {
+                AbilityHitsTerrainEvent event = (AbilityHitsTerrainEvent) physicsEvent;
 
-                    Ability ability = game.gameState().abilities().get(event.abilityId());
+                Ability ability = game.gameState().abilities().get(event.abilityId());
 
-                    if (ability != null) {
-                        ability.onTerrainHit();
-                    }
-
+                if (ability != null) {
+                    ability.onTerrainHit();
                 }
-            });
-            game.physics().physicsEventQueue().clear();
-        }
+
+            }
+        });
+        game.physics().physicsEventQueue().clear();
+
     }
 
     private static void handleCreatureAttacked(AbilityHitsCreatureEvent event,

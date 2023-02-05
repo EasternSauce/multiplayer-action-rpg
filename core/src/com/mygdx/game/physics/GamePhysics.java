@@ -12,10 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
@@ -32,7 +29,7 @@ public class GamePhysics {
 
     Boolean forceUpdateBodyPositions = false;
 
-    final List<PhysicsEvent> physicsEventQueue = new LinkedList<>();
+    final List<PhysicsEvent> physicsEventQueue = Collections.synchronizedList(new ArrayList<>());
 
     public void init(Map<AreaId, TiledMap> maps) {
         physicsWorlds = maps.entrySet()
@@ -51,19 +48,17 @@ public class GamePhysics {
             CreatureBody creatureBody = (CreatureBody) objA;
             AbilityBody abilityBody = (AbilityBody) objB;
             if (!abilityBody.creatureId().equals(creatureBody.creatureId())) {
-                synchronized (physicsEventQueue) {
-                    physicsEventQueue.add(AbilityHitsCreatureEvent.of(abilityBody.creatureId(),
-                                                                      creatureBody.creatureId(),
-                                                                      abilityBody.abilityId()));
-                }
+                physicsEventQueue.add(AbilityHitsCreatureEvent.of(abilityBody.creatureId(),
+                                                                  creatureBody.creatureId(),
+                                                                  abilityBody.abilityId()));
+
             }
         }
         if (objA instanceof TerrainTileBody && objB instanceof AbilityBody) {
             //            TerrainTileBody terrainTileBody = (TerrainTileBody) objA;
             AbilityBody abilityBody = (AbilityBody) objB;
-            synchronized (physicsEventQueue) {
-                physicsEventQueue.add(AbilityHitsTerrainEvent.of(abilityBody.abilityId()));
-            }
+            physicsEventQueue.add(AbilityHitsTerrainEvent.of(abilityBody.abilityId()));
+
 
         }
     }

@@ -24,7 +24,7 @@ public class MyGdxGameServer extends MyGdxGame {
     private static MyGdxGameServer instance;
 
     final Server _endPoint = new Server(1638400, 204800);
-    private final List<GameStateAction> tickActions = new ArrayList<>();
+    private final List<GameStateAction> tickActions = Collections.synchronizedList(new ArrayList<>());
     private final Map<Integer, CreatureId> clientCreatures = new HashMap<>();
     Thread broadcastThread;
 
@@ -51,61 +51,58 @@ public class MyGdxGameServer extends MyGdxGame {
 
     @Override
     public void onUpdate() {
-        synchronized (tickActions) {
-            gameState().creatures().forEach((creatureId, creature) -> { // handle deaths server side
-                if (creature.params().justDied()) { // death condition
-                    CreatureDeathAction action = CreatureDeathAction.of(creatureId);
-                    tickActions.add(action);
-                }
-                else if (creature.params().awaitingRespawn() && creature instanceof Player &&
-                         // handle respawns server side
-                         creature.params().respawnTimer().time() > creature.params().respawnTime()) {
-                    Vector2
-                            pos =
-                            Vector2.of((float) ((Math.random() * (28 - 18)) + 18),
-                                       (float) ((Math.random() * (12 - 6)) + 6));
-                    RespawnCreatureAction action = RespawnCreatureAction.of(creatureId, pos);
+        gameState().creatures().forEach((creatureId, creature) -> { // handle deaths server side
+            if (creature.params().justDied()) { // death condition
+                CreatureDeathAction action = CreatureDeathAction.of(creatureId);
+                tickActions.add(action);
+            }
+            else if (creature.params().awaitingRespawn() && creature instanceof Player &&
+                     // handle respawns server side
+                     creature.params().respawnTimer().time() > creature.params().respawnTime()) {
+                Vector2
+                        pos =
+                        Vector2.of((float) ((Math.random() * (28 - 18)) + 18),
+                                   (float) ((Math.random() * (12 - 6)) + 6));
+                RespawnCreatureAction action = RespawnCreatureAction.of(creatureId, pos);
 
-                    tickActions.add(action);
-                }
+                tickActions.add(action);
+            }
 
-            });
-        }
+        });
 
 
         //playsound on getting hit
 
-        synchronized (tickActions) {
 
-            // remove expired abilities
-            gameState().abilities()
-                       .entrySet()
-                       .stream()
-                       .filter(entry -> entry.getValue().params().state() == AbilityState.INACTIVE)
-                       .forEach(entry -> tickActions.add(RemoveAbilityAction.of(entry.getKey())));
+        // remove expired abilities
+        gameState().abilities()
+                   .entrySet()
+                   .stream()
+                   .filter(entry -> entry.getValue().params().state() == AbilityState.INACTIVE)
+                   .forEach(entry -> tickActions.add(RemoveAbilityAction.of(entry.getKey())));
 
-            ArrayList<GameStateAction> tickActionsCopy = new ArrayList<>(tickActions);
+        ArrayList<GameStateAction> tickActionsCopy = new ArrayList<>(tickActions);
 
-            tickActionsCopy.forEach(gameStateAction -> gameStateAction.applyToGame(this));
+        tickActionsCopy.forEach(gameStateAction -> gameStateAction.applyToGame(this));
 
-            Connection[] connections = endPoint().getConnections();
-            for (Connection connection : connections) {
-                if (!clientCreatures.containsKey(connection.getID())) {
-                    continue;// TODO: why is this needed?
-                }
-                Creature creature = gameState().creatures().get(clientCreatures.get(connection.getID()));
-                List<GameStateAction>
-                        personalizedTickActions =
-                        tickActionsCopy.stream()
-                                       .filter(action -> action.actionObjectPos(gameState())
-                                                               .distance(creature.params().pos()) <
-                                                         Constants.ClientGameUpdateRange)
-                                       .collect(Collectors.toList());
-                connection.sendTCP(ActionsHolder.of(personalizedTickActions));
+        Connection[] connections = endPoint().getConnections();
+        for (Connection connection : connections) {
+            if (!clientCreatures.containsKey(connection.getID())) {
+                continue;// don't update until player is initialized
             }
-
-            tickActions.clear();
+            Creature creature = gameState().creatures().get(clientCreatures.get(connection.getID()));
+            List<GameStateAction>
+                    personalizedTickActions =
+                    tickActionsCopy.stream()
+                                   .filter(action -> action.actionObjectPos(gameState())
+                                                           .distance(creature.params().pos()) <
+                                                     Constants.ClientGameUpdateRange)
+                                   .collect(Collectors.toList());
+            connection.sendTCP(ActionsHolder.of(personalizedTickActions));
         }
+
+        tickActions.clear();
+
 
     }
 
@@ -124,56 +121,54 @@ public class MyGdxGameServer extends MyGdxGame {
 
             @Override
             public void received(Connection connection, Object object) {
-                synchronized (tickActions) {
-                    if (object instanceof PlayerMovementCommand) {
-                        PlayerMovementCommand command = (PlayerMovementCommand) object;
-                        MoveTowardsTargetAction
-                                move =
-                                MoveTowardsTargetAction.of(command.playerId(), command.mousePos());
-                        tickActions.add(move);
-                    }
-                    else if (object instanceof InitPlayerCommand) {
-                        InitPlayerCommand command = (InitPlayerCommand) object;
-                        AddPlayerAction
-                                addPlayerAction =
-                                AddPlayerAction.of(command.playerId(), command.pos(), command.textureName());
+                if (object instanceof PlayerMovementCommand) {
+                    PlayerMovementCommand command = (PlayerMovementCommand) object;
+                    MoveTowardsTargetAction
+                            move =
+                            MoveTowardsTargetAction.of(command.playerId(), command.mousePos());
+                    tickActions.add(move);
+                }
+                else if (object instanceof InitPlayerCommand) {
+                    InitPlayerCommand command = (InitPlayerCommand) object;
+                    AddPlayerAction
+                            addPlayerAction =
+                            AddPlayerAction.of(command.playerId(), command.pos(), command.textureName());
 
-                        tickActions.add(addPlayerAction);
+                    tickActions.add(addPlayerAction);
 
-                        connection.sendTCP(GameStateHolder.of(gameState(), true));
+                    connection.sendTCP(GameStateHolder.of(gameState(), true));
 
-                        clientCreatures.put(connection.getID(), command.playerId());
-                    }
-                    else if (object instanceof SendChatMessageCommand) {
-                        SendChatMessageCommand command = (SendChatMessageCommand) object;
+                    clientCreatures.put(connection.getID(), command.playerId());
+                }
+                else if (object instanceof SendChatMessageCommand) {
+                    SendChatMessageCommand command = (SendChatMessageCommand) object;
 
-                        endPoint().sendToAllTCP(command);
-                    }
-                    else if (object instanceof SpawnAbilityCommand) {
-                        SpawnAbilityCommand command = (SpawnAbilityCommand) object;
+                    endPoint().sendToAllTCP(command);
+                }
+                else if (object instanceof SpawnAbilityCommand) {
+                    SpawnAbilityCommand command = (SpawnAbilityCommand) object;
 
-                        trySpawningAbility(command);
+                    trySpawningAbility(command);
 
-                    }
-                    else if (object instanceof SpawnEnemyCommand) {
-                        SpawnEnemyCommand command = (SpawnEnemyCommand) object;
-                        spawnEnemy(command.creatureId(), command.areaId(), command.pos(), "skeleton");
+                }
+                else if (object instanceof SpawnEnemyCommand) {
+                    SpawnEnemyCommand command = (SpawnEnemyCommand) object;
+                    spawnEnemy(command.creatureId(), command.areaId(), command.pos(), "skeleton");
 
-                        endPoint().sendToAllTCP(command);
+                    endPoint().sendToAllTCP(command);
 
-                    }
                 }
             }
+
 
             @Override
             public void disconnected(Connection connection) {
-                synchronized (tickActions) {
-                    CreatureId disconnectedCreatureId = clientCreatures.get(connection.getID());
+                CreatureId disconnectedCreatureId = clientCreatures.get(connection.getID());
 
-                    RemovePlayerAction removePlayerAction = RemovePlayerAction.of(disconnectedCreatureId);
-                    tickActions.add(removePlayerAction);
-                }
+                RemovePlayerAction removePlayerAction = RemovePlayerAction.of(disconnectedCreatureId);
+                tickActions.add(removePlayerAction);
             }
+
         });
 
         broadcastThread = new Thread(() -> {

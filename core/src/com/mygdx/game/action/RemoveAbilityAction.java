@@ -21,8 +21,7 @@ public class RemoveAbilityAction implements GameStateAction {
 
     @Override
     public void applyToGame(MyGdxGame game) {
-        synchronized (game.abilitiesToBeRemoved()) {
-            game.abilitiesToBeRemoved().add(abilityId);
-        }
+        game.abilitiesToBeRemoved().add(abilityId);
+
     }
 }

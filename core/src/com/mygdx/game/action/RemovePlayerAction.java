@@ -21,8 +21,7 @@ public class RemovePlayerAction implements GameStateAction {
 
     @Override
     public void applyToGame(MyGdxGame game) {
-        synchronized (game.creaturesToBeRemoved()) {
-            game.creaturesToBeRemoved().add(creatureId);
-        }
+        game.creaturesToBeRemoved().add(creatureId);
+
     }
 }
