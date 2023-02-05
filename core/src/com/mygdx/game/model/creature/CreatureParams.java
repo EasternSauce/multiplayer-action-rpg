@@ -59,6 +59,7 @@ public class CreatureParams {
 
     SimpleTimer movementCommandsPerSecondLimitTimer = SimpleTimer.of(Float.MAX_VALUE, false);
     SimpleTimer attackCommandsPerSecondLimitTimer = SimpleTimer.of(Float.MAX_VALUE, false);
+    Float attackCommandsPerSecondLimit = 0.2f;
 
     SimpleTimer isStillMovingTimer = SimpleTimer.of(Float.MAX_VALUE, false);
 

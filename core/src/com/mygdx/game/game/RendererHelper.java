@@ -147,13 +147,13 @@ public class RendererHelper {
         for (int i = 0; i < Math.min(chat.messages().size(), 6); i++) {
             Assets.drawFont(drawingLayer,
                             chat.messages().get(i).poster() + ": " + chat.messages().get(i).text(),
-                            Vector2.of(30, 180 - 20 * i),
+                            Vector2.of(30, 220 - 20 * i),
                             Color.PURPLE);
         }
 
         Assets.drawFont(drawingLayer,
                         (chat.isTyping() ? "> " : "") + chat.currentMessage(),
-                        Vector2.of(30, 30),
+                        Vector2.of(30, 70),
                         Color.PURPLE);
     }
 

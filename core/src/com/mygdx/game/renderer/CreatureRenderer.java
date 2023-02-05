@@ -112,7 +112,7 @@ public class CreatureRenderer {
             sprite.setRotation(0f);
             sprite.setRegion(texture);
 
-            sprite.setColor(1, 1, 1, 1); // TODO: immunity frames visual
+            sprite.setColor(1, 1, 1, 1);
         }
         else {
             TextureRegion texture = pickFacingTexture(WorldDirection.RIGHT, gameState);

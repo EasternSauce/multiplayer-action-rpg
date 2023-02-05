@@ -28,14 +28,14 @@ public abstract class Creature {
             params().isStillMovingTimer().restart();
         }
 
-        updateAutomaticControls(game); // TODO: move this to playscreen?
+        updateAutomaticControls(game);
         updateTimers(delta);
 
 
     }
 
     private void regenerateStamina() {
-        if (params().staminaRegenerationTimer().time() > params().staminaRegenerationTickTime()) {
+        if (params().staminaRegenerationTimer().time() > params().staminaRegenerationTickTime() && isAlive()) {
             float afterRegeneration = params().stamina() + params().staminaRegeneration();
             params().stamina(Math.min(afterRegeneration, params().maxStamina()));
             params().staminaRegenerationTimer().restart();

@@ -2,6 +2,7 @@ package com.mygdx.game.physics;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.game.model.GameState;
+import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.util.Vector2;
@@ -30,10 +31,10 @@ public class CreatureBody {
         return creatureId;
     }
 
-    public void init(GamePhysics gamePhysics, GameState gameState) { // TODO: get world by area id
+    public void init(GamePhysics gamePhysics, GameState gameState, AreaId areaId) {
         Creature creature = gameState.creatures().get(creatureId);
 
-        world = gamePhysics.physicsWorlds().get(creature.params().areaId());
+        world = gamePhysics.physicsWorlds().get(areaId);
 
         b2Body = B2BodyFactory.createCreatureB2Body(world, this, creature);
 
@@ -61,7 +62,6 @@ public class CreatureBody {
         float vectorY = normalMovingVector.y() * v;
 
         if (bodyCreated) {
-            //TODO: knockback
             if (creature.params().isMoving()) {
                 setVelocity(Vector2.of(vectorX, vectorY));
             }

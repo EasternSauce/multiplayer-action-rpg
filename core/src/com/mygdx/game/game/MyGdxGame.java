@@ -114,7 +114,7 @@ public abstract class MyGdxGame extends Game {
             }
             if (!gamePhysics.creatureBodies().containsKey(creatureId)) {
                 CreatureBody creatureBody = CreatureBody.of(creatureId);
-                creatureBody.init(gamePhysics, gameState());
+                creatureBody.init(gamePhysics, gameState(), creature.params().areaId());
                 gamePhysics.creatureBodies().put(creatureId, creatureBody);
             }
         }

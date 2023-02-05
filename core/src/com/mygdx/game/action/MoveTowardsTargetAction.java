@@ -1,6 +1,5 @@
 package com.mygdx.game.action;
 
-import com.mygdx.game.Constants;
 import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.creature.Creature;
@@ -33,12 +32,8 @@ public class MoveTowardsTargetAction implements GameStateAction {
         if (creature != null && creature.isAlive()) {
             Vector2 pos = creature.params().pos();
 
-            float viewportRatioX = Constants.ViewpointWorldWidth / Constants.WindowWidth;
-            float viewportRatioY = Constants.ViewpointWorldHeight / Constants.WindowHeight;
-
             creature.params()
-                    .movementCommandTargetPos(Vector2.of(pos.x() + mousePos.x() * viewportRatioX / Constants.PPM,
-                                                         pos.y() + mousePos.y() * viewportRatioY / Constants.PPM))
+                    .movementCommandTargetPos(pos.add(mousePos))
                     .reachedTargetPos(false);
 
 

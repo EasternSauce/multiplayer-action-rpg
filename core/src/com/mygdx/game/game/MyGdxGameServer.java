@@ -180,7 +180,7 @@ public class MyGdxGameServer extends MyGdxGame {
                     Connection[] connections = endPoint().getConnections();
                     for (Connection connection : connections) {
                         if (!clientCreatures.containsKey(connection.getID())) {
-                            continue;// TODO: why is this needed?
+                            continue;
                         }
                         Creature creature = gameState().creatures().get(clientCreatures.get(connection.getID()));
 

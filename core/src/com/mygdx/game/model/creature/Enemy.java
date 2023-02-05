@@ -58,7 +58,6 @@ public class Enemy extends Creature {
     public void updateAutomaticControls(MyGdxGame game) {
 
         if (params().attackedByCreatureId() != null) {
-            // TODO: separate timer that makes attacks take aggro regardless?
             params.aggroedCreatureId(params().attackedByCreatureId());
         }
         else {

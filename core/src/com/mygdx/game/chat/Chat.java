@@ -18,6 +18,9 @@ public class Chat {
     Boolean isTyping = false;
     String currentMessage = "";
 
+    Float holdBackspaceTime;
+    Boolean holdingBackspace = false;
+
     public void sendMessage(GameState gameState, String posterId, String message) {
         if (messages().size() < 6) {
             messages().add(ChatMessage.of(gameState.generalTimer().time(), posterId, message));
