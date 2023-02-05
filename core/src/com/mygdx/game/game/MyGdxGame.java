@@ -138,9 +138,9 @@ public abstract class MyGdxGame extends Game {
 
     }
 
-    public void spawnEnemy(CreatureId creatureId, AreaId areaId, Vector2 pos, String enemyType) {
+    public void spawnEnemy(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn) {
         gameState().creatures()
-                   .put(creatureId, Enemy.of(CreatureParams.of(creatureId, areaId, pos, enemyType).speed(5f)));
+                   .put(creatureId, Enemy.of(CreatureParams.of(creatureId, areaId, enemySpawn).speed(5f)));
 
         creaturesToBeCreated().add(creatureId);
 

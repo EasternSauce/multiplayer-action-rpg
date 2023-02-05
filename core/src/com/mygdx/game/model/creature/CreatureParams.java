@@ -1,6 +1,7 @@
 package com.mygdx.game.model.creature;
 
 import com.mygdx.game.ability.AbilityType;
+import com.mygdx.game.game.EnemySpawn;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.util.RandomHelper;
 import com.mygdx.game.util.SimpleTimer;
@@ -90,6 +91,24 @@ public class CreatureParams {
 
     Map<AbilityType, SimpleTimer> abilityCooldowns = new HashMap<>();
 
+    public static CreatureParams of(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn) {
+        CreatureParams params = CreatureParams.of();
+        params.id = creatureId;
+        params.areaId = areaId;
+        params.pos = enemySpawn.pos();
+        params.textureName = enemySpawn.enemyType().textureName;
+        params.findTargetCooldown = 0.5f + RandomHelper.seededRandomFloat(creatureId);
+        params.pathCalculationFailurePenalty = 10f + 5f * RandomHelper.seededRandomFloat(creatureId);
+        params.pathCalculationCooldown = 2f + 2f * RandomHelper.seededRandomFloat(creatureId);
+
+        params.abilityCooldowns = Arrays.stream(AbilityType.values())
+                                        .collect(Collectors.toMap(Function.identity(),
+                                                                  abilityType -> SimpleTimer.of(Float.MAX_VALUE,
+                                                                                                false)));
+
+        return params;
+    }
+
     public static CreatureParams of(CreatureId creatureId, AreaId areaId, Vector2 pos, String textureName) {
         CreatureParams params = CreatureParams.of();
         params.id = creatureId;
@@ -107,6 +126,5 @@ public class CreatureParams {
 
         return params;
     }
-
 
 }

@@ -24,32 +24,35 @@ public class CreatureAnimationConfig {
     public static Map<String, CreatureAnimationConfig> configs = new HashMap<>();
 
     static {
-        Map<WorldDirection, Integer> male1DirMap = new HashMap<>();
-        male1DirMap.put(WorldDirection.UP, 3);
-        male1DirMap.put(WorldDirection.DOWN, 0);
-        male1DirMap.put(WorldDirection.LEFT, 1);
-        male1DirMap.put(WorldDirection.RIGHT, 2);
-        configs.put("male1", CreatureAnimationConfig.of("male1", 1, 1.8f, 1.8f, 32, 32, 3, 0.1f, male1DirMap));
-        Map<WorldDirection, Integer> male2DirMap = new HashMap<>();
-        male2DirMap.put(WorldDirection.UP, 3);
-        male2DirMap.put(WorldDirection.DOWN, 0);
-        male2DirMap.put(WorldDirection.LEFT, 1);
-        male2DirMap.put(WorldDirection.RIGHT, 2);
-        configs.put("male2", CreatureAnimationConfig.of("male2", 1, 1.8f, 1.8f, 32, 32, 3, 0.1f, male2DirMap));
-        Map<WorldDirection, Integer> female1DirMap = new HashMap<>();
-        female1DirMap.put(WorldDirection.UP, 3);
-        female1DirMap.put(WorldDirection.DOWN, 0);
-        female1DirMap.put(WorldDirection.LEFT, 1);
-        female1DirMap.put(WorldDirection.RIGHT, 2);
-        configs.put("female1", CreatureAnimationConfig.of("female1", 1, 1.8f, 1.8f, 32, 32, 3, 0.1f, female1DirMap));
-        Map<WorldDirection, Integer> skeletonDirMap = new HashMap<>();
-        skeletonDirMap.put(WorldDirection.UP, 0);
-        skeletonDirMap.put(WorldDirection.DOWN, 2);
-        skeletonDirMap.put(WorldDirection.LEFT, 1);
-        skeletonDirMap.put(WorldDirection.RIGHT, 3);
+        configs.put("male1",
+                    CreatureAnimationConfig.of("male1", 1, 1.8f, 1.8f, 32, 32, 3, 0.1f, textureDirMap(3, 0, 1, 2)));
+        configs.put("male2",
+                    CreatureAnimationConfig.of("male2", 1, 1.8f, 1.8f, 32, 32, 3, 0.1f, textureDirMap(3, 0, 1, 2)));
+        configs.put("female1",
+                    CreatureAnimationConfig.of("female1", 1, 1.8f, 1.8f, 32, 32, 3, 0.1f, textureDirMap(3, 0, 1, 2)));
         configs.put("skeleton",
-                    CreatureAnimationConfig.of("skeleton", 0, 1.8f, 1.8f, 64, 64, 9, 0.05f, skeletonDirMap));
+                    CreatureAnimationConfig.of("skeleton", 0, 1.8f, 1.8f, 64, 64, 9, 0.05f, textureDirMap(3, 0, 1, 2)));
+        configs.put("archer",
+                    CreatureAnimationConfig.of("undead_adventurer",
+                                               0,
+                                               1.8f,
+                                               1.8f,
+                                               32,
+                                               48,
+                                               4,
+                                               0.1f,
+                                               textureDirMap(3, 0, 1, 2)));
 
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    private static Map<WorldDirection, Integer> textureDirMap(int up, int down, int left, int right) {
+        Map<WorldDirection, Integer> textureDirMap = new HashMap<>();
+        textureDirMap.put(WorldDirection.UP, up);
+        textureDirMap.put(WorldDirection.DOWN, down);
+        textureDirMap.put(WorldDirection.LEFT, left);
+        textureDirMap.put(WorldDirection.RIGHT, right);
+        return textureDirMap;
     }
 
 

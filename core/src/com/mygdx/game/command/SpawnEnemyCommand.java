@@ -1,8 +1,8 @@
 package com.mygdx.game.command;
 
+import com.mygdx.game.game.EnemySpawn;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.CreatureId;
-import com.mygdx.game.util.Vector2;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 public class SpawnEnemyCommand implements GameCommand {
     CreatureId creatureId;
     AreaId areaId;
-    String enemyType;
-    Vector2 pos;
+    EnemySpawn enemySpawn;
 
 }
