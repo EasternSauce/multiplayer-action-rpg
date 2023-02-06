@@ -6,7 +6,9 @@ public enum AbilityType {
     FIREBALL_EXPLOSION,
     LIGHTNING_SPARK,
     LIGHTNING_NODE,
-    LIGHTNING_CHAIN
+    LIGHTNING_CHAIN,
+
+    CROSSBOW_BOLT
 
 
 }

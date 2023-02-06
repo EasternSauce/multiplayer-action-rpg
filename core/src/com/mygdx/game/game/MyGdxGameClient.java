@@ -29,7 +29,7 @@ public class MyGdxGameClient extends MyGdxGame {
 
     private static MyGdxGameClient instance;
 
-    final Client _endPoint = new Client(8192000, 2048000);
+    final Client _endPoint = new Client(10000000, 2500000);
     boolean isInitialized = false;
 
     private MyGdxGameClient() {
@@ -146,7 +146,7 @@ public class MyGdxGameClient extends MyGdxGame {
                             Vector2.of(mouseX - centerX, (Gdx.graphics.getHeight() - mouseY) - centerY).normalized();
 
                     endPoint().sendTCP(SpawnAbilityCommand.of(abilityId,
-                                                              AreaId.of("area1"),
+                                                              player.params().areaId(),
                                                               thisPlayerId,
                                                               AbilityType.SLASH,
                                                               new HashSet<>(),
@@ -169,7 +169,7 @@ public class MyGdxGameClient extends MyGdxGame {
                     Vector2 mousePos = mousePos();
 
                     endPoint().sendTCP(SpawnAbilityCommand.of(abilityId,
-                                                              AreaId.of("area1"),
+                                                              player.params().areaId(),
                                                               thisPlayerId,
                                                               AbilityType.FIREBALL,
                                                               new HashSet<>(),
@@ -188,28 +188,40 @@ public class MyGdxGameClient extends MyGdxGame {
 
                     AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
 
-                    //                    float mouseX = Gdx.input.getX();
-                    //                    float mouseY = Gdx.input.getY();
-                    //
-                    //                    float centerX = Gdx.graphics.getWidth() / 2f;
-                    //                    float centerY = Gdx.graphics.getHeight() / 2f;
-                    //
-                    //                    float offCenterX = mouseX - centerX;
-                    //                    float offCenterY = (Gdx.graphics.getHeight() - mouseY) - centerY;
-                    //
-                    //                    Vector2 mouseDirVector = Vector2.of(offCenterX, offCenterY).normalized();
-
                     Vector2 mousePos = mousePos();
 
                     Vector2 pos = player.params().pos().add(mousePos);
 
                     endPoint().sendTCP(SpawnAbilityCommand.of(abilityId,
-                                                              AreaId.of("area1"),
+                                                              player.params().areaId(),
                                                               thisPlayerId,
                                                               AbilityType.LIGHTNING_SPARK,
                                                               new HashSet<>(),
                                                               null,
                                                               pos,
+                                                              mousePos));
+                }
+            }
+
+            if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
+
+                Creature player = gameState().creatures().get(thisPlayerId);
+
+                if (player.params().attackCommandsPerSecondLimitTimer().time() >
+                    player.params().attackCommandsPerSecondLimit()) {
+                    player.params().actionCooldownTimer().restart();
+
+                    AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
+
+                    Vector2 mousePos = mousePos();
+
+                    endPoint().sendTCP(SpawnAbilityCommand.of(abilityId,
+                                                              player.params().areaId(),
+                                                              thisPlayerId,
+                                                              AbilityType.CROSSBOW_BOLT,
+                                                              new HashSet<>(),
+                                                              null,
+                                                              player.params().pos(),
                                                               mousePos));
                 }
             }

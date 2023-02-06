@@ -1,7 +1,8 @@
 package com.mygdx.game.ability;
 
-import com.mygdx.game.game.MyGdxGame;
-import com.mygdx.game.model.GameState;
+import com.mygdx.game.game.CreatureAbilityChainable;
+import com.mygdx.game.game.CreatureAbilityUpdateable;
+import com.mygdx.game.game.CreaturePosRetrievable;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.util.Vector2;
@@ -24,32 +25,32 @@ public class LightningChain extends Ability {
     }
 
     @Override
-    void onAbilityStarted(MyGdxGame game) {
+    void onAbilityStarted(CreatureAbilityUpdateable game) {
 
     }
 
     @Override
-    void onDelayedAction(MyGdxGame game) {
+    void onDelayedAction(CreatureAbilityChainable game) {
 
     }
 
     @Override
-    void onAbilityCompleted(MyGdxGame game) {
+    void onAbilityCompleted(CreatureAbilityChainable game) {
 
     }
 
     @Override
-    void onUpdatePosition(GameState gameState) {
+    void onUpdatePosition(CreaturePosRetrievable game) {
 
     }
 
     @Override
-    void onChannelUpdate(GameState gameState) {
+    void onChannelUpdate(CreaturePosRetrievable game) {
 
     }
 
     @Override
-    void onActiveUpdate(GameState gameState) {
+    void onActiveUpdate(CreaturePosRetrievable game) {
 
     }
 
@@ -75,7 +76,7 @@ public class LightningChain extends Ability {
                                       .id(abilityId)
                                       .areaId(areaId)
                                       .width(1f)
-                                      .height(3f)
+                                      .height(chainFromPos.distance(pos))
                                       .channelTime(0f)
                                       .activeTime(0.4f)
                                       .textureName("lightning_chain")

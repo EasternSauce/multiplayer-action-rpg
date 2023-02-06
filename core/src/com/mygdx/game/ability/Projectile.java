@@ -1,6 +1,6 @@
 package com.mygdx.game.ability;
 
-import com.mygdx.game.model.GameState;
+import com.mygdx.game.game.CreaturePosRetrievable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -10,7 +10,7 @@ public abstract class Projectile extends Ability {
     AbilityParams params;
 
     @Override
-    void onChannelUpdate(GameState gameState) {
+    void onChannelUpdate(CreaturePosRetrievable game) {
         if (params().speed() != null) {
             params().velocity(params().dirVector().normalized().multiplyBy(params().speed()));
         }
@@ -18,7 +18,7 @@ public abstract class Projectile extends Ability {
     }
 
     @Override
-    void onActiveUpdate(GameState gameState) {
+    void onActiveUpdate(CreaturePosRetrievable game) {
         if (params().speed() != null) {
             params().velocity(params().dirVector().normalized().multiplyBy(params().speed()));
         }

@@ -1,8 +1,9 @@
 package com.mygdx.game.ability;
 
-import com.mygdx.game.game.MyGdxGame;
-import com.mygdx.game.model.GameState;
-import com.mygdx.game.model.creature.Creature;
+import com.mygdx.game.game.CreatureAbilityChainable;
+import com.mygdx.game.game.CreatureAbilityInitiable;
+import com.mygdx.game.game.CreatureAbilityUpdateable;
+import com.mygdx.game.game.CreaturePosRetrievable;
 import com.mygdx.game.renderer.AbilityAnimationConfig;
 import lombok.Data;
 
@@ -16,14 +17,14 @@ public abstract class Ability {
 
     public abstract AbilityType type();
 
-    public void update(Float delta, MyGdxGame game) {
+    public void update(Float delta, CreatureAbilityUpdateable game) {
         AbilityState state = params().state();
 
         if (state == AbilityState.CHANNEL) {
-            onChannelUpdate(game.gameState());
+            onChannelUpdate(game);
 
             if (isPositionManipulated()) {
-                onUpdatePosition(game.gameState());
+                onUpdatePosition(game);
             }
 
             if (params().stateTimer().time() > params().channelTime()) {
@@ -33,10 +34,10 @@ public abstract class Ability {
             }
         }
         else if (state == AbilityState.ACTIVE) {
-            onActiveUpdate(game.gameState());
+            onActiveUpdate(game);
 
             if (isPositionManipulated()) {
-                onUpdatePosition(game.gameState());
+                onUpdatePosition(game);
             }
 
             if (!params().delayedActionCompleted() && params().stateTimer().time() > params().delayedActionTime()) {
@@ -55,27 +56,25 @@ public abstract class Ability {
         updateTimers(delta);
     }
 
-    abstract void onAbilityStarted(MyGdxGame game);
+    abstract void onAbilityStarted(CreatureAbilityUpdateable game);
 
-    abstract void onDelayedAction(MyGdxGame game);
+    abstract void onDelayedAction(CreatureAbilityChainable game);
 
-    abstract void onAbilityCompleted(MyGdxGame game);
+    abstract void onAbilityCompleted(CreatureAbilityChainable game);
 
-    abstract void onUpdatePosition(GameState gameState);
+    abstract void onUpdatePosition(CreaturePosRetrievable game);
 
-    abstract void onChannelUpdate(GameState gameState);
+    abstract void onChannelUpdate(CreaturePosRetrievable game);
 
-    abstract void onActiveUpdate(GameState gameState);
+    abstract void onActiveUpdate(CreaturePosRetrievable game);
 
-    public void init(MyGdxGame game) {
+    public void init(CreatureAbilityInitiable game) {
 
         if (isPositionManipulated()) {
-            onUpdatePosition(game.gameState());
+            onUpdatePosition(game);
         }
-        Creature creature = game.gameState().creatures().get(params().creatureId());
 
-        creature.takeManaDamage(params().manaCost());
-        creature.takeStaminaDamage(params().staminaCost());
+        game.onCreatureUseAbility(params().creatureId(), params().staminaCost(), params().manaCost());
 
         params().state(AbilityState.CHANNEL);
         params().stateTimer().restart();

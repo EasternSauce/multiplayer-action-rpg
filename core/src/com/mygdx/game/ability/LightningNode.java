@@ -1,7 +1,8 @@
 package com.mygdx.game.ability;
 
-import com.mygdx.game.game.MyGdxGame;
-import com.mygdx.game.model.GameState;
+import com.mygdx.game.game.CreatureAbilityChainable;
+import com.mygdx.game.game.CreatureAbilityUpdateable;
+import com.mygdx.game.game.CreaturePosRetrievable;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
@@ -25,48 +26,45 @@ public class LightningNode extends Ability {
     }
 
     @Override
-    void onAbilityStarted(MyGdxGame game) {
+    void onAbilityStarted(CreatureAbilityUpdateable game) {
 
     }
 
     @Override
-    void onDelayedAction(MyGdxGame game) {
+    void onDelayedAction(CreatureAbilityChainable game) {
         // find closest enemy, and if they are within distance, and havent been hit yet, then start node over them
-
         Set<CreatureId> excluded = new HashSet<>(params().creaturesAlreadyHit());
         excluded.add(params().creatureId());
 
-        CreatureId creatureId = game.aliveCreatureClosestTo(params().pos(), 7f, excluded);
+        Creature creature = game.getCreature(game.aliveCreatureClosestTo(params().pos(), 9f, excluded));
 
+        if (creature != null && params().creaturesAlreadyHit().size() <= 10) {
+            creature.handleBeingAttacked(params().damage(),
+                                         params().creatureId()); // TODO: can we do this in main update loop instead? introduce events etc.
 
-        if (creatureId != null && game.gameState().creatures().containsKey(creatureId) && params().creaturesAlreadyHit()
-                                                                                                  .size() <= 10) {
-            Creature chainToCreature = game.gameState().creatures().get(creatureId);
-            chainToCreature.handleBeingAttacked(25f, params().creatureId());
+            game.chainAbility(this, AbilityType.LIGHTNING_CHAIN, creature.params().pos(), null);
 
-            game.chainAbility(this, AbilityType.LIGHTNING_CHAIN, chainToCreature.params().pos(), null);
-
-            game.chainAbility(this, AbilityType.LIGHTNING_NODE, chainToCreature.params().pos(), creatureId);
+            game.chainAbility(this, AbilityType.LIGHTNING_NODE, creature.params().pos(), creature.params().id());
         }
     }
 
     @Override
-    void onAbilityCompleted(MyGdxGame game) {
+    void onAbilityCompleted(CreatureAbilityChainable game) {
 
     }
 
     @Override
-    void onUpdatePosition(GameState gameState) {
+    void onUpdatePosition(CreaturePosRetrievable game) {
 
     }
 
     @Override
-    void onChannelUpdate(GameState gameState) {
+    void onChannelUpdate(CreaturePosRetrievable game) {
 
     }
 
     @Override
-    void onActiveUpdate(GameState gameState) {
+    void onActiveUpdate(CreaturePosRetrievable game) {
 
     }
 
@@ -96,7 +94,7 @@ public class LightningNode extends Ability {
                                       .activeTime(0.4f)
                                       .textureName("lightning")
                                       .creatureId(creatureId)
-                                      .damage(0f)
+                                      .damage(30f)
                                       .isActiveAnimationLooping(true)
                                       .attackWithoutMoving(true)
                                       .pos(pos)

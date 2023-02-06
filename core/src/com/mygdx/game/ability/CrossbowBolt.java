@@ -1,5 +1,6 @@
 package com.mygdx.game.ability;
 
+
 import com.mygdx.game.game.CreatureAbilityChainable;
 import com.mygdx.game.game.CreatureAbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
@@ -16,13 +17,13 @@ import java.util.Set;
 @NoArgsConstructor(staticName = "of")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class FireballExplosion extends Ability {
-    AbilityParams params;
+public class CrossbowBolt extends Projectile {
 
+    AbilityParams params;
 
     @Override
     public AbilityType type() {
-        return AbilityType.FIREBALL_EXPLOSION;
+        return AbilityType.CROSSBOW_BOLT;
     }
 
     @Override
@@ -32,7 +33,7 @@ public class FireballExplosion extends Ability {
 
     @Override
     void onDelayedAction(CreatureAbilityChainable game) {
-
+        // TODO: chain multiple shots
     }
 
     @Override
@@ -46,57 +47,47 @@ public class FireballExplosion extends Ability {
     }
 
     @Override
-    void onChannelUpdate(CreaturePosRetrievable game) {
-
-    }
-
-    @Override
-    void onActiveUpdate(CreaturePosRetrievable game) {
-
-    }
-
-    @Override
     public void onCreatureHit() {
 
     }
 
     @Override
     public void onTerrainHit() {
-
+        params().velocity(Vector2.of(0f, 0f));
+        params().stateTimer().time(params().activeTime());
     }
 
-    public static FireballExplosion of(AbilityId abilityId,
-                                       AreaId areaId,
-                                       CreatureId creatureId,
-                                       Vector2 pos,
-                                       Vector2 dirVector,
-                                       Set<CreatureId> creaturesAlreadyHit) {
-        FireballExplosion ability = FireballExplosion.of();
+    public static CrossbowBolt of(AbilityId abilityId,
+                                  AreaId areaId,
+                                  CreatureId creatureId,
+                                  Vector2 pos,
+                                  Vector2 dirVector,
+                                  Set<CreatureId> creaturesAlreadyHit) {
+        CrossbowBolt ability = CrossbowBolt.of();
         ability.params = AbilityParams.of()
                                       .id(abilityId)
                                       .areaId(areaId)
-                                      .width(9f)
-                                      .height(9f)
+                                      .width(1.5f)
+                                      .height(1.5f)
                                       .channelTime(0f)
-                                      .activeTime(0.35f)
-                                      .textureName("explosion")
+                                      .activeTime(30f)
+                                      .textureName("arrow")
                                       .creatureId(creatureId)
-                                      .damage(28f)
+                                      .damage(25f)
                                       .pos(pos)
                                       .creaturesAlreadyHit(creaturesAlreadyHit)
-                                      .manaCost(22f)
-                                      .staminaCost(0f)
-                                      .cooldown(0f)
-                                      .performableByCreature(false)
+                                      .manaCost(0f)
+                                      .staminaCost(10f)
+                                      .cooldown(0.35f)
+                                      .performableByCreature(true)
                                       .dirVector(dirVector)
-                                      .cooldown(0f)
-                                      .isChannelAnimationLooping(false)
-                                      .isActiveAnimationLooping(false)
-                                      .attackWithoutMoving(true)
+                                      .isChannelAnimationLooping(true)
+                                      .isActiveAnimationLooping(true)
                                       .creaturesAlreadyHit(new HashSet<>())
-                                      .rotationShift(0f);
+                                      .rotationShift(0f)
+                                      .speed(30f);
+
 
         return ability;
     }
-
 }

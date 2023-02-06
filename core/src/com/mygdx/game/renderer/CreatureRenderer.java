@@ -110,16 +110,19 @@ public class CreatureRenderer {
             }
 
             sprite.setRotation(0f);
+            sprite.setColor(1, 1, 1, 1);
+
             sprite.setRegion(texture);
 
-            sprite.setColor(1, 1, 1, 1);
         }
         else {
             TextureRegion texture = pickFacingTexture(WorldDirection.RIGHT, gameState);
-            sprite.setRegion(texture);
 
             sprite.setOriginCenter();
             sprite.setRotation(90f);
+
+            sprite.setRegion(texture);
+
         }
     }
 

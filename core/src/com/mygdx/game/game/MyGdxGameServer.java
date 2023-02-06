@@ -174,9 +174,10 @@ public class MyGdxGameServer extends MyGdxGame {
 
         broadcastThread = new Thread(() -> {
             try {
+                Thread.sleep(2000); // delay first broadcast
                 while (true) {
                     //noinspection BusyWait
-                    Thread.sleep(350);
+                    Thread.sleep(500);
 
                     Connection[] connections = endPoint().getConnections();
                     for (Connection connection : connections) {
@@ -257,7 +258,7 @@ public class MyGdxGameServer extends MyGdxGame {
 
         List<EnemySpawn>
                 enemySpawns =
-                Arrays.asList(EnemySpawn.of(Vector2.of(46.081165f, 15.265114f), EnemyType.SKELETON),
+                Arrays.asList(EnemySpawn.of(Vector2.of(46.081165f, 15.265114f), EnemyType.ARCHER),
                               EnemySpawn.of(Vector2.of(72.060196f, 31.417873f), EnemyType.SKELETON),
                               EnemySpawn.of(Vector2.of(77.200066f, 31.255192f), EnemyType.SKELETON),
                               EnemySpawn.of(Vector2.of(74.47733f, 25.755476f), EnemyType.SKELETON),

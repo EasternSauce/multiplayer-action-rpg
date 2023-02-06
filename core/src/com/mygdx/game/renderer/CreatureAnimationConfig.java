@@ -32,7 +32,7 @@ public class CreatureAnimationConfig {
                     CreatureAnimationConfig.of("female1", 1, 1.8f, 1.8f, 32, 32, 3, 0.1f, textureDirMap(3, 0, 1, 2)));
         configs.put("skeleton",
                     CreatureAnimationConfig.of("skeleton", 0, 1.8f, 1.8f, 64, 64, 9, 0.05f, textureDirMap(3, 0, 1, 2)));
-        configs.put("archer",
+        configs.put("undead_adventurer",
                     CreatureAnimationConfig.of("undead_adventurer",
                                                0,
                                                1.8f,

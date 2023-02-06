@@ -1,9 +1,9 @@
 package com.mygdx.game.ability;
 
-import com.mygdx.game.game.MyGdxGame;
-import com.mygdx.game.model.GameState;
+import com.mygdx.game.game.CreatureAbilityChainable;
+import com.mygdx.game.game.CreatureAbilityUpdateable;
+import com.mygdx.game.game.CreaturePosRetrievable;
 import com.mygdx.game.model.area.AreaId;
-import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.util.Vector2;
 import lombok.Data;
@@ -31,22 +31,22 @@ public class Attack extends Ability {
     }
 
     @Override
-    void onAbilityStarted(MyGdxGame game) {
+    void onAbilityStarted(CreatureAbilityUpdateable game) {
 
     }
 
     @Override
-    void onDelayedAction(MyGdxGame game) {
+    void onDelayedAction(CreatureAbilityChainable game) {
 
     }
 
     @Override
-    void onAbilityCompleted(MyGdxGame game) {
+    void onAbilityCompleted(CreatureAbilityChainable game) {
 
     }
 
     @Override
-    protected void onUpdatePosition(GameState gameState) {
+    protected void onUpdatePosition(CreaturePosRetrievable game) {
         Vector2 dirVector;
         if (params().dirVector().len() <= 0) {
             dirVector = Vector2.of(1, 0);
@@ -60,13 +60,11 @@ public class Attack extends Ability {
         float attackShiftX = dirVector.normalized().x() * params().range();
         float attackShiftY = dirVector.normalized().y() * params().range();
 
-        Creature creature = gameState.creatures().get(params().creatureId());
+        Vector2 pos = game.getCreaturePos(params().creatureId());
 
-        if (creature != null) {
-            Vector2 creaturePos = creature.params().pos();
-
-            float attackRectX = attackShiftX + creaturePos.x();
-            float attackRectY = attackShiftY + creaturePos.y();
+        if (pos != null) {
+            float attackRectX = attackShiftX + pos.x();
+            float attackRectY = attackShiftY + pos.y();
 
             params().pos(Vector2.of(attackRectX, attackRectY));
             params().rotationAngle(theta);
@@ -74,7 +72,7 @@ public class Attack extends Ability {
     }
 
     @Override
-    void onChannelUpdate(GameState gameState) {
+    void onChannelUpdate(CreaturePosRetrievable gameState) {
         if (isPositionManipulated()) {
             onUpdatePosition(gameState);
         }
@@ -82,9 +80,9 @@ public class Attack extends Ability {
     }
 
     @Override
-    void onActiveUpdate(GameState gameState) {
+    void onActiveUpdate(CreaturePosRetrievable game) {
         if (isPositionManipulated()) {
-            onUpdatePosition(gameState);
+            onUpdatePosition(game);
         }
 
     }

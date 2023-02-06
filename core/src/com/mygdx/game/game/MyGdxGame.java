@@ -24,7 +24,7 @@ import com.mygdx.game.util.Vector2;
 import java.io.IOException;
 import java.util.*;
 
-public abstract class MyGdxGame extends Game {
+public abstract class MyGdxGame extends Game implements CreatureAbilityUpdateable {
     final protected GameRenderer gameRenderer = GameRenderer.of();
     final protected GamePhysics gamePhysics = GamePhysics.of();
     final protected GameStateHolder gameStateHolder = GameStateHolder.of(GameState.of());
@@ -184,13 +184,6 @@ public abstract class MyGdxGame extends Game {
                                    AbilityType abilityType) {
     }
 
-
-    abstract public void chainAbility(Ability chainFromAbility,
-                                      AbilityType abilityType,
-                                      Vector2 chainToPos,
-                                      CreatureId creatureId);
-
-
     public void updateCreatures(float delta, MyGdxGame game) {
         Set<CreatureId> creaturesToUpdate = creaturesToUpdate();
 
@@ -265,6 +258,7 @@ public abstract class MyGdxGame extends Game {
 
     }
 
+    @Override
     public CreatureId aliveCreatureClosestTo(Vector2 pos, float maxRange, Set<CreatureId> excluded) {
 
         CreatureId minCreatureId = null;
@@ -278,5 +272,29 @@ public abstract class MyGdxGame extends Game {
             }
         }
         return minCreatureId;
+    }
+
+    @Override
+    public void onCreatureUseAbility(CreatureId creatureId, Float staminaCost, Float manaCost) {
+        Creature creature = gameState().creatures().get(creatureId);
+
+        creature.takeManaDamage(manaCost);
+        creature.takeStaminaDamage(staminaCost);
+    }
+
+    @Override
+    public Vector2 getCreaturePos(CreatureId creatureId) {
+        if (!gameState().creatures().containsKey(creatureId)) {
+            return null;
+        }
+        return gameState().creatures().get(creatureId).params().pos();
+    }
+
+    @Override
+    public Creature getCreature(CreatureId creatureId) {
+        if (creatureId == null || !gameState().creatures().containsKey(creatureId)) {
+            return null;
+        }
+        return gameState().creatures().get(creatureId);
     }
 }

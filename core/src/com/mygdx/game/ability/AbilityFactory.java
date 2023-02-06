@@ -44,6 +44,10 @@ public class AbilityFactory {
             return LightningChain.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit, chainFromPos);
         }
 
+        if (abilityType == AbilityType.CROSSBOW_BOLT) {
+            return CrossbowBolt.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit);
+        }
+
         throw new RuntimeException("ability type not found");
     }
 }

@@ -76,7 +76,6 @@ public class AbilityRenderer {
     private void updateSprite(TextureRegion texture, GameState gameState) {
 
         Ability ability = gameState.abilities().get(abilityId);
-        //        AbilityAnimationConfig config = ability.animationConfig();
 
         sprite.setRegion(texture);
         sprite.setSize(ability.params().width(), ability.params().height());

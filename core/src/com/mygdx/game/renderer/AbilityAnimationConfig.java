@@ -37,5 +37,8 @@ public class AbilityAnimationConfig {
         configs.put("lightning_chain",
                     AbilityAnimationConfig.of(64, 192, "lightning_chain", "lightning_chain", 0, 6, 0f, 0.1f, 1.7f));
 
+        configs.put("arrow",
+                    AbilityAnimationConfig.of(40, 40, "arrow", "arrow", 0, 1, 0f, 0.1f, 1.7f));
+
     }
 }
