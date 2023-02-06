@@ -1,7 +1,7 @@
 package com.mygdx.game.model.creature;
 
 import com.mygdx.game.ability.AbilityType;
-import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.game.EnemyAiUpdatable;
 import com.mygdx.game.pathing.Astar;
 import com.mygdx.game.pathing.AstarResult;
 import com.mygdx.game.physics.PhysicsWorld;
@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 @NoArgsConstructor(staticName = "of")
 @Data
@@ -28,11 +27,10 @@ public class Enemy extends Creature {
         return enemy;
     }
 
-    public CreatureId findTarget(MyGdxGame game) {
+    public CreatureId findTarget(EnemyAiUpdatable game) {
         Float minDistance = Float.MAX_VALUE;
         CreatureId minCreatureId = null;
-        for (Map.Entry<CreatureId, Creature> entry : game.gameState().creatures().entrySet()) {
-            Creature creature = entry.getValue();
+        for (Creature creature : game.getCreatures()) {
             boolean condition = creature.isAlive() &&
                                 creature.params()
                                         .areaId()
@@ -46,8 +44,8 @@ public class Enemy extends Creature {
                                                 params().pos()) < enemySearchDistance;
 
             if (condition && params().pos().distance(creature.params().pos()) < minDistance) {
-                minCreatureId = entry.getKey();
-                minDistance = params().pos().distance(entry.getValue().params().pos());
+                minCreatureId = creature.params().id();
+                minDistance = params().pos().distance(creature.params().pos());
             }
         }
         return minCreatureId;
@@ -55,7 +53,7 @@ public class Enemy extends Creature {
     }
 
     @Override
-    public void updateAutomaticControls(MyGdxGame game) {
+    public void updateAutomaticControls(EnemyAiUpdatable game) {
 
         if (params().attackedByCreatureId() != null) {
             params.aggroedCreatureId(params().attackedByCreatureId());
@@ -77,11 +75,10 @@ public class Enemy extends Creature {
 
         Creature potentialTarget = null;
         if (params().aggroedCreatureId() != null) {
-            potentialTarget = game.gameState().creatures().get(params().aggroedCreatureId());
+            potentialTarget = game.getCreature(params().aggroedCreatureId());
         }
 
-        if (params().aggroTimer()
-                    .time() < params.loseAggroTime() &&
+        if (params().aggroTimer().time() < params.loseAggroTime() &&
             potentialTarget != null &&
             potentialTarget.isAlive() &&
             this.isAlive()) {
@@ -102,10 +99,9 @@ public class Enemy extends Creature {
 
     }
 
-    private void processPathfinding(MyGdxGame game) {
+    private void processPathfinding(EnemyAiUpdatable game) {
         boolean condition = params().areaId()
-                                    .equals(game.gameState()
-                                                .currentAreaId()) &&
+                                    .equals(game.getCurrentAreaId()) &&
                             params().targetCreatureId() != null &&
                             (params().forcePathCalculation() || params().pathCalculationCooldownTimer()
                                                                         .time() > params().pathCalculationCooldown()) &&
@@ -113,8 +109,8 @@ public class Enemy extends Creature {
                                     .time() > params().pathCalculationFailurePenalty();
 
         if (condition) {
-            Creature target = game.gameState().creatures().get(params().targetCreatureId());
-            PhysicsWorld world = game.physics().physicsWorlds().get(params().areaId());
+            Creature target = game.getCreature(params().targetCreatureId());
+            PhysicsWorld world = game.getPhysicsWorld(params().areaId());
 
             Boolean isLineOfSight = world.isLineOfSight(params().pos(), target.params().pos());
 
@@ -170,7 +166,7 @@ public class Enemy extends Creature {
         //        }
     }
 
-    public void handleAttackTarget(Creature potentialTarget, Vector2 vectorTowardsTarget, MyGdxGame game) {
+    public void handleAttackTarget(Creature potentialTarget, Vector2 vectorTowardsTarget, EnemyAiUpdatable game) {
         if (potentialTarget.params().pos().distance(params().pos()) < 4f) {
 
             game.handleAttackTarget(params().id(), vectorTowardsTarget, AbilityType.SLASH);

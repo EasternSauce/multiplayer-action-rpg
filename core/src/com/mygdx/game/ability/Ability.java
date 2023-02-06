@@ -1,7 +1,6 @@
 package com.mygdx.game.ability;
 
 import com.mygdx.game.game.CreatureAbilityChainable;
-import com.mygdx.game.game.CreatureAbilityInitiable;
 import com.mygdx.game.game.CreatureAbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
 import com.mygdx.game.renderer.AbilityAnimationConfig;
@@ -68,7 +67,7 @@ public abstract class Ability {
 
     abstract void onActiveUpdate(CreaturePosRetrievable game);
 
-    public void init(CreatureAbilityInitiable game) {
+    public void init(CreatureAbilityUpdateable game) {
 
         if (isPositionManipulated()) {
             onUpdatePosition(game);

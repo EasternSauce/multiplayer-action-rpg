@@ -1,6 +1,6 @@
 package com.mygdx.game.ability;
 
-import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.game.CreaturePosRetrievable;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.util.Vector2;
@@ -18,7 +18,7 @@ public class AbilityFactory {
                                          Vector2 chainFromPos,
                                          Vector2 pos,
                                          Set<CreatureId> creaturesAlreadyHit,
-                                         MyGdxGame game) {
+                                         CreaturePosRetrievable game) {
         if (abilityType == AbilityType.SLASH) {
             return Attack.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit);
         }
@@ -32,7 +32,7 @@ public class AbilityFactory {
         }
 
         if (abilityType == AbilityType.LIGHTNING_SPARK) {
-            Vector2 creaturePos = game.gameState().creatures().get(creatureId).params().pos();
+            Vector2 creaturePos = game.getCreaturePos(creatureId);
             return LightningSpark.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit, creaturePos);
         }
 

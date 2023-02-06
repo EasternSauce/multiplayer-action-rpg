@@ -1,7 +1,7 @@
 package com.mygdx.game.model.creature;
 
 import com.mygdx.game.ability.Ability;
-import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.game.EnemyAiUpdatable;
 import com.mygdx.game.renderer.CreatureAnimationConfig;
 import com.mygdx.game.util.Vector2;
 import com.mygdx.game.util.WorldDirection;
@@ -12,7 +12,7 @@ public abstract class Creature {
 
     public abstract Creature params(CreatureParams params);
 
-    public void update(float delta, MyGdxGame game) {
+    public void update(float delta, EnemyAiUpdatable game) {
 
         regenerateStamina();
 
@@ -118,7 +118,7 @@ public abstract class Creature {
         return 4;
     }
 
-    public void updateAutomaticControls(MyGdxGame game) {
+    public void updateAutomaticControls(EnemyAiUpdatable game) {
 
     }
 

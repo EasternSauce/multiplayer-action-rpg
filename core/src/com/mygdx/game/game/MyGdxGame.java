@@ -15,6 +15,7 @@ import com.mygdx.game.model.creature.Enemy;
 import com.mygdx.game.physics.AbilityBody;
 import com.mygdx.game.physics.CreatureBody;
 import com.mygdx.game.physics.GamePhysics;
+import com.mygdx.game.physics.PhysicsWorld;
 import com.mygdx.game.renderer.AbilityRenderer;
 import com.mygdx.game.renderer.CreatureRenderer;
 import com.mygdx.game.renderer.GameRenderer;
@@ -24,7 +25,7 @@ import com.mygdx.game.util.Vector2;
 import java.io.IOException;
 import java.util.*;
 
-public abstract class MyGdxGame extends Game implements CreatureAbilityUpdateable {
+public abstract class MyGdxGame extends Game implements CreatureAbilityUpdateable, EnemyAiUpdatable {
     final protected GameRenderer gameRenderer = GameRenderer.of();
     final protected GamePhysics gamePhysics = GamePhysics.of();
     final protected GameStateHolder gameStateHolder = GameStateHolder.of(GameState.of());
@@ -184,62 +185,62 @@ public abstract class MyGdxGame extends Game implements CreatureAbilityUpdateabl
                                    AbilityType abilityType) {
     }
 
-    public void updateCreatures(float delta, MyGdxGame game) {
+    public void updateCreatures(float delta) {
         Set<CreatureId> creaturesToUpdate = creaturesToUpdate();
 
         creaturesToUpdate.forEach(creatureId -> {
-            if (game.physics().creatureBodies().containsKey(creatureId)) {
-                game.physics().creatureBodies().get(creatureId).update(game.gameState());
+            if (physics().creatureBodies().containsKey(creatureId)) {
+                physics().creatureBodies().get(creatureId).update(gameState());
             }
         });
 
         // set gamestate position based on b2body position
         creaturesToUpdate.forEach(creatureId -> {
-            if (game.gameState().creatures().containsKey(creatureId) && game.physics()
-                                                                            .creatureBodies()
-                                                                            .containsKey(creatureId)) {
-                game.gameState()
-                    .creatures()
-                    .get(creatureId)
-                    .params()
-                    .pos(game.physics().creatureBodies().get(creatureId).getBodyPos());
+            if (gameState().creatures().containsKey(creatureId) && physics()
+                    .creatureBodies()
+                    .containsKey(creatureId)) {
+                gameState()
+                        .creatures()
+                        .get(creatureId)
+                        .params()
+                        .pos(physics().creatureBodies().get(creatureId).getBodyPos());
             }
         });
 
         // if creature is to be updated, then body should be active, otherwise it should be inactive
-        game.gamePhysics.creatureBodies()
-                        .forEach((key, value) -> game.gamePhysics.creatureBodies()
-                                                                 .get(key)
-                                                                 .setActive(creaturesToUpdate.contains(key)));
+        gamePhysics.creatureBodies()
+                   .forEach((key, value) -> gamePhysics.creatureBodies()
+                                                       .get(key)
+                                                       .setActive(creaturesToUpdate.contains(key)));
 
         creaturesToUpdate.forEach(creatureId -> {
-            if (game.renderer().creatureRenderers().containsKey(creatureId)) {
-                game.renderer().creatureRenderers().get(creatureId).update(game.gameState());
+            if (renderer().creatureRenderers().containsKey(creatureId)) {
+                renderer().creatureRenderers().get(creatureId).update(gameState());
             }
         });
 
         creaturesToUpdate.forEach(creatureId -> {
-            if (game.gameState().creatures().containsKey(creatureId)) {
-                game.gameState().creatures().get(creatureId).update(delta, game);
+            if (gameState().creatures().containsKey(creatureId)) {
+                gameState().creatures().get(creatureId).update(delta, this);
             }
         });
 
     }
 
-    public void updateAbilities(float delta, MyGdxGame game) {
+    public void updateAbilities(float delta) {
         Set<AbilityId> abilitiesToUpdate = abilitiesToUpdate();
 
         abilitiesToUpdate.forEach(abilityId -> {
-            if (game.physics().abilityBodies().containsKey(abilityId)) {
-                game.physics().abilityBodies().get(abilityId).update(game.gameState());
+            if (physics().abilityBodies().containsKey(abilityId)) {
+                physics().abilityBodies().get(abilityId).update(gameState());
             }
         });
 
         abilitiesToUpdate.forEach(abilityId -> {
-            if (game.physics().abilityBodies().containsKey(abilityId)) {
-                Ability ability = game.gameState().abilities().get(abilityId);
+            if (physics().abilityBodies().containsKey(abilityId)) {
+                Ability ability = gameState().abilities().get(abilityId);
                 if (!ability.params().inactiveBody()) {
-                    ability.params().pos(game.physics().abilityBodies().get(abilityId).getBodyPos());
+                    ability.params().pos(physics().abilityBodies().get(abilityId).getBodyPos());
                 }
 
             }
@@ -247,13 +248,13 @@ public abstract class MyGdxGame extends Game implements CreatureAbilityUpdateabl
         });
 
         abilitiesToUpdate.forEach(abilityId -> {
-            if (game.renderer().abilityRenderers().containsKey(abilityId)) {
-                game.renderer().abilityRenderers().get(abilityId).update(game.gameState());
+            if (renderer().abilityRenderers().containsKey(abilityId)) {
+                renderer().abilityRenderers().get(abilityId).update(gameState());
             }
         });
 
 
-        abilitiesToUpdate.forEach(abilityId -> game.gameState().abilities().get(abilityId).update(delta, game));
+        abilitiesToUpdate.forEach(abilityId -> gameState().abilities().get(abilityId).update(delta, this));
 
 
     }
@@ -296,5 +297,20 @@ public abstract class MyGdxGame extends Game implements CreatureAbilityUpdateabl
             return null;
         }
         return gameState().creatures().get(creatureId);
+    }
+
+    @Override
+    public Collection<Creature> getCreatures() {
+        return gameState().creatures().values();
+    }
+
+    @Override
+    public AreaId getCurrentAreaId() {
+        return gameState().currentAreaId();
+    }
+
+    @Override
+    public PhysicsWorld getPhysicsWorld(AreaId areaId) {
+        return physics().physicsWorlds().get(areaId);
     }
 }

@@ -111,30 +111,24 @@ public class MyGdxGamePlayScreen implements Screen {
         game.creaturesToBeCreated().forEach(creatureId -> game.createCreature(creatureId));
         game.creaturesToBeCreated().clear();
 
-
         game.abilitiesToBeCreated().forEach(abilityId -> game.createAbility(abilityId));
         game.abilitiesToBeCreated().clear();
-
 
         game.creaturesToBeRemoved().forEach(creatureId -> game.removeCreature(creatureId));
         game.creaturesToBeRemoved().clear();
 
-
         game.abilitiesToBeRemoved().forEach(abilityId -> game.removeAbility(abilityId));
         game.abilitiesToBeRemoved().clear();
-
 
         game.creaturesToTeleport()
             .forEach((creatureId, pos) -> game.physics().creatureBodies().get(creatureId).forceSetTransform(pos));
 
-
         game.creaturesToTeleport().clear();
-
 
         game.gameState().generalTimer().update(delta);
 
-        game.updateCreatures(delta, game);
-        game.updateAbilities(delta, game);
+        game.updateCreatures(delta);
+        game.updateAbilities(delta);
 
         PhysicsHelper.processPhysicsEventQueue(game);
 
