@@ -48,13 +48,12 @@ public class CrossbowBolt extends Projectile {
 
     @Override
     public void onCreatureHit() {
-
+        deactivate();
     }
 
     @Override
     public void onTerrainHit() {
-        params().velocity(Vector2.of(0f, 0f));
-        params().stateTimer().time(params().activeTime());
+        deactivate();
     }
 
     public static CrossbowBolt of(AbilityId abilityId,

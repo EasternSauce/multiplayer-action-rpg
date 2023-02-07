@@ -107,7 +107,8 @@ public class LightningSpark extends Ability {
                                       .performableByCreature(true)
                                       .inactiveBody(true)
                                       .dirVector(dirVector)
-                                      .rotationShift(0f);
+                                      .rotationShift(0f).delayedActionTime(0.001f);
+
         return ability;
     }
 

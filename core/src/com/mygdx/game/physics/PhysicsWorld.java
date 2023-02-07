@@ -173,20 +173,20 @@ public class PhysicsWorld {
     public void createBorders() {
 
         for (int x = 0; x < widthInTiles(); x++) {
-            TerrainTileBody tile1 = TerrainTileBody.of(TilePos.of(x, -1), tileWidth, tileHeight, null, null);
+            TerrainTileBody tile1 = TerrainTileBody.of(TilePos.of(x, -1), tileWidth, tileHeight, 0, false);
             tile1.init(this);
             terrainBorders.add(tile1);
             TerrainTileBody tile2 =
-                    TerrainTileBody.of(TilePos.of(x, heightInTiles()), tileWidth, tileHeight, null, null);
+                    TerrainTileBody.of(TilePos.of(x, heightInTiles()), tileWidth, tileHeight, 0, false);
             tile2.init(this);
             terrainBorders.add(tile2);
         }
         for (int y = 0; y < heightInTiles(); y++) {
-            TerrainTileBody tile1 = TerrainTileBody.of(TilePos.of(-1, y), tileWidth, tileHeight, null, null);
+            TerrainTileBody tile1 = TerrainTileBody.of(TilePos.of(-1, y), tileWidth, tileHeight, 0, false);
             tile1.init(this);
             terrainBorders.add(tile1);
             TerrainTileBody tile2 =
-                    TerrainTileBody.of(TilePos.of(widthInTiles(), y), tileWidth, tileHeight, null, null);
+                    TerrainTileBody.of(TilePos.of(widthInTiles(), y), tileWidth, tileHeight, 0, false);
             tile2.init(this);
             terrainBorders.add(tile2);
         }

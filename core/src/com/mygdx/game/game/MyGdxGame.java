@@ -32,7 +32,7 @@ public abstract class MyGdxGame extends Game implements CreatureAbilityUpdateabl
     final MyGdxGamePlayScreen playScreen = MyGdxGamePlayScreen.of();
     final public EndPoint _endPoint = null;
     @SuppressWarnings("FieldCanBeLocal")
-    private final boolean debug = false;
+    private final boolean debug = true;
     public final Chat chat = Chat.of();
     protected CreatureId thisPlayerId = null;
 

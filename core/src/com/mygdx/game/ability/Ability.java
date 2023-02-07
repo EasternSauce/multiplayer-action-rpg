@@ -39,7 +39,9 @@ public abstract class Ability {
                 onUpdatePosition(game);
             }
 
-            if (!params().delayedActionCompleted() && params().stateTimer().time() > params().delayedActionTime()) {
+            if (!params().delayedActionCompleted() &&
+                params().delayedActionTime() != null &&
+                params().stateTimer().time() > params().delayedActionTime()) {
                 params().delayedActionCompleted(true);
                 onDelayedAction(game);
             }
@@ -86,6 +88,10 @@ public abstract class Ability {
 
     public AbilityAnimationConfig animationConfig() {
         return AbilityAnimationConfig.configs.get(params().textureName());
+    }
+
+    public void deactivate() {
+        params().stateTimer().time(params().activeTime());
     }
 
     public abstract void onCreatureHit();

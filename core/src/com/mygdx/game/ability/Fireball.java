@@ -22,15 +22,13 @@ public class Fireball extends Projectile {
 
     @Override
     public void onCreatureHit() {
-        params().velocity(Vector2.of(0f, 0f));
-        params().stateTimer().time(params().activeTime());
+        deactivate();
         // stop moving, then start explode ability
     }
 
     @Override
     public void onTerrainHit() {
-        params().velocity(Vector2.of(0f, 0f));
-        params().stateTimer().time(params().activeTime());
+        deactivate();
         // stop moving, then start explode ability
     }
 
@@ -102,7 +100,8 @@ public class Fireball extends Projectile {
                                       .isChannelAnimationLooping(false)
                                       .isActiveAnimationLooping(true)
                                       .creaturesAlreadyHit(new HashSet<>())
-                                      .rotationShift(0f);
+                                      .rotationShift(0f)
+                                      .delayedActionTime(0.001f);
 
 
         return ability;

@@ -390,6 +390,11 @@ public class MyGdxGameClient extends MyGdxGame {
 
         String[] textures = new String[]{"male1", "male2", "female1"};
 
+        try {
+            Thread.sleep(2000); // without this game doesn't start sometimes (too much data transfer too early?)
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         endPoint().sendTCP(InitPlayerCommand.of(thisPlayerId,
                                                 Vector2.of((float) ((Math.random() * (28 - 18)) + 18),
                                                            (float) ((Math.random() * (12 - 6)) + 6)),

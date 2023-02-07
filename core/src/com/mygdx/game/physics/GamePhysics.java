@@ -55,10 +55,11 @@ public class GamePhysics {
             }
         }
         if (objA instanceof TerrainTileBody && objB instanceof AbilityBody) {
-            //            TerrainTileBody terrainTileBody = (TerrainTileBody) objA;
-            AbilityBody abilityBody = (AbilityBody) objB;
-            physicsEventQueue.add(AbilityHitsTerrainEvent.of(abilityBody.abilityId()));
-
+            TerrainTileBody terrainTileBody = (TerrainTileBody) objA;
+            if (!terrainTileBody.flyover()) {
+                AbilityBody abilityBody = (AbilityBody) objB;
+                physicsEventQueue.add(AbilityHitsTerrainEvent.of(abilityBody.abilityId()));
+            }
 
         }
     }

@@ -46,7 +46,7 @@ public class AbilityParams {
     Float manaCost;
     Float staminaCost;
 
-    Float delayedActionTime = 0.001f;
+    Float delayedActionTime;
 
     Boolean delayedActionCompleted = false;
 
