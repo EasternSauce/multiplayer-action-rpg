@@ -37,7 +37,7 @@ public class TryPerformSkillAction implements GameStateAction {
         if (creature != null) {
             Skill skill = creature.params().skills().get(skillType);
 
-            skill.tryPerform(game, startingPos, dirVector);
+            skill.tryPerform(startingPos, dirVector, game);
 
         }
 

@@ -240,14 +240,14 @@ public class MyGdxGameServer extends MyGdxGame {
 
     }
 
-    public void trySpawningAbility(AbilityId abilityId,
-                                   AreaId areaId,
-                                   CreatureId creatureId,
-                                   AbilityType abilityType,
-                                   Set<CreatureId> creaturesAlreadyHit,
-                                   Vector2 chainFromPos,
-                                   Vector2 pos,
-                                   Vector2 dirVector) {
+    public void spawnAbility(AbilityId abilityId,
+                             AreaId areaId,
+                             CreatureId creatureId,
+                             AbilityType abilityType,
+                             Set<CreatureId> creaturesAlreadyHit,
+                             Vector2 chainFromPos,
+                             Vector2 pos,
+                             Vector2 dirVector) {
         Creature creature = gameState().creatures().get(creatureId);
 
         Ability ability = AbilityFactory.produceAbility(abilityType,
@@ -371,12 +371,12 @@ public class MyGdxGameServer extends MyGdxGame {
     @Override
     public void handleAttackTarget(CreatureId attackingCreatureId,
                                    Vector2 vectorTowardsTarget,
-                                   AbilityType abilityType) {
+                                   SkillType skillType) {
 
         Creature attackingCreature = gameState().creatures().get(attackingCreatureId);
 
         TryPerformSkillAction action = TryPerformSkillAction.of(attackingCreatureId,
-                                                                SkillType.SLASH,
+                                                                skillType,
                                                                 attackingCreature.params().pos(),
                                                                 vectorTowardsTarget);
 
@@ -402,14 +402,14 @@ public class MyGdxGameServer extends MyGdxGame {
 
         Vector2 chainFromPos = chainFromAbility.params().pos();
 
-        trySpawningAbility(abilityId,
-                           chainFromAbility.params().areaId(),
-                           chainFromAbility.params().creatureId(),
-                           chainIntoAbilityType,
-                           creaturesAlreadyHit,
-                           chainFromPos,
-                           chainToPos,
-                           chainFromAbility.params().dirVector());
+        spawnAbility(abilityId,
+                     chainFromAbility.params().areaId(),
+                     chainFromAbility.params().creatureId(),
+                     chainIntoAbilityType,
+                     creaturesAlreadyHit,
+                     chainFromPos,
+                     chainToPos,
+                     chainFromAbility.params().dirVector());
     }
 
 

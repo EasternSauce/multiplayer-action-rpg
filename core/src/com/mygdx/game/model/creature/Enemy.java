@@ -1,10 +1,10 @@
 package com.mygdx.game.model.creature;
 
-import com.mygdx.game.ability.AbilityType;
 import com.mygdx.game.game.EnemyAiUpdatable;
 import com.mygdx.game.pathing.Astar;
 import com.mygdx.game.pathing.AstarResult;
 import com.mygdx.game.physics.PhysicsWorld;
+import com.mygdx.game.skill.SkillType;
 import com.mygdx.game.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -169,7 +169,7 @@ public class Enemy extends Creature {
     public void handleAttackTarget(Creature potentialTarget, Vector2 vectorTowardsTarget, EnemyAiUpdatable game) {
         if (potentialTarget.params().pos().distance(params().pos()) < 4f) {
 
-            game.handleAttackTarget(params().id(), vectorTowardsTarget, AbilityType.SLASH);
+            game.handleAttackTarget(params().id(), vectorTowardsTarget, SkillType.SLASH);
 
         }
     }

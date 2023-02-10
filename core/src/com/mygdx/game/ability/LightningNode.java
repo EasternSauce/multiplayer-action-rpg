@@ -1,7 +1,7 @@
 package com.mygdx.game.ability;
 
-import com.mygdx.game.game.CreatureAbilityChainable;
-import com.mygdx.game.game.CreatureAbilityUpdateable;
+import com.mygdx.game.game.AbilityChainable;
+import com.mygdx.game.game.AbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
@@ -26,12 +26,12 @@ public class LightningNode extends Ability {
     }
 
     @Override
-    void onAbilityStarted(CreatureAbilityUpdateable game) {
+    void onAbilityStarted(AbilityUpdateable game) {
 
     }
 
     @Override
-    void onDelayedAction(CreatureAbilityChainable game) {
+    void onDelayedAction(AbilityChainable game) {
         // find closest enemy, and if they are within distance, and havent been hit yet, then start node over them
         Set<CreatureId> excluded = new HashSet<>(params().creaturesAlreadyHit());
         excluded.add(params().creatureId());
@@ -49,7 +49,7 @@ public class LightningNode extends Ability {
     }
 
     @Override
-    void onAbilityCompleted(CreatureAbilityChainable game) {
+    void onAbilityCompleted(AbilityChainable game) {
 
     }
 
@@ -99,10 +99,6 @@ public class LightningNode extends Ability {
                                       .attackWithoutMoving(true)
                                       .pos(pos)
                                       .creaturesAlreadyHit(creaturesAlreadyHit)
-                                      .manaCost(0f)
-                                      .staminaCost(0f)
-                                      .cooldown(1.0f)
-                                      .performableByCreature(false)
                                       .inactiveBody(true)
                                       .dirVector(dirVector)
                                       .rotationShift(0f)

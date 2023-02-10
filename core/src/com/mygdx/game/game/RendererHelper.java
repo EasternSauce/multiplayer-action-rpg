@@ -32,7 +32,7 @@ public class RendererHelper {
                 .forEach((abilityId, abilityAnimation) -> abilityAnimation.render(drawingLayer, game.gameState()));
 
 
-        drawingLayer.spriteBatch().end();
+        drawingLayer.end();
 
         renderer.areaRenderers().get(game.gameState().currentAreaId()).render(new int[]{2, 3});
 
@@ -63,7 +63,7 @@ public class RendererHelper {
 
         }
 
-        drawingLayer.spriteBatch().end();
+        drawingLayer.end();
     }
 
     public static void updateCamera(MyGdxGame game) {

@@ -4,7 +4,6 @@ import com.badlogic.gdx.Game;
 import com.esotericsoftware.kryonet.EndPoint;
 import com.mygdx.game.ability.Ability;
 import com.mygdx.game.ability.AbilityId;
-import com.mygdx.game.ability.AbilityType;
 import com.mygdx.game.chat.Chat;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.area.AreaId;
@@ -19,14 +18,14 @@ import com.mygdx.game.physics.PhysicsWorld;
 import com.mygdx.game.renderer.AbilityRenderer;
 import com.mygdx.game.renderer.CreatureRenderer;
 import com.mygdx.game.renderer.GameRenderer;
-import com.mygdx.game.skill.Skill;
+import com.mygdx.game.skill.SkillType;
 import com.mygdx.game.util.GameStateHolder;
 import com.mygdx.game.util.Vector2;
 
 import java.io.IOException;
 import java.util.*;
 
-public abstract class MyGdxGame extends Game implements CreatureAbilityUpdateable, EnemyAiUpdatable {
+public abstract class MyGdxGame extends Game implements AbilityUpdateable, EnemyAiUpdatable, AbilitySpawnable {
     final protected GameRenderer gameRenderer = GameRenderer.of();
     final protected GamePhysics gamePhysics = GamePhysics.of();
     final protected GameStateHolder gameStateHolder = GameStateHolder.of(GameState.of());
@@ -159,14 +158,6 @@ public abstract class MyGdxGame extends Game implements CreatureAbilityUpdateabl
 
     abstract public Set<AbilityId> abilitiesToUpdate();
 
-    abstract public void trySpawningAbility(AbilityId abilityId,
-                                            AreaId areaId,
-                                            CreatureId creatureId,
-                                            AbilityType abilityType,
-                                            Set<CreatureId> creaturesAlreadyHit,
-                                            Vector2 chainFromPos,
-                                            Vector2 pos,
-                                            Vector2 dirVector);
 
     public void removeCreature(CreatureId creatureId) {
         gameState().creatures().remove(creatureId);
@@ -190,10 +181,9 @@ public abstract class MyGdxGame extends Game implements CreatureAbilityUpdateabl
         }
     }
 
-    public void handleAttackTarget(CreatureId attackingCreatureId,
-                                   Vector2 vectorTowardsTarget,
-                                   AbilityType abilityType) {
-    }
+    abstract public void handleAttackTarget(CreatureId attackingCreatureId,
+                                            Vector2 vectorTowardsTarget,
+                                            SkillType skillType);
 
     public void updateCreatures(float delta) {
         Set<CreatureId> creaturesToUpdate = creaturesToUpdate();
@@ -286,14 +276,6 @@ public abstract class MyGdxGame extends Game implements CreatureAbilityUpdateabl
     }
 
     @Override
-    public void onCreatureUseAbility(CreatureId creatureId, Float staminaCost, Float manaCost) {
-        Creature creature = gameState().creatures().get(creatureId);
-
-        creature.takeManaDamage(manaCost);
-        creature.takeStaminaDamage(staminaCost);
-    }
-
-    @Override
     public Vector2 getCreaturePos(CreatureId creatureId) {
         if (!gameState().creatures().containsKey(creatureId)) {
             return null;
@@ -324,7 +306,4 @@ public abstract class MyGdxGame extends Game implements CreatureAbilityUpdateabl
         return physics().physicsWorlds().get(areaId);
     }
 
-    public boolean canPerformSkill(Skill skill) {
-        return true; // TODO
-    }
 }

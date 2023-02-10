@@ -131,83 +131,67 @@ public class MyGdxGameClient extends MyGdxGame {
 
                 Creature player = gameState().creatures().get(thisPlayerId);
 
-                if (player.params().attackCommandsPerSecondLimitTimer().time() >
-                    player.params().attackCommandsPerSecondLimit()) {
-                    player.params().actionCooldownTimer().restart();
 
+                float mouseX = Gdx.input.getX();
+                float mouseY = Gdx.input.getY();
 
-                    float mouseX = Gdx.input.getX();
-                    float mouseY = Gdx.input.getY();
+                float centerX = Gdx.graphics.getWidth() / 2f;
+                float centerY = Gdx.graphics.getHeight() / 2f;
 
-                    float centerX = Gdx.graphics.getWidth() / 2f;
-                    float centerY = Gdx.graphics.getHeight() / 2f;
+                Vector2 dirVector =
+                        Vector2.of(mouseX - centerX, (Gdx.graphics.getHeight() - mouseY) - centerY).normalized();
 
-                    Vector2 dirVector =
-                            Vector2.of(mouseX - centerX, (Gdx.graphics.getHeight() - mouseY) - centerY).normalized();
+                endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
+                                                             SkillType.SLASH,
+                                                             player.params().pos(),
+                                                             dirVector));
 
-                    endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
-                                                                 SkillType.SLASH,
-                                                                 player.params().pos(),
-                                                                 dirVector));
-                }
             }
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
 
                 Creature player = gameState().creatures().get(thisPlayerId);
 
-                if (player.params().attackCommandsPerSecondLimitTimer().time() >
-                    player.params().attackCommandsPerSecondLimit()) {
-                    player.params().actionCooldownTimer().restart();
+
+                Vector2 dirVector = mousePos();
+
+                endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
+                                                             SkillType.FIREBALL,
+                                                             player.params().pos(),
+                                                             dirVector));
 
 
-                    Vector2 dirVector = mousePos();
-
-                    endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
-                                                                 SkillType.FIREBALL,
-                                                                 player.params().pos(),
-                                                                 dirVector));
-
-                }
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
 
                 Creature player = gameState().creatures().get(thisPlayerId);
 
-                if (player.params().attackCommandsPerSecondLimitTimer().time() >
-                    player.params().attackCommandsPerSecondLimit()) {
-                    player.params().actionCooldownTimer().restart();
+
+                Vector2 dirVector = mousePos();
+
+                Vector2 startingPos = player.params().pos().add(dirVector);
+
+                endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
+                                                             SkillType.LIGHTNING,
+                                                             startingPos,
+                                                             dirVector));
 
 
-                    Vector2 dirVector = mousePos();
-
-                    Vector2 startingPos = player.params().pos().add(dirVector);
-
-                    endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
-                                                                 SkillType.LIGHTNING,
-                                                                 startingPos,
-                                                                 dirVector));
-
-                }
             }
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
 
                 Creature player = gameState().creatures().get(thisPlayerId);
 
-                if (player.params().attackCommandsPerSecondLimitTimer().time() >
-                    player.params().attackCommandsPerSecondLimit()) {
-                    player.params().actionCooldownTimer().restart();
+
+                Vector2 dirVector = mousePos();
+
+                endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
+                                                             SkillType.CROSSBOW_BOLT,
+                                                             player.params().pos(),
+                                                             dirVector));
 
 
-                    Vector2 dirVector = mousePos();
-
-                    endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
-                                                                 SkillType.CROSSBOW_BOLT,
-                                                                 player.params().pos(),
-                                                                 dirVector));
-
-                }
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.F11)) {
 
@@ -426,14 +410,19 @@ public class MyGdxGameClient extends MyGdxGame {
     }
 
     @Override
-    public void trySpawningAbility(AbilityId abilityId,
-                                   AreaId areaId,
-                                   CreatureId creatureId,
-                                   AbilityType abilityType,
-                                   Set<CreatureId> creaturesAlreadyHit,
-                                   Vector2 chainFromPos,
-                                   Vector2 pos,
-                                   Vector2 dirVector) {
+    public void handleAttackTarget(CreatureId attackingCreatureId, Vector2 vectorTowardsTarget, SkillType skillType) {
+        // do nothing
+    }
+
+    @Override
+    public void spawnAbility(AbilityId abilityId,
+                             AreaId areaId,
+                             CreatureId creatureId,
+                             AbilityType abilityType,
+                             Set<CreatureId> creaturesAlreadyHit,
+                             Vector2 chainFromPos,
+                             Vector2 pos,
+                             Vector2 dirVector) {
 
     }
 

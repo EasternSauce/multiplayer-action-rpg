@@ -1,7 +1,7 @@
 package com.mygdx.game.ability;
 
-import com.mygdx.game.game.CreatureAbilityChainable;
-import com.mygdx.game.game.CreatureAbilityUpdateable;
+import com.mygdx.game.game.AbilityChainable;
+import com.mygdx.game.game.AbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
 import com.mygdx.game.renderer.AbilityAnimationConfig;
 import lombok.Data;
@@ -16,7 +16,7 @@ public abstract class Ability {
 
     public abstract AbilityType type();
 
-    public void update(Float delta, CreatureAbilityUpdateable game) {
+    public void update(Float delta, AbilityUpdateable game) {
         AbilityState state = params().state();
 
         if (state == AbilityState.CHANNEL) {
@@ -57,11 +57,11 @@ public abstract class Ability {
         updateTimers(delta);
     }
 
-    abstract void onAbilityStarted(CreatureAbilityUpdateable game);
+    abstract void onAbilityStarted(AbilityUpdateable game);
 
-    abstract void onDelayedAction(CreatureAbilityChainable game);
+    abstract void onDelayedAction(AbilityChainable game);
 
-    abstract void onAbilityCompleted(CreatureAbilityChainable game);
+    abstract void onAbilityCompleted(AbilityChainable game);
 
     abstract void onUpdatePosition(CreaturePosRetrievable game);
 
@@ -69,13 +69,11 @@ public abstract class Ability {
 
     abstract void onActiveUpdate(CreaturePosRetrievable game);
 
-    public void init(CreatureAbilityUpdateable game) {
+    public void init(AbilityUpdateable game) {
 
         if (isPositionManipulated()) {
             onUpdatePosition(game);
         }
-
-        game.onCreatureUseAbility(params().creatureId(), params().staminaCost(), params().manaCost());
 
         params().state(AbilityState.CHANNEL);
         params().stateTimer().restart();

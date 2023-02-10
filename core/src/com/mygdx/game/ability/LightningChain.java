@@ -1,7 +1,7 @@
 package com.mygdx.game.ability;
 
-import com.mygdx.game.game.CreatureAbilityChainable;
-import com.mygdx.game.game.CreatureAbilityUpdateable;
+import com.mygdx.game.game.AbilityChainable;
+import com.mygdx.game.game.AbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.CreatureId;
@@ -25,17 +25,17 @@ public class LightningChain extends Ability {
     }
 
     @Override
-    void onAbilityStarted(CreatureAbilityUpdateable game) {
+    void onAbilityStarted(AbilityUpdateable game) {
 
     }
 
     @Override
-    void onDelayedAction(CreatureAbilityChainable game) {
+    void onDelayedAction(AbilityChainable game) {
 
     }
 
     @Override
-    void onAbilityCompleted(CreatureAbilityChainable game) {
+    void onAbilityCompleted(AbilityChainable game) {
 
     }
 
@@ -87,10 +87,6 @@ public class LightningChain extends Ability {
                                       .pos(LightningChain.calculatePos(pos, chainFromPos))
                                       .rotationAngle(LightningChain.calculateRotationAngle(pos, chainFromPos))
                                       .creaturesAlreadyHit(creaturesAlreadyHit)
-                                      .manaCost(0f)
-                                      .staminaCost(0f)
-                                      .cooldown(0f)
-                                      .performableByCreature(false)
                                       .inactiveBody(true)
                                       .dirVector(dirVector)
                                       .rotationShift(90f);

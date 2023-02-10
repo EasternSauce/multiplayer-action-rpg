@@ -1,9 +1,9 @@
 package com.mygdx.game.skill;
 
-import com.mygdx.game.ability.AbilityId;
 import com.mygdx.game.ability.AbilityType;
+import com.mygdx.game.game.AbilitySpawnable;
 import com.mygdx.game.game.MyGdxGame;
-import com.mygdx.game.model.area.AreaId;
+import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.util.SimpleTimer;
 import com.mygdx.game.util.Vector2;
@@ -12,7 +12,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -27,6 +26,9 @@ public class Skill {
     SimpleTimer performTimer;
     Float cooldown;
 
+    Float staminaCost;
+    Float manaCost;
+
 
     public static Skill of(SkillType skillType, CreatureId creatureId) {
         if (skillType == SkillType.SLASH) {
@@ -36,7 +38,9 @@ public class Skill {
                                                                                  0f)})
                                   .collect(Collectors.toCollection(ArrayList::new)),
                             SimpleTimer.getExpiredTimer(),
-                            0.6f);
+                            0.6f,
+                            20f,
+                            0f);
         }
         if (skillType == SkillType.FIREBALL) {
             return Skill.of(skillType,
@@ -45,7 +49,9 @@ public class Skill {
                                                                                  0f)})
                                   .collect(Collectors.toCollection(ArrayList::new)),
                             SimpleTimer.getExpiredTimer(),
-                            0.2f);
+                            0.2f,
+                            0f,
+                            30f);
         }
         if (skillType == SkillType.LIGHTNING) {
             return Skill.of(skillType,
@@ -54,7 +60,9 @@ public class Skill {
                                                                                  0f)})
                                   .collect(Collectors.toCollection(ArrayList::new)),
                             SimpleTimer.getExpiredTimer(),
-                            1f);
+                            1f,
+                            0f,
+                            20f);
         }
         if (skillType == SkillType.CROSSBOW_BOLT) {
             return Skill.of(skillType,
@@ -68,46 +76,31 @@ public class Skill {
                                                               1.4f)})
                                   .collect(Collectors.toCollection(ArrayList::new)),
                             SimpleTimer.getExpiredTimer(),
-                            2f);
+                            2f, 30f,
+                            0f);
         }
         throw new RuntimeException("skill not handled");
     }
 
-    public void update(float delta, MyGdxGame game) {
-        performTimer.update(delta);
-
-        abilities.stream()
-                 .filter(scheduledAbility -> !scheduledAbility.isPerformed() &&
-                                             performTimer().time() > scheduledAbility.scheduledTime())
-                 .forEach(scheduledAbility -> {
-                     AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
-
-                     System.out.println("spawning ability " + !scheduledAbility.isPerformed());
-                     AreaId areaId = game.getCreature(creatureId).params().areaId();
-
-                     Vector2 pos = scheduledAbility.startingPos();
-
-                     game.trySpawningAbility(abilityId,
-                                             areaId,
-                                             creatureId,
-                                             scheduledAbility.abilityType(),
-                                             new HashSet<>(),
-                                             null,
-                                             pos,
-                                             scheduledAbility.dirVector());
-                     scheduledAbility.isPerformed(true);
-                 });
+    public void update(AbilitySpawnable game) {
+        for (ScheduledAbility scheduledAbility : abilities) {
+            if (!scheduledAbility.isPerformed() && performTimer().time() > scheduledAbility.scheduledTime()) {
+                scheduledAbility.perform(creatureId, game);
+            }
+        }
 
     }
 
-    public void tryPerform(MyGdxGame game, Vector2 startingPos, Vector2 dirVector) {
-        if (game.canPerformSkill(this) && performTimer.time() > cooldown) {
-            System.out.println("can perform");
+
+    public void tryPerform(Vector2 startingPos, Vector2 dirVector, MyGdxGame game) {
+        Creature creature = game.gameState().creatures().get(creatureId);
+        if (creature != null && creature.canPerformSkill(this) && performTimer.time() > cooldown) {
             abilities.forEach(scheduledAbility -> {
                 scheduledAbility.isPerformed(false);
                 scheduledAbility.startingPos(startingPos);
                 scheduledAbility.dirVector(dirVector);
             });
+            creature.onPerformSkill(this);
             performTimer.restart();
         }
     }

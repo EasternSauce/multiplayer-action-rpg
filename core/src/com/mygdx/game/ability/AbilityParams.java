@@ -43,9 +43,6 @@ public class AbilityParams {
 
     Boolean attackWithoutMoving = false;
 
-    Float manaCost;
-    Float staminaCost;
-
     Float delayedActionTime;
 
     Boolean delayedActionCompleted = false;
@@ -56,29 +53,5 @@ public class AbilityParams {
 
     Float rotationShift;
 
-    Float cooldown;
-
-    Boolean performableByCreature;
-
-    public static AbilityParams of(AbilityId abilityId,
-                                   AreaId areaId,
-                                   Float width,
-                                   Float height,
-                                   Float channelTime,
-                                   Float activeTime,
-                                   Float range,
-                                   String textureName) {
-        AbilityParams params = AbilityParams.of();
-        params.id = abilityId;
-        params.areaId = areaId;
-        params.width = width;
-        params.height = height;
-        params.channelTime = channelTime;
-        params.activeTime = activeTime;
-        params.range = range;
-        params.textureName = textureName;
-
-        return params;
-    }
 
 }

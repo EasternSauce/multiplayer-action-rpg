@@ -1,6 +1,5 @@
 package com.mygdx.game.model.creature;
 
-import com.mygdx.game.ability.AbilityType;
 import com.mygdx.game.game.EnemySpawn;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.skill.Skill;
@@ -61,12 +60,9 @@ public class CreatureParams {
     String textureName;
 
     SimpleTimer movementCommandsPerSecondLimitTimer = SimpleTimer.getExpiredTimer();
-    SimpleTimer attackCommandsPerSecondLimitTimer = SimpleTimer.getExpiredTimer();
     Float attackCommandsPerSecondLimit = 0.2f;
 
     SimpleTimer isStillMovingTimer = SimpleTimer.getExpiredTimer();
-
-    SimpleTimer actionCooldownTimer = SimpleTimer.getExpiredTimer();
 
     SimpleTimer respawnTimer = SimpleTimer.getExpiredTimer();
     Float respawnTime = 5f;
@@ -93,7 +89,6 @@ public class CreatureParams {
 
     Map<SkillType, Skill> skills = new HashMap<>();
 
-    Map<AbilityType, SimpleTimer> abilityCooldowns = new HashMap<>();
 
     public static CreatureParams of(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn) {
         CreatureParams params = CreatureParams.of();
@@ -104,10 +99,6 @@ public class CreatureParams {
         params.findTargetCooldown = 0.5f + RandomHelper.seededRandomFloat(creatureId);
         params.pathCalculationFailurePenalty = 10f + 5f * RandomHelper.seededRandomFloat(creatureId);
         params.pathCalculationCooldown = 2f + 2f * RandomHelper.seededRandomFloat(creatureId);
-
-        params.abilityCooldowns = Arrays.stream(AbilityType.values())
-                                        .collect(Collectors.toMap(Function.identity(),
-                                                                  abilityType -> SimpleTimer.getExpiredTimer()));
 
         params.skills = // TODO: should we restrict which creature can perform which skill?
                 Arrays.stream(SkillType.values())
@@ -126,9 +117,6 @@ public class CreatureParams {
         params.pathCalculationFailurePenalty = 10f + 5f * RandomHelper.seededRandomFloat(creatureId);
         params.pathCalculationCooldown = 2f + 2f * RandomHelper.seededRandomFloat(creatureId);
 
-        params.abilityCooldowns = Arrays.stream(AbilityType.values())
-                                        .collect(Collectors.toMap(Function.identity(),
-                                                                  abilityType -> SimpleTimer.getExpiredTimer()));
         params.skills = // TODO: should we restrict which creature can perform which skill?
                 Arrays.stream(SkillType.values())
                       .collect(Collectors.toMap(Function.identity(), skillType -> Skill.of(skillType, creatureId)));

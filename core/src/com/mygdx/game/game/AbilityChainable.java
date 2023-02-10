@@ -7,7 +7,7 @@ import com.mygdx.game.util.Vector2;
 
 import java.util.Set;
 
-public interface CreatureAbilityChainable extends CreatureRetrievable {
+public interface AbilityChainable extends CreatureRetrievable {
     void chainAbility(Ability chainFromAbility,
                       AbilityType abilityType,
                       Vector2 chainToPos,

@@ -4,6 +4,7 @@ import com.mygdx.game.ability.Ability;
 import com.mygdx.game.game.EnemyAiUpdatable;
 import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.renderer.CreatureAnimationConfig;
+import com.mygdx.game.skill.Skill;
 import com.mygdx.game.util.Vector2;
 import com.mygdx.game.util.WorldDirection;
 
@@ -29,7 +30,10 @@ public abstract class Creature {
             params().isStillMovingTimer().restart();
         }
 
-        params().skills().forEach((skillType, skill) -> skill.update(delta, game));
+        if (isAlive()) {
+            params().skills().forEach((skillType, skill) -> skill.update(game));
+        }
+
         updateAutomaticControls(game);
         updateTimers(delta);
 
@@ -74,14 +78,13 @@ public abstract class Creature {
         params().pathCalculationCooldownTimer().update(delta);
         params().movementCommandsPerSecondLimitTimer().update(delta);
         params().isStillMovingTimer().update(delta);
-        params().actionCooldownTimer().update(delta);
         params().respawnTimer().update(delta);
         params().staminaRegenerationTimer().update(delta);
         params().aggroTimer().update(delta);
         params().findTargetTimer().update(delta);
         params().pathCalculationFailurePenaltyTimer().update(delta);
 
-        params().abilityCooldowns().forEach((abilityType, simpleTimer) -> simpleTimer.update(delta));
+        params().skills().forEach((skillType, skill) -> skill.performTimer().update(delta));
         // add other timers here...
     }
 
@@ -152,7 +155,7 @@ public abstract class Creature {
         params().aggroTimer().restart();
     }
 
-    public void takeManaDamage(Float manaCost) {
+    private void takeManaDamage(Float manaCost) {
         if (params().mana() - manaCost > 0) {
             params().mana(params().mana() - manaCost);
         }
@@ -161,7 +164,7 @@ public abstract class Creature {
         }
     }
 
-    public void takeStaminaDamage(Float staminaCost) {
+    private void takeStaminaDamage(Float staminaCost) {
         if (params().stamina() - staminaCost > 0) {
             params().stamina(params().stamina() - staminaCost);
         }
@@ -190,13 +193,12 @@ public abstract class Creature {
         return CreatureAnimationConfig.configs.get(params().textureName());
     }
 
+    public boolean canPerformSkill(Skill skill) {
+        return isAlive() && params().stamina() >= skill.staminaCost() && params().mana() >= skill.manaCost();
+    }
 
-    public boolean canPerformAbility(Ability ability) {
-        return isAlive() &&
-               ability.params().staminaCost() <= params().stamina() &&
-               ability.params().manaCost() <= params().mana() &&
-               (!ability.params().performableByCreature() ||
-                (params().actionCooldownTimer().time() > params().actionCooldown() &&
-                 params().abilityCooldowns().get(ability.type()).time() > ability.params().cooldown()));
+    public void onPerformSkill(Skill skill) {
+        takeStaminaDamage(skill.staminaCost());
+        takeManaDamage(skill.manaCost());
     }
 }

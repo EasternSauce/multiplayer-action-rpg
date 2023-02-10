@@ -1,8 +1,8 @@
 package com.mygdx.game.ability;
 
 
-import com.mygdx.game.game.CreatureAbilityChainable;
-import com.mygdx.game.game.CreatureAbilityUpdateable;
+import com.mygdx.game.game.AbilityChainable;
+import com.mygdx.game.game.AbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.CreatureId;
@@ -27,17 +27,17 @@ public class CrossbowBolt extends Projectile {
     }
 
     @Override
-    void onAbilityStarted(CreatureAbilityUpdateable game) {
+    void onAbilityStarted(AbilityUpdateable game) {
 
     }
 
     @Override
-    void onDelayedAction(CreatureAbilityChainable game) {
+    void onDelayedAction(AbilityChainable game) {
         // TODO: chain multiple shots
     }
 
     @Override
-    void onAbilityCompleted(CreatureAbilityChainable game) {
+    void onAbilityCompleted(AbilityChainable game) {
 
     }
 
@@ -75,10 +75,6 @@ public class CrossbowBolt extends Projectile {
                                       .damage(25f)
                                       .pos(pos)
                                       .creaturesAlreadyHit(creaturesAlreadyHit)
-                                      .manaCost(0f)
-                                      .staminaCost(10f)
-                                      .cooldown(0.35f)
-                                      .performableByCreature(true)
                                       .dirVector(dirVector)
                                       .isChannelAnimationLooping(true)
                                       .isActiveAnimationLooping(true)

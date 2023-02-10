@@ -31,12 +31,6 @@ public class AddAbilityAction implements GameStateAction {
             return;
         }
 
-        if (ability.params().performableByCreature()) {
-            creature.params().actionCooldownTimer().restart();
-        }
-
-        creature.params().abilityCooldowns().get(ability.type()).restart();
-
         gameState.abilities().put(ability.params().id(), ability);
 
         game.abilitiesToBeCreated().add(ability.params().id());
