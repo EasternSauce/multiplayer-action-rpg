@@ -19,7 +19,7 @@ public class AbilityParams {
     Float width;
     Float height;
     CreatureId creatureId;
-    SimpleTimer stateTimer = SimpleTimer.of(Float.MAX_VALUE, false);
+    SimpleTimer stateTimer = SimpleTimer.getExpiredTimer();
     Vector2 dirVector;
     String textureName;
     //    AbilityRect rect;

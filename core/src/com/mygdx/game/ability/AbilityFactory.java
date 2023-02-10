@@ -45,7 +45,8 @@ public class AbilityFactory {
         }
 
         if (abilityType == AbilityType.CROSSBOW_BOLT) {
-            return CrossbowBolt.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit);
+            Vector2 creaturePos = game.getCreaturePos(creatureId);
+            return CrossbowBolt.of(abilityId, areaId, creatureId, creaturePos, dirVector, creaturesAlreadyHit);
         }
 
         throw new RuntimeException("ability type not found");

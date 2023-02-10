@@ -19,6 +19,7 @@ import com.mygdx.game.physics.PhysicsWorld;
 import com.mygdx.game.renderer.AbilityRenderer;
 import com.mygdx.game.renderer.CreatureRenderer;
 import com.mygdx.game.renderer.GameRenderer;
+import com.mygdx.game.skill.Skill;
 import com.mygdx.game.util.GameStateHolder;
 import com.mygdx.game.util.Vector2;
 
@@ -157,6 +158,15 @@ public abstract class MyGdxGame extends Game implements CreatureAbilityUpdateabl
     abstract public Set<CreatureId> creaturesToUpdate();
 
     abstract public Set<AbilityId> abilitiesToUpdate();
+
+    abstract public void trySpawningAbility(AbilityId abilityId,
+                                            AreaId areaId,
+                                            CreatureId creatureId,
+                                            AbilityType abilityType,
+                                            Set<CreatureId> creaturesAlreadyHit,
+                                            Vector2 chainFromPos,
+                                            Vector2 pos,
+                                            Vector2 dirVector);
 
     public void removeCreature(CreatureId creatureId) {
         gameState().creatures().remove(creatureId);
@@ -312,5 +322,9 @@ public abstract class MyGdxGame extends Game implements CreatureAbilityUpdateabl
     @Override
     public PhysicsWorld getPhysicsWorld(AreaId areaId) {
         return physics().physicsWorlds().get(areaId);
+    }
+
+    public boolean canPerformSkill(Skill skill) {
+        return true; // TODO
     }
 }

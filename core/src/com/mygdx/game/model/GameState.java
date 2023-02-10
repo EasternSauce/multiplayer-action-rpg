@@ -27,7 +27,7 @@ public class GameState {
 
     AreaId defaultAreaId = AreaId.of("area1");
 
-    SimpleTimer generalTimer = SimpleTimer.of(0, true);
+    SimpleTimer generalTimer = SimpleTimer.getStartedTimer();
 
     Set<CreatureId> existingCreatureIds;
     Set<AbilityId> existingAbilityIds;

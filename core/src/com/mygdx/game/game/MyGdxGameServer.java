@@ -13,6 +13,7 @@ import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.creature.EnemyType;
 import com.mygdx.game.model.creature.Player;
+import com.mygdx.game.skill.SkillType;
 import com.mygdx.game.util.GameStateHolder;
 import com.mygdx.game.util.Vector2;
 
@@ -146,10 +147,18 @@ public class MyGdxGameServer extends MyGdxGame {
 
                     endPoint().sendToAllTCP(command);
                 }
-                else if (object instanceof SpawnAbilityCommand) {
-                    SpawnAbilityCommand command = (SpawnAbilityCommand) object;
 
-                    trySpawningAbility(command);
+                else if (object instanceof TryPerformSkillCommand) {
+                    TryPerformSkillCommand command = (TryPerformSkillCommand) object;
+
+                    TryPerformSkillAction
+                            action =
+                            TryPerformSkillAction.of(command.creatureId(),
+                                                     command.skillType(),
+                                                     command.startingPos(),
+                                                     command.dirVector());
+
+                    tickActions.add(action);
 
                 }
                 else if (object instanceof SpawnEnemyCommand) {
@@ -160,7 +169,6 @@ public class MyGdxGameServer extends MyGdxGame {
 
                 }
             }
-
 
             @Override
             public void disconnected(Connection connection) {
@@ -174,7 +182,7 @@ public class MyGdxGameServer extends MyGdxGame {
 
         broadcastThread = new Thread(() -> {
             try {
-                Thread.sleep(2000); // delay first broadcast
+                //                Thread.sleep(2000); // delay first broadcast
                 while (true) {
                     //noinspection BusyWait
                     Thread.sleep(500);
@@ -232,20 +240,27 @@ public class MyGdxGameServer extends MyGdxGame {
 
     }
 
-    private void trySpawningAbility(SpawnAbilityCommand command) {
-        Creature creature = gameState().creatures().get(command.creatureId());
+    public void trySpawningAbility(AbilityId abilityId,
+                                   AreaId areaId,
+                                   CreatureId creatureId,
+                                   AbilityType abilityType,
+                                   Set<CreatureId> creaturesAlreadyHit,
+                                   Vector2 chainFromPos,
+                                   Vector2 pos,
+                                   Vector2 dirVector) {
+        Creature creature = gameState().creatures().get(creatureId);
 
-        Ability ability = AbilityFactory.produceAbility(command.abilityType(),
-                                                        command.abilityId(),
-                                                        command.areaId(),
-                                                        command.creatureId(),
-                                                        command.dirVector(),
-                                                        command.chainFromPos(),
-                                                        command.pos(),
-                                                        command.creaturesAlreadyHit(),
+        Ability ability = AbilityFactory.produceAbility(abilityType,
+                                                        abilityId,
+                                                        areaId,
+                                                        creatureId,
+                                                        dirVector,
+                                                        chainFromPos,
+                                                        pos,
+                                                        creaturesAlreadyHit,
                                                         this);
 
-        if (creature != null && creature.canPerformAbility(ability)) {
+        if (creature != null /*&& creature.canPerformAbility(ability)*/) { // TODO?
             AddAbilityAction action = AddAbilityAction.of(ability);
 
             tickActions.add(action);
@@ -360,16 +375,12 @@ public class MyGdxGameServer extends MyGdxGame {
 
         Creature attackingCreature = gameState().creatures().get(attackingCreatureId);
 
-        AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
-        SpawnAbilityCommand command = SpawnAbilityCommand.of(abilityId,
-                                                             attackingCreature.params().areaId(),
-                                                             attackingCreature.params().id(),
-                                                             abilityType,
-                                                             new HashSet<>(),
-                                                             null,
-                                                             attackingCreature.params().pos(),
-                                                             vectorTowardsTarget);
-        trySpawningAbility(command);
+        TryPerformSkillAction action = TryPerformSkillAction.of(attackingCreatureId,
+                                                                SkillType.SLASH,
+                                                                attackingCreature.params().pos(),
+                                                                vectorTowardsTarget);
+
+        tickActions.add(action);
 
     }
 
@@ -391,16 +402,14 @@ public class MyGdxGameServer extends MyGdxGame {
 
         Vector2 chainFromPos = chainFromAbility.params().pos();
 
-        SpawnAbilityCommand command = SpawnAbilityCommand.of(abilityId,
-                                                             chainFromAbility.params().areaId(),
-                                                             chainFromAbility.params().creatureId(),
-                                                             chainIntoAbilityType,
-                                                             creaturesAlreadyHit,
-                                                             chainFromPos,
-                                                             chainToPos,
-                                                             chainFromAbility.params().dirVector());
-
-        trySpawningAbility(command);
+        trySpawningAbility(abilityId,
+                           chainFromAbility.params().areaId(),
+                           chainFromAbility.params().creatureId(),
+                           chainIntoAbilityType,
+                           creaturesAlreadyHit,
+                           chainFromPos,
+                           chainToPos,
+                           chainFromAbility.params().dirVector());
     }
 
 

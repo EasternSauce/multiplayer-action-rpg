@@ -18,6 +18,7 @@ import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.creature.EnemyType;
+import com.mygdx.game.skill.SkillType;
 import com.mygdx.game.util.GameStateHolder;
 import com.mygdx.game.util.Vector2;
 
@@ -134,7 +135,6 @@ public class MyGdxGameClient extends MyGdxGame {
                     player.params().attackCommandsPerSecondLimit()) {
                     player.params().actionCooldownTimer().restart();
 
-                    AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
 
                     float mouseX = Gdx.input.getX();
                     float mouseY = Gdx.input.getY();
@@ -142,17 +142,13 @@ public class MyGdxGameClient extends MyGdxGame {
                     float centerX = Gdx.graphics.getWidth() / 2f;
                     float centerY = Gdx.graphics.getHeight() / 2f;
 
-                    Vector2 mouseDirVector =
+                    Vector2 dirVector =
                             Vector2.of(mouseX - centerX, (Gdx.graphics.getHeight() - mouseY) - centerY).normalized();
 
-                    endPoint().sendTCP(SpawnAbilityCommand.of(abilityId,
-                                                              player.params().areaId(),
-                                                              thisPlayerId,
-                                                              AbilityType.SLASH,
-                                                              new HashSet<>(),
-                                                              null,
-                                                              player.params().pos(),
-                                                              mouseDirVector));
+                    endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
+                                                                 SkillType.SLASH,
+                                                                 player.params().pos(),
+                                                                 dirVector));
                 }
             }
 
@@ -164,18 +160,14 @@ public class MyGdxGameClient extends MyGdxGame {
                     player.params().attackCommandsPerSecondLimit()) {
                     player.params().actionCooldownTimer().restart();
 
-                    AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
 
-                    Vector2 mousePos = mousePos();
+                    Vector2 dirVector = mousePos();
 
-                    endPoint().sendTCP(SpawnAbilityCommand.of(abilityId,
-                                                              player.params().areaId(),
-                                                              thisPlayerId,
-                                                              AbilityType.FIREBALL,
-                                                              new HashSet<>(),
-                                                              null,
-                                                              player.params().pos(),
-                                                              mousePos));
+                    endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
+                                                                 SkillType.FIREBALL,
+                                                                 player.params().pos(),
+                                                                 dirVector));
+
                 }
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
@@ -186,20 +178,16 @@ public class MyGdxGameClient extends MyGdxGame {
                     player.params().attackCommandsPerSecondLimit()) {
                     player.params().actionCooldownTimer().restart();
 
-                    AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
 
-                    Vector2 mousePos = mousePos();
+                    Vector2 dirVector = mousePos();
 
-                    Vector2 pos = player.params().pos().add(mousePos);
+                    Vector2 startingPos = player.params().pos().add(dirVector);
 
-                    endPoint().sendTCP(SpawnAbilityCommand.of(abilityId,
-                                                              player.params().areaId(),
-                                                              thisPlayerId,
-                                                              AbilityType.LIGHTNING_SPARK,
-                                                              new HashSet<>(),
-                                                              null,
-                                                              pos,
-                                                              mousePos));
+                    endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
+                                                                 SkillType.LIGHTNING,
+                                                                 startingPos,
+                                                                 dirVector));
+
                 }
             }
 
@@ -211,18 +199,14 @@ public class MyGdxGameClient extends MyGdxGame {
                     player.params().attackCommandsPerSecondLimit()) {
                     player.params().actionCooldownTimer().restart();
 
-                    AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
 
-                    Vector2 mousePos = mousePos();
+                    Vector2 dirVector = mousePos();
 
-                    endPoint().sendTCP(SpawnAbilityCommand.of(abilityId,
-                                                              player.params().areaId(),
-                                                              thisPlayerId,
-                                                              AbilityType.CROSSBOW_BOLT,
-                                                              new HashSet<>(),
-                                                              null,
-                                                              player.params().pos(),
-                                                              mousePos));
+                    endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
+                                                                 SkillType.CROSSBOW_BOLT,
+                                                                 player.params().pos(),
+                                                                 dirVector));
+
                 }
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.F11)) {
@@ -439,6 +423,18 @@ public class MyGdxGameClient extends MyGdxGame {
             }
             return false;
         }).collect(Collectors.toSet());
+    }
+
+    @Override
+    public void trySpawningAbility(AbilityId abilityId,
+                                   AreaId areaId,
+                                   CreatureId creatureId,
+                                   AbilityType abilityType,
+                                   Set<CreatureId> creaturesAlreadyHit,
+                                   Vector2 chainFromPos,
+                                   Vector2 pos,
+                                   Vector2 dirVector) {
+
     }
 
     @Override
