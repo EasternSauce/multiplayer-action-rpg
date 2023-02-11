@@ -108,7 +108,7 @@ public class Astar {
                                                            astarState.foundPath(),
                                                            false);
 
-            if (astarState.closedSet().size() > 35) { // give up once you process enough tiles [PERFORMANCE SAVER]
+            if (astarState.closedSet().size() > 80) { // give up once you process enough tiles [PERFORMANCE SAVER]
                 resultingAstarState.gaveUp(true);
             }
 

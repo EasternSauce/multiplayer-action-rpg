@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 @NoArgsConstructor(staticName = "of")
 @Data
@@ -103,10 +104,11 @@ public class Enemy extends Creature {
         boolean condition = params().areaId()
                                     .equals(game.getCurrentAreaId()) &&
                             params().targetCreatureId() != null &&
-                            (params().forcePathCalculation() || params().pathCalculationCooldownTimer()
-                                                                        .time() > params().pathCalculationCooldown()) &&
-                            params().pathCalculationFailurePenaltyTimer()
-                                    .time() > params().pathCalculationFailurePenalty();
+                            (params().forcePathCalculation()
+                             || params().pathCalculationCooldownTimer().time() >
+                                params().pathCalculationCooldown());// &&
+        //                            params().pathCalculationFailurePenaltyTimer()
+        //                                    .time() > params().pathCalculationFailurePenalty();
 
         if (condition) {
             Creature target = game.getCreature(params().targetCreatureId());
@@ -115,20 +117,60 @@ public class Enemy extends Creature {
             Boolean isLineOfSight = world.isLineOfSight(params().pos(), target.params().pos());
 
             if (!isLineOfSight) {
-                AstarResult result = Astar.findPath(world, params().pos(), target.params().pos(), this.capability());
+                List<Vector2> mirroredPath = mirrorPathFromNearbyCreature(params().targetCreatureId(), game);
 
-                params().pathTowardsTarget(result.path());
+                List<Vector2> path;
+
+                if (mirroredPath != null) {
+                    System.out.println("MIRRORING... " + Math.random());
+
+                    path = mirroredPath;
+                    this.params().isPathMirrored(true);
+                }
+                else {
+                    System.out.println("CALCULATING PATH... " + Math.random());
+
+                    AstarResult
+                            result =
+                            Astar.findPath(world, params().pos(), target.params().pos(), this.capability());
+                    path = result.path();
+
+                    //                    if (result.gaveUp()) {
+                    //                        params().pathCalculationFailurePenaltyTimer().restart();
+                    //                    }
+                    this.params().isPathMirrored(false);
+                }
+
+                params().pathTowardsTarget(path);
+
                 params().pathCalculationCooldownTimer().restart();
                 params().forcePathCalculation(false);
-
-                if (result.gaveUp()) {
-                    params().pathCalculationFailurePenaltyTimer().restart();
-                }
             }
             else {
                 params().pathTowardsTarget(null);
             }
         }
+    }
+
+    private List<Vector2> mirrorPathFromNearbyCreature(CreatureId targetId, EnemyAiUpdatable game) {
+
+        Optional<Creature> otherCreature = game.getCreatures()
+                                               .stream()
+                                               .filter(creature ->
+                                                               creature instanceof Enemy &&
+                                                               creature.params().pos().distance(this.params().pos()) <
+                                                               4f &&
+                                                               !creature.params().id().equals(this.params().id()) &&
+                                                               creature.params().pathTowardsTarget() != null &&
+                                                               !creature.params().isPathMirrored() &&
+                                                               creature.params().targetCreatureId() != null &&
+                                                               creature.params().targetCreatureId().equals(targetId) &&
+                                                               creature.params().pathCalculationCooldownTimer().time() <
+                                                               1f)
+                                               .findFirst();
+
+        return otherCreature.map(creature -> creature.params().pathTowardsTarget()).orElse(null);
+
     }
 
     public void handleNewTarget(CreatureId potentialTargetId) {

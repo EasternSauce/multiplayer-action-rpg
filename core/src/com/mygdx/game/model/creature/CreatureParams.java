@@ -44,8 +44,8 @@ public class CreatureParams {
     Boolean forcePathCalculation = false;
     SimpleTimer pathCalculationCooldownTimer = SimpleTimer.getExpiredTimer();
     Float pathCalculationCooldown;
-    SimpleTimer pathCalculationFailurePenaltyTimer = SimpleTimer.getExpiredTimer();
-    Float pathCalculationFailurePenalty;
+    //    SimpleTimer pathCalculationFailurePenaltyTimer = SimpleTimer.getExpiredTimer();
+    //    Float pathCalculationFailurePenalty;
 
     List<Vector2> pathTowardsTarget = null;
 
@@ -89,6 +89,8 @@ public class CreatureParams {
 
     Map<SkillType, Skill> skills = new HashMap<>();
 
+    Boolean isPathMirrored = false;
+
 
     public static CreatureParams of(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn) {
         CreatureParams params = CreatureParams.of();
@@ -97,8 +99,8 @@ public class CreatureParams {
         params.pos = enemySpawn.pos();
         params.textureName = enemySpawn.enemyType().textureName;
         params.findTargetCooldown = 0.5f + RandomHelper.seededRandomFloat(creatureId);
-        params.pathCalculationFailurePenalty = 10f + 5f * RandomHelper.seededRandomFloat(creatureId);
-        params.pathCalculationCooldown = 2f + 2f * RandomHelper.seededRandomFloat(creatureId);
+        //        params.pathCalculationFailurePenalty = 10f + 5f * RandomHelper.seededRandomFloat(creatureId);
+        params.pathCalculationCooldown = 4f + 2f * RandomHelper.seededRandomFloat(creatureId);
 
         params.skills = // TODO: should we restrict which creature can perform which skill?
                 Arrays.stream(SkillType.values())
@@ -114,8 +116,8 @@ public class CreatureParams {
         params.pos = pos;
         params.textureName = textureName;
         params.findTargetCooldown = 0.5f + RandomHelper.seededRandomFloat(creatureId);
-        params.pathCalculationFailurePenalty = 10f + 5f * RandomHelper.seededRandomFloat(creatureId);
-        params.pathCalculationCooldown = 2f + 2f * RandomHelper.seededRandomFloat(creatureId);
+        //        params.pathCalculationFailurePenalty = 10f + 5f * RandomHelper.seededRandomFloat(creatureId);
+        params.pathCalculationCooldown = 1f + RandomHelper.seededRandomFloat(creatureId);
 
         params.skills = // TODO: should we restrict which creature can perform which skill?
                 Arrays.stream(SkillType.values())

@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 public class MyGdxGameServer extends MyGdxGame {
     private static MyGdxGameServer instance;
 
-    final Server _endPoint = new Server(64000000, 64000000);
+    final Server _endPoint = new Server(6400000, 6400000);
     private final List<GameStateAction> tickActions = Collections.synchronizedList(new ArrayList<>());
     private final Map<Integer, CreatureId> clientCreatures = new HashMap<>();
     Thread broadcastThread;

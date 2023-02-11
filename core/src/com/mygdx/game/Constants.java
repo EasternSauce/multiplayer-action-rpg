@@ -9,7 +9,7 @@ public class Constants {
     public static final float ViewpointWorldWidth = 1650f;
     public static final float ViewpointWorldHeight = 864f;
 
-    public static final float ClientGameUpdateRange = 28f;
+    public static final float ClientGameUpdateRange = 38f;
 
     public static final float MapScale = 4.0f;
     public static final float MovementCommandCooldown = 0.05f;

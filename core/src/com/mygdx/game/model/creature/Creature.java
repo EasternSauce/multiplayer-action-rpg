@@ -82,7 +82,7 @@ public abstract class Creature {
         params().staminaRegenerationTimer().update(delta);
         params().aggroTimer().update(delta);
         params().findTargetTimer().update(delta);
-        params().pathCalculationFailurePenaltyTimer().update(delta);
+        //        params().pathCalculationFailurePenaltyTimer().update(delta);
 
         params().skills().forEach((skillType, skill) -> skill.performTimer().update(delta));
         // add other timers here...

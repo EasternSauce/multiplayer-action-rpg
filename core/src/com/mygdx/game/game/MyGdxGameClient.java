@@ -30,7 +30,7 @@ public class MyGdxGameClient extends MyGdxGame {
 
     private static MyGdxGameClient instance;
 
-    final Client _endPoint = new Client(64000000, 64000000);
+    final Client _endPoint = new Client(6400000, 6400000);
     boolean isInitialized = false;
 
     private MyGdxGameClient() {
@@ -132,14 +132,7 @@ public class MyGdxGameClient extends MyGdxGame {
                 Creature player = gameState().creatures().get(thisPlayerId);
 
 
-                float mouseX = Gdx.input.getX();
-                float mouseY = Gdx.input.getY();
-
-                float centerX = Gdx.graphics.getWidth() / 2f;
-                float centerY = Gdx.graphics.getHeight() / 2f;
-
-                Vector2 dirVector =
-                        Vector2.of(mouseX - centerX, (Gdx.graphics.getHeight() - mouseY) - centerY).normalized();
+                Vector2 dirVector = mousePos();
 
                 endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
                                                              SkillType.SLASH,
