@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 @NoArgsConstructor(staticName = "of")
 @Data
@@ -106,9 +107,7 @@ public class Enemy extends Creature {
                             params().targetCreatureId() != null &&
                             (params().forcePathCalculation()
                              || params().pathCalculationCooldownTimer().time() >
-                                params().pathCalculationCooldown());// &&
-        //                            params().pathCalculationFailurePenaltyTimer()
-        //                                    .time() > params().pathCalculationFailurePenalty();
+                                params().pathCalculationCooldown());
 
         if (condition) {
             Creature target = game.getCreature(params().targetCreatureId());
@@ -122,22 +121,15 @@ public class Enemy extends Creature {
                 List<Vector2> path;
 
                 if (mirroredPath != null) {
-                    System.out.println("MIRRORING... " + Math.random());
-
                     path = mirroredPath;
                     this.params().isPathMirrored(true);
                 }
                 else {
-                    System.out.println("CALCULATING PATH... " + Math.random());
-
                     AstarResult
                             result =
                             Astar.findPath(world, params().pos(), target.params().pos(), this.capability());
                     path = result.path();
 
-                    //                    if (result.gaveUp()) {
-                    //                        params().pathCalculationFailurePenaltyTimer().restart();
-                    //                    }
                     this.params().isPathMirrored(false);
                 }
 
@@ -154,20 +146,19 @@ public class Enemy extends Creature {
 
     private List<Vector2> mirrorPathFromNearbyCreature(CreatureId targetId, EnemyAiUpdatable game) {
 
-        Optional<Creature> otherCreature = game.getCreatures()
-                                               .stream()
-                                               .filter(creature ->
-                                                               creature instanceof Enemy &&
-                                                               creature.params().pos().distance(this.params().pos()) <
-                                                               4f &&
-                                                               !creature.params().id().equals(this.params().id()) &&
-                                                               creature.params().pathTowardsTarget() != null &&
-                                                               !creature.params().isPathMirrored() &&
-                                                               creature.params().targetCreatureId() != null &&
-                                                               creature.params().targetCreatureId().equals(targetId) &&
-                                                               creature.params().pathCalculationCooldownTimer().time() <
-                                                               1f)
-                                               .findFirst();
+        Predicate<Creature> creaturePredicate = creature ->
+                creature instanceof Enemy &&
+                creature.params().pos().distance(this.params().pos()) <
+                4f &&
+                !creature.params().id().equals(this.params().id()) &&
+                creature.params().pathTowardsTarget() != null &&
+                !creature.params().isPathMirrored() &&
+                creature.params().targetCreatureId() != null &&
+                creature.params().targetCreatureId().equals(targetId) &&
+                creature.params().pathCalculationCooldownTimer().time() <
+                1f;
+
+        Optional<Creature> otherCreature = game.getCreatures().stream().filter(creaturePredicate).findFirst();
 
         return otherCreature.map(creature -> creature.params().pathTowardsTarget()).orElse(null);
 
@@ -188,24 +179,21 @@ public class Enemy extends Creature {
         if (params().pathTowardsTarget() != null && !params().pathTowardsTarget().isEmpty()) {
             List<Vector2> path = params().pathTowardsTarget();
             Vector2 nextNodeOnPath = path.get(0);
-            if (params().pos().distance(nextNodeOnPath) < 2f) {
+            if (params().pos().distance(nextNodeOnPath) < 1f) {
                 List<Vector2> changedPath = new LinkedList<>(path);
                 changedPath.remove(0);
                 params().pathTowardsTarget(changedPath);
             }
             else {
-                params().movementCommandTargetPos(nextNodeOnPath);
-                params().reachedTargetPos(false);
+                moveTowards(nextNodeOnPath);
             }
         }
-        else {
-            params().movementCommandTargetPos(potentialTarget.params().pos());
-            params().reachedTargetPos(false);
+        else if (params().pos().distance(potentialTarget.params().pos()) > 3f) {
+            moveTowards(potentialTarget.params().pos());
         }
-        //} else {
-        //            // stop moving
-        //            stopMoving();
-        //        }
+        else {
+            stopMoving();
+        }
     }
 
     public void handleAttackTarget(Creature potentialTarget, Vector2 vectorTowardsTarget, EnemyAiUpdatable game) {

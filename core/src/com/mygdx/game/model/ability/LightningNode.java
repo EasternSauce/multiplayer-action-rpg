@@ -38,7 +38,9 @@ public class LightningNode extends Ability {
 
         Creature creature = game.getCreature(game.aliveCreatureClosestTo(params().pos(), 9f, excluded));
 
-        if (creature != null && params().creaturesAlreadyHit().size() <= 10) {
+        if (creature != null &&
+            params().creaturesAlreadyHit().size() <= 10 &&
+            game.getWorld(params().areaId()).isLineOfSight(params().pos(), creature.params().pos())) {
             creature.handleBeingAttacked(params().damage(),
                                          params().creatureId()); // TODO: can we do this in main update loop instead? introduce events etc.
 

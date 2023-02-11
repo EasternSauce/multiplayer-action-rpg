@@ -314,6 +314,11 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Enemy
         return physics().physicsWorlds().get(areaId);
     }
 
+    @Override
+    public PhysicsWorld getWorld(AreaId areaId) {
+        return physics().physicsWorlds().get(areaId);
+    }
+
     public void registerClasses(EndPoint endPoint) {
         endPoint.getKryo().setRegistrationRequired(true);
 

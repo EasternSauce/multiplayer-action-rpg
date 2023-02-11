@@ -44,8 +44,6 @@ public class CreatureParams {
     Boolean forcePathCalculation = false;
     SimpleTimer pathCalculationCooldownTimer = SimpleTimer.getExpiredTimer();
     Float pathCalculationCooldown;
-    //    SimpleTimer pathCalculationFailurePenaltyTimer = SimpleTimer.getExpiredTimer();
-    //    Float pathCalculationFailurePenalty;
 
     List<Vector2> pathTowardsTarget = null;
 

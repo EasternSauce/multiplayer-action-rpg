@@ -32,10 +32,7 @@ public class MoveTowardsTargetAction implements GameStateAction {
         if (creature != null && creature.isAlive()) {
             Vector2 pos = creature.params().pos();
 
-            creature.params()
-                    .movementCommandTargetPos(pos.add(mousePos))
-                    .reachedTargetPos(false);
-
+            creature.moveTowards(pos.add(mousePos));
 
             creature.params().previousPos(creature.params().pos());
             creature.params().isStillMovingTimer().restart();

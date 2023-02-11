@@ -82,7 +82,6 @@ public abstract class Creature {
         params().staminaRegenerationTimer().update(delta);
         params().aggroTimer().update(delta);
         params().findTargetTimer().update(delta);
-        //        params().pathCalculationFailurePenaltyTimer().update(delta);
 
         params().skills().forEach((skillType, skill) -> skill.performTimer().update(delta));
         // add other timers here...
@@ -129,6 +128,11 @@ public abstract class Creature {
 
     public void stopMoving() {
         params().movementCommandTargetPos(params().pos());
+    }
+
+    public void moveTowards(Vector2 pos) {
+        params().movementCommandTargetPos(pos);
+        params().reachedTargetPos(false);
     }
 
     private void takeLifeDamage(float damage) {
