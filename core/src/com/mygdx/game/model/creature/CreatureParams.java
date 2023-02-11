@@ -2,11 +2,11 @@ package com.mygdx.game.model.creature;
 
 import com.mygdx.game.game.EnemySpawn;
 import com.mygdx.game.model.area.AreaId;
-import com.mygdx.game.skill.Skill;
-import com.mygdx.game.skill.SkillType;
+import com.mygdx.game.model.skill.Skill;
+import com.mygdx.game.model.skill.SkillType;
+import com.mygdx.game.model.util.SimpleTimer;
+import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.util.RandomHelper;
-import com.mygdx.game.util.SimpleTimer;
-import com.mygdx.game.util.Vector2;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

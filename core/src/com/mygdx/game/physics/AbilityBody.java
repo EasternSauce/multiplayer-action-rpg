@@ -2,12 +2,12 @@ package com.mygdx.game.physics;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.mygdx.game.ability.Ability;
-import com.mygdx.game.ability.AbilityId;
-import com.mygdx.game.ability.AbilityState;
 import com.mygdx.game.model.GameState;
+import com.mygdx.game.model.ability.Ability;
+import com.mygdx.game.model.ability.AbilityId;
+import com.mygdx.game.model.ability.AbilityState;
 import com.mygdx.game.model.creature.CreatureId;
-import com.mygdx.game.util.Vector2;
+import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

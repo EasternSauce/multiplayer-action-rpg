@@ -6,9 +6,9 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.Constants;
+import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.pathing.Astar;
 import com.mygdx.game.pathing.PathingNode;
-import com.mygdx.game.util.Vector2;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

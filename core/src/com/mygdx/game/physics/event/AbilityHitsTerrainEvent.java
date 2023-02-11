@@ -1,6 +1,6 @@
 package com.mygdx.game.physics.event;
 
-import com.mygdx.game.ability.AbilityId;
+import com.mygdx.game.model.ability.AbilityId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

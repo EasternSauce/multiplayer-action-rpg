@@ -2,15 +2,21 @@ package com.mygdx.game.game;
 
 import com.badlogic.gdx.Game;
 import com.esotericsoftware.kryonet.EndPoint;
-import com.mygdx.game.ability.Ability;
-import com.mygdx.game.ability.AbilityId;
 import com.mygdx.game.chat.Chat;
+import com.mygdx.game.command.*;
 import com.mygdx.game.model.GameState;
+import com.mygdx.game.model.ability.*;
+import com.mygdx.game.model.action.*;
+import com.mygdx.game.model.area.Area;
 import com.mygdx.game.model.area.AreaId;
-import com.mygdx.game.model.creature.Creature;
-import com.mygdx.game.model.creature.CreatureId;
-import com.mygdx.game.model.creature.CreatureParams;
-import com.mygdx.game.model.creature.Enemy;
+import com.mygdx.game.model.creature.*;
+import com.mygdx.game.model.skill.ScheduledAbility;
+import com.mygdx.game.model.skill.Skill;
+import com.mygdx.game.model.skill.SkillType;
+import com.mygdx.game.model.util.GameStateHolder;
+import com.mygdx.game.model.util.SimpleTimer;
+import com.mygdx.game.model.util.Vector2;
+import com.mygdx.game.model.util.WorldDirection;
 import com.mygdx.game.physics.AbilityBody;
 import com.mygdx.game.physics.CreatureBody;
 import com.mygdx.game.physics.GamePhysics;
@@ -18,12 +24,10 @@ import com.mygdx.game.physics.PhysicsWorld;
 import com.mygdx.game.renderer.AbilityRenderer;
 import com.mygdx.game.renderer.CreatureRenderer;
 import com.mygdx.game.renderer.GameRenderer;
-import com.mygdx.game.skill.SkillType;
-import com.mygdx.game.util.GameStateHolder;
-import com.mygdx.game.util.Vector2;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class MyGdxGame extends Game implements AbilityUpdateable, EnemyAiUpdatable, AbilitySpawnable {
     final protected GameRenderer gameRenderer = GameRenderer.of();
@@ -160,24 +164,28 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Enemy
 
 
     public void removeCreature(CreatureId creatureId) {
-        gameState().creatures().remove(creatureId);
+        if (creatureId != null) {
+            gameState().creatures().remove(creatureId);
 
-        renderer().creatureRenderers().remove(creatureId);
+            renderer().creatureRenderers().remove(creatureId);
 
-        if (physics().creatureBodies().containsKey(creatureId)) {
-            physics().creatureBodies().get(creatureId).onRemove();
-            physics().creatureBodies().remove(creatureId);
+            if (physics().creatureBodies().containsKey(creatureId)) {
+                physics().creatureBodies().get(creatureId).onRemove();
+                physics().creatureBodies().remove(creatureId);
+            }
         }
     }
 
     public void removeAbility(AbilityId abilityId) {
-        gameState().abilities().remove(abilityId);
+        if (abilityId != null) {
+            gameState().abilities().remove(abilityId);
 
-        renderer().abilityRenderers().remove(abilityId);
+            renderer().abilityRenderers().remove(abilityId);
 
-        if (physics().abilityBodies().containsKey(abilityId)) {
-            physics().abilityBodies().get(abilityId).onRemove();
-            physics().abilityBodies().remove(abilityId);
+            if (physics().abilityBodies().containsKey(abilityId)) {
+                physics().abilityBodies().get(abilityId).onRemove();
+                physics().abilityBodies().remove(abilityId);
+            }
         }
     }
 
@@ -304,6 +312,67 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Enemy
     @Override
     public PhysicsWorld getPhysicsWorld(AreaId areaId) {
         return physics().physicsWorlds().get(areaId);
+    }
+
+    public void registerClasses(EndPoint endPoint) {
+        endPoint.getKryo().setRegistrationRequired(true);
+
+        endPoint.getKryo().register(HashSet.class);
+        endPoint.getKryo().register(HashMap.class);
+        endPoint.getKryo().register(ArrayList.class);
+        endPoint.getKryo().register(LinkedList.class);
+        endPoint.getKryo().register(ConcurrentHashMap.class);
+
+        endPoint.getKryo().register(CreatureId.class);
+        endPoint.getKryo().register(Vector2.class);
+        endPoint.getKryo().register(AreaId.class);
+        endPoint.getKryo().register(SimpleTimer.class);
+        endPoint.getKryo().register(AbilityType.class);
+        endPoint.getKryo().register(AbilityState.class);
+        endPoint.getKryo().register(EnemyType.class);
+        endPoint.getKryo().register(SkillType.class);
+        endPoint.getKryo().register(EnemySpawn.class);
+        endPoint.getKryo().register(AbilityId.class);
+
+        endPoint.getKryo().register(InitPlayerCommand.class);
+        endPoint.getKryo().register(PlayerMovementCommand.class);
+        endPoint.getKryo().register(SendChatMessageCommand.class);
+        endPoint.getKryo().register(SpawnEnemyCommand.class);
+        endPoint.getKryo().register(TryPerformSkillCommand.class);
+
+        endPoint.getKryo().register(Ability.class);
+        endPoint.getKryo().register(AbilityRect.class);
+        endPoint.getKryo().register(Attack.class);
+        endPoint.getKryo().register(CrossbowBolt.class);
+        endPoint.getKryo().register(Fireball.class);
+        endPoint.getKryo().register(FireballExplosion.class);
+        endPoint.getKryo().register(LightningChain.class);
+        endPoint.getKryo().register(LightningNode.class);
+        endPoint.getKryo().register(LightningSpark.class);
+
+        endPoint.getKryo().register(Enemy.class);
+        endPoint.getKryo().register(Area.class);
+        endPoint.getKryo().register(Player.class);
+        endPoint.getKryo().register(ScheduledAbility.class);
+        endPoint.getKryo().register(Skill.class);
+        endPoint.getKryo().register(WorldDirection.class);
+        endPoint.getKryo().register(CreatureParams.class);
+        endPoint.getKryo().register(AbilityParams.class);
+
+
+        endPoint.getKryo().register(AddAbilityAction.class);
+        endPoint.getKryo().register(AddPlayerAction.class);
+        endPoint.getKryo().register(CreatureDeathAction.class);
+        endPoint.getKryo().register(MoveTowardsTargetAction.class);
+        endPoint.getKryo().register(RemoveAbilityAction.class);
+        endPoint.getKryo().register(RemovePlayerAction.class);
+        endPoint.getKryo().register(RespawnCreatureAction.class);
+        endPoint.getKryo().register(TryPerformSkillAction.class);
+
+        endPoint.getKryo().register(ActionsHolder.class);
+        endPoint.getKryo().register(GameState.class);
+        endPoint.getKryo().register(GameStateHolder.class);
+
     }
 
 }

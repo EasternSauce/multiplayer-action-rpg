@@ -1,11 +1,11 @@
 package com.mygdx.game.model.creature;
 
 import com.mygdx.game.game.EnemyAiUpdatable;
+import com.mygdx.game.model.skill.SkillType;
+import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.pathing.Astar;
 import com.mygdx.game.pathing.AstarResult;
 import com.mygdx.game.physics.PhysicsWorld;
-import com.mygdx.game.skill.SkillType;
-import com.mygdx.game.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;

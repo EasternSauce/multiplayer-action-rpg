@@ -1,6 +1,6 @@
 package com.mygdx.game.renderer;
 
-import com.mygdx.game.util.WorldDirection;
+import com.mygdx.game.model.util.WorldDirection;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

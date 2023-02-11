@@ -8,9 +8,9 @@ import com.mygdx.game.Constants;
 import com.mygdx.game.assets.Assets;
 import com.mygdx.game.chat.Chat;
 import com.mygdx.game.model.creature.Creature;
+import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.renderer.DrawingLayer;
 import com.mygdx.game.renderer.GameRenderer;
-import com.mygdx.game.util.Vector2;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
 import java.util.Locale;
@@ -106,7 +106,7 @@ public class RendererHelper {
     }
 
     private static void drawRespawnMessage(Creature creature, DrawingLayer drawingLayer) {
-        if (!creature.isAlive()) {
+        if (creature != null && !creature.isAlive()) {
             if (creature.params().respawnTimer().time() < creature.params().respawnTime()) {
                 Assets.drawLargeFont(drawingLayer,
                                      "You are dead!\nRespawning...\n" + String.format(Locale.US,
@@ -126,21 +126,25 @@ public class RendererHelper {
     private static void drawHudBars(Creature creature, DrawingLayer drawingLayer) {
         ShapeDrawer shapeDrawer = drawingLayer.shapeDrawer();
 
-        shapeDrawer.filledRectangle(new Rectangle(10, 40, 100, 10), Color.ORANGE);
-        shapeDrawer.filledRectangle(new Rectangle(10,
-                                                  40,
-                                                  100 * creature.params().life() / creature.params().maxLife(),
-                                                  10), Color.RED);
-        shapeDrawer.filledRectangle(new Rectangle(10, 25, 100, 10), Color.ORANGE);
-        shapeDrawer.filledRectangle(new Rectangle(10,
-                                                  25,
-                                                  100 * creature.params().stamina() / creature.params().maxStamina(),
-                                                  10), Color.GREEN);
-        shapeDrawer.filledRectangle(new Rectangle(10, 10, 100, 10), Color.ORANGE);
-        shapeDrawer.filledRectangle(new Rectangle(10,
-                                                  10,
-                                                  100 * creature.params().mana() / creature.params().maxMana(),
-                                                  10), Color.BLUE);
+        if (creature != null) {
+            shapeDrawer.filledRectangle(new Rectangle(10, 40, 100, 10), Color.ORANGE);
+            shapeDrawer.filledRectangle(new Rectangle(10,
+                                                      40,
+                                                      100 * creature.params().life() / creature.params().maxLife(),
+                                                      10), Color.RED);
+            shapeDrawer.filledRectangle(new Rectangle(10, 25, 100, 10), Color.ORANGE);
+            shapeDrawer.filledRectangle(new Rectangle(10,
+                                                      25,
+                                                      100 * creature.params().stamina() /
+                                                      creature.params().maxStamina(),
+                                                      10), Color.GREEN);
+            shapeDrawer.filledRectangle(new Rectangle(10, 10, 100, 10), Color.ORANGE);
+            shapeDrawer.filledRectangle(new Rectangle(10,
+                                                      10,
+                                                      100 * creature.params().mana() / creature.params().maxMana(),
+                                                      10), Color.BLUE);
+        }
+
     }
 
     private static void drawChat(Chat chat, DrawingLayer drawingLayer) {

@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
-import com.mygdx.game.util.WorldDirection;
+import com.mygdx.game.model.util.WorldDirection;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

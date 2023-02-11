@@ -5,7 +5,7 @@ import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
-import com.mygdx.game.util.Vector2;
+import com.mygdx.game.model.util.Vector2;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")

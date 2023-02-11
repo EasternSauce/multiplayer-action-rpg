@@ -1,12 +1,12 @@
 package com.mygdx.game.model;
 
-import com.mygdx.game.ability.Ability;
-import com.mygdx.game.ability.AbilityId;
+import com.mygdx.game.model.ability.Ability;
+import com.mygdx.game.model.ability.AbilityId;
 import com.mygdx.game.model.area.Area;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
-import com.mygdx.game.util.SimpleTimer;
+import com.mygdx.game.model.util.SimpleTimer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

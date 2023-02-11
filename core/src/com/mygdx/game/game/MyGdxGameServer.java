@@ -4,18 +4,18 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.mygdx.game.Constants;
-import com.mygdx.game.ability.*;
-import com.mygdx.game.action.*;
 import com.mygdx.game.command.*;
 import com.mygdx.game.model.GameState;
+import com.mygdx.game.model.ability.*;
+import com.mygdx.game.model.action.*;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.creature.EnemyType;
 import com.mygdx.game.model.creature.Player;
-import com.mygdx.game.skill.SkillType;
-import com.mygdx.game.util.GameStateHolder;
-import com.mygdx.game.util.Vector2;
+import com.mygdx.game.model.skill.SkillType;
+import com.mygdx.game.model.util.GameStateHolder;
+import com.mygdx.game.model.util.Vector2;
 
 import java.io.IOException;
 import java.util.*;
@@ -25,13 +25,13 @@ import java.util.stream.Collectors;
 public class MyGdxGameServer extends MyGdxGame {
     private static MyGdxGameServer instance;
 
-    final Server _endPoint = new Server(1638400, 204800);
+    final Server _endPoint = new Server(64000000, 64000000);
     private final List<GameStateAction> tickActions = Collections.synchronizedList(new ArrayList<>());
     private final Map<Integer, CreatureId> clientCreatures = new HashMap<>();
     Thread broadcastThread;
 
     private MyGdxGameServer() {
-        _endPoint.getKryo().setRegistrationRequired(false);
+        registerClasses(_endPoint);
     }
 
     public static MyGdxGameServer getInstance() {
@@ -182,7 +182,6 @@ public class MyGdxGameServer extends MyGdxGame {
 
         broadcastThread = new Thread(() -> {
             try {
-                //                Thread.sleep(2000); // delay first broadcast
                 while (true) {
                     //noinspection BusyWait
                     Thread.sleep(500);

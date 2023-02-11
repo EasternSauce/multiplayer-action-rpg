@@ -1,6 +1,6 @@
 package com.mygdx.game.game;
 
-import com.mygdx.game.ability.Ability;
+import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.Player;
 import com.mygdx.game.physics.event.AbilityHitsCreatureEvent;

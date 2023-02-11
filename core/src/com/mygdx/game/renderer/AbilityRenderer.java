@@ -4,10 +4,10 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.mygdx.game.ability.Ability;
-import com.mygdx.game.ability.AbilityId;
-import com.mygdx.game.ability.AbilityState;
 import com.mygdx.game.model.GameState;
+import com.mygdx.game.model.ability.Ability;
+import com.mygdx.game.model.ability.AbilityId;
+import com.mygdx.game.model.ability.AbilityState;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

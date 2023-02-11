@@ -1,10 +1,10 @@
 package com.mygdx.game.game;
 
-import com.mygdx.game.ability.AbilityId;
-import com.mygdx.game.ability.AbilityType;
+import com.mygdx.game.model.ability.AbilityId;
+import com.mygdx.game.model.ability.AbilityType;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.CreatureId;
-import com.mygdx.game.util.Vector2;
+import com.mygdx.game.model.util.Vector2;
 
 import java.util.Set;
 

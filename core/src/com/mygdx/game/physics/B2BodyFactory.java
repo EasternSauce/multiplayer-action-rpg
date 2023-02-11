@@ -3,7 +3,7 @@ package com.mygdx.game.physics;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.mygdx.game.model.creature.Creature;
-import com.mygdx.game.util.Vector2;
+import com.mygdx.game.model.util.Vector2;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

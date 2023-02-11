@@ -5,8 +5,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.renderer.DrawingLayer;
-import com.mygdx.game.util.Vector2;
 
 public class Assets {
 

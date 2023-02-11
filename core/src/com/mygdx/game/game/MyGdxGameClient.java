@@ -7,20 +7,20 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.mygdx.game.Constants;
-import com.mygdx.game.ability.Ability;
-import com.mygdx.game.ability.AbilityId;
-import com.mygdx.game.ability.AbilityType;
-import com.mygdx.game.action.ActionsHolder;
-import com.mygdx.game.action.GameStateAction;
 import com.mygdx.game.command.*;
 import com.mygdx.game.model.GameState;
+import com.mygdx.game.model.ability.Ability;
+import com.mygdx.game.model.ability.AbilityId;
+import com.mygdx.game.model.ability.AbilityType;
+import com.mygdx.game.model.action.ActionsHolder;
+import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.creature.EnemyType;
-import com.mygdx.game.skill.SkillType;
-import com.mygdx.game.util.GameStateHolder;
-import com.mygdx.game.util.Vector2;
+import com.mygdx.game.model.skill.SkillType;
+import com.mygdx.game.model.util.GameStateHolder;
+import com.mygdx.game.model.util.Vector2;
 
 import java.io.IOException;
 import java.util.*;
@@ -30,11 +30,11 @@ public class MyGdxGameClient extends MyGdxGame {
 
     private static MyGdxGameClient instance;
 
-    final Client _endPoint = new Client(10000000, 2500000);
+    final Client _endPoint = new Client(64000000, 64000000);
     boolean isInitialized = false;
 
     private MyGdxGameClient() {
-        _endPoint.getKryo().setRegistrationRequired(false);
+        registerClasses(_endPoint);
 
         thisPlayerId = CreatureId.of("Player_" + (int) (Math.random() * 10000000));
     }
@@ -284,7 +284,6 @@ public class MyGdxGameClient extends MyGdxGame {
                 else if (object instanceof GameStateHolder) {
                     GameStateHolder action = (GameStateHolder) object;
 
-
                     if (action.initial()) {
                         gameStateHolder.gameState(action.gameState());
 
@@ -358,11 +357,6 @@ public class MyGdxGameClient extends MyGdxGame {
 
         String[] textures = new String[]{"male1", "male2", "female1"};
 
-        try {
-            Thread.sleep(2000); // without this game doesn't start sometimes (too much data transfer too early?)
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
         endPoint().sendTCP(InitPlayerCommand.of(thisPlayerId,
                                                 Vector2.of((float) ((Math.random() * (28 - 18)) + 18),
                                                            (float) ((Math.random() * (12 - 6)) + 6)),
