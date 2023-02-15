@@ -145,7 +145,7 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Enemy
 
     public void spawnEnemy(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn) {
         gameState().creatures()
-                   .put(creatureId, Enemy.of(CreatureParams.of(creatureId, areaId, enemySpawn).speed(5f)));
+                   .put(creatureId, Enemy.of(CreatureParams.of(creatureId, areaId, enemySpawn).baseSpeed(8f)));
 
         creaturesToBeCreated().add(creatureId);
 
@@ -207,6 +207,7 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Enemy
             if (gameState().creatures().containsKey(creatureId) && physics()
                     .creatureBodies()
                     .containsKey(creatureId)) {
+
                 gameState()
                         .creatures()
                         .get(creatureId)
@@ -223,7 +224,7 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Enemy
 
         creaturesToUpdate.forEach(creatureId -> {
             if (renderer().creatureRenderers().containsKey(creatureId)) {
-                renderer().creatureRenderers().get(creatureId).update(gameState());
+                renderer().creatureRenderers().get(creatureId).update(this);
             }
         });
 
@@ -338,6 +339,7 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Enemy
         endPoint.getKryo().register(SkillType.class);
         endPoint.getKryo().register(EnemySpawn.class);
         endPoint.getKryo().register(AbilityId.class);
+        endPoint.getKryo().register(EnemyAiState.class);
 
         endPoint.getKryo().register(InitPlayerCommand.class);
         endPoint.getKryo().register(PlayerMovementCommand.class);

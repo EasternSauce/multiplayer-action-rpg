@@ -1,11 +1,14 @@
 package com.mygdx.game.model.creature;
 
+import com.mygdx.game.game.CreaturePosRetrievable;
 import com.mygdx.game.game.EnemyAiUpdatable;
 import com.mygdx.game.model.skill.SkillType;
 import com.mygdx.game.model.util.Vector2;
+import com.mygdx.game.model.util.WorldDirection;
 import com.mygdx.game.pathing.Astar;
 import com.mygdx.game.pathing.AstarResult;
 import com.mygdx.game.physics.PhysicsWorld;
+import com.mygdx.game.util.RandomHelper;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -21,7 +24,7 @@ import java.util.function.Predicate;
 public class Enemy extends Creature {
     CreatureParams params;
 
-    private float enemySearchDistance = 15f;
+    private float enemySearchDistance = 18f;
 
     public static Enemy of(CreatureParams params) {
         Enemy enemy = Enemy.of();
@@ -57,10 +60,36 @@ public class Enemy extends Creature {
     @Override
     public void updateAutomaticControls(EnemyAiUpdatable game) {
 
-        if (params().attackedByCreatureId() != null) {
+        if (params().aiStateTimer().time() > params().aiStateTimeout()) {
+            params().aiStateTimer().restart();
+
+            if (params().aiState() == EnemyAiState.DEFENSIVE && params().targetCreatureId() != null) {
+                Vector2 targetPos = game.getCreaturePos(params().targetCreatureId());
+                do {
+                    params().defensivePosition(Vector2.of(this.params().pos().x() + nextFloat() * 3,
+                                                          this.params().pos().y() + nextFloat() * 3));
+                } while (params().defensivePosition().distance(targetPos) < 12f &&
+                         params().defensivePosition().distance(targetPos) > 13f);
+
+                float randomValue = nextAbsoluteFloat();
+                if (randomValue < 0.05f) {
+                    params().aiState(EnemyAiState.AGGRESSIVE);
+                    params().speed(params().baseSpeed());
+                }
+            }
+
+            params().aiStateTimeout(1f + 1f * nextAbsoluteFloat());
+        }
+
+        if (params().justAttackedTimer().time() < params().justAttackedTimeout()) {
+            params().aiState(EnemyAiState.AGGRESSIVE);
+            params().speed(params().baseSpeed());
+        }
+
+        if (params().attackedByCreatureId() != null) { // if attacked, aggro no matter what
             params.aggroedCreatureId(params().attackedByCreatureId());
         }
-        else {
+        else { // if not attacked, search around for targets
             CreatureId foundTargetId = params().lastFoundTargetId();
 
             if (params().findTargetTimer().time() > params().findTargetCooldown()) {
@@ -83,22 +112,34 @@ public class Enemy extends Creature {
         if (params().aggroTimer().time() < params.loseAggroTime() &&
             potentialTarget != null &&
             potentialTarget.isAlive() &&
-            this.isAlive()) {
+            this.isAlive()) { // if aggro not timed out and potential target is found
 
             Vector2 vectorTowardsTarget = params().pos().vectorTowards(potentialTarget.params().pos());
 
-            handleNewTarget(potentialTarget.params().id());
-            handleMovement(potentialTarget);
-            handleAttackTarget(potentialTarget, vectorTowardsTarget, game);
+            handleNewTarget(potentialTarget.params().id()); // logic for when target changed
+            handleMovement(potentialTarget); // set movement command, causing creature to walk towards target
+            handleAttackTarget(potentialTarget, vectorTowardsTarget, game); // attack target if within range
 
         }
-        else {
+        else { // if aggro timed out and out of range
             handleTargetLost();
 
         }
 
-        processPathfinding(game);
+        processPathfinding(game); // set path towards creature target
 
+    }
+
+    @Override
+    public void handleBeingAttacked(float damage, CreatureId attackerId) {
+        takeLifeDamage(damage);
+        stopMoving();
+
+        params().attackedByCreatureId();
+        params().aggroedCreatureId(attackerId);
+        params().aggroTimer().restart();
+
+        params().justAttackedTimer().restart();
     }
 
     private void processPathfinding(EnemyAiUpdatable game) {
@@ -125,8 +166,7 @@ public class Enemy extends Creature {
                     this.params().isPathMirrored(true);
                 }
                 else {
-                    AstarResult
-                            result =
+                    AstarResult result =
                             Astar.findPath(world, params().pos(), target.params().pos(), this.capability());
                     path = result.path();
 
@@ -148,15 +188,13 @@ public class Enemy extends Creature {
 
         Predicate<Creature> creaturePredicate = creature ->
                 creature instanceof Enemy &&
-                creature.params().pos().distance(this.params().pos()) <
-                4f &&
+                creature.params().pos().distance(this.params().pos()) < 4f &&
                 !creature.params().id().equals(this.params().id()) &&
                 creature.params().pathTowardsTarget() != null &&
                 !creature.params().isPathMirrored() &&
                 creature.params().targetCreatureId() != null &&
                 creature.params().targetCreatureId().equals(targetId) &&
-                creature.params().pathCalculationCooldownTimer().time() <
-                1f;
+                creature.params().pathCalculationCooldownTimer().time() < 0.5f;
 
         Optional<Creature> otherCreature = game.getCreatures().stream().filter(creaturePredicate).findFirst();
 
@@ -174,9 +212,21 @@ public class Enemy extends Creature {
 
 
     public void handleMovement(Creature potentialTarget) {
-        //        if (potentialTarget.params().pos().distance(params().pos()) > 3f &&
-        //                potentialTarget.params().pos().distance(params().pos()) < enemySearchDistance) {
-        if (params().pathTowardsTarget() != null && !params().pathTowardsTarget().isEmpty()) {
+        Float distance = params().pos().distance(potentialTarget.params().pos());
+
+        if (params().justAttackedTimer().time() >= params().justAttackedTimeout()) {
+            if (distance > 20f) {
+                params().aiState(EnemyAiState.DEFENSIVE);
+                params().speed(params().baseSpeed() / 3);
+            }
+            else if (distance < 10f) {
+                params().aiState(EnemyAiState.AGGRESSIVE);
+                params().speed(params().baseSpeed());
+            }
+        }
+
+
+        if (params().pathTowardsTarget() != null && !params().pathTowardsTarget().isEmpty()) { // path is available
             List<Vector2> path = params().pathTowardsTarget();
             Vector2 nextNodeOnPath = path.get(0);
             if (params().pos().distance(nextNodeOnPath) < 1f) {
@@ -188,10 +238,19 @@ public class Enemy extends Creature {
                 moveTowards(nextNodeOnPath);
             }
         }
-        else if (params().pos().distance(potentialTarget.params().pos()) > 3f) {
-            moveTowards(potentialTarget.params().pos());
+        else if (distance > 3f) {
+            if (params().aiState() == EnemyAiState.AGGRESSIVE) {
+                params().speed(params().baseSpeed());
+                moveTowards(potentialTarget.params().pos());
+            }
+            else if (params().aiState() == EnemyAiState.DEFENSIVE) {
+                params().speed(params().baseSpeed() / 3);
+                if (params().defensivePosition() != null) {
+                    moveTowards(params().defensivePosition());
+                }
+            }
         }
-        else {
+        else { // if no path or distance is small, then stop moving
             stopMoving();
         }
     }
@@ -208,5 +267,49 @@ public class Enemy extends Creature {
         params().targetCreatureId(null);
         params().attackedByCreatureId(null);
         stopMoving();
+    }
+
+    public Float nextAbsoluteFloat() {
+        params().aiStateSeed(RandomHelper.seededRandomFloat(params().aiStateSeed()));
+        return params().aiStateSeed();
+    }
+
+    public Float nextFloat() {
+        params().aiStateSeed(RandomHelper.seededRandomFloat(params().aiStateSeed()));
+        return (params().aiStateSeed() - 0.5f) * 2;
+    }
+
+    @Override
+    public WorldDirection facingDirection(CreaturePosRetrievable game) {
+
+        float deg;
+        if (params().targetCreatureId() != null) {
+            Vector2 targetPos = game.getCreaturePos(params().targetCreatureId());
+            if (targetPos != null) {
+                deg = this.params().pos().vectorTowards(targetPos).angleDeg();
+            }
+            else {
+                deg = 0f;
+            }
+
+        }
+        else {
+            deg = params().movingVector().angleDeg();
+        }
+
+
+        if (deg >= 45 && deg < 135) {
+            return WorldDirection.UP;
+        }
+        else if (deg >= 135 && deg < 225) {
+            return WorldDirection.LEFT;
+        }
+        else if (deg >= 225 && deg < 315) {
+            return WorldDirection.DOWN;
+        }
+        else {
+            return WorldDirection.RIGHT;
+        }
+
     }
 }

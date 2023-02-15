@@ -38,6 +38,7 @@ public class CreatureParams {
     Boolean isMoving = false;
 
     Float speed = 10f;
+    Float baseSpeed = 10f;
 
     CreatureId targetCreatureId = null;
 
@@ -89,6 +90,18 @@ public class CreatureParams {
 
     Boolean isPathMirrored = false;
 
+    EnemyAiState aiState = EnemyAiState.DEFENSIVE;
+
+    SimpleTimer aiStateTimer = SimpleTimer.getExpiredTimer();
+
+    Float aiStateTimeout;
+    Float aiStateSeed;
+
+    Vector2 defensivePosition;
+
+    SimpleTimer justAttackedTimer = SimpleTimer.getExpiredTimer();
+
+    Float justAttackedTimeout = 3f;
 
     public static CreatureParams of(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn) {
         CreatureParams params = CreatureParams.of();
@@ -104,6 +117,9 @@ public class CreatureParams {
                 Arrays.stream(SkillType.values())
                       .collect(Collectors.toMap(Function.identity(), skillType -> Skill.of(skillType, creatureId)));
 
+        params.aiStateSeed = RandomHelper.seededRandomFloat(creatureId);
+        params.aiStateTimeout = 0f;
+
         return params;
     }
 
@@ -115,11 +131,14 @@ public class CreatureParams {
         params.textureName = textureName;
         params.findTargetCooldown = 0.5f + RandomHelper.seededRandomFloat(creatureId);
         //        params.pathCalculationFailurePenalty = 10f + 5f * RandomHelper.seededRandomFloat(creatureId);
-        params.pathCalculationCooldown = 1f + RandomHelper.seededRandomFloat(creatureId);
+        params.pathCalculationCooldown = 4f + 2f * RandomHelper.seededRandomFloat(creatureId);
 
         params.skills = // TODO: should we restrict which creature can perform which skill?
                 Arrays.stream(SkillType.values())
                       .collect(Collectors.toMap(Function.identity(), skillType -> Skill.of(skillType, creatureId)));
+
+        params.aiStateSeed = RandomHelper.seededRandomFloat(creatureId);
+        params.aiStateTimeout = 0f;
 
         return params;
     }

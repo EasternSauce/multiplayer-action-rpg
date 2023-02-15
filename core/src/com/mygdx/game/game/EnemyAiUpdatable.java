@@ -9,7 +9,7 @@ import com.mygdx.game.physics.PhysicsWorld;
 
 import java.util.Collection;
 
-public interface EnemyAiUpdatable extends CreatureRetrievable {
+public interface EnemyAiUpdatable extends CreatureRetrievable, CreaturePosRetrievable {
     Collection<Creature> getCreatures();
 
     void handleAttackTarget(CreatureId attackingCreatureId,

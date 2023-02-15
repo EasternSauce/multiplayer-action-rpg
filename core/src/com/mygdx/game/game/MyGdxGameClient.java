@@ -319,7 +319,6 @@ public class MyGdxGameClient extends MyGdxGame {
 
 
                         gameStateHolder.gameState(newGameState);
-
                     }
 
                     gamePhysics.forceUpdateBodyPositions(true);

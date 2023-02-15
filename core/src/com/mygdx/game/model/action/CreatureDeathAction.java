@@ -31,7 +31,6 @@ public class CreatureDeathAction implements GameStateAction {
         creature.params().life(0f); // just to make sure its dead on client side
         creature.params().justDied(false);
         creature.params().isDead(true);
-        creature.stopMoving();
         creature.params().respawnTimer().restart();
         creature.params().awaitingRespawn(true);
         creature.onDeath();

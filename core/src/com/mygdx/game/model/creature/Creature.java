@@ -1,5 +1,6 @@
 package com.mygdx.game.model.creature;
 
+import com.mygdx.game.game.CreaturePosRetrievable;
 import com.mygdx.game.game.EnemyAiUpdatable;
 import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.model.ability.Ability;
@@ -55,10 +56,9 @@ public abstract class Creature {
 
         Vector2 vectorBetween = Vector2.of(targetPos.x() - currentPos.x(), targetPos.y() - currentPos.y());
 
-
         params().isMoving(false);
 
-        if (vectorBetween.len() < 0.1f) {
+        if (!isAlive() || vectorBetween.len() < 0.1f) {
             params().reachedTargetPos(true);
         }
         else {
@@ -82,6 +82,7 @@ public abstract class Creature {
         params().staminaRegenerationTimer().update(delta);
         params().aggroTimer().update(delta);
         params().findTargetTimer().update(delta);
+        params().aiStateTimer().update(delta);
 
         params().skills().forEach((skillType, skill) -> skill.performTimer().update(delta));
         // add other timers here...
@@ -91,7 +92,7 @@ public abstract class Creature {
         return !params().isDead();
     }
 
-    public WorldDirection facingDirection() {
+    public WorldDirection facingDirection(CreaturePosRetrievable game) {
         float deg = params().movingVector().angleDeg();
         if (deg >= 45 && deg < 135) {
             return WorldDirection.UP;
@@ -135,7 +136,7 @@ public abstract class Creature {
         params().reachedTargetPos(false);
     }
 
-    private void takeLifeDamage(float damage) {
+    protected void takeLifeDamage(float damage) {
         float beforeLife = params().life();
 
         float actualDamage = damage * 100f / (100f + params().armor());
@@ -154,9 +155,7 @@ public abstract class Creature {
 
     public void handleBeingAttacked(float damage, CreatureId attackerId) {
         takeLifeDamage(damage);
-        params().attackedByCreatureId();
-        params().aggroedCreatureId(attackerId);
-        params().aggroTimer().restart();
+        stopMoving();
     }
 
     private void takeManaDamage(Float manaCost) {
@@ -205,4 +204,5 @@ public abstract class Creature {
         takeStaminaDamage(skill.staminaCost());
         takeManaDamage(skill.manaCost());
     }
+
 }

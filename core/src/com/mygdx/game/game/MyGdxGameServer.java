@@ -184,7 +184,7 @@ public class MyGdxGameServer extends MyGdxGame {
             try {
                 while (true) {
                     //noinspection BusyWait
-                    Thread.sleep(500);
+                    Thread.sleep(300);
 
                     Connection[] connections = endPoint().getConnections();
                     for (Connection connection : connections) {

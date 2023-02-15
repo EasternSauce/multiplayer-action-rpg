@@ -15,4 +15,10 @@ public class RandomHelper {
 
         return generator.nextFloat();
     }
+
+    public static float seededRandomFloat(Float otherSeed) {
+        Random generator = new Random((int) (otherSeed * 1000000000));
+
+        return generator.nextFloat();
+    }
 }

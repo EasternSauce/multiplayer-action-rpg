@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
@@ -89,12 +90,12 @@ public class CreatureRenderer {
         return facingTextures().get(creature.animationConfig().dirMap().get(currentDirection));
     }
 
-    public void update(GameState gameState) {
-        if (!gameState.creatures().containsKey(creatureId)) {
+    public void update(MyGdxGame game) {
+        if (!game.gameState().creatures().containsKey(creatureId)) {
             return;
         }
 
-        Creature creature = gameState.creatures().get(creatureId);
+        Creature creature = game.gameState().creatures().get(creatureId);
 
         sprite.setCenter(creature.params().pos().x(), creature.params().pos().y());
         sprite.setSize(creature.animationConfig().spriteWidth(), creature.animationConfig().spriteHeight());
@@ -103,10 +104,10 @@ public class CreatureRenderer {
 
             TextureRegion texture;
             if (!creature.params().isMoving()) {
-                texture = pickFacingTexture(creature.facingDirection(), gameState);
+                texture = pickFacingTexture(creature.facingDirection(game), game.gameState());
             }
             else {
-                texture = runningAnimation(creature.facingDirection(), gameState);
+                texture = runningAnimation(creature.facingDirection(game), game.gameState());
             }
 
             sprite.setRotation(0f);
@@ -116,7 +117,7 @@ public class CreatureRenderer {
 
         }
         else {
-            TextureRegion texture = pickFacingTexture(WorldDirection.RIGHT, gameState);
+            TextureRegion texture = pickFacingTexture(WorldDirection.RIGHT, game.gameState());
 
             sprite.setOriginCenter();
             sprite.setRotation(90f);
