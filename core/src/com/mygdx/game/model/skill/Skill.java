@@ -76,7 +76,7 @@ public class Skill {
                                                               1.4f)})
                                   .collect(Collectors.toCollection(ArrayList::new)),
                             SimpleTimer.getExpiredTimer(),
-                            2f, 30f,
+                            2f, 40f,
                             0f);
         }
         throw new RuntimeException("skill not handled");

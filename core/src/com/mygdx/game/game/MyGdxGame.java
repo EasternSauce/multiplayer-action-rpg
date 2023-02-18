@@ -145,7 +145,7 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Enemy
 
     public void spawnEnemy(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn) {
         gameState().creatures()
-                   .put(creatureId, Enemy.of(CreatureParams.of(creatureId, areaId, enemySpawn).baseSpeed(8f)));
+                   .put(creatureId, Enemy.of(CreatureParams.of(creatureId, areaId, enemySpawn).baseSpeed(7f)));
 
         creaturesToBeCreated().add(creatureId);
 

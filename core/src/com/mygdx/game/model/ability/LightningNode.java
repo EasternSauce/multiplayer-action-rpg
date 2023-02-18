@@ -21,6 +21,11 @@ public class LightningNode extends Ability {
     AbilityParams params;
 
     @Override
+    public Boolean isRanged() {
+        return true;
+    }
+
+    @Override
     public AbilityType type() {
         return AbilityType.LIGHTNING_NODE;
     }
@@ -36,12 +41,12 @@ public class LightningNode extends Ability {
         Set<CreatureId> excluded = new HashSet<>(params().creaturesAlreadyHit());
         excluded.add(params().creatureId());
 
-        Creature creature = game.getCreature(game.aliveCreatureClosestTo(params().pos(), 9f, excluded));
+        Creature creature = game.getCreature(game.aliveCreatureClosestTo(params().pos(), 13f, excluded));
 
         if (creature != null &&
             params().creaturesAlreadyHit().size() <= 10 &&
             game.getWorld(params().areaId()).isLineOfSight(params().pos(), creature.params().pos())) {
-            creature.handleBeingAttacked(params().damage(),
+            creature.handleBeingAttacked(true, params().damage(),
                                          params().creatureId()); // TODO: can we do this in main update loop instead? introduce events etc.
 
             game.chainAbility(this, AbilityType.LIGHTNING_CHAIN, creature.params().pos(), null);

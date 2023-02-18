@@ -49,6 +49,11 @@ public class Fireball extends Projectile {
     }
 
     @Override
+    public Boolean isRanged() {
+        return true;
+    }
+
+    @Override
     public AbilityType type() {
         return AbilityType.FIREBALL;
     }

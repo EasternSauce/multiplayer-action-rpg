@@ -259,7 +259,7 @@ public class MyGdxGameServer extends MyGdxGame {
                                                         creaturesAlreadyHit,
                                                         this);
 
-        if (creature != null /*&& creature.canPerformAbility(ability)*/) { // TODO?
+        if (creature != null) {
             AddAbilityAction action = AddAbilityAction.of(ability);
 
             tickActions.add(action);

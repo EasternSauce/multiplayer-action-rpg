@@ -23,6 +23,11 @@ public class LightningSpark extends Ability {
 
 
     @Override
+    public Boolean isRanged() {
+        return true;
+    }
+
+    @Override
     public AbilityType type() {
         return AbilityType.LIGHTNING_SPARK;
     }
@@ -38,11 +43,11 @@ public class LightningSpark extends Ability {
         Set<CreatureId> excluded = new HashSet<>(params().creaturesAlreadyHit());
         excluded.add(params().creatureId());
 
-        Creature creature = game.getCreature(game.aliveCreatureClosestTo(params().pos(), 9f, excluded));
+        Creature creature = game.getCreature(game.aliveCreatureClosestTo(params().pos(), 13f, excluded));
 
         if (creature != null &&
             game.getWorld(params().areaId()).isLineOfSight(params().pos(), creature.params().pos())) {
-            creature.handleBeingAttacked(params().damage(), params().creatureId());
+            creature.handleBeingAttacked(true, params().damage(), params().creatureId());
 
             game.chainAbility(this, AbilityType.LIGHTNING_CHAIN, creature.params().pos(), null);
 

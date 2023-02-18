@@ -77,7 +77,7 @@ public class CreatureParams {
     Float staminaRegeneration = 0.35f;
 
     SimpleTimer aggroTimer = SimpleTimer.getExpiredTimer();
-    Float loseAggroTime = 7f;
+    Float loseAggroTime = 3f;
     CreatureId aggroedCreatureId = null;
 
     CreatureId attackedByCreatureId = null;
@@ -90,7 +90,7 @@ public class CreatureParams {
 
     Boolean isPathMirrored = false;
 
-    EnemyAiState aiState = EnemyAiState.DEFENSIVE;
+    EnemyAiState aiState = EnemyAiState.RESTING;
 
     SimpleTimer aiStateTimer = SimpleTimer.getExpiredTimer();
 
@@ -99,9 +99,9 @@ public class CreatureParams {
 
     Vector2 defensivePosition;
 
-    SimpleTimer justAttackedTimer = SimpleTimer.getExpiredTimer();
+    SimpleTimer justAttackedFromRangeTimer = SimpleTimer.getExpiredTimer();
 
-    Float justAttackedTimeout = 3f;
+    Float justAttackedFromRangeTimeout = 3f;
 
     public static CreatureParams of(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn) {
         CreatureParams params = CreatureParams.of();

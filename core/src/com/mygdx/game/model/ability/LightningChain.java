@@ -20,6 +20,11 @@ public class LightningChain extends Ability {
 
 
     @Override
+    public Boolean isRanged() {
+        return true;
+    }
+
+    @Override
     public AbilityType type() {
         return AbilityType.LIGHTNING_CHAIN;
     }

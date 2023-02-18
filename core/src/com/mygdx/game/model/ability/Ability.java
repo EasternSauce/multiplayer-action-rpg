@@ -14,6 +14,8 @@ public abstract class Ability {
         return false;
     }
 
+    public abstract Boolean isRanged();
+
     public abstract AbilityType type();
 
     public void update(Float delta, AbilityUpdateable game) {

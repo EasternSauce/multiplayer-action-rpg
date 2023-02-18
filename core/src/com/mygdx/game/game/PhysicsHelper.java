@@ -51,7 +51,7 @@ public class PhysicsHelper {
             if ((attackedIsPlayer || attackingIsPlayer) && !ability.params()
                                                                    .creaturesAlreadyHit()
                                                                    .contains(event.attackedCreatureId())) {
-                attackedCreature.handleBeingAttacked(ability.params().damage(), event.attackingCreatureId());
+                attackedCreature.handleBeingAttacked(ability.isRanged(), ability.params().damage(), event.attackingCreatureId());
             }
 
             ability.params().creaturesAlreadyHit().add(event.attackedCreatureId());

@@ -26,6 +26,11 @@ public class Attack extends Ability {
     }
 
     @Override
+    public Boolean isRanged() {
+        return false;
+    }
+
+    @Override
     public AbilityType type() {
         return AbilityType.SLASH;
     }

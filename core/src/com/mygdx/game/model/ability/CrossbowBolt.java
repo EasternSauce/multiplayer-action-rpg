@@ -22,6 +22,11 @@ public class CrossbowBolt extends Projectile {
     AbilityParams params;
 
     @Override
+    public Boolean isRanged() {
+        return true;
+    }
+
+    @Override
     public AbilityType type() {
         return AbilityType.CROSSBOW_BOLT;
     }
@@ -72,7 +77,7 @@ public class CrossbowBolt extends Projectile {
                                       .activeTime(30f)
                                       .textureName("arrow")
                                       .creatureId(creatureId)
-                                      .damage(25f)
+                                      .damage(10f)
                                       .pos(pos)
                                       .creaturesAlreadyHit(creaturesAlreadyHit)
                                       .dirVector(dirVector)

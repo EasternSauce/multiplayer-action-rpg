@@ -153,7 +153,7 @@ public abstract class Creature {
         }
     }
 
-    public void handleBeingAttacked(float damage, CreatureId attackerId) {
+    public void handleBeingAttacked(Boolean isRanged, float damage, CreatureId attackerId) {
         takeLifeDamage(damage);
         stopMoving();
     }

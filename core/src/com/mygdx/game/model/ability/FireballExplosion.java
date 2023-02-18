@@ -21,6 +21,11 @@ public class FireballExplosion extends Ability {
 
 
     @Override
+    public Boolean isRanged() {
+        return true;
+    }
+
+    @Override
     public AbilityType type() {
         return AbilityType.FIREBALL_EXPLOSION;
     }
