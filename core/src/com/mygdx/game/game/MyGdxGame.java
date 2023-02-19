@@ -136,7 +136,9 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Enemy
             }
             if (!gamePhysics.abilityBodies().containsKey(abilityId)) {
                 AbilityBody abilityBody = AbilityBody.of(abilityId);
-                abilityBody.init(gamePhysics, gameState(), ability.params().inactiveBody());
+                if (ability.params().state() == AbilityState.ACTIVE) {
+                    abilityBody.init(gamePhysics, gameState(), ability.params().inactiveBody());
+                }
                 gamePhysics.abilityBodies().put(abilityId, abilityBody);
             }
         }
@@ -248,7 +250,7 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Enemy
         abilitiesToUpdate.forEach(abilityId -> {
             if (physics().abilityBodies().containsKey(abilityId)) {
                 Ability ability = gameState().abilities().get(abilityId);
-                if (!ability.params().inactiveBody()) {
+                if (ability.bodyShouldExist()) {
                     ability.params().pos(physics().abilityBodies().get(abilityId).getBodyPos());
                 }
 
@@ -382,4 +384,12 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Enemy
 
     }
 
+    @Override
+    public void initAbilityBody(Ability ability) {
+        if (ability != null && physics().abilityBodies().containsKey(ability.params().id())) {
+            physics().abilityBodies()
+                     .get(ability.params().id())
+                     .init(physics(), gameState(), ability.params().inactiveBody());
+        }
+    }
 }

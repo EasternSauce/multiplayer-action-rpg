@@ -59,10 +59,10 @@ public class AbilityBody {
 
     }
 
-    public void init(GamePhysics physics, GameState gameState, boolean inactiveBody) {
+    public void init(GamePhysics physics, GameState gameState, boolean skipCreatingBody) {
         Ability ability = gameState.abilities().get(abilityId);
 
-        if (!inactiveBody && ability != null) {
+        if (!skipCreatingBody && ability != null) {
             if (ability.params().inactiveBody()) {
                 return;
             }
@@ -82,7 +82,7 @@ public class AbilityBody {
     public void update(GameState gameState) {
         Ability ability = gameState.abilities().get(abilityId);
 
-        if (!inactiveBody && ability != null) {
+        if (!inactiveBody && ability != null && ability.bodyShouldExist()) {
             if (ability.isPositionManipulated() && (ability.params().state() == AbilityState.CHANNEL || ability.params()
                                                                                                                .state() ==
                                                                                                         AbilityState.ACTIVE)) {

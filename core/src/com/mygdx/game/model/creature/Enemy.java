@@ -47,7 +47,8 @@ public class Enemy extends Creature {
                                         .pos()
                                         .distance(
                                                 params().pos()) < enemySearchDistance &&
-                                game.getPhysicsWorld(this.params().areaId()).isLineOfSight(this.params().pos(), creature.params().pos());
+                                game.getPhysicsWorld(this.params().areaId())
+                                    .isLineOfSight(this.params().pos(), creature.params().pos());
 
             if (condition && params().pos().distance(creature.params().pos()) < minDistance) {
                 minCreatureId = creature.params().id();
@@ -141,7 +142,7 @@ public class Enemy extends Creature {
             }
         }
 
-        if (params().aggroTimer().time() < params.loseAggroTime() &&  // TODO: why split targetCreature and aggroeedCreature? is it not always same?
+        if (params().aggroTimer().time() < params.loseAggroTime() &&
             potentialTarget != null &&
             potentialTarget.isAlive() &&
             this.isAlive()) { // if aggro not timed out and potential target is found
@@ -155,8 +156,7 @@ public class Enemy extends Creature {
 
         }
         else { // if aggro timed out and out of range
-            if (potentialTarget != null){
-                System.out.println(potentialTarget.isAlive() + " " + this.isAlive());
+            if (potentialTarget != null) {
                 handleTargetLost();
             }
 
@@ -193,7 +193,9 @@ public class Enemy extends Creature {
         params().aggroedCreatureId(attackerId);
         params().aggroTimer().restart();
 
-        if(isRanged) params().justAttackedFromRangeTimer().restart();
+        if (isRanged) {
+            params().justAttackedFromRangeTimer().restart();
+        }
     }
 
     private void processPathfinding(EnemyAiUpdatable game) {

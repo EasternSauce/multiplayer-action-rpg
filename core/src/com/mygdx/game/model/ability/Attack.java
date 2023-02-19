@@ -114,7 +114,7 @@ public class Attack extends Ability {
                                       .areaId(areaId)
                                       .width(2f)
                                       .height(2f)
-                                      .channelTime(0f)
+                                      .channelTime(0.3f)
                                       .activeTime(0.3f)
                                       .range(1.8f)
                                       .textureName("slash")

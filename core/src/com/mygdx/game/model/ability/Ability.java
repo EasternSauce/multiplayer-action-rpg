@@ -30,6 +30,7 @@ public abstract class Ability {
 
             if (params().stateTimer().time() > params().channelTime()) {
                 params().state(AbilityState.ACTIVE);
+                game.initAbilityBody(this);
                 onAbilityStarted(game);
                 params().stateTimer().restart();
             }
@@ -97,4 +98,8 @@ public abstract class Ability {
     public abstract void onCreatureHit();
 
     public abstract void onTerrainHit();
+
+    public boolean bodyShouldExist() {
+        return !(params().inactiveBody() || params().state() != AbilityState.ACTIVE);
+    }
 }

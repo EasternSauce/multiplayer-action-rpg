@@ -51,7 +51,9 @@ public class PhysicsHelper {
             if ((attackedIsPlayer || attackingIsPlayer) && !ability.params()
                                                                    .creaturesAlreadyHit()
                                                                    .contains(event.attackedCreatureId())) {
-                attackedCreature.handleBeingAttacked(ability.isRanged(), ability.params().damage(), event.attackingCreatureId());
+                attackedCreature.handleBeingAttacked(ability.isRanged(),
+                                                     ability.params().damage(),
+                                                     event.attackingCreatureId());
             }
 
             ability.params().creaturesAlreadyHit().add(event.attackedCreatureId());
@@ -77,15 +79,14 @@ public class PhysicsHelper {
             });
 
             game.gameState().abilities().forEach((abilityId, ability) -> {
-                if (game.physics().abilityBodies().containsKey(abilityId) && !ability.params()
-                                                                                     .inactiveBody() && game.physics()
-                                                                                                            .abilityBodies()
-                                                                                                            .get(abilityId)
-                                                                                                            .getBodyPos()
-                                                                                                            .distance(
-                                                                                                                    ability.params()
-                                                                                                                           .pos()) >
-                                                                                                        0.05f // only setTransform if positions are far apart
+                if (game.physics().abilityBodies().containsKey(abilityId) && ability.bodyShouldExist() && game.physics()
+                                                                                                              .abilityBodies()
+                                                                                                              .get(abilityId)
+                                                                                                              .getBodyPos()
+                                                                                                              .distance(
+                                                                                                                      ability.params()
+                                                                                                                             .pos()) >
+                                                                                                          0.05f // only setTransform if positions are far apart
                 ) {
                     game.physics().abilityBodies().get(abilityId).trySetTransform(ability.params().pos());
                 }
