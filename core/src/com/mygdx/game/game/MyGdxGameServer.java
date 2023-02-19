@@ -25,13 +25,12 @@ import java.util.stream.Collectors;
 public class MyGdxGameServer extends MyGdxGame {
     private static MyGdxGameServer instance;
 
-    final Server _endPoint = new Server(6400000, 6400000);
+    Server _endPoint;
     private final List<GameStateAction> tickActions = Collections.synchronizedList(new ArrayList<>());
     private final Map<Integer, CreatureId> clientCreatures = new HashMap<>();
     Thread broadcastThread;
 
     private MyGdxGameServer() {
-        registerClasses(_endPoint);
     }
 
     public static MyGdxGameServer getInstance() {
@@ -49,6 +48,10 @@ public class MyGdxGameServer extends MyGdxGame {
     @Override
     public Server endPoint() {
         return _endPoint;
+    }
+
+    public void endPoint(Server endPoint) {
+        this._endPoint = endPoint;
     }
 
     @Override
@@ -81,7 +84,10 @@ public class MyGdxGameServer extends MyGdxGame {
                    .entrySet()
                    .stream()
                    .filter(entry -> entry.getValue().params().state() == AbilityState.INACTIVE)
-                   .forEach(entry -> tickActions.add(RemoveAbilityAction.of(entry.getKey())));
+                   .forEach(entry -> {
+                       System.out.println("adding action");
+                       tickActions.add(RemoveAbilityAction.of(entry.getKey()));
+                   });
 
         ArrayList<GameStateAction> tickActionsCopy = new ArrayList<>(tickActions);
 
@@ -110,7 +116,8 @@ public class MyGdxGameServer extends MyGdxGame {
 
     @Override
     public void establishConnection() {
-
+        endPoint(new Server(6400000, 6400000));
+        registerEndPointClasses();
         endPoint().start();
 
         try {
@@ -184,7 +191,7 @@ public class MyGdxGameServer extends MyGdxGame {
             try {
                 while (true) {
                     //noinspection BusyWait
-                    Thread.sleep(300);
+                    Thread.sleep(1000);
 
                     Connection[] connections = endPoint().getConnections();
                     for (Connection connection : connections) {

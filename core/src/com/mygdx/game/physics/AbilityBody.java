@@ -8,22 +8,25 @@ import com.mygdx.game.model.ability.AbilityId;
 import com.mygdx.game.model.ability.AbilityState;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.util.Vector2;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-@Data
 public class AbilityBody {
+
+    @Getter
     AbilityId abilityId;
 
+    @Getter
     CreatureId creatureId;
 
     Body b2Body = null;
-    Sprite sprite = new Sprite(); // only used for calculating vertices
+    final Sprite sprite = new Sprite(); // only used for calculating vertices
 
     PhysicsWorld world;
 
-    Boolean inactiveBody = false;
+    @Getter
+    Boolean isBodyInitialized = false;
 
     public static AbilityBody of(AbilityId abilityId) {
         AbilityBody abilityBody = new AbilityBody();
@@ -63,18 +66,15 @@ public class AbilityBody {
         Ability ability = gameState.abilities().get(abilityId);
 
         if (!skipCreatingBody && ability != null) {
-            if (ability.params().inactiveBody()) {
-                return;
-            }
-
             world = physics.physicsWorlds().get(ability.params().areaId());
 
             creatureId = ability.params().creatureId();
 
             b2Body = B2BodyFactory.createAbilityB2Body(world, this, ability.params().pos(), hitboxVertices(gameState));
-        }
-        else {
-            this.inactiveBody = true;
+
+            System.out.println("creating body");
+
+            isBodyInitialized = true;
         }
 
     }
@@ -82,7 +82,7 @@ public class AbilityBody {
     public void update(GameState gameState) {
         Ability ability = gameState.abilities().get(abilityId);
 
-        if (!inactiveBody && ability != null && ability.bodyShouldExist()) {
+        if (isBodyInitialized() && ability != null && ability.bodyShouldExist()) {
             if (ability.isPositionManipulated() && (ability.params().state() == AbilityState.CHANNEL || ability.params()
                                                                                                                .state() ==
                                                                                                         AbilityState.ACTIVE)) {
@@ -98,8 +98,10 @@ public class AbilityBody {
     }
 
     public void onRemove() {
-        if (!inactiveBody) {
+        if (isBodyInitialized()) {
             world.b2world().destroyBody(b2Body);
+            System.out.println("removing body");
+
         }
 
     }

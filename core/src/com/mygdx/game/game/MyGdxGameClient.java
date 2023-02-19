@@ -30,12 +30,10 @@ public class MyGdxGameClient extends MyGdxGame {
 
     private static MyGdxGameClient instance;
 
-    final Client _endPoint = new Client(6400000, 6400000);
+    Client _endPoint;
     boolean isInitialized = false;
 
     private MyGdxGameClient() {
-        registerClasses(_endPoint);
-
         thisPlayerId = CreatureId.of("Player_" + (int) (Math.random() * 10000000));
     }
 
@@ -46,9 +44,14 @@ public class MyGdxGameClient extends MyGdxGame {
         return instance;
     }
 
+
     @Override
     public Client endPoint() {
         return _endPoint;
+    }
+
+    public void endPoint(Client endPoint) {
+        this._endPoint = endPoint;
     }
 
     @Override
@@ -257,7 +260,8 @@ public class MyGdxGameClient extends MyGdxGame {
 
     @Override
     public void establishConnection() throws IOException {
-
+        endPoint(new Client(6400000, 6400000));
+        registerEndPointClasses();
         endPoint().start();
         endPoint().connect(12000, "89.79.23.118", 20445, 20445);
 

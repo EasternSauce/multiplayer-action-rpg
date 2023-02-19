@@ -79,14 +79,18 @@ public class PhysicsHelper {
             });
 
             game.gameState().abilities().forEach((abilityId, ability) -> {
-                if (game.physics().abilityBodies().containsKey(abilityId) && ability.bodyShouldExist() && game.physics()
-                                                                                                              .abilityBodies()
-                                                                                                              .get(abilityId)
-                                                                                                              .getBodyPos()
-                                                                                                              .distance(
-                                                                                                                      ability.params()
-                                                                                                                             .pos()) >
-                                                                                                          0.05f // only setTransform if positions are far apart
+                if (game.physics().abilityBodies().containsKey(abilityId) &&
+                    game.physics().abilityBodies().get(abilityId).isBodyInitialized() &&
+                    // this is needed to fix body created client/server desync
+                    ability.bodyShouldExist() &&
+                    game.physics()
+                        .abilityBodies()
+                        .get(abilityId)
+                        .getBodyPos()
+                        .distance(
+                                ability.params()
+                                       .pos()) >
+                    0.05f // only setTransform if positions are far apart
                 ) {
                     game.physics().abilityBodies().get(abilityId).trySetTransform(ability.params().pos());
                 }

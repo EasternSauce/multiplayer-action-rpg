@@ -34,7 +34,7 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Enemy
     final protected GamePhysics gamePhysics = GamePhysics.of();
     final protected GameStateHolder gameStateHolder = GameStateHolder.of(GameState.of());
     final MyGdxGamePlayScreen playScreen = MyGdxGamePlayScreen.of();
-    final public EndPoint _endPoint = null;
+
     @SuppressWarnings("FieldCanBeLocal")
     private final boolean debug = true;
     public final Chat chat = Chat.of();
@@ -90,9 +90,7 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Enemy
         return gameStateHolder.gameState();
     }
 
-    public EndPoint endPoint() {
-        return _endPoint;
-    }
+    public abstract EndPoint endPoint();
 
     public boolean isInitialized() {
         return true;
@@ -137,6 +135,7 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Enemy
             if (!gamePhysics.abilityBodies().containsKey(abilityId)) {
                 AbilityBody abilityBody = AbilityBody.of(abilityId);
                 if (ability.params().state() == AbilityState.ACTIVE) {
+                    System.out.println("sending init for existing ability");
                     abilityBody.init(gamePhysics, gameState(), ability.params().inactiveBody());
                 }
                 gamePhysics.abilityBodies().put(abilityId, abilityBody);
@@ -179,6 +178,7 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Enemy
     }
 
     public void removeAbility(AbilityId abilityId) {
+        System.out.println("trying to remove ability: " + abilityId);
         if (abilityId != null) {
             gameState().abilities().remove(abilityId);
 
@@ -250,7 +250,7 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Enemy
         abilitiesToUpdate.forEach(abilityId -> {
             if (physics().abilityBodies().containsKey(abilityId)) {
                 Ability ability = gameState().abilities().get(abilityId);
-                if (ability.bodyShouldExist()) {
+                if (physics().abilityBodies().get(abilityId).isBodyInitialized() && ability.bodyShouldExist()) {
                     ability.params().pos(physics().abilityBodies().get(abilityId).getBodyPos());
                 }
 
@@ -322,71 +322,73 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Enemy
         return physics().physicsWorlds().get(areaId);
     }
 
-    public void registerClasses(EndPoint endPoint) {
-        endPoint.getKryo().setRegistrationRequired(true);
+    public void registerEndPointClasses() {
+        endPoint().getKryo().setRegistrationRequired(true);
 
-        endPoint.getKryo().register(HashSet.class);
-        endPoint.getKryo().register(HashMap.class);
-        endPoint.getKryo().register(ArrayList.class);
-        endPoint.getKryo().register(LinkedList.class);
-        endPoint.getKryo().register(ConcurrentHashMap.class);
+        endPoint().getKryo().register(HashSet.class);
+        endPoint().getKryo().register(HashMap.class);
+        endPoint().getKryo().register(ArrayList.class);
+        endPoint().getKryo().register(LinkedList.class);
+        endPoint().getKryo().register(ConcurrentHashMap.class);
 
-        endPoint.getKryo().register(CreatureId.class);
-        endPoint.getKryo().register(Vector2.class);
-        endPoint.getKryo().register(AreaId.class);
-        endPoint.getKryo().register(SimpleTimer.class);
-        endPoint.getKryo().register(AbilityType.class);
-        endPoint.getKryo().register(AbilityState.class);
-        endPoint.getKryo().register(EnemyType.class);
-        endPoint.getKryo().register(SkillType.class);
-        endPoint.getKryo().register(EnemySpawn.class);
-        endPoint.getKryo().register(AbilityId.class);
-        endPoint.getKryo().register(EnemyAiState.class);
+        endPoint().getKryo().register(CreatureId.class);
+        endPoint().getKryo().register(Vector2.class);
+        endPoint().getKryo().register(AreaId.class);
+        endPoint().getKryo().register(SimpleTimer.class);
+        endPoint().getKryo().register(AbilityType.class);
+        endPoint().getKryo().register(AbilityState.class);
+        endPoint().getKryo().register(EnemyType.class);
+        endPoint().getKryo().register(SkillType.class);
+        endPoint().getKryo().register(EnemySpawn.class);
+        endPoint().getKryo().register(AbilityId.class);
+        endPoint().getKryo().register(EnemyAiState.class);
 
-        endPoint.getKryo().register(InitPlayerCommand.class);
-        endPoint.getKryo().register(PlayerMovementCommand.class);
-        endPoint.getKryo().register(SendChatMessageCommand.class);
-        endPoint.getKryo().register(SpawnEnemyCommand.class);
-        endPoint.getKryo().register(TryPerformSkillCommand.class);
+        endPoint().getKryo().register(InitPlayerCommand.class);
+        endPoint().getKryo().register(PlayerMovementCommand.class);
+        endPoint().getKryo().register(SendChatMessageCommand.class);
+        endPoint().getKryo().register(SpawnEnemyCommand.class);
+        endPoint().getKryo().register(TryPerformSkillCommand.class);
 
-        endPoint.getKryo().register(Ability.class);
-        endPoint.getKryo().register(AbilityRect.class);
-        endPoint.getKryo().register(Attack.class);
-        endPoint.getKryo().register(CrossbowBolt.class);
-        endPoint.getKryo().register(Fireball.class);
-        endPoint.getKryo().register(FireballExplosion.class);
-        endPoint.getKryo().register(LightningChain.class);
-        endPoint.getKryo().register(LightningNode.class);
-        endPoint.getKryo().register(LightningSpark.class);
+        endPoint().getKryo().register(Ability.class);
+        endPoint().getKryo().register(AbilityRect.class);
+        endPoint().getKryo().register(Attack.class);
+        endPoint().getKryo().register(CrossbowBolt.class);
+        endPoint().getKryo().register(Fireball.class);
+        endPoint().getKryo().register(FireballExplosion.class);
+        endPoint().getKryo().register(LightningChain.class);
+        endPoint().getKryo().register(LightningNode.class);
+        endPoint().getKryo().register(LightningSpark.class);
 
-        endPoint.getKryo().register(Enemy.class);
-        endPoint.getKryo().register(Area.class);
-        endPoint.getKryo().register(Player.class);
-        endPoint.getKryo().register(ScheduledAbility.class);
-        endPoint.getKryo().register(Skill.class);
-        endPoint.getKryo().register(WorldDirection.class);
-        endPoint.getKryo().register(CreatureParams.class);
-        endPoint.getKryo().register(AbilityParams.class);
+        endPoint().getKryo().register(Enemy.class);
+        endPoint().getKryo().register(Area.class);
+        endPoint().getKryo().register(Player.class);
+        endPoint().getKryo().register(ScheduledAbility.class);
+        endPoint().getKryo().register(Skill.class);
+        endPoint().getKryo().register(WorldDirection.class);
+        endPoint().getKryo().register(CreatureParams.class);
+        endPoint().getKryo().register(AbilityParams.class);
 
 
-        endPoint.getKryo().register(AddAbilityAction.class);
-        endPoint.getKryo().register(AddPlayerAction.class);
-        endPoint.getKryo().register(CreatureDeathAction.class);
-        endPoint.getKryo().register(MoveTowardsTargetAction.class);
-        endPoint.getKryo().register(RemoveAbilityAction.class);
-        endPoint.getKryo().register(RemovePlayerAction.class);
-        endPoint.getKryo().register(RespawnCreatureAction.class);
-        endPoint.getKryo().register(TryPerformSkillAction.class);
+        endPoint().getKryo().register(AddAbilityAction.class);
+        endPoint().getKryo().register(AddPlayerAction.class);
+        endPoint().getKryo().register(CreatureDeathAction.class);
+        endPoint().getKryo().register(MoveTowardsTargetAction.class);
+        endPoint().getKryo().register(RemoveAbilityAction.class);
+        endPoint().getKryo().register(RemovePlayerAction.class);
+        endPoint().getKryo().register(RespawnCreatureAction.class);
+        endPoint().getKryo().register(TryPerformSkillAction.class);
 
-        endPoint.getKryo().register(ActionsHolder.class);
-        endPoint.getKryo().register(GameState.class);
-        endPoint.getKryo().register(GameStateHolder.class);
+        endPoint().getKryo().register(ActionsHolder.class);
+        endPoint().getKryo().register(GameState.class);
+        endPoint().getKryo().register(GameStateHolder.class);
 
     }
 
     @Override
     public void initAbilityBody(Ability ability) {
+        System.out.println("trying to init ability body");
         if (ability != null && physics().abilityBodies().containsKey(ability.params().id())) {
+            System.out.println("initing...");
             physics().abilityBodies()
                      .get(ability.params().id())
                      .init(physics(), gameState(), ability.params().inactiveBody());

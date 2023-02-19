@@ -24,7 +24,7 @@ public class AbilityAnimationConfig {
     public static Map<String, AbilityAnimationConfig> configs = new HashMap<>();
 
     static {
-        configs.put("slash", AbilityAnimationConfig.of(40, 40, "slash_windup2", "slash2", 6, 6, 0.05f, 0.05f, 1.4f));
+        configs.put("slash", AbilityAnimationConfig.of(40, 40, "slash_windup3", "slash2", 6, 6, 0.025f, 0.05f, 1.4f));
 
         configs.put("bubble", AbilityAnimationConfig.of(64, 64, "bubble", "bubble", 0, 2, 0f, 0.3f, 1.7f));
 
