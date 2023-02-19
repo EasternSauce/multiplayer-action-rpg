@@ -27,42 +27,42 @@ background2
   index: -1
 bag
   rotate: false
-  xy: 1846, 240
+  xy: 3986, 782
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 black_mage
   rotate: false
-  xy: 3540, 580
+  xy: 3588, 580
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: -1
 bubble
   rotate: false
-  xy: 452, 44
+  xy: 3262, 652
   size: 128, 64
   orig: 128, 64
   offset: 0, 0
   index: -1
 cursor
   rotate: false
-  xy: 3784, 782
+  xy: 2190, 336
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 downarrow
   rotate: false
-  xy: 2810, 620
+  xy: 4020, 782
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 evil_ninja
   rotate: false
-  xy: 3980, 808
+  xy: 2810, 524
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
@@ -83,7 +83,7 @@ explosion_windup
   index: -1
 female1
   rotate: false
-  xy: 3882, 808
+  xy: 920, 43
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
@@ -97,63 +97,63 @@ fireball2
   index: -1
 fist_slam
   rotate: false
-  xy: 2238, 306
+  xy: 3784, 782
   size: 200, 80
   orig: 200, 80
   offset: 0, 0
   index: -1
 fist_slam_windup
   rotate: false
-  xy: 2036, 288
+  xy: 3784, 864
   size: 200, 80
   orig: 200, 80
   offset: 0, 0
   index: -1
 ghost
   rotate: false
-  xy: 3344, 580
+  xy: 3392, 580
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: -1
 goblet
   rotate: false
-  xy: 582, 45
+  xy: 2908, 588
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 goblet_lit
   rotate: false
-  xy: 966, 172
+  xy: 452, 44
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 goblin
   rotate: false
-  xy: 3442, 580
+  xy: 3490, 580
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: -1
 ice_shard
   rotate: false
-  xy: 3912, 938
+  xy: 2036, 296
   size: 152, 72
   orig: 152, 72
   offset: 0, 0
   index: -1
 jawa
   rotate: false
-  xy: 3784, 816
+  xy: 822, 43
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: -1
 lightning
   rotate: false
-  xy: 3654, 946
+  xy: 3004, 652
   size: 256, 64
   orig: 256, 64
   offset: 0, 0
@@ -165,9 +165,16 @@ lightning_chain
   orig: 384, 193
   offset: 0, 0
   index: -1
+magic_orb
+  rotate: false
+  xy: 3654, 946
+  size: 384, 64
+  orig: 384, 64
+  offset: 0, 0
+  index: -1
 male1
   rotate: false
-  xy: 3246, 588
+  xy: 3986, 816
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
@@ -202,7 +209,7 @@ nice_icons
   index: -1
 pillar
   rotate: false
-  xy: 2440, 336
+  xy: 1064, 316
   size: 25, 50
   orig: 25, 50
   offset: 0, 0
@@ -237,28 +244,28 @@ slam
   index: -1
 slam_windup
   rotate: false
-  xy: 3004, 656
+  xy: 2230, 368
   size: 240, 60
   orig: 240, 60
   offset: 0, 0
   index: -1
 slash
   rotate: false
-  xy: 3004, 614
+  xy: 3784, 740
   size: 240, 40
   orig: 240, 40
   offset: 0, 0
   index: -1
 slash2
   rotate: false
-  xy: 1604, 232
+  xy: 3394, 710
   size: 240, 40
   orig: 240, 40
   offset: 0, 0
   index: -1
 slash2mirrored
   rotate: false
-  xy: 3394, 710
+  xy: 244, 2
   size: 240, 40
   orig: 240, 40
   offset: 0, 0
@@ -272,14 +279,14 @@ slash_windup
   index: -1
 slash_windup2
   rotate: false
-  xy: 244, 2
+  xy: 580, 69
   size: 240, 40
   orig: 240, 40
   offset: 0, 0
   index: -1
 slash_windup3
   rotate: false
-  xy: 2230, 388
+  xy: 1604, 232
   size: 240, 40
   orig: 240, 40
   offset: 0, 0
@@ -300,7 +307,7 @@ taurus
   index: -1
 treasure
   rotate: false
-  xy: 486, 10
+  xy: 1846, 240
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

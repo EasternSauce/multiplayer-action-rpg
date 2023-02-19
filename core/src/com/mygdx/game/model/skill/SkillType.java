@@ -4,5 +4,7 @@ public enum SkillType {
     SLASH,
     FIREBALL,
     LIGHTNING,
-    CROSSBOW_BOLT
+    CROSSBOW_BOLT,
+
+    MAGIC_ORB
 }

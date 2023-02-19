@@ -56,7 +56,7 @@ public class FireballExplosion extends Ability {
     }
 
     @Override
-    void onActiveUpdate(CreaturePosRetrievable game) {
+    void onActiveUpdate(AbilityUpdateable game) {
 
     }
 

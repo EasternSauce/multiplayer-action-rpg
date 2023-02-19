@@ -1,5 +1,6 @@
 package com.mygdx.game.model.ability;
 
+import com.mygdx.game.game.AbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,7 +19,7 @@ public abstract class Projectile extends Ability {
     }
 
     @Override
-    void onActiveUpdate(CreaturePosRetrievable game) {
+    void onActiveUpdate(AbilityUpdateable game) {
         if (params().speed() != null) {
             params().velocity(params().dirVector().normalized().multiplyBy(params().speed()));
         }

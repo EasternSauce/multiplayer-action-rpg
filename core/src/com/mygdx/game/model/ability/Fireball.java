@@ -33,7 +33,7 @@ public class Fireball extends Projectile {
     }
 
     @Override
-    protected void onActiveUpdate(CreaturePosRetrievable game) {
+    protected void onActiveUpdate(AbilityUpdateable game) {
         //projectile speeds up over time
         if (params().speed() != null) {
             params().velocity(params().dirVector().normalized().multiplyBy(params().speed()));

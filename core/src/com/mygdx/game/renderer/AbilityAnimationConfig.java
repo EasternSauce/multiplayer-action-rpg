@@ -40,5 +40,7 @@ public class AbilityAnimationConfig {
         configs.put("arrow",
                     AbilityAnimationConfig.of(40, 40, "arrow", "arrow", 0, 1, 0f, 0.1f, 1.7f));
 
+        configs.put("magic_orb", AbilityAnimationConfig.of(64, 64, "magic_orb", "magic_orb", 0, 6, 0f, 0.2f, 1.7f));
+
     }
 }

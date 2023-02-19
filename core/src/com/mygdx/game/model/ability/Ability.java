@@ -70,7 +70,7 @@ public abstract class Ability {
 
     abstract void onChannelUpdate(CreaturePosRetrievable game);
 
-    abstract void onActiveUpdate(CreaturePosRetrievable game);
+    abstract void onActiveUpdate(AbilityUpdateable game);
 
     public void init(AbilityUpdateable game) {
 

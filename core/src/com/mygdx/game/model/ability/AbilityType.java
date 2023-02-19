@@ -8,7 +8,9 @@ public enum AbilityType {
     LIGHTNING_NODE,
     LIGHTNING_CHAIN,
 
-    CROSSBOW_BOLT
+    CROSSBOW_BOLT,
+
+    MAGIC_ORB
 
 
 }

@@ -49,6 +49,10 @@ public class AbilityFactory {
             return CrossbowBolt.of(abilityId, areaId, creatureId, creaturePos, dirVector, creaturesAlreadyHit);
         }
 
+        if (abilityType == AbilityType.MAGIC_ORB) {
+            return MagicOrb.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit);
+        }
+
         throw new RuntimeException("ability type not found");
     }
 }

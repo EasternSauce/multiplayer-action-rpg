@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import static java.lang.Math.PI;
+
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
@@ -18,6 +20,30 @@ public class Vector2 {
         }
         return angle;
     }
+
+    public Vector2 setAngleDeg(float degrees) {
+        return setAngleRad(degrees * (float) PI / 180);
+    }
+
+    public Vector2 setAngleRad(float radians) {
+        x = len();
+        y = 0f;
+        rotateRad(radians);
+
+        return this;
+    }
+
+    public void rotateRad(float radians) {
+        float cos = (float) Math.cos(radians);
+        float sin = (float) Math.sin(radians);
+
+        float newX = this.x * cos - this.y * sin;
+        float newY = this.x * sin + this.y * cos;
+
+        this.x = newX;
+        this.y = newY;
+    }
+
 
     public float len() {
         return (float) Math.sqrt(x * x + y * y);

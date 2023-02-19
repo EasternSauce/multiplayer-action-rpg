@@ -79,6 +79,17 @@ public class Skill {
                             2f, 40f,
                             0f);
         }
+        if (skillType == SkillType.MAGIC_ORB) {
+            return Skill.of(skillType,
+                            creatureId,
+                            Stream.of(new ScheduledAbility[]{ScheduledAbility.of(AbilityType.MAGIC_ORB,
+                                                                                 0f)})
+                                  .collect(Collectors.toCollection(ArrayList::new)),
+                            SimpleTimer.getExpiredTimer(),
+                            0.2f,
+                            0f,
+                            15f);
+        }
         throw new RuntimeException("skill not handled");
     }
 
