@@ -441,4 +441,9 @@ public class MyGdxGameClient extends MyGdxGame {
         return Vector2.of(mousePos.x() * viewportRatioX / Constants.PPM,
                           mousePos.y() * viewportRatioY / Constants.PPM);
     }
+
+    @Override
+    public void initAbilityBody(Ability ability) {
+        // do nothing
+    }
 }

@@ -114,6 +114,9 @@ public class MyGdxGamePlayScreen implements Screen {
         game.abilitiesToBeCreated().forEach(abilityId -> game.createAbility(abilityId));
         game.abilitiesToBeCreated().clear();
 
+        game.abilitiesToBeActivated().forEach(abilityId -> game.activateAbility(abilityId));
+        game.abilitiesToBeActivated().clear();
+
         game.creaturesToBeRemoved().forEach(creatureId -> game.removeCreature(creatureId));
         game.creaturesToBeRemoved().clear();
 

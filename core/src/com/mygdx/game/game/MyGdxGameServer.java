@@ -84,10 +84,7 @@ public class MyGdxGameServer extends MyGdxGame {
                    .entrySet()
                    .stream()
                    .filter(entry -> entry.getValue().params().state() == AbilityState.INACTIVE)
-                   .forEach(entry -> {
-                       System.out.println("adding action");
-                       tickActions.add(RemoveAbilityAction.of(entry.getKey()));
-                   });
+                   .forEach(entry -> tickActions.add(RemoveAbilityAction.of(entry.getKey())));
 
         ArrayList<GameStateAction> tickActionsCopy = new ArrayList<>(tickActions);
 
@@ -424,5 +421,12 @@ public class MyGdxGameServer extends MyGdxGame {
         endPoint().stop();
         broadcastThread.interrupt();
 
+    }
+
+    @Override
+    public void initAbilityBody(Ability ability) {
+        AbilityActivateAction action = AbilityActivateAction.of(ability);
+
+        tickActions.add(action);
     }
 }

@@ -72,8 +72,6 @@ public class AbilityBody {
 
             b2Body = B2BodyFactory.createAbilityB2Body(world, this, ability.params().pos(), hitboxVertices(gameState));
 
-            System.out.println("creating body");
-
             isBodyInitialized = true;
         }
 
@@ -100,7 +98,6 @@ public class AbilityBody {
     public void onRemove() {
         if (isBodyInitialized()) {
             world.b2world().destroyBody(b2Body);
-            System.out.println("removing body");
 
         }
 

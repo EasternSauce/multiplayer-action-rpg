@@ -42,6 +42,7 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Enemy
 
     final List<CreatureId> creaturesToBeCreated = Collections.synchronizedList(new ArrayList<>());
     final List<AbilityId> abilitiesToBeCreated = Collections.synchronizedList(new ArrayList<>());
+    final List<AbilityId> abilitiesToBeActivated = Collections.synchronizedList(new ArrayList<>());
 
     final List<CreatureId> creaturesToBeRemoved = Collections.synchronizedList(new ArrayList<>());
     final List<AbilityId> abilitiesToBeRemoved = Collections.synchronizedList(new ArrayList<>());
@@ -63,6 +64,10 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Enemy
 
     public List<AbilityId> abilitiesToBeCreated() {
         return abilitiesToBeCreated;
+    }
+
+    public List<AbilityId> abilitiesToBeActivated() {
+        return abilitiesToBeActivated;
     }
 
     public List<CreatureId> creaturesToBeRemoved() {
@@ -135,7 +140,6 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Enemy
             if (!gamePhysics.abilityBodies().containsKey(abilityId)) {
                 AbilityBody abilityBody = AbilityBody.of(abilityId);
                 if (ability.params().state() == AbilityState.ACTIVE) {
-                    System.out.println("sending init for existing ability");
                     abilityBody.init(gamePhysics, gameState(), ability.params().inactiveBody());
                 }
                 gamePhysics.abilityBodies().put(abilityId, abilityBody);
@@ -143,6 +147,21 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Enemy
         }
 
     }
+
+    public void activateAbility(AbilityId abilityId) {
+        Ability ability = gameState().abilities().get(abilityId);
+
+        if (ability != null && physics().abilityBodies().containsKey(ability.params().id())) {
+            physics().abilityBodies()
+                     .get(ability.params().id())
+                     .init(physics(),
+                           gameState(),
+                           ability.params()
+                                  .inactiveBody());
+        }
+
+    }
+
 
     public void spawnEnemy(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn) {
         gameState().creatures()
@@ -178,7 +197,6 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Enemy
     }
 
     public void removeAbility(AbilityId abilityId) {
-        System.out.println("trying to remove ability: " + abilityId);
         if (abilityId != null) {
             gameState().abilities().remove(abilityId);
 
@@ -377,21 +395,11 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Enemy
         endPoint().getKryo().register(RemovePlayerAction.class);
         endPoint().getKryo().register(RespawnCreatureAction.class);
         endPoint().getKryo().register(TryPerformSkillAction.class);
+        endPoint().getKryo().register(AbilityActivateAction.class);
 
         endPoint().getKryo().register(ActionsHolder.class);
         endPoint().getKryo().register(GameState.class);
         endPoint().getKryo().register(GameStateHolder.class);
 
-    }
-
-    @Override
-    public void initAbilityBody(Ability ability) {
-        System.out.println("trying to init ability body");
-        if (ability != null && physics().abilityBodies().containsKey(ability.params().id())) {
-            System.out.println("initing...");
-            physics().abilityBodies()
-                     .get(ability.params().id())
-                     .init(physics(), gameState(), ability.params().inactiveBody());
-        }
     }
 }
