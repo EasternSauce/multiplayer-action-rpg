@@ -23,13 +23,11 @@ public class Fireball extends Projectile {
     @Override
     public void onCreatureHit() {
         deactivate();
-        // stop moving, then start explode ability
     }
 
     @Override
     public void onTerrainHit() {
         deactivate();
-        // stop moving, then start explode ability
     }
 
     @Override

@@ -17,6 +17,7 @@ import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
+import com.mygdx.game.model.creature.EnemySpawn;
 import com.mygdx.game.model.creature.EnemyType;
 import com.mygdx.game.model.skill.SkillType;
 import com.mygdx.game.model.util.GameStateHolder;

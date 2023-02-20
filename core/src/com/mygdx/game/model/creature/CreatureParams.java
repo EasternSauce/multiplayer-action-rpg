@@ -1,6 +1,5 @@
 package com.mygdx.game.model.creature;
 
-import com.mygdx.game.game.EnemySpawn;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.skill.Skill;
 import com.mygdx.game.model.skill.SkillType;
