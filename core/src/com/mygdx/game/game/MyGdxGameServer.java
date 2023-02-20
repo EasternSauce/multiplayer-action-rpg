@@ -396,14 +396,10 @@ public class MyGdxGameServer extends MyGdxGame {
     @Override
     public void chainAbility(Ability chainFromAbility,
                              AbilityType chainIntoAbilityType,
-                             Vector2 pos,
+                             Vector2 chainToPos,
                              CreatureId creatureId) {
         AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
-        Vector2 chainToPos = pos;
 
-        if (pos == null) {
-            chainToPos = chainFromAbility.params().pos();
-        }
         if (creatureId != null) {
             chainFromAbility.params().creaturesAlreadyHit().add(creatureId);
         }

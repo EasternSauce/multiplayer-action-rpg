@@ -70,7 +70,7 @@ public class Fireball extends Projectile {
 
     @Override
     protected void onAbilityCompleted(AbilityChainable game) {
-        game.chainAbility(this, AbilityType.FIREBALL_EXPLOSION, null, null);
+        game.chainAbility(this, AbilityType.FIREBALL_EXPLOSION, params().pos(), null);
     }
 
     @Override
