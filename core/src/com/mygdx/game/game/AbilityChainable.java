@@ -5,7 +5,7 @@ import com.mygdx.game.model.ability.AbilityType;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.util.Vector2;
-import com.mygdx.game.physics.PhysicsWorld;
+import com.mygdx.game.physics.world.PhysicsWorld;
 
 import java.util.Set;
 

@@ -1,8 +1,8 @@
 package com.mygdx.game.pathing;
 
 import com.mygdx.game.model.util.Vector2;
-import com.mygdx.game.physics.PhysicsWorld;
-import com.mygdx.game.physics.TilePos;
+import com.mygdx.game.physics.util.TilePos;
+import com.mygdx.game.physics.world.PhysicsWorld;
 
 import java.util.*;
 import java.util.stream.Collectors;

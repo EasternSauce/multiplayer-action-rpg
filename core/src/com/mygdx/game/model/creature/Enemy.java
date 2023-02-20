@@ -7,7 +7,7 @@ import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.model.util.WorldDirection;
 import com.mygdx.game.pathing.Astar;
 import com.mygdx.game.pathing.AstarResult;
-import com.mygdx.game.physics.PhysicsWorld;
+import com.mygdx.game.physics.world.PhysicsWorld;
 import com.mygdx.game.util.RandomHelper;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

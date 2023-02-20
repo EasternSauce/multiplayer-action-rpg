@@ -5,7 +5,7 @@ import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.skill.SkillType;
 import com.mygdx.game.model.util.Vector2;
-import com.mygdx.game.physics.PhysicsWorld;
+import com.mygdx.game.physics.world.PhysicsWorld;
 
 import java.util.Collection;
 

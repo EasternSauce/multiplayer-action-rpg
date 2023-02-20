@@ -8,6 +8,7 @@ import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityId;
 import com.mygdx.game.model.ability.AbilityState;
+import com.mygdx.game.renderer.config.AbilityAnimationConfig;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

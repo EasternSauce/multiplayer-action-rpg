@@ -1,4 +1,4 @@
-package com.mygdx.game.physics;
+package com.mygdx.game.physics.util;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

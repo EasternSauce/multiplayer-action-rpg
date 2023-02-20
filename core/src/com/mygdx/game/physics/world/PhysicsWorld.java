@@ -1,4 +1,4 @@
-package com.mygdx.game.physics;
+package com.mygdx.game.physics.world;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -9,6 +9,8 @@ import com.mygdx.game.Constants;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.pathing.Astar;
 import com.mygdx.game.pathing.PathingNode;
+import com.mygdx.game.physics.body.TerrainTileBody;
+import com.mygdx.game.physics.util.TilePos;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

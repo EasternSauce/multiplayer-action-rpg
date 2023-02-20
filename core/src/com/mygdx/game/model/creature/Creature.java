@@ -7,7 +7,7 @@ import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.skill.Skill;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.model.util.WorldDirection;
-import com.mygdx.game.renderer.CreatureAnimationConfig;
+import com.mygdx.game.renderer.config.CreatureAnimationConfig;
 
 public abstract class Creature {
 

@@ -3,7 +3,7 @@ package com.mygdx.game.model.ability;
 import com.mygdx.game.game.AbilityChainable;
 import com.mygdx.game.game.AbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
-import com.mygdx.game.renderer.AbilityAnimationConfig;
+import com.mygdx.game.renderer.config.AbilityAnimationConfig;
 import lombok.Data;
 
 @Data

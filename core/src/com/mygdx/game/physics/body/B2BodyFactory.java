@@ -1,4 +1,4 @@
-package com.mygdx.game.physics;
+package com.mygdx.game.physics.body;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -11,6 +11,7 @@ import com.mygdx.game.physics.shape.BodyShape;
 import com.mygdx.game.physics.shape.Circle;
 import com.mygdx.game.physics.shape.Polygon;
 import com.mygdx.game.physics.shape.Rectangle;
+import com.mygdx.game.physics.world.PhysicsWorld;
 
 
 public class B2BodyFactory {

@@ -1,6 +1,8 @@
-package com.mygdx.game.physics;
+package com.mygdx.game.physics.body;
 
 import com.badlogic.gdx.physics.box2d.Body;
+import com.mygdx.game.physics.util.TilePos;
+import com.mygdx.game.physics.world.PhysicsWorld;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

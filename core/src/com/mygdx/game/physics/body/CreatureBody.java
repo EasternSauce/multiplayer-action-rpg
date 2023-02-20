@@ -1,4 +1,4 @@
-package com.mygdx.game.physics;
+package com.mygdx.game.physics.body;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.game.model.GameState;
@@ -6,6 +6,8 @@ import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.util.Vector2;
+import com.mygdx.game.physics.GamePhysics;
+import com.mygdx.game.physics.world.PhysicsWorld;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")

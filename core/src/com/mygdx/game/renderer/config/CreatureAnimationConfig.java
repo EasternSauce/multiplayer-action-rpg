@@ -1,4 +1,4 @@
-package com.mygdx.game.renderer;
+package com.mygdx.game.renderer.config;
 
 import com.mygdx.game.model.util.WorldDirection;
 import lombok.AllArgsConstructor;

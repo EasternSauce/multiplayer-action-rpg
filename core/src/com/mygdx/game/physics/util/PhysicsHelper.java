@@ -1,5 +1,6 @@
-package com.mygdx.game.game;
+package com.mygdx.game.physics.util;
 
+import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.Player;
