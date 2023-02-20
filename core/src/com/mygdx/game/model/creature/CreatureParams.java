@@ -104,30 +104,22 @@ public class CreatureParams {
     Float justAttackedFromRangeTimeout = 3f;
 
     public static CreatureParams of(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn) {
-        CreatureParams params = CreatureParams.of();
-        params.id = creatureId;
-        params.areaId = areaId;
-        params.pos = enemySpawn.pos();
-        params.textureName = enemySpawn.enemyType().textureName;
-        params.findTargetCooldown = 0.5f + RandomHelper.seededRandomFloat(creatureId);
-        //        params.pathCalculationFailurePenalty = 10f + 5f * RandomHelper.seededRandomFloat(creatureId);
-        params.pathCalculationCooldown = 4f + 2f * RandomHelper.seededRandomFloat(creatureId);
-
-        params.skills = // TODO: should we restrict which creature can perform which skill?
-                Arrays.stream(SkillType.values())
-                      .collect(Collectors.toMap(Function.identity(), skillType -> Skill.of(skillType, creatureId)));
-
-        params.aiStateSeed = RandomHelper.seededRandomFloat(creatureId);
-        params.aiStateTimeout = 0f;
-
-        return params;
+        return getCreatureParams(creatureId, areaId, enemySpawn.pos(), enemySpawn.enemyType().textureName);
     }
 
+
     public static CreatureParams of(CreatureId creatureId, AreaId areaId, Vector2 pos, String textureName) {
+        return getCreatureParams(creatureId, areaId, pos, textureName);
+    }
+
+    private static CreatureParams getCreatureParams(CreatureId creatureId,
+                                                    AreaId areaId,
+                                                    Vector2 enemySpawn,
+                                                    String textureName) {
         CreatureParams params = CreatureParams.of();
         params.id = creatureId;
         params.areaId = areaId;
-        params.pos = pos;
+        params.pos = enemySpawn;
         params.textureName = textureName;
         params.findTargetCooldown = 0.5f + RandomHelper.seededRandomFloat(creatureId);
         //        params.pathCalculationFailurePenalty = 10f + 5f * RandomHelper.seededRandomFloat(creatureId);
@@ -139,7 +131,6 @@ public class CreatureParams {
 
         params.aiStateSeed = RandomHelper.seededRandomFloat(creatureId);
         params.aiStateTimeout = 0f;
-
         return params;
     }
 

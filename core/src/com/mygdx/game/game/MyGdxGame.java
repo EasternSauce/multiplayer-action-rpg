@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-public abstract class MyGdxGame extends Game implements AbilityUpdateable, EnemyAiUpdatable, AbilitySpawnable {
+public abstract class MyGdxGame extends Game implements AbilityUpdateable, CreatureUpdatable {
     final protected GameRenderer gameRenderer = GameRenderer.of();
     final protected GamePhysics gamePhysics = GamePhysics.of();
     final protected GameStateHolder gameStateHolder = GameStateHolder.of(GameState.of());
@@ -405,5 +405,5 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Enemy
 
     }
 
-    abstract public void setCreatureMovingVector(CreatureId creatureId, Vector2 dirVector);
+
 }

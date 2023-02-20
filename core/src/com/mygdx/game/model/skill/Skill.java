@@ -1,6 +1,6 @@
 package com.mygdx.game.model.skill;
 
-import com.mygdx.game.game.AbilitySpawnable;
+import com.mygdx.game.game.CreatureUpdatable;
 import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.model.ability.AbilityType;
 import com.mygdx.game.model.creature.Creature;
@@ -34,9 +34,7 @@ public class Skill {
         if (skillType == SkillType.SLASH) {
             return Skill.of(skillType,
                             creatureId,
-                            Stream.of(new ScheduledAbility[]{ScheduledAbility.of(AbilityType.SLASH,
-                                                                                 0f)})
-                                  .collect(Collectors.toCollection(ArrayList::new)),
+                            singleScheduledAbility(AbilityType.SLASH),
                             SimpleTimer.getExpiredTimer(),
                             0.6f,
                             20f,
@@ -45,9 +43,7 @@ public class Skill {
         if (skillType == SkillType.FIREBALL) {
             return Skill.of(skillType,
                             creatureId,
-                            Stream.of(new ScheduledAbility[]{ScheduledAbility.of(AbilityType.FIREBALL,
-                                                                                 0f)})
-                                  .collect(Collectors.toCollection(ArrayList::new)),
+                            singleScheduledAbility(AbilityType.FIREBALL),
                             SimpleTimer.getExpiredTimer(),
                             0.2f,
                             0f,
@@ -56,9 +52,7 @@ public class Skill {
         if (skillType == SkillType.LIGHTNING) {
             return Skill.of(skillType,
                             creatureId,
-                            Stream.of(new ScheduledAbility[]{ScheduledAbility.of(AbilityType.LIGHTNING_SPARK,
-                                                                                 0f)})
-                                  .collect(Collectors.toCollection(ArrayList::new)),
+                            singleScheduledAbility(AbilityType.LIGHTNING_SPARK),
                             SimpleTimer.getExpiredTimer(),
                             1f,
                             0f,
@@ -67,24 +61,22 @@ public class Skill {
         if (skillType == SkillType.CROSSBOW_BOLT) {
             return Skill.of(skillType,
                             creatureId,
-                            Stream.of(new ScheduledAbility[]{ScheduledAbility.of(AbilityType.CROSSBOW_BOLT,
-                                                                                 0f),
+                            Stream.of(new ScheduledAbility[]{
+                                          ScheduledAbility.of(AbilityType.CROSSBOW_BOLT, 0f),
                                           ScheduledAbility.of(AbilityType.CROSSBOW_BOLT, 0.4f),
                                           ScheduledAbility.of(AbilityType.CROSSBOW_BOLT, 1f),
                                           ScheduledAbility.of(AbilityType.CROSSBOW_BOLT, 1.2f),
-                                          ScheduledAbility.of(AbilityType.CROSSBOW_BOLT,
-                                                              1.4f)})
+                                          ScheduledAbility.of(AbilityType.CROSSBOW_BOLT, 1.4f)})
                                   .collect(Collectors.toCollection(ArrayList::new)),
                             SimpleTimer.getExpiredTimer(),
-                            2f, 40f,
+                            2f,
+                            40f,
                             0f);
         }
         if (skillType == SkillType.MAGIC_ORB) {
             return Skill.of(skillType,
                             creatureId,
-                            Stream.of(new ScheduledAbility[]{ScheduledAbility.of(AbilityType.MAGIC_ORB,
-                                                                                 0f)})
-                                  .collect(Collectors.toCollection(ArrayList::new)),
+                            singleScheduledAbility(AbilityType.MAGIC_ORB),
                             SimpleTimer.getExpiredTimer(),
                             0.2f,
                             0f,
@@ -93,7 +85,13 @@ public class Skill {
         throw new RuntimeException("skill not handled");
     }
 
-    public void update(AbilitySpawnable game) {
+    public static List<ScheduledAbility> singleScheduledAbility(AbilityType abilityType) {
+        return Stream.of(new ScheduledAbility[]{ScheduledAbility.of(abilityType,
+                                                                    0f)})
+                     .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    public void update(CreatureUpdatable game) {
         for (ScheduledAbility scheduledAbility : abilities) {
             if (!scheduledAbility.isPerformed() && performTimer().time() > scheduledAbility.scheduledTime()) {
                 scheduledAbility.perform(creatureId, game);
