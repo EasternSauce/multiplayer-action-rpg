@@ -1,16 +1,17 @@
 package com.mygdx.game.physics;
 
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.MassData;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.util.Vector2;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.mygdx.game.physics.shape.BodyShape;
+import com.mygdx.game.physics.shape.Circle;
+import com.mygdx.game.physics.shape.Polygon;
+import com.mygdx.game.physics.shape.Rectangle;
 
-interface BodyShape {
-    Shape b2Shape();
-}
 
 public class B2BodyFactory {
     public static Body createB2Body(PhysicsWorld world,
@@ -97,45 +98,6 @@ public class B2BodyFactory {
     }
 }
 
-@NoArgsConstructor(staticName = "of")
-@AllArgsConstructor(staticName = "of")
-@Data
-class Circle implements BodyShape {
-    float radius;
 
-    @Override
-    public Shape b2Shape() {
-        CircleShape shape = new CircleShape();
-        shape.setRadius(radius);
-        return shape;
-    }
-}
 
-@NoArgsConstructor(staticName = "of")
-@AllArgsConstructor(staticName = "of")
-@Data
-class Rectangle implements BodyShape {
-    float width;
-    float height;
 
-    @Override
-    public Shape b2Shape() {
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(width / 2, height / 2);
-        return shape;
-    }
-}
-
-@NoArgsConstructor(staticName = "of")
-@AllArgsConstructor(staticName = "of")
-@Data
-class Polygon implements BodyShape {
-    float[] vertices;
-
-    @Override
-    public Shape b2Shape() {
-        PolygonShape shape = new PolygonShape();
-        shape.set(vertices);
-        return shape;
-    }
-}

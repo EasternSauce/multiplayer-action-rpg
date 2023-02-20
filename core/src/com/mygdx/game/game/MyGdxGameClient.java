@@ -420,6 +420,11 @@ public class MyGdxGameClient extends MyGdxGame {
     }
 
     @Override
+    public void setCreatureMovingVector(CreatureId creatureId, Vector2 dirVector) {
+        // do nothing
+    }
+
+    @Override
     public void spawnAbility(AbilityId abilityId,
                              AreaId areaId,
                              CreatureId creatureId,

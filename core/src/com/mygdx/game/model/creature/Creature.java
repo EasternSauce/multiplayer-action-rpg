@@ -20,7 +20,7 @@ public abstract class Creature {
         regenerateStamina();
 
         if (!params().reachedTargetPos()) {
-            moveTowardsTarget();
+            moveTowardsTarget(game);
         }
 
         if (params().isStillMovingTimer().time() > 0.02f) {
@@ -50,7 +50,7 @@ public abstract class Creature {
         }
     }
 
-    private void moveTowardsTarget() {
+    private void moveTowardsTarget(MyGdxGame game) {
         Vector2 currentPos = params().pos();
         Vector2 targetPos = params().movementCommandTargetPos();
 
@@ -65,7 +65,7 @@ public abstract class Creature {
 
             Vector2 dirVector = vectorBetween.normalized();
 
-            params().movingVector(dirVector);
+            game.setCreatureMovingVector(params().id(), dirVector);
 
             params().isMoving(true);
 

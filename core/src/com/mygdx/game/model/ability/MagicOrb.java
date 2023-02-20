@@ -127,7 +127,6 @@ public class MagicOrb extends Projectile {
             }
 
         }
-        //        params().dirVector(params().dirVector().setAngleDeg(params().dirVector().angleDeg() + 4f));
 
     }
 

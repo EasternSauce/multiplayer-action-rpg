@@ -391,16 +391,19 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Enemy
         endPoint().getKryo().register(AddAbilityAction.class);
         endPoint().getKryo().register(AddPlayerAction.class);
         endPoint().getKryo().register(CreatureDeathAction.class);
-        endPoint().getKryo().register(MoveTowardsTargetAction.class);
+        endPoint().getKryo().register(MovePlayerTowardsTargetAction.class);
         endPoint().getKryo().register(RemoveAbilityAction.class);
         endPoint().getKryo().register(RemovePlayerAction.class);
         endPoint().getKryo().register(RespawnCreatureAction.class);
         endPoint().getKryo().register(TryPerformSkillAction.class);
         endPoint().getKryo().register(AbilityActivateAction.class);
+        endPoint().getKryo().register(SetCreatureMovingVectorAction.class);
 
         endPoint().getKryo().register(ActionsHolder.class);
         endPoint().getKryo().register(GameState.class);
         endPoint().getKryo().register(GameStateHolder.class);
 
     }
+
+    abstract public void setCreatureMovingVector(CreatureId creatureId, Vector2 dirVector);
 }

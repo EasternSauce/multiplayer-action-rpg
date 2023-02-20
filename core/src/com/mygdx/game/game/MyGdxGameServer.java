@@ -129,9 +129,8 @@ public class MyGdxGameServer extends MyGdxGame {
             public void received(Connection connection, Object object) {
                 if (object instanceof PlayerMovementCommand) {
                     PlayerMovementCommand command = (PlayerMovementCommand) object;
-                    MoveTowardsTargetAction
-                            move =
-                            MoveTowardsTargetAction.of(command.playerId(), command.mousePos());
+                    MovePlayerTowardsTargetAction
+                            move = MovePlayerTowardsTargetAction.of(command.playerId(), command.mousePos());
                     tickActions.add(move);
                 }
                 else if (object instanceof InitPlayerCommand) {
@@ -385,6 +384,13 @@ public class MyGdxGameServer extends MyGdxGame {
 
         tickActions.add(action);
 
+    }
+
+    @Override
+    public void setCreatureMovingVector(CreatureId creatureId, Vector2 dirVector) {
+        SetCreatureMovingVectorAction action = SetCreatureMovingVectorAction.of(creatureId, dirVector);
+
+        tickActions.add(action);
     }
 
     @Override

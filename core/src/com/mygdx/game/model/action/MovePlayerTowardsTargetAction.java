@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-public class MoveTowardsTargetAction implements GameStateAction {
+public class MovePlayerTowardsTargetAction implements GameStateAction {
 
     CreatureId creatureId;
 

@@ -30,9 +30,7 @@ public class GameRenderer {
 
     DrawingLayer worldDrawingLayer;
     DrawingLayer hudDrawingLayer;
-    //
-    //    Map<CreatureId, Sprite> creatureSprites;
-    //
+
 
     Map<AreaId, String> mapsToLoad;
 
