@@ -13,4 +13,9 @@ public class Constants {
 
     public static final float MapScale = 4.0f;
     public static final float MovementCommandCooldown = 0.05f;
+    public static final Float LOSE_AGGRO_DISTANCE = 26f;
+    public static final float DEFENSIVE_POS_DISTANCE = 20f;
+    public static final float BACK_UP_DISTANCE = 5f;
+    public static final Float TURN_ALERTED_DISTANCE = 24f;
+    public static final Float TURN_AGGRESIVE_DISTANCE = 13f;
 }

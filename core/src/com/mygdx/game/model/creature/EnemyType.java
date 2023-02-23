@@ -2,7 +2,10 @@ package com.mygdx.game.model.creature;
 
 public enum EnemyType {
     SKELETON("skeleton"),
-    ARCHER("undead_adventurer");
+    ARCHER("undead_adventurer"),
+
+    MAGE("black_mage");
+
 
     public final String textureName;
 

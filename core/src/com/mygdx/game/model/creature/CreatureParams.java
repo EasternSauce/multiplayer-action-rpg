@@ -102,8 +102,15 @@ public class CreatureParams {
 
     Float justAttackedFromRangeTimeout = 3f;
 
+    Float attackDistance = 3f;
+
+    SkillType mainAttackSkill;
+
     public static CreatureParams of(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn) {
-        return getCreatureParams(creatureId, areaId, enemySpawn.pos(), enemySpawn.enemyType().textureName);
+        return getCreatureParams(creatureId,
+                                 areaId,
+                                 enemySpawn.pos(),
+                                 enemySpawn.enemyTemplate().enemyType().textureName);
     }
 
 

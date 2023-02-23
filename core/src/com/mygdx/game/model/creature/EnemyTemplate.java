@@ -1,6 +1,6 @@
 package com.mygdx.game.model.creature;
 
-import com.mygdx.game.model.util.Vector2;
+import com.mygdx.game.model.skill.SkillType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-public class EnemySpawn {
-    Vector2 pos;
-    EnemyTemplate enemyTemplate;
+public class EnemyTemplate {
+    EnemyType enemyType;
+    Float attackDistance;
+    SkillType mainAttackSkill;
 }

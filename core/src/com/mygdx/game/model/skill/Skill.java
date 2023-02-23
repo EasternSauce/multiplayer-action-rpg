@@ -46,7 +46,7 @@ public class Skill {
                             singleScheduledAbility(AbilityType.FIREBALL),
                             SimpleTimer.getExpiredTimer(),
                             0.2f,
-                            0f,
+                            15f,
                             30f);
         }
         if (skillType == SkillType.LIGHTNING) {
@@ -55,7 +55,7 @@ public class Skill {
                             singleScheduledAbility(AbilityType.LIGHTNING_SPARK),
                             SimpleTimer.getExpiredTimer(),
                             1f,
-                            0f,
+                            15f,
                             20f);
         }
         if (skillType == SkillType.CROSSBOW_BOLT) {
@@ -78,9 +78,9 @@ public class Skill {
                             creatureId,
                             singleScheduledAbility(AbilityType.MAGIC_ORB),
                             SimpleTimer.getExpiredTimer(),
-                            0.2f,
-                            0f,
-                            15f);
+                            0.8f,
+                            15f,
+                            10f);
         }
         throw new RuntimeException("skill not handled");
     }

@@ -6,6 +6,8 @@ import com.mygdx.game.game.CreaturePosRetrievable;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
+import com.mygdx.game.model.creature.Enemy;
+import com.mygdx.game.model.creature.Player;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -72,19 +74,42 @@ public class MagicOrb extends Projectile {
 
         Creature minCreature = null;
         float minDistance = Float.MAX_VALUE;
-        for (Creature creature : game.getCreatures()
-                                     .stream()
-                                     .filter(creature -> !creature.params().id().equals(params().creatureId()) &&
-                                                         creature.isAlive() &&
-                                                         creature.params()
-                                                                 .pos()
-                                                                 .distance(params().pos()) <
-                                                         20f)
-                                     .collect(
-                                             Collectors.toSet())) {
-            if (creature.params().pos().distance(params().pos()) < minDistance) {
-                minCreature = creature;
-                minDistance = creature.params().pos().distance(params().pos());
+
+        Creature abilityCreature = game.getCreature(params().creatureId());
+
+        if (abilityCreature instanceof Enemy) {
+            for (Creature creature : game.getCreatures()
+                                         .stream()
+                                         .filter(creature -> !creature.params().id().equals(params().creatureId()) &&
+                                                             creature.isAlive() &&
+                                                             creature instanceof Player &&
+                                                             creature.params()
+                                                                     .pos()
+                                                                     .distance(params().pos()) <
+                                                             20f)
+                                         .collect(
+                                                 Collectors.toSet())) {
+                if (creature.params().pos().distance(params().pos()) < minDistance) {
+                    minCreature = creature;
+                    minDistance = creature.params().pos().distance(params().pos());
+                }
+            }
+        }
+        if (abilityCreature instanceof Player) {
+            for (Creature creature : game.getCreatures()
+                                         .stream()
+                                         .filter(creature -> !creature.params().id().equals(params().creatureId()) &&
+                                                             creature.isAlive() &&
+                                                             creature.params()
+                                                                     .pos()
+                                                                     .distance(params().pos()) <
+                                                             20f)
+                                         .collect(
+                                                 Collectors.toSet())) {
+                if (creature.params().pos().distance(params().pos()) < minDistance) {
+                    minCreature = creature;
+                    minDistance = creature.params().pos().distance(params().pos());
+                }
             }
         }
 

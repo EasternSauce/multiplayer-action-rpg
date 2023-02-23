@@ -155,7 +155,6 @@ public abstract class Creature {
 
     public void handleBeingAttacked(Boolean isRanged, float damage, CreatureId attackerId) {
         takeLifeDamage(damage);
-        stopMoving();
     }
 
     private void takeManaDamage(Float manaCost) {

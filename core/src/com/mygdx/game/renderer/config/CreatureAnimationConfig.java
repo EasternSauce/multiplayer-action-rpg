@@ -42,6 +42,16 @@ public class CreatureAnimationConfig {
                                                4,
                                                0.1f,
                                                textureDirMap(3, 0, 1, 2)));
+        configs.put("black_mage",
+                    CreatureAnimationConfig.of("black_mage",
+                                               0,
+                                               1.5f,
+                                               1.5f,
+                                               32,
+                                               32,
+                                               3,
+                                               0.1f,
+                                               textureDirMap(3, 0, 1, 2)));
 
     }
 

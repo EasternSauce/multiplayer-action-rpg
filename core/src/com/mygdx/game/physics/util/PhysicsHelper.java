@@ -55,10 +55,12 @@ public class PhysicsHelper {
                 attackedCreature.handleBeingAttacked(ability.isRanged(),
                                                      ability.params().damage(),
                                                      event.attackingCreatureId());
+
+                ability.params().creaturesAlreadyHit().add(event.attackedCreatureId());
+                ability.onCreatureHit();
             }
 
-            ability.params().creaturesAlreadyHit().add(event.attackedCreatureId());
-            ability.onCreatureHit();
+
         }
     }
 
