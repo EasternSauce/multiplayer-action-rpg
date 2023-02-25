@@ -306,9 +306,7 @@ public class Enemy extends Creature {
         }
         else if (params().aiState() == EnemyAiState.ALERTED) {
             params().speed(params().baseSpeed() / 3);
-            System.out.println("alerted?");
             if (params().defensivePosition() != null) {
-                System.out.println("move");
                 moveTowards(params().defensivePosition());
             }
         }

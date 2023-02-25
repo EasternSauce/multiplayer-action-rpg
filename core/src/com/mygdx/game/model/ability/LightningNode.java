@@ -49,9 +49,13 @@ public class LightningNode extends Ability {
             creature.handleBeingAttacked(true, params().damage(),
                                          params().creatureId()); // TODO: can we do this in main update loop instead? introduce events etc.
 
-            game.chainAbility(this, AbilityType.LIGHTNING_CHAIN, creature.params().pos(), null);
+            game.chainAbility(this, AbilityType.LIGHTNING_CHAIN, creature.params().pos(), params.dirVector(), null);
 
-            game.chainAbility(this, AbilityType.LIGHTNING_NODE, creature.params().pos(), creature.params().id());
+            game.chainAbility(this,
+                              AbilityType.LIGHTNING_NODE,
+                              creature.params().pos(),
+                              params.dirVector(),
+                              creature.params().id());
         }
     }
 

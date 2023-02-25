@@ -383,6 +383,8 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Creat
         endPoint().getKryo().register(LightningNode.class);
         endPoint().getKryo().register(LightningSpark.class);
         endPoint().getKryo().register(MagicOrb.class);
+        endPoint().getKryo().register(VolatileBubble.class);
+        endPoint().getKryo().register(IceSpear.class);
 
         endPoint().getKryo().register(Enemy.class);
         endPoint().getKryo().register(Area.class);

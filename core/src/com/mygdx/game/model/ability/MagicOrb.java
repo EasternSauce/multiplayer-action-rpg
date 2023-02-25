@@ -65,6 +65,18 @@ public class MagicOrb extends Projectile {
         deactivate();
     }
 
+
+    private boolean isTargetingAllowed(Creature thisCreature, Creature targetCreature) {
+        if (thisCreature instanceof Enemy) {
+            return targetCreature instanceof Player;
+        }
+        //noinspection RedundantIfStatement
+        if (thisCreature instanceof Player) {
+            return true;
+        }
+        return false;
+    }
+
     @Override
     void onActiveUpdate(AbilityUpdateable game) {
         if (params().speed() != null) {
@@ -75,43 +87,27 @@ public class MagicOrb extends Projectile {
         Creature minCreature = null;
         float minDistance = Float.MAX_VALUE;
 
-        Creature abilityCreature = game.getCreature(params().creatureId());
+        Creature thisCreature = game.getCreature(params().creatureId());
 
-        if (abilityCreature instanceof Enemy) {
-            for (Creature creature : game.getCreatures()
-                                         .stream()
-                                         .filter(creature -> !creature.params().id().equals(params().creatureId()) &&
-                                                             creature.isAlive() &&
-                                                             creature instanceof Player &&
-                                                             creature.params()
-                                                                     .pos()
-                                                                     .distance(params().pos()) <
-                                                             20f)
-                                         .collect(
-                                                 Collectors.toSet())) {
-                if (creature.params().pos().distance(params().pos()) < minDistance) {
-                    minCreature = creature;
-                    minDistance = creature.params().pos().distance(params().pos());
-                }
+        for (Creature creature : game.getCreatures()
+                                     .stream()
+                                     .filter(targetCreature -> !targetCreature.params()
+                                                                              .id()
+                                                                              .equals(params().creatureId()) &&
+                                                               targetCreature.isAlive() &&
+                                                               isTargetingAllowed(thisCreature, targetCreature) &&
+                                                               targetCreature.params()
+                                                                             .pos()
+                                                                             .distance(params().pos()) <
+                                                               20f)
+                                     .collect(
+                                             Collectors.toSet())) {
+            if (creature.params().pos().distance(params().pos()) < minDistance) {
+                minCreature = creature;
+                minDistance = creature.params().pos().distance(params().pos());
             }
         }
-        if (abilityCreature instanceof Player) {
-            for (Creature creature : game.getCreatures()
-                                         .stream()
-                                         .filter(creature -> !creature.params().id().equals(params().creatureId()) &&
-                                                             creature.isAlive() &&
-                                                             creature.params()
-                                                                     .pos()
-                                                                     .distance(params().pos()) <
-                                                             20f)
-                                         .collect(
-                                                 Collectors.toSet())) {
-                if (creature.params().pos().distance(params().pos()) < minDistance) {
-                    minCreature = creature;
-                    minDistance = creature.params().pos().distance(params().pos());
-                }
-            }
-        }
+
 
         if (minCreature != null) {
             Vector2 vectorTowards = params().pos().vectorTowards(minCreature.params().pos());
@@ -140,7 +136,17 @@ public class MagicOrb extends Projectile {
                 }
             }
 
-            float increment = 1f;
+            float increment = 1.5f;
+
+            if (params().stateTimer().time() > 0.5f && params().stateTimer().time() < 2f) {
+                increment = 1.5f - (params().stateTimer().time() - 0.5f) / 1.5f * 1.5f;
+            }
+            else if (params().stateTimer().time() >= 2f) {
+                increment = 0f;
+            }
+            System.out.println(increment);
+
+
             if (result > increment) {
                 params().dirVector(params().dirVector().setAngleDeg(params().dirVector().angleDeg() + increment));
             }

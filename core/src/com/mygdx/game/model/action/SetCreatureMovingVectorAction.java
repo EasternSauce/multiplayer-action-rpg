@@ -26,7 +26,9 @@ public class SetCreatureMovingVectorAction implements GameStateAction {
     public void applyToGame(MyGdxGame game) {
         Creature creature = game.gameState().creatures().get(creatureId);
 
-        creature.params().movingVector(movingVector);
+        if (creature != null) {
+            creature.params().movingVector(movingVector);
+        }
 
     }
 }

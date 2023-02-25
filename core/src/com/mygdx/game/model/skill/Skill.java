@@ -82,6 +82,24 @@ public class Skill {
                             15f,
                             10f);
         }
+        if (skillType == SkillType.SLOW_MAGIC_ORB) {
+            return Skill.of(skillType,
+                            creatureId,
+                            singleScheduledAbility(AbilityType.MAGIC_ORB),
+                            SimpleTimer.getExpiredTimer(),
+                            1.3f,
+                            15f,
+                            10f);
+        }
+        if (skillType == SkillType.VOLATILE_BUBBLE) {
+            return Skill.of(skillType,
+                            creatureId,
+                            singleScheduledAbility(AbilityType.VOLATILE_BUBBLE),
+                            SimpleTimer.getExpiredTimer(),
+                            1.3f,
+                            15f,
+                            0f);
+        }
         throw new RuntimeException("skill not handled");
     }
 

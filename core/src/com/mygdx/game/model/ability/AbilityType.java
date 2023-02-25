@@ -10,7 +10,11 @@ public enum AbilityType {
 
     CROSSBOW_BOLT,
 
-    MAGIC_ORB
+    MAGIC_ORB,
+
+    VOLATILE_BUBBLE,
+
+    ICE_SPEAR
 
 
 }

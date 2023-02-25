@@ -16,35 +16,9 @@ import java.util.Set;
 @NoArgsConstructor(staticName = "of")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Fireball extends Projectile {
+public class IceSpear extends Projectile {
+
     AbilityParams params;
-
-
-    @Override
-    public void onCreatureHit() {
-        deactivate();
-    }
-
-    @Override
-    public void onTerrainHit() {
-        deactivate();
-    }
-
-    @Override
-    protected void onActiveUpdate(AbilityUpdateable game) {
-        //projectile speeds up over time
-        if (params().speed() != null) {
-            params().velocity(params().dirVector().normalized().multiplyBy(params().speed()));
-        }
-        params().rotationAngle(params().dirVector().angleDeg());
-
-        if (params().stateTimer().time() < 2f) {
-            params().speed(5f + (params().stateTimer().time() / 2f) * 40f);
-        }
-        else {
-            params().speed(45f);
-        }
-    }
 
     @Override
     public Boolean isRanged() {
@@ -53,7 +27,7 @@ public class Fireball extends Projectile {
 
     @Override
     public AbilityType type() {
-        return AbilityType.FIREBALL;
+        return AbilityType.ICE_SPEAR;
     }
 
     @Override
@@ -67,8 +41,8 @@ public class Fireball extends Projectile {
     }
 
     @Override
-    protected void onAbilityCompleted(AbilityChainable game) {
-        game.chainAbility(this, AbilityType.FIREBALL_EXPLOSION, params().pos(), params.dirVector(), null);
+    void onAbilityCompleted(AbilityChainable game) {
+
     }
 
     @Override
@@ -76,21 +50,31 @@ public class Fireball extends Projectile {
 
     }
 
-    public static Fireball of(AbilityId abilityId,
+    @Override
+    public void onCreatureHit() {
+
+    }
+
+    @Override
+    public void onTerrainHit() {
+
+    }
+
+    public static IceSpear of(AbilityId abilityId,
                               AreaId areaId,
                               CreatureId creatureId,
                               Vector2 pos,
                               Vector2 dirVector,
                               Set<CreatureId> creaturesAlreadyHit) {
-        Fireball ability = Fireball.of();
+        IceSpear ability = IceSpear.of();
         ability.params = AbilityParams.of()
                                       .id(abilityId)
                                       .areaId(areaId)
-                                      .width(1.5f)
-                                      .height(1.5f)
+                                      .width(1.05f)
+                                      .height(0.5f)
                                       .channelTime(0f)
                                       .activeTime(30f)
-                                      .textureName("fireball")
+                                      .textureName("ice_shard")
                                       .creatureId(creatureId)
                                       .damage(40f)
                                       .pos(pos)
@@ -100,9 +84,11 @@ public class Fireball extends Projectile {
                                       .isActiveAnimationLooping(true)
                                       .creaturesAlreadyHit(new HashSet<>())
                                       .rotationShift(0f)
-                                      .delayedActionTime(0.001f);
+                                      .delayedActionTime(0.001f)
+                                      .speed(15f);
 
 
         return ability;
     }
 }
+

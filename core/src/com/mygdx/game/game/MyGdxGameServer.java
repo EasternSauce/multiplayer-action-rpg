@@ -279,7 +279,7 @@ public class MyGdxGameServer extends MyGdxGame {
                               EnemySpawn.of(Vector2.of(77.200066f, 31.255192f),
                                             EnemyTemplate.of(EnemyType.SKELETON, 3f, SkillType.SLASH)),
                               EnemySpawn.of(Vector2.of(74.47733f, 25.755476f),
-                                            EnemyTemplate.of(EnemyType.MAGE, 15f, SkillType.MAGIC_ORB)),
+                                            EnemyTemplate.of(EnemyType.MAGE, 15f, SkillType.SLOW_MAGIC_ORB)),
                               EnemySpawn.of(Vector2.of(45.421207f, 45.40418f),
                                             EnemyTemplate.of(EnemyType.SKELETON, 3f, SkillType.SLASH)),
                               EnemySpawn.of(Vector2.of(42.50976f, 42.877632f),
@@ -440,6 +440,7 @@ public class MyGdxGameServer extends MyGdxGame {
     public void chainAbility(Ability chainFromAbility,
                              AbilityType chainIntoAbilityType,
                              Vector2 chainToPos,
+                             Vector2 dirVector,
                              CreatureId creatureId) {
         AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
 
@@ -457,7 +458,7 @@ public class MyGdxGameServer extends MyGdxGame {
                      creaturesAlreadyHit,
                      chainFromPos,
                      chainToPos,
-                     chainFromAbility.params().dirVector());
+                     dirVector);
     }
 
 

@@ -53,6 +53,15 @@ public class AbilityFactory {
             return MagicOrb.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit);
         }
 
+        if (abilityType == AbilityType.VOLATILE_BUBBLE) {
+            return VolatileBubble.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit);
+        }
+
+        if (abilityType == AbilityType.ICE_SPEAR) {
+            return IceSpear.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit);
+        }
+
+
         throw new RuntimeException("ability type not found");
     }
 }

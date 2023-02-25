@@ -13,6 +13,7 @@ public interface AbilityChainable extends CreatureRetrievable {
     void chainAbility(Ability chainFromAbility,
                       AbilityType abilityType,
                       Vector2 chainToPos,
+                      Vector2 dirVector,
                       CreatureId creatureId);
 
     CreatureId aliveCreatureClosestTo(Vector2 pos, float maxRange, Set<CreatureId> excluded);

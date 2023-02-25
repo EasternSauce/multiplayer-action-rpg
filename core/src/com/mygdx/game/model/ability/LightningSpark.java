@@ -49,9 +49,13 @@ public class LightningSpark extends Ability {
             game.getWorld(params().areaId()).isLineOfSight(params().pos(), creature.params().pos())) {
             creature.handleBeingAttacked(true, params().damage(), params().creatureId());
 
-            game.chainAbility(this, AbilityType.LIGHTNING_CHAIN, creature.params().pos(), null);
+            game.chainAbility(this, AbilityType.LIGHTNING_CHAIN, creature.params().pos(), params.dirVector(), null);
 
-            game.chainAbility(this, AbilityType.LIGHTNING_NODE, creature.params().pos(), creature.params().id());
+            game.chainAbility(this,
+                              AbilityType.LIGHTNING_NODE,
+                              creature.params().pos(),
+                              params.dirVector(),
+                              creature.params().id());
         }
     }
 

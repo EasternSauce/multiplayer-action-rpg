@@ -6,5 +6,11 @@ public enum SkillType {
     LIGHTNING,
     CROSSBOW_BOLT,
 
-    MAGIC_ORB
+    MAGIC_ORB,
+
+    SLOW_MAGIC_ORB,
+
+    VOLATILE_BUBBLE
+
+
 }

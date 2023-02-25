@@ -42,5 +42,7 @@ public class AbilityAnimationConfig {
 
         configs.put("magic_orb", AbilityAnimationConfig.of(64, 64, "magic_orb", "magic_orb", 0, 6, 0f, 0.2f, 1.7f));
 
+        configs.put("ice_shard", AbilityAnimationConfig.of(152, 72, "ice_shard", "ice_shard", 0, 1, 0f, 0.3f, 1.7f));
+
     }
 }

@@ -26,22 +26,18 @@ public class Vector2 {
     }
 
     public Vector2 setAngleRad(float radians) {
-        x = len();
-        y = 0f;
-        rotateRad(radians);
-
-        return this;
+        Vector2 newVec = Vector2.of(len(), 0f);
+        return newVec.rotateRad(radians);
     }
 
-    public void rotateRad(float radians) {
+    public Vector2 rotateRad(float radians) {
         float cos = (float) Math.cos(radians);
         float sin = (float) Math.sin(radians);
 
         float newX = this.x * cos - this.y * sin;
         float newY = this.x * sin + this.y * cos;
 
-        this.x = newX;
-        this.y = newY;
+        return Vector2.of(newX, newY);
     }
 
 

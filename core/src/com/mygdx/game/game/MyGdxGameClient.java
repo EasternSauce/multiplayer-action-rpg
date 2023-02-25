@@ -202,6 +202,20 @@ public class MyGdxGameClient extends MyGdxGame {
 
 
             }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.T)) {
+
+                Creature player = gameState().creatures().get(thisPlayerId);
+
+
+                Vector2 dirVector = mousePos();
+
+                endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
+                                                             SkillType.VOLATILE_BUBBLE,
+                                                             player.params().pos(),
+                                                             dirVector));
+
+
+            }
             if (Gdx.input.isKeyJustPressed(Input.Keys.F11)) {
 
                 List<EnemySpawn>
@@ -484,6 +498,7 @@ public class MyGdxGameClient extends MyGdxGame {
     public void chainAbility(Ability chainFromAbility,
                              AbilityType abilityType,
                              Vector2 chainToPos,
+                             Vector2 dirVector,
                              CreatureId creatureId) {
         // do nothing
     }
