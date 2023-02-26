@@ -13,16 +13,16 @@ import lombok.NoArgsConstructor;
 
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
 public class GameState {
 
-    Map<CreatureId, Creature> creatures = new ConcurrentHashMap<>();
-    Map<AbilityId, Ability> abilities = new ConcurrentHashMap<>();
-    Map<AreaId, Area> areas = new ConcurrentHashMap<>();
+    Map<CreatureId, Creature> creatures = new ConcurrentSkipListMap<>();
+    Map<AbilityId, Ability> abilities = new ConcurrentSkipListMap<>();
+    Map<AreaId, Area> areas = new ConcurrentSkipListMap<>();
     AreaId currentAreaId = AreaId.of("area1");
 
     AreaId defaultAreaId = AreaId.of("area1");
@@ -34,9 +34,9 @@ public class GameState {
 
     public static GameState of(GameState gameState) {
         GameState newGameState = GameState.of();
-        newGameState.creatures(new ConcurrentHashMap<>(gameState.creatures));
-        newGameState.abilities(new ConcurrentHashMap<>(gameState.abilities));
-        newGameState.areas(new ConcurrentHashMap<>(gameState.areas));
+        newGameState.creatures(new ConcurrentSkipListMap<>(gameState.creatures));
+        newGameState.abilities(new ConcurrentSkipListMap<>(gameState.abilities));
+        newGameState.areas(new ConcurrentSkipListMap<>(gameState.areas));
         newGameState.currentAreaId(gameState.currentAreaId);
         newGameState.defaultAreaId(gameState.defaultAreaId);
         newGameState.generalTimer(gameState.generalTimer);

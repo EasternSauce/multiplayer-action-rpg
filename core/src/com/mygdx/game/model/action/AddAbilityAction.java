@@ -33,10 +33,12 @@ public class AddAbilityAction implements GameStateAction {
 
         gameState.abilities().put(ability.params().id(), ability);
 
-        game.abilitiesToBeCreated().add(ability.params().id());
-
+        if (ability.params().activeTime() > 0) {
+            game.abilitiesToBeCreated().add(ability.params().id());
+        }
 
         ability.init(game);
+
         creature.onAbilityPerformed(ability);
 
     }

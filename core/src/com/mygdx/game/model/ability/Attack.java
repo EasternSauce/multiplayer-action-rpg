@@ -10,8 +10,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 @NoArgsConstructor(staticName = "of")
 @Data
@@ -125,7 +125,7 @@ public class Attack extends Ability {
                                       .dirVector(dirVector)
                                       .isChannelAnimationLooping(false)
                                       .isActiveAnimationLooping(false)
-                                      .creaturesAlreadyHit(new HashSet<>())
+                                      .creaturesAlreadyHit(new ConcurrentSkipListSet<>())
                                       .rotationShift(0f);
         return ability;
     }

@@ -1,5 +1,8 @@
 package com.mygdx.game.model.util;
 
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 public enum WorldDirection {
     LEFT,
     RIGHT,

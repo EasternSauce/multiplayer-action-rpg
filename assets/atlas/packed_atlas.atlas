@@ -6,7 +6,7 @@ filter: Nearest, Nearest
 repeat: none
 arrow
   rotate: false
-  xy: 3636, 710
+  xy: 1846, 232
   size: 40, 40
   orig: 40, 40
   offset: 0, 0
@@ -27,14 +27,14 @@ background2
   index: -1
 bag
   rotate: false
-  xy: 3986, 782
+  xy: 3636, 718
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 black_mage
   rotate: false
-  xy: 3588, 580
+  xy: 3490, 580
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
@@ -48,14 +48,14 @@ bubble
   index: -1
 cursor
   rotate: false
-  xy: 2190, 336
+  xy: 966, 204
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 downarrow
   rotate: false
-  xy: 4020, 782
+  xy: 2190, 336
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -111,9 +111,9 @@ fist_slam_windup
   index: -1
 ghost
   rotate: false
-  xy: 3392, 580
-  size: 96, 128
-  orig: 96, 128
+  xy: 3986, 782
+  size: 97, 32
+  orig: 97, 32
   offset: 0, 0
   index: -1
 goblet
@@ -132,7 +132,7 @@ goblet_lit
   index: -1
 goblin
   rotate: false
-  xy: 3490, 580
+  xy: 3392, 580
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
@@ -307,7 +307,7 @@ taurus
   index: -1
 treasure
   rotate: false
-  xy: 1846, 240
+  xy: 4040, 978
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

@@ -10,9 +10,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -85,7 +85,7 @@ public class CreatureParams {
     SimpleTimer findTargetTimer = SimpleTimer.getExpiredTimer();
     Float findTargetCooldown;
 
-    Map<SkillType, Skill> skills = new HashMap<>();
+    Map<SkillType, Skill> skills = new ConcurrentSkipListMap<>();
 
     Boolean isPathMirrored = false;
 
@@ -132,8 +132,10 @@ public class CreatureParams {
         params.pathCalculationCooldown = 4f + 2f * RandomHelper.seededRandomFloat(creatureId);
 
         params.skills = // TODO: should we restrict which creature can perform which skill?
-                Arrays.stream(SkillType.values())
-                      .collect(Collectors.toMap(Function.identity(), skillType -> Skill.of(skillType, creatureId)));
+                new ConcurrentSkipListMap<>(Arrays.stream(SkillType.values())
+                                                  .collect(Collectors.toMap(Function.identity(),
+                                                                            skillType -> Skill.of(skillType,
+                                                                                                  creatureId))));
 
         params.aiStateSeed = RandomHelper.seededRandomFloat(creatureId);
         params.aiStateTimeout = 0f;

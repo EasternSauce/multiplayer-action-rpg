@@ -1,5 +1,8 @@
 package com.mygdx.game.model.creature;
 
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 public enum EnemyType {
     SKELETON("skeleton"),
     ARCHER("undead_adventurer"),
@@ -7,7 +10,7 @@ public enum EnemyType {
     MAGE("black_mage");
 
 
-    public final String textureName;
+    public String textureName;
 
     EnemyType(String textureName) {
         this.textureName = textureName;

@@ -53,5 +53,9 @@ public class AbilityParams {
 
     Float rotationShift;
 
+    Boolean flip = false;
+
+    Float rngSeed;
+
 
 }

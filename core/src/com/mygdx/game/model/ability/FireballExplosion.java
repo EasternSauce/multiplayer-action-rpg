@@ -10,8 +10,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 @NoArgsConstructor(staticName = "of")
 @Data
@@ -93,7 +93,7 @@ public class FireballExplosion extends Ability {
                                       .isChannelAnimationLooping(false)
                                       .isActiveAnimationLooping(false)
                                       .attackWithoutMoving(true)
-                                      .creaturesAlreadyHit(new HashSet<>())
+                                      .creaturesAlreadyHit(new ConcurrentSkipListSet<>())
                                       .rotationShift(0f);
 
         return ability;

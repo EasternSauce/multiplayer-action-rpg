@@ -1,5 +1,8 @@
 package com.mygdx.game.model.skill;
 
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 public enum SkillType {
     SLASH,
     FIREBALL,
@@ -10,7 +13,9 @@ public enum SkillType {
 
     SLOW_MAGIC_ORB,
 
-    VOLATILE_BUBBLE
+    VOLATILE_BUBBLE,
+
+    SUMMON_GHOSTS
 
 
 }

@@ -1,5 +1,8 @@
 package com.mygdx.game.model.creature;
 
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 public enum EnemyAiState {
 
     RESTING,

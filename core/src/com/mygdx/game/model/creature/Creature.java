@@ -203,5 +203,4 @@ public abstract class Creature {
         takeStaminaDamage(skill.staminaCost());
         takeManaDamage(skill.manaCost());
     }
-
 }

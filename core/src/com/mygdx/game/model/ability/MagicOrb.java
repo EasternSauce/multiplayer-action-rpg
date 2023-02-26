@@ -13,8 +13,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
@@ -62,7 +62,9 @@ public class MagicOrb extends Projectile {
 
     @Override
     public void onTerrainHit() {
-        deactivate();
+        if (params().stateTimer().time() > 0.1f) {
+            deactivate();
+        }
     }
 
 
@@ -144,8 +146,6 @@ public class MagicOrb extends Projectile {
             else if (params().stateTimer().time() >= 2f) {
                 increment = 0f;
             }
-            System.out.println(increment);
-
 
             if (result > increment) {
                 params().dirVector(params().dirVector().setAngleDeg(params().dirVector().angleDeg() + increment));
@@ -183,7 +183,7 @@ public class MagicOrb extends Projectile {
                                       .dirVector(dirVector)
                                       .isChannelAnimationLooping(false)
                                       .isActiveAnimationLooping(true)
-                                      .creaturesAlreadyHit(new HashSet<>())
+                                      .creaturesAlreadyHit(new ConcurrentSkipListSet<>())
                                       .rotationShift(0f)
                                       .delayedActionTime(0.001f)
                                       .speed(12f);

@@ -83,7 +83,6 @@ public class Enemy extends Creature {
             if (foundTargetId != null) {
                 if (params().lastFoundTargetId() == null || !params().lastFoundTargetId().equals(foundTargetId)) {
                     params().aiState(EnemyAiState.ALERTED);
-                    System.out.println("set alerted");
                     params.aggroedCreatureId(foundTargetId);
                     params().lastFoundTargetId(foundTargetId);
                 }
@@ -139,8 +138,6 @@ public class Enemy extends Creature {
                     defensivePos =
                     targetPos.add(vectorTowards.normalized().multiplyBy(Constants.DEFENSIVE_POS_DISTANCE));
 
-            System.out.println("set new pos");
-
             params().defensivePosition(Vector2.of(defensivePos.x() + nextFloat(),
                                                   defensivePos.y() + nextFloat()));
 
@@ -178,7 +175,6 @@ public class Enemy extends Creature {
             if ((params().aiState() == EnemyAiState.AGGRESSIVE ||
                  params().aiState() == EnemyAiState.KEEPING_DISTANCE) && distance > Constants.TURN_ALERTED_DISTANCE) {
                 params().aiState(EnemyAiState.ALERTED);
-                System.out.println("set alerted");
 
             }
             else if (params().aiState() == EnemyAiState.ALERTED && distance < Constants.TURN_AGGRESIVE_DISTANCE) {

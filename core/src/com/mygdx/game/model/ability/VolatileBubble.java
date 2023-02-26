@@ -10,8 +10,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 @NoArgsConstructor(staticName = "of")
 @Data
@@ -78,7 +78,7 @@ public class VolatileBubble extends Projectile {
 
     @Override
     public void onTerrainHit() {
-
+        deactivate();
     }
 
     public static VolatileBubble of(AbilityId abilityId,
@@ -97,16 +97,16 @@ public class VolatileBubble extends Projectile {
                                       .activeTime(30f)
                                       .textureName("bubble")
                                       .creatureId(creatureId)
-                                      .damage(40f)
+                                      .damage(15f)
                                       .pos(pos)
                                       .creaturesAlreadyHit(creaturesAlreadyHit)
                                       .dirVector(dirVector)
                                       .isChannelAnimationLooping(false)
                                       .isActiveAnimationLooping(true)
-                                      .creaturesAlreadyHit(new HashSet<>())
+                                      .creaturesAlreadyHit(new ConcurrentSkipListSet<>())
                                       .rotationShift(0f)
                                       .delayedActionTime(0.001f)
-                                      .speed(5f);
+                                      .speed(10f);
 
 
         return ability;

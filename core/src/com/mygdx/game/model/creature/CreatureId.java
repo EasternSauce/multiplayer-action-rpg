@@ -7,6 +7,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-public class CreatureId {
+public class CreatureId implements Comparable<CreatureId> {
     String value;
+
+
+    @Override
+    public int compareTo(CreatureId o) {
+        return value().compareTo(o.value());
+    }
 }

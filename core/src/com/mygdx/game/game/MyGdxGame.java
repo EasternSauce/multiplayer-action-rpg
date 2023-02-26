@@ -27,7 +27,8 @@ import com.mygdx.game.renderer.GameRenderer;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 public abstract class MyGdxGame extends Game implements AbilityUpdateable, CreatureUpdatable {
     final protected GameRenderer gameRenderer = GameRenderer.of();
@@ -47,7 +48,7 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Creat
     final List<CreatureId> creaturesToBeRemoved = Collections.synchronizedList(new ArrayList<>());
     final List<AbilityId> abilitiesToBeRemoved = Collections.synchronizedList(new ArrayList<>());
 
-    final Map<CreatureId, Vector2> creaturesToTeleport = new HashMap<>();
+    final Map<CreatureId, Vector2> creaturesToTeleport = new ConcurrentSkipListMap<>();
 
 
     public Boolean debug() {
@@ -349,11 +350,10 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Creat
     public void registerEndPointClasses() {
         endPoint().getKryo().setRegistrationRequired(true);
 
-        endPoint().getKryo().register(HashSet.class);
-        endPoint().getKryo().register(HashMap.class);
         endPoint().getKryo().register(ArrayList.class);
         endPoint().getKryo().register(LinkedList.class);
-        endPoint().getKryo().register(ConcurrentHashMap.class);
+        endPoint().getKryo().register(ConcurrentSkipListSet.class);
+        endPoint().getKryo().register(ConcurrentSkipListMap.class);
 
         endPoint().getKryo().register(CreatureId.class);
         endPoint().getKryo().register(Vector2.class);
@@ -375,6 +375,7 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Creat
 
         endPoint().getKryo().register(Ability.class);
         endPoint().getKryo().register(AbilityRect.class);
+        endPoint().getKryo().register(SummonGhosts.class);
         endPoint().getKryo().register(Attack.class);
         endPoint().getKryo().register(CrossbowBolt.class);
         endPoint().getKryo().register(Fireball.class);
@@ -385,6 +386,8 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Creat
         endPoint().getKryo().register(MagicOrb.class);
         endPoint().getKryo().register(VolatileBubble.class);
         endPoint().getKryo().register(IceSpear.class);
+        endPoint().getKryo().register(PlayfulGhost.class);
+
 
         endPoint().getKryo().register(Enemy.class);
         endPoint().getKryo().register(Area.class);

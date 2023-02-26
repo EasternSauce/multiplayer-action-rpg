@@ -44,5 +44,7 @@ public class AbilityAnimationConfig {
 
         configs.put("ice_shard", AbilityAnimationConfig.of(152, 72, "ice_shard", "ice_shard", 0, 1, 0f, 0.3f, 1.7f));
 
+        configs.put("ghost", AbilityAnimationConfig.of(32, 32, "ghost", "ghost", 0, 3, 0f, 0.3f, 1.7f));
+
     }
 }

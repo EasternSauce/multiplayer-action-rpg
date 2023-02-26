@@ -10,8 +10,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 @NoArgsConstructor(staticName = "of")
 @Data
@@ -52,12 +52,14 @@ public class IceSpear extends Projectile {
 
     @Override
     public void onCreatureHit() {
-
+        //deactivate();
     }
 
     @Override
     public void onTerrainHit() {
-
+        if (params().stateTimer().time() > 0.1f) {
+            deactivate();
+        }
     }
 
     public static IceSpear of(AbilityId abilityId,
@@ -73,16 +75,16 @@ public class IceSpear extends Projectile {
                                       .width(1.05f)
                                       .height(0.5f)
                                       .channelTime(0f)
-                                      .activeTime(30f)
+                                      .activeTime(0.6f)
                                       .textureName("ice_shard")
                                       .creatureId(creatureId)
-                                      .damage(40f)
+                                      .damage(10f)
                                       .pos(pos)
                                       .creaturesAlreadyHit(creaturesAlreadyHit)
                                       .dirVector(dirVector)
                                       .isChannelAnimationLooping(false)
                                       .isActiveAnimationLooping(true)
-                                      .creaturesAlreadyHit(new HashSet<>())
+                                      .creaturesAlreadyHit(new ConcurrentSkipListSet<>())
                                       .rotationShift(0f)
                                       .delayedActionTime(0.001f)
                                       .speed(15f);

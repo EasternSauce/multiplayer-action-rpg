@@ -18,8 +18,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
@@ -50,7 +50,7 @@ public class MyGdxGamePlayScreen implements Screen {
                                          (float) Constants.WindowHeight,
                                          game.renderer().hudCamera()));
 
-        Map<AreaId, String> mapsToLoad = new HashMap<>();
+        Map<AreaId, String> mapsToLoad = new ConcurrentSkipListMap<>();
         mapsToLoad.put(AreaId.of("area1"), "assets/areas/area1");
         mapsToLoad.put(AreaId.of("area2"), "assets/areas/area2");
         mapsToLoad.put(AreaId.of("area3"), "assets/areas/area3");

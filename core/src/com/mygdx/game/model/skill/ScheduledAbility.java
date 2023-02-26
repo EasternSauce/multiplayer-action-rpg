@@ -9,7 +9,7 @@ import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 @NoArgsConstructor(staticName = "of")
 @Data
@@ -41,7 +41,7 @@ public class ScheduledAbility {
                           areaId,
                           creatureId,
                           abilityType,
-                          new HashSet<>(),
+                          new ConcurrentSkipListSet<>(),
                           null,
                           pos,
                           dirVector);

@@ -11,8 +11,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 @NoArgsConstructor(staticName = "of")
 @Data
@@ -83,7 +83,7 @@ public class CrossbowBolt extends Projectile {
                                       .dirVector(dirVector)
                                       .isChannelAnimationLooping(true)
                                       .isActiveAnimationLooping(true)
-                                      .creaturesAlreadyHit(new HashSet<>())
+                                      .creaturesAlreadyHit(new ConcurrentSkipListSet<>())
                                       .rotationShift(0f)
                                       .speed(30f);
 

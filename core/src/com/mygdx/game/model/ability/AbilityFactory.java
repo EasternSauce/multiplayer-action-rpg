@@ -61,8 +61,15 @@ public class AbilityFactory {
             return IceSpear.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit);
         }
 
+        if (abilityType == AbilityType.PLAYFUL_GHOST) {
+            return PlayfulGhost.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit);
+        }
 
-        throw new RuntimeException("ability type not found");
+        if (abilityType == AbilityType.SUMMON_GHOSTS) {
+            return SummonGhosts.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit);
+        }
+
+        throw new RuntimeException("ability type not found: " + abilityType);
     }
 }
 

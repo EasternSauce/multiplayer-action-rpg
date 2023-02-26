@@ -1,5 +1,8 @@
 package com.mygdx.game.model.ability;
 
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 public enum AbilityType {
     SLASH,
     FIREBALL,
@@ -14,7 +17,11 @@ public enum AbilityType {
 
     VOLATILE_BUBBLE,
 
-    ICE_SPEAR
+    ICE_SPEAR,
+
+    SUMMON_GHOSTS,
+
+    PLAYFUL_GHOST
 
 
 }

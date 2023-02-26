@@ -98,7 +98,16 @@ public class Skill {
                             SimpleTimer.getExpiredTimer(),
                             1.3f,
                             15f,
-                            0f);
+                            20f);
+        }
+        if (skillType == SkillType.SUMMON_GHOSTS) {
+            return Skill.of(skillType,
+                            creatureId,
+                            singleScheduledAbility(AbilityType.SUMMON_GHOSTS),
+                            SimpleTimer.getExpiredTimer(),
+                            1.3f,
+                            15f,
+                            20f);
         }
         throw new RuntimeException("skill not handled");
     }

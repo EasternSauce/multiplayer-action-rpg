@@ -10,11 +10,5 @@ import lombok.NoArgsConstructor;
 @Data
 public class GameStateHolder {
     GameState gameState;
-    Boolean initial = false;
 
-    public static GameStateHolder of(GameState gameState) {
-        GameStateHolder gameStateHolder = GameStateHolder.of();
-        gameStateHolder.gameState = gameState;
-        return gameStateHolder;
-    }
 }

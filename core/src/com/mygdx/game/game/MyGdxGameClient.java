@@ -29,7 +29,6 @@ public class MyGdxGameClient extends MyGdxGame {
     private static MyGdxGameClient instance;
 
     Client _endPoint;
-    boolean isInitialized = false;
 
     private MyGdxGameClient() {
         thisPlayerId = CreatureId.of("Player_" + (int) (Math.random() * 10000000));
@@ -50,11 +49,6 @@ public class MyGdxGameClient extends MyGdxGame {
 
     public void endPoint(Client endPoint) {
         this._endPoint = endPoint;
-    }
-
-    @Override
-    public boolean isInitialized() {
-        return isInitialized;
     }
 
     @Override
@@ -93,7 +87,7 @@ public class MyGdxGameClient extends MyGdxGame {
 
         }
         else {
-            if (isInitialized && chat.holdingBackspace() && chat.isTyping()) {
+            if (chat.holdingBackspace() && chat.isTyping()) {
                 chat.holdingBackspace(false);
             }
         }
@@ -211,6 +205,20 @@ public class MyGdxGameClient extends MyGdxGame {
 
                 endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
                                                              SkillType.VOLATILE_BUBBLE,
+                                                             player.params().pos(),
+                                                             dirVector));
+
+
+            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.Y)) {
+
+                Creature player = gameState().creatures().get(thisPlayerId);
+
+
+                Vector2 dirVector = mousePos();
+
+                endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
+                                                             SkillType.SUMMON_GHOSTS,
                                                              player.params().pos(),
                                                              dirVector));
 
@@ -336,7 +344,7 @@ public class MyGdxGameClient extends MyGdxGame {
         endPoint(new Client(6400000, 6400000));
         registerEndPointClasses();
         endPoint().start();
-        endPoint().connect(12000, "89.79.23.118", 20445, 20445);
+        endPoint().connect(12000 * 99999, "89.79.23.118", 20445, 20445);
 
         endPoint().addListener(new Listener() {
             @Override
@@ -354,49 +362,38 @@ public class MyGdxGameClient extends MyGdxGame {
                 else if (object instanceof GameStateHolder) {
                     GameStateHolder action = (GameStateHolder) object;
 
-                    if (action.initial()) {
-                        gameStateHolder.gameState(action.gameState());
+                    GameState oldGameState = gameState();
+                    GameState newGameState = action.gameState();
 
-                        gameState().creatures()
-                                   .forEach((creatureId, creature) -> creaturesToBeCreated().add(creatureId));
+                    Set<CreatureId> oldCreatureIds = oldGameState.creatures().keySet();
+                    Set<CreatureId> newCreatureIds = newGameState.existingCreatureIds();
 
+                    Set<CreatureId> creaturesAdded = new HashSet<>(newCreatureIds);
+                    creaturesAdded.removeAll(oldCreatureIds);
 
-                        isInitialized = true;
+                    Set<CreatureId> creaturesRemoved = new HashSet<>(oldCreatureIds);
+                    creaturesRemoved.removeAll(newCreatureIds);
 
-                    }
-                    else {
-                        GameState oldGameState = gameState();
-                        GameState newGameState = action.gameState();
+                    Set<AbilityId> oldAbilityIds = oldGameState.abilities().keySet();
+                    Set<AbilityId> newAbilityIds = newGameState.existingAbilityIds();
 
-                        Set<CreatureId> oldCreatureIds = oldGameState.creatures().keySet();
-                        Set<CreatureId> newCreatureIds = newGameState.existingCreatureIds();
+                    Set<AbilityId> abilitiesAdded = new HashSet<>(newAbilityIds);
+                    abilitiesAdded.removeAll(oldAbilityIds);
 
-                        Set<CreatureId> creaturesAdded = new HashSet<>(newCreatureIds);
-                        creaturesAdded.removeAll(oldCreatureIds);
+                    Set<AbilityId> abilitiesRemoved = new HashSet<>(oldAbilityIds);
+                    abilitiesRemoved.removeAll(newAbilityIds);
 
-                        Set<CreatureId> creaturesRemoved = new HashSet<>(oldCreatureIds);
-                        creaturesRemoved.removeAll(newCreatureIds);
+                    creaturesToBeCreated().addAll(creaturesAdded);
 
-                        Set<AbilityId> oldAbilityIds = oldGameState.abilities().keySet();
-                        Set<AbilityId> newAbilityIds = newGameState.existingAbilityIds();
+                    creaturesToBeRemoved().addAll(creaturesRemoved);
 
-                        Set<AbilityId> abilitiesAdded = new HashSet<>(newAbilityIds);
-                        abilitiesAdded.removeAll(oldAbilityIds);
+                    abilitiesToBeCreated().addAll(abilitiesAdded);
 
-                        Set<AbilityId> abilitiesRemoved = new HashSet<>(oldAbilityIds);
-                        abilitiesRemoved.removeAll(newAbilityIds);
-
-                        creaturesToBeCreated().addAll(creaturesAdded);
-
-                        creaturesToBeRemoved().addAll(creaturesRemoved);
-
-                        abilitiesToBeCreated().addAll(abilitiesAdded);
-
-                        abilitiesToBeRemoved().addAll(abilitiesRemoved);
+                    abilitiesToBeRemoved().addAll(abilitiesRemoved);
 
 
-                        gameStateHolder.gameState(newGameState);
-                    }
+                    gameStateHolder.gameState(newGameState);
+
 
                     gamePhysics.forceUpdateBodyPositions(true);
 
