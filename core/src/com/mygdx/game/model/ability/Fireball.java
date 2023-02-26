@@ -92,7 +92,7 @@ public class Fireball extends Projectile {
                                       .activeTime(30f)
                                       .textureName("fireball")
                                       .creatureId(creatureId)
-                                      .damage(40f)
+                                      .damage(15f)
                                       .pos(pos)
                                       .creaturesAlreadyHit(creaturesAlreadyHit)
                                       .dirVector(dirVector)

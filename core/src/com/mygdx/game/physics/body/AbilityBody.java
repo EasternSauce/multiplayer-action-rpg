@@ -67,6 +67,10 @@ public class AbilityBody {
     public void init(GamePhysics physics, GameState gameState, boolean skipCreatingBody) {
         Ability ability = gameState.abilities().get(abilityId);
 
+        if (isBodyInitialized) {
+            throw new RuntimeException("body initialized more than one time!");
+        }
+
         if (!skipCreatingBody && ability != null) {
             world = physics.physicsWorlds().get(ability.params().areaId());
 

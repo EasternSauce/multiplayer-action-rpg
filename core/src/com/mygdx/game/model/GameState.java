@@ -12,7 +12,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 @NoArgsConstructor(staticName = "of")
@@ -29,8 +28,8 @@ public class GameState {
 
     SimpleTimer generalTimer = SimpleTimer.getStartedTimer();
 
-    Set<CreatureId> existingCreatureIds;
-    Set<AbilityId> existingAbilityIds;
+    //    Set<CreatureId> globalCreatureIds = new ConcurrentSkipListSet<>();
+    //    Set<AbilityId> globalAbilityIds = new ConcurrentSkipListSet<>();
 
     public static GameState of(GameState gameState) {
         GameState newGameState = GameState.of();
@@ -40,8 +39,21 @@ public class GameState {
         newGameState.currentAreaId(gameState.currentAreaId);
         newGameState.defaultAreaId(gameState.defaultAreaId);
         newGameState.generalTimer(gameState.generalTimer);
-        newGameState.existingCreatureIds(gameState.existingCreatureIds);
-        newGameState.existingAbilityIds(gameState.existingAbilityIds);
+        //        newGameState.globalCreatureIds(gameState.globalCreatureIds);
+        //        newGameState.globalAbilityIds(gameState.globalAbilityIds);
+        return newGameState;
+    }
+
+    public static GameState of(GameState gameState,
+                               Map<CreatureId, Creature> creatures,
+                               Map<AbilityId, Ability> abilities) {
+        GameState newGameState = GameState.of();
+        newGameState.creatures(creatures);
+        newGameState.abilities(abilities);
+        newGameState.areas(new ConcurrentSkipListMap<>(gameState.areas));
+        newGameState.currentAreaId(gameState.currentAreaId);
+        newGameState.defaultAreaId(gameState.defaultAreaId);
+        newGameState.generalTimer(gameState.generalTimer);
         return newGameState;
     }
 }

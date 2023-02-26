@@ -13,7 +13,7 @@ import com.mygdx.game.model.creature.*;
 import com.mygdx.game.model.skill.ScheduledAbility;
 import com.mygdx.game.model.skill.Skill;
 import com.mygdx.game.model.skill.SkillType;
-import com.mygdx.game.model.util.GameStateHolder;
+import com.mygdx.game.model.util.GameStateBroadcast;
 import com.mygdx.game.model.util.SimpleTimer;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.model.util.WorldDirection;
@@ -33,7 +33,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
 public abstract class MyGdxGame extends Game implements AbilityUpdateable, CreatureUpdatable {
     final protected GameRenderer gameRenderer = GameRenderer.of();
     final protected GamePhysics gamePhysics = GamePhysics.of();
-    final protected GameStateHolder gameStateHolder = GameStateHolder.of(GameState.of());
+    protected GameState gameState = GameState.of();
     final MyGdxGamePlayScreen playScreen = MyGdxGamePlayScreen.of();
 
     @SuppressWarnings("FieldCanBeLocal")
@@ -93,7 +93,7 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Creat
     }
 
     public GameState gameState() {
-        return gameStateHolder.gameState();
+        return gameState;
     }
 
     public abstract EndPoint endPoint();
@@ -133,6 +133,7 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Creat
         Ability ability = gameState().abilities().get(abilityId);
 
         if (ability != null) {
+
             if (!gameRenderer.abilityRenderers().containsKey(abilityId)) {
                 AbilityRenderer abilityRenderer = AbilityRenderer.of(abilityId);
                 abilityRenderer.init(gameRenderer.atlas(), gameState());
@@ -189,7 +190,6 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Creat
 
     abstract public Set<AbilityId> abilitiesToUpdate();
 
-
     public void removeCreature(CreatureId creatureId) {
         if (creatureId != null) {
             gameState().creatures().remove(creatureId);
@@ -204,7 +204,9 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Creat
     }
 
     public void removeAbility(AbilityId abilityId) {
+
         if (abilityId != null) {
+
             gameState().abilities().remove(abilityId);
 
             renderer().abilityRenderers().remove(abilityId);
@@ -412,7 +414,7 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Creat
 
         endPoint().getKryo().register(ActionsHolder.class);
         endPoint().getKryo().register(GameState.class);
-        endPoint().getKryo().register(GameStateHolder.class);
+        endPoint().getKryo().register(GameStateBroadcast.class);
 
     }
 

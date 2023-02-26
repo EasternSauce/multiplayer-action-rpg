@@ -17,7 +17,7 @@ import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.*;
 import com.mygdx.game.model.skill.SkillType;
-import com.mygdx.game.model.util.GameStateHolder;
+import com.mygdx.game.model.util.GameStateBroadcast;
 import com.mygdx.game.model.util.Vector2;
 
 import java.io.IOException;
@@ -359,41 +359,39 @@ public class MyGdxGameClient extends MyGdxGame {
 
 
                 }
-                else if (object instanceof GameStateHolder) {
-                    GameStateHolder action = (GameStateHolder) object;
+                else if (object instanceof GameStateBroadcast) {
+                    GameStateBroadcast action = (GameStateBroadcast) object;
 
                     GameState oldGameState = gameState();
                     GameState newGameState = action.gameState();
 
                     Set<CreatureId> oldCreatureIds = oldGameState.creatures().keySet();
-                    Set<CreatureId> newCreatureIds = newGameState.existingCreatureIds();
-
-                    Set<CreatureId> creaturesAdded = new HashSet<>(newCreatureIds);
-                    creaturesAdded.removeAll(oldCreatureIds);
-
-                    Set<CreatureId> creaturesRemoved = new HashSet<>(oldCreatureIds);
-                    creaturesRemoved.removeAll(newCreatureIds);
-
+                    Set<CreatureId> newCreatureIds = newGameState.creatures().keySet();
                     Set<AbilityId> oldAbilityIds = oldGameState.abilities().keySet();
-                    Set<AbilityId> newAbilityIds = newGameState.existingAbilityIds();
-
-                    Set<AbilityId> abilitiesAdded = new HashSet<>(newAbilityIds);
-                    abilitiesAdded.removeAll(oldAbilityIds);
-
-                    Set<AbilityId> abilitiesRemoved = new HashSet<>(oldAbilityIds);
-                    abilitiesRemoved.removeAll(newAbilityIds);
-
-                    creaturesToBeCreated().addAll(creaturesAdded);
-
-                    creaturesToBeRemoved().addAll(creaturesRemoved);
-
-                    abilitiesToBeCreated().addAll(abilitiesAdded);
-
-                    abilitiesToBeRemoved().addAll(abilitiesRemoved);
+                    Set<AbilityId> newAbilityIds = newGameState.abilities().keySet();
 
 
-                    gameStateHolder.gameState(newGameState);
+                    Set<CreatureId> creaturesAddedSinceLastUpdate = new HashSet<>(newCreatureIds);
+                    creaturesAddedSinceLastUpdate.removeAll(oldCreatureIds);
 
+                    Set<CreatureId> creaturesRemovedSinceLastUpdate = new HashSet<>(oldCreatureIds);
+                    creaturesRemovedSinceLastUpdate.removeAll(newCreatureIds);
+
+                    Set<AbilityId> abilitiesAddedSinceLastUpdate = new HashSet<>(newAbilityIds);
+                    abilitiesAddedSinceLastUpdate.removeAll(oldAbilityIds);
+
+                    Set<AbilityId> abilitiesRemovedSinceLastUpdate = new HashSet<>(oldAbilityIds);
+                    abilitiesRemovedSinceLastUpdate.removeAll(newAbilityIds);
+
+                    creaturesToBeCreated().addAll(creaturesAddedSinceLastUpdate);
+
+                    creaturesToBeRemoved().addAll(creaturesRemovedSinceLastUpdate);
+
+                    abilitiesToBeCreated().addAll(abilitiesAddedSinceLastUpdate);
+
+                    abilitiesToBeRemoved().addAll(abilitiesRemovedSinceLastUpdate);
+
+                    gameState = newGameState;
 
                     gamePhysics.forceUpdateBodyPositions(true);
 
@@ -468,6 +466,7 @@ public class MyGdxGameClient extends MyGdxGame {
             return false;
         }).collect(Collectors.toSet());
     }
+
 
     @Override
     public void handleAttackTarget(CreatureId attackingCreatureId, Vector2 vectorTowardsTarget, SkillType skillType) {

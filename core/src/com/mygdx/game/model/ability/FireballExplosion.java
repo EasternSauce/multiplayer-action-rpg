@@ -86,7 +86,7 @@ public class FireballExplosion extends Ability {
                                       .activeTime(0.35f)
                                       .textureName("explosion")
                                       .creatureId(creatureId)
-                                      .damage(28f)
+                                      .damage(35f)
                                       .pos(pos)
                                       .creaturesAlreadyHit(creaturesAlreadyHit)
                                       .dirVector(dirVector)

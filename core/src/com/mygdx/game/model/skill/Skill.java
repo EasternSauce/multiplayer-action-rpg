@@ -45,7 +45,7 @@ public class Skill {
                             creatureId,
                             singleScheduledAbility(AbilityType.FIREBALL),
                             SimpleTimer.getExpiredTimer(),
-                            0.2f,
+                            0.4f,
                             15f,
                             30f);
         }

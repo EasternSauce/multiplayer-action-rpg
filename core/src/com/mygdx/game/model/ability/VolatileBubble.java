@@ -106,7 +106,7 @@ public class VolatileBubble extends Projectile {
                                       .creaturesAlreadyHit(new ConcurrentSkipListSet<>())
                                       .rotationShift(0f)
                                       .delayedActionTime(0.001f)
-                                      .speed(10f);
+                                      .speed(0.5f);
 
 
         return ability;
