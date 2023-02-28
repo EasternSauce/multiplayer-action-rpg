@@ -3,15 +3,9 @@ package com.mygdx.game.model.ability;
 import com.mygdx.game.game.AbilityChainable;
 import com.mygdx.game.game.AbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
-import com.mygdx.game.model.area.AreaId;
-import com.mygdx.game.model.creature.CreatureId;
-import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import java.util.Set;
-import java.util.concurrent.ConcurrentSkipListSet;
 
 @NoArgsConstructor(staticName = "of")
 @Data
@@ -52,11 +46,6 @@ public class Fireball extends Projectile {
     }
 
     @Override
-    public AbilityType type() {
-        return AbilityType.FIREBALL;
-    }
-
-    @Override
     void onAbilityStarted(AbilityUpdateable game) {
 
     }
@@ -68,7 +57,14 @@ public class Fireball extends Projectile {
 
     @Override
     protected void onAbilityCompleted(AbilityChainable game) {
-        game.chainAbility(this, AbilityType.FIREBALL_EXPLOSION, params().pos(), params.dirVector(), null);
+        game.chainAbility(this,
+                          AbilityType.FIREBALL_EXPLOSION,
+                          params().pos(),
+                          null,
+                          null,
+                          0f,
+                          params.dirVector(),
+                          null);
     }
 
     @Override
@@ -76,31 +72,20 @@ public class Fireball extends Projectile {
 
     }
 
-    public static Fireball of(AbilityId abilityId,
-                              AreaId areaId,
-                              CreatureId creatureId,
-                              Vector2 pos,
-                              Vector2 dirVector,
-                              Set<CreatureId> creaturesAlreadyHit) {
+    public static Fireball of(AbilityInitialParams abilityInitialParams) {
         Fireball ability = Fireball.of();
-        ability.params = AbilityParams.of()
-                                      .id(abilityId)
-                                      .areaId(areaId)
-                                      .width(1.5f)
-                                      .height(1.5f)
-                                      .channelTime(0f)
-                                      .activeTime(30f)
-                                      .textureName("fireball")
-                                      .creatureId(creatureId)
-                                      .damage(15f)
-                                      .pos(pos)
-                                      .creaturesAlreadyHit(creaturesAlreadyHit)
-                                      .dirVector(dirVector)
-                                      .isChannelAnimationLooping(false)
-                                      .isActiveAnimationLooping(true)
-                                      .creaturesAlreadyHit(new ConcurrentSkipListSet<>())
-                                      .rotationShift(0f)
-                                      .delayedActionTime(0.001f);
+        ability.params =
+                AbilityParams.of(abilityInitialParams)
+                             .width(1.5f)
+                             .height(1.5f)
+                             .channelTime(0f)
+                             .activeTime(30f)
+                             .textureName("fireball")
+                             .damage(15f)
+                             .isChannelAnimationLooping(false)
+                             .isActiveAnimationLooping(true)
+                             .rotationShift(0f)
+                             .delayedActionTime(0.001f);
 
 
         return ability;

@@ -109,6 +109,16 @@ public class Skill {
                             15f,
                             20f);
         }
+
+        if (skillType == SkillType.RICOCHET_SHOT) {
+            return Skill.of(skillType,
+                            creatureId,
+                            singleScheduledAbility(AbilityType.RICOCHET_SHOT),
+                            SimpleTimer.getExpiredTimer(),
+                            1.3f,
+                            15f,
+                            20f);
+        }
         throw new RuntimeException("skill not handled");
     }
 

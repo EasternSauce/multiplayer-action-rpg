@@ -3,7 +3,6 @@ package com.mygdx.game.model.ability;
 import com.mygdx.game.game.AbilityChainable;
 import com.mygdx.game.game.AbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
-import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.util.Vector2;
@@ -28,11 +27,6 @@ public class LightningSpark extends Ability {
     }
 
     @Override
-    public AbilityType type() {
-        return AbilityType.LIGHTNING_SPARK;
-    }
-
-    @Override
     void onAbilityStarted(AbilityUpdateable game) {
 
     }
@@ -43,19 +37,29 @@ public class LightningSpark extends Ability {
         Set<CreatureId> excluded = new HashSet<>(params().creaturesAlreadyHit());
         excluded.add(params().creatureId());
 
-        Creature creature = game.getCreature(game.aliveCreatureClosestTo(params().pos(), 13f, excluded));
+        Creature targetCreature = game.getCreature(game.aliveCreatureClosestTo(params().pos(), 13f, excluded));
 
-        if (creature != null &&
-            game.getWorld(params().areaId()).isLineOfSight(params().pos(), creature.params().pos())) {
-            creature.handleBeingAttacked(true, params().damage(), params().creatureId());
+        if (targetCreature != null &&
+            game.getWorld(params().areaId()).isLineOfSight(params().pos(), targetCreature.params().pos())) {
+            targetCreature.handleBeingAttacked(true, params().damage(), params().creatureId());
 
-            game.chainAbility(this, AbilityType.LIGHTNING_CHAIN, creature.params().pos(), params.dirVector(), null);
+            game.chainAbility(this,
+                              AbilityType.LIGHTNING_CHAIN,
+                              targetCreature.params().pos(), // this pos is later changed, TODO: move it to other param?
+                              null,
+                              null,
+                              0f,
+                              params.dirVector(),
+                              null);
 
             game.chainAbility(this,
                               AbilityType.LIGHTNING_NODE,
-                              creature.params().pos(),
+                              targetCreature.params().pos(),
+                              null,
+                              null,
+                              0f,
                               params.dirVector(),
-                              creature.params().id());
+                              targetCreature.params().id());
         }
     }
 
@@ -89,31 +93,23 @@ public class LightningSpark extends Ability {
 
     }
 
-    public static LightningSpark of(AbilityId abilityId,
-                                    AreaId areaId,
-                                    CreatureId creatureId,
-                                    Vector2 pos,
-                                    Vector2 dirVector,
-                                    Set<CreatureId> creaturesAlreadyHit,
-                                    Vector2 creaturePos) {
+    public static LightningSpark of(AbilityInitialParams abilityInitialParams) {
         LightningSpark ability = LightningSpark.of();
-        ability.params = AbilityParams.of()
-                                      .id(abilityId)
-                                      .areaId(areaId)
-                                      .width(3f)
-                                      .height(3f)
-                                      .channelTime(0f)
-                                      .activeTime(0.4f)
-                                      .textureName("lightning")
-                                      .creatureId(creatureId)
-                                      .damage(30f)
-                                      .isActiveAnimationLooping(true)
-                                      .attackWithoutMoving(true)
-                                      .pos(LightningSpark.calculatePos(pos, creaturePos))
-                                      .creaturesAlreadyHit(creaturesAlreadyHit)
-                                      .inactiveBody(true)
-                                      .dirVector(dirVector)
-                                      .rotationShift(0f).delayedActionTime(0.001f);
+        ability.params =
+                AbilityParams.of(abilityInitialParams)
+                             .width(3f)
+                             .height(3f)
+                             .channelTime(0f)
+                             .activeTime(0.4f)
+                             .textureName("lightning")
+                             .damage(30f)
+                             .isActiveAnimationLooping(true)
+                             .attackWithoutMoving(true)
+                             .inactiveBody(true)
+                             .rotationShift(0f)
+                             .delayedActionTime(0.001f)
+                             .pos(LightningSpark.calculatePos(abilityInitialParams.creaturePosWhenSkillPerformed(),
+                                                              abilityInitialParams.creaturePosCurrent()));
 
         return ability;
     }

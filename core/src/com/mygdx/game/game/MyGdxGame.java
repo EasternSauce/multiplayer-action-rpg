@@ -378,7 +378,7 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Creat
         endPoint().getKryo().register(Ability.class);
         endPoint().getKryo().register(AbilityRect.class);
         endPoint().getKryo().register(SummonGhosts.class);
-        endPoint().getKryo().register(Attack.class);
+        endPoint().getKryo().register(Slash.class);
         endPoint().getKryo().register(CrossbowBolt.class);
         endPoint().getKryo().register(Fireball.class);
         endPoint().getKryo().register(FireballExplosion.class);
@@ -389,6 +389,8 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Creat
         endPoint().getKryo().register(VolatileBubble.class);
         endPoint().getKryo().register(IceSpear.class);
         endPoint().getKryo().register(PlayfulGhost.class);
+        endPoint().getKryo().register(RicochetBullet.class);
+        endPoint().getKryo().register(RicochetShot.class);
 
 
         endPoint().getKryo().register(Enemy.class);

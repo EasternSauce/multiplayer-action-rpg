@@ -25,6 +25,10 @@ public class Vector2 {
         return setAngleRad(degrees * (float) PI / 180);
     }
 
+    public Vector2 rotateDeg(float degrees) {
+        return setAngleDeg(angleDeg() + degrees);
+    }
+
     public Vector2 setAngleRad(float radians) {
         Vector2 newVec = Vector2.of(len(), 0f);
         return newVec.rotateRad(radians);

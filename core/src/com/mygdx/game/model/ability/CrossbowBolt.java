@@ -4,15 +4,9 @@ package com.mygdx.game.model.ability;
 import com.mygdx.game.game.AbilityChainable;
 import com.mygdx.game.game.AbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
-import com.mygdx.game.model.area.AreaId;
-import com.mygdx.game.model.creature.CreatureId;
-import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import java.util.Set;
-import java.util.concurrent.ConcurrentSkipListSet;
 
 @NoArgsConstructor(staticName = "of")
 @Data
@@ -24,11 +18,6 @@ public class CrossbowBolt extends Projectile {
     @Override
     public Boolean isRanged() {
         return true;
-    }
-
-    @Override
-    public AbilityType type() {
-        return AbilityType.CROSSBOW_BOLT;
     }
 
     @Override
@@ -61,32 +50,21 @@ public class CrossbowBolt extends Projectile {
         deactivate();
     }
 
-    public static CrossbowBolt of(AbilityId abilityId,
-                                  AreaId areaId,
-                                  CreatureId creatureId,
-                                  Vector2 pos,
-                                  Vector2 dirVector,
-                                  Set<CreatureId> creaturesAlreadyHit) {
+    public static CrossbowBolt of(AbilityInitialParams abilityInitialParams) {
         CrossbowBolt ability = CrossbowBolt.of();
-        ability.params = AbilityParams.of()
-                                      .id(abilityId)
-                                      .areaId(areaId)
-                                      .width(1.5f)
-                                      .height(1.5f)
-                                      .channelTime(0f)
-                                      .activeTime(30f)
-                                      .textureName("arrow")
-                                      .creatureId(creatureId)
-                                      .damage(10f)
-                                      .pos(pos)
-                                      .creaturesAlreadyHit(creaturesAlreadyHit)
-                                      .dirVector(dirVector)
-                                      .isChannelAnimationLooping(true)
-                                      .isActiveAnimationLooping(true)
-                                      .creaturesAlreadyHit(new ConcurrentSkipListSet<>())
-                                      .rotationShift(0f)
-                                      .speed(30f);
-
+        ability.params =
+                AbilityParams.of(abilityInitialParams)
+                             .width(1.5f)
+                             .height(1.5f)
+                             .channelTime(0f)
+                             .activeTime(30f)
+                             .textureName("arrow")
+                             .damage(10f)
+                             .isChannelAnimationLooping(true)
+                             .isActiveAnimationLooping(true)
+                             .rotationShift(0f)
+                             .speed(30f)
+                             .pos(abilityInitialParams.creaturePosCurrent()); // TODO: this is overriding? to be refactored
 
         return ability;
     }

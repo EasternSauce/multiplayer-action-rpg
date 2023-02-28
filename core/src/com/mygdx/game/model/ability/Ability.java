@@ -16,8 +16,6 @@ public abstract class Ability {
 
     public abstract Boolean isRanged();
 
-    public abstract AbilityType type();
-
     public void update(Float delta, AbilityUpdateable game) {
         AbilityState state = params().state();
 
@@ -85,6 +83,7 @@ public abstract class Ability {
 
     public void updateTimers(float delta) {
         params().stateTimer().update(delta);
+        params().changeDirectionTimer().update(delta);
     }
 
     public AbilityAnimationConfig animationConfig() {

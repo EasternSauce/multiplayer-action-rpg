@@ -3,20 +3,15 @@ package com.mygdx.game.model.ability;
 import com.mygdx.game.game.AbilityChainable;
 import com.mygdx.game.game.AbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
-import com.mygdx.game.model.area.AreaId;
-import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
-import java.util.concurrent.ConcurrentSkipListSet;
-
 @NoArgsConstructor(staticName = "of")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Attack extends Ability {
+public class Slash extends Ability {
 
     AbilityParams params;
 
@@ -28,11 +23,6 @@ public class Attack extends Ability {
     @Override
     public Boolean isRanged() {
         return false;
-    }
-
-    @Override
-    public AbilityType type() {
-        return AbilityType.SLASH;
     }
 
     @Override
@@ -102,31 +92,20 @@ public class Attack extends Ability {
 
     }
 
-    public static Attack of(AbilityId abilityId,
-                            AreaId areaId,
-                            CreatureId creatureId,
-                            Vector2 pos,
-                            Vector2 dirVector,
-                            Set<CreatureId> creaturesAlreadyHit) {
-        Attack ability = Attack.of();
-        ability.params = AbilityParams.of()
-                                      .id(abilityId)
-                                      .areaId(areaId)
-                                      .width(2f)
-                                      .height(2f)
-                                      .channelTime(0.15f)
-                                      .activeTime(0.3f)
-                                      .range(1.8f)
-                                      .textureName("slash")
-                                      .creatureId(creatureId)
-                                      .damage(22f)
-                                      .pos(pos)
-                                      .creaturesAlreadyHit(creaturesAlreadyHit)
-                                      .dirVector(dirVector)
-                                      .isChannelAnimationLooping(false)
-                                      .isActiveAnimationLooping(false)
-                                      .creaturesAlreadyHit(new ConcurrentSkipListSet<>())
-                                      .rotationShift(0f);
+    public static Slash of(AbilityInitialParams abilityInitialParams) {
+        Slash ability = Slash.of();
+        ability.params =
+                AbilityParams.of(abilityInitialParams)
+                             .width(2f)
+                             .height(2f)
+                             .channelTime(0.15f)
+                             .activeTime(0.3f)
+                             .range(1.8f)
+                             .textureName("slash")
+                             .damage(22f)
+                             .isChannelAnimationLooping(false)
+                             .isActiveAnimationLooping(false)
+                             .rotationShift(0f);
         return ability;
     }
 }

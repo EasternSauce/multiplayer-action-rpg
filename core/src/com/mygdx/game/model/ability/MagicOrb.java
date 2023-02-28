@@ -3,9 +3,7 @@ package com.mygdx.game.model.ability;
 import com.mygdx.game.game.AbilityChainable;
 import com.mygdx.game.game.AbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
-import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
-import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.creature.Enemy;
 import com.mygdx.game.model.creature.Player;
 import com.mygdx.game.model.util.Vector2;
@@ -13,8 +11,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
-import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
@@ -28,11 +24,6 @@ public class MagicOrb extends Projectile {
     @Override
     public Boolean isRanged() {
         return true;
-    }
-
-    @Override
-    public AbilityType type() {
-        return AbilityType.MAGIC_ORB;
     }
 
     @Override
@@ -98,12 +89,9 @@ public class MagicOrb extends Projectile {
                                                                               .equals(params().creatureId()) &&
                                                                targetCreature.isAlive() &&
                                                                isTargetingAllowed(thisCreature, targetCreature) &&
-                                                               targetCreature.params()
-                                                                             .pos()
-                                                                             .distance(params().pos()) <
+                                                               targetCreature.params().pos().distance(params().pos()) <
                                                                20f)
-                                     .collect(
-                                             Collectors.toSet())) {
+                                     .collect(Collectors.toSet())) {
             if (creature.params().pos().distance(params().pos()) < minDistance) {
                 minCreature = creature;
                 minDistance = creature.params().pos().distance(params().pos());
@@ -148,10 +136,10 @@ public class MagicOrb extends Projectile {
             }
 
             if (result > increment) {
-                params().dirVector(params().dirVector().setAngleDeg(params().dirVector().angleDeg() + increment));
+                params().dirVector(params().dirVector().rotateDeg(increment));
             }
             else if (result < -increment) {
-                params().dirVector(params().dirVector().setAngleDeg(params().dirVector().angleDeg() - increment));
+                params().dirVector(params().dirVector().rotateDeg(-increment));
             }
             else {
                 params().dirVector(params().dirVector().setAngleDeg(targetAngleDeg));
@@ -161,32 +149,21 @@ public class MagicOrb extends Projectile {
 
     }
 
-    public static MagicOrb of(AbilityId abilityId,
-                              AreaId areaId,
-                              CreatureId creatureId,
-                              Vector2 pos,
-                              Vector2 dirVector,
-                              Set<CreatureId> creaturesAlreadyHit) {
+    public static MagicOrb of(AbilityInitialParams abilityInitialParams) {
         MagicOrb ability = MagicOrb.of();
-        ability.params = AbilityParams.of()
-                                      .id(abilityId)
-                                      .areaId(areaId)
-                                      .width(1.5f)
-                                      .height(1.5f)
-                                      .channelTime(0f)
-                                      .activeTime(30f)
-                                      .textureName("magic_orb")
-                                      .creatureId(creatureId)
-                                      .damage(40f)
-                                      .pos(pos)
-                                      .creaturesAlreadyHit(creaturesAlreadyHit)
-                                      .dirVector(dirVector)
-                                      .isChannelAnimationLooping(false)
-                                      .isActiveAnimationLooping(true)
-                                      .creaturesAlreadyHit(new ConcurrentSkipListSet<>())
-                                      .rotationShift(0f)
-                                      .delayedActionTime(0.001f)
-                                      .speed(12f);
+        ability.params =
+                AbilityParams.of(abilityInitialParams)
+                             .width(1.5f)
+                             .height(1.5f)
+                             .channelTime(0f)
+                             .activeTime(30f)
+                             .textureName("magic_orb")
+                             .damage(40f)
+                             .isChannelAnimationLooping(false)
+                             .isActiveAnimationLooping(true)
+                             .rotationShift(0f)
+                             .delayedActionTime(0.001f)
+                             .speed(12f);
 
 
         return ability;

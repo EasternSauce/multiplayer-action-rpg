@@ -242,27 +242,13 @@ public class MyGdxGameServer extends MyGdxGame {
 
     }
 
-    public void spawnAbility(AbilityId abilityId,
-                             AreaId areaId,
-                             CreatureId creatureId,
-                             AbilityType abilityType,
-                             Set<CreatureId> creaturesAlreadyHit,
-                             Vector2 chainFromPos,
-                             Vector2 pos,
-                             Vector2 dirVector) {
-        Creature creature = gameState().creatures().get(creatureId);
-
-        Ability ability = AbilityFactory.produceAbility(abilityType,
-                                                        abilityId,
-                                                        areaId,
-                                                        creatureId,
-                                                        dirVector,
-                                                        chainFromPos,
-                                                        pos,
-                                                        creaturesAlreadyHit,
-                                                        this);
+    public void spawnAbility(AbilityType abilityType, AbilityInitialParams abilityInitialParams) {
+        Creature creature = gameState().creatures().get(abilityInitialParams.creatureId());
 
         if (creature != null) {
+            Ability ability = AbilityFactory.produceAbility(abilityType, abilityInitialParams);
+
+
             AddAbilityAction action = AddAbilityAction.of(ability);
 
             tickActions.add(action);
@@ -441,8 +427,11 @@ public class MyGdxGameServer extends MyGdxGame {
 
     @Override
     public void chainAbility(Ability chainFromAbility,
-                             AbilityType chainIntoAbilityType,
-                             Vector2 chainToPos,
+                             AbilityType abilityType,
+                             Vector2 pos,
+                             Float width,
+                             Float height,
+                             Float rotationAngle,
                              Vector2 dirVector,
                              CreatureId creatureId) {
         AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
@@ -456,14 +445,21 @@ public class MyGdxGameServer extends MyGdxGame {
 
         Vector2 chainFromPos = chainFromAbility.params().pos();
 
-        spawnAbility(abilityId,
-                     chainFromAbility.params().areaId(),
-                     chainFromAbility.params().creatureId(),
-                     chainIntoAbilityType,
-                     creaturesAlreadyHit,
-                     chainFromPos,
-                     chainToPos,
-                     dirVector);
+        AbilityInitialParams
+                abilityInitialParams =
+                AbilityInitialParams.of()
+                                    .abilityId(abilityId)
+                                    .areaId(chainFromAbility.params().areaId())
+                                    .creatureId(chainFromAbility.params().creatureId())
+                                    .abilityCreaturesAlreadyHit(creaturesAlreadyHit)
+                                    .abilityChainFromPos(chainFromPos)
+                                    .creaturePosWhenSkillPerformed(pos)
+                                    .abilityWidth(width)
+                                    .abilityHeight(height)
+                                    .abilityRotationAngle(rotationAngle)
+                                    .abilityDirVector(dirVector);
+
+        spawnAbility(abilityType, abilityInitialParams);
     }
 
 

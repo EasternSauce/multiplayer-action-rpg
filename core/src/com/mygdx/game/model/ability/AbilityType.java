@@ -21,7 +21,11 @@ public enum AbilityType {
 
     SUMMON_GHOSTS,
 
-    PLAYFUL_GHOST
+    PLAYFUL_GHOST,
+
+    RICOCHET_SHOT,
+
+    RICOCHET_BULLET
 
 
 }

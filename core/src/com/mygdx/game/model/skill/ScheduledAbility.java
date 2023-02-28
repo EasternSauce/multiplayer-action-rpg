@@ -2,14 +2,13 @@ package com.mygdx.game.model.skill;
 
 import com.mygdx.game.game.AbilitySpawnable;
 import com.mygdx.game.model.ability.AbilityId;
+import com.mygdx.game.model.ability.AbilityInitialParams;
 import com.mygdx.game.model.ability.AbilityType;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.concurrent.ConcurrentSkipListSet;
 
 @NoArgsConstructor(staticName = "of")
 @Data
@@ -21,13 +20,10 @@ public class ScheduledAbility {
     Vector2 dirVector;
 
     public static ScheduledAbility of(AbilityType abilityType, Float scheduledTime) {
-        ScheduledAbility scheduledAbility = ScheduledAbility.of();
-        scheduledAbility.abilityType = abilityType;
-        scheduledAbility.scheduledTime = scheduledTime;
-        scheduledAbility.isPerformed = true;
-        scheduledAbility.startingPos = null;
-        scheduledAbility.dirVector = null;
-        return scheduledAbility;
+        return ScheduledAbility.of()
+                               .abilityType(abilityType)
+                               .scheduledTime(scheduledTime)
+                               .isPerformed(true);
     }
 
     public void perform(CreatureId creatureId, AbilitySpawnable game) {
@@ -35,16 +31,15 @@ public class ScheduledAbility {
 
         AreaId areaId = game.getCreature(creatureId).params().areaId();
 
-        Vector2 pos = startingPos;
-
-        game.spawnAbility(abilityId,
-                          areaId,
-                          creatureId,
-                          abilityType,
-                          new ConcurrentSkipListSet<>(),
-                          null,
-                          pos,
-                          dirVector);
+        AbilityInitialParams abilityInitialParams = AbilityInitialParams.of()
+                                                                        .abilityId(abilityId)
+                                                                        .areaId(areaId)
+                                                                        .creatureId(creatureId)
+                                                                        .creaturePosWhenSkillPerformed(startingPos)
+                                                                        .abilityDirVector(dirVector)
+                                                                        .creaturePosCurrent(game.getCreature(
+                                                                                creatureId).params().pos());
+        game.spawnAbility(abilityType, abilityInitialParams);
 
         isPerformed = true;
     }

@@ -11,6 +11,7 @@ import com.mygdx.game.command.*;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityId;
+import com.mygdx.game.model.ability.AbilityInitialParams;
 import com.mygdx.game.model.ability.AbilityType;
 import com.mygdx.game.model.action.ActionsHolder;
 import com.mygdx.game.model.action.GameStateAction;
@@ -219,6 +220,20 @@ public class MyGdxGameClient extends MyGdxGame {
 
                 endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
                                                              SkillType.SUMMON_GHOSTS,
+                                                             player.params().pos(),
+                                                             dirVector));
+
+
+            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.U)) {
+
+                Creature player = gameState().creatures().get(thisPlayerId);
+
+
+                Vector2 dirVector = mousePos();
+
+                endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
+                                                             SkillType.RICOCHET_SHOT,
                                                              player.params().pos(),
                                                              dirVector));
 
@@ -479,21 +494,19 @@ public class MyGdxGameClient extends MyGdxGame {
     }
 
     @Override
-    public void spawnAbility(AbilityId abilityId,
-                             AreaId areaId,
-                             CreatureId creatureId,
-                             AbilityType abilityType,
-                             Set<CreatureId> creaturesAlreadyHit,
-                             Vector2 chainFromPos,
-                             Vector2 pos,
-                             Vector2 dirVector) {
-
+    public void spawnAbility(
+            AbilityType abilityType,
+            AbilityInitialParams abilityInitialParams) {
+        // do nothing, wait for server action
     }
 
     @Override
     public void chainAbility(Ability chainFromAbility,
                              AbilityType abilityType,
-                             Vector2 chainToPos,
+                             Vector2 pos,
+                             Float width,
+                             Float height,
+                             Float rotationAngle,
                              Vector2 dirVector,
                              CreatureId creatureId) {
         // do nothing

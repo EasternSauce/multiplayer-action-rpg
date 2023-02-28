@@ -24,7 +24,7 @@ public class AbilityParams {
     String textureName;
     //    AbilityRect rect;
 
-    Float rotationAngle = 0f;
+    Float rotationAngle;
 
     Boolean isChannelAnimationLooping;
     Boolean isActiveAnimationLooping;
@@ -57,5 +57,27 @@ public class AbilityParams {
 
     Float rngSeed;
 
+    SimpleTimer changeDirectionTimer = SimpleTimer.getStartedTimer();
+
+    Boolean foundTarget = false;
+
+    Vector2 chainFromPos;
+
+    Vector2 creatureStartingPos;
+
+    public static AbilityParams of(AbilityInitialParams abilityInitialParams) {
+        return AbilityParams.of()
+                            .id(abilityInitialParams.abilityId())
+                            .areaId(abilityInitialParams.areaId())
+                            .creatureId(abilityInitialParams.creatureId())
+                            .dirVector(abilityInitialParams.abilityDirVector())
+                            .chainFromPos(abilityInitialParams.abilityChainFromPos())
+                            .pos(abilityInitialParams.creaturePosWhenSkillPerformed())
+                            .width(abilityInitialParams.abilityWidth())
+                            .height(abilityInitialParams.abilityHeight())
+                            .rotationAngle(abilityInitialParams.abilityRotationAngle())
+                            .creaturesAlreadyHit(abilityInitialParams.abilityCreaturesAlreadyHit())
+                            .creatureStartingPos(abilityInitialParams.creaturePosCurrent());
+    }
 
 }

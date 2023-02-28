@@ -3,10 +3,8 @@ package com.mygdx.game.model.ability;
 import com.mygdx.game.game.AbilityChainable;
 import com.mygdx.game.game.AbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
-import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
-import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -26,36 +24,42 @@ public class LightningNode extends Ability {
     }
 
     @Override
-    public AbilityType type() {
-        return AbilityType.LIGHTNING_NODE;
-    }
-
-    @Override
     void onAbilityStarted(AbilityUpdateable game) {
 
     }
 
     @Override
     void onDelayedAction(AbilityChainable game) {
-        // find closest enemy, and if they are within distance, and havent been hit yet, then start node over them
+        // find the closest enemy, and if they are within distance, and haven't been hit yet, then start node over them
         Set<CreatureId> excluded = new HashSet<>(params().creaturesAlreadyHit());
         excluded.add(params().creatureId());
 
-        Creature creature = game.getCreature(game.aliveCreatureClosestTo(params().pos(), 13f, excluded));
+        Creature targetCreature = game.getCreature(game.aliveCreatureClosestTo(params().pos(), 13f, excluded));
 
-        if (creature != null &&
+        if (targetCreature != null &&
             params().creaturesAlreadyHit().size() <= 10 &&
-            game.getWorld(params().areaId()).isLineOfSight(params().pos(), creature.params().pos())) {
-            creature.handleBeingAttacked(true, params().damage(),
-                                         params().creatureId()); // TODO: can we do this in main update loop instead? introduce events etc.
+            game.getWorld(params().areaId()).isLineOfSight(params().pos(), targetCreature.params().pos())) {
+            targetCreature.handleBeingAttacked(true,
+                                               params().damage(),
+                                               params().creatureId()); // TODO: can we do this in main update loop instead? introduce events etc.
 
-            game.chainAbility(this, AbilityType.LIGHTNING_CHAIN, creature.params().pos(), params.dirVector(), null);
+            game.chainAbility(this,
+                              AbilityType.LIGHTNING_CHAIN,
+                              targetCreature.params().pos(), // this pos is later changed, TODO: move it to other param?
+                              null,
+                              null,
+                              0f,
+                              params.dirVector(),
+                              null);
 
             game.chainAbility(this,
                               AbilityType.LIGHTNING_NODE,
-                              creature.params().pos(),
+                              targetCreature.params().pos(),
+                              null,
+                              null,
+                              0f,
                               params.dirVector(),
-                              creature.params().id());
+                              targetCreature.params().id());
         }
     }
 
@@ -89,29 +93,19 @@ public class LightningNode extends Ability {
 
     }
 
-    public static LightningNode of(AbilityId abilityId,
-                                   AreaId areaId,
-                                   CreatureId creatureId,
-                                   Vector2 pos,
-                                   Vector2 dirVector,
-                                   Set<CreatureId> creaturesAlreadyHit) {
+    public static LightningNode of(AbilityInitialParams abilityInitialParams) {
         LightningNode ability = LightningNode.of();
-        ability.params = AbilityParams.of()
-                                      .id(abilityId)
-                                      .areaId(areaId)
+        ability.params = AbilityParams.of(abilityInitialParams)
+
                                       .width(3f)
                                       .height(3f)
                                       .channelTime(0f)
                                       .activeTime(0.4f)
                                       .textureName("lightning")
-                                      .creatureId(creatureId)
                                       .damage(30f)
                                       .isActiveAnimationLooping(true)
                                       .attackWithoutMoving(true)
-                                      .pos(pos)
-                                      .creaturesAlreadyHit(creaturesAlreadyHit)
                                       .inactiveBody(true)
-                                      .dirVector(dirVector)
                                       .rotationShift(0f)
                                       .delayedActionTime(0.001f);
 

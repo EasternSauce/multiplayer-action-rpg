@@ -15,7 +15,9 @@ public enum SkillType {
 
     VOLATILE_BUBBLE,
 
-    SUMMON_GHOSTS
+    SUMMON_GHOSTS,
+
+    RICOCHET_SHOT
 
 
 }

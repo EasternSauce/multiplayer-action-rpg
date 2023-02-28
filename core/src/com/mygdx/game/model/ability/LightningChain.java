@@ -3,14 +3,10 @@ package com.mygdx.game.model.ability;
 import com.mygdx.game.game.AbilityChainable;
 import com.mygdx.game.game.AbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
-import com.mygdx.game.model.area.AreaId;
-import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import java.util.Set;
 
 @NoArgsConstructor(staticName = "of")
 @Data
@@ -22,11 +18,6 @@ public class LightningChain extends Ability {
     @Override
     public Boolean isRanged() {
         return true;
-    }
-
-    @Override
-    public AbilityType type() {
-        return AbilityType.LIGHTNING_CHAIN;
     }
 
     @Override
@@ -69,31 +60,24 @@ public class LightningChain extends Ability {
 
     }
 
-    public static LightningChain of(AbilityId abilityId,
-                                    AreaId areaId,
-                                    CreatureId creatureId,
-                                    Vector2 pos,
-                                    Vector2 dirVector,
-                                    Set<CreatureId> creaturesAlreadyHit,
-                                    Vector2 chainFromPos) {
+
+    public static LightningChain of(AbilityInitialParams abilityInitialParams) {
         LightningChain ability = LightningChain.of();
-        ability.params = AbilityParams.of()
-                                      .id(abilityId)
-                                      .areaId(areaId)
+        ability.params = AbilityParams.of(abilityInitialParams)
                                       .width(1f)
-                                      .height(chainFromPos.distance(pos))
+                                      .height(abilityInitialParams.abilityChainFromPos()
+                                                                  .distance(abilityInitialParams.creaturePosWhenSkillPerformed()))
                                       .channelTime(0f)
                                       .activeTime(0.4f)
                                       .textureName("lightning_chain")
-                                      .creatureId(creatureId)
                                       .damage(0f)
                                       .isActiveAnimationLooping(true)
                                       .attackWithoutMoving(true)
-                                      .pos(LightningChain.calculatePos(pos, chainFromPos))
-                                      .rotationAngle(LightningChain.calculateRotationAngle(pos, chainFromPos))
-                                      .creaturesAlreadyHit(creaturesAlreadyHit)
+                                      .pos(LightningChain.calculatePos(abilityInitialParams.creaturePosWhenSkillPerformed(),
+                                                                       abilityInitialParams.abilityChainFromPos()))
+                                      .rotationAngle(LightningChain.calculateRotationAngle(abilityInitialParams.creaturePosWhenSkillPerformed(),
+                                                                                           abilityInitialParams.abilityChainFromPos()))
                                       .inactiveBody(true)
-                                      .dirVector(dirVector)
                                       .rotationShift(90f);
 
         return ability;

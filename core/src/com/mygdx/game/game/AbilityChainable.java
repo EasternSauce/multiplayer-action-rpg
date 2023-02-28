@@ -12,7 +12,10 @@ import java.util.Set;
 public interface AbilityChainable extends CreatureRetrievable {
     void chainAbility(Ability chainFromAbility,
                       AbilityType abilityType,
-                      Vector2 chainToPos,
+                      Vector2 pos,
+                      Float width,
+                      Float height,
+                      Float rotationAngle,
                       Vector2 dirVector,
                       CreatureId creatureId);
 

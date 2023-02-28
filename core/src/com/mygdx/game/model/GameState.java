@@ -28,9 +28,6 @@ public class GameState {
 
     SimpleTimer generalTimer = SimpleTimer.getStartedTimer();
 
-    //    Set<CreatureId> globalCreatureIds = new ConcurrentSkipListSet<>();
-    //    Set<AbilityId> globalAbilityIds = new ConcurrentSkipListSet<>();
-
     public static GameState of(GameState gameState) {
         GameState newGameState = GameState.of();
         newGameState.creatures(new ConcurrentSkipListMap<>(gameState.creatures));
@@ -39,8 +36,7 @@ public class GameState {
         newGameState.currentAreaId(gameState.currentAreaId);
         newGameState.defaultAreaId(gameState.defaultAreaId);
         newGameState.generalTimer(gameState.generalTimer);
-        //        newGameState.globalCreatureIds(gameState.globalCreatureIds);
-        //        newGameState.globalAbilityIds(gameState.globalAbilityIds);
+
         return newGameState;
     }
 

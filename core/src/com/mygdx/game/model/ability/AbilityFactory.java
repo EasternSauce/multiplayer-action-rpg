@@ -1,76 +1,70 @@
 package com.mygdx.game.model.ability;
 
-import com.mygdx.game.game.CreaturePosRetrievable;
-import com.mygdx.game.model.area.AreaId;
-import com.mygdx.game.model.creature.CreatureId;
-import com.mygdx.game.model.util.Vector2;
-
-import java.util.Set;
-
 
 public class AbilityFactory {
 
     public static Ability produceAbility(AbilityType abilityType,
-                                         AbilityId abilityId,
-                                         AreaId areaId,
-                                         CreatureId creatureId,
-                                         Vector2 dirVector,
-                                         Vector2 chainFromPos,
-                                         Vector2 pos,
-                                         Set<CreatureId> creaturesAlreadyHit,
-                                         CreaturePosRetrievable game) {
+                                         AbilityInitialParams abilityInitialParams) {
         if (abilityType == AbilityType.SLASH) {
-            return Attack.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit);
+            return Slash.of(abilityInitialParams);
+
         }
 
         if (abilityType == AbilityType.FIREBALL) {
-            return Fireball.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit);
+            return Fireball.of(abilityInitialParams);
         }
 
         if (abilityType == AbilityType.FIREBALL_EXPLOSION) {
-            return FireballExplosion.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit);
+            return FireballExplosion.of(abilityInitialParams);
         }
 
         if (abilityType == AbilityType.LIGHTNING_SPARK) {
-            Vector2 creaturePos = game.getCreaturePos(creatureId);
-            return LightningSpark.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit, creaturePos);
+            return LightningSpark.of(abilityInitialParams);
         }
 
         if (abilityType == AbilityType.LIGHTNING_NODE) {
-            return LightningNode.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit);
+            return LightningNode.of(abilityInitialParams);
         }
 
         if (abilityType == AbilityType.LIGHTNING_CHAIN) {
-            return LightningChain.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit, chainFromPos);
+            return LightningChain.of(abilityInitialParams);
         }
 
         if (abilityType == AbilityType.CROSSBOW_BOLT) {
-            Vector2 creaturePos = game.getCreaturePos(creatureId);
-            return CrossbowBolt.of(abilityId, areaId, creatureId, creaturePos, dirVector, creaturesAlreadyHit);
+            return CrossbowBolt.of(abilityInitialParams);
         }
 
         if (abilityType == AbilityType.MAGIC_ORB) {
-            return MagicOrb.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit);
+            return MagicOrb.of(abilityInitialParams);
         }
 
         if (abilityType == AbilityType.VOLATILE_BUBBLE) {
-            return VolatileBubble.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit);
+            return VolatileBubble.of(abilityInitialParams);
         }
 
         if (abilityType == AbilityType.ICE_SPEAR) {
-            return IceSpear.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit);
+            return IceSpear.of(abilityInitialParams);
         }
 
         if (abilityType == AbilityType.PLAYFUL_GHOST) {
-            return PlayfulGhost.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit);
+            return PlayfulGhost.of(abilityInitialParams);
         }
 
         if (abilityType == AbilityType.SUMMON_GHOSTS) {
-            return SummonGhosts.of(abilityId, areaId, creatureId, pos, dirVector, creaturesAlreadyHit);
+            return SummonGhosts.of(abilityInitialParams);
+        }
+
+        if (abilityType == AbilityType.RICOCHET_SHOT) {
+            return RicochetShot.of(abilityInitialParams);
+        }
+
+        if (abilityType == AbilityType.RICOCHET_BULLET) {
+            return RicochetBullet.of(abilityInitialParams);
         }
 
         throw new RuntimeException("ability type not found: " + abilityType);
     }
+
 }
 
 
