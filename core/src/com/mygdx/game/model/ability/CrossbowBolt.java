@@ -1,9 +1,10 @@
 package com.mygdx.game.model.ability;
 
 
-import com.mygdx.game.game.AbilityChainable;
 import com.mygdx.game.game.AbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
+import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.model.creature.Creature;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -26,12 +27,12 @@ public class CrossbowBolt extends Projectile {
     }
 
     @Override
-    void onDelayedAction(AbilityChainable game) {
+    void onDelayedAction(MyGdxGame game) {
         // TODO: chain multiple shots
     }
 
     @Override
-    void onAbilityCompleted(AbilityChainable game) {
+    void onAbilityCompleted(MyGdxGame game) {
 
     }
 
@@ -50,11 +51,12 @@ public class CrossbowBolt extends Projectile {
         deactivate();
     }
 
-    public static CrossbowBolt of(AbilityInitialParams abilityInitialParams) {
+    public static CrossbowBolt of(AbilityParams abilityParams, MyGdxGame game) {
+        Creature creature = game.getCreature(abilityParams.creatureId());
+
         CrossbowBolt ability = CrossbowBolt.of();
         ability.params =
-                AbilityParams.of(abilityInitialParams)
-                             .width(1.5f)
+                abilityParams.width(1.5f)
                              .height(1.5f)
                              .channelTime(0f)
                              .activeTime(30f)
@@ -64,7 +66,7 @@ public class CrossbowBolt extends Projectile {
                              .isActiveAnimationLooping(true)
                              .rotationShift(0f)
                              .speed(30f)
-                             .pos(abilityInitialParams.creaturePosCurrent()); // TODO: this is overriding? to be refactored
+                             .pos(creature.params().pos());
 
         return ability;
     }

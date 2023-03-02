@@ -1,8 +1,8 @@
 package com.mygdx.game.model.ability;
 
-import com.mygdx.game.game.AbilityChainable;
 import com.mygdx.game.game.AbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
+import com.mygdx.game.game.MyGdxGame;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -25,46 +25,35 @@ public class VolatileBubble extends Projectile {
     }
 
     @Override
-    void onDelayedAction(AbilityChainable game) {
+    void onDelayedAction(MyGdxGame game) {
 
     }
 
     @Override
-    void onAbilityCompleted(AbilityChainable game) {
+    void onAbilityCompleted(MyGdxGame game) {
         float baseAngle = params().dirVector().angleDeg();
-        game.chainAbility(this, AbilityType.ICE_SPEAR, params().pos(), null, null, null, params.dirVector(), null);
+
+        game.chainAbility(this, AbilityType.ICE_SPEAR, params().pos(), params.dirVector(), game);
         game.chainAbility(this,
                           AbilityType.ICE_SPEAR,
                           params().pos(),
-                          null,
-                          null,
-                          0f,
                           params.dirVector().setAngleDeg(baseAngle + 72f),
-                          null);
+                          game);
         game.chainAbility(this,
                           AbilityType.ICE_SPEAR,
                           params().pos(),
-                          null,
-                          null,
-                          0f,
                           params.dirVector().setAngleDeg(baseAngle + 144f),
-                          null);
+                          game);
         game.chainAbility(this,
                           AbilityType.ICE_SPEAR,
                           params().pos(),
-                          null,
-                          null,
-                          0f,
                           params.dirVector().setAngleDeg(baseAngle + 216f),
-                          null);
+                          game);
         game.chainAbility(this,
                           AbilityType.ICE_SPEAR,
                           params().pos(),
-                          null,
-                          null,
-                          0f,
                           params.dirVector().setAngleDeg(baseAngle + 288f),
-                          null);
+                          game);
     }
 
     @Override
@@ -82,21 +71,21 @@ public class VolatileBubble extends Projectile {
         deactivate();
     }
 
-    public static VolatileBubble of(AbilityInitialParams abilityInitialParams) {
+    public static VolatileBubble of(AbilityParams abilityParams, @SuppressWarnings("unused") MyGdxGame game) {
         VolatileBubble ability = VolatileBubble.of();
         ability.params =
-                AbilityParams.of(abilityInitialParams)
-                             .width(1.5f)
-                             .height(1.5f)
-                             .channelTime(0f)
-                             .activeTime(30f)
-                             .textureName("bubble")
-                             .damage(15f)
-                             .isChannelAnimationLooping(false)
-                             .isActiveAnimationLooping(true)
-                             .rotationShift(0f)
-                             .delayedActionTime(0.001f)
-                             .speed(0.5f);
+                abilityParams
+                        .width(1.5f)
+                        .height(1.5f)
+                        .channelTime(0f)
+                        .activeTime(30f)
+                        .textureName("bubble")
+                        .damage(15f)
+                        .isChannelAnimationLooping(false)
+                        .isActiveAnimationLooping(true)
+                        .rotationShift(0f)
+                        .delayedActionTime(0.001f)
+                        .speed(10f);
 
 
         return ability;

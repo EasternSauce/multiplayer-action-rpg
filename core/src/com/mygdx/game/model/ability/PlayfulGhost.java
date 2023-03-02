@@ -1,8 +1,8 @@
 package com.mygdx.game.model.ability;
 
-import com.mygdx.game.game.AbilityChainable;
 import com.mygdx.game.game.AbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
+import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.Enemy;
 import com.mygdx.game.model.creature.Player;
@@ -21,22 +21,23 @@ public class PlayfulGhost extends Projectile {
 
     AbilityParams params;
 
-    public static PlayfulGhost of(AbilityInitialParams abilityInitialParams) {
+    public static PlayfulGhost of(AbilityParams abilityParams, @SuppressWarnings("unused") MyGdxGame game) {
         PlayfulGhost ability = PlayfulGhost.of();
         ability.params =
-                AbilityParams.of(abilityInitialParams)
-                             .width(1.5f)
-                             .height(1.5f)
-                             .channelTime(0f)
-                             .activeTime(30f)
-                             .textureName("ghost")
-                             .damage(15f)
-                             .isChannelAnimationLooping(false)
-                             .isActiveAnimationLooping(true)
-                             .rotationShift(0f)
-                             .delayedActionTime(0.001f)
-                             .speed(5f)
-                             .rngSeed(RandomHelper.seededRandomFloat(abilityInitialParams.creatureId()));
+                abilityParams
+                        .width(1.5f)
+                        .height(1.5f)
+                        .channelTime(0f)
+                        .activeTime(30f)
+                        .textureName("ghost")
+                        .damage(15f)
+                        .isChannelAnimationLooping(false)
+                        .isActiveAnimationLooping(true)
+                        .rotationShift(0f)
+                        .delayedActionTime(0.001f)
+                        .speed(5f)
+                        .rngSeed(RandomHelper.seededRandomFloat(abilityParams.creatureId()))
+                        .pos(abilityParams.chainToPos());
 
 
         return ability;
@@ -53,12 +54,12 @@ public class PlayfulGhost extends Projectile {
     }
 
     @Override
-    void onDelayedAction(AbilityChainable game) {
+    void onDelayedAction(MyGdxGame game) {
 
     }
 
     @Override
-    void onAbilityCompleted(AbilityChainable game) {
+    void onAbilityCompleted(MyGdxGame game) {
 
     }
 

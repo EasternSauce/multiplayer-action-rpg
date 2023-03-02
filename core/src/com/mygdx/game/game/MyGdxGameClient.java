@@ -11,7 +11,7 @@ import com.mygdx.game.command.*;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityId;
-import com.mygdx.game.model.ability.AbilityInitialParams;
+import com.mygdx.game.model.ability.AbilityParams;
 import com.mygdx.game.model.ability.AbilityType;
 import com.mygdx.game.model.action.ActionsHolder;
 import com.mygdx.game.model.action.GameStateAction;
@@ -496,7 +496,7 @@ public class MyGdxGameClient extends MyGdxGame {
     @Override
     public void spawnAbility(
             AbilityType abilityType,
-            AbilityInitialParams abilityInitialParams) {
+            AbilityParams abilityParams, MyGdxGame game) {
         // do nothing, wait for server action
     }
 
@@ -504,11 +504,8 @@ public class MyGdxGameClient extends MyGdxGame {
     public void chainAbility(Ability chainFromAbility,
                              AbilityType abilityType,
                              Vector2 pos,
-                             Float width,
-                             Float height,
-                             Float rotationAngle,
                              Vector2 dirVector,
-                             CreatureId creatureId) {
+                             MyGdxGame game) {
         // do nothing
     }
 

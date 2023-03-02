@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 @NoArgsConstructor(staticName = "of")
 @Data
@@ -24,14 +25,14 @@ public class AbilityParams {
     String textureName;
     //    AbilityRect rect;
 
-    Float rotationAngle;
+    Float rotationAngle = 0f;
 
     Boolean isChannelAnimationLooping;
     Boolean isActiveAnimationLooping;
 
     Float range;
 
-    Set<CreatureId> creaturesAlreadyHit;
+    Set<CreatureId> creaturesAlreadyHit = new ConcurrentSkipListSet<>();
 
     Vector2 velocity;
     Float speed;
@@ -62,22 +63,21 @@ public class AbilityParams {
     Boolean foundTarget = false;
 
     Vector2 chainFromPos;
+    Vector2 chainToPos;
 
-    Vector2 creatureStartingPos;
-
-    public static AbilityParams of(AbilityInitialParams abilityInitialParams) {
-        return AbilityParams.of()
-                            .id(abilityInitialParams.abilityId())
-                            .areaId(abilityInitialParams.areaId())
-                            .creatureId(abilityInitialParams.creatureId())
-                            .dirVector(abilityInitialParams.abilityDirVector())
-                            .chainFromPos(abilityInitialParams.abilityChainFromPos())
-                            .pos(abilityInitialParams.creaturePosWhenSkillPerformed())
-                            .width(abilityInitialParams.abilityWidth())
-                            .height(abilityInitialParams.abilityHeight())
-                            .rotationAngle(abilityInitialParams.abilityRotationAngle())
-                            .creaturesAlreadyHit(abilityInitialParams.abilityCreaturesAlreadyHit())
-                            .creatureStartingPos(abilityInitialParams.creaturePosCurrent());
-    }
+    //    public static AbilityParams of(AbilityParams abilityParams, MyGdxGame game) {
+    //        return AbilityParams.of()
+    //                            .id(abilityInitialParams.abilityId())
+    //                            .areaId(abilityInitialParams.areaId())
+    //                            .creatureId(abilityInitialParams.creatureId())
+    //                            .dirVector(abilityInitialParams.abilityDirVector())
+    //                            .chainFromPos(abilityInitialParams.abilityChainFromPos())
+    //                            .pos(abilityInitialParams.creaturePosWhenSkillPerformed())
+    //                            .width(abilityInitialParams.abilityWidth())
+    //                            .height(abilityInitialParams.abilityHeight())
+    //                            .rotationAngle(abilityInitialParams.abilityRotationAngle())
+    //                            .creaturesAlreadyHit(abilityInitialParams.abilityCreaturesAlreadyHit())
+    //                            .creatureStartingPos(abilityInitialParams.creaturePosCurrent());
+    //    }
 
 }

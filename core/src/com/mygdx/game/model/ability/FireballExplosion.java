@@ -1,8 +1,8 @@
 package com.mygdx.game.model.ability;
 
-import com.mygdx.game.game.AbilityChainable;
 import com.mygdx.game.game.AbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
+import com.mygdx.game.game.MyGdxGame;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -25,12 +25,12 @@ public class FireballExplosion extends Ability {
     }
 
     @Override
-    void onDelayedAction(AbilityChainable game) {
+    void onDelayedAction(MyGdxGame game) {
 
     }
 
     @Override
-    void onAbilityCompleted(AbilityChainable game) {
+    void onAbilityCompleted(MyGdxGame game) {
 
     }
 
@@ -59,11 +59,10 @@ public class FireballExplosion extends Ability {
 
     }
 
-    public static FireballExplosion of(AbilityInitialParams abilityInitialParams) {
+    public static FireballExplosion of(AbilityParams abilityParams, @SuppressWarnings("unused") MyGdxGame game) {
         FireballExplosion ability = FireballExplosion.of();
         ability.params =
-                AbilityParams.of(abilityInitialParams)
-                             .width(9f)
+                abilityParams.width(9f)
                              .height(9f)
                              .channelTime(0f)
                              .activeTime(0.35f)
@@ -72,7 +71,8 @@ public class FireballExplosion extends Ability {
                              .isChannelAnimationLooping(false)
                              .isActiveAnimationLooping(false)
                              .attackWithoutMoving(true)
-                             .rotationShift(0f);
+                             .rotationShift(0f)
+                             .pos(abilityParams.chainToPos());
 
         return ability;
     }

@@ -1,8 +1,8 @@
 package com.mygdx.game.model.ability;
 
-import com.mygdx.game.game.AbilityChainable;
 import com.mygdx.game.game.AbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
+import com.mygdx.game.game.MyGdxGame;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -51,20 +51,17 @@ public class Fireball extends Projectile {
     }
 
     @Override
-    void onDelayedAction(AbilityChainable game) {
+    void onDelayedAction(MyGdxGame game) {
 
     }
 
     @Override
-    protected void onAbilityCompleted(AbilityChainable game) {
+    protected void onAbilityCompleted(MyGdxGame game) {
         game.chainAbility(this,
                           AbilityType.FIREBALL_EXPLOSION,
                           params().pos(),
-                          null,
-                          null,
-                          0f,
                           params.dirVector(),
-                          null);
+                          game);
     }
 
     @Override
@@ -72,20 +69,20 @@ public class Fireball extends Projectile {
 
     }
 
-    public static Fireball of(AbilityInitialParams abilityInitialParams) {
+    public static Fireball of(AbilityParams abilityParams, @SuppressWarnings("unused") MyGdxGame game) {
         Fireball ability = Fireball.of();
         ability.params =
-                AbilityParams.of(abilityInitialParams)
-                             .width(1.5f)
-                             .height(1.5f)
-                             .channelTime(0f)
-                             .activeTime(30f)
-                             .textureName("fireball")
-                             .damage(15f)
-                             .isChannelAnimationLooping(false)
-                             .isActiveAnimationLooping(true)
-                             .rotationShift(0f)
-                             .delayedActionTime(0.001f);
+                abilityParams
+                        .width(1.5f)
+                        .height(1.5f)
+                        .channelTime(0f)
+                        .activeTime(30f)
+                        .textureName("fireball")
+                        .damage(15f)
+                        .isChannelAnimationLooping(false)
+                        .isActiveAnimationLooping(true)
+                        .rotationShift(0f)
+                        .delayedActionTime(0.001f);
 
 
         return ability;

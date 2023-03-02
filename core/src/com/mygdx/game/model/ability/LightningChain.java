@@ -1,8 +1,8 @@
 package com.mygdx.game.model.ability;
 
-import com.mygdx.game.game.AbilityChainable;
 import com.mygdx.game.game.AbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
+import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -26,12 +26,12 @@ public class LightningChain extends Ability {
     }
 
     @Override
-    void onDelayedAction(AbilityChainable game) {
+    void onDelayedAction(MyGdxGame game) {
 
     }
 
     @Override
-    void onAbilityCompleted(AbilityChainable game) {
+    void onAbilityCompleted(MyGdxGame game) {
 
     }
 
@@ -61,24 +61,24 @@ public class LightningChain extends Ability {
     }
 
 
-    public static LightningChain of(AbilityInitialParams abilityInitialParams) {
+    public static LightningChain of(AbilityParams abilityParams, @SuppressWarnings("unused") MyGdxGame game) {
         LightningChain ability = LightningChain.of();
-        ability.params = AbilityParams.of(abilityInitialParams)
-                                      .width(1f)
-                                      .height(abilityInitialParams.abilityChainFromPos()
-                                                                  .distance(abilityInitialParams.creaturePosWhenSkillPerformed()))
-                                      .channelTime(0f)
-                                      .activeTime(0.4f)
-                                      .textureName("lightning_chain")
-                                      .damage(0f)
-                                      .isActiveAnimationLooping(true)
-                                      .attackWithoutMoving(true)
-                                      .pos(LightningChain.calculatePos(abilityInitialParams.creaturePosWhenSkillPerformed(),
-                                                                       abilityInitialParams.abilityChainFromPos()))
-                                      .rotationAngle(LightningChain.calculateRotationAngle(abilityInitialParams.creaturePosWhenSkillPerformed(),
-                                                                                           abilityInitialParams.abilityChainFromPos()))
-                                      .inactiveBody(true)
-                                      .rotationShift(90f);
+        ability.params = abilityParams
+                .width(1f)
+                .height(abilityParams.chainFromPos()
+                                     .distance(abilityParams.chainToPos()))
+                .channelTime(0f)
+                .activeTime(0.4f)
+                .textureName("lightning_chain")
+                .damage(0f)
+                .isActiveAnimationLooping(true)
+                .attackWithoutMoving(true)
+                .pos(LightningChain.calculatePos(abilityParams.chainToPos(),
+                                                 abilityParams.chainFromPos()))
+                .rotationAngle(LightningChain.calculateRotationAngle(abilityParams.chainToPos(),
+                                                                     abilityParams.chainFromPos()))
+                .inactiveBody(true)
+                .rotationShift(90f);
 
         return ability;
     }

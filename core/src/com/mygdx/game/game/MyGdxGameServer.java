@@ -242,11 +242,13 @@ public class MyGdxGameServer extends MyGdxGame {
 
     }
 
-    public void spawnAbility(AbilityType abilityType, AbilityInitialParams abilityInitialParams) {
-        Creature creature = gameState().creatures().get(abilityInitialParams.creatureId());
+    public void spawnAbility(AbilityType abilityType,
+                             AbilityParams abilityParams,
+                             MyGdxGame game) {
+        Creature creature = game.getCreature(abilityParams.creatureId());
 
         if (creature != null) {
-            Ability ability = AbilityFactory.produceAbility(abilityType, abilityInitialParams);
+            Ability ability = AbilityFactory.produceAbility(abilityType, abilityParams, game);
 
 
             AddAbilityAction action = AddAbilityAction.of(ability);
@@ -428,38 +430,44 @@ public class MyGdxGameServer extends MyGdxGame {
     @Override
     public void chainAbility(Ability chainFromAbility,
                              AbilityType abilityType,
-                             Vector2 pos,
-                             Float width,
-                             Float height,
-                             Float rotationAngle,
+                             Vector2 chainToPos,
                              Vector2 dirVector,
-                             CreatureId creatureId) {
+                             MyGdxGame game) {
         AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
 
-        if (creatureId != null) {
-            chainFromAbility.params().creaturesAlreadyHit().add(creatureId);
-        }
         Set<CreatureId>
                 creaturesAlreadyHit =
                 new ConcurrentSkipListSet<>(chainFromAbility.params().creaturesAlreadyHit());
 
         Vector2 chainFromPos = chainFromAbility.params().pos();
 
-        AbilityInitialParams
-                abilityInitialParams =
-                AbilityInitialParams.of()
-                                    .abilityId(abilityId)
-                                    .areaId(chainFromAbility.params().areaId())
-                                    .creatureId(chainFromAbility.params().creatureId())
-                                    .abilityCreaturesAlreadyHit(creaturesAlreadyHit)
-                                    .abilityChainFromPos(chainFromPos)
-                                    .creaturePosWhenSkillPerformed(pos)
-                                    .abilityWidth(width)
-                                    .abilityHeight(height)
-                                    .abilityRotationAngle(rotationAngle)
-                                    .abilityDirVector(dirVector);
+        //        AbilityInitialParams
+        //                abilityInitialParams =
+        //                AbilityInitialParams.of()
+        //                                    .abilityId(abilityId)
+        //                                    .areaId(chainFromAbility.params().areaId())
+        //                                    .creatureId(chainFromAbility.params().creatureId())
+        //                                    .abilityCreaturesAlreadyHit(creaturesAlreadyHit)
+        //                                    .abilityChainFromPos(chainFromPos)
+        //                                    .creaturePosWhenSkillPerformed(chainToPos)
+        //                                    .abilityWidth(width)
+        //                                    .abilityHeight(height)
+        //                                    .abilityRotationAngle(rotationAngle)
+        //                                    .abilityDirVector(dirVector);
 
-        spawnAbility(abilityType, abilityInitialParams);
+        Creature creature = game.getCreature(chainFromAbility.params().creatureId());
+
+        AbilityParams abilityParams = AbilityParams.of()
+                                                   .id(abilityId)
+                                                   .areaId(creature.params().areaId())
+                                                   .creatureId(chainFromAbility.params().creatureId())
+                                                   .creaturesAlreadyHit(creaturesAlreadyHit)
+                                                   .chainFromPos(chainFromPos)
+                                                   .chainToPos(chainToPos)
+                                                   .dirVector(dirVector);
+
+
+        spawnAbility(abilityType, abilityParams, game);
     }
 
 

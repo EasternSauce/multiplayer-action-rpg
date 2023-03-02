@@ -1,8 +1,8 @@
 package com.mygdx.game.model.ability;
 
-import com.mygdx.game.game.AbilityChainable;
 import com.mygdx.game.game.AbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
+import com.mygdx.game.game.MyGdxGame;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -25,12 +25,12 @@ public class IceSpear extends Projectile {
     }
 
     @Override
-    void onDelayedAction(AbilityChainable game) {
+    void onDelayedAction(MyGdxGame game) {
 
     }
 
     @Override
-    void onAbilityCompleted(AbilityChainable game) {
+    void onAbilityCompleted(MyGdxGame game) {
 
     }
 
@@ -51,21 +51,22 @@ public class IceSpear extends Projectile {
         }
     }
 
-    public static IceSpear of(AbilityInitialParams abilityInitialParams) {
+    public static IceSpear of(AbilityParams abilityParams, @SuppressWarnings("unused") MyGdxGame game) {
         IceSpear ability = IceSpear.of();
         ability.params =
-                AbilityParams.of(abilityInitialParams)
-                             .width(1.05f)
-                             .height(0.5f)
-                             .channelTime(0f)
-                             .activeTime(0.6f)
-                             .textureName("ice_shard")
-                             .damage(10f)
-                             .isChannelAnimationLooping(false)
-                             .isActiveAnimationLooping(true)
-                             .rotationShift(0f)
-                             .delayedActionTime(0.001f)
-                             .speed(15f);
+                abilityParams
+                        .width(1.05f)
+                        .height(0.5f)
+                        .channelTime(0f)
+                        .activeTime(0.6f)
+                        .textureName("ice_shard")
+                        .damage(10f)
+                        .isChannelAnimationLooping(false)
+                        .isActiveAnimationLooping(true)
+                        .rotationShift(0f)
+                        .delayedActionTime(0.001f)
+                        .speed(15f)
+                        .pos(abilityParams.chainToPos());
 
 
         return ability;

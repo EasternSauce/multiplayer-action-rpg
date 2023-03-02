@@ -3,6 +3,7 @@ package com.mygdx.game.model.creature;
 import com.mygdx.game.game.CreaturePosRetrievable;
 import com.mygdx.game.game.CreatureUpdatable;
 import com.mygdx.game.game.EnemyAiUpdatable;
+import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.skill.Skill;
 import com.mygdx.game.model.util.Vector2;
@@ -15,7 +16,7 @@ public abstract class Creature {
 
     public abstract Creature params(CreatureParams params);
 
-    public void update(float delta, CreatureUpdatable game) {
+    public void update(float delta, MyGdxGame game) {
 
         regenerateStamina();
 

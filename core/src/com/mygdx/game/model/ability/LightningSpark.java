@@ -1,8 +1,8 @@
 package com.mygdx.game.model.ability;
 
-import com.mygdx.game.game.AbilityChainable;
 import com.mygdx.game.game.AbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
+import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.util.Vector2;
@@ -32,7 +32,7 @@ public class LightningSpark extends Ability {
     }
 
     @Override
-    void onDelayedAction(AbilityChainable game) {
+    void onDelayedAction(MyGdxGame game) {
         // find closest enemy, and if they are within distance, and havent been hit yet, then start node over them
         Set<CreatureId> excluded = new HashSet<>(params().creaturesAlreadyHit());
         excluded.add(params().creatureId());
@@ -43,28 +43,24 @@ public class LightningSpark extends Ability {
             game.getWorld(params().areaId()).isLineOfSight(params().pos(), targetCreature.params().pos())) {
             targetCreature.handleBeingAttacked(true, params().damage(), params().creatureId());
 
+            params().creaturesAlreadyHit().add(targetCreature.params().id());
+
             game.chainAbility(this,
                               AbilityType.LIGHTNING_CHAIN,
                               targetCreature.params().pos(), // this pos is later changed, TODO: move it to other param?
-                              null,
-                              null,
-                              0f,
                               params.dirVector(),
-                              null);
+                              game);
 
             game.chainAbility(this,
                               AbilityType.LIGHTNING_NODE,
                               targetCreature.params().pos(),
-                              null,
-                              null,
-                              0f,
                               params.dirVector(),
-                              targetCreature.params().id());
+                              game);
         }
     }
 
     @Override
-    void onAbilityCompleted(AbilityChainable game) {
+    void onAbilityCompleted(MyGdxGame game) {
 
     }
 
@@ -93,23 +89,25 @@ public class LightningSpark extends Ability {
 
     }
 
-    public static LightningSpark of(AbilityInitialParams abilityInitialParams) {
+    public static LightningSpark of(AbilityParams abilityParams, MyGdxGame game) {
+        Creature creature = game.getCreature(abilityParams.creatureId());
+
         LightningSpark ability = LightningSpark.of();
         ability.params =
-                AbilityParams.of(abilityInitialParams)
-                             .width(3f)
-                             .height(3f)
-                             .channelTime(0f)
-                             .activeTime(0.4f)
-                             .textureName("lightning")
-                             .damage(30f)
-                             .isActiveAnimationLooping(true)
-                             .attackWithoutMoving(true)
-                             .inactiveBody(true)
-                             .rotationShift(0f)
-                             .delayedActionTime(0.001f)
-                             .pos(LightningSpark.calculatePos(abilityInitialParams.creaturePosWhenSkillPerformed(),
-                                                              abilityInitialParams.creaturePosCurrent()));
+                abilityParams
+                        .width(3f)
+                        .height(3f)
+                        .channelTime(0f)
+                        .activeTime(0.4f)
+                        .textureName("lightning")
+                        .damage(30f)
+                        .isActiveAnimationLooping(true)
+                        .attackWithoutMoving(true)
+                        .inactiveBody(true)
+                        .rotationShift(0f)
+                        .delayedActionTime(0.001f)
+                        .pos(LightningSpark.calculatePos(creature.params().pos().add(abilityParams.dirVector()),
+                                                         creature.params().pos()));
 
         return ability;
     }

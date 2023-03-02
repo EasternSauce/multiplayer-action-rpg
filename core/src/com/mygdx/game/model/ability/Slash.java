@@ -1,8 +1,8 @@
 package com.mygdx.game.model.ability;
 
-import com.mygdx.game.game.AbilityChainable;
 import com.mygdx.game.game.AbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
+import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -31,12 +31,12 @@ public class Slash extends Ability {
     }
 
     @Override
-    void onDelayedAction(AbilityChainable game) {
+    void onDelayedAction(MyGdxGame game) {
 
     }
 
     @Override
-    void onAbilityCompleted(AbilityChainable game) {
+    void onAbilityCompleted(MyGdxGame game) {
 
     }
 
@@ -92,20 +92,20 @@ public class Slash extends Ability {
 
     }
 
-    public static Slash of(AbilityInitialParams abilityInitialParams) {
+    public static Slash of(AbilityParams abilityParams, @SuppressWarnings("unused") MyGdxGame game) {
         Slash ability = Slash.of();
         ability.params =
-                AbilityParams.of(abilityInitialParams)
-                             .width(2f)
-                             .height(2f)
-                             .channelTime(0.15f)
-                             .activeTime(0.3f)
-                             .range(1.8f)
-                             .textureName("slash")
-                             .damage(22f)
-                             .isChannelAnimationLooping(false)
-                             .isActiveAnimationLooping(false)
-                             .rotationShift(0f);
+                abilityParams
+                        .width(2f)
+                        .height(2f)
+                        .channelTime(0.15f)
+                        .activeTime(0.3f)
+                        .range(1.8f)
+                        .textureName("slash")
+                        .damage(22f)
+                        .isChannelAnimationLooping(false)
+                        .isActiveAnimationLooping(false)
+                        .rotationShift(0f);
         return ability;
     }
 }

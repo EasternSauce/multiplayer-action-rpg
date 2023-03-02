@@ -1,8 +1,8 @@
 package com.mygdx.game.model.ability;
 
-import com.mygdx.game.game.AbilityChainable;
 import com.mygdx.game.game.AbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
+import com.mygdx.game.game.MyGdxGame;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -13,11 +13,11 @@ import lombok.NoArgsConstructor;
 public class SummonGhosts extends Ability {
     AbilityParams params;
 
-    public static SummonGhosts of(AbilityInitialParams abilityInitialParams) {
+    public static SummonGhosts of(AbilityParams abilityParams, @SuppressWarnings("unused") MyGdxGame game) {
         SummonGhosts ability = SummonGhosts.of();
-        ability.params = AbilityParams.of(abilityInitialParams)
+        ability.params = abilityParams
 
-                                      .channelTime(0f).activeTime(0f);
+                .channelTime(0f).activeTime(0f);
 
 
         return ability;
@@ -34,30 +34,26 @@ public class SummonGhosts extends Ability {
     }
 
     @Override
-    void onDelayedAction(AbilityChainable game) {
+    void onDelayedAction(MyGdxGame game) {
 
     }
 
     @Override
-    void onAbilityCompleted(AbilityChainable game) {
+    void onAbilityCompleted(MyGdxGame game) {
         float baseAngle = params().dirVector().angleDeg();
-        game.chainAbility(this, AbilityType.PLAYFUL_GHOST, params().pos(), null, null, null, params.dirVector(), null);
+        game.chainAbility(this, AbilityType.PLAYFUL_GHOST, params().pos(), params.dirVector(), game);
         game.chainAbility(this,
                           AbilityType.PLAYFUL_GHOST,
                           params().pos(),
-                          null,
-                          null,
-                          0f,
                           params.dirVector().setAngleDeg(baseAngle - 30f),
-                          null);
+
+                          game);
         game.chainAbility(this,
                           AbilityType.PLAYFUL_GHOST,
                           params().pos(),
-                          null,
-                          null,
-                          0f,
                           params.dirVector().setAngleDeg(baseAngle + 30f),
-                          null);
+
+                          game);
     }
 
     @Override

@@ -1,8 +1,8 @@
 package com.mygdx.game.model.ability;
 
-import com.mygdx.game.game.AbilityChainable;
 import com.mygdx.game.game.AbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
+import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.Enemy;
 import com.mygdx.game.model.creature.Player;
@@ -32,12 +32,12 @@ public class MagicOrb extends Projectile {
     }
 
     @Override
-    void onDelayedAction(AbilityChainable game) {
+    void onDelayedAction(MyGdxGame game) {
 
     }
 
     @Override
-    void onAbilityCompleted(AbilityChainable game) {
+    void onAbilityCompleted(MyGdxGame game) {
 
     }
 
@@ -149,21 +149,21 @@ public class MagicOrb extends Projectile {
 
     }
 
-    public static MagicOrb of(AbilityInitialParams abilityInitialParams) {
+    public static MagicOrb of(AbilityParams abilityParams, @SuppressWarnings("unused") MyGdxGame game) {
         MagicOrb ability = MagicOrb.of();
         ability.params =
-                AbilityParams.of(abilityInitialParams)
-                             .width(1.5f)
-                             .height(1.5f)
-                             .channelTime(0f)
-                             .activeTime(30f)
-                             .textureName("magic_orb")
-                             .damage(40f)
-                             .isChannelAnimationLooping(false)
-                             .isActiveAnimationLooping(true)
-                             .rotationShift(0f)
-                             .delayedActionTime(0.001f)
-                             .speed(12f);
+                abilityParams
+                        .width(1.5f)
+                        .height(1.5f)
+                        .channelTime(0f)
+                        .activeTime(30f)
+                        .textureName("magic_orb")
+                        .damage(40f)
+                        .isChannelAnimationLooping(false)
+                        .isActiveAnimationLooping(true)
+                        .rotationShift(0f)
+                        .delayedActionTime(0.001f)
+                        .speed(12f);
 
 
         return ability;

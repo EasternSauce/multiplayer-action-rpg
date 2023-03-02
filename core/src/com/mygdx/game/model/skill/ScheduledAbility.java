@@ -1,10 +1,10 @@
 package com.mygdx.game.model.skill;
 
-import com.mygdx.game.game.AbilitySpawnable;
+import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.model.ability.AbilityId;
-import com.mygdx.game.model.ability.AbilityInitialParams;
+import com.mygdx.game.model.ability.AbilityParams;
 import com.mygdx.game.model.ability.AbilityType;
-import com.mygdx.game.model.area.AreaId;
+import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
@@ -26,20 +26,36 @@ public class ScheduledAbility {
                                .isPerformed(true);
     }
 
-    public void perform(CreatureId creatureId, AbilitySpawnable game) {
+    public void onPerformSkill(Vector2 startingPos, Vector2 dirVector) {
+        isPerformed(false);
+        startingPos(startingPos);
+        dirVector(dirVector);
+    }
+
+    public void perform(CreatureId creatureId, MyGdxGame game) {
         AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
 
-        AreaId areaId = game.getCreature(creatureId).params().areaId();
+        //        AreaId areaId = game.getCreature(creatureId).params().areaId();
 
-        AbilityInitialParams abilityInitialParams = AbilityInitialParams.of()
-                                                                        .abilityId(abilityId)
-                                                                        .areaId(areaId)
-                                                                        .creatureId(creatureId)
-                                                                        .creaturePosWhenSkillPerformed(startingPos)
-                                                                        .abilityDirVector(dirVector)
-                                                                        .creaturePosCurrent(game.getCreature(
-                                                                                creatureId).params().pos());
-        game.spawnAbility(abilityType, abilityInitialParams);
+        Creature creature = game.getCreature(creatureId);
+        //
+        //        AbilityInitialParams abilityInitialParams = AbilityInitialParams.of()
+        //                                                                        .abilityId(abilityId)
+        //                                                                        .areaId(areaId)
+        //                                                                        .creatureId(creatureId)
+        //                                                                        .creaturePosWhenSkillPerformed(startingPos)
+        //                                                                        .abilityDirVector(dirVector)
+        //                                                                        .creaturePosCurrent(game.getCreature(
+        //                                                                                creatureId).params().pos());
+
+        AbilityParams abilityParams = AbilityParams.of()
+                                                   .id(abilityId)
+                                                   .areaId(creature.params().areaId())
+                                                   .creatureId(creatureId)
+                                                   .pos(startingPos)
+                                                   .dirVector(dirVector);
+
+        game.spawnAbility(abilityType, abilityParams, game);
 
         isPerformed = true;
     }

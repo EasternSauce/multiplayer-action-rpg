@@ -1,8 +1,8 @@
 package com.mygdx.game.model.ability;
 
-import com.mygdx.game.game.AbilityChainable;
 import com.mygdx.game.game.AbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
+import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.renderer.config.AbilityAnimationConfig;
 import lombok.Data;
 
@@ -16,7 +16,7 @@ public abstract class Ability {
 
     public abstract Boolean isRanged();
 
-    public void update(Float delta, AbilityUpdateable game) {
+    public void update(Float delta, MyGdxGame game) {
         AbilityState state = params().state();
 
         if (state == AbilityState.CHANNEL) {
@@ -60,9 +60,9 @@ public abstract class Ability {
 
     abstract void onAbilityStarted(AbilityUpdateable game);
 
-    abstract void onDelayedAction(AbilityChainable game);
+    abstract void onDelayedAction(MyGdxGame game);
 
-    abstract void onAbilityCompleted(AbilityChainable game);
+    abstract void onAbilityCompleted(MyGdxGame game);
 
     abstract void onUpdatePosition(CreaturePosRetrievable game);
 

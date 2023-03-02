@@ -1,8 +1,8 @@
 package com.mygdx.game.model.ability;
 
-import com.mygdx.game.game.AbilityChainable;
 import com.mygdx.game.game.AbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
+import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -14,12 +14,12 @@ import lombok.NoArgsConstructor;
 public class RicochetShot extends Ability {
     AbilityParams params;
 
-    public static RicochetShot of(AbilityInitialParams abilityInitialParams) {
+    public static RicochetShot of(AbilityParams abilityParams, @SuppressWarnings("unused") MyGdxGame game) {
         RicochetShot ability = RicochetShot.of();
         ability.params =
-                AbilityParams.of(abilityInitialParams)
-                             .channelTime(0f)
-                             .activeTime(0f);
+                abilityParams
+                        .channelTime(0f)
+                        .activeTime(0f);
 
 
         return ability;
@@ -36,12 +36,12 @@ public class RicochetShot extends Ability {
     }
 
     @Override
-    void onDelayedAction(AbilityChainable game) {
+    void onDelayedAction(MyGdxGame game) {
 
     }
 
     @Override
-    void onAbilityCompleted(AbilityChainable game) {
+    void onAbilityCompleted(MyGdxGame game) {
 
         Vector2 leftSidePos = params().pos().add(params.dirVector().normalized().multiplyBy(2f).rotateDeg(90));
         Vector2 rightSidePos = params().pos().add(params.dirVector().normalized().multiplyBy(2f).rotateDeg(-90));
@@ -49,13 +49,10 @@ public class RicochetShot extends Ability {
         game.chainAbility(this,
                           AbilityType.RICOCHET_BULLET,
                           params().pos(),
-                          null,
-                          null,
-                          0f,
                           params.dirVector(),
-                          null);
-        game.chainAbility(this, AbilityType.RICOCHET_BULLET, leftSidePos, null, null, null, params.dirVector(), null);
-        game.chainAbility(this, AbilityType.RICOCHET_BULLET, rightSidePos, null, null, null, params.dirVector(), null);
+                          game);
+        game.chainAbility(this, AbilityType.RICOCHET_BULLET, leftSidePos, params.dirVector(), game);
+        game.chainAbility(this, AbilityType.RICOCHET_BULLET, rightSidePos, params.dirVector(), game);
     }
 
     @Override
