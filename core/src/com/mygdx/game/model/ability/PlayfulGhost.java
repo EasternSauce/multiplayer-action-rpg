@@ -36,8 +36,7 @@ public class PlayfulGhost extends Projectile {
                         .rotationShift(0f)
                         .delayedActionTime(0.001f)
                         .speed(5f)
-                        .rngSeed(RandomHelper.seededRandomFloat(abilityParams.creatureId()))
-                        .pos(abilityParams.chainToPos());
+                        .rngSeed(RandomHelper.seededRandomFloat(abilityParams.creatureId()));
 
 
         return ability;

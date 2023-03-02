@@ -16,7 +16,7 @@ public class ScheduledAbility {
     AbilityType abilityType;
     Float scheduledTime;
     Boolean isPerformed;
-    Vector2 startingPos;
+    Vector2 startPos;
     Vector2 dirVector;
 
     public static ScheduledAbility of(AbilityType abilityType, Float scheduledTime) {
@@ -28,32 +28,21 @@ public class ScheduledAbility {
 
     public void onPerformSkill(Vector2 startingPos, Vector2 dirVector) {
         isPerformed(false);
-        startingPos(startingPos);
+        startPos(startingPos);
         dirVector(dirVector);
     }
 
     public void perform(CreatureId creatureId, MyGdxGame game) {
         AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
 
-        //        AreaId areaId = game.getCreature(creatureId).params().areaId();
-
         Creature creature = game.getCreature(creatureId);
-        //
-        //        AbilityInitialParams abilityInitialParams = AbilityInitialParams.of()
-        //                                                                        .abilityId(abilityId)
-        //                                                                        .areaId(areaId)
-        //                                                                        .creatureId(creatureId)
-        //                                                                        .creaturePosWhenSkillPerformed(startingPos)
-        //                                                                        .abilityDirVector(dirVector)
-        //                                                                        .creaturePosCurrent(game.getCreature(
-        //                                                                                creatureId).params().pos());
 
         AbilityParams abilityParams = AbilityParams.of()
                                                    .id(abilityId)
                                                    .areaId(creature.params().areaId())
                                                    .creatureId(creatureId)
-                                                   .pos(startingPos)
-                                                   .dirVector(dirVector);
+                                                   .dirVector(dirVector)
+                                                   .skillStartPos(startPos);
 
         game.spawnAbility(abilityType, abilityParams, game);
 

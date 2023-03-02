@@ -16,7 +16,7 @@ public class Slash extends Ability {
     AbilityParams params;
 
     @Override
-    public Boolean isPositionManipulated() {
+    public Boolean isPositionUpdated() {
         return true;
     }
 
@@ -68,7 +68,7 @@ public class Slash extends Ability {
 
     @Override
     void onChannelUpdate(CreaturePosRetrievable gameState) {
-        if (isPositionManipulated()) {
+        if (isPositionUpdated()) {
             onUpdatePosition(gameState);
         }
 
@@ -76,7 +76,7 @@ public class Slash extends Ability {
 
     @Override
     void onActiveUpdate(AbilityUpdateable game) {
-        if (isPositionManipulated()) {
+        if (isPositionUpdated()) {
             onUpdatePosition(game);
         }
 

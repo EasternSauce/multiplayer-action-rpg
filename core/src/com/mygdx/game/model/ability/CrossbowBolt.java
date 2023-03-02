@@ -4,7 +4,6 @@ package com.mygdx.game.model.ability;
 import com.mygdx.game.game.AbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
 import com.mygdx.game.game.MyGdxGame;
-import com.mygdx.game.model.creature.Creature;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -51,9 +50,7 @@ public class CrossbowBolt extends Projectile {
         deactivate();
     }
 
-    public static CrossbowBolt of(AbilityParams abilityParams, MyGdxGame game) {
-        Creature creature = game.getCreature(abilityParams.creatureId());
-
+    public static CrossbowBolt of(AbilityParams abilityParams, @SuppressWarnings("unused") MyGdxGame game) {
         CrossbowBolt ability = CrossbowBolt.of();
         ability.params =
                 abilityParams.width(1.5f)
@@ -65,8 +62,7 @@ public class CrossbowBolt extends Projectile {
                              .isChannelAnimationLooping(true)
                              .isActiveAnimationLooping(true)
                              .rotationShift(0f)
-                             .speed(30f)
-                             .pos(creature.params().pos());
+                             .speed(30f);
 
         return ability;
     }

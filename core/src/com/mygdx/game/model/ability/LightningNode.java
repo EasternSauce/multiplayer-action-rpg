@@ -103,8 +103,7 @@ public class LightningNode extends Ability {
                 .attackWithoutMoving(true)
                 .inactiveBody(true)
                 .rotationShift(0f)
-                .delayedActionTime(0.001f)
-                .pos(abilityParams.chainToPos());
+                .delayedActionTime(0.001f);
 
         return ability;
     }

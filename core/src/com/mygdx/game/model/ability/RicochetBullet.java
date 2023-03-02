@@ -27,8 +27,7 @@ public class RicochetBullet extends Projectile {
                         .isActiveAnimationLooping(true)
                         .rotationShift(0f)
                         .delayedActionTime(0.001f)
-                        .speed(12f)
-                        .pos(abilityParams.chainToPos());
+                        .speed(12f);
 
 
         return ability;

@@ -3,67 +3,49 @@ package com.mygdx.game.model.ability;
 
 import com.mygdx.game.game.MyGdxGame;
 
+import java.util.function.BiFunction;
+
 public class AbilityFactory {
 
-    public static Ability produceAbility(AbilityType abilityType,
-                                         AbilityParams abilityParams, MyGdxGame game) {
-        if (abilityType == AbilityType.SLASH) {
-            return Slash.of(abilityParams, game);
+    public static BiFunction<AbilityParams, MyGdxGame, Ability> getAbilityByType(AbilityType abilityType) {
+        switch (abilityType) {
+            case SLASH:
+                return Slash::of;
+            case FIREBALL:
+                return Fireball::of;
+            case FIREBALL_EXPLOSION:
+                return FireballExplosion::of;
+            case LIGHTNING_SPARK:
+                return LightningSpark::of;
+            case LIGHTNING_NODE:
+                return LightningNode::of;
+            case LIGHTNING_CHAIN:
+                return LightningChain::of;
+            case CROSSBOW_BOLT:
+                return CrossbowBolt::of;
+            case MAGIC_ORB:
+                return MagicOrb::of;
+            case VOLATILE_BUBBLE:
+                return VolatileBubble::of;
+            case ICE_SPEAR:
+                return IceSpear::of;
+            case PLAYFUL_GHOST:
+                return PlayfulGhost::of;
+            case SUMMON_GHOSTS:
+                return SummonGhosts::of;
+            case RICOCHET_SHOT:
+                return RicochetShot::of;
+            case RICOCHET_BULLET:
+                return RicochetBullet::of;
+            default:
+                throw new RuntimeException("ability type not found: " + abilityType);
         }
 
-        if (abilityType == AbilityType.FIREBALL) {
-            return Fireball.of(abilityParams, game);
-        }
+    }
 
-        if (abilityType == AbilityType.FIREBALL_EXPLOSION) {
-            return FireballExplosion.of(abilityParams, game);
-        }
+    public static Ability produceAbility(AbilityType abilityType, AbilityParams abilityParams, MyGdxGame game) {
 
-        if (abilityType == AbilityType.LIGHTNING_SPARK) {
-            return LightningSpark.of(abilityParams, game);
-        }
-
-        if (abilityType == AbilityType.LIGHTNING_NODE) {
-            return LightningNode.of(abilityParams, game);
-        }
-
-        if (abilityType == AbilityType.LIGHTNING_CHAIN) {
-            return LightningChain.of(abilityParams, game);
-        }
-
-        if (abilityType == AbilityType.CROSSBOW_BOLT) {
-            return CrossbowBolt.of(abilityParams, game);
-        }
-
-        if (abilityType == AbilityType.MAGIC_ORB) {
-            return MagicOrb.of(abilityParams, game);
-        }
-
-        if (abilityType == AbilityType.VOLATILE_BUBBLE) {
-            return VolatileBubble.of(abilityParams, game);
-        }
-
-        if (abilityType == AbilityType.ICE_SPEAR) {
-            return IceSpear.of(abilityParams, game);
-        }
-
-        if (abilityType == AbilityType.PLAYFUL_GHOST) {
-            return PlayfulGhost.of(abilityParams, game);
-        }
-
-        if (abilityType == AbilityType.SUMMON_GHOSTS) {
-            return SummonGhosts.of(abilityParams, game);
-        }
-
-        if (abilityType == AbilityType.RICOCHET_SHOT) {
-            return RicochetShot.of(abilityParams, game);
-        }
-
-        if (abilityType == AbilityType.RICOCHET_BULLET) {
-            return RicochetBullet.of(abilityParams, game);
-        }
-
-        throw new RuntimeException("ability type not found: " + abilityType);
+        return getAbilityByType(abilityType).apply(abilityParams, game);
     }
 
 }

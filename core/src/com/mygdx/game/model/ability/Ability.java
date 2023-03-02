@@ -3,6 +3,7 @@ package com.mygdx.game.model.ability;
 import com.mygdx.game.game.AbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
 import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.renderer.config.AbilityAnimationConfig;
 import lombok.Data;
 
@@ -10,7 +11,11 @@ import lombok.Data;
 public abstract class Ability {
     AbilityParams params;
 
-    public Boolean isPositionManipulated() {
+    public Boolean isPositionUpdated() {
+        return false;
+    }
+
+    public Boolean isPositionCalculated() {
         return false;
     }
 
@@ -22,7 +27,7 @@ public abstract class Ability {
         if (state == AbilityState.CHANNEL) {
             onChannelUpdate(game);
 
-            if (isPositionManipulated()) {
+            if (isPositionUpdated()) {
                 onUpdatePosition(game);
             }
 
@@ -36,7 +41,7 @@ public abstract class Ability {
         else if (state == AbilityState.ACTIVE) {
             onActiveUpdate(game);
 
-            if (isPositionManipulated()) {
+            if (isPositionUpdated()) {
                 onUpdatePosition(game);
             }
 
@@ -72,12 +77,23 @@ public abstract class Ability {
 
     public void init(AbilityUpdateable game) {
 
-        if (isPositionManipulated()) {
+        if (isPositionUpdated()) {
             onUpdatePosition(game);
         }
 
         params().state(AbilityState.CHANNEL);
         params().stateTimer().restart();
+
+        Creature creature = game.getCreature(params().creatureId());
+
+        if (creature != null && !isPositionCalculated()) {
+            if (params().chainToPos() != null) {
+                params().pos(params().chainToPos());
+            }
+            else {
+                params().pos(creature.params().pos());
+            }
+        }
 
     }
 

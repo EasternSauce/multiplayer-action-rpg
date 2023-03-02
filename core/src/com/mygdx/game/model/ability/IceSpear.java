@@ -65,8 +65,7 @@ public class IceSpear extends Projectile {
                         .isActiveAnimationLooping(true)
                         .rotationShift(0f)
                         .delayedActionTime(0.001f)
-                        .speed(15f)
-                        .pos(abilityParams.chainToPos());
+                        .speed(15f);
 
 
         return ability;

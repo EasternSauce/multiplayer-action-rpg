@@ -3,6 +3,7 @@ package com.mygdx.game.model.ability;
 import com.mygdx.game.game.AbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
 import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.model.creature.Creature;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -70,6 +71,8 @@ public class Fireball extends Projectile {
     }
 
     public static Fireball of(AbilityParams abilityParams, @SuppressWarnings("unused") MyGdxGame game) {
+        Creature creature = game.getCreature(abilityParams.creatureId());
+
         Fireball ability = Fireball.of();
         ability.params =
                 abilityParams
@@ -82,7 +85,8 @@ public class Fireball extends Projectile {
                         .isChannelAnimationLooping(false)
                         .isActiveAnimationLooping(true)
                         .rotationShift(0f)
-                        .delayedActionTime(0.001f);
+                        .delayedActionTime(0.001f)
+                        .pos(creature.params().pos());
 
 
         return ability;

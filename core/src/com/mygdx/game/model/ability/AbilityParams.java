@@ -65,19 +65,6 @@ public class AbilityParams {
     Vector2 chainFromPos;
     Vector2 chainToPos;
 
-    //    public static AbilityParams of(AbilityParams abilityParams, MyGdxGame game) {
-    //        return AbilityParams.of()
-    //                            .id(abilityInitialParams.abilityId())
-    //                            .areaId(abilityInitialParams.areaId())
-    //                            .creatureId(abilityInitialParams.creatureId())
-    //                            .dirVector(abilityInitialParams.abilityDirVector())
-    //                            .chainFromPos(abilityInitialParams.abilityChainFromPos())
-    //                            .pos(abilityInitialParams.creaturePosWhenSkillPerformed())
-    //                            .width(abilityInitialParams.abilityWidth())
-    //                            .height(abilityInitialParams.abilityHeight())
-    //                            .rotationAngle(abilityInitialParams.abilityRotationAngle())
-    //                            .creaturesAlreadyHit(abilityInitialParams.abilityCreaturesAlreadyHit())
-    //                            .creatureStartingPos(abilityInitialParams.creaturePosCurrent());
-    //    }
+    Vector2 skillStartPos;
 
 }

@@ -21,6 +21,11 @@ public class LightningChain extends Ability {
     }
 
     @Override
+    public Boolean isPositionCalculated() {
+        return true;
+    }
+
+    @Override
     void onAbilityStarted(AbilityUpdateable game) {
 
     }

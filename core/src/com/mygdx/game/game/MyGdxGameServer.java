@@ -250,7 +250,6 @@ public class MyGdxGameServer extends MyGdxGame {
         if (creature != null) {
             Ability ability = AbilityFactory.produceAbility(abilityType, abilityParams, game);
 
-
             AddAbilityAction action = AddAbilityAction.of(ability);
 
             tickActions.add(action);
@@ -441,20 +440,6 @@ public class MyGdxGameServer extends MyGdxGame {
 
         Vector2 chainFromPos = chainFromAbility.params().pos();
 
-        //        AbilityInitialParams
-        //                abilityInitialParams =
-        //                AbilityInitialParams.of()
-        //                                    .abilityId(abilityId)
-        //                                    .areaId(chainFromAbility.params().areaId())
-        //                                    .creatureId(chainFromAbility.params().creatureId())
-        //                                    .abilityCreaturesAlreadyHit(creaturesAlreadyHit)
-        //                                    .abilityChainFromPos(chainFromPos)
-        //                                    .creaturePosWhenSkillPerformed(chainToPos)
-        //                                    .abilityWidth(width)
-        //                                    .abilityHeight(height)
-        //                                    .abilityRotationAngle(rotationAngle)
-        //                                    .abilityDirVector(dirVector);
-
         Creature creature = game.getCreature(chainFromAbility.params().creatureId());
 
         AbilityParams abilityParams = AbilityParams.of()
@@ -465,7 +450,6 @@ public class MyGdxGameServer extends MyGdxGame {
                                                    .chainFromPos(chainFromPos)
                                                    .chainToPos(chainToPos)
                                                    .dirVector(dirVector);
-
 
         spawnAbility(abilityType, abilityParams, game);
     }

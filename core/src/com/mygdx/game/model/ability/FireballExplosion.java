@@ -71,8 +71,7 @@ public class FireballExplosion extends Ability {
                              .isChannelAnimationLooping(false)
                              .isActiveAnimationLooping(false)
                              .attackWithoutMoving(true)
-                             .rotationShift(0f)
-                             .pos(abilityParams.chainToPos());
+                             .rotationShift(0f);
 
         return ability;
     }
