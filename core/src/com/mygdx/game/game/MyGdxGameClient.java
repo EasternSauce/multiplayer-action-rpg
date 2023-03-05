@@ -503,7 +503,7 @@ public class MyGdxGameClient extends MyGdxGame {
     @Override
     public void chainAbility(Ability chainFromAbility,
                              AbilityType abilityType,
-                             Vector2 pos,
+                             Vector2 chainToPos,
                              Vector2 dirVector,
                              MyGdxGame game) {
         // do nothing

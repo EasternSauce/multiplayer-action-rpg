@@ -5,6 +5,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.game.model.ability.AbilityId;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.CreatureId;
+import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.physics.body.AbilityBody;
 import com.mygdx.game.physics.body.CreatureBody;
 import com.mygdx.game.physics.body.TerrainTileBody;
@@ -62,7 +63,11 @@ public class GamePhysics {
             TerrainTileBody terrainTileBody = (TerrainTileBody) objA;
             if (!terrainTileBody.flyover()) {
                 AbilityBody abilityBody = (AbilityBody) objB;
-                physicsEventQueue.add(AbilityHitsTerrainEvent.of(abilityBody.abilityId()));
+                Vector2
+                        tileCenter =
+                        Vector2.of(terrainTileBody.b2Body().getWorldCenter().x,
+                                   terrainTileBody.b2Body().getWorldCenter().y);
+                physicsEventQueue.add(AbilityHitsTerrainEvent.of(abilityBody.abilityId(), tileCenter));
             }
 
         }

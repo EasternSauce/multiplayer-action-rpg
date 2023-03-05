@@ -5,6 +5,7 @@ import com.mygdx.game.game.CreaturePosRetrievable;
 import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
+import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -40,7 +41,7 @@ public class LightningNode extends Ability {
             params().creaturesAlreadyHit().size() <= 10 &&
             game.getWorld(params().areaId()).isLineOfSight(params().pos(), targetCreature.params().pos())) {
             targetCreature.handleBeingAttacked(true,
-                                               params().damage(),
+                                               params().currentDamage(),
                                                params().creatureId()); // TODO: can we do this in main update loop instead? introduce events etc.
 
             params().creaturesAlreadyHit().add(targetCreature.params().id());
@@ -85,7 +86,7 @@ public class LightningNode extends Ability {
     }
 
     @Override
-    public void onTerrainHit() {
+    public void onTerrainHit(Vector2 tileCenter, MyGdxGame game) {
 
     }
 
@@ -98,7 +99,7 @@ public class LightningNode extends Ability {
                 .channelTime(0f)
                 .activeTime(0.4f)
                 .textureName("lightning")
-                .damage(30f)
+                .baseDamage(30f)
                 .isActiveAnimationLooping(true)
                 .attackWithoutMoving(true)
                 .inactiveBody(true)

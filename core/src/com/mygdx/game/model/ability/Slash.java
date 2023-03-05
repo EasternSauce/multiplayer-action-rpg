@@ -88,7 +88,7 @@ public class Slash extends Ability {
     }
 
     @Override
-    public void onTerrainHit() {
+    public void onTerrainHit(Vector2 tileCenter, MyGdxGame game) {
 
     }
 
@@ -102,7 +102,7 @@ public class Slash extends Ability {
                         .activeTime(0.3f)
                         .range(1.8f)
                         .textureName("slash")
-                        .damage(22f)
+                        .baseDamage(22f)
                         .isChannelAnimationLooping(false)
                         .isActiveAnimationLooping(false)
                         .rotationShift(0f);

@@ -4,6 +4,7 @@ import com.mygdx.game.game.AbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
 import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.model.creature.Creature;
+import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.renderer.config.AbilityAnimationConfig;
 import lombok.Data;
 
@@ -84,6 +85,8 @@ public abstract class Ability {
         params().state(AbilityState.CHANNEL);
         params().stateTimer().restart();
 
+        params().currentDamage(params().baseDamage());
+
         Creature creature = game.getCreature(params().creatureId());
 
         if (creature != null && !isPositionCalculated()) {
@@ -112,7 +115,7 @@ public abstract class Ability {
 
     public abstract void onCreatureHit();
 
-    public abstract void onTerrainHit();
+    public abstract void onTerrainHit(Vector2 tileCenter, MyGdxGame game);
 
     public boolean bodyShouldExist() {
         return !(params().inactiveBody() || params().state() != AbilityState.ACTIVE);

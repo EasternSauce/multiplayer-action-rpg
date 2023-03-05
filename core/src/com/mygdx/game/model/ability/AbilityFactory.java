@@ -34,7 +34,7 @@ public class AbilityFactory {
             case SUMMON_GHOSTS:
                 return SummonGhosts::of;
             case RICOCHET_SHOT:
-                return RicochetShot::of;
+                return RicochetBallista::of;
             case RICOCHET_BULLET:
                 return RicochetBullet::of;
             default:

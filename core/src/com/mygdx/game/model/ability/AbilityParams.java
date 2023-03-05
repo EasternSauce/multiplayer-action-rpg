@@ -37,7 +37,8 @@ public class AbilityParams {
     Vector2 velocity;
     Float speed;
 
-    Float damage;
+    Float baseDamage;
+    Float currentDamage;
 
     Float channelTime;
     Float activeTime;
@@ -66,5 +67,9 @@ public class AbilityParams {
     Vector2 chainToPos;
 
     Vector2 skillStartPos;
+
+    Vector2 lastTileHitPos;
+
+    Float wallBounceCount = 0f;
 
 }

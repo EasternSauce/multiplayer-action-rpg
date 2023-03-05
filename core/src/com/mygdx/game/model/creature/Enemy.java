@@ -94,11 +94,15 @@ public class Enemy extends Creature {
         if (params().aggroedCreatureId() != null) {
             potentialTarget = game.getCreature(params().aggroedCreatureId());
 
-            Float distance = params().pos().distance(potentialTarget.params().pos());
+            if (potentialTarget != null) {
+                Float distance = params().pos().distance(potentialTarget.params().pos());
 
-            if (distance < Constants.LOSE_AGGRO_DISTANCE) {
-                params().aggroTimer().restart();
+                if (distance < Constants.LOSE_AGGRO_DISTANCE) {
+                    params().aggroTimer().restart();
+                }
             }
+
+
         }
 
         if (params().aggroTimer().time() < params.loseAggroTime() &&

@@ -61,7 +61,7 @@ public class LightningChain extends Ability {
     }
 
     @Override
-    public void onTerrainHit() {
+    public void onTerrainHit(Vector2 tileCenter, MyGdxGame game) {
 
     }
 
@@ -75,7 +75,7 @@ public class LightningChain extends Ability {
                 .channelTime(0f)
                 .activeTime(0.4f)
                 .textureName("lightning_chain")
-                .damage(0f)
+                .baseDamage(0f)
                 .isActiveAnimationLooping(true)
                 .attackWithoutMoving(true)
                 .pos(LightningChain.calculatePos(abilityParams.chainToPos(),

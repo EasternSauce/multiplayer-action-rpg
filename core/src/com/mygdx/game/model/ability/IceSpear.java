@@ -3,6 +3,7 @@ package com.mygdx.game.model.ability;
 import com.mygdx.game.game.AbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
 import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -45,7 +46,7 @@ public class IceSpear extends Projectile {
     }
 
     @Override
-    public void onTerrainHit() {
+    public void onTerrainHit(Vector2 tileCenter, MyGdxGame game) {
         if (params().stateTimer().time() > 0.1f) {
             deactivate();
         }
@@ -60,7 +61,7 @@ public class IceSpear extends Projectile {
                         .channelTime(0f)
                         .activeTime(0.6f)
                         .textureName("ice_shard")
-                        .damage(10f)
+                        .baseDamage(10f)
                         .isChannelAnimationLooping(false)
                         .isActiveAnimationLooping(true)
                         .rotationShift(0f)

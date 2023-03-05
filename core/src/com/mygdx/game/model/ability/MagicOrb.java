@@ -52,7 +52,7 @@ public class MagicOrb extends Projectile {
     }
 
     @Override
-    public void onTerrainHit() {
+    public void onTerrainHit(Vector2 tileCenter, MyGdxGame game) {
         if (params().stateTimer().time() > 0.1f) {
             deactivate();
         }
@@ -158,7 +158,7 @@ public class MagicOrb extends Projectile {
                         .channelTime(0f)
                         .activeTime(30f)
                         .textureName("magic_orb")
-                        .damage(40f)
+                        .baseDamage(40f)
                         .isChannelAnimationLooping(false)
                         .isActiveAnimationLooping(true)
                         .rotationShift(0f)

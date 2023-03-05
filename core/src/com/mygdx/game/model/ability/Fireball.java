@@ -4,6 +4,7 @@ import com.mygdx.game.game.AbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
 import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.model.creature.Creature;
+import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -21,7 +22,7 @@ public class Fireball extends Projectile {
     }
 
     @Override
-    public void onTerrainHit() {
+    public void onTerrainHit(Vector2 tileCenter, MyGdxGame game) {
         deactivate();
     }
 
@@ -81,7 +82,7 @@ public class Fireball extends Projectile {
                         .channelTime(0f)
                         .activeTime(30f)
                         .textureName("fireball")
-                        .damage(15f)
+                        .baseDamage(15f)
                         .isChannelAnimationLooping(false)
                         .isActiveAnimationLooping(true)
                         .rotationShift(0f)

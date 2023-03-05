@@ -3,6 +3,7 @@ package com.mygdx.game.model.ability;
 import com.mygdx.game.game.AbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
 import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -55,7 +56,7 @@ public class FireballExplosion extends Ability {
     }
 
     @Override
-    public void onTerrainHit() {
+    public void onTerrainHit(Vector2 tileCenter, MyGdxGame game) {
 
     }
 
@@ -67,7 +68,7 @@ public class FireballExplosion extends Ability {
                              .channelTime(0f)
                              .activeTime(0.35f)
                              .textureName("explosion")
-                             .damage(35f)
+                             .baseDamage(35f)
                              .isChannelAnimationLooping(false)
                              .isActiveAnimationLooping(false)
                              .attackWithoutMoving(true)

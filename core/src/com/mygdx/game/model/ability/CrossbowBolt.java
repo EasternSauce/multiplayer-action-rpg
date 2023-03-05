@@ -4,6 +4,7 @@ package com.mygdx.game.model.ability;
 import com.mygdx.game.game.AbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
 import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -27,7 +28,7 @@ public class CrossbowBolt extends Projectile {
 
     @Override
     void onDelayedAction(MyGdxGame game) {
-        // TODO: chain multiple shots
+
     }
 
     @Override
@@ -46,7 +47,7 @@ public class CrossbowBolt extends Projectile {
     }
 
     @Override
-    public void onTerrainHit() {
+    public void onTerrainHit(Vector2 tileCenter, MyGdxGame game) {
         deactivate();
     }
 
@@ -58,7 +59,7 @@ public class CrossbowBolt extends Projectile {
                              .channelTime(0f)
                              .activeTime(30f)
                              .textureName("arrow")
-                             .damage(10f)
+                             .baseDamage(10f)
                              .isChannelAnimationLooping(true)
                              .isActiveAnimationLooping(true)
                              .rotationShift(0f)

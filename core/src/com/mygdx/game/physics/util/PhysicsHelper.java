@@ -2,6 +2,7 @@ package com.mygdx.game.physics.util;
 
 import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.model.ability.Ability;
+import com.mygdx.game.model.ability.AbilityState;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.Player;
 import com.mygdx.game.physics.event.AbilityHitsCreatureEvent;
@@ -33,8 +34,9 @@ public class PhysicsHelper {
 
                 Ability ability = game.gameState().abilities().get(event.abilityId());
 
-                if (ability != null) {
-                    ability.onTerrainHit();
+                if (ability != null && ability.params().state() == AbilityState.ACTIVE) {
+                    System.out.println("on terrain hit");
+                    ability.onTerrainHit(event.tileCenter(), game);
                 }
 
             }
@@ -53,7 +55,7 @@ public class PhysicsHelper {
                                                                    .creaturesAlreadyHit()
                                                                    .contains(event.attackedCreatureId())) {
                 attackedCreature.handleBeingAttacked(ability.isRanged(),
-                                                     ability.params().damage(),
+                                                     ability.params().currentDamage(),
                                                      event.attackingCreatureId());
 
                 ability.params().creaturesAlreadyHit().add(event.attackedCreatureId());

@@ -440,11 +440,9 @@ public class MyGdxGameServer extends MyGdxGame {
 
         Vector2 chainFromPos = chainFromAbility.params().pos();
 
-        Creature creature = game.getCreature(chainFromAbility.params().creatureId());
-
         AbilityParams abilityParams = AbilityParams.of()
                                                    .id(abilityId)
-                                                   .areaId(creature.params().areaId())
+                                                   .areaId(chainFromAbility.params().areaId())
                                                    .creatureId(chainFromAbility.params().creatureId())
                                                    .creaturesAlreadyHit(creaturesAlreadyHit)
                                                    .chainFromPos(chainFromPos)

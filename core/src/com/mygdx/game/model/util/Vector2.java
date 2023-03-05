@@ -59,6 +59,29 @@ public class Vector2 {
         return Vector2.of(point.x() - x, point.y() - y);
     }
 
+    public Float dot(Vector2 other) {
+        return x * other.x() + y * other.y();
+    }
+
+    @SuppressWarnings("unused")
+    public Vector2 simplify() {
+        float angle = angleDeg();
+
+        if (angle >= 45 && angle < 135) {
+            return Vector2.of(0, -1);
+        }
+        if (angle >= 135 && angle < 225) {
+            return Vector2.of(-1, 0);
+        }
+        if (angle >= 225 && angle < 315) {
+            return Vector2.of(0, 1);
+        }
+        if ((angle >= 315 && angle < 360) || (angle >= 0 && angle < 45)) {
+            return Vector2.of(1, 0);
+        }
+        throw new RuntimeException("outcome shouldn't be possible");
+    }
+
     public Vector2 normalized() {
         float len = len();
         Vector2 newVector = Vector2.of(x, y);

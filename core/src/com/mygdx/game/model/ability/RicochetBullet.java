@@ -3,6 +3,7 @@ package com.mygdx.game.model.ability;
 import com.mygdx.game.game.AbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
 import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -17,17 +18,17 @@ public class RicochetBullet extends Projectile {
         RicochetBullet ability = RicochetBullet.of();
         ability.params =
                 abilityParams
-                        .width(1.5f)
-                        .height(1.5f)
+                        .width(0.8f)
+                        .height(0.8f)
                         .channelTime(0f)
-                        .activeTime(30f)
+                        .activeTime(10f)
                         .textureName("fireball")
-                        .damage(15f)
+                        .baseDamage(12f)
                         .isChannelAnimationLooping(false)
                         .isActiveAnimationLooping(true)
                         .rotationShift(0f)
                         .delayedActionTime(0.001f)
-                        .speed(12f);
+                        .speed(25f);
 
 
         return ability;
@@ -60,11 +61,79 @@ public class RicochetBullet extends Projectile {
 
     @Override
     public void onCreatureHit() {
-
+        params.currentDamage(params().currentDamage() * 3 / 5f);
     }
 
     @Override
-    public void onTerrainHit() {
+    public void onTerrainHit(Vector2 tileCenter, MyGdxGame game) {
+
+        if (params().wallBounceCount() > 4) {
+            deactivate();
+            return;
+        }
+
+        System.out.println("dot = " + params().dirVector().dot(params().pos().vectorTowards(tileCenter)));
+        if (
+                (params().lastTileHitPos() != null && params().lastTileHitPos().equals(tileCenter)) ||
+                params().dirVector().dot(params().pos().vectorTowards(tileCenter)) <=
+                4 // check if it is facing the tile
+        ) {
+            return;
+        }
+
+        params().creaturesAlreadyHit().clear();
+
+        params.currentDamage(params().baseDamage());
+
+        params().wallBounceCount(params().wallBounceCount() + 1);
+
+        System.out.println("here");
+        params().lastTileHitPos(tileCenter);
+
+        Vector2 collisionVector = params().pos().vectorTowards(tileCenter);
+
+        float collisionAngle = collisionVector.angleDeg();
+
+        float angle = params.dirVector().multiplyBy(-1).angleDeg();
+
+
+        float reflectAngle = 0f;
+        if (collisionAngle >= 45f && collisionAngle < 135f) {
+            if (angle < 90f) {
+                reflectAngle = 90f + Math.abs(angle - 90f);
+            }
+            else {
+                reflectAngle = 90f - Math.abs(angle - 90f);
+            }
+        }
+        if (collisionAngle >= 135f && collisionAngle < 225f) {
+            if (angle < 180f) {
+                reflectAngle = 180f + Math.abs(angle - 180f);
+            }
+            else {
+                reflectAngle = 180f - Math.abs(angle - 180f);
+            }
+        }
+        if (collisionAngle >= 225f && collisionAngle < 315f) {
+            if (angle < 270f) {
+                reflectAngle = 270f + Math.abs(angle - 270f);
+            }
+            else {
+                reflectAngle = 270f - Math.abs(angle - 270f);
+            }
+        }
+        if ((collisionAngle >= 315f && collisionAngle < 360f) || (collisionAngle >= 0f && collisionAngle < 45f)) {
+            if (angle >= 315f && angle < 360f) {
+                reflectAngle = Math.abs(angle - 360f);
+            }
+            else {
+                reflectAngle = 360f - Math.abs(angle - 360f);
+            }
+        }
+
+        params.dirVector(params.dirVector().setAngleDeg(reflectAngle));
 
     }
+
+
 }

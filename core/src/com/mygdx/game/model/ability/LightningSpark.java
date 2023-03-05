@@ -46,7 +46,7 @@ public class LightningSpark extends Ability {
 
         if (targetCreature != null &&
             game.getWorld(params().areaId()).isLineOfSight(params().pos(), targetCreature.params().pos())) {
-            targetCreature.handleBeingAttacked(true, params().damage(), params().creatureId());
+            targetCreature.handleBeingAttacked(true, params().currentDamage(), params().creatureId());
 
             params().creaturesAlreadyHit().add(targetCreature.params().id());
 
@@ -90,7 +90,7 @@ public class LightningSpark extends Ability {
     }
 
     @Override
-    public void onTerrainHit() {
+    public void onTerrainHit(Vector2 tileCenter, MyGdxGame game) {
 
     }
 
@@ -105,7 +105,7 @@ public class LightningSpark extends Ability {
                         .channelTime(0f)
                         .activeTime(0.4f)
                         .textureName("lightning")
-                        .damage(30f)
+                        .baseDamage(30f)
                         .isActiveAnimationLooping(true)
                         .attackWithoutMoving(true)
                         .inactiveBody(true)

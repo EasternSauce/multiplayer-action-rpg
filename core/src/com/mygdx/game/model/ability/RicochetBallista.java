@@ -11,11 +11,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class RicochetShot extends Ability {
+public class RicochetBallista extends Ability {
     AbilityParams params;
 
-    public static RicochetShot of(AbilityParams abilityParams, @SuppressWarnings("unused") MyGdxGame game) {
-        RicochetShot ability = RicochetShot.of();
+    public static RicochetBallista of(AbilityParams abilityParams, @SuppressWarnings("unused") MyGdxGame game) {
+        RicochetBallista ability = RicochetBallista.of();
         ability.params =
                 abilityParams
                         .channelTime(0f)
@@ -43,8 +43,8 @@ public class RicochetShot extends Ability {
     @Override
     void onAbilityCompleted(MyGdxGame game) {
 
-        Vector2 leftSidePos = params().pos().add(params.dirVector().normalized().multiplyBy(2f).rotateDeg(90));
-        Vector2 rightSidePos = params().pos().add(params.dirVector().normalized().multiplyBy(2f).rotateDeg(-90));
+        Vector2 leftSidePos = params().pos().add(params.dirVector().normalized().multiplyBy(1f).rotateDeg(90));
+        Vector2 rightSidePos = params().pos().add(params.dirVector().normalized().multiplyBy(1f).rotateDeg(-90));
 
         game.chainAbility(this,
                           AbilityType.RICOCHET_BULLET,
@@ -76,7 +76,7 @@ public class RicochetShot extends Ability {
     }
 
     @Override
-    public void onTerrainHit() {
+    public void onTerrainHit(Vector2 tileCenter, MyGdxGame game) {
 
     }
 }
