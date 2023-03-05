@@ -52,12 +52,12 @@ public class GamePhysics {
         if (objA instanceof CreatureBody && objB instanceof AbilityBody) {
             CreatureBody creatureBody = (CreatureBody) objA;
             AbilityBody abilityBody = (AbilityBody) objB;
-            if (!abilityBody.creatureId().equals(creatureBody.creatureId())) {
-                physicsEventQueue.add(AbilityHitsCreatureEvent.of(abilityBody.creatureId(),
-                                                                  creatureBody.creatureId(),
-                                                                  abilityBody.abilityId()));
 
-            }
+            physicsEventQueue.add(AbilityHitsCreatureEvent.of(abilityBody.creatureId(),
+                                                              creatureBody.creatureId(),
+                                                              abilityBody.abilityId()));
+
+
         }
         if (objA instanceof TerrainTileBody && objB instanceof AbilityBody) {
             TerrainTileBody terrainTileBody = (TerrainTileBody) objA;

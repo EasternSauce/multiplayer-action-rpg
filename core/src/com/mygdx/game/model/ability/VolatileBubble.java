@@ -68,6 +68,11 @@ public class VolatileBubble extends Projectile {
     }
 
     @Override
+    public void onThisCreatureHit() {
+
+    }
+
+    @Override
     public void onTerrainHit(Vector2 tileCenter, MyGdxGame game) {
         deactivate();
     }

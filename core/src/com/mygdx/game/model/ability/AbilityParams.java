@@ -72,4 +72,6 @@ public class AbilityParams {
 
     Float wallBounceCount = 0f;
 
+    Boolean comingBack = false;
+
 }

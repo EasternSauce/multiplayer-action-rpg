@@ -27,21 +27,28 @@ background2
   index: -1
 bag
   rotate: false
-  xy: 3636, 718
+  xy: 2190, 336
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 black_mage
   rotate: false
-  xy: 3490, 580
+  xy: 2690, 330
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: -1
+boomerang
+  rotate: false
+  xy: 3386, 912
+  size: 256, 32
+  orig: 256, 32
+  offset: 0, 0
+  index: -1
 bubble
   rotate: false
-  xy: 3262, 652
+  xy: 3504, 652
   size: 128, 64
   orig: 128, 64
   offset: 0, 0
@@ -55,7 +62,7 @@ cursor
   index: -1
 downarrow
   rotate: false
-  xy: 2190, 336
+  xy: 4040, 978
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -111,14 +118,14 @@ fist_slam_windup
   index: -1
 ghost
   rotate: false
-  xy: 3986, 782
+  xy: 3654, 718
   size: 97, 32
   orig: 97, 32
   offset: 0, 0
   index: -1
 goblet
   rotate: false
-  xy: 2908, 588
+  xy: 3634, 652
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -132,7 +139,7 @@ goblet_lit
   index: -1
 goblin
   rotate: false
-  xy: 3392, 580
+  xy: 2788, 394
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
@@ -195,7 +202,7 @@ minos
   index: -1
 necromancer
   rotate: false
-  xy: 3394, 752
+  xy: 3394, 718
   size: 128, 192
   orig: 128, 192
   offset: 0, 0
@@ -251,21 +258,21 @@ slam_windup
   index: -1
 slash
   rotate: false
-  xy: 3784, 740
+  xy: 580, 69
   size: 240, 40
   orig: 240, 40
   offset: 0, 0
   index: -1
 slash2
   rotate: false
-  xy: 3394, 710
+  xy: 1604, 232
   size: 240, 40
   orig: 240, 40
   offset: 0, 0
   index: -1
 slash2mirrored
   rotate: false
-  xy: 244, 2
+  xy: 3262, 634
   size: 240, 40
   orig: 240, 40
   offset: 0, 0
@@ -279,14 +286,14 @@ slash_windup
   index: -1
 slash_windup2
   rotate: false
-  xy: 580, 69
+  xy: 244, 2
   size: 240, 40
   orig: 240, 40
   offset: 0, 0
   index: -1
 slash_windup3
   rotate: false
-  xy: 1604, 232
+  xy: 3262, 676
   size: 240, 40
   orig: 240, 40
   offset: 0, 0
@@ -307,7 +314,7 @@ taurus
   index: -1
 treasure
   rotate: false
-  xy: 4040, 978
+  xy: 3986, 782
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -342,7 +349,7 @@ undead_knight
   index: -1
 undead_lancer
   rotate: false
-  xy: 3524, 752
+  xy: 3524, 718
   size: 128, 192
   orig: 128, 192
   offset: 0, 0

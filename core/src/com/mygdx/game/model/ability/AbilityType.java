@@ -23,9 +23,11 @@ public enum AbilityType {
 
     PLAYFUL_GHOST,
 
-    RICOCHET_SHOT,
+    RICOCHET_BALLISTA,
 
-    RICOCHET_BULLET
+    RICOCHET_BULLET,
+
+    BOOMERANG
 
 
 }

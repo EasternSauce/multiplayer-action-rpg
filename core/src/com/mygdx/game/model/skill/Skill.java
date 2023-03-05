@@ -109,14 +109,24 @@ public class Skill {
                             20f);
         }
 
-        if (skillType == SkillType.RICOCHET_SHOT) {
+        if (skillType == SkillType.RICOCHET_BALLISTA) {
             return Skill.of(skillType,
                             creatureId,
-                            singleScheduledAbility(AbilityType.RICOCHET_SHOT),
+                            singleScheduledAbility(AbilityType.RICOCHET_BALLISTA),
                             SimpleTimer.getExpiredTimer(),
                             1.3f,
                             15f,
                             20f);
+        }
+
+        if (skillType == SkillType.BOOMERANG) {
+            return Skill.of(skillType,
+                            creatureId,
+                            singleScheduledAbility(AbilityType.BOOMERANG),
+                            SimpleTimer.getExpiredTimer(),
+                            1.3f,
+                            35f,
+                            0f);
         }
         throw new RuntimeException("skill not handled");
     }

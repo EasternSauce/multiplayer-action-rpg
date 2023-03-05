@@ -65,6 +65,11 @@ public class RicochetBullet extends Projectile {
     }
 
     @Override
+    public void onThisCreatureHit() {
+
+    }
+
+    @Override
     public void onTerrainHit(Vector2 tileCenter, MyGdxGame game) {
 
         if (params().wallBounceCount() > 4) {
@@ -72,7 +77,6 @@ public class RicochetBullet extends Projectile {
             return;
         }
 
-        System.out.println("dot = " + params().dirVector().dot(params().pos().vectorTowards(tileCenter)));
         if (
                 (params().lastTileHitPos() != null && params().lastTileHitPos().equals(tileCenter)) ||
                 params().dirVector().dot(params().pos().vectorTowards(tileCenter)) <=
@@ -87,7 +91,6 @@ public class RicochetBullet extends Projectile {
 
         params().wallBounceCount(params().wallBounceCount() + 1);
 
-        System.out.println("here");
         params().lastTileHitPos(tileCenter);
 
         Vector2 collisionVector = params().pos().vectorTowards(tileCenter);

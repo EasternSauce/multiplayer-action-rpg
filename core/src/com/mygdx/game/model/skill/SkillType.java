@@ -17,7 +17,9 @@ public enum SkillType {
 
     SUMMON_GHOSTS,
 
-    RICOCHET_SHOT
+    RICOCHET_BALLISTA,
+
+    BOOMERANG
 
 
 }

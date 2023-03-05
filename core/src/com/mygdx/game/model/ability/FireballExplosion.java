@@ -56,6 +56,11 @@ public class FireballExplosion extends Ability {
     }
 
     @Override
+    public void onThisCreatureHit() {
+
+    }
+
+    @Override
     public void onTerrainHit(Vector2 tileCenter, MyGdxGame game) {
 
     }

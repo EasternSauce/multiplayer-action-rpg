@@ -24,9 +24,15 @@ public class PhysicsHelper {
 
                 Ability ability = game.gameState().abilities().get(event.abilityId());
 
-                if (game.creaturesToUpdate().contains(event.attackedCreatureId()) && game.abilitiesToUpdate()
-                                                                                         .contains(event.abilityId())) {
-                    handleCreatureAttacked(event, attackedCreature, attackedIsPlayer, attackingIsPlayer, ability);
+                if (game.creaturesToUpdate().contains(event.attackedCreatureId()) && // TODO: refactor
+                    game.abilitiesToUpdate().contains(event.abilityId())) {
+                    if (event.attackingCreatureId().equals(event.attackedCreatureId())) {
+                        ability.onThisCreatureHit();
+                    }
+                    else {
+                        handleCreatureAttacked(event, attackedCreature, attackedIsPlayer, attackingIsPlayer, ability);
+                    }
+
                 }
             }
             if (physicsEvent instanceof AbilityHitsTerrainEvent) {
@@ -35,7 +41,6 @@ public class PhysicsHelper {
                 Ability ability = game.gameState().abilities().get(event.abilityId());
 
                 if (ability != null && ability.params().state() == AbilityState.ACTIVE) {
-                    System.out.println("on terrain hit");
                     ability.onTerrainHit(event.tileCenter(), game);
                 }
 

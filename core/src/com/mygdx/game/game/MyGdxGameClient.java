@@ -233,7 +233,21 @@ public class MyGdxGameClient extends MyGdxGame {
                 Vector2 dirVector = mousePos();
 
                 endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
-                                                             SkillType.RICOCHET_SHOT,
+                                                             SkillType.RICOCHET_BALLISTA,
+                                                             player.params().pos(),
+                                                             dirVector));
+
+
+            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
+
+                Creature player = gameState().creatures().get(thisPlayerId);
+
+
+                Vector2 dirVector = mousePos();
+
+                endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
+                                                             SkillType.BOOMERANG,
                                                              player.params().pos(),
                                                              dirVector));
 

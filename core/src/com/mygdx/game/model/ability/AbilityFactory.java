@@ -33,10 +33,12 @@ public class AbilityFactory {
                 return PlayfulGhost::of;
             case SUMMON_GHOSTS:
                 return SummonGhosts::of;
-            case RICOCHET_SHOT:
+            case RICOCHET_BALLISTA:
                 return RicochetBallista::of;
             case RICOCHET_BULLET:
                 return RicochetBullet::of;
+            case BOOMERANG:
+                return Boomerang::of;
             default:
                 throw new RuntimeException("ability type not found: " + abilityType);
         }
