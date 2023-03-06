@@ -27,7 +27,7 @@ public class PhysicsHelper {
                 if (game.creaturesToUpdate().contains(event.attackedCreatureId()) && // TODO: refactor
                     game.abilitiesToUpdate().contains(event.abilityId())) {
                     if (event.attackingCreatureId().equals(event.attackedCreatureId())) {
-                        ability.onThisCreatureHit();
+                        ability.onThisCreatureHit(game);
                     }
                     else {
                         handleCreatureAttacked(event, attackedCreature, attackedIsPlayer, attackingIsPlayer, ability);

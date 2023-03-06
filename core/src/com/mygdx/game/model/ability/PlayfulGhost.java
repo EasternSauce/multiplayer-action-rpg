@@ -166,7 +166,7 @@ public class PlayfulGhost extends Projectile {
     }
 
     @Override
-    public void onThisCreatureHit() {
+    public void onThisCreatureHit(MyGdxGame game) {
 
     }
 

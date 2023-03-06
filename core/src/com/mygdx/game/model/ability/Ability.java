@@ -115,7 +115,7 @@ public abstract class Ability {
 
     public abstract void onCreatureHit();
 
-    public abstract void onThisCreatureHit();
+    public abstract void onThisCreatureHit(MyGdxGame game);
 
     public abstract void onTerrainHit(Vector2 tileCenter, MyGdxGame game);
 

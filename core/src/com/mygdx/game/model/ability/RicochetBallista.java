@@ -76,7 +76,7 @@ public class RicochetBallista extends Ability {
     }
 
     @Override
-    public void onThisCreatureHit() {
+    public void onThisCreatureHit(MyGdxGame game) {
 
     }
 

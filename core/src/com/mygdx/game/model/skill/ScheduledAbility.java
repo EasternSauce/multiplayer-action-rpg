@@ -19,11 +19,14 @@ public class ScheduledAbility {
     Vector2 startPos;
     Vector2 dirVector;
 
-    public static ScheduledAbility of(AbilityType abilityType, Float scheduledTime) {
+    SkillType skillType;
+
+    public static ScheduledAbility of(AbilityType abilityType, SkillType skillType, Float scheduledTime) {
         return ScheduledAbility.of()
                                .abilityType(abilityType)
                                .scheduledTime(scheduledTime)
-                               .isPerformed(true);
+                               .isPerformed(true)
+                               .skillType(skillType);
     }
 
     public void onPerformSkill(Vector2 startingPos, Vector2 dirVector) {
@@ -42,7 +45,8 @@ public class ScheduledAbility {
                                                    .areaId(creature.params().areaId())
                                                    .creatureId(creatureId)
                                                    .dirVector(dirVector)
-                                                   .skillStartPos(startPos);
+                                                   .skillStartPos(startPos)
+                                                   .skillType(skillType);
 
         game.spawnAbility(abilityType, abilityParams, game);
 

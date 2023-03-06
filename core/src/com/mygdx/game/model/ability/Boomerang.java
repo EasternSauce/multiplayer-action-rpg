@@ -5,6 +5,7 @@ import com.mygdx.game.game.AbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
 import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.model.creature.Creature;
+import com.mygdx.game.model.skill.Skill;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -50,8 +51,14 @@ public class Boomerang extends Projectile {
     }
 
     @Override
-    public void onThisCreatureHit() {
+    public void onThisCreatureHit(MyGdxGame game) {
         if (params().comingBack()) {
+
+            Creature creature = game.getCreature(params().creatureId());
+            Skill skill = creature.params().skills().get(params().skillType());
+
+            skill.resetCooldown();
+
             deactivate();
         }
     }
@@ -123,12 +130,12 @@ public class Boomerang extends Projectile {
     public static Boomerang of(AbilityParams abilityParams, @SuppressWarnings("unused") MyGdxGame game) {
         Boomerang ability = Boomerang.of();
         ability.params =
-                abilityParams.width(2f)
-                             .height(2f)
+                abilityParams.width(1.8f)
+                             .height(1.8f)
                              .channelTime(0f)
-                             .activeTime(30f)
+                             .activeTime(10f)
                              .textureName("boomerang")
-                             .baseDamage(30f)
+                             .baseDamage(25f)
                              .isChannelAnimationLooping(true)
                              .isActiveAnimationLooping(true)
                              .rotationShift(0f)

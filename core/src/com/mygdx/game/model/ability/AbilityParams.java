@@ -2,6 +2,7 @@ package com.mygdx.game.model.ability;
 
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.CreatureId;
+import com.mygdx.game.model.skill.SkillType;
 import com.mygdx.game.model.util.SimpleTimer;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
@@ -73,5 +74,7 @@ public class AbilityParams {
     Float wallBounceCount = 0f;
 
     Boolean comingBack = false;
+
+    SkillType skillType;
 
 }

@@ -33,7 +33,7 @@ public class Skill {
         if (skillType == SkillType.SLASH) {
             return Skill.of(skillType,
                             creatureId,
-                            singleScheduledAbility(AbilityType.SLASH),
+                            singleScheduledAbility(AbilityType.SLASH, skillType),
                             SimpleTimer.getExpiredTimer(),
                             0.6f,
                             20f,
@@ -42,7 +42,7 @@ public class Skill {
         if (skillType == SkillType.FIREBALL) {
             return Skill.of(skillType,
                             creatureId,
-                            singleScheduledAbility(AbilityType.FIREBALL),
+                            singleScheduledAbility(AbilityType.FIREBALL, skillType),
                             SimpleTimer.getExpiredTimer(),
                             0.4f,
                             15f,
@@ -51,7 +51,7 @@ public class Skill {
         if (skillType == SkillType.LIGHTNING) {
             return Skill.of(skillType,
                             creatureId,
-                            singleScheduledAbility(AbilityType.LIGHTNING_SPARK),
+                            singleScheduledAbility(AbilityType.LIGHTNING_SPARK, skillType),
                             SimpleTimer.getExpiredTimer(),
                             1f,
                             15f,
@@ -61,11 +61,11 @@ public class Skill {
             return Skill.of(skillType,
                             creatureId,
                             Stream.of(new ScheduledAbility[]{
-                                          ScheduledAbility.of(AbilityType.CROSSBOW_BOLT, 0f),
-                                          ScheduledAbility.of(AbilityType.CROSSBOW_BOLT, 0.4f),
-                                          ScheduledAbility.of(AbilityType.CROSSBOW_BOLT, 1f),
-                                          ScheduledAbility.of(AbilityType.CROSSBOW_BOLT, 1.2f),
-                                          ScheduledAbility.of(AbilityType.CROSSBOW_BOLT, 1.4f)})
+                                          ScheduledAbility.of(AbilityType.CROSSBOW_BOLT, skillType, 0f),
+                                          ScheduledAbility.of(AbilityType.CROSSBOW_BOLT, skillType, 0.4f),
+                                          ScheduledAbility.of(AbilityType.CROSSBOW_BOLT, skillType, 1f),
+                                          ScheduledAbility.of(AbilityType.CROSSBOW_BOLT, skillType, 1.2f),
+                                          ScheduledAbility.of(AbilityType.CROSSBOW_BOLT, skillType, 1.4f)})
                                   .collect(Collectors.toCollection(ArrayList::new)),
                             SimpleTimer.getExpiredTimer(),
                             2f,
@@ -75,7 +75,7 @@ public class Skill {
         if (skillType == SkillType.MAGIC_ORB) {
             return Skill.of(skillType,
                             creatureId,
-                            singleScheduledAbility(AbilityType.MAGIC_ORB),
+                            singleScheduledAbility(AbilityType.MAGIC_ORB, skillType),
                             SimpleTimer.getExpiredTimer(),
                             0.8f,
                             15f,
@@ -84,7 +84,7 @@ public class Skill {
         if (skillType == SkillType.SLOW_MAGIC_ORB) {
             return Skill.of(skillType,
                             creatureId,
-                            singleScheduledAbility(AbilityType.MAGIC_ORB),
+                            singleScheduledAbility(AbilityType.MAGIC_ORB, skillType),
                             SimpleTimer.getExpiredTimer(),
                             1.3f,
                             15f,
@@ -93,7 +93,7 @@ public class Skill {
         if (skillType == SkillType.VOLATILE_BUBBLE) {
             return Skill.of(skillType,
                             creatureId,
-                            singleScheduledAbility(AbilityType.VOLATILE_BUBBLE),
+                            singleScheduledAbility(AbilityType.VOLATILE_BUBBLE, skillType),
                             SimpleTimer.getExpiredTimer(),
                             1.3f,
                             15f,
@@ -102,7 +102,7 @@ public class Skill {
         if (skillType == SkillType.SUMMON_GHOSTS) {
             return Skill.of(skillType,
                             creatureId,
-                            singleScheduledAbility(AbilityType.SUMMON_GHOSTS),
+                            singleScheduledAbility(AbilityType.SUMMON_GHOSTS, skillType),
                             SimpleTimer.getExpiredTimer(),
                             1.3f,
                             15f,
@@ -112,7 +112,7 @@ public class Skill {
         if (skillType == SkillType.RICOCHET_BALLISTA) {
             return Skill.of(skillType,
                             creatureId,
-                            singleScheduledAbility(AbilityType.RICOCHET_BALLISTA),
+                            singleScheduledAbility(AbilityType.RICOCHET_BALLISTA, skillType),
                             SimpleTimer.getExpiredTimer(),
                             1.3f,
                             15f,
@@ -122,17 +122,17 @@ public class Skill {
         if (skillType == SkillType.BOOMERANG) {
             return Skill.of(skillType,
                             creatureId,
-                            singleScheduledAbility(AbilityType.BOOMERANG),
+                            singleScheduledAbility(AbilityType.BOOMERANG, skillType),
                             SimpleTimer.getExpiredTimer(),
-                            1.3f,
-                            35f,
+                            10f,
+                            25f,
                             0f);
         }
         throw new RuntimeException("skill not handled");
     }
 
-    public static List<ScheduledAbility> singleScheduledAbility(AbilityType abilityType) {
-        return Stream.of(new ScheduledAbility[]{ScheduledAbility.of(abilityType,
+    public static List<ScheduledAbility> singleScheduledAbility(AbilityType abilityType, SkillType skillType) {
+        return Stream.of(new ScheduledAbility[]{ScheduledAbility.of(abilityType, skillType,
                                                                     0f)})
                      .collect(Collectors.toCollection(ArrayList::new));
     }
@@ -154,5 +154,9 @@ public class Skill {
             creature.onPerformSkill(this);
             performTimer.restart();
         }
+    }
+
+    public void resetCooldown() {
+        performTimer().time(cooldown);
     }
 }

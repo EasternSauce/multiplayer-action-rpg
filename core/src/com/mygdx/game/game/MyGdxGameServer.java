@@ -447,7 +447,8 @@ public class MyGdxGameServer extends MyGdxGame {
                                                    .creaturesAlreadyHit(creaturesAlreadyHit)
                                                    .chainFromPos(chainFromPos)
                                                    .chainToPos(chainToPos)
-                                                   .dirVector(dirVector);
+                                                   .dirVector(dirVector)
+                                                   .skillType(chainFromAbility.params().skillType());
 
         spawnAbility(abilityType, abilityParams, game);
     }
