@@ -27,7 +27,9 @@ public enum AbilityType {
 
     RICOCHET_BULLET,
 
-    BOOMERANG
+    BOOMERANG,
+
+    SUMMON_SHIELD
 
 
 }

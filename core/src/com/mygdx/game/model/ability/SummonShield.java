@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Slash extends Ability {
+public class SummonShield extends Ability {
 
     AbilityParams params;
 
@@ -99,23 +99,32 @@ public class Slash extends Ability {
 
     @Override
     public void onAbilityHit(AbilityId otherAbilityId, MyGdxGame game) {
-
+        Ability otherAbility = game.getAbility(otherAbilityId);
+        if (otherAbility != null) {
+            otherAbility.deactivate();
+        }
     }
 
-    public static Slash of(AbilityParams abilityParams, @SuppressWarnings("unused") MyGdxGame game) {
-        Slash ability = Slash.of();
+
+    public static SummonShield of(AbilityParams abilityParams, @SuppressWarnings("unused") MyGdxGame game) {
+        SummonShield ability = SummonShield.of();
         ability.params =
                 abilityParams
                         .width(2f)
                         .height(2f)
-                        .channelTime(0.15f)
-                        .activeTime(0.3f)
-                        .range(1.8f)
-                        .textureName("slash")
-                        .baseDamage(22f)
+                        .channelTime(0f)
+                        .activeTime(1f)
+                        .range(1.2f)
+                        .textureName("shield")
+                        .baseDamage(0f)
                         .isChannelAnimationLooping(false)
                         .isActiveAnimationLooping(false)
-                        .rotationShift(0f);
+                        .rotationShift(0f)
+                        .flip(SummonShield.calculateFlip(abilityParams.dirVector().angleDeg()));
         return ability;
+    }
+
+    private static Boolean calculateFlip(Float rotationAngle) {
+        return rotationAngle >= 90 && rotationAngle < 270;
     }
 }

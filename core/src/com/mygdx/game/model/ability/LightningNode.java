@@ -95,6 +95,11 @@ public class LightningNode extends Ability {
 
     }
 
+    @Override
+    public void onAbilityHit(AbilityId otherAbilityId, MyGdxGame game) {
+
+    }
+
     public static LightningNode of(AbilityParams abilityParams, @SuppressWarnings("unused") MyGdxGame game) {
         LightningNode ability = LightningNode.of();
         ability.params = abilityParams

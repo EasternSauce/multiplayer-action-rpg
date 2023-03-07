@@ -154,6 +154,11 @@ public class MagicOrb extends Projectile {
 
     }
 
+    @Override
+    public void onAbilityHit(AbilityId otherAbilityId, MyGdxGame game) {
+
+    }
+
     public static MagicOrb of(AbilityParams abilityParams, @SuppressWarnings("unused") MyGdxGame game) {
         MagicOrb ability = MagicOrb.of();
         ability.params =

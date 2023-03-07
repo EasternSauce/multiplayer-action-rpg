@@ -175,6 +175,11 @@ public class PlayfulGhost extends Projectile {
         deactivate();
     }
 
+    @Override
+    public void onAbilityHit(AbilityId otherAbilityId, MyGdxGame game) {
+
+    }
+
     @SuppressWarnings("unused")
     public Float nextPositiveFloat() {
         params().rngSeed(RandomHelper.seededRandomFloat(params().rngSeed()));

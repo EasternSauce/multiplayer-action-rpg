@@ -65,6 +65,11 @@ public class FireballExplosion extends Ability {
 
     }
 
+    @Override
+    public void onAbilityHit(AbilityId otherAbilityId, MyGdxGame game) {
+
+    }
+
     public static FireballExplosion of(AbilityParams abilityParams, @SuppressWarnings("unused") MyGdxGame game) {
         FireballExplosion ability = FireballExplosion.of();
         ability.params =

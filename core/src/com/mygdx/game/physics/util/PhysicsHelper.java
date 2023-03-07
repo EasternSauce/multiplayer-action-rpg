@@ -5,6 +5,7 @@ import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityState;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.Player;
+import com.mygdx.game.physics.event.AbilityHitsAbilityEvent;
 import com.mygdx.game.physics.event.AbilityHitsCreatureEvent;
 import com.mygdx.game.physics.event.AbilityHitsTerrainEvent;
 
@@ -44,6 +45,19 @@ public class PhysicsHelper {
                     ability.onTerrainHit(event.tileCenter(), game);
                 }
 
+            }
+            if (physicsEvent instanceof AbilityHitsAbilityEvent) {
+                AbilityHitsAbilityEvent event = (AbilityHitsAbilityEvent) physicsEvent;
+
+                Ability abilityA = game.gameState().abilities().get(event.abilityA_Id());
+                Ability abilityB = game.gameState().abilities().get(event.abilityB_Id());
+
+                if (abilityA != null && abilityA.params().state() == AbilityState.ACTIVE) {
+                    abilityA.onAbilityHit(event.abilityB_Id(), game);
+                }
+                if (abilityB != null && abilityB.params().state() == AbilityState.ACTIVE) {
+                    abilityB.onAbilityHit(event.abilityA_Id(), game);
+                }
             }
         });
         game.physics().physicsEventQueue().clear();

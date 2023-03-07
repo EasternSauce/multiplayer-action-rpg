@@ -19,7 +19,9 @@ public enum SkillType {
 
     RICOCHET_BALLISTA,
 
-    BOOMERANG
+    BOOMERANG,
+
+    SUMMON_SHIELD
 
 
 }

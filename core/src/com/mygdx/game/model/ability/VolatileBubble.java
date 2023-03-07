@@ -77,6 +77,11 @@ public class VolatileBubble extends Projectile {
         deactivate();
     }
 
+    @Override
+    public void onAbilityHit(AbilityId otherAbilityId, MyGdxGame game) {
+
+    }
+
     public static VolatileBubble of(AbilityParams abilityParams, @SuppressWarnings("unused") MyGdxGame game) {
         VolatileBubble ability = VolatileBubble.of();
         ability.params =

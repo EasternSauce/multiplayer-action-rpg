@@ -253,6 +253,20 @@ public class MyGdxGameClient extends MyGdxGame {
 
 
             }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.O)) {
+
+                Creature player = gameState().creatures().get(thisPlayerId);
+
+
+                Vector2 dirVector = mousePos();
+
+                endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
+                                                             SkillType.SUMMON_SHIELD,
+                                                             player.params().pos(),
+                                                             dirVector));
+
+
+            }
             if (Gdx.input.isKeyJustPressed(Input.Keys.F11)) {
 
                 List<EnemySpawn>

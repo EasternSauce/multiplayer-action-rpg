@@ -39,6 +39,8 @@ public class AbilityFactory {
                 return RicochetBullet::of;
             case BOOMERANG:
                 return Boomerang::of;
+            case SUMMON_SHIELD:
+                return SummonShield::of;
             default:
                 throw new RuntimeException("ability type not found: " + abilityType);
         }

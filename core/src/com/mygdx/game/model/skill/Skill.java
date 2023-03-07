@@ -128,6 +128,16 @@ public class Skill {
                             25f,
                             0f);
         }
+
+        if (skillType == SkillType.SUMMON_SHIELD) {
+            return Skill.of(skillType,
+                            creatureId,
+                            singleScheduledAbility(AbilityType.SUMMON_SHIELD, skillType),
+                            SimpleTimer.getExpiredTimer(),
+                            2f,
+                            25f,
+                            0f);
+        }
         throw new RuntimeException("skill not handled");
     }
 

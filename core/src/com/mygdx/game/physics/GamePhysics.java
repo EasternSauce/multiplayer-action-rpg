@@ -9,6 +9,7 @@ import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.physics.body.AbilityBody;
 import com.mygdx.game.physics.body.CreatureBody;
 import com.mygdx.game.physics.body.TerrainTileBody;
+import com.mygdx.game.physics.event.AbilityHitsAbilityEvent;
 import com.mygdx.game.physics.event.AbilityHitsCreatureEvent;
 import com.mygdx.game.physics.event.AbilityHitsTerrainEvent;
 import com.mygdx.game.physics.event.PhysicsEvent;
@@ -69,6 +70,14 @@ public class GamePhysics {
                                    terrainTileBody.b2Body().getWorldCenter().y);
                 physicsEventQueue.add(AbilityHitsTerrainEvent.of(abilityBody.abilityId(), tileCenter));
             }
+
+        }
+        if (objA instanceof AbilityBody && objB instanceof AbilityBody) {
+            AbilityBody abilityBodyA = (AbilityBody) objA;
+            AbilityBody abilityBodyB = (AbilityBody) objB;
+
+            physicsEventQueue.add(AbilityHitsAbilityEvent.of(abilityBodyA.abilityId(), abilityBodyB.abilityId()));
+
 
         }
     }

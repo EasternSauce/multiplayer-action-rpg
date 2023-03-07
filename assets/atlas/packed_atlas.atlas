@@ -27,7 +27,7 @@ background2
   index: -1
 bag
   rotate: false
-  xy: 2190, 336
+  xy: 4040, 978
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -55,14 +55,14 @@ bubble
   index: -1
 cursor
   rotate: false
-  xy: 966, 204
+  xy: 518, 76
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 downarrow
   rotate: false
-  xy: 4040, 978
+  xy: 3986, 782
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -235,6 +235,13 @@ serpent
   orig: 144, 224
   offset: 0, 0
   index: -1
+shield
+  rotate: false
+  xy: 2190, 334
+  size: 32, 34
+  orig: 32, 34
+  offset: 0, 0
+  index: -1
 skeleton
   rotate: false
   xy: 2, 110
@@ -314,7 +321,7 @@ taurus
   index: -1
 treasure
   rotate: false
-  xy: 3986, 782
+  xy: 966, 204
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

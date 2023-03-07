@@ -76,6 +76,11 @@ public class Fireball extends Projectile {
 
     }
 
+    @Override
+    public void onAbilityHit(AbilityId otherAbilityId, MyGdxGame game) {
+
+    }
+
     public static Fireball of(AbilityParams abilityParams, @SuppressWarnings("unused") MyGdxGame game) {
         Creature creature = game.getCreature(abilityParams.creatureId());
 

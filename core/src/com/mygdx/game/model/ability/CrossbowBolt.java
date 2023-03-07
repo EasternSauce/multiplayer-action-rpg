@@ -56,6 +56,11 @@ public class CrossbowBolt extends Projectile {
         deactivate();
     }
 
+    @Override
+    public void onAbilityHit(AbilityId otherAbilityId, MyGdxGame game) {
+
+    }
+
     public static CrossbowBolt of(AbilityParams abilityParams, @SuppressWarnings("unused") MyGdxGame game) {
         CrossbowBolt ability = CrossbowBolt.of();
         ability.params =

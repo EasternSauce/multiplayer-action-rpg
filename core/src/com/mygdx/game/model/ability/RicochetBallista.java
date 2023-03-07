@@ -84,4 +84,9 @@ public class RicochetBallista extends Ability {
     public void onTerrainHit(Vector2 tileCenter, MyGdxGame game) {
 
     }
+
+    @Override
+    public void onAbilityHit(AbilityId otherAbilityId, MyGdxGame game) {
+
+    }
 }

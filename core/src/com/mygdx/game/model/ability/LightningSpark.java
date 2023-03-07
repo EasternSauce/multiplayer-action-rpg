@@ -99,6 +99,11 @@ public class LightningSpark extends Ability {
 
     }
 
+    @Override
+    public void onAbilityHit(AbilityId otherAbilityId, MyGdxGame game) {
+
+    }
+
     public static LightningSpark of(AbilityParams abilityParams, MyGdxGame game) {
         Creature creature = game.getCreature(abilityParams.creatureId());
 

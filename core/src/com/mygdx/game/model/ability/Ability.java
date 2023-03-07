@@ -119,6 +119,8 @@ public abstract class Ability {
 
     public abstract void onTerrainHit(Vector2 tileCenter, MyGdxGame game);
 
+    public abstract void onAbilityHit(AbilityId otherAbilityId, MyGdxGame game);
+
     public boolean bodyShouldExist() {
         return !(params().inactiveBody() || params().state() != AbilityState.ACTIVE);
     }

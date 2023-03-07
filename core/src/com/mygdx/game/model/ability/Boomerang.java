@@ -127,6 +127,11 @@ public class Boomerang extends Projectile {
         params().speed(20f);
     }
 
+    @Override
+    public void onAbilityHit(AbilityId otherAbilityId, MyGdxGame game) {
+
+    }
+
     public static Boomerang of(AbilityParams abilityParams, @SuppressWarnings("unused") MyGdxGame game) {
         Boomerang ability = Boomerang.of();
         ability.params =

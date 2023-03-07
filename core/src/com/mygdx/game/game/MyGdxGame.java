@@ -30,7 +30,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 
-public abstract class MyGdxGame extends Game implements AbilityUpdateable, CreatureUpdatable {
+public abstract class MyGdxGame extends Game implements AbilityUpdateable, CreatureUpdatable, AbilityRetrievable {
     final protected GameRenderer gameRenderer = GameRenderer.of();
     final protected GamePhysics gamePhysics = GamePhysics.of();
     protected GameState gameState = GameState.of();
@@ -330,6 +330,14 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Creat
     }
 
     @Override
+    public Ability getAbility(AbilityId abilityId) {
+        if (abilityId == null || !gameState().abilities().containsKey(abilityId)) {
+            return null;
+        }
+        return gameState().abilities().get(abilityId);
+    }
+
+    @Override
     public Collection<Creature> getCreatures() {
         return gameState().creatures().values();
     }
@@ -392,6 +400,7 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Creat
         endPoint().getKryo().register(RicochetBullet.class);
         endPoint().getKryo().register(RicochetBallista.class);
         endPoint().getKryo().register(Boomerang.class);
+        endPoint().getKryo().register(SummonShield.class);
 
 
         endPoint().getKryo().register(Enemy.class);

@@ -138,5 +138,10 @@ public class RicochetBullet extends Projectile {
 
     }
 
+    @Override
+    public void onAbilityHit(AbilityId otherAbilityId, MyGdxGame game) {
+
+    }
+
 
 }

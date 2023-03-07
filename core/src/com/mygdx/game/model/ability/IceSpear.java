@@ -57,6 +57,11 @@ public class IceSpear extends Projectile {
         }
     }
 
+    @Override
+    public void onAbilityHit(AbilityId otherAbilityId, MyGdxGame game) {
+
+    }
+
     public static IceSpear of(AbilityParams abilityParams, @SuppressWarnings("unused") MyGdxGame game) {
         IceSpear ability = IceSpear.of();
         ability.params =

@@ -48,5 +48,7 @@ public class AbilityAnimationConfig {
 
         configs.put("boomerang", AbilityAnimationConfig.of(32, 32, "boomerang", "boomerang", 0, 8, 0f, 0.05f, 1.7f));
 
+        configs.put("shield", AbilityAnimationConfig.of(32, 34, "shield", "shield", 0, 1, 0f, 0.1f, 1.7f));
+
     }
 }

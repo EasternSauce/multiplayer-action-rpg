@@ -70,6 +70,10 @@ public class LightningChain extends Ability {
 
     }
 
+    @Override
+    public void onAbilityHit(AbilityId otherAbilityId, MyGdxGame game) {
+
+    }
 
     public static LightningChain of(AbilityParams abilityParams, @SuppressWarnings("unused") MyGdxGame game) {
         LightningChain ability = LightningChain.of();
