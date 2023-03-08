@@ -32,23 +32,26 @@ public class LightningSpark extends Ability {
     }
 
     @Override
-    void onAbilityStarted(AbilityUpdateable game) {
+    void onAbilityStarted(MyGdxGame game) {
 
     }
 
     @Override
     void onDelayedAction(MyGdxGame game) {
         // find closest enemy, and if they are within distance, and havent been hit yet, then start node over them
-        Set<CreatureId> excluded = new HashSet<>(params().creaturesAlreadyHit());
+        Set<CreatureId> excluded = new HashSet<>(params().creaturesAlreadyHit().keySet());
         excluded.add(params().creatureId());
 
         Creature targetCreature = game.getCreature(game.aliveCreatureClosestTo(params().pos(), 13f, excluded));
 
         if (targetCreature != null &&
             game.getWorld(params().areaId()).isLineOfSight(params().pos(), targetCreature.params().pos())) {
-            targetCreature.handleBeingAttacked(true, params().currentDamage(), params().creatureId());
+            targetCreature.handleBeingAttacked(true,
+                                               params().dirVector(),
+                                               params().currentDamage(),
+                                               params().creatureId(), game);
 
-            params().creaturesAlreadyHit().add(targetCreature.params().id());
+            params().creaturesAlreadyHit().put(targetCreature.params().id(), params().stateTimer().time());
 
             game.chainAbility(this,
                               AbilityType.LIGHTNING_CHAIN,

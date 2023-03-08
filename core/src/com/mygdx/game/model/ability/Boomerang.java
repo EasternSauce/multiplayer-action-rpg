@@ -24,7 +24,7 @@ public class Boomerang extends Projectile {
     }
 
     @Override
-    void onAbilityStarted(AbilityUpdateable game) {
+    void onAbilityStarted(MyGdxGame game) {
 
     }
 

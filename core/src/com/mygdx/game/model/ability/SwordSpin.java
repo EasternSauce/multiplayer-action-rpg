@@ -3,15 +3,19 @@ package com.mygdx.game.model.ability;
 import com.mygdx.game.game.AbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
 import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @NoArgsConstructor(staticName = "of")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class SummonShield extends Ability {
+public class SwordSpin extends Ability {
 
     AbilityParams params;
 
@@ -79,7 +83,17 @@ public class SummonShield extends Ability {
         if (isPositionUpdated()) {
             onUpdatePosition(game);
         }
+        params().dirVector(params().dirVector().rotateDeg(-7));
 
+        Set<CreatureId> creaturesHitRemove = new HashSet<>();
+
+        params().creaturesAlreadyHit().forEach((creatureId, time) -> {
+            if (time < params().stateTimer().time() - 0.4f) {
+                creaturesHitRemove.add(creatureId);
+            }
+        });
+
+        creaturesHitRemove.forEach(creatureId -> params().creaturesAlreadyHit().remove(creatureId));
     }
 
     @Override
@@ -99,34 +113,24 @@ public class SummonShield extends Ability {
 
     @Override
     public void onAbilityHit(AbilityId otherAbilityId, MyGdxGame game) {
-        Ability otherAbility = game.getAbility(otherAbilityId);
-        if (otherAbility != null) {
-            if (otherAbility.isRanged()) {
-                otherAbility.deactivate();
-            }
-        }
+
     }
 
-
-    public static SummonShield of(AbilityParams abilityParams, @SuppressWarnings("unused") MyGdxGame game) {
-        SummonShield ability = SummonShield.of();
+    public static SwordSpin of(AbilityParams abilityParams, @SuppressWarnings("unused") MyGdxGame game) {
+        SwordSpin ability = SwordSpin.of();
         ability.params =
                 abilityParams
-                        .width(2f)
-                        .height(2f)
+                        .width(2.2f)
+                        .height(2.2f)
                         .channelTime(0f)
-                        .activeTime(1f)
-                        .range(1.2f)
-                        .textureName("shield")
-                        .baseDamage(0f)
+                        .activeTime(5f)
+                        .range(2.2f)
+                        .textureName("sword")
+                        .baseDamage(13f)
                         .isChannelAnimationLooping(false)
                         .isActiveAnimationLooping(false)
                         .rotationShift(0f)
-                        .flip(SummonShield.calculateFlip(abilityParams.dirVector().angleDeg()));
+                        .dirVector(abilityParams.dirVector().rotateDeg(90));
         return ability;
-    }
-
-    private static Boolean calculateFlip(Float rotationAngle) {
-        return rotationAngle >= 90 && rotationAngle < 270;
     }
 }

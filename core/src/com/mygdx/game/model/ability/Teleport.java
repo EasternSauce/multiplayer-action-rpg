@@ -3,6 +3,7 @@ package com.mygdx.game.model.ability;
 import com.mygdx.game.game.AbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
 import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,19 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class RicochetBallista extends Ability {
+public class Teleport extends Ability {
     AbilityParams params;
 
-    public static RicochetBallista of(AbilityParams abilityParams, @SuppressWarnings("unused") MyGdxGame game) {
-        RicochetBallista ability = RicochetBallista.of();
-        ability.params =
-                abilityParams
-                        .channelTime(0f)
-                        .activeTime(0f);
-
-
-        return ability;
-    }
 
     @Override
     public Boolean isRanged() {
@@ -37,22 +28,12 @@ public class RicochetBallista extends Ability {
 
     @Override
     void onDelayedAction(MyGdxGame game) {
-
+        game.chainAbility(this, AbilityType.TELEPORT_DESTINATION, params().pos(), params().dirVector(), game);
     }
 
     @Override
     void onAbilityCompleted(MyGdxGame game) {
 
-        Vector2 leftSidePos = params().pos().add(params.dirVector().normalized().multiplyBy(1f).rotateDeg(90));
-        Vector2 rightSidePos = params().pos().add(params.dirVector().normalized().multiplyBy(1f).rotateDeg(-90));
-
-        game.chainAbility(this,
-                          AbilityType.RICOCHET_BULLET,
-                          params().pos(),
-                          params.dirVector(),
-                          game);
-        game.chainAbility(this, AbilityType.RICOCHET_BULLET, leftSidePos, params.dirVector(), game);
-        game.chainAbility(this, AbilityType.RICOCHET_BULLET, rightSidePos, params.dirVector(), game);
     }
 
     @Override
@@ -88,5 +69,27 @@ public class RicochetBallista extends Ability {
     @Override
     public void onAbilityHit(AbilityId otherAbilityId, MyGdxGame game) {
 
+    }
+
+    public static Teleport of(AbilityParams abilityParams, @SuppressWarnings("unused") MyGdxGame game) {
+        Creature creature = game.getCreature(abilityParams.creatureId());
+
+        Teleport ability = Teleport.of();
+        ability.params =
+                abilityParams
+                        .width(4.5f)
+                        .height(4.5f)
+                        .channelTime(0f)
+                        .activeTime(0.5f)
+                        .textureName("blast")
+                        .baseDamage(0f)
+                        .isChannelAnimationLooping(false)
+                        .isActiveAnimationLooping(false)
+                        .rotationShift(0f)
+                        .pos(creature.params().pos())
+                        .delayedActionTime(0.1f);
+
+
+        return ability;
     }
 }

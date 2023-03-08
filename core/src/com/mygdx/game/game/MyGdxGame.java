@@ -37,7 +37,7 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Creat
     final MyGdxGamePlayScreen playScreen = MyGdxGamePlayScreen.of();
 
     @SuppressWarnings("FieldCanBeLocal")
-    private final boolean debug = true;
+    private final boolean debug = false;
     public final Chat chat = Chat.of();
     protected CreatureId thisPlayerId = null;
 
@@ -338,6 +338,20 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Creat
     }
 
     @Override
+    public Ability getAbility(CreatureId creatureId, SkillType skillType) {
+
+
+        Optional<Ability> first = gameState.abilities()
+                                           .values()
+                                           .stream()
+                                           .filter(ability -> ability.params().creatureId().equals(creatureId) &&
+                                                              ability.params().skillType() == skillType)
+                                           .findFirst();
+
+        return first.orElse(null);
+    }
+
+    @Override
     public Collection<Creature> getCreatures() {
         return gameState().creatures().values();
     }
@@ -386,7 +400,7 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Creat
         endPoint().getKryo().register(Ability.class);
         endPoint().getKryo().register(AbilityRect.class);
         endPoint().getKryo().register(SummonGhosts.class);
-        endPoint().getKryo().register(Slash.class);
+        endPoint().getKryo().register(SwordSlash.class);
         endPoint().getKryo().register(CrossbowBolt.class);
         endPoint().getKryo().register(Fireball.class);
         endPoint().getKryo().register(FireballExplosion.class);
@@ -401,6 +415,9 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Creat
         endPoint().getKryo().register(RicochetBallista.class);
         endPoint().getKryo().register(Boomerang.class);
         endPoint().getKryo().register(SummonShield.class);
+        endPoint().getKryo().register(SwordSpin.class);
+        endPoint().getKryo().register(Teleport.class);
+        endPoint().getKryo().register(TeleportDestination.class);
 
 
         endPoint().getKryo().register(Enemy.class);

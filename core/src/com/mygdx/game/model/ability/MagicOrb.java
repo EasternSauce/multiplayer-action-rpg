@@ -27,7 +27,7 @@ public class MagicOrb extends Projectile {
     }
 
     @Override
-    void onAbilityStarted(AbilityUpdateable game) {
+    void onAbilityStarted(MyGdxGame game) {
 
     }
 

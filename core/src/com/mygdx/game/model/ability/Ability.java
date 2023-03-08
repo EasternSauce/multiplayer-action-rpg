@@ -64,7 +64,7 @@ public abstract class Ability {
         updateTimers(delta);
     }
 
-    abstract void onAbilityStarted(AbilityUpdateable game);
+    abstract void onAbilityStarted(MyGdxGame game);
 
     abstract void onDelayedAction(MyGdxGame game);
 

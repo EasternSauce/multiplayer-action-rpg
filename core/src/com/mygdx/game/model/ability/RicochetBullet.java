@@ -1,6 +1,5 @@
 package com.mygdx.game.model.ability;
 
-import com.mygdx.game.game.AbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
 import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.model.util.Vector2;
@@ -40,7 +39,7 @@ public class RicochetBullet extends Projectile {
     }
 
     @Override
-    void onAbilityStarted(AbilityUpdateable game) {
+    void onAbilityStarted(MyGdxGame game) {
 
     }
 

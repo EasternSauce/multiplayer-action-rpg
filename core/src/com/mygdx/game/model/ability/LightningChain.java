@@ -26,7 +26,7 @@ public class LightningChain extends Ability {
     }
 
     @Override
-    void onAbilityStarted(AbilityUpdateable game) {
+    void onAbilityStarted(MyGdxGame game) {
 
     }
 

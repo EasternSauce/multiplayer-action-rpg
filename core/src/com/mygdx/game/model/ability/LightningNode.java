@@ -25,14 +25,14 @@ public class LightningNode extends Ability {
     }
 
     @Override
-    void onAbilityStarted(AbilityUpdateable game) {
+    void onAbilityStarted(MyGdxGame game) {
 
     }
 
     @Override
     void onDelayedAction(MyGdxGame game) {
         // find the closest enemy, and if they are within distance, and haven't been hit yet, then start node over them
-        Set<CreatureId> excluded = new HashSet<>(params().creaturesAlreadyHit());
+        Set<CreatureId> excluded = new HashSet<>(params().creaturesAlreadyHit().keySet());
         excluded.add(params().creatureId());
 
         Creature targetCreature = game.getCreature(game.aliveCreatureClosestTo(params().pos(), 13f, excluded));
@@ -41,10 +41,12 @@ public class LightningNode extends Ability {
             params().creaturesAlreadyHit().size() <= 10 &&
             game.getWorld(params().areaId()).isLineOfSight(params().pos(), targetCreature.params().pos())) {
             targetCreature.handleBeingAttacked(true,
+                                               params().dirVector(),
                                                params().currentDamage(),
-                                               params().creatureId()); // TODO: can we do this in main update loop instead? introduce events etc.
+                                               params().creatureId(),
+                                               game); // TODO: can we do this in main update loop instead? introduce events etc.
 
-            params().creaturesAlreadyHit().add(targetCreature.params().id());
+            params().creaturesAlreadyHit().put(targetCreature.params().id(), params().stateTimer().time());
 
             game.chainAbility(this,
                               AbilityType.LIGHTNING_CHAIN,

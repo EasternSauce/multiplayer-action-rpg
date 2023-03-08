@@ -10,7 +10,7 @@ public class AbilityFactory {
     public static BiFunction<AbilityParams, MyGdxGame, Ability> getAbilityByType(AbilityType abilityType) {
         switch (abilityType) {
             case SLASH:
-                return Slash::of;
+                return SwordSlash::of;
             case FIREBALL:
                 return Fireball::of;
             case FIREBALL_EXPLOSION:
@@ -41,6 +41,12 @@ public class AbilityFactory {
                 return Boomerang::of;
             case SUMMON_SHIELD:
                 return SummonShield::of;
+            case SWORD_SPIN:
+                return SwordSpin::of;
+            case TELEPORT:
+                return Teleport::of;
+            case TELEPORT_DESTINATION:
+                return TeleportDestination::of;
             default:
                 throw new RuntimeException("ability type not found: " + abilityType);
         }

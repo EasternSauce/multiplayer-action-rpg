@@ -21,7 +21,7 @@ public class FireballExplosion extends Ability {
     }
 
     @Override
-    void onAbilityStarted(AbilityUpdateable game) {
+    void onAbilityStarted(MyGdxGame game) {
 
     }
 

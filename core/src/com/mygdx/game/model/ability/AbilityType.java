@@ -29,7 +29,13 @@ public enum AbilityType {
 
     BOOMERANG,
 
-    SUMMON_SHIELD
+    SUMMON_SHIELD,
+
+    SWORD_SPIN,
+
+    TELEPORT,
+
+    TELEPORT_DESTINATION
 
 
 }

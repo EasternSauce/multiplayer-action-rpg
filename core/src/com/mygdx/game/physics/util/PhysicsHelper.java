@@ -31,7 +31,12 @@ public class PhysicsHelper {
                         ability.onThisCreatureHit(game);
                     }
                     else {
-                        handleCreatureAttacked(event, attackedCreature, attackedIsPlayer, attackingIsPlayer, ability);
+                        handleCreatureAttacked(event,
+                                               attackedCreature,
+                                               attackedIsPlayer,
+                                               attackingIsPlayer,
+                                               ability,
+                                               game);
                     }
 
                 }
@@ -68,16 +73,19 @@ public class PhysicsHelper {
                                                Creature attackedCreature,
                                                boolean attackedIsPlayer,
                                                boolean attackingIsPlayer,
-                                               Ability ability) {
+                                               Ability ability, MyGdxGame game) {
         if (ability != null && attackedCreature.isAlive()) {
             if ((attackedIsPlayer || attackingIsPlayer) && !ability.params()
                                                                    .creaturesAlreadyHit()
-                                                                   .contains(event.attackedCreatureId())) {
+                                                                   .containsKey(event.attackedCreatureId())) {
                 attackedCreature.handleBeingAttacked(ability.isRanged(),
+                                                     ability.params().dirVector(),
                                                      ability.params().currentDamage(),
-                                                     event.attackingCreatureId());
+                                                     event.attackingCreatureId(), game);
 
-                ability.params().creaturesAlreadyHit().add(event.attackedCreatureId());
+                ability.params()
+                       .creaturesAlreadyHit()
+                       .put(event.attackedCreatureId(), ability.params().stateTimer().time());
                 ability.onCreatureHit();
             }
 

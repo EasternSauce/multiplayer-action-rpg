@@ -4,7 +4,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 public enum SkillType {
-    SLASH,
+    SWORD_SLASH,
     FIREBALL,
     LIGHTNING,
     CROSSBOW_BOLT,
@@ -21,7 +21,11 @@ public enum SkillType {
 
     BOOMERANG,
 
-    SUMMON_SHIELD
+    SUMMON_SHIELD,
+
+    SWORD_SPIN,
+
+    TELEPORT
 
 
 }

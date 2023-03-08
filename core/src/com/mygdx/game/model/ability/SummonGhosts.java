@@ -30,7 +30,7 @@ public class SummonGhosts extends Ability {
     }
 
     @Override
-    void onAbilityStarted(AbilityUpdateable game) {
+    void onAbilityStarted(MyGdxGame game) {
 
     }
 

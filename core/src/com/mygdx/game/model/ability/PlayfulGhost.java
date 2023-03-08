@@ -48,7 +48,7 @@ public class PlayfulGhost extends Projectile {
     }
 
     @Override
-    void onAbilityStarted(AbilityUpdateable game) {
+    void onAbilityStarted(MyGdxGame game) {
 
     }
 
@@ -102,7 +102,7 @@ public class PlayfulGhost extends Projectile {
                                                                targetCreature.params().pos().distance(params().pos()) <
                                                                10f &&
                                                                !params().creaturesAlreadyHit()
-                                                                        .contains(targetCreature.params().id()))
+                                                                        .containsKey(targetCreature.params().id()))
                                      .collect(Collectors.toSet())) {
             if (creature.params().pos().distance(params().pos()) < minDistance) {
                 minCreature = creature;

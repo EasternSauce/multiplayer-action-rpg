@@ -5,7 +5,9 @@ import com.mygdx.game.game.CreatureUpdatable;
 import com.mygdx.game.game.EnemyAiUpdatable;
 import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.model.ability.Ability;
+import com.mygdx.game.model.ability.AbilityState;
 import com.mygdx.game.model.skill.Skill;
+import com.mygdx.game.model.skill.SkillType;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.model.util.WorldDirection;
 import com.mygdx.game.renderer.config.CreatureAnimationConfig;
@@ -154,7 +156,25 @@ public abstract class Creature {
         }
     }
 
-    public void handleBeingAttacked(Boolean isRanged, float damage, CreatureId attackerId) {
+    public void handleBeingAttacked(Boolean isRanged,
+                                    Vector2 dirVector,
+                                    float damage,
+                                    CreatureId attackerId,
+                                    MyGdxGame game) {
+        if (!isRanged) { // check if target is pointing shield at the attack
+            Ability shieldAbility = game.getAbility(params().id(), SkillType.SUMMON_SHIELD);
+            if (shieldAbility != null && shieldAbility.params().state() == AbilityState.ACTIVE) {
+                float
+                        angleDiff =
+                        (dirVector.angleDeg() - shieldAbility.params().dirVector().multiplyBy(-1).angleDeg() +
+                         180 +
+                         360) % 360 - 180;
+                if (angleDiff <= 60 && angleDiff >= -60) {
+                    return;
+                }
+            }
+        }
+
         takeLifeDamage(damage);
     }
 

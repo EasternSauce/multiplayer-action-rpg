@@ -50,5 +50,9 @@ public class AbilityAnimationConfig {
 
         configs.put("shield", AbilityAnimationConfig.of(32, 34, "shield", "shield", 0, 1, 0f, 0.1f, 1.7f));
 
+        configs.put("sword", AbilityAnimationConfig.of(40, 40, "sword", "sword", 0, 1, 0f, 0.1f, 1.7f));
+
+        configs.put("blast", AbilityAnimationConfig.of(64, 64, "blast", "blast", 0, 10, 0f, 0.05f, 1.7f));
+
     }
 }

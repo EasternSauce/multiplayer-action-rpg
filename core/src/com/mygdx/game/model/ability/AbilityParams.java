@@ -8,8 +8,8 @@ import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
-import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.Map;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 @NoArgsConstructor(staticName = "of")
 @Data
@@ -33,7 +33,7 @@ public class AbilityParams {
 
     Float range;
 
-    Set<CreatureId> creaturesAlreadyHit = new ConcurrentSkipListSet<>();
+    Map<CreatureId, Float> creaturesAlreadyHit = new ConcurrentSkipListMap<>();
 
     Vector2 velocity;
     Float speed;
@@ -76,5 +76,6 @@ public class AbilityParams {
     Boolean comingBack = false;
 
     SkillType skillType;
+
 
 }

@@ -30,7 +30,7 @@ public class Skill {
 
 
     public static Skill of(SkillType skillType, CreatureId creatureId) {
-        if (skillType == SkillType.SLASH) {
+        if (skillType == SkillType.SWORD_SLASH) {
             return Skill.of(skillType,
                             creatureId,
                             singleScheduledAbility(AbilityType.SLASH, skillType),
@@ -137,6 +137,24 @@ public class Skill {
                             2f,
                             25f,
                             0f);
+        }
+        if (skillType == SkillType.SWORD_SPIN) {
+            return Skill.of(skillType,
+                            creatureId,
+                            singleScheduledAbility(AbilityType.SWORD_SPIN, skillType),
+                            SimpleTimer.getExpiredTimer(),
+                            7f,
+                            60f,
+                            0f);
+        }
+        if (skillType == SkillType.TELEPORT) {
+            return Skill.of(skillType,
+                            creatureId,
+                            singleScheduledAbility(AbilityType.TELEPORT, skillType),
+                            SimpleTimer.getExpiredTimer(),
+                            2f,
+                            10f,
+                            35f);
         }
         throw new RuntimeException("skill not handled");
     }

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Slash extends Ability {
+public class SwordSlash extends Ability {
 
     AbilityParams params;
 
@@ -26,7 +26,7 @@ public class Slash extends Ability {
     }
 
     @Override
-    void onAbilityStarted(AbilityUpdateable game) {
+    void onAbilityStarted(MyGdxGame game) {
 
     }
 
@@ -102,8 +102,8 @@ public class Slash extends Ability {
 
     }
 
-    public static Slash of(AbilityParams abilityParams, @SuppressWarnings("unused") MyGdxGame game) {
-        Slash ability = Slash.of();
+    public static SwordSlash of(AbilityParams abilityParams, @SuppressWarnings("unused") MyGdxGame game) {
+        SwordSlash ability = SwordSlash.of();
         ability.params =
                 abilityParams
                         .width(2f)
