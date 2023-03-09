@@ -58,7 +58,7 @@ public class Enemy extends Creature {
     }
 
     @Override
-    public void updateAutomaticControls(EnemyAiUpdatable game) {
+    public void updateAutomaticControls(MyGdxGame game) {
 
         if (params().aiStateTimer().time() > params().aiStateTimeout()) {
             params().aiStateTimer().restart();
@@ -222,9 +222,9 @@ public class Enemy extends Creature {
         }
     }
 
-    private void processPathfinding(EnemyAiUpdatable game) {
+    private void processPathfinding(MyGdxGame game) {
         boolean condition = params().areaId()
-                                    .equals(game.getCurrentAreaId()) &&
+                                    .equals(game.currentPlayerAreaId()) &&
                             params().targetCreatureId() != null &&
                             (params().forcePathCalculation()
                              || params().pathCalculationCooldownTimer().time() >

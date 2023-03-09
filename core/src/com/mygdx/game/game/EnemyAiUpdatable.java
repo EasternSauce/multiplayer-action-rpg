@@ -16,7 +16,5 @@ public interface EnemyAiUpdatable extends CreatureRetrievable, CreaturePosRetrie
                             Vector2 vectorTowardsTarget,
                             SkillType skillType);
 
-    AreaId getCurrentAreaId();
-
     PhysicsWorld getPhysicsWorld(AreaId areaId);
 }

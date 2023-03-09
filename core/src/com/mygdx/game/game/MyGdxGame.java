@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.esotericsoftware.kryonet.EndPoint;
 import com.mygdx.game.chat.Chat;
 import com.mygdx.game.command.*;
+import com.mygdx.game.game.data.TeleportInfo;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.ability.*;
 import com.mygdx.game.model.action.*;
@@ -37,7 +38,7 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Creat
     final MyGdxGamePlayScreen playScreen = MyGdxGamePlayScreen.of();
 
     @SuppressWarnings("FieldCanBeLocal")
-    private final boolean debug = false;
+    private final boolean debug = true;
     public final Chat chat = Chat.of();
     protected CreatureId thisPlayerId = null;
 
@@ -48,7 +49,7 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Creat
     final List<CreatureId> creaturesToBeRemoved = Collections.synchronizedList(new ArrayList<>());
     final List<AbilityId> abilitiesToBeRemoved = Collections.synchronizedList(new ArrayList<>());
 
-    final Map<CreatureId, Vector2> creaturesToTeleport = new ConcurrentSkipListMap<>();
+    final List<TeleportInfo> creaturesToTeleport = Collections.synchronizedList(new ArrayList<>());
 
 
     public Boolean debug() {
@@ -79,7 +80,7 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Creat
         return abilitiesToBeRemoved;
     }
 
-    public Map<CreatureId, Vector2> creaturesToTeleport() {
+    public List<TeleportInfo> creaturesToTeleport() {
         return creaturesToTeleport;
     }
 
@@ -357,11 +358,6 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Creat
     }
 
     @Override
-    public AreaId getCurrentAreaId() {
-        return gameState().currentAreaId();
-    }
-
-    @Override
     public PhysicsWorld getPhysicsWorld(AreaId areaId) {
         return physics().physicsWorlds().get(areaId);
     }
@@ -448,4 +444,42 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Creat
     }
 
 
+    public AreaId currentPlayerAreaId() {
+        if (thisPlayerId != null && gameState.creatures().containsKey(thisPlayerId)) {
+            System.out.println("player area is " + getCreature(thisPlayerId).params().areaId());
+            return getCreature(thisPlayerId).params().areaId();
+        }
+        return gameState.defaultAreaId();
+    }
+
+    public void teleportCreature(TeleportInfo teleportInfo, MyGdxGame game) {
+        if (teleportInfo.areaId().equals(game.getCreature(teleportInfo.creatureId()).params().areaId())) {
+            game.physics().creatureBodies().get(teleportInfo.creatureId()).forceSetTransform(teleportInfo.pos());
+        }
+        else {
+            if (teleportInfo.creatureId() != null) {
+                Creature creature = game.getCreature(teleportInfo.creatureId());
+
+                System.out.println("teleporting...");
+
+                creature.params().areaId(teleportInfo.areaId());
+
+                System.out.println("setting area to " + teleportInfo.areaId());
+                creature.params().pos(teleportInfo.pos());
+
+                if (physics().creatureBodies().containsKey(teleportInfo.creatureId())) {
+                    physics().creatureBodies().get(teleportInfo.creatureId()).onRemove();
+                    physics().creatureBodies().remove(teleportInfo.creatureId());
+                }
+
+                if (!gamePhysics.creatureBodies().containsKey(teleportInfo.creatureId())) {
+                    CreatureBody creatureBody = CreatureBody.of(teleportInfo.creatureId());
+                    creatureBody.init(gamePhysics, gameState(), teleportInfo.areaId());
+                    gamePhysics.creatureBodies().put(teleportInfo.creatureId(), creatureBody);
+                }
+
+            }
+        }
+
+    }
 }

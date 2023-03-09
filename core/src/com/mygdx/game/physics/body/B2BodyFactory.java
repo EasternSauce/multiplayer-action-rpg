@@ -58,11 +58,9 @@ public class B2BodyFactory {
 
     public static Body createTerrainTileB2body(PhysicsWorld world, TerrainTileBody terrainTileBody) {
         return createB2Body(world,
-                            Vector2.of(terrainTileBody.pos()
-                                                      .x() * terrainTileBody.tileWidth() +
+                            Vector2.of(terrainTileBody.pos().x() * terrainTileBody.tileWidth() +
                                        terrainTileBody.tileWidth() / 2,
-                                       terrainTileBody.pos()
-                                                      .y() * terrainTileBody.tileHeight() +
+                                       terrainTileBody.pos().y() * terrainTileBody.tileHeight() +
                                        terrainTileBody.tileHeight() / 2),
                             BodyType.StaticBody,
                             terrainTileBody,
@@ -97,6 +95,23 @@ public class B2BodyFactory {
                             null,
                             null);
     }
+
+    public static Body createAreaGateB2body(PhysicsWorld world,
+                                            AreaGateBody areaGateBody,
+                                            Vector2 pos,
+                                            float width,
+                                            float height) {
+        return createB2Body(world,
+                            pos,
+                            BodyType.StaticBody,
+                            areaGateBody,
+                            Rectangle.of(width, height),
+                            true,
+                            false,
+                            null,
+                            null);
+    }
+
 }
 
 

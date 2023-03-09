@@ -3,6 +3,7 @@ package com.mygdx.game.model.ability;
 import com.mygdx.game.game.AbilityUpdateable;
 import com.mygdx.game.game.CreaturePosRetrievable;
 import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.game.data.TeleportInfo;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.util.Vector2;
@@ -23,8 +24,7 @@ public class TeleportDestination extends Ability {
 
     @Override
     void onAbilityStarted(MyGdxGame game) {
-        System.out.println("putting pos " + params().pos());
-        game.creaturesToTeleport().put(params().creatureId(), params().pos());
+        game.creaturesToTeleport().add(TeleportInfo.of(params().creatureId(), params().pos(), params().areaId()));
     }
 
     @Override
@@ -113,11 +113,9 @@ public class TeleportDestination extends Ability {
         }
 
         if (!game.physics().physicsWorlds().get(areaId).isLineOfSight(creaturePos, destinationPos)) {
-            System.out.println("not line of sight");
             return creaturePos;
         }
 
-        System.out.println("creature pos is " + creaturePos + " teleport to " + destinationPos);
         return destinationPos;
     }
 }

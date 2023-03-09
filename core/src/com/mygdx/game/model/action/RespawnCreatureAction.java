@@ -1,6 +1,7 @@
 package com.mygdx.game.model.action;
 
 import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.game.data.TeleportInfo;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
@@ -34,7 +35,7 @@ public class RespawnCreatureAction implements GameStateAction {
             creature.params().mana(creature.params().maxMana());
 
             creature.params().pos(pos);
-            game.creaturesToTeleport().put(creatureId, pos);
+            game.creaturesToTeleport().add(TeleportInfo.of(creatureId, pos, creature.params().areaId()));
         }
 
     }

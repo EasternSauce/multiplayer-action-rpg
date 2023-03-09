@@ -5,7 +5,8 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mygdx.game.model.GameState;
+import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.game.data.AreaGate;
 import com.mygdx.game.model.ability.AbilityId;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.CreatureId;
@@ -14,7 +15,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
@@ -44,42 +47,50 @@ public class GameRenderer {
     Map<AbilityId, AbilityRenderer> abilityRenderers = new HashMap<>();
     Map<AreaId, AreaRenderer> areaRenderers = new HashMap<>();
 
-    public void init(Map<AreaId, TiledMap> maps) {
+    Set<AreaGateRenderer> areaGateRenderers = new HashSet<>();
+
+    public void init(Map<AreaId, TiledMap> maps, Set<AreaGate> areaGates) {
         areaRenderers = maps.keySet().stream().collect(Collectors.toMap(areaId -> areaId, AreaRenderer::of));
         areaRenderers.forEach((areaId, areaRenderer) -> areaRenderer.init(maps.get(areaId), mapScale));
+        areaGateRenderers =
+                areaGates.stream().map(areaGate -> AreaGateRenderer.of(areaGate, atlas)).collect(Collectors.toSet());
     }
 
-    public void renderAliveCreatures(DrawingLayer drawingLayer, GameState gameState) {
-        gameState.creatures().entrySet().stream().filter(entry -> entry.getValue().isAlive()).forEach(entry -> {
+    public void renderAliveCreatures(DrawingLayer drawingLayer, MyGdxGame game) {
+        game.gameState().creatures().entrySet().stream().filter(entry -> entry.getValue().isAlive()).forEach(entry -> {
             if (creatureRenderers().containsKey(entry.getKey()) && entry.getValue()
                                                                         .params()
                                                                         .areaId()
-                                                                        .equals(gameState.currentAreaId())) {
+                                                                        .equals(game.currentPlayerAreaId())) {
                 creatureRenderers.get(entry.getKey()).render(drawingLayer);
 
             }
         });
 
-        gameState.creatures().entrySet().stream().filter(entry -> entry.getValue().isAlive()).forEach(entry -> {
+        game.gameState().creatures().entrySet().stream().filter(entry -> entry.getValue().isAlive()).forEach(entry -> {
             if (creatureRenderers().containsKey(entry.getKey()) && entry.getValue()
                                                                         .params()
                                                                         .areaId()
-                                                                        .equals(gameState.currentAreaId())) {
-                creatureRenderers.get(entry.getKey()).renderLifeBar(drawingLayer, gameState);
+                                                                        .equals(game.currentPlayerAreaId())) {
+                creatureRenderers.get(entry.getKey()).renderLifeBar(drawingLayer, game.gameState());
 
             }
         });
     }
 
-    public void renderDeadCreatures(DrawingLayer drawingLayer, GameState gameState) {
-        gameState.creatures().entrySet().stream().filter(entry -> !entry.getValue().isAlive()).forEach(entry -> {
+    public void renderDeadCreatures(DrawingLayer drawingLayer, MyGdxGame game) {
+        game.gameState().creatures().entrySet().stream().filter(entry -> !entry.getValue().isAlive()).forEach(entry -> {
             if (creatureRenderers().containsKey(entry.getKey()) && entry.getValue()
                                                                         .params()
                                                                         .areaId()
-                                                                        .equals(gameState.currentAreaId())) {
+                                                                        .equals(game.currentPlayerAreaId())) {
                 creatureRenderers.get(entry.getKey()).render(drawingLayer);
 
             }
         });
+    }
+
+    public void renderAreaGates(DrawingLayer drawingLayer, MyGdxGame game) {
+        areaGateRenderers.forEach(areaGateRenderer -> areaGateRenderer.render(drawingLayer, game));
     }
 }

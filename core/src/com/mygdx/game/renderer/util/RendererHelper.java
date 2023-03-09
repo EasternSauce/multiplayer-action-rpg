@@ -22,12 +22,14 @@ public class RendererHelper {
         DrawingLayer drawingLayer = game.renderer().worldDrawingLayer();
         GameRenderer renderer = game.renderer();
 
-        renderer.areaRenderers().get(game.gameState().currentAreaId()).render(new int[]{0, 1});
+        renderer.areaRenderers().get(game.currentPlayerAreaId()).render(new int[]{0, 1});
 
         drawingLayer.spriteBatch().begin();
 
-        renderer.renderDeadCreatures(drawingLayer, game.gameState());
-        renderer.renderAliveCreatures(drawingLayer, game.gameState());
+        renderer.renderAreaGates(drawingLayer, game);
+
+        renderer.renderDeadCreatures(drawingLayer, game);
+        renderer.renderAliveCreatures(drawingLayer, game);
 
         renderer.abilityRenderers()
                 .forEach((abilityId, abilityAnimation) -> abilityAnimation.render(drawingLayer, game.gameState()));
@@ -35,12 +37,12 @@ public class RendererHelper {
 
         drawingLayer.end();
 
-        renderer.areaRenderers().get(game.gameState().currentAreaId()).render(new int[]{2, 3});
+        renderer.areaRenderers().get(game.currentPlayerAreaId()).render(new int[]{2, 3});
 
         if (game.debug()) {
             game.physics()
                 .debugRenderer()
-                .render(game.physics().physicsWorlds().get(game.gameState().currentAreaId()).b2world(),
+                .render(game.physics().physicsWorlds().get(game.currentPlayerAreaId()).b2world(),
                         renderer.worldCamera().combined);
         }
     }

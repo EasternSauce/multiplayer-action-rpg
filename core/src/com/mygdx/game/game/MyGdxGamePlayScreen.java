@@ -9,7 +9,9 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.game.Constants;
+import com.mygdx.game.game.data.AreaGate;
 import com.mygdx.game.model.area.AreaId;
+import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.physics.util.PhysicsHelper;
 import com.mygdx.game.renderer.DrawingLayer;
 import com.mygdx.game.renderer.util.RendererHelper;
@@ -18,7 +20,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.stream.Collectors;
 
@@ -54,7 +59,8 @@ public class MyGdxGamePlayScreen implements Screen {
         mapsToLoad.put(AreaId.of("area1"), "assets/areas/area1");
         mapsToLoad.put(AreaId.of("area2"), "assets/areas/area2");
         mapsToLoad.put(AreaId.of("area3"), "assets/areas/area3");
-        game.renderer().mapsToLoad(mapsToLoad);
+        //        game.renderer().mapsToLoad(mapsToLoad);
+
 
         maps(mapsToLoad.entrySet()
                        .stream()
@@ -70,9 +76,19 @@ public class MyGdxGamePlayScreen implements Screen {
 
         game.renderer().atlas(new TextureAtlas("assets/atlas/packed_atlas.atlas"));
 
-        game.renderer().init(maps);
+        Set<AreaGate>
+                areaGates =
+                new HashSet<>(Arrays.asList(AreaGate.of(AreaId.of("area1"),
+                                                        Vector2.of(199.5f, 15f),
+                                                        AreaId.of("area3"),
+                                                        Vector2.of(17f, 2.5f)), AreaGate.of(AreaId.of("area1"),
+                                                                                            Vector2.of(2f, 63f),
+                                                                                            AreaId.of("area2"),
+                                                                                            Vector2.of(58f, 9f))));
 
-        game.physics().init(maps);
+        game.renderer().init(maps, areaGates);
+
+        game.physics().init(maps, areaGates, game);
 
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
@@ -104,7 +120,7 @@ public class MyGdxGamePlayScreen implements Screen {
 
     public void update(float delta) {
 
-        game.physics().physicsWorlds().get(game.gameState().currentAreaId()).step();
+        game.physics().physicsWorlds().get(game.currentPlayerAreaId()).step();
 
         PhysicsHelper.handleForceUpdateBodyPositions(game);
 
@@ -126,10 +142,7 @@ public class MyGdxGamePlayScreen implements Screen {
         game.abilitiesToBeRemoved().clear();
 
         game.creaturesToTeleport()
-            .forEach((creatureId, pos) -> {
-                System.out.println("teleporting");
-                game.physics().creatureBodies().get(creatureId).forceSetTransform(pos);
-            });
+            .forEach(teleportInfo -> game.teleportCreature(teleportInfo, game));
 
         game.creaturesToTeleport().clear();
 
@@ -140,7 +153,7 @@ public class MyGdxGamePlayScreen implements Screen {
 
         PhysicsHelper.processPhysicsEventQueue(game);
 
-        game.renderer().areaRenderers().get(game.gameState().currentAreaId()).setView(game.renderer().worldCamera());
+        game.renderer().areaRenderers().get(game.currentPlayerAreaId()).setView(game.renderer().worldCamera());
 
         RendererHelper.updateCamera(game);
 

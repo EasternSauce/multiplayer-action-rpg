@@ -257,7 +257,7 @@ public class MyGdxGameServer extends MyGdxGame {
 
     @Override
     public void initState() {
-        AreaId areaId = gameState().defaultAreaId();
+        AreaId areaId = AreaId.of("area1");
 
         List<EnemySpawn>
                 enemySpawns =
@@ -433,7 +433,6 @@ public class MyGdxGameServer extends MyGdxGame {
                              MyGdxGame game) {
         AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
 
-        System.out.println("chaining");
         Map<CreatureId, Float>
                 creaturesAlreadyHit =
                 new ConcurrentSkipListMap<>(chainFromAbility.params().creaturesAlreadyHit());

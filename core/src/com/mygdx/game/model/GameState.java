@@ -22,10 +22,8 @@ public class GameState {
     Map<CreatureId, Creature> creatures = new ConcurrentSkipListMap<>();
     Map<AbilityId, Ability> abilities = new ConcurrentSkipListMap<>();
     Map<AreaId, Area> areas = new ConcurrentSkipListMap<>();
-    AreaId currentAreaId = AreaId.of("area1");
 
     AreaId defaultAreaId = AreaId.of("area1");
-
     SimpleTimer generalTimer = SimpleTimer.getStartedTimer();
 
     public static GameState of(GameState gameState) {
@@ -33,7 +31,6 @@ public class GameState {
         newGameState.creatures(new ConcurrentSkipListMap<>(gameState.creatures));
         newGameState.abilities(new ConcurrentSkipListMap<>(gameState.abilities));
         newGameState.areas(new ConcurrentSkipListMap<>(gameState.areas));
-        newGameState.currentAreaId(gameState.currentAreaId);
         newGameState.defaultAreaId(gameState.defaultAreaId);
         newGameState.generalTimer(gameState.generalTimer);
 
@@ -47,7 +44,6 @@ public class GameState {
         newGameState.creatures(creatures);
         newGameState.abilities(abilities);
         newGameState.areas(new ConcurrentSkipListMap<>(gameState.areas));
-        newGameState.currentAreaId(gameState.currentAreaId);
         newGameState.defaultAreaId(gameState.defaultAreaId);
         newGameState.generalTimer(gameState.generalTimer);
         return newGameState;

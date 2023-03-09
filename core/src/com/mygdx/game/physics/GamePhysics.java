@@ -2,17 +2,17 @@ package com.mygdx.game.physics;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.physics.box2d.*;
+import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.game.data.AreaGate;
 import com.mygdx.game.model.ability.AbilityId;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.physics.body.AbilityBody;
+import com.mygdx.game.physics.body.AreaGateBody;
 import com.mygdx.game.physics.body.CreatureBody;
 import com.mygdx.game.physics.body.TerrainTileBody;
-import com.mygdx.game.physics.event.AbilityHitsAbilityEvent;
-import com.mygdx.game.physics.event.AbilityHitsCreatureEvent;
-import com.mygdx.game.physics.event.AbilityHitsTerrainEvent;
-import com.mygdx.game.physics.event.PhysicsEvent;
+import com.mygdx.game.physics.event.*;
 import com.mygdx.game.physics.world.PhysicsWorld;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,13 +31,15 @@ public class GamePhysics {
     Map<CreatureId, CreatureBody> creatureBodies = new HashMap<>();
     Map<AbilityId, AbilityBody> abilityBodies = new HashMap<>();
 
+    Set<AreaGateBody> areaGateBodies = new HashSet<>();
+
     Box2DDebugRenderer debugRenderer;
 
     Boolean forceUpdateBodyPositions = false;
 
     final List<PhysicsEvent> physicsEventQueue = Collections.synchronizedList(new ArrayList<>());
 
-    public void init(Map<AreaId, TiledMap> maps) {
+    public void init(Map<AreaId, TiledMap> maps, Set<AreaGate> areaGates, MyGdxGame game) {
         physicsWorlds = maps.entrySet()
                             .stream()
                             .collect(Collectors.toMap(Map.Entry::getKey, entry -> PhysicsWorld.of(entry.getValue())));
@@ -46,6 +48,10 @@ public class GamePhysics {
             physicsWorld.init();
             createContactListener(physicsWorld);
         });
+
+        areaGateBodies = areaGates.stream().map(AreaGateBody::of).collect(Collectors.toSet());
+        areaGateBodies.forEach(areaGateBody -> areaGateBody.init(game));
+
 
     }
 
@@ -77,6 +83,14 @@ public class GamePhysics {
             AbilityBody abilityBodyB = (AbilityBody) objB;
 
             physicsEventQueue.add(AbilityHitsAbilityEvent.of(abilityBodyA.abilityId(), abilityBodyB.abilityId()));
+
+
+        }
+        if (objA instanceof CreatureBody && objB instanceof AreaGateBody) {
+            CreatureBody creatureBody = (CreatureBody) objA;
+            AreaGateBody areaGateBody = (AreaGateBody) objB;
+
+            physicsEventQueue.add(CreatureHitsAreaGateEvent.of(creatureBody.creatureId(), areaGateBody.areaGate()));
 
 
         }

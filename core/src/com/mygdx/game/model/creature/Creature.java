@@ -2,7 +2,6 @@ package com.mygdx.game.model.creature;
 
 import com.mygdx.game.game.CreaturePosRetrievable;
 import com.mygdx.game.game.CreatureUpdatable;
-import com.mygdx.game.game.EnemyAiUpdatable;
 import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityState;
@@ -126,7 +125,7 @@ public abstract class Creature {
         return 4;
     }
 
-    public void updateAutomaticControls(EnemyAiUpdatable game) {
+    public void updateAutomaticControls(MyGdxGame game) {
 
     }
 
@@ -224,4 +223,5 @@ public abstract class Creature {
         takeStaminaDamage(skill.staminaCost());
         takeManaDamage(skill.manaCost());
     }
+
 }

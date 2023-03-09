@@ -23,6 +23,7 @@ import com.mygdx.game.model.util.Vector2;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.stream.Collectors;
 
 public class MyGdxGameClient extends MyGdxGame {
@@ -105,10 +106,10 @@ public class MyGdxGameClient extends MyGdxGame {
             if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                 Vector2 mousePos = mousePos();
 
-                Creature creature = gameState().creatures().get(thisPlayerId);
+                Creature player = gameState().creatures().get(thisPlayerId);
 
-                if (creature.params().movementCommandsPerSecondLimitTimer().time() >
-                    Constants.MovementCommandCooldown) {
+                if (player != null && player.params().movementCommandsPerSecondLimitTimer().time() >
+                                      Constants.MovementCommandCooldown) {
                     endPoint().sendTCP(PlayerMovementCommand.of(thisPlayerId, mousePos));
                 }
             }
@@ -392,7 +393,7 @@ public class MyGdxGameClient extends MyGdxGame {
                                       EnemySpawn.of(Vector2.of(101.61807f, 155.82611f),
                                                     EnemyTemplate.of(EnemyType.SKELETON, 3f, SkillType.SWORD_SLASH)));
 
-                AreaId areaId = gameState().defaultAreaId();
+                AreaId areaId = currentPlayerAreaId();
 
                 enemySpawns.forEach(enemySpawn -> {
                     CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 10000000));
@@ -492,9 +493,12 @@ public class MyGdxGameClient extends MyGdxGame {
 
         String[] textures = new String[]{"male1", "male2", "female1"};
 
+        //        Vector2 pos = Vector2.of((float) ((Math.random() * (28 - 18)) + 18),
+        //                                 (float) ((Math.random() * (12 - 6)) + 6));
+        Vector2 pos = Vector2.of(16.854788f, 94.31893f);
+
         endPoint().sendTCP(InitPlayerCommand.of(thisPlayerId,
-                                                Vector2.of((float) ((Math.random() * (28 - 18)) + 18),
-                                                           (float) ((Math.random() * (12 - 6)) + 6)),
+                                                pos,
                                                 textures[((int) (Math.random() * 100) % 3)]));
 
     }
@@ -528,6 +532,10 @@ public class MyGdxGameClient extends MyGdxGame {
     @Override
     public Set<AbilityId> abilitiesToUpdate() {
         Creature player = gameState().creatures().get(thisPlayerId);
+
+        if (player == null) {
+            return new ConcurrentSkipListSet<>();
+        }
 
         return gameState().abilities().keySet().stream().filter(abilityId -> {
             Ability ability = gameState().abilities().get(abilityId);
