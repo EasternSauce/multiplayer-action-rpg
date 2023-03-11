@@ -22,13 +22,13 @@ public class AreaGateRenderer {
 
         areaGateRenderer.spriteA = new Sprite();
         areaGateRenderer.spriteA.setRegion(atlas.findRegion("downarrow"));
-        areaGateRenderer.spriteA.setCenter(areaGate.posA().x(), areaGate.posA().y());
         areaGateRenderer.spriteA.setSize(areaGate.width(), areaGate.height());
+        areaGateRenderer.spriteA.setCenter(areaGate.posA().x(), areaGate.posA().y());
 
         areaGateRenderer.spriteB = new Sprite();
         areaGateRenderer.spriteB.setRegion(atlas.findRegion("downarrow"));
-        areaGateRenderer.spriteB.setCenter(areaGate.posB().x(), areaGate.posB().y());
         areaGateRenderer.spriteB.setSize(areaGate.width(), areaGate.height());
+        areaGateRenderer.spriteB.setCenter(areaGate.posB().x(), areaGate.posB().y());
 
         areaGateRenderer.areaA_Id = areaGate.areaA_Id();
         areaGateRenderer.areaB_Id = areaGate.areaB_Id();

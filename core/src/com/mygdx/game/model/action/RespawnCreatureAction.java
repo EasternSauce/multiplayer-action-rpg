@@ -35,7 +35,8 @@ public class RespawnCreatureAction implements GameStateAction {
             creature.params().mana(creature.params().maxMana());
 
             creature.params().pos(pos);
-            game.creaturesToTeleport().add(TeleportInfo.of(creatureId, pos, creature.params().areaId()));
+            game.creaturesToTeleport()
+                .add(TeleportInfo.of(creatureId, pos, creature.params().areaId(), creature.params().areaId()));
         }
 
     }

@@ -106,7 +106,8 @@ public class CreatureParams {
 
     SkillType mainAttackSkill;
 
-    Boolean isInsideGate = false;
+    Boolean justTeleportedToGate = false;
+    AreaId areaWhenEnteredGate;
 
     public static CreatureParams of(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn) {
         return getCreatureParams(creatureId,

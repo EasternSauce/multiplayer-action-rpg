@@ -13,5 +13,6 @@ import lombok.NoArgsConstructor;
 public class TeleportInfo {
     CreatureId creatureId;
     Vector2 pos;
-    AreaId areaId;
+    AreaId fromAreaId;
+    AreaId toAreaId;
 }

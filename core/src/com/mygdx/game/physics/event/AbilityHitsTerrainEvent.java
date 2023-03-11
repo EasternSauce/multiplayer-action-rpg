@@ -11,5 +11,6 @@ import lombok.NoArgsConstructor;
 @Data
 public class AbilityHitsTerrainEvent implements PhysicsEvent {
     AbilityId abilityId;
-    Vector2 tileCenter;
+    Vector2 abilityPos;
+    Vector2 tilePos;
 }

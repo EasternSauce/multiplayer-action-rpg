@@ -49,7 +49,7 @@ public class PhysicsHelper {
                 Ability ability = game.gameState().abilities().get(event.abilityId());
 
                 if (ability != null && ability.params().state() == AbilityState.ACTIVE) {
-                    ability.onTerrainHit(event.tileCenter(), game);
+                    ability.onTerrainHit(event.abilityPos(), event.tilePos(), game);
                 }
 
             }
@@ -72,7 +72,9 @@ public class PhysicsHelper {
                 Creature creature = game.getCreature(event.creatureId());
                 AreaGate areaGate = event.areaGate();
 
-                if (creature instanceof Player && !creature.params().isInsideGate()) {
+                creature.params().areaWhenEnteredGate(creature.params().areaId());
+
+                if (creature instanceof Player && !creature.params().justTeleportedToGate()) {
                     AreaId fromAreaId;
                     AreaId toAreaId;
                     Vector2 pos;
@@ -93,13 +95,25 @@ public class PhysicsHelper {
                         throw new RuntimeException("unreachable");
                     }
 
-                    game.creaturesToTeleport().add(TeleportInfo.of(event.creatureId(), pos, toAreaId));
+                    game.creaturesToTeleport().add(TeleportInfo.of(event.creatureId(), pos, fromAreaId, toAreaId));
 
-                    creature.params().isInsideGate(true);
+
                 }
             }
             else if (physicsEvent instanceof CreatureLeavesAreaGateEvent) {
-                // TODO
+
+                CreatureLeavesAreaGateEvent event = (CreatureLeavesAreaGateEvent) physicsEvent;
+
+                Creature creature = game.getCreature(event.creatureId());
+
+                if (creature instanceof Player &&
+                    creature.params().justTeleportedToGate() &&
+                    creature.params().areaWhenEnteredGate().equals(creature.params().areaId())) {
+
+
+                    creature.params().justTeleportedToGate(false);
+
+                }
             }
         });
         game.physics().physicsEventQueue().clear();

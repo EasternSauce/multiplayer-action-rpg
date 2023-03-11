@@ -493,9 +493,9 @@ public class MyGdxGameClient extends MyGdxGame {
 
         String[] textures = new String[]{"male1", "male2", "female1"};
 
-        //        Vector2 pos = Vector2.of((float) ((Math.random() * (28 - 18)) + 18),
-        //                                 (float) ((Math.random() * (12 - 6)) + 6));
-        Vector2 pos = Vector2.of(16.854788f, 94.31893f);
+        Vector2 pos = Vector2.of((float) ((Math.random() * (28 - 18)) + 18),
+                                 (float) ((Math.random() * (12 - 6)) + 6));
+        //        Vector2 pos = Vector2.of(16.854788f, 94.31893f);
 
         endPoint().sendTCP(InitPlayerCommand.of(thisPlayerId,
                                                 pos,
@@ -550,6 +550,12 @@ public class MyGdxGameClient extends MyGdxGame {
     @Override
     public void handleAttackTarget(CreatureId attackingCreatureId, Vector2 vectorTowardsTarget, SkillType skillType) {
         // do nothing
+    }
+
+    @Override
+    void performPhysicsWorldStep() {
+        physics().physicsWorlds().get(currentPlayerAreaId()).step();
+
     }
 
     @Override

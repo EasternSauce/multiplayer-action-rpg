@@ -69,8 +69,6 @@ public class AbilityParams {
 
     Vector2 skillStartPos;
 
-    Vector2 lastTileHitPos;
-
     Float wallBounceCount = 0f;
 
     Boolean comingBack = false;

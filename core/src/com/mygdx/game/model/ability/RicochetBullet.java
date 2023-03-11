@@ -69,20 +69,18 @@ public class RicochetBullet extends Projectile {
     }
 
     @Override
-    public void onTerrainHit(Vector2 tileCenter, MyGdxGame game) {
+    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos, MyGdxGame game) {
+
+        if (params().dirVector().normalized().dot(abilityPos.vectorTowards(tilePos).normalized()) <
+            0.6f) { // check if it is facing the tile
+            return;
+        }
 
         if (params().wallBounceCount() > 4) {
             deactivate();
             return;
         }
 
-        if (
-                (params().lastTileHitPos() != null && params().lastTileHitPos().equals(tileCenter)) ||
-                params().dirVector().dot(params().pos().vectorTowards(tileCenter)) <=
-                4 // check if it is facing the tile
-        ) {
-            return;
-        }
 
         params().creaturesAlreadyHit().clear();
 
@@ -90,9 +88,7 @@ public class RicochetBullet extends Projectile {
 
         params().wallBounceCount(params().wallBounceCount() + 1);
 
-        params().lastTileHitPos(tileCenter);
-
-        Vector2 collisionVector = params().pos().vectorTowards(tileCenter);
+        Vector2 collisionVector = abilityPos.vectorTowards(tilePos);
 
         float collisionAngle = collisionVector.angleDeg();
 

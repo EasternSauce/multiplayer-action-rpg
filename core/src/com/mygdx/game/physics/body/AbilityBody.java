@@ -10,10 +10,12 @@ import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.physics.GamePhysics;
 import com.mygdx.game.physics.world.PhysicsWorld;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
+@Data
 public class AbilityBody {
 
     @Getter

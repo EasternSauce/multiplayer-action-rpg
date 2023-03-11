@@ -83,7 +83,7 @@ public class SummonGhosts extends Ability {
     }
 
     @Override
-    public void onTerrainHit(Vector2 tileCenter, MyGdxGame game) {
+    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos, MyGdxGame game) {
 
     }
 

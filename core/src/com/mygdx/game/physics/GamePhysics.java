@@ -66,19 +66,25 @@ public class GamePhysics {
 
 
         }
-        if (objA instanceof TerrainTileBody && objB instanceof AbilityBody) {
+        else if (objA instanceof TerrainTileBody && objB instanceof AbilityBody) {
             TerrainTileBody terrainTileBody = (TerrainTileBody) objA;
             if (!terrainTileBody.flyover()) {
                 AbilityBody abilityBody = (AbilityBody) objB;
                 Vector2
-                        tileCenter =
+                        tilePos =
                         Vector2.of(terrainTileBody.b2Body().getWorldCenter().x,
                                    terrainTileBody.b2Body().getWorldCenter().y);
-                physicsEventQueue.add(AbilityHitsTerrainEvent.of(abilityBody.abilityId(), tileCenter));
+
+                Vector2
+                        abilityPos =
+                        Vector2.of(abilityBody.b2Body().getWorldCenter().x,
+                                   abilityBody.b2Body().getWorldCenter().y);
+
+                physicsEventQueue.add(AbilityHitsTerrainEvent.of(abilityBody.abilityId(), abilityPos, tilePos));
             }
 
         }
-        if (objA instanceof AbilityBody && objB instanceof AbilityBody) {
+        else if (objA instanceof AbilityBody && objB instanceof AbilityBody) {
             AbilityBody abilityBodyA = (AbilityBody) objA;
             AbilityBody abilityBodyB = (AbilityBody) objB;
 
@@ -86,13 +92,21 @@ public class GamePhysics {
 
 
         }
-        if (objA instanceof CreatureBody && objB instanceof AreaGateBody) {
+        else if (objA instanceof CreatureBody && objB instanceof AreaGateBody) {
             CreatureBody creatureBody = (CreatureBody) objA;
             AreaGateBody areaGateBody = (AreaGateBody) objB;
 
             physicsEventQueue.add(CreatureHitsAreaGateEvent.of(creatureBody.creatureId(), areaGateBody.areaGate()));
 
 
+        }
+    }
+
+    public void onContactEnd(Object objA, Object objB) {
+        if (objA instanceof CreatureBody && objB instanceof AreaGateBody) {
+            CreatureBody creatureBody = (CreatureBody) objA;
+            AreaGateBody areaGateBody = (AreaGateBody) objB;
+            physicsEventQueue.add(CreatureLeavesAreaGateEvent.of(creatureBody.creatureId(), areaGateBody.areaGate()));
         }
     }
 
@@ -106,14 +120,19 @@ public class GamePhysics {
                 Object objA = contact.getFixtureA().getBody().getUserData();
                 Object objB = contact.getFixtureB().getBody().getUserData();
 
-
                 onContactStart(objA, objB);
                 onContactStart(objB, objA);
             }
 
             @Override
             public void endContact(Contact contact) {
+                if (contact.getFixtureA() != null && contact.getFixtureB() != null) {
+                    Object objA = contact.getFixtureA().getBody().getUserData();
+                    Object objB = contact.getFixtureB().getBody().getUserData();
 
+                    onContactEnd(objA, objB);
+                    onContactEnd(objB, objA);
+                }
             }
 
             @Override

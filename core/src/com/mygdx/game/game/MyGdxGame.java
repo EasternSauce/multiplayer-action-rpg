@@ -446,26 +446,23 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Creat
 
     public AreaId currentPlayerAreaId() {
         if (thisPlayerId != null && gameState.creatures().containsKey(thisPlayerId)) {
-            System.out.println("player area is " + getCreature(thisPlayerId).params().areaId());
             return getCreature(thisPlayerId).params().areaId();
         }
         return gameState.defaultAreaId();
     }
 
     public void teleportCreature(TeleportInfo teleportInfo, MyGdxGame game) {
-        if (teleportInfo.areaId().equals(game.getCreature(teleportInfo.creatureId()).params().areaId())) {
+        if (teleportInfo.toAreaId().equals(game.getCreature(teleportInfo.creatureId()).params().areaId())) {
             game.physics().creatureBodies().get(teleportInfo.creatureId()).forceSetTransform(teleportInfo.pos());
         }
         else {
             if (teleportInfo.creatureId() != null) {
                 Creature creature = game.getCreature(teleportInfo.creatureId());
 
-                System.out.println("teleporting...");
+                creature.params().areaId(teleportInfo.toAreaId());
 
-                creature.params().areaId(teleportInfo.areaId());
-
-                System.out.println("setting area to " + teleportInfo.areaId());
                 creature.params().pos(teleportInfo.pos());
+                creature.params().movementCommandTargetPos(teleportInfo.pos());
 
                 if (physics().creatureBodies().containsKey(teleportInfo.creatureId())) {
                     physics().creatureBodies().get(teleportInfo.creatureId()).onRemove();
@@ -474,12 +471,17 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Creat
 
                 if (!gamePhysics.creatureBodies().containsKey(teleportInfo.creatureId())) {
                     CreatureBody creatureBody = CreatureBody.of(teleportInfo.creatureId());
-                    creatureBody.init(gamePhysics, gameState(), teleportInfo.areaId());
+                    creatureBody.init(gamePhysics, gameState(), teleportInfo.toAreaId());
                     gamePhysics.creatureBodies().put(teleportInfo.creatureId(), creatureBody);
                 }
+
+                creature.params().justTeleportedToGate(true);
+
 
             }
         }
 
     }
+
+    abstract void performPhysicsWorldStep();
 }

@@ -81,10 +81,11 @@ public class MyGdxGamePlayScreen implements Screen {
                 new HashSet<>(Arrays.asList(AreaGate.of(AreaId.of("area1"),
                                                         Vector2.of(199.5f, 15f),
                                                         AreaId.of("area3"),
-                                                        Vector2.of(17f, 2.5f)), AreaGate.of(AreaId.of("area1"),
-                                                                                            Vector2.of(2f, 63f),
-                                                                                            AreaId.of("area2"),
-                                                                                            Vector2.of(58f, 9f))));
+                                                        Vector2.of(17f, 2.5f)),
+                                            AreaGate.of(AreaId.of("area1"),
+                                                        Vector2.of(2f, 63f),
+                                                        AreaId.of("area2"),
+                                                        Vector2.of(58f, 9f))));
 
         game.renderer().init(maps, areaGates);
 
@@ -120,7 +121,7 @@ public class MyGdxGamePlayScreen implements Screen {
 
     public void update(float delta) {
 
-        game.physics().physicsWorlds().get(game.currentPlayerAreaId()).step();
+        game.performPhysicsWorldStep();
 
         PhysicsHelper.handleForceUpdateBodyPositions(game);
 
@@ -141,8 +142,7 @@ public class MyGdxGamePlayScreen implements Screen {
         game.abilitiesToBeRemoved().forEach(abilityId -> game.removeAbility(abilityId));
         game.abilitiesToBeRemoved().clear();
 
-        game.creaturesToTeleport()
-            .forEach(teleportInfo -> game.teleportCreature(teleportInfo, game));
+        game.creaturesToTeleport().forEach(teleportInfo -> game.teleportCreature(teleportInfo, game));
 
         game.creaturesToTeleport().clear();
 

@@ -24,7 +24,8 @@ public class TeleportDestination extends Ability {
 
     @Override
     void onAbilityStarted(MyGdxGame game) {
-        game.creaturesToTeleport().add(TeleportInfo.of(params().creatureId(), params().pos(), params().areaId()));
+        game.creaturesToTeleport()
+            .add(TeleportInfo.of(params().creatureId(), params().pos(), params().areaId(), params().areaId()));
     }
 
     @Override
@@ -63,7 +64,7 @@ public class TeleportDestination extends Ability {
     }
 
     @Override
-    public void onTerrainHit(Vector2 tileCenter, MyGdxGame game) {
+    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos, MyGdxGame game) {
 
     }
 

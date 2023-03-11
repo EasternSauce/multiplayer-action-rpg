@@ -13,6 +13,7 @@ import com.mygdx.game.model.creature.*;
 import com.mygdx.game.model.skill.SkillType;
 import com.mygdx.game.model.util.GameStateBroadcast;
 import com.mygdx.game.model.util.Vector2;
+import com.mygdx.game.physics.world.PhysicsWorld;
 
 import java.io.IOException;
 import java.util.*;
@@ -189,9 +190,9 @@ public class MyGdxGameServer extends MyGdxGame {
                         if (!clientCreatures.containsKey(connection.getID())) {
                             continue;
                         }
-                        Creature creature = gameState().creatures().get(clientCreatures.get(connection.getID()));
+                        Creature player = gameState().creatures().get(clientCreatures.get(connection.getID()));
 
-                        if (creature == null) {
+                        if (player == null) {
                             continue;
                         }
 
@@ -200,13 +201,19 @@ public class MyGdxGameServer extends MyGdxGame {
                                 new ConcurrentSkipListMap<>(gameState().creatures()
                                                                        .entrySet()
                                                                        .stream()
-                                                                       .filter(entry -> entry.getValue()
-                                                                                             .params()
-                                                                                             .pos()
-                                                                                             .distance(
-                                                                                                     creature.params()
-                                                                                                             .pos()) <
-                                                                                        Constants.ClientGameUpdateRange)
+                                                                       .filter(entry ->
+                                                                                       entry.getValue()
+                                                                                            .params()
+                                                                                            .areaId()
+                                                                                            .equals(player.params()
+                                                                                                          .areaId()) &&
+                                                                                       entry.getValue()
+                                                                                            .params()
+                                                                                            .pos()
+                                                                                            .distance(
+                                                                                                    player.params()
+                                                                                                          .pos()) <
+                                                                                       Constants.ClientGameUpdateRange)
                                                                        .collect(Collectors.toMap(Map.Entry::getKey,
                                                                                                  Map.Entry::getValue)));
                         ConcurrentSkipListMap<AbilityId, Ability>
@@ -214,13 +221,19 @@ public class MyGdxGameServer extends MyGdxGame {
                                 new ConcurrentSkipListMap<>(gameState().abilities()
                                                                        .entrySet()
                                                                        .stream()
-                                                                       .filter(entry -> entry.getValue()
-                                                                                             .params()
-                                                                                             .pos()
-                                                                                             .distance(
-                                                                                                     creature.params()
-                                                                                                             .pos()) <
-                                                                                        Constants.ClientGameUpdateRange)
+                                                                       .filter(entry ->
+                                                                                       entry.getValue()
+                                                                                            .params()
+                                                                                            .areaId()
+                                                                                            .equals(player.params()
+                                                                                                          .areaId()) &&
+                                                                                       entry.getValue()
+                                                                                            .params()
+                                                                                            .pos()
+                                                                                            .distance(
+                                                                                                    player.params()
+                                                                                                          .pos()) <
+                                                                                       Constants.ClientGameUpdateRange)
                                                                        .collect(Collectors.toMap(Map.Entry::getKey,
                                                                                                  Map.Entry::getValue)));
 
@@ -355,11 +368,11 @@ public class MyGdxGameServer extends MyGdxGame {
                                             EnemyTemplate.of(EnemyType.SKELETON, 3f, SkillType.SWORD_SLASH)));
 
 
-        enemySpawns.forEach(enemySpawn -> {
-            CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 10000000));
-            spawnEnemy(enemyId, areaId, enemySpawn);
-            endPoint().sendToAllTCP(SpawnEnemyCommand.of(enemyId, areaId, enemySpawn));
-        });
+                enemySpawns.forEach(enemySpawn -> {
+                    CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 10000000));
+                    spawnEnemy(enemyId, areaId, enemySpawn);
+                    endPoint().sendToAllTCP(SpawnEnemyCommand.of(enemyId, areaId, enemySpawn));
+                });
     }
 
     @Override
@@ -374,8 +387,11 @@ public class MyGdxGameServer extends MyGdxGame {
 
             Set<CreatureId> creaturesToAdd = gameState().creatures().keySet().stream().filter(creatureId -> {
                 Creature creature = gameState().creatures().get(creatureId);
-                return creature.params().pos().distance(player.params().pos()) < Constants.ClientGameUpdateRange;
+                return player.params().areaId().equals(creature.params().areaId()) &&
+                       creature.params().pos().distance(player.params().pos()) < Constants.ClientGameUpdateRange;
             }).collect(Collectors.toSet());
+
+
             creaturesToUpdate.addAll(creaturesToAdd);
         }
 
@@ -416,6 +432,11 @@ public class MyGdxGameServer extends MyGdxGame {
 
         tickActions.add(action);
 
+    }
+
+    @Override
+    void performPhysicsWorldStep() {
+        physics().physicsWorlds().values().forEach(PhysicsWorld::step);
     }
 
     @Override
