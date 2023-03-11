@@ -1,7 +1,6 @@
 package com.mygdx.game.model.ability;
 
-import com.mygdx.game.game.CreaturePosRetrievable;
-import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.game.AbilityUpdatable;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,44 +19,40 @@ public class VolatileBubble extends Projectile {
     }
 
     @Override
-    void onAbilityStarted(MyGdxGame game) {
+    void onAbilityStarted(AbilityUpdatable game) {
 
     }
 
     @Override
-    void onDelayedAction(MyGdxGame game) {
+    void onDelayedAction(AbilityUpdatable game) {
 
     }
 
     @Override
-    void onAbilityCompleted(MyGdxGame game) {
+    void onAbilityCompleted(AbilityUpdatable game) {
         float baseAngle = params().dirVector().angleDeg();
 
-        game.chainAbility(this, AbilityType.ICE_SPEAR, params().pos(), params.dirVector(), game);
+        game.chainAbility(this, AbilityType.ICE_SPEAR, params().pos(), params.dirVector());
         game.chainAbility(this,
                           AbilityType.ICE_SPEAR,
                           params().pos(),
-                          params.dirVector().setAngleDeg(baseAngle + 72f),
-                          game);
+                          params.dirVector().setAngleDeg(baseAngle + 72f));
         game.chainAbility(this,
                           AbilityType.ICE_SPEAR,
                           params().pos(),
-                          params.dirVector().setAngleDeg(baseAngle + 144f),
-                          game);
+                          params.dirVector().setAngleDeg(baseAngle + 144f));
         game.chainAbility(this,
                           AbilityType.ICE_SPEAR,
                           params().pos(),
-                          params.dirVector().setAngleDeg(baseAngle + 216f),
-                          game);
+                          params.dirVector().setAngleDeg(baseAngle + 216f));
         game.chainAbility(this,
                           AbilityType.ICE_SPEAR,
                           params().pos(),
-                          params.dirVector().setAngleDeg(baseAngle + 288f),
-                          game);
+                          params.dirVector().setAngleDeg(baseAngle + 288f));
     }
 
     @Override
-    void onUpdatePosition(CreaturePosRetrievable game) {
+    void onUpdatePosition(AbilityUpdatable game) {
 
     }
 
@@ -67,21 +62,21 @@ public class VolatileBubble extends Projectile {
     }
 
     @Override
-    public void onThisCreatureHit(MyGdxGame game) {
+    public void onThisCreatureHit(AbilityUpdatable game) {
 
     }
 
     @Override
-    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos, MyGdxGame game) {
+    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
         deactivate();
     }
 
     @Override
-    public void onAbilityHit(AbilityId otherAbilityId, MyGdxGame game) {
+    public void onOtherAbilityHit(AbilityId otherAbilityId, AbilityUpdatable game) {
 
     }
 
-    public static VolatileBubble of(AbilityParams abilityParams, @SuppressWarnings("unused") MyGdxGame game) {
+    public static VolatileBubble of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
         VolatileBubble ability = VolatileBubble.of();
         ability.params =
                 abilityParams

@@ -1,8 +1,6 @@
 package com.mygdx.game.model.ability;
 
-import com.mygdx.game.game.AbilityUpdateable;
-import com.mygdx.game.game.CreaturePosRetrievable;
-import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.game.AbilityUpdatable;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -14,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class SummonGhosts extends Ability {
     AbilityParams params;
 
-    public static SummonGhosts of(AbilityParams abilityParams, @SuppressWarnings("unused") MyGdxGame game) {
+    public static SummonGhosts of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
         SummonGhosts ability = SummonGhosts.of();
         ability.params = abilityParams
 
@@ -30,45 +28,41 @@ public class SummonGhosts extends Ability {
     }
 
     @Override
-    void onAbilityStarted(MyGdxGame game) {
+    void onAbilityStarted(AbilityUpdatable game) {
 
     }
 
     @Override
-    void onDelayedAction(MyGdxGame game) {
+    void onDelayedAction(AbilityUpdatable game) {
 
     }
 
     @Override
-    void onAbilityCompleted(MyGdxGame game) {
+    void onAbilityCompleted(AbilityUpdatable game) {
         float baseAngle = params().dirVector().angleDeg();
-        game.chainAbility(this, AbilityType.PLAYFUL_GHOST, params().pos(), params.dirVector(), game);
+        game.chainAbility(this, AbilityType.PLAYFUL_GHOST, params().pos(), params.dirVector());
         game.chainAbility(this,
                           AbilityType.PLAYFUL_GHOST,
                           params().pos(),
-                          params.dirVector().setAngleDeg(baseAngle - 30f),
-
-                          game);
+                          params.dirVector().setAngleDeg(baseAngle - 30f));
         game.chainAbility(this,
                           AbilityType.PLAYFUL_GHOST,
                           params().pos(),
-                          params.dirVector().setAngleDeg(baseAngle + 30f),
-
-                          game);
+                          params.dirVector().setAngleDeg(baseAngle + 30f));
     }
 
     @Override
-    void onUpdatePosition(CreaturePosRetrievable game) {
-
-    }
-
-    @Override
-    void onChannelUpdate(CreaturePosRetrievable game) {
+    void onUpdatePosition(AbilityUpdatable game) {
 
     }
 
     @Override
-    void onActiveUpdate(AbilityUpdateable game) {
+    void onChannelUpdate(AbilityUpdatable game) {
+
+    }
+
+    @Override
+    void onActiveUpdate(AbilityUpdatable game) {
 
     }
 
@@ -78,17 +72,17 @@ public class SummonGhosts extends Ability {
     }
 
     @Override
-    public void onThisCreatureHit(MyGdxGame game) {
+    public void onThisCreatureHit(AbilityUpdatable game) {
 
     }
 
     @Override
-    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos, MyGdxGame game) {
+    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
 
     }
 
     @Override
-    public void onAbilityHit(AbilityId otherAbilityId, MyGdxGame game) {
+    public void onOtherAbilityHit(AbilityId otherAbilityId, AbilityUpdatable game) {
 
     }
 }

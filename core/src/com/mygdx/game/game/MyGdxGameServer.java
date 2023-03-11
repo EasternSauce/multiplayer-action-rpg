@@ -255,12 +255,11 @@ public class MyGdxGameServer extends MyGdxGame {
     }
 
     public void spawnAbility(AbilityType abilityType,
-                             AbilityParams abilityParams,
-                             MyGdxGame game) {
-        Creature creature = game.getCreature(abilityParams.creatureId());
+                             AbilityParams abilityParams) {
+        Creature creature = getCreature(abilityParams.creatureId());
 
         if (creature != null) {
-            Ability ability = AbilityFactory.produceAbility(abilityType, abilityParams, game);
+            Ability ability = AbilityFactory.produceAbility(abilityType, abilityParams, this);
 
             AddAbilityAction action = AddAbilityAction.of(ability);
 
@@ -368,11 +367,11 @@ public class MyGdxGameServer extends MyGdxGame {
                                             EnemyTemplate.of(EnemyType.SKELETON, 3f, SkillType.SWORD_SLASH)));
 
 
-                enemySpawns.forEach(enemySpawn -> {
-                    CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 10000000));
-                    spawnEnemy(enemyId, areaId, enemySpawn);
-                    endPoint().sendToAllTCP(SpawnEnemyCommand.of(enemyId, areaId, enemySpawn));
-                });
+        enemySpawns.forEach(enemySpawn -> {
+            CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 10000000));
+            spawnEnemy(enemyId, areaId, enemySpawn);
+            endPoint().sendToAllTCP(SpawnEnemyCommand.of(enemyId, areaId, enemySpawn));
+        });
     }
 
     @Override
@@ -450,8 +449,7 @@ public class MyGdxGameServer extends MyGdxGame {
     public void chainAbility(Ability chainFromAbility,
                              AbilityType abilityType,
                              Vector2 chainToPos,
-                             Vector2 dirVector,
-                             MyGdxGame game) {
+                             Vector2 dirVector) {
         AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
 
         Map<CreatureId, Float>
@@ -470,7 +468,7 @@ public class MyGdxGameServer extends MyGdxGame {
                                                    .dirVector(dirVector)
                                                    .skillType(chainFromAbility.params().skillType());
 
-        spawnAbility(abilityType, abilityParams, game);
+        spawnAbility(abilityType, abilityParams);
     }
 
 

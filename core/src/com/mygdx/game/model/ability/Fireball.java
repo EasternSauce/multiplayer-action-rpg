@@ -1,8 +1,6 @@
 package com.mygdx.game.model.ability;
 
-import com.mygdx.game.game.AbilityUpdateable;
-import com.mygdx.game.game.CreaturePosRetrievable;
-import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.game.AbilityUpdatable;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
@@ -22,17 +20,17 @@ public class Fireball extends Projectile {
     }
 
     @Override
-    public void onThisCreatureHit(MyGdxGame game) {
+    public void onThisCreatureHit(AbilityUpdatable game) {
 
     }
 
     @Override
-    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos, MyGdxGame game) {
+    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
         deactivate();
     }
 
     @Override
-    protected void onActiveUpdate(AbilityUpdateable game) {
+    protected void onActiveUpdate(AbilityUpdatable game) {
         //projectile speeds up over time
         if (params().speed() != null) {
             params().velocity(params().dirVector().normalized().multiplyBy(params().speed()));
@@ -53,35 +51,34 @@ public class Fireball extends Projectile {
     }
 
     @Override
-    void onAbilityStarted(MyGdxGame game) {
+    void onAbilityStarted(AbilityUpdatable game) {
 
     }
 
     @Override
-    void onDelayedAction(MyGdxGame game) {
+    void onDelayedAction(AbilityUpdatable game) {
 
     }
 
     @Override
-    protected void onAbilityCompleted(MyGdxGame game) {
+    protected void onAbilityCompleted(AbilityUpdatable game) {
         game.chainAbility(this,
                           AbilityType.FIREBALL_EXPLOSION,
                           params().pos(),
-                          params.dirVector(),
-                          game);
+                          params.dirVector());
     }
 
     @Override
-    void onUpdatePosition(CreaturePosRetrievable game) {
+    void onUpdatePosition(AbilityUpdatable game) {
 
     }
 
     @Override
-    public void onAbilityHit(AbilityId otherAbilityId, MyGdxGame game) {
+    public void onOtherAbilityHit(AbilityId otherAbilityId, AbilityUpdatable game) {
 
     }
 
-    public static Fireball of(AbilityParams abilityParams, @SuppressWarnings("unused") MyGdxGame game) {
+    public static Fireball of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
         Creature creature = game.getCreature(abilityParams.creatureId());
 
         Fireball ability = Fireball.of();

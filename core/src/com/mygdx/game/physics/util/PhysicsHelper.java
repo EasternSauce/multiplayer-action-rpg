@@ -49,7 +49,7 @@ public class PhysicsHelper {
                 Ability ability = game.gameState().abilities().get(event.abilityId());
 
                 if (ability != null && ability.params().state() == AbilityState.ACTIVE) {
-                    ability.onTerrainHit(event.abilityPos(), event.tilePos(), game);
+                    ability.onTerrainHit(event.abilityPos(), event.tilePos());
                 }
 
             }
@@ -60,10 +60,10 @@ public class PhysicsHelper {
                 Ability abilityB = game.gameState().abilities().get(event.abilityB_Id());
 
                 if (abilityA != null && abilityA.params().state() == AbilityState.ACTIVE) {
-                    abilityA.onAbilityHit(event.abilityB_Id(), game);
+                    abilityA.onOtherAbilityHit(event.abilityB_Id(), game);
                 }
                 if (abilityB != null && abilityB.params().state() == AbilityState.ACTIVE) {
-                    abilityB.onAbilityHit(event.abilityA_Id(), game);
+                    abilityB.onOtherAbilityHit(event.abilityA_Id(), game);
                 }
             }
             else if (physicsEvent instanceof CreatureHitsAreaGateEvent) {

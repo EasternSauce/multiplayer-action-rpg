@@ -1,9 +1,7 @@
 package com.mygdx.game.model.ability;
 
 
-import com.mygdx.game.game.AbilityUpdateable;
-import com.mygdx.game.game.CreaturePosRetrievable;
-import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.game.AbilityUpdatable;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.skill.Skill;
 import com.mygdx.game.model.util.Vector2;
@@ -24,22 +22,22 @@ public class Boomerang extends Projectile {
     }
 
     @Override
-    void onAbilityStarted(MyGdxGame game) {
+    void onAbilityStarted(AbilityUpdatable game) {
 
     }
 
     @Override
-    void onDelayedAction(MyGdxGame game) {
+    void onDelayedAction(AbilityUpdatable game) {
 
     }
 
     @Override
-    void onAbilityCompleted(MyGdxGame game) {
+    void onAbilityCompleted(AbilityUpdatable game) {
 
     }
 
     @Override
-    void onUpdatePosition(CreaturePosRetrievable game) {
+    void onUpdatePosition(AbilityUpdatable game) {
 
     }
 
@@ -51,7 +49,7 @@ public class Boomerang extends Projectile {
     }
 
     @Override
-    public void onThisCreatureHit(MyGdxGame game) {
+    public void onThisCreatureHit(AbilityUpdatable game) {
         if (params().comingBack()) {
 
             Creature creature = game.getCreature(params().creatureId());
@@ -64,7 +62,7 @@ public class Boomerang extends Projectile {
     }
 
     @Override
-    void onActiveUpdate(AbilityUpdateable game) {
+    void onActiveUpdate(AbilityUpdatable game) {
         if (params().speed() != null) {
             params().velocity(params().dirVector().normalized().multiplyBy(params().speed()));
         }
@@ -122,17 +120,17 @@ public class Boomerang extends Projectile {
     }
 
     @Override
-    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos, MyGdxGame game) {
+    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
         params().comingBack(true);
         params().speed(20f);
     }
 
     @Override
-    public void onAbilityHit(AbilityId otherAbilityId, MyGdxGame game) {
+    public void onOtherAbilityHit(AbilityId otherAbilityId, AbilityUpdatable game) {
 
     }
 
-    public static Boomerang of(AbilityParams abilityParams, @SuppressWarnings("unused") MyGdxGame game) {
+    public static Boomerang of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
         Boomerang ability = Boomerang.of();
         ability.params =
                 abilityParams.width(1.8f)

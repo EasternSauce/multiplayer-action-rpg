@@ -1,8 +1,8 @@
 package com.mygdx.game.model.creature;
 
 import com.mygdx.game.Constants;
-import com.mygdx.game.game.CreaturePosRetrievable;
-import com.mygdx.game.game.EnemyAiUpdatable;
+import com.mygdx.game.game.AbilityUpdatable;
+import com.mygdx.game.game.CreatureUpdatable;
 import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityState;
@@ -37,7 +37,7 @@ public class Enemy extends Creature {
         return enemy;
     }
 
-    public CreatureId findTarget(EnemyAiUpdatable game) {
+    public CreatureId findTarget(CreatureUpdatable game) {
         Float minDistance = Float.MAX_VALUE;
         CreatureId minCreatureId = null;
         for (Creature creature : game.getCreatures()) {
@@ -133,7 +133,7 @@ public class Enemy extends Creature {
 
     }
 
-    private void processAiStateChangeLogic(EnemyAiUpdatable game) {
+    private void processAiStateChangeLogic(CreatureUpdatable game) {
         if (params().targetCreatureId() == null) {
             return;
         }
@@ -196,7 +196,7 @@ public class Enemy extends Creature {
 
     @Override
     public void handleBeingAttacked(Boolean isRanged, Vector2 dirVector, float damage, CreatureId attackerId,
-                                    MyGdxGame game) {
+                                    AbilityUpdatable game) {
         if (!isRanged) { // check if target is pointing shield at the attack
             Ability shieldAbility = game.getAbility(params().id(), SkillType.SUMMON_SHIELD);
             if (shieldAbility != null && shieldAbility.params().state() == AbilityState.ACTIVE) {
@@ -264,7 +264,7 @@ public class Enemy extends Creature {
         }
     }
 
-    private List<Vector2> mirrorPathFromNearbyCreature(CreatureId targetId, EnemyAiUpdatable game) {
+    private List<Vector2> mirrorPathFromNearbyCreature(CreatureId targetId, CreatureUpdatable game) {
 
         Predicate<Creature> creaturePredicate = creature ->
                 creature instanceof Enemy &&
@@ -340,7 +340,7 @@ public class Enemy extends Creature {
         }
     }
 
-    public void handleAttackTarget(Creature potentialTarget, Vector2 vectorTowardsTarget, EnemyAiUpdatable game) {
+    public void handleAttackTarget(Creature potentialTarget, Vector2 vectorTowardsTarget, CreatureUpdatable game) {
         if (potentialTarget.params().pos().distance(params().pos()) < params().attackDistance()) {
 
             game.handleAttackTarget(params().id(), vectorTowardsTarget, params().mainAttackSkill());
@@ -368,7 +368,7 @@ public class Enemy extends Creature {
     }
 
     @Override
-    public WorldDirection facingDirection(CreaturePosRetrievable game) {
+    public WorldDirection facingDirection(CreatureUpdatable game) {
 
         float deg;
         if (params().targetCreatureId() != null) {

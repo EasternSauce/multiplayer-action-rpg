@@ -1,8 +1,6 @@
 package com.mygdx.game.model.ability;
 
-import com.mygdx.game.game.AbilityUpdateable;
-import com.mygdx.game.game.CreaturePosRetrievable;
-import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.game.AbilityUpdatable;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
@@ -30,22 +28,22 @@ public class SwordSpin extends Ability {
     }
 
     @Override
-    void onAbilityStarted(MyGdxGame game) {
+    void onAbilityStarted(AbilityUpdatable game) {
 
     }
 
     @Override
-    void onDelayedAction(MyGdxGame game) {
+    void onDelayedAction(AbilityUpdatable game) {
 
     }
 
     @Override
-    void onAbilityCompleted(MyGdxGame game) {
+    void onAbilityCompleted(AbilityUpdatable game) {
 
     }
 
     @Override
-    protected void onUpdatePosition(CreaturePosRetrievable game) {
+    protected void onUpdatePosition(AbilityUpdatable game) {
         Vector2 dirVector;
         if (params().dirVector().len() <= 0) {
             dirVector = Vector2.of(1, 0);
@@ -71,7 +69,7 @@ public class SwordSpin extends Ability {
     }
 
     @Override
-    void onChannelUpdate(CreaturePosRetrievable gameState) {
+    void onChannelUpdate(AbilityUpdatable gameState) {
         if (isPositionUpdated()) {
             onUpdatePosition(gameState);
         }
@@ -79,7 +77,7 @@ public class SwordSpin extends Ability {
     }
 
     @Override
-    void onActiveUpdate(AbilityUpdateable game) {
+    void onActiveUpdate(AbilityUpdatable game) {
         if (isPositionUpdated()) {
             onUpdatePosition(game);
         }
@@ -102,21 +100,21 @@ public class SwordSpin extends Ability {
     }
 
     @Override
-    public void onThisCreatureHit(MyGdxGame game) {
+    public void onThisCreatureHit(AbilityUpdatable game) {
 
     }
 
     @Override
-    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos, MyGdxGame game) {
+    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
 
     }
 
     @Override
-    public void onAbilityHit(AbilityId otherAbilityId, MyGdxGame game) {
+    public void onOtherAbilityHit(AbilityId otherAbilityId, AbilityUpdatable game) {
 
     }
 
-    public static SwordSpin of(AbilityParams abilityParams, @SuppressWarnings("unused") MyGdxGame game) {
+    public static SwordSpin of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
         SwordSpin ability = SwordSpin.of();
         ability.params =
                 abilityParams

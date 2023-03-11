@@ -31,7 +31,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 
-public abstract class MyGdxGame extends Game implements AbilityUpdateable, CreatureUpdatable, AbilityRetrievable {
+public abstract class MyGdxGame extends Game implements AbilityUpdatable, CreatureUpdatable {
     final protected GameRenderer gameRenderer = GameRenderer.of();
     final protected GamePhysics gamePhysics = GamePhysics.of();
     protected GameState gameState = GameState.of();
@@ -80,6 +80,7 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Creat
         return abilitiesToBeRemoved;
     }
 
+    @Override
     public List<TeleportInfo> creaturesToTeleport() {
         return creaturesToTeleport;
     }
@@ -451,13 +452,13 @@ public abstract class MyGdxGame extends Game implements AbilityUpdateable, Creat
         return gameState.defaultAreaId();
     }
 
-    public void teleportCreature(TeleportInfo teleportInfo, MyGdxGame game) {
-        if (teleportInfo.toAreaId().equals(game.getCreature(teleportInfo.creatureId()).params().areaId())) {
-            game.physics().creatureBodies().get(teleportInfo.creatureId()).forceSetTransform(teleportInfo.pos());
+    public void teleportCreature(TeleportInfo teleportInfo) {
+        if (teleportInfo.toAreaId().equals(getCreature(teleportInfo.creatureId()).params().areaId())) {
+            physics().creatureBodies().get(teleportInfo.creatureId()).forceSetTransform(teleportInfo.pos());
         }
         else {
             if (teleportInfo.creatureId() != null) {
-                Creature creature = game.getCreature(teleportInfo.creatureId());
+                Creature creature = getCreature(teleportInfo.creatureId());
 
                 creature.params().areaId(teleportInfo.toAreaId());
 

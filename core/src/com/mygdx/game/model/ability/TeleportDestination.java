@@ -1,8 +1,6 @@
 package com.mygdx.game.model.ability;
 
-import com.mygdx.game.game.AbilityUpdateable;
-import com.mygdx.game.game.CreaturePosRetrievable;
-import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.game.AbilityUpdatable;
 import com.mygdx.game.game.data.TeleportInfo;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
@@ -23,33 +21,33 @@ public class TeleportDestination extends Ability {
     }
 
     @Override
-    void onAbilityStarted(MyGdxGame game) {
+    void onAbilityStarted(AbilityUpdatable game) {
         game.creaturesToTeleport()
             .add(TeleportInfo.of(params().creatureId(), params().pos(), params().areaId(), params().areaId()));
     }
 
     @Override
-    void onDelayedAction(MyGdxGame game) {
+    void onDelayedAction(AbilityUpdatable game) {
 
     }
 
     @Override
-    void onAbilityCompleted(MyGdxGame game) {
+    void onAbilityCompleted(AbilityUpdatable game) {
 
     }
 
     @Override
-    void onUpdatePosition(CreaturePosRetrievable game) {
+    void onUpdatePosition(AbilityUpdatable game) {
 
     }
 
     @Override
-    void onChannelUpdate(CreaturePosRetrievable game) {
+    void onChannelUpdate(AbilityUpdatable game) {
 
     }
 
     @Override
-    void onActiveUpdate(AbilityUpdateable game) {
+    void onActiveUpdate(AbilityUpdatable game) {
 
     }
 
@@ -59,21 +57,22 @@ public class TeleportDestination extends Ability {
     }
 
     @Override
-    public void onThisCreatureHit(MyGdxGame game) {
+    public void onThisCreatureHit(AbilityUpdatable game) {
 
     }
 
     @Override
-    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos, MyGdxGame game) {
+    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
 
     }
 
     @Override
-    public void onAbilityHit(AbilityId otherAbilityId, MyGdxGame game) {
+    public void onOtherAbilityHit(AbilityId otherAbilityId, AbilityUpdatable game) {
 
     }
 
-    public static TeleportDestination of(AbilityParams abilityParams, @SuppressWarnings("unused") MyGdxGame game) {
+    public static TeleportDestination of(AbilityParams abilityParams,
+                                         @SuppressWarnings("unused") AbilityUpdatable game) {
         Creature creature = game.getCreature(abilityParams.creatureId());
 
         Vector2 teleportPos = TeleportDestination.calculatePos(creature.params()
@@ -101,7 +100,7 @@ public class TeleportDestination extends Ability {
         return ability;
     }
 
-    private static Vector2 calculatePos(Vector2 pos, Vector2 creaturePos, AreaId areaId, MyGdxGame game) {
+    private static Vector2 calculatePos(Vector2 pos, Vector2 creaturePos, AreaId areaId, AbilityUpdatable game) {
         Vector2 vectorTowards = creaturePos.vectorTowards(pos);
 
         float maxRange = 14f;
@@ -113,7 +112,7 @@ public class TeleportDestination extends Ability {
             destinationPos = pos;
         }
 
-        if (!game.physics().physicsWorlds().get(areaId).isLineOfSight(creaturePos, destinationPos)) {
+        if (!game.getWorld(areaId).isLineOfSight(creaturePos, destinationPos)) {
             return creaturePos;
         }
 

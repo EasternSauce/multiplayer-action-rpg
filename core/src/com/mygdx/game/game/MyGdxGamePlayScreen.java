@@ -142,7 +142,7 @@ public class MyGdxGamePlayScreen implements Screen {
         game.abilitiesToBeRemoved().forEach(abilityId -> game.removeAbility(abilityId));
         game.abilitiesToBeRemoved().clear();
 
-        game.creaturesToTeleport().forEach(teleportInfo -> game.teleportCreature(teleportInfo, game));
+        game.creaturesToTeleport().forEach(teleportInfo -> game.teleportCreature(teleportInfo));
 
         game.creaturesToTeleport().clear();
 

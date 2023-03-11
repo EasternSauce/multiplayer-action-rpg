@@ -566,7 +566,7 @@ public class MyGdxGameClient extends MyGdxGame {
     @Override
     public void spawnAbility(
             AbilityType abilityType,
-            AbilityParams abilityParams, MyGdxGame game) {
+            AbilityParams abilityParams) {
         // do nothing, wait for server action
     }
 
@@ -574,8 +574,7 @@ public class MyGdxGameClient extends MyGdxGame {
     public void chainAbility(Ability chainFromAbility,
                              AbilityType abilityType,
                              Vector2 chainToPos,
-                             Vector2 dirVector,
-                             MyGdxGame game) {
+                             Vector2 dirVector) {
         // do nothing
     }
 

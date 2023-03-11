@@ -1,8 +1,6 @@
 package com.mygdx.game.model.ability;
 
-import com.mygdx.game.game.AbilityUpdateable;
-import com.mygdx.game.game.CreaturePosRetrievable;
-import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.game.AbilityUpdatable;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.renderer.config.AbilityAnimationConfig;
@@ -22,7 +20,7 @@ public abstract class Ability {
 
     public abstract Boolean isRanged();
 
-    public void update(Float delta, MyGdxGame game) {
+    public void update(Float delta, AbilityUpdatable game) {
         AbilityState state = params().state();
 
         if (state == AbilityState.CHANNEL) {
@@ -64,19 +62,19 @@ public abstract class Ability {
         updateTimers(delta);
     }
 
-    abstract void onAbilityStarted(MyGdxGame game);
+    abstract void onAbilityStarted(AbilityUpdatable game);
 
-    abstract void onDelayedAction(MyGdxGame game);
+    abstract void onDelayedAction(AbilityUpdatable game);
 
-    abstract void onAbilityCompleted(MyGdxGame game);
+    abstract void onAbilityCompleted(AbilityUpdatable game);
 
-    abstract void onUpdatePosition(CreaturePosRetrievable game);
+    abstract void onUpdatePosition(AbilityUpdatable game);
 
-    abstract void onChannelUpdate(CreaturePosRetrievable game);
+    abstract void onChannelUpdate(AbilityUpdatable game);
 
-    abstract void onActiveUpdate(AbilityUpdateable game);
+    abstract void onActiveUpdate(AbilityUpdatable game);
 
-    public void init(AbilityUpdateable game) {
+    public void init(AbilityUpdatable game) {
 
         if (isPositionUpdated()) {
             onUpdatePosition(game);
@@ -115,11 +113,11 @@ public abstract class Ability {
 
     public abstract void onCreatureHit();
 
-    public abstract void onThisCreatureHit(MyGdxGame game);
+    public abstract void onThisCreatureHit(AbilityUpdatable game);
 
-    public abstract void onTerrainHit(Vector2 abilityPos, Vector2 tilePos, MyGdxGame game);
+    public abstract void onTerrainHit(Vector2 abilityPos, Vector2 tilePos);
 
-    public abstract void onAbilityHit(AbilityId otherAbilityId, MyGdxGame game);
+    public abstract void onOtherAbilityHit(AbilityId otherAbilityId, AbilityUpdatable game);
 
     public boolean bodyShouldExist() {
         return !(params().inactiveBody() || params().state() != AbilityState.ACTIVE);

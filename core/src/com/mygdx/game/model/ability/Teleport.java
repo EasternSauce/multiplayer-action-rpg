@@ -1,8 +1,6 @@
 package com.mygdx.game.model.ability;
 
-import com.mygdx.game.game.AbilityUpdateable;
-import com.mygdx.game.game.CreaturePosRetrievable;
-import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.game.AbilityUpdatable;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
@@ -22,32 +20,32 @@ public class Teleport extends Ability {
     }
 
     @Override
-    void onAbilityStarted(MyGdxGame game) {
+    void onAbilityStarted(AbilityUpdatable game) {
 
     }
 
     @Override
-    void onDelayedAction(MyGdxGame game) {
-        game.chainAbility(this, AbilityType.TELEPORT_DESTINATION, params().pos(), params().dirVector(), game);
+    void onDelayedAction(AbilityUpdatable game) {
+        game.chainAbility(this, AbilityType.TELEPORT_DESTINATION, params().pos(), params().dirVector());
     }
 
     @Override
-    void onAbilityCompleted(MyGdxGame game) {
-
-    }
-
-    @Override
-    void onUpdatePosition(CreaturePosRetrievable game) {
+    void onAbilityCompleted(AbilityUpdatable game) {
 
     }
 
     @Override
-    void onChannelUpdate(CreaturePosRetrievable game) {
+    void onUpdatePosition(AbilityUpdatable game) {
 
     }
 
     @Override
-    void onActiveUpdate(AbilityUpdateable game) {
+    void onChannelUpdate(AbilityUpdatable game) {
+
+    }
+
+    @Override
+    void onActiveUpdate(AbilityUpdatable game) {
 
     }
 
@@ -57,21 +55,21 @@ public class Teleport extends Ability {
     }
 
     @Override
-    public void onThisCreatureHit(MyGdxGame game) {
+    public void onThisCreatureHit(AbilityUpdatable game) {
 
     }
 
     @Override
-    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos, MyGdxGame game) {
+    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
 
     }
 
     @Override
-    public void onAbilityHit(AbilityId otherAbilityId, MyGdxGame game) {
+    public void onOtherAbilityHit(AbilityId otherAbilityId, AbilityUpdatable game) {
 
     }
 
-    public static Teleport of(AbilityParams abilityParams, @SuppressWarnings("unused") MyGdxGame game) {
+    public static Teleport of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
         Creature creature = game.getCreature(abilityParams.creatureId());
 
         Teleport ability = Teleport.of();

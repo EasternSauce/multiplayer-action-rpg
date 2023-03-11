@@ -1,8 +1,6 @@
 package com.mygdx.game.model.ability;
 
-import com.mygdx.game.game.AbilityUpdateable;
-import com.mygdx.game.game.CreaturePosRetrievable;
-import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.game.AbilityUpdatable;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.Enemy;
 import com.mygdx.game.model.creature.Player;
@@ -27,22 +25,22 @@ public class MagicOrb extends Projectile {
     }
 
     @Override
-    void onAbilityStarted(MyGdxGame game) {
+    void onAbilityStarted(AbilityUpdatable game) {
 
     }
 
     @Override
-    void onDelayedAction(MyGdxGame game) {
+    void onDelayedAction(AbilityUpdatable game) {
 
     }
 
     @Override
-    void onAbilityCompleted(MyGdxGame game) {
+    void onAbilityCompleted(AbilityUpdatable game) {
 
     }
 
     @Override
-    void onUpdatePosition(CreaturePosRetrievable game) {
+    void onUpdatePosition(AbilityUpdatable game) {
 
     }
 
@@ -52,12 +50,12 @@ public class MagicOrb extends Projectile {
     }
 
     @Override
-    public void onThisCreatureHit(MyGdxGame game) {
+    public void onThisCreatureHit(AbilityUpdatable game) {
 
     }
 
     @Override
-    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos, MyGdxGame game) {
+    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
         if (params().stateTimer().time() > 0.1f) {
             deactivate();
         }
@@ -76,7 +74,7 @@ public class MagicOrb extends Projectile {
     }
 
     @Override
-    void onActiveUpdate(AbilityUpdateable game) {
+    void onActiveUpdate(AbilityUpdatable game) {
         if (params().speed() != null) {
             params().velocity(params().dirVector().normalized().multiplyBy(params().speed()));
         }
@@ -155,11 +153,11 @@ public class MagicOrb extends Projectile {
     }
 
     @Override
-    public void onAbilityHit(AbilityId otherAbilityId, MyGdxGame game) {
+    public void onOtherAbilityHit(AbilityId otherAbilityId, AbilityUpdatable game) {
 
     }
 
-    public static MagicOrb of(AbilityParams abilityParams, @SuppressWarnings("unused") MyGdxGame game) {
+    public static MagicOrb of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
         MagicOrb ability = MagicOrb.of();
         ability.params =
                 abilityParams

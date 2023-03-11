@@ -1,6 +1,6 @@
 package com.mygdx.game.model.creature;
 
-import com.mygdx.game.game.CreaturePosRetrievable;
+import com.mygdx.game.game.AbilityUpdatable;
 import com.mygdx.game.game.CreatureUpdatable;
 import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.model.ability.Ability;
@@ -94,7 +94,7 @@ public abstract class Creature {
         return !params().isDead();
     }
 
-    public WorldDirection facingDirection(CreaturePosRetrievable game) {
+    public WorldDirection facingDirection(CreatureUpdatable game) {
         float deg = params().movingVector().angleDeg();
         if (deg >= 45 && deg < 135) {
             return WorldDirection.UP;
@@ -159,7 +159,7 @@ public abstract class Creature {
                                     Vector2 dirVector,
                                     float damage,
                                     CreatureId attackerId,
-                                    MyGdxGame game) {
+                                    AbilityUpdatable game) {
         if (!isRanged) { // check if target is pointing shield at the attack
             Ability shieldAbility = game.getAbility(params().id(), SkillType.SUMMON_SHIELD);
             if (shieldAbility != null && shieldAbility.params().state() == AbilityState.ACTIVE) {

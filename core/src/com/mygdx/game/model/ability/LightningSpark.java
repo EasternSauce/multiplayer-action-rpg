@@ -1,8 +1,6 @@
 package com.mygdx.game.model.ability;
 
-import com.mygdx.game.game.AbilityUpdateable;
-import com.mygdx.game.game.CreaturePosRetrievable;
-import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.game.AbilityUpdatable;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.util.Vector2;
@@ -32,12 +30,12 @@ public class LightningSpark extends Ability {
     }
 
     @Override
-    void onAbilityStarted(MyGdxGame game) {
+    void onAbilityStarted(AbilityUpdatable game) {
 
     }
 
     @Override
-    void onDelayedAction(MyGdxGame game) {
+    void onDelayedAction(AbilityUpdatable game) {
         // find closest enemy, and if they are within distance, and havent been hit yet, then start node over them
         Set<CreatureId> excluded = new HashSet<>(params().creaturesAlreadyHit().keySet());
         excluded.add(params().creatureId());
@@ -56,34 +54,32 @@ public class LightningSpark extends Ability {
             game.chainAbility(this,
                               AbilityType.LIGHTNING_CHAIN,
                               targetCreature.params().pos(), // this pos is later changed, TODO: move it to other param?
-                              params.dirVector(),
-                              game);
+                              params.dirVector());
 
             game.chainAbility(this,
                               AbilityType.LIGHTNING_NODE,
                               targetCreature.params().pos(),
-                              params.dirVector(),
-                              game);
+                              params.dirVector());
         }
     }
 
     @Override
-    void onAbilityCompleted(MyGdxGame game) {
+    void onAbilityCompleted(AbilityUpdatable game) {
 
     }
 
     @Override
-    void onUpdatePosition(CreaturePosRetrievable game) {
+    void onUpdatePosition(AbilityUpdatable game) {
 
     }
 
     @Override
-    void onChannelUpdate(CreaturePosRetrievable game) {
+    void onChannelUpdate(AbilityUpdatable game) {
 
     }
 
     @Override
-    void onActiveUpdate(AbilityUpdateable game) {
+    void onActiveUpdate(AbilityUpdatable game) {
 
     }
 
@@ -93,21 +89,21 @@ public class LightningSpark extends Ability {
     }
 
     @Override
-    public void onThisCreatureHit(MyGdxGame game) {
+    public void onThisCreatureHit(AbilityUpdatable game) {
 
     }
 
     @Override
-    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos, MyGdxGame game) {
+    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
 
     }
 
     @Override
-    public void onAbilityHit(AbilityId otherAbilityId, MyGdxGame game) {
+    public void onOtherAbilityHit(AbilityId otherAbilityId, AbilityUpdatable game) {
 
     }
 
-    public static LightningSpark of(AbilityParams abilityParams, MyGdxGame game) {
+    public static LightningSpark of(AbilityParams abilityParams, AbilityUpdatable game) {
         Creature creature = game.getCreature(abilityParams.creatureId());
 
         LightningSpark ability = LightningSpark.of();
