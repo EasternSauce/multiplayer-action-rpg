@@ -1,8 +1,9 @@
 package com.mygdx.game.physics.util;
 
+import com.mygdx.game.Constants;
 import com.mygdx.game.game.data.AreaGate;
 import com.mygdx.game.game.data.TeleportEvent;
-import com.mygdx.game.game.intrface.GameUpdatable;
+import com.mygdx.game.game.interface_.GameUpdatable;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityState;
 import com.mygdx.game.model.area.AreaId;
@@ -140,7 +141,7 @@ public class PhysicsHelper {
             game.getCreatures().forEach((creatureId, creature) -> {
                 if (game.getCreatureBodies().containsKey(creatureId) &&
                     game.getCreatureBodies().get(creatureId).getBodyPos().distance(creature.params().pos()) >
-                    0.05f // only setTransform if positions are far apart
+                    Constants.FORCE_UPDATE_MINIMUM_DISTANCE // only setTransform if positions are far apart
                 ) {
                     game.getCreatureBodies().get(creatureId).trySetTransform(creature.params().pos());
                 }
@@ -152,7 +153,7 @@ public class PhysicsHelper {
                     // this is needed to fix body created client/server desync
                     ability.bodyShouldExist() &&
                     game.getAbilityBodies().get(abilityId).getBodyPos().distance(ability.params().pos()) >
-                    0.05f // only setTransform if positions are far apart
+                    Constants.FORCE_UPDATE_MINIMUM_DISTANCE // only setTransform if positions are far apart
                 ) {
                     game.getAbilityBodies().get(abilityId).trySetTransform(ability.params().pos());
                 }

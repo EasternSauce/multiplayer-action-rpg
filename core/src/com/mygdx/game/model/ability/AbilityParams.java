@@ -24,7 +24,6 @@ public class AbilityParams {
     SimpleTimer stateTimer = SimpleTimer.getExpiredTimer();
     Vector2 dirVector;
     String textureName;
-    //    AbilityRect rect;
 
     Float rotationAngle = 0f;
 

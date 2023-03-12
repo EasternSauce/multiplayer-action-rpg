@@ -4,25 +4,19 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.math.Vector3;
 import com.esotericsoftware.kryonet.EndPoint;
 import com.mygdx.game.chat.Chat;
-import com.mygdx.game.command.*;
 import com.mygdx.game.game.data.TeleportEvent;
-import com.mygdx.game.game.intrface.AbilityUpdatable;
-import com.mygdx.game.game.intrface.CreatureUpdatable;
-import com.mygdx.game.game.intrface.GameActionApplicable;
-import com.mygdx.game.game.intrface.GameRenderable;
+import com.mygdx.game.game.interface_.AbilityUpdatable;
+import com.mygdx.game.game.interface_.CreatureUpdatable;
+import com.mygdx.game.game.interface_.GameActionApplicable;
+import com.mygdx.game.game.interface_.GameRenderable;
 import com.mygdx.game.model.GameState;
-import com.mygdx.game.model.ability.*;
-import com.mygdx.game.model.action.*;
-import com.mygdx.game.model.area.Area;
+import com.mygdx.game.model.ability.Ability;
+import com.mygdx.game.model.ability.AbilityId;
+import com.mygdx.game.model.ability.AbilityState;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.*;
-import com.mygdx.game.model.skill.ScheduledAbility;
-import com.mygdx.game.model.skill.Skill;
 import com.mygdx.game.model.skill.SkillType;
-import com.mygdx.game.model.util.GameStateBroadcast;
-import com.mygdx.game.model.util.SimpleTimer;
 import com.mygdx.game.model.util.Vector2;
-import com.mygdx.game.model.util.WorldDirection;
 import com.mygdx.game.physics.GamePhysics;
 import com.mygdx.game.physics.body.AbilityBody;
 import com.mygdx.game.physics.body.CreatureBody;
@@ -34,8 +28,6 @@ import com.mygdx.game.renderer.GameRenderer;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.ConcurrentSkipListMap;
-import java.util.concurrent.ConcurrentSkipListSet;
 
 public abstract class MyGdxGame extends Game implements AbilityUpdatable, CreatureUpdatable, GameRenderable, GameActionApplicable {
     final protected GameRenderer gameRenderer = GameRenderer.of();
@@ -348,83 +340,6 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
     public PhysicsWorld getPhysicsWorld(AreaId areaId) {
         return physics().physicsWorlds().get(areaId);
     }
-
-    public void registerEndPointClasses() {
-        endPoint().getKryo().setRegistrationRequired(true);
-
-        endPoint().getKryo().register(ArrayList.class);
-        endPoint().getKryo().register(LinkedList.class);
-        endPoint().getKryo().register(ConcurrentSkipListSet.class);
-        endPoint().getKryo().register(ConcurrentSkipListMap.class);
-
-        endPoint().getKryo().register(CreatureId.class);
-        endPoint().getKryo().register(Vector2.class);
-        endPoint().getKryo().register(AreaId.class);
-        endPoint().getKryo().register(SimpleTimer.class);
-        endPoint().getKryo().register(AbilityType.class);
-        endPoint().getKryo().register(AbilityState.class);
-        endPoint().getKryo().register(EnemyType.class);
-        endPoint().getKryo().register(SkillType.class);
-        endPoint().getKryo().register(EnemySpawn.class);
-        endPoint().getKryo().register(AbilityId.class);
-        endPoint().getKryo().register(EnemyAiState.class);
-
-        endPoint().getKryo().register(InitPlayerCommand.class);
-        endPoint().getKryo().register(PlayerMovementCommand.class);
-        endPoint().getKryo().register(SendChatMessageCommand.class);
-        endPoint().getKryo().register(SpawnEnemyCommand.class);
-        endPoint().getKryo().register(TryPerformSkillCommand.class);
-
-        endPoint().getKryo().register(Ability.class);
-        endPoint().getKryo().register(AbilityRect.class);
-        endPoint().getKryo().register(SummonGhosts.class);
-        endPoint().getKryo().register(SwordSlash.class);
-        endPoint().getKryo().register(CrossbowBolt.class);
-        endPoint().getKryo().register(Fireball.class);
-        endPoint().getKryo().register(FireballExplosion.class);
-        endPoint().getKryo().register(LightningChain.class);
-        endPoint().getKryo().register(LightningNode.class);
-        endPoint().getKryo().register(LightningSpark.class);
-        endPoint().getKryo().register(MagicOrb.class);
-        endPoint().getKryo().register(VolatileBubble.class);
-        endPoint().getKryo().register(IceSpear.class);
-        endPoint().getKryo().register(PlayfulGhost.class);
-        endPoint().getKryo().register(RicochetBullet.class);
-        endPoint().getKryo().register(RicochetBallista.class);
-        endPoint().getKryo().register(Boomerang.class);
-        endPoint().getKryo().register(SummonShield.class);
-        endPoint().getKryo().register(SwordSpin.class);
-        endPoint().getKryo().register(Teleport.class);
-        endPoint().getKryo().register(TeleportDestination.class);
-
-
-        endPoint().getKryo().register(Enemy.class);
-        endPoint().getKryo().register(Area.class);
-        endPoint().getKryo().register(Player.class);
-        endPoint().getKryo().register(ScheduledAbility.class);
-        endPoint().getKryo().register(Skill.class);
-        endPoint().getKryo().register(WorldDirection.class);
-        endPoint().getKryo().register(CreatureParams.class);
-        endPoint().getKryo().register(AbilityParams.class);
-
-
-        endPoint().getKryo().register(AddAbilityAction.class);
-        endPoint().getKryo().register(AddPlayerAction.class);
-        endPoint().getKryo().register(CreatureDeathAction.class);
-        endPoint().getKryo().register(MovePlayerTowardsTargetAction.class);
-        endPoint().getKryo().register(RemoveAbilityAction.class);
-        endPoint().getKryo().register(RemovePlayerAction.class);
-        endPoint().getKryo().register(RespawnCreatureAction.class);
-        endPoint().getKryo().register(TryPerformSkillAction.class);
-        endPoint().getKryo().register(AbilityActivateAction.class);
-        endPoint().getKryo().register(SetCreatureMovingVectorAction.class);
-
-        endPoint().getKryo().register(ActionsHolder.class);
-        endPoint().getKryo().register(GameState.class);
-        endPoint().getKryo().register(GameStateBroadcast.class);
-
-    }
-
 
     public AreaId getCurrentPlayerAreaId() {
         if (thisPlayerId != null && gameState.creatures().containsKey(thisPlayerId)) {

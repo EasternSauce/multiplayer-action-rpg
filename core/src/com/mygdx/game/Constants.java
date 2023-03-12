@@ -18,4 +18,8 @@ public class Constants {
     public static final float BACK_UP_DISTANCE = 5f;
     public static final Float TURN_ALERTED_DISTANCE = 24f;
     public static final Float TURN_AGGRESIVE_DISTANCE = 13f;
+    public static final float JUST_ATTACKED_FROM_RANGE_TIME = 3f;
+    public static Float FORCE_UPDATE_MINIMUM_DISTANCE = 0.05f;
+
+    public static float ENEMY_SEARCH_DISTANCE = 18f;
 }

@@ -14,6 +14,7 @@ import com.mygdx.game.model.skill.SkillType;
 import com.mygdx.game.model.util.GameStateBroadcast;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.physics.world.PhysicsWorld;
+import com.mygdx.game.util.EndPointHelper;
 
 import java.io.IOException;
 import java.util.*;
@@ -112,7 +113,7 @@ public class MyGdxGameServer extends MyGdxGame {
     @Override
     public void establishConnection() {
         endPoint(new Server(6400000, 6400000));
-        registerEndPointClasses();
+        EndPointHelper.registerEndPointClasses(endPoint());
         endPoint().start();
 
         try {

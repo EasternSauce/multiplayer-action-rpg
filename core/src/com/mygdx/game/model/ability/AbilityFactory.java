@@ -1,7 +1,7 @@
 package com.mygdx.game.model.ability;
 
 
-import com.mygdx.game.game.intrface.AbilityUpdatable;
+import com.mygdx.game.game.interface_.AbilityUpdatable;
 
 import java.util.function.BiFunction;
 

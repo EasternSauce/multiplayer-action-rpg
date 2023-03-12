@@ -1,4 +1,4 @@
-package com.mygdx.game.game.intrface;
+package com.mygdx.game.game.interface_;
 
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityType;

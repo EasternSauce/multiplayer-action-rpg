@@ -3,7 +3,7 @@ package com.mygdx.game.physics;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.game.game.data.AreaGate;
-import com.mygdx.game.game.intrface.GameUpdatable;
+import com.mygdx.game.game.interface_.GameUpdatable;
 import com.mygdx.game.model.ability.AbilityId;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.CreatureId;

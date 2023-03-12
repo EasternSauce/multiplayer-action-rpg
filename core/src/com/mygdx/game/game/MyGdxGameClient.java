@@ -20,6 +20,7 @@ import com.mygdx.game.model.creature.*;
 import com.mygdx.game.model.skill.SkillType;
 import com.mygdx.game.model.util.GameStateBroadcast;
 import com.mygdx.game.model.util.Vector2;
+import com.mygdx.game.util.EndPointHelper;
 
 import java.io.IOException;
 import java.util.*;
@@ -416,7 +417,7 @@ public class MyGdxGameClient extends MyGdxGame {
     @Override
     public void establishConnection() throws IOException {
         endPoint(new Client(6400000, 6400000));
-        registerEndPointClasses();
+        EndPointHelper.registerEndPointClasses(endPoint());
         endPoint().start();
         endPoint().connect(12000 * 99999, "89.79.23.118", 20445, 20445);
 

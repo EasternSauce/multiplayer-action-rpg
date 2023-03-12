@@ -2,7 +2,7 @@ package com.mygdx.game.physics.body;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.game.game.data.AreaGate;
-import com.mygdx.game.game.intrface.GameUpdatable;
+import com.mygdx.game.game.interface_.GameUpdatable;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

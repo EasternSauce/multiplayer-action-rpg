@@ -1,4 +1,4 @@
-package com.mygdx.game.game.intrface;
+package com.mygdx.game.game.interface_;
 
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.game.data.TeleportEvent;

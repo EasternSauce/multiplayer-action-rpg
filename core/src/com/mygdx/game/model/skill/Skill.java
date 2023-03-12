@@ -1,7 +1,7 @@
 package com.mygdx.game.model.skill;
 
-import com.mygdx.game.game.intrface.CreatureUpdatable;
-import com.mygdx.game.game.intrface.GameUpdatable;
+import com.mygdx.game.game.interface_.CreatureUpdatable;
+import com.mygdx.game.game.interface_.GameUpdatable;
 import com.mygdx.game.model.ability.AbilityType;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;

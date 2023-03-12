@@ -1,9 +1,9 @@
 package com.mygdx.game.model.creature;
 
 import com.mygdx.game.Constants;
-import com.mygdx.game.game.intrface.CreatureUpdatable;
-import com.mygdx.game.game.intrface.GameRenderable;
-import com.mygdx.game.game.intrface.GameUpdatable;
+import com.mygdx.game.game.interface_.CreatureUpdatable;
+import com.mygdx.game.game.interface_.GameRenderable;
+import com.mygdx.game.game.interface_.GameUpdatable;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityState;
 import com.mygdx.game.model.skill.Skill;
@@ -28,8 +28,6 @@ import java.util.function.Predicate;
 public class Enemy extends Creature {
     CreatureParams params;
 
-    private float enemySearchDistance = 18f;
-
     public static Enemy of(CreatureParams params) {
         Enemy enemy = Enemy.of();
         enemy.params = params;
@@ -43,7 +41,7 @@ public class Enemy extends Creature {
             boolean condition = creature.isAlive() &&
                                 creature.params().areaId().value().equals(params().areaId().value()) &&
                                 creature instanceof Player &&
-                                creature.params().pos().distance(params().pos()) < enemySearchDistance &&
+                                creature.params().pos().distance(params().pos()) < Constants.ENEMY_SEARCH_DISTANCE &&
                                 game.isLineOfSight(this.params().areaId(),
                                                    this.params().pos(),
                                                    creature.params().pos());
@@ -60,15 +58,15 @@ public class Enemy extends Creature {
     @Override
     public void updateAutomaticControls(CreatureUpdatable game) {
 
-        if (params().aiStateTimer().time() > params().aiStateTimeout()) {
+        if (params().aiStateTimer().time() > params().aiStateTime()) {
             params().aiStateTimer().restart();
 
             processAiStateChangeLogic(game);
 
-            params().aiStateTimeout(1f + 1f * nextPositiveFloat());
+            params().aiStateTime(1f + 1f * nextPositiveFloat());
         }
 
-        if (params().justAttackedFromRangeTimer().time() < params().justAttackedFromRangeTimeout()) {
+        if (params().justAttackedFromRangeTimer().time() < Constants.JUST_ATTACKED_FROM_RANGE_TIME) {
             params().aiState(EnemyAiState.AGGRESSIVE);
             params().speed(params().baseSpeed());
         }
@@ -179,7 +177,7 @@ public class Enemy extends Creature {
     private void handleAiStateTargetDistanceLogic(Creature potentialTarget) {
         Float distance = params().pos().distance(potentialTarget.params().pos());
 
-        if (params().justAttackedFromRangeTimer().time() >= params().justAttackedFromRangeTimeout()) {
+        if (params().justAttackedFromRangeTimer().time() >= Constants.JUST_ATTACKED_FROM_RANGE_TIME) {
             if ((params().aiState() == EnemyAiState.AGGRESSIVE ||
                  params().aiState() == EnemyAiState.KEEPING_DISTANCE) && distance > Constants.TURN_ALERTED_DISTANCE) {
                 params().aiState(EnemyAiState.ALERTED);

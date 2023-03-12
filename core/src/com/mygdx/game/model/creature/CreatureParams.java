@@ -93,14 +93,12 @@ public class CreatureParams {
 
     SimpleTimer aiStateTimer = SimpleTimer.getExpiredTimer();
 
-    Float aiStateTimeout;
+    Float aiStateTime;
     Float aiStateSeed;
 
     Vector2 defensivePosition;
 
     SimpleTimer justAttackedFromRangeTimer = SimpleTimer.getExpiredTimer();
-
-    Float justAttackedFromRangeTimeout = 3f;
 
     Float attackDistance = 3f;
 
@@ -141,7 +139,7 @@ public class CreatureParams {
                                                                                                   creatureId))));
 
         params.aiStateSeed = RandomHelper.seededRandomFloat(creatureId);
-        params.aiStateTimeout = 0f;
+        params.aiStateTime = 0f;
         return params;
     }
 
