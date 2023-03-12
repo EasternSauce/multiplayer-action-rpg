@@ -375,7 +375,7 @@ public class MyGdxGameServer extends MyGdxGame {
     }
 
     @Override
-    public Set<CreatureId> creaturesToUpdate() {
+    public Set<CreatureId> getCreaturesToUpdate() {
         Set<CreatureId> creaturesToUpdate = new HashSet<>();
 
         for (CreatureId clientCreatureId : clientCreatures.values()) {
@@ -398,7 +398,7 @@ public class MyGdxGameServer extends MyGdxGame {
     }
 
     @Override
-    public Set<AbilityId> abilitiesToUpdate() {
+    public Set<AbilityId> getAbilitiesToUpdate() {
         Set<AbilityId> abilitiesToUpdate = new HashSet<>();
 
         for (CreatureId clientCreatureId : clientCreatures.values()) {
@@ -439,7 +439,8 @@ public class MyGdxGameServer extends MyGdxGame {
     }
 
     @Override
-    public void setCreatureMovingVector(CreatureId creatureId, Vector2 dirVector) {
+    public void setCreatureMovingVector(CreatureId creatureId,
+                                        Vector2 dirVector) { // this is handled as an action to make movement more fluid client-side
         SetCreatureMovingVectorAction action = SetCreatureMovingVectorAction.of(creatureId, dirVector);
 
         tickActions.add(action);

@@ -2,8 +2,8 @@ package com.mygdx.game.physics;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.physics.box2d.*;
-import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.game.data.AreaGate;
+import com.mygdx.game.game.intrface.GameUpdatable;
 import com.mygdx.game.model.ability.AbilityId;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.CreatureId;
@@ -35,11 +35,11 @@ public class GamePhysics {
 
     Box2DDebugRenderer debugRenderer;
 
-    Boolean forceUpdateBodyPositions = false;
+    Boolean isForceUpdateBodyPositions = false;
 
     final List<PhysicsEvent> physicsEventQueue = Collections.synchronizedList(new ArrayList<>());
 
-    public void init(Map<AreaId, TiledMap> maps, Set<AreaGate> areaGates, MyGdxGame game) {
+    public void init(Map<AreaId, TiledMap> maps, Set<AreaGate> areaGates, GameUpdatable game) {
         physicsWorlds = maps.entrySet()
                             .stream()
                             .collect(Collectors.toMap(Map.Entry::getKey, entry -> PhysicsWorld.of(entry.getValue())));

@@ -1,6 +1,7 @@
 package com.mygdx.game.model.ability;
 
-import com.mygdx.game.game.AbilityUpdatable;
+import com.mygdx.game.game.intrface.AbilityUpdatable;
+import com.mygdx.game.game.intrface.GameUpdatable;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.Enemy;
 import com.mygdx.game.model.creature.Player;
@@ -91,7 +92,7 @@ public class PlayfulGhost extends Projectile {
         Creature thisCreature = game.getCreature(params().creatureId());
 
         for (Creature creature : game.getCreatures()
-                                     .stream()
+                                     .values().stream()
                                      .filter(targetCreature -> !targetCreature.params()
                                                                               .id()
                                                                               .equals(params().creatureId()) &&
@@ -164,7 +165,7 @@ public class PlayfulGhost extends Projectile {
     }
 
     @Override
-    public void onThisCreatureHit(AbilityUpdatable game) {
+    public void onThisCreatureHit(GameUpdatable game) {
 
     }
 
@@ -174,7 +175,7 @@ public class PlayfulGhost extends Projectile {
     }
 
     @Override
-    public void onOtherAbilityHit(AbilityId otherAbilityId, AbilityUpdatable game) {
+    public void onOtherAbilityHit(AbilityId otherAbilityId, GameUpdatable game) {
 
     }
 

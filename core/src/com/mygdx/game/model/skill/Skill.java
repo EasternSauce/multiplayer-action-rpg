@@ -1,6 +1,7 @@
 package com.mygdx.game.model.skill;
 
-import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.game.intrface.CreatureUpdatable;
+import com.mygdx.game.game.intrface.GameUpdatable;
 import com.mygdx.game.model.ability.AbilityType;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
@@ -165,7 +166,7 @@ public class Skill {
                      .collect(Collectors.toCollection(ArrayList::new));
     }
 
-    public void update(MyGdxGame game) {
+    public void update(CreatureUpdatable game) {
         for (ScheduledAbility scheduledAbility : abilities) {
             if (!scheduledAbility.isPerformed() && performTimer().time() > scheduledAbility.scheduledTime()) {
                 scheduledAbility.perform(creatureId, game);
@@ -175,8 +176,8 @@ public class Skill {
     }
 
 
-    public void tryPerform(Vector2 startingPos, Vector2 dirVector, MyGdxGame game) {
-        Creature creature = game.gameState().creatures().get(creatureId);
+    public void tryPerform(Vector2 startingPos, Vector2 dirVector, GameUpdatable game) {
+        Creature creature = game.getCreature(creatureId);
         if (creature != null && creature.canPerformSkill(this) && performTimer.time() > cooldown) {
             abilities.forEach(scheduledAbility -> scheduledAbility.onPerformSkill(startingPos, dirVector));
             creature.onPerformSkill(this);

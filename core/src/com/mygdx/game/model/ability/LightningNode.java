@@ -1,6 +1,7 @@
 package com.mygdx.game.model.ability;
 
-import com.mygdx.game.game.AbilityUpdatable;
+import com.mygdx.game.game.intrface.AbilityUpdatable;
+import com.mygdx.game.game.intrface.GameUpdatable;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.util.Vector2;
@@ -33,11 +34,11 @@ public class LightningNode extends Ability {
         Set<CreatureId> excluded = new HashSet<>(params().creaturesAlreadyHit().keySet());
         excluded.add(params().creatureId());
 
-        Creature targetCreature = game.getCreature(game.aliveCreatureClosestTo(params().pos(), 13f, excluded));
+        Creature targetCreature = game.getCreature(game.getAliveCreatureIdClosestTo(params().pos(), 13f, excluded));
 
         if (targetCreature != null &&
             params().creaturesAlreadyHit().size() <= 10 &&
-            game.getWorld(params().areaId()).isLineOfSight(params().pos(), targetCreature.params().pos())) {
+            game.isLineOfSight(params().areaId(), params().pos(), targetCreature.params().pos())) {
             targetCreature.handleBeingAttacked(true,
                                                params().dirVector(),
                                                params().currentDamage(),
@@ -84,7 +85,7 @@ public class LightningNode extends Ability {
     }
 
     @Override
-    public void onThisCreatureHit(AbilityUpdatable game) {
+    public void onThisCreatureHit(GameUpdatable game) {
 
     }
 
@@ -94,7 +95,7 @@ public class LightningNode extends Ability {
     }
 
     @Override
-    public void onOtherAbilityHit(AbilityId otherAbilityId, AbilityUpdatable game) {
+    public void onOtherAbilityHit(AbilityId otherAbilityId, GameUpdatable game) {
 
     }
 

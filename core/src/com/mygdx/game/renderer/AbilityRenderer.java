@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.mygdx.game.game.intrface.GameUpdatable;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityId;
@@ -106,8 +107,8 @@ public class AbilityRenderer {
 
     }
 
-    public void render(DrawingLayer drawingLayer, GameState gameState) {
-        Ability ability = gameState.abilities().get(abilityId);
+    public void render(DrawingLayer drawingLayer, GameUpdatable game) {
+        Ability ability = game.getAbility(abilityId);
 
         if (ability != null) {
             if (sprite.getTexture() != null) {

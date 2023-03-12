@@ -1,24 +1,16 @@
-package com.mygdx.game.game;
+package com.mygdx.game.game.intrface;
 
-import com.mygdx.game.model.area.AreaId;
-import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.skill.SkillType;
 import com.mygdx.game.model.util.Vector2;
-import com.mygdx.game.physics.world.PhysicsWorld;
 
-import java.util.Collection;
+public interface CreatureUpdatable extends GameUpdatable {
 
-public interface CreatureUpdatable {
     void setCreatureMovingVector(CreatureId creatureId, Vector2 dirVector);
-
-    Collection<Creature> getCreatures();
 
     void handleAttackTarget(CreatureId attackingCreatureId,
                             Vector2 vectorTowardsTarget,
                             SkillType skillType);
 
-    PhysicsWorld getPhysicsWorld(AreaId areaId);
 
-    Vector2 getCreaturePos(CreatureId creatureId);
 }

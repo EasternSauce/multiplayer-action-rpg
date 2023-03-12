@@ -7,7 +7,8 @@ import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.Constants;
 import com.mygdx.game.assets.Assets;
 import com.mygdx.game.chat.Chat;
-import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.game.intrface.GameRenderable;
+import com.mygdx.game.game.intrface.GameUpdatable;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.renderer.DrawingLayer;
@@ -18,11 +19,11 @@ import java.util.Locale;
 
 public class RendererHelper {
 
-    public static void drawWorld(MyGdxGame game) {
-        DrawingLayer drawingLayer = game.renderer().worldDrawingLayer();
-        GameRenderer renderer = game.renderer();
+    public static void drawWorld(GameRenderable game) {
+        GameRenderer renderer = game.getRenderer();
+        DrawingLayer drawingLayer = renderer.worldDrawingLayer();
 
-        renderer.areaRenderers().get(game.currentPlayerAreaId()).render(new int[]{0, 1});
+        renderer.areaRenderers().get(game.getCurrentPlayerAreaId()).render(new int[]{0, 1});
 
         drawingLayer.spriteBatch().begin();
 
@@ -32,33 +33,28 @@ public class RendererHelper {
         renderer.renderAliveCreatures(drawingLayer, game);
 
         renderer.abilityRenderers()
-                .forEach((abilityId, abilityAnimation) -> abilityAnimation.render(drawingLayer, game.gameState()));
+                .forEach((abilityId, abilityAnimation) -> abilityAnimation.render(drawingLayer, game));
 
 
         drawingLayer.end();
 
-        renderer.areaRenderers().get(game.currentPlayerAreaId()).render(new int[]{2, 3});
+        renderer.areaRenderers().get(game.getCurrentPlayerAreaId()).render(new int[]{2, 3});
 
-        if (game.debug()) {
-            game.physics()
-                .debugRenderer()
-                .render(game.physics().physicsWorlds().get(game.currentPlayerAreaId()).b2world(),
-                        renderer.worldCamera().combined);
-        }
+        game.renderB2BodyDebug();
     }
 
-    public static void drawHud(MyGdxGame game) {
-        DrawingLayer drawingLayer = game.renderer().hudDrawingLayer();
+    public static void drawHud(GameRenderable game) {
+        DrawingLayer drawingLayer = game.getRenderer().hudDrawingLayer();
 
         drawingLayer.begin();
 
-        RendererHelper.drawChat(game.chat, drawingLayer);
+        RendererHelper.drawChat(game.getChat(), drawingLayer);
 
 
         RendererHelper.drawFpsCounter(drawingLayer);
 
-        if (game.thisPlayerId() != null) {
-            Creature creature = game.gameState().creatures().get(game.thisPlayerId());
+        if (game.getCurrentPlayerId() != null) {
+            Creature creature = game.getCreature(game.getCurrentPlayerId());
 
             RendererHelper.drawRespawnMessage(creature, drawingLayer);
 
@@ -69,18 +65,18 @@ public class RendererHelper {
         drawingLayer.end();
     }
 
-    public static void updateCamera(MyGdxGame game) {
+    public static void updateCamera(GameUpdatable game) {
         Creature player = null;
 
-        if (game.thisPlayerId() != null) {
-            player = game.gameState().creatures().get(game.thisPlayerId());
+        if (game.getCurrentPlayerId() != null) {
+            player = game.getCreature(game.getCurrentPlayerId());
         }
 
         if (player != null) {
             float camX;
             float camY;
 
-            if (game.thisPlayerId() != null) {
+            if (game.getCurrentPlayerId() != null) {
 
                 camX = player.params().pos().x();
                 camY = player.params().pos().y();
@@ -91,13 +87,13 @@ public class RendererHelper {
                 camY = 0;
             }
 
-            Vector3 camPosition = game.renderer().worldCamera().position;
+            Vector3 camPosition = game.getWorldCameraPosition();
 
 
             camPosition.x = (float) (Math.floor(camX * 100) / 100);
             camPosition.y = (float) (Math.floor(camY * 100) / 100);
 
-            game.renderer().worldCamera().update();
+            game.updateWorldCamera();
         }
 
 

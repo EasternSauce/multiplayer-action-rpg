@@ -1,9 +1,9 @@
 package com.mygdx.game.model.creature;
 
 import com.mygdx.game.Constants;
-import com.mygdx.game.game.AbilityUpdatable;
-import com.mygdx.game.game.CreatureUpdatable;
-import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.game.intrface.CreatureUpdatable;
+import com.mygdx.game.game.intrface.GameRenderable;
+import com.mygdx.game.game.intrface.GameUpdatable;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityState;
 import com.mygdx.game.model.skill.Skill;
@@ -12,7 +12,6 @@ import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.model.util.WorldDirection;
 import com.mygdx.game.pathing.Astar;
 import com.mygdx.game.pathing.AstarResult;
-import com.mygdx.game.physics.world.PhysicsWorld;
 import com.mygdx.game.util.RandomHelper;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -40,13 +39,14 @@ public class Enemy extends Creature {
     public CreatureId findTarget(CreatureUpdatable game) {
         Float minDistance = Float.MAX_VALUE;
         CreatureId minCreatureId = null;
-        for (Creature creature : game.getCreatures()) {
+        for (Creature creature : game.getCreatures().values()) {
             boolean condition = creature.isAlive() &&
                                 creature.params().areaId().value().equals(params().areaId().value()) &&
                                 creature instanceof Player &&
                                 creature.params().pos().distance(params().pos()) < enemySearchDistance &&
-                                game.getPhysicsWorld(this.params().areaId())
-                                    .isLineOfSight(this.params().pos(), creature.params().pos());
+                                game.isLineOfSight(this.params().areaId(),
+                                                   this.params().pos(),
+                                                   creature.params().pos());
 
             if (condition && params().pos().distance(creature.params().pos()) < minDistance) {
                 minCreatureId = creature.params().id();
@@ -58,7 +58,7 @@ public class Enemy extends Creature {
     }
 
     @Override
-    public void updateAutomaticControls(MyGdxGame game) {
+    public void updateAutomaticControls(CreatureUpdatable game) {
 
         if (params().aiStateTimer().time() > params().aiStateTimeout()) {
             params().aiStateTimer().restart();
@@ -196,7 +196,7 @@ public class Enemy extends Creature {
 
     @Override
     public void handleBeingAttacked(Boolean isRanged, Vector2 dirVector, float damage, CreatureId attackerId,
-                                    AbilityUpdatable game) {
+                                    GameUpdatable game) {
         if (!isRanged) { // check if target is pointing shield at the attack
             Ability shieldAbility = game.getAbility(params().id(), SkillType.SUMMON_SHIELD);
             if (shieldAbility != null && shieldAbility.params().state() == AbilityState.ACTIVE) {
@@ -222,9 +222,9 @@ public class Enemy extends Creature {
         }
     }
 
-    private void processPathfinding(MyGdxGame game) {
+    private void processPathfinding(CreatureUpdatable game) {
         boolean condition = params().areaId()
-                                    .equals(game.currentPlayerAreaId()) &&
+                                    .equals(game.getCurrentPlayerAreaId()) &&
                             params().targetCreatureId() != null &&
                             (params().forcePathCalculation()
                              || params().pathCalculationCooldownTimer().time() >
@@ -232,11 +232,8 @@ public class Enemy extends Creature {
 
         if (condition) {
             Creature target = game.getCreature(params().targetCreatureId());
-            PhysicsWorld world = game.getPhysicsWorld(params().areaId());
 
-            Boolean isLineOfSight = world.isLineOfSight(params().pos(), target.params().pos());
-
-            if (!isLineOfSight) {
+            if (!game.isLineOfSight(params().areaId(), params().pos(), target.params().pos())) {
                 List<Vector2> mirroredPath = mirrorPathFromNearbyCreature(params().targetCreatureId(), game);
 
                 List<Vector2> path;
@@ -247,7 +244,10 @@ public class Enemy extends Creature {
                 }
                 else {
                     AstarResult result =
-                            Astar.findPath(world, params().pos(), target.params().pos(), this.capability());
+                            Astar.findPath(game.getPhysicsWorld(params().areaId()),
+                                           params().pos(),
+                                           target.params().pos(),
+                                           this.capability());
                     path = result.path();
 
                     this.params().isPathMirrored(false);
@@ -276,7 +276,7 @@ public class Enemy extends Creature {
                 creature.params().targetCreatureId().equals(targetId) &&
                 creature.params().pathCalculationCooldownTimer().time() < 0.5f;
 
-        Optional<Creature> otherCreature = game.getCreatures().stream().filter(creaturePredicate).findFirst();
+        Optional<Creature> otherCreature = game.getCreatures().values().stream().filter(creaturePredicate).findFirst();
 
         return otherCreature.map(creature -> creature.params().pathTowardsTarget()).orElse(null);
 
@@ -368,7 +368,7 @@ public class Enemy extends Creature {
     }
 
     @Override
-    public WorldDirection facingDirection(CreatureUpdatable game) {
+    public WorldDirection facingDirection(GameRenderable game) {
 
         float deg;
         if (params().targetCreatureId() != null) {

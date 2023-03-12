@@ -1,10 +1,15 @@
 package com.mygdx.game.game;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.math.Vector3;
 import com.esotericsoftware.kryonet.EndPoint;
 import com.mygdx.game.chat.Chat;
 import com.mygdx.game.command.*;
-import com.mygdx.game.game.data.TeleportInfo;
+import com.mygdx.game.game.data.TeleportEvent;
+import com.mygdx.game.game.intrface.AbilityUpdatable;
+import com.mygdx.game.game.intrface.CreatureUpdatable;
+import com.mygdx.game.game.intrface.GameActionApplicable;
+import com.mygdx.game.game.intrface.GameRenderable;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.ability.*;
 import com.mygdx.game.model.action.*;
@@ -21,6 +26,7 @@ import com.mygdx.game.model.util.WorldDirection;
 import com.mygdx.game.physics.GamePhysics;
 import com.mygdx.game.physics.body.AbilityBody;
 import com.mygdx.game.physics.body.CreatureBody;
+import com.mygdx.game.physics.event.PhysicsEvent;
 import com.mygdx.game.physics.world.PhysicsWorld;
 import com.mygdx.game.renderer.AbilityRenderer;
 import com.mygdx.game.renderer.CreatureRenderer;
@@ -31,15 +37,15 @@ import java.util.*;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 
-public abstract class MyGdxGame extends Game implements AbilityUpdatable, CreatureUpdatable {
+public abstract class MyGdxGame extends Game implements AbilityUpdatable, CreatureUpdatable, GameRenderable, GameActionApplicable {
     final protected GameRenderer gameRenderer = GameRenderer.of();
     final protected GamePhysics gamePhysics = GamePhysics.of();
     protected GameState gameState = GameState.of();
     final MyGdxGamePlayScreen playScreen = MyGdxGamePlayScreen.of();
 
     @SuppressWarnings("FieldCanBeLocal")
-    private final boolean debug = true;
-    public final Chat chat = Chat.of();
+    private final boolean isDebugEnabled = true;
+    private final Chat chat = Chat.of();
     protected CreatureId thisPlayerId = null;
 
     final List<CreatureId> creaturesToBeCreated = Collections.synchronizedList(new ArrayList<>());
@@ -49,14 +55,15 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
     final List<CreatureId> creaturesToBeRemoved = Collections.synchronizedList(new ArrayList<>());
     final List<AbilityId> abilitiesToBeRemoved = Collections.synchronizedList(new ArrayList<>());
 
-    final List<TeleportInfo> creaturesToTeleport = Collections.synchronizedList(new ArrayList<>());
+    final List<TeleportEvent> teleportEvents = Collections.synchronizedList(new ArrayList<>());
 
 
-    public Boolean debug() {
-        return debug;
+    public Boolean isDebugEnabled() {
+        return isDebugEnabled;
     }
 
-    public CreatureId thisPlayerId() {
+    @Override
+    public CreatureId getCurrentPlayerId() {
         return thisPlayerId;
     }
 
@@ -80,9 +87,13 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
         return abilitiesToBeRemoved;
     }
 
+    public List<TeleportEvent> teleportEvents() {
+        return teleportEvents;
+    }
+
     @Override
-    public List<TeleportInfo> creaturesToTeleport() {
-        return creaturesToTeleport;
+    public void addTeleportEvent(TeleportEvent teleportEvent) {
+        teleportEvents.add(teleportEvent);
     }
 
 
@@ -188,10 +199,6 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
 
     abstract public void initState();
 
-    abstract public Set<CreatureId> creaturesToUpdate();
-
-    abstract public Set<AbilityId> abilitiesToUpdate();
-
     public void removeCreature(CreatureId creatureId) {
         if (creatureId != null) {
             gameState().creatures().remove(creatureId);
@@ -225,7 +232,7 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
                                             SkillType skillType);
 
     public void updateCreatures(float delta) {
-        Set<CreatureId> creaturesToUpdate = creaturesToUpdate();
+        Set<CreatureId> creaturesToUpdate = getCreaturesToUpdate();
 
         creaturesToUpdate.forEach(creatureId -> {
             if (physics().creatureBodies().containsKey(creatureId)) {
@@ -268,7 +275,7 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
     }
 
     public void updateAbilities(float delta) {
-        Set<AbilityId> abilitiesToUpdate = abilitiesToUpdate();
+        Set<AbilityId> abilitiesToUpdate = getAbilitiesToUpdate();
 
         abilitiesToUpdate.forEach(abilityId -> {
             if (physics().abilityBodies().containsKey(abilityId)) {
@@ -300,11 +307,11 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
     }
 
     @Override
-    public CreatureId aliveCreatureClosestTo(Vector2 pos, float maxRange, Set<CreatureId> excluded) {
+    public CreatureId getAliveCreatureIdClosestTo(Vector2 pos, float maxRange, Set<CreatureId> excluded) {
 
         CreatureId minCreatureId = null;
         float minDistance = Float.MAX_VALUE;
-        for (CreatureId creatureId : creaturesToUpdate()) {
+        for (CreatureId creatureId : getCreaturesToUpdate()) {
             Creature creature = gameState().creatures().get(creatureId);
             float distance = pos.distance(creature.params().pos());
             if (creature.isAlive() && distance < minDistance && distance < maxRange && !excluded.contains(creatureId)) {
@@ -331,40 +338,14 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
         return gameState().creatures().get(creatureId);
     }
 
-    @Override
-    public Ability getAbility(AbilityId abilityId) {
-        if (abilityId == null || !gameState().abilities().containsKey(abilityId)) {
-            return null;
-        }
-        return gameState().abilities().get(abilityId);
-    }
 
     @Override
-    public Ability getAbility(CreatureId creatureId, SkillType skillType) {
-
-
-        Optional<Ability> first = gameState.abilities()
-                                           .values()
-                                           .stream()
-                                           .filter(ability -> ability.params().creatureId().equals(creatureId) &&
-                                                              ability.params().skillType() == skillType)
-                                           .findFirst();
-
-        return first.orElse(null);
-    }
-
-    @Override
-    public Collection<Creature> getCreatures() {
-        return gameState().creatures().values();
+    public Map<CreatureId, Creature> getCreatures() {
+        return gameState().creatures();
     }
 
     @Override
     public PhysicsWorld getPhysicsWorld(AreaId areaId) {
-        return physics().physicsWorlds().get(areaId);
-    }
-
-    @Override
-    public PhysicsWorld getWorld(AreaId areaId) {
         return physics().physicsWorlds().get(areaId);
     }
 
@@ -445,35 +426,35 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
     }
 
 
-    public AreaId currentPlayerAreaId() {
+    public AreaId getCurrentPlayerAreaId() {
         if (thisPlayerId != null && gameState.creatures().containsKey(thisPlayerId)) {
             return getCreature(thisPlayerId).params().areaId();
         }
         return gameState.defaultAreaId();
     }
 
-    public void teleportCreature(TeleportInfo teleportInfo) {
-        if (teleportInfo.toAreaId().equals(getCreature(teleportInfo.creatureId()).params().areaId())) {
-            physics().creatureBodies().get(teleportInfo.creatureId()).forceSetTransform(teleportInfo.pos());
+    public void teleportCreature(TeleportEvent teleportEvent) {
+        if (teleportEvent.toAreaId().equals(getCreature(teleportEvent.creatureId()).params().areaId())) {
+            physics().creatureBodies().get(teleportEvent.creatureId()).forceSetTransform(teleportEvent.pos());
         }
         else {
-            if (teleportInfo.creatureId() != null) {
-                Creature creature = getCreature(teleportInfo.creatureId());
+            if (teleportEvent.creatureId() != null) {
+                Creature creature = getCreature(teleportEvent.creatureId());
 
-                creature.params().areaId(teleportInfo.toAreaId());
+                creature.params().areaId(teleportEvent.toAreaId());
 
-                creature.params().pos(teleportInfo.pos());
-                creature.params().movementCommandTargetPos(teleportInfo.pos());
+                creature.params().pos(teleportEvent.pos());
+                creature.params().movementCommandTargetPos(teleportEvent.pos());
 
-                if (physics().creatureBodies().containsKey(teleportInfo.creatureId())) {
-                    physics().creatureBodies().get(teleportInfo.creatureId()).onRemove();
-                    physics().creatureBodies().remove(teleportInfo.creatureId());
+                if (physics().creatureBodies().containsKey(teleportEvent.creatureId())) {
+                    physics().creatureBodies().get(teleportEvent.creatureId()).onRemove();
+                    physics().creatureBodies().remove(teleportEvent.creatureId());
                 }
 
-                if (!gamePhysics.creatureBodies().containsKey(teleportInfo.creatureId())) {
-                    CreatureBody creatureBody = CreatureBody.of(teleportInfo.creatureId());
-                    creatureBody.init(gamePhysics, gameState(), teleportInfo.toAreaId());
-                    gamePhysics.creatureBodies().put(teleportInfo.creatureId(), creatureBody);
+                if (!gamePhysics.creatureBodies().containsKey(teleportEvent.creatureId())) {
+                    CreatureBody creatureBody = CreatureBody.of(teleportEvent.creatureId());
+                    creatureBody.init(gamePhysics, gameState(), teleportEvent.toAreaId());
+                    gamePhysics.creatureBodies().put(teleportEvent.creatureId(), creatureBody);
                 }
 
                 creature.params().justTeleportedToGate(true);
@@ -485,4 +466,104 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
     }
 
     abstract void performPhysicsWorldStep();
+
+    @Override
+    public boolean isLineOfSight(AreaId areaId, Vector2 fromPos, Vector2 toPos) {
+        return physics().physicsWorlds().get(areaId).isLineOfSight(fromPos, toPos);
+    }
+
+    @Override
+    public Vector3 getWorldCameraPosition() {
+        return renderer().worldCamera().position;
+    }
+
+    @Override
+    public void updateWorldCamera() {
+        renderer().worldCamera().update();
+    }
+
+    @Override
+    public Map<AbilityId, Ability> getAbilities() {
+        return gameState.abilities();
+    }
+
+    @Override
+    public Ability getAbility(AbilityId abilityId) {
+        if (abilityId == null || !gameState().abilities().containsKey(abilityId)) {
+            return null;
+        }
+        return gameState().abilities().get(abilityId);
+    }
+
+    @Override
+    public Ability getAbility(CreatureId creatureId, SkillType skillType) {
+
+
+        Optional<Ability> first = gameState.abilities()
+                                           .values()
+                                           .stream()
+                                           .filter(ability -> ability.params().creatureId().equals(creatureId) &&
+                                                              ability.params().skillType() == skillType)
+                                           .findFirst();
+
+        return first.orElse(null);
+    }
+
+    @Override
+    public Vector2 getAbilityPos(AbilityId abilityId) {
+        if (abilityId == null || !gameState().abilities().containsKey(abilityId)) {
+            return null;
+        }
+        return gameState().abilities().get(abilityId).params().pos();
+    }
+
+    @Override
+    public void renderB2BodyDebug() {
+        if (isDebugEnabled()) {
+            physics()
+                    .debugRenderer()
+                    .render(physics().physicsWorlds().get(getCurrentPlayerAreaId()).b2world(),
+                            renderer().worldCamera().combined);
+        }
+    }
+
+    @Override
+    public GameRenderer getRenderer() {
+        return renderer();
+    }
+
+    @Override
+    public Chat getChat() {
+        return chat;
+    }
+
+    @Override
+    public List<PhysicsEvent> getPhysicsEventQueue() {
+        return physics().physicsEventQueue();
+    }
+
+    @Override
+    public Map<CreatureId, CreatureBody> getCreatureBodies() {
+        return physics().creatureBodies();
+    }
+
+    @Override
+    public Map<AbilityId, AbilityBody> getAbilityBodies() {
+        return physics().abilityBodies();
+    }
+
+    @Override
+    public boolean isForceUpdateBodyPositions() {
+        return physics().isForceUpdateBodyPositions();
+    }
+
+    @Override
+    public void setForceUpdateBodyPositions(boolean value) {
+        physics().isForceUpdateBodyPositions(value);
+    }
+
+    @Override
+    public AreaId getDefaultAreaId() {
+        return gameState.defaultAreaId();
+    }
 }

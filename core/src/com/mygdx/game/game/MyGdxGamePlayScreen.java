@@ -94,10 +94,10 @@ public class MyGdxGamePlayScreen implements Screen {
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean keyTyped(char character) {
-                if (game.chat.isTyping() &&
+                if (game.getChat().isTyping() &&
                     character != '\b' &&
                     (character == ' ' || !(Character.isWhitespace(character)))) {
-                    game.chat.currentMessage(game.chat.currentMessage() + character);
+                    game.getChat().currentMessage(game.getChat().currentMessage() + character);
                 }
 
                 return true;
@@ -142,9 +142,9 @@ public class MyGdxGamePlayScreen implements Screen {
         game.abilitiesToBeRemoved().forEach(abilityId -> game.removeAbility(abilityId));
         game.abilitiesToBeRemoved().clear();
 
-        game.creaturesToTeleport().forEach(teleportInfo -> game.teleportCreature(teleportInfo));
+        game.teleportEvents().forEach(teleportInfo -> game.teleportCreature(teleportInfo));
 
-        game.creaturesToTeleport().clear();
+        game.teleportEvents().clear();
 
         game.gameState().generalTimer().update(delta);
 
@@ -153,7 +153,7 @@ public class MyGdxGamePlayScreen implements Screen {
 
         PhysicsHelper.processPhysicsEventQueue(game);
 
-        game.renderer().areaRenderers().get(game.currentPlayerAreaId()).setView(game.renderer().worldCamera());
+        game.renderer().areaRenderers().get(game.getCurrentPlayerAreaId()).setView(game.renderer().worldCamera());
 
         RendererHelper.updateCamera(game);
 

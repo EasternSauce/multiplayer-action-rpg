@@ -1,6 +1,6 @@
 package com.mygdx.game.model.action;
 
-import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.game.intrface.GameActionApplicable;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
@@ -25,15 +25,14 @@ public class AddPlayerAction implements GameStateAction {
         return pos;
     }
 
-    public void applyToGame(MyGdxGame game) {
-        GameState gameState = game.gameState();
+    public void applyToGame(GameActionApplicable game) {
 
-        Creature player = Player.of(CreatureParams.of(playerId, gameState.defaultAreaId(), pos, textureName));
+        Creature player = Player.of(CreatureParams.of(playerId, game.getDefaultAreaId(), pos, textureName));
         player.params().life(350f);
         player.params().maxLife(350f);
         player.params().mana(350f);
         player.params().maxMana(350f);
-        gameState.creatures().put(playerId, player);
+        game.getCreatures().put(playerId, player);
 
         game.creaturesToBeCreated().add(playerId);
 

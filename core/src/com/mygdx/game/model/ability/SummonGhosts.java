@@ -1,6 +1,7 @@
 package com.mygdx.game.model.ability;
 
-import com.mygdx.game.game.AbilityUpdatable;
+import com.mygdx.game.game.intrface.AbilityUpdatable;
+import com.mygdx.game.game.intrface.GameUpdatable;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -72,7 +73,7 @@ public class SummonGhosts extends Ability {
     }
 
     @Override
-    public void onThisCreatureHit(AbilityUpdatable game) {
+    public void onThisCreatureHit(GameUpdatable game) {
 
     }
 
@@ -82,7 +83,7 @@ public class SummonGhosts extends Ability {
     }
 
     @Override
-    public void onOtherAbilityHit(AbilityId otherAbilityId, AbilityUpdatable game) {
+    public void onOtherAbilityHit(AbilityId otherAbilityId, GameUpdatable game) {
 
     }
 }

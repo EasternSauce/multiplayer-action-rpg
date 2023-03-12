@@ -2,8 +2,8 @@ package com.mygdx.game.renderer;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.game.data.AreaGate;
+import com.mygdx.game.game.intrface.GameUpdatable;
 import com.mygdx.game.model.area.AreaId;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -37,8 +37,8 @@ public class AreaGateRenderer {
 
     }
 
-    public void render(DrawingLayer drawingLayer, MyGdxGame game) {
-        AreaId currentAreaId = game.currentPlayerAreaId();
+    public void render(DrawingLayer drawingLayer, GameUpdatable game) {
+        AreaId currentAreaId = game.getCurrentPlayerAreaId();
 
         if (currentAreaId.equals(areaA_Id)) {
             spriteA.draw(drawingLayer.spriteBatch());

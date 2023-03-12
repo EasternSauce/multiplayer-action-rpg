@@ -56,53 +56,55 @@ public class MyGdxGameClient extends MyGdxGame {
     @Override
     public void onUpdate() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
-            if (!chat.isTyping()) {
-                chat.isTyping(true);
+            if (!getChat().isTyping()) {
+                getChat().isTyping(true);
             }
             else {
-                chat.isTyping(false);
-                if (!chat.currentMessage().isEmpty()) {
-                    endPoint().sendTCP(SendChatMessageCommand.of(thisPlayerId.value(), chat.currentMessage()));
+                getChat().isTyping(false);
+                if (!getChat().currentMessage().isEmpty()) {
+                    endPoint().sendTCP(SendChatMessageCommand.of(thisPlayerId.value(), getChat().currentMessage()));
 
-                    chat.sendMessage(gameState(), thisPlayerId.value(), chat.currentMessage());
+                    getChat().sendMessage(gameState(), thisPlayerId.value(), getChat().currentMessage());
 
-                    chat.currentMessage("");
+                    getChat().currentMessage("");
                 }
             }
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)) {
-            if (chat.isTyping()) {
-                if (chat.holdingBackspace()) {
-                    if (!chat.currentMessage().isEmpty() &&
-                        gameState().generalTimer().time() > chat.holdBackspaceTime() + 0.3f) {
-                        chat.currentMessage(chat.currentMessage().substring(0, chat.currentMessage().length() - 1));
+            if (getChat().isTyping()) {
+                if (getChat().holdingBackspace()) {
+                    if (!getChat().currentMessage().isEmpty() &&
+                        gameState().generalTimer().time() > getChat().holdBackspaceTime() + 0.3f) {
+                        getChat().currentMessage(getChat().currentMessage()
+                                                          .substring(0, getChat().currentMessage().length() - 1));
                     }
                 }
                 else {
-                    chat.holdingBackspace(true);
-                    chat.holdBackspaceTime(gameState().generalTimer().time());
-                    chat.currentMessage(chat.currentMessage().substring(0, chat.currentMessage().length() - 1));
+                    getChat().holdingBackspace(true);
+                    getChat().holdBackspaceTime(gameState().generalTimer().time());
+                    getChat().currentMessage(getChat().currentMessage()
+                                                      .substring(0, getChat().currentMessage().length() - 1));
                 }
 
             }
 
         }
         else {
-            if (chat.holdingBackspace() && chat.isTyping()) {
-                chat.holdingBackspace(false);
+            if (getChat().holdingBackspace() && getChat().isTyping()) {
+                getChat().holdingBackspace(false);
             }
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            if (chat.isTyping()) {
-                if (!chat.currentMessage().isEmpty()) {
-                    chat.currentMessage("");
-                    chat.isTyping(false);
+            if (getChat().isTyping()) {
+                if (!getChat().currentMessage().isEmpty()) {
+                    getChat().currentMessage("");
+                    getChat().isTyping(false);
                 }
             }
         }
-        if (!chat.isTyping()) {
+        if (!getChat().isTyping()) {
             if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                 Vector2 mousePos = mousePos();
 
@@ -393,7 +395,7 @@ public class MyGdxGameClient extends MyGdxGame {
                                       EnemySpawn.of(Vector2.of(101.61807f, 155.82611f),
                                                     EnemyTemplate.of(EnemyType.SKELETON, 3f, SkillType.SWORD_SLASH)));
 
-                AreaId areaId = currentPlayerAreaId();
+                AreaId areaId = getCurrentPlayerAreaId();
 
                 enemySpawns.forEach(enemySpawn -> {
                     CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 10000000));
@@ -465,14 +467,14 @@ public class MyGdxGameClient extends MyGdxGame {
 
                     gameState = newGameState;
 
-                    gamePhysics.forceUpdateBodyPositions(true);
+                    gamePhysics.isForceUpdateBodyPositions(true);
 
                 }
                 else if (object instanceof SendChatMessageCommand) {
                     SendChatMessageCommand action = (SendChatMessageCommand) object;
 
                     if (!Objects.equals(action.poster(), thisPlayerId.value())) {
-                        chat.sendMessage(gameState(), action.poster(), action.text());
+                        getChat().sendMessage(gameState(), action.poster(), action.text());
                     }
 
                 }
@@ -509,7 +511,7 @@ public class MyGdxGameClient extends MyGdxGame {
     }
 
     @Override
-    public Set<CreatureId> creaturesToUpdate() {
+    public Set<CreatureId> getCreaturesToUpdate() {
         Creature player = gameState().creatures().get(thisPlayerId);
 
         if (player == null) {
@@ -530,7 +532,7 @@ public class MyGdxGameClient extends MyGdxGame {
     }
 
     @Override
-    public Set<AbilityId> abilitiesToUpdate() {
+    public Set<AbilityId> getAbilitiesToUpdate() {
         Creature player = gameState().creatures().get(thisPlayerId);
 
         if (player == null) {
@@ -554,7 +556,7 @@ public class MyGdxGameClient extends MyGdxGame {
 
     @Override
     void performPhysicsWorldStep() {
-        physics().physicsWorlds().get(currentPlayerAreaId()).step();
+        physics().physicsWorlds().get(getCurrentPlayerAreaId()).step();
 
     }
 
@@ -600,4 +602,5 @@ public class MyGdxGameClient extends MyGdxGame {
     public void initAbilityBody(Ability ability) {
         // do nothing
     }
+
 }

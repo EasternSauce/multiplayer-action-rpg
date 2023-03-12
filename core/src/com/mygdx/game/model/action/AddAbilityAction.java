@@ -1,6 +1,6 @@
 package com.mygdx.game.model.action;
 
-import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.game.intrface.GameActionApplicable;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.creature.Creature;
@@ -22,16 +22,15 @@ public class AddAbilityAction implements GameStateAction {
     }
 
     @Override
-    public void applyToGame(MyGdxGame game) {
-        GameState gameState = game.gameState();
+    public void applyToGame(GameActionApplicable game) {
 
-        Creature creature = gameState.creatures().get(ability.params().creatureId());
+        Creature creature = game.getCreature(ability.params().creatureId());
 
         if (creature == null) {
             return;
         }
 
-        gameState.abilities().put(ability.params().id(), ability);
+        game.getAbilities().put(ability.params().id(), ability);
 
         if (ability.params().activeTime() > 0) {
             game.abilitiesToBeCreated().add(ability.params().id());

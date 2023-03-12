@@ -1,7 +1,8 @@
 package com.mygdx.game.model.ability;
 
 
-import com.mygdx.game.game.AbilityUpdatable;
+import com.mygdx.game.game.intrface.AbilityUpdatable;
+import com.mygdx.game.game.intrface.GameUpdatable;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.skill.Skill;
 import com.mygdx.game.model.util.Vector2;
@@ -49,7 +50,7 @@ public class Boomerang extends Projectile {
     }
 
     @Override
-    public void onThisCreatureHit(AbilityUpdatable game) {
+    public void onThisCreatureHit(GameUpdatable game) {
         if (params().comingBack()) {
 
             Creature creature = game.getCreature(params().creatureId());
@@ -126,7 +127,7 @@ public class Boomerang extends Projectile {
     }
 
     @Override
-    public void onOtherAbilityHit(AbilityId otherAbilityId, AbilityUpdatable game) {
+    public void onOtherAbilityHit(AbilityId otherAbilityId, GameUpdatable game) {
 
     }
 

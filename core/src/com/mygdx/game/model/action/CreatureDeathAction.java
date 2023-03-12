@@ -1,6 +1,6 @@
 package com.mygdx.game.model.action;
 
-import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.game.intrface.GameActionApplicable;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
@@ -21,8 +21,8 @@ public class CreatureDeathAction implements GameStateAction {
         return gameState.creatures().get(creatureId).params().pos();
     }
 
-    public void applyToGame(MyGdxGame game) {
-        Creature creature = game.gameState().creatures().get(creatureId);
+    public void applyToGame(GameActionApplicable game) {
+        Creature creature = game.getCreatures().get(creatureId);
 
         if (creature == null) {
             return;

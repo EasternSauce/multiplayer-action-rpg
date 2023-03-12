@@ -1,8 +1,8 @@
 package com.mygdx.game.physics.util;
 
-import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.game.data.AreaGate;
-import com.mygdx.game.game.data.TeleportInfo;
+import com.mygdx.game.game.data.TeleportEvent;
+import com.mygdx.game.game.intrface.GameUpdatable;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityState;
 import com.mygdx.game.model.area.AreaId;
@@ -13,22 +13,22 @@ import com.mygdx.game.physics.event.*;
 
 public class PhysicsHelper {
 
-    public static void processPhysicsEventQueue(MyGdxGame game) {
-        game.physics().physicsEventQueue().forEach(physicsEvent -> {
+    public static void processPhysicsEventQueue(GameUpdatable game) {
+        game.getPhysicsEventQueue().forEach(physicsEvent -> {
             if (physicsEvent instanceof AbilityHitsCreatureEvent) {
                 AbilityHitsCreatureEvent event = (AbilityHitsCreatureEvent) physicsEvent;
 
-                Creature attackedCreature = game.gameState().creatures().get(event.attackedCreatureId());
+                Creature attackedCreature = game.getCreature(event.attackedCreatureId());
 
-                Creature attackingCreature = game.gameState().creatures().get(event.attackingCreatureId());
+                Creature attackingCreature = game.getCreature(event.attackingCreatureId());
 
                 boolean attackedIsPlayer = (attackedCreature instanceof Player);
                 boolean attackingIsPlayer = (attackingCreature instanceof Player);
 
-                Ability ability = game.gameState().abilities().get(event.abilityId());
+                Ability ability = game.getAbility(event.abilityId());
 
-                if (game.creaturesToUpdate().contains(event.attackedCreatureId()) && // TODO: refactor
-                    game.abilitiesToUpdate().contains(event.abilityId())) {
+                if (game.getCreaturesToUpdate().contains(event.attackedCreatureId()) && // TODO: refactor
+                    game.getAbilitiesToUpdate().contains(event.abilityId())) {
                     if (event.attackingCreatureId().equals(event.attackedCreatureId())) {
                         ability.onThisCreatureHit(game);
                     }
@@ -46,7 +46,7 @@ public class PhysicsHelper {
             else if (physicsEvent instanceof AbilityHitsTerrainEvent) {
                 AbilityHitsTerrainEvent event = (AbilityHitsTerrainEvent) physicsEvent;
 
-                Ability ability = game.gameState().abilities().get(event.abilityId());
+                Ability ability = game.getAbility(event.abilityId());
 
                 if (ability != null && ability.params().state() == AbilityState.ACTIVE) {
                     ability.onTerrainHit(event.abilityPos(), event.tilePos());
@@ -56,8 +56,8 @@ public class PhysicsHelper {
             else if (physicsEvent instanceof AbilityHitsAbilityEvent) {
                 AbilityHitsAbilityEvent event = (AbilityHitsAbilityEvent) physicsEvent;
 
-                Ability abilityA = game.gameState().abilities().get(event.abilityA_Id());
-                Ability abilityB = game.gameState().abilities().get(event.abilityB_Id());
+                Ability abilityA = game.getAbility(event.abilityA_Id());
+                Ability abilityB = game.getAbility(event.abilityB_Id());
 
                 if (abilityA != null && abilityA.params().state() == AbilityState.ACTIVE) {
                     abilityA.onOtherAbilityHit(event.abilityB_Id(), game);
@@ -95,7 +95,7 @@ public class PhysicsHelper {
                         throw new RuntimeException("unreachable");
                     }
 
-                    game.creaturesToTeleport().add(TeleportInfo.of(event.creatureId(), pos, fromAreaId, toAreaId));
+                    game.addTeleportEvent(TeleportEvent.of(event.creatureId(), pos, fromAreaId, toAreaId));
 
 
                 }
@@ -116,7 +116,7 @@ public class PhysicsHelper {
                 }
             }
         });
-        game.physics().physicsEventQueue().clear();
+        game.getPhysicsEventQueue().clear();
 
     }
 
@@ -125,7 +125,7 @@ public class PhysicsHelper {
                                                boolean attackedIsPlayer,
                                                boolean attackingIsPlayer,
                                                Ability ability,
-                                               MyGdxGame game) {
+                                               GameUpdatable game) {
         if (ability != null && attackedCreature.isAlive()) {
             if ((attackedIsPlayer || attackingIsPlayer) &&
                 !ability.params().creaturesAlreadyHit().containsKey(event.attackedCreatureId())) {
@@ -145,28 +145,28 @@ public class PhysicsHelper {
         }
     }
 
-    public static void handleForceUpdateBodyPositions(MyGdxGame game) {
-        if (game.physics().forceUpdateBodyPositions()) { // only runs after receiving game state update
-            game.physics().forceUpdateBodyPositions(false);
+    public static void handleForceUpdateBodyPositions(GameUpdatable game) {
+        if (game.isForceUpdateBodyPositions()) { // only runs after receiving game state update
+            game.setForceUpdateBodyPositions(false);
 
-            game.gameState().creatures().forEach((creatureId, creature) -> {
-                if (game.physics().creatureBodies().containsKey(creatureId) &&
-                    game.physics().creatureBodies().get(creatureId).getBodyPos().distance(creature.params().pos()) >
+            game.getCreatures().forEach((creatureId, creature) -> {
+                if (game.getCreatureBodies().containsKey(creatureId) &&
+                    game.getCreatureBodies().get(creatureId).getBodyPos().distance(creature.params().pos()) >
                     0.05f // only setTransform if positions are far apart
                 ) {
-                    game.physics().creatureBodies().get(creatureId).trySetTransform(creature.params().pos());
+                    game.getCreatureBodies().get(creatureId).trySetTransform(creature.params().pos());
                 }
             });
 
-            game.gameState().abilities().forEach((abilityId, ability) -> {
-                if (game.physics().abilityBodies().containsKey(abilityId) &&
-                    game.physics().abilityBodies().get(abilityId).isBodyInitialized() &&
+            game.getAbilities().forEach((abilityId, ability) -> {
+                if (game.getAbilityBodies().containsKey(abilityId) &&
+                    game.getAbilityBodies().get(abilityId).isBodyInitialized() &&
                     // this is needed to fix body created client/server desync
                     ability.bodyShouldExist() &&
-                    game.physics().abilityBodies().get(abilityId).getBodyPos().distance(ability.params().pos()) >
+                    game.getAbilityBodies().get(abilityId).getBodyPos().distance(ability.params().pos()) >
                     0.05f // only setTransform if positions are far apart
                 ) {
-                    game.physics().abilityBodies().get(abilityId).trySetTransform(ability.params().pos());
+                    game.getAbilityBodies().get(abilityId).trySetTransform(ability.params().pos());
                 }
             });
         }

@@ -6,7 +6,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.game.intrface.GameRenderable;
+import com.mygdx.game.game.intrface.GameUpdatable;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
@@ -78,25 +79,35 @@ public class CreatureRenderer {
 
     }
 
-    public TextureRegion runningAnimation(WorldDirection currentDirection, GameState gameState) {
-        Creature creature = gameState.creatures().get(creatureId);
+    public TextureRegion runningAnimation(GameRenderable game) {
+        Creature creature = game.getCreature(creatureId);
+
+        WorldDirection currentDirection = creature.facingDirection(game);
 
         return runningAnimations.get(creature.animationConfig().dirMap().get(currentDirection))
                                 .getKeyFrame(creature.params().animationTimer().time(), true);
     }
 
-    public TextureRegion pickFacingTexture(WorldDirection currentDirection, GameState gameState) {
-        Creature creature = gameState.creatures().get(creatureId);
+    public TextureRegion getFacingTexture(GameRenderable game) {
+        Creature creature = game.getCreature(creatureId);
+
+        WorldDirection currentDirection = creature.facingDirection(game);
 
         return facingTextures().get(creature.animationConfig().dirMap().get(currentDirection));
     }
 
-    public void update(MyGdxGame game) {
-        if (!game.gameState().creatures().containsKey(creatureId)) {
+    public TextureRegion getFacingTexture(WorldDirection overrideDirection, GameRenderable game) {
+        Creature creature = game.getCreature(creatureId);
+
+        return facingTextures().get(creature.animationConfig().dirMap().get(overrideDirection));
+    }
+
+    public void update(GameRenderable game) {
+        if (!game.getCreatures().containsKey(creatureId)) {
             return;
         }
 
-        Creature creature = game.gameState().creatures().get(creatureId);
+        Creature creature = game.getCreature(creatureId);
 
         sprite.setCenter(creature.params().pos().x(), creature.params().pos().y());
         sprite.setSize(creature.animationConfig().spriteWidth(), creature.animationConfig().spriteHeight());
@@ -105,10 +116,10 @@ public class CreatureRenderer {
 
             TextureRegion texture;
             if (!creature.params().isMoving()) {
-                texture = pickFacingTexture(creature.facingDirection(game), game.gameState());
+                texture = getFacingTexture(game);
             }
             else {
-                texture = runningAnimation(creature.facingDirection(game), game.gameState());
+                texture = runningAnimation(game);
             }
 
             sprite.setRotation(0f);
@@ -118,7 +129,7 @@ public class CreatureRenderer {
 
         }
         else {
-            TextureRegion texture = pickFacingTexture(WorldDirection.RIGHT, game.gameState());
+            TextureRegion texture = getFacingTexture(WorldDirection.RIGHT, game);
 
             sprite.setOriginCenter();
             sprite.setRotation(90f);
@@ -134,11 +145,11 @@ public class CreatureRenderer {
         }
     }
 
-    public void renderLifeBar(DrawingLayer drawingLayer, GameState gameState) {
+    public void renderLifeBar(DrawingLayer drawingLayer, GameUpdatable game) {
         float lifeBarHeight = 0.16f;
         float lifeBarWidth = 2.0f;
 
-        Creature creature = gameState.creatures().get(creatureId);
+        Creature creature = game.getCreature(creatureId);
         float currentLifeBarWidth = lifeBarWidth * creature.params().life() / creature.params().maxLife();
         float barPosX = creature.params().pos().x() - lifeBarWidth / 2;
         float barPosY = creature.params().pos().y() + sprite.getWidth() / 2 + 0.3125f;

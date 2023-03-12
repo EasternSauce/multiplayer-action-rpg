@@ -1,7 +1,8 @@
 package com.mygdx.game.model.ability;
 
-import com.mygdx.game.game.AbilityUpdatable;
-import com.mygdx.game.game.data.TeleportInfo;
+import com.mygdx.game.game.data.TeleportEvent;
+import com.mygdx.game.game.intrface.AbilityUpdatable;
+import com.mygdx.game.game.intrface.GameUpdatable;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.util.Vector2;
@@ -22,8 +23,10 @@ public class TeleportDestination extends Ability {
 
     @Override
     void onAbilityStarted(AbilityUpdatable game) {
-        game.creaturesToTeleport()
-            .add(TeleportInfo.of(params().creatureId(), params().pos(), params().areaId(), params().areaId()));
+        game.addTeleportEvent(TeleportEvent.of(params().creatureId(),
+                                               params().pos(),
+                                               params().areaId(),
+                                               params().areaId()));
     }
 
     @Override
@@ -57,7 +60,7 @@ public class TeleportDestination extends Ability {
     }
 
     @Override
-    public void onThisCreatureHit(AbilityUpdatable game) {
+    public void onThisCreatureHit(GameUpdatable game) {
 
     }
 
@@ -67,7 +70,7 @@ public class TeleportDestination extends Ability {
     }
 
     @Override
-    public void onOtherAbilityHit(AbilityId otherAbilityId, AbilityUpdatable game) {
+    public void onOtherAbilityHit(AbilityId otherAbilityId, GameUpdatable game) {
 
     }
 
@@ -112,7 +115,7 @@ public class TeleportDestination extends Ability {
             destinationPos = pos;
         }
 
-        if (!game.getWorld(areaId).isLineOfSight(creaturePos, destinationPos)) {
+        if (!game.isLineOfSight(areaId, creaturePos, destinationPos)) {
             return creaturePos;
         }
 

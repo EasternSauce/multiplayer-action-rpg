@@ -1,7 +1,7 @@
 package com.mygdx.game.model.action;
 
-import com.mygdx.game.game.MyGdxGame;
-import com.mygdx.game.game.data.TeleportInfo;
+import com.mygdx.game.game.data.TeleportEvent;
+import com.mygdx.game.game.intrface.GameActionApplicable;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
@@ -22,10 +22,9 @@ public class RespawnCreatureAction implements GameStateAction {
         return pos;
     }
 
-    public void applyToGame(MyGdxGame game) {
-        GameState gameState = game.gameState();
+    public void applyToGame(GameActionApplicable game) {
 
-        Creature creature = gameState.creatures().get(creatureId);
+        Creature creature = game.getCreature(creatureId);
 
         if (creature != null) {
             creature.params().awaitingRespawn(false);
@@ -35,8 +34,10 @@ public class RespawnCreatureAction implements GameStateAction {
             creature.params().mana(creature.params().maxMana());
 
             creature.params().pos(pos);
-            game.creaturesToTeleport()
-                .add(TeleportInfo.of(creatureId, pos, creature.params().areaId(), creature.params().areaId()));
+            game.addTeleportEvent(TeleportEvent.of(creatureId,
+                                                   pos,
+                                                   creature.params().areaId(),
+                                                   creature.params().areaId()));
         }
 
     }

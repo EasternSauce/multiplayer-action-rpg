@@ -1,6 +1,8 @@
 package com.mygdx.game.model.ability;
 
-import com.mygdx.game.game.AbilityUpdatable;
+import com.mygdx.game.game.intrface.AbilityUpdatable;
+import com.mygdx.game.game.intrface.GameActionApplicable;
+import com.mygdx.game.game.intrface.GameUpdatable;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.renderer.config.AbilityAnimationConfig;
@@ -74,7 +76,7 @@ public abstract class Ability {
 
     abstract void onActiveUpdate(AbilityUpdatable game);
 
-    public void init(AbilityUpdatable game) {
+    public void init(GameActionApplicable game) {
 
         if (isPositionUpdated()) {
             onUpdatePosition(game);
@@ -113,11 +115,11 @@ public abstract class Ability {
 
     public abstract void onCreatureHit();
 
-    public abstract void onThisCreatureHit(AbilityUpdatable game);
+    public abstract void onThisCreatureHit(GameUpdatable game);
 
     public abstract void onTerrainHit(Vector2 abilityPos, Vector2 tilePos);
 
-    public abstract void onOtherAbilityHit(AbilityId otherAbilityId, AbilityUpdatable game);
+    public abstract void onOtherAbilityHit(AbilityId otherAbilityId, GameUpdatable game);
 
     public boolean bodyShouldExist() {
         return !(params().inactiveBody() || params().state() != AbilityState.ACTIVE);

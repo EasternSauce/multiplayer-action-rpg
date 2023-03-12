@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-public class TeleportInfo {
+public class TeleportEvent {
     CreatureId creatureId;
     Vector2 pos;
     AreaId fromAreaId;

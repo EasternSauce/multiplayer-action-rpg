@@ -1,6 +1,6 @@
 package com.mygdx.game.model.action;
 
-import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.game.intrface.GameActionApplicable;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
@@ -23,8 +23,8 @@ public class SetCreatureMovingVectorAction implements GameStateAction {
     }
 
     @Override
-    public void applyToGame(MyGdxGame game) {
-        Creature creature = game.gameState().creatures().get(creatureId);
+    public void applyToGame(GameActionApplicable game) {
+        Creature creature = game.getCreature(creatureId);
 
         if (creature != null) {
             creature.params().movingVector(movingVector);

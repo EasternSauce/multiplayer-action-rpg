@@ -1,8 +1,8 @@
 package com.mygdx.game.model.creature;
 
-import com.mygdx.game.game.AbilityUpdatable;
-import com.mygdx.game.game.CreatureUpdatable;
-import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.game.intrface.CreatureUpdatable;
+import com.mygdx.game.game.intrface.GameRenderable;
+import com.mygdx.game.game.intrface.GameUpdatable;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityState;
 import com.mygdx.game.model.skill.Skill;
@@ -17,7 +17,7 @@ public abstract class Creature {
 
     public abstract Creature params(CreatureParams params);
 
-    public void update(float delta, MyGdxGame game) {
+    public void update(float delta, CreatureUpdatable game) {
 
         regenerateStamina();
 
@@ -94,7 +94,7 @@ public abstract class Creature {
         return !params().isDead();
     }
 
-    public WorldDirection facingDirection(CreatureUpdatable game) {
+    public WorldDirection facingDirection(GameRenderable game) {
         float deg = params().movingVector().angleDeg();
         if (deg >= 45 && deg < 135) {
             return WorldDirection.UP;
@@ -125,7 +125,7 @@ public abstract class Creature {
         return 4;
     }
 
-    public void updateAutomaticControls(MyGdxGame game) {
+    public void updateAutomaticControls(CreatureUpdatable game) {
 
     }
 
@@ -159,7 +159,7 @@ public abstract class Creature {
                                     Vector2 dirVector,
                                     float damage,
                                     CreatureId attackerId,
-                                    AbilityUpdatable game) {
+                                    GameUpdatable game) {
         if (!isRanged) { // check if target is pointing shield at the attack
             Ability shieldAbility = game.getAbility(params().id(), SkillType.SUMMON_SHIELD);
             if (shieldAbility != null && shieldAbility.params().state() == AbilityState.ACTIVE) {
