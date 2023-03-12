@@ -18,27 +18,15 @@ public class PhysicsHelper {
             if (physicsEvent instanceof AbilityHitsCreatureEvent) {
                 AbilityHitsCreatureEvent event = (AbilityHitsCreatureEvent) physicsEvent;
 
-                Creature attackedCreature = game.getCreature(event.attackedCreatureId());
-
-                Creature attackingCreature = game.getCreature(event.attackingCreatureId());
-
-                boolean attackedIsPlayer = (attackedCreature instanceof Player);
-                boolean attackingIsPlayer = (attackingCreature instanceof Player);
-
-                Ability ability = game.getAbility(event.abilityId());
-
-                if (game.getCreaturesToUpdate().contains(event.attackedCreatureId()) && // TODO: refactor
+                if (game.getCreaturesToUpdate().contains(event.destinationCreatureId()) &&
                     game.getAbilitiesToUpdate().contains(event.abilityId())) {
-                    if (event.attackingCreatureId().equals(event.attackedCreatureId())) {
+
+                    if (event.sourceCreatureId().equals(event.destinationCreatureId())) {
+                        Ability ability = game.getAbility(event.abilityId());
                         ability.onThisCreatureHit(game);
                     }
                     else {
-                        handleCreatureAttacked(event,
-                                               attackedCreature,
-                                               attackedIsPlayer,
-                                               attackingIsPlayer,
-                                               ability,
-                                               game);
+                        handleCreatureAttacked(event, game);
                     }
 
                 }
@@ -120,24 +108,24 @@ public class PhysicsHelper {
 
     }
 
-    private static void handleCreatureAttacked(AbilityHitsCreatureEvent event,
-                                               Creature attackedCreature,
-                                               boolean attackedIsPlayer,
-                                               boolean attackingIsPlayer,
-                                               Ability ability,
-                                               GameUpdatable game) {
-        if (ability != null && attackedCreature.isAlive()) {
-            if ((attackedIsPlayer || attackingIsPlayer) &&
-                !ability.params().creaturesAlreadyHit().containsKey(event.attackedCreatureId())) {
-                attackedCreature.handleBeingAttacked(ability.isRanged(),
-                                                     ability.params().dirVector(),
-                                                     ability.params().currentDamage(),
-                                                     event.attackingCreatureId(),
-                                                     game);
+    private static void handleCreatureAttacked(AbilityHitsCreatureEvent event, GameUpdatable game) {
+
+        Creature sourceCreature = game.getCreature(event.sourceCreatureId());
+        Creature destinationCreature = game.getCreature(event.destinationCreatureId());
+        Ability ability = game.getAbility(event.abilityId());
+
+        if (ability != null && destinationCreature.isAlive()) {
+            if ((sourceCreature instanceof Player || destinationCreature instanceof Player) &&
+                !ability.params().creaturesAlreadyHit().containsKey(event.destinationCreatureId())) {
+                destinationCreature.handleBeingAttacked(ability.isRanged(),
+                                                        ability.params().dirVector(),
+                                                        ability.params().currentDamage(),
+                                                        event.sourceCreatureId(),
+                                                        game);
 
                 ability.params()
                        .creaturesAlreadyHit()
-                       .put(event.attackedCreatureId(), ability.params().stateTimer().time());
+                       .put(event.destinationCreatureId(), ability.params().stateTimer().time());
                 ability.onCreatureHit();
             }
 
