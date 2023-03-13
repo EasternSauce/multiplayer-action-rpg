@@ -6,6 +6,7 @@ import com.mygdx.game.model.area.Area;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
+import com.mygdx.game.model.util.PlayerParams;
 import com.mygdx.game.model.util.SimpleTimer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,6 +27,8 @@ public class GameState {
     AreaId defaultAreaId = AreaId.of("area1");
     SimpleTimer generalTimer = SimpleTimer.getStartedTimer();
 
+    Map<CreatureId, PlayerParams> playerParams = new ConcurrentSkipListMap<>();
+
     public static GameState of(GameState gameState) {
         GameState newGameState = GameState.of();
         newGameState.creatures(new ConcurrentSkipListMap<>(gameState.creatures));
@@ -33,6 +36,7 @@ public class GameState {
         newGameState.areas(new ConcurrentSkipListMap<>(gameState.areas));
         newGameState.defaultAreaId(gameState.defaultAreaId);
         newGameState.generalTimer(gameState.generalTimer);
+        newGameState.playerParams(gameState.playerParams);
 
         return newGameState;
     }
@@ -46,6 +50,8 @@ public class GameState {
         newGameState.areas(new ConcurrentSkipListMap<>(gameState.areas));
         newGameState.defaultAreaId(gameState.defaultAreaId);
         newGameState.generalTimer(gameState.generalTimer);
+        newGameState.playerParams(gameState.playerParams);
+
         return newGameState;
     }
 }

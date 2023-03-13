@@ -14,6 +14,27 @@ import lombok.NoArgsConstructor;
 public class Teleport extends Ability {
     AbilityParams params;
 
+    public static Teleport of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
+        Creature creature = game.getCreature(abilityParams.creatureId());
+
+        Teleport ability = Teleport.of();
+        ability.params =
+                abilityParams
+                        .width(4.5f)
+                        .height(4.5f)
+                        .channelTime(0f)
+                        .activeTime(0.5f)
+                        .textureName("blast")
+                        .baseDamage(0f)
+                        .isChannelAnimationLooping(false)
+                        .isActiveAnimationLooping(false)
+                        .rotationShift(0f)
+                        .pos(creature.params().pos())
+                        .delayedActionTime(0.1f);
+
+
+        return ability;
+    }
 
     @Override
     public Boolean isRanged() {
@@ -68,27 +89,5 @@ public class Teleport extends Ability {
     @Override
     public void onOtherAbilityHit(AbilityId otherAbilityId, GameUpdatable game) {
 
-    }
-
-    public static Teleport of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
-        Creature creature = game.getCreature(abilityParams.creatureId());
-
-        Teleport ability = Teleport.of();
-        ability.params =
-                abilityParams
-                        .width(4.5f)
-                        .height(4.5f)
-                        .channelTime(0f)
-                        .activeTime(0.5f)
-                        .textureName("blast")
-                        .baseDamage(0f)
-                        .isChannelAnimationLooping(false)
-                        .isActiveAnimationLooping(false)
-                        .rotationShift(0f)
-                        .pos(creature.params().pos())
-                        .delayedActionTime(0.1f);
-
-
-        return ability;
     }
 }

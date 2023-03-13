@@ -14,6 +14,28 @@ public class SummonShield extends Ability {
 
     AbilityParams params;
 
+    public static SummonShield of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
+        SummonShield ability = SummonShield.of();
+        ability.params =
+                abilityParams
+                        .width(2f)
+                        .height(2f)
+                        .channelTime(0f)
+                        .activeTime(1f)
+                        .range(1.2f)
+                        .textureName("shield")
+                        .baseDamage(0f)
+                        .isChannelAnimationLooping(false)
+                        .isActiveAnimationLooping(false)
+                        .rotationShift(0f)
+                        .flip(SummonShield.calculateFlip(abilityParams.dirVector().angleDeg()));
+        return ability;
+    }
+
+    private static Boolean calculateFlip(Float rotationAngle) {
+        return rotationAngle >= 90 && rotationAngle < 270;
+    }
+
     @Override
     public Boolean isPositionUpdated() {
         return true;
@@ -104,28 +126,5 @@ public class SummonShield extends Ability {
                 otherAbility.deactivate();
             }
         }
-    }
-
-
-    public static SummonShield of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
-        SummonShield ability = SummonShield.of();
-        ability.params =
-                abilityParams
-                        .width(2f)
-                        .height(2f)
-                        .channelTime(0f)
-                        .activeTime(1f)
-                        .range(1.2f)
-                        .textureName("shield")
-                        .baseDamage(0f)
-                        .isChannelAnimationLooping(false)
-                        .isActiveAnimationLooping(false)
-                        .rotationShift(0f)
-                        .flip(SummonShield.calculateFlip(abilityParams.dirVector().angleDeg()));
-        return ability;
-    }
-
-    private static Boolean calculateFlip(Float rotationAngle) {
-        return rotationAngle >= 90 && rotationAngle < 270;
     }
 }

@@ -18,6 +18,24 @@ public class SwordSpin extends Ability {
 
     AbilityParams params;
 
+    public static SwordSpin of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
+        SwordSpin ability = SwordSpin.of();
+        ability.params =
+                abilityParams
+                        .width(2.2f)
+                        .height(2.2f)
+                        .channelTime(0f)
+                        .activeTime(5f)
+                        .range(2.2f)
+                        .textureName("sword")
+                        .baseDamage(13f)
+                        .isChannelAnimationLooping(false)
+                        .isActiveAnimationLooping(false)
+                        .rotationShift(0f)
+                        .dirVector(abilityParams.dirVector().rotateDeg(90));
+        return ability;
+    }
+
     @Override
     public Boolean isPositionUpdated() {
         return true;
@@ -113,23 +131,5 @@ public class SwordSpin extends Ability {
     @Override
     public void onOtherAbilityHit(AbilityId otherAbilityId, GameUpdatable game) {
 
-    }
-
-    public static SwordSpin of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
-        SwordSpin ability = SwordSpin.of();
-        ability.params =
-                abilityParams
-                        .width(2.2f)
-                        .height(2.2f)
-                        .channelTime(0f)
-                        .activeTime(5f)
-                        .range(2.2f)
-                        .textureName("sword")
-                        .baseDamage(13f)
-                        .isChannelAnimationLooping(false)
-                        .isActiveAnimationLooping(false)
-                        .rotationShift(0f)
-                        .dirVector(abilityParams.dirVector().rotateDeg(90));
-        return ability;
     }
 }

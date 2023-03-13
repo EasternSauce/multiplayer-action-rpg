@@ -14,6 +14,26 @@ public class IceSpear extends Projectile {
 
     AbilityParams params;
 
+    public static IceSpear of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
+        IceSpear ability = IceSpear.of();
+        ability.params =
+                abilityParams
+                        .width(1.05f)
+                        .height(0.5f)
+                        .channelTime(0f)
+                        .activeTime(0.6f)
+                        .textureName("ice_shard")
+                        .baseDamage(10f)
+                        .isChannelAnimationLooping(false)
+                        .isActiveAnimationLooping(true)
+                        .rotationShift(0f)
+                        .delayedActionTime(0.001f)
+                        .speed(15f);
+
+
+        return ability;
+    }
+
     @Override
     public Boolean isRanged() {
         return true;
@@ -59,26 +79,6 @@ public class IceSpear extends Projectile {
     @Override
     public void onOtherAbilityHit(AbilityId otherAbilityId, GameUpdatable game) {
 
-    }
-
-    public static IceSpear of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
-        IceSpear ability = IceSpear.of();
-        ability.params =
-                abilityParams
-                        .width(1.05f)
-                        .height(0.5f)
-                        .channelTime(0f)
-                        .activeTime(0.6f)
-                        .textureName("ice_shard")
-                        .baseDamage(10f)
-                        .isChannelAnimationLooping(false)
-                        .isActiveAnimationLooping(true)
-                        .rotationShift(0f)
-                        .delayedActionTime(0.001f)
-                        .speed(15f);
-
-
-        return ability;
     }
 }
 

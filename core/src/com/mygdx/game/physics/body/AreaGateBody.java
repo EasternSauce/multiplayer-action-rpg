@@ -16,6 +16,12 @@ public class AreaGateBody {
     @SuppressWarnings("FieldCanBeLocal")
     Body areaGateB_b2body;
 
+    public static AreaGateBody of(AreaGate areaGate) {
+        AreaGateBody areaGateBody = AreaGateBody.of();
+        areaGateBody.areaGate = areaGate;
+        return areaGateBody;
+    }
+
     public void init(GameUpdatable game) {
         areaGateA_b2body =
                 B2BodyFactory.createAreaGateB2body(game.getPhysicsWorld(areaGate.areaA_Id()),
@@ -29,11 +35,5 @@ public class AreaGateBody {
                                                    areaGate.posB(),
                                                    areaGate.width(),
                                                    areaGate.height());
-    }
-
-    public static AreaGateBody of(AreaGate areaGate) {
-        AreaGateBody areaGateBody = AreaGateBody.of();
-        areaGateBody.areaGate = areaGate;
-        return areaGateBody;
     }
 }

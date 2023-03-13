@@ -18,15 +18,12 @@ import lombok.NoArgsConstructor;
 @Data
 public class AbilityBody {
 
+    final Sprite sprite = new Sprite(); // only used for calculating vertices
     @Getter
     AbilityId abilityId;
-
     @Getter
     CreatureId creatureId;
-
     Body b2Body = null;
-    final Sprite sprite = new Sprite(); // only used for calculating vertices
-
     PhysicsWorld world;
 
     @Getter

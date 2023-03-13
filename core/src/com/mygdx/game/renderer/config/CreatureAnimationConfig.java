@@ -12,15 +12,6 @@ import java.util.concurrent.ConcurrentSkipListMap;
 @AllArgsConstructor(staticName = "of")
 @Data
 public class CreatureAnimationConfig {
-    String textureName;
-    Integer neutralStanceFrame;
-    Float spriteWidth;
-    Float spriteHeight;
-    Integer textureWidth;
-    Integer textureHeight;
-    Integer frameCount;
-    Float frameDuration;
-    Map<WorldDirection, Integer> dirMap;
     public static Map<String, CreatureAnimationConfig> configs = new ConcurrentSkipListMap<>();
 
     static {
@@ -54,6 +45,16 @@ public class CreatureAnimationConfig {
                                                textureDirMap(3, 0, 1, 2)));
 
     }
+
+    String textureName;
+    Integer neutralStanceFrame;
+    Float spriteWidth;
+    Float spriteHeight;
+    Integer textureWidth;
+    Integer textureHeight;
+    Integer frameCount;
+    Float frameDuration;
+    Map<WorldDirection, Integer> dirMap;
 
     @SuppressWarnings("SameParameterValue")
     private static Map<WorldDirection, Integer> textureDirMap(int up, int down, int left, int right) {

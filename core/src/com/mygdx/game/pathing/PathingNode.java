@@ -1,6 +1,6 @@
 package com.mygdx.game.pathing;
 
-import com.mygdx.game.physics.util.TilePos;
+import com.mygdx.game.model.util.Vector2Int;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,11 +12,11 @@ import java.util.List;
 @AllArgsConstructor(staticName = "of")
 @Data
 public class PathingNode {
-    TilePos pos;
+    Vector2Int pos;
     Integer clearance;
     List<PathingEdge> outgoingEdges = new ArrayList<>();
 
-    public static PathingNode of(TilePos pos, Integer clearance) {
+    public static PathingNode of(Vector2Int pos, Integer clearance) {
         PathingNode pathingNode = new PathingNode();
         pathingNode.pos(pos);
         pathingNode.clearance(clearance);

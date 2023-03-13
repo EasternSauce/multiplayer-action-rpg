@@ -54,6 +54,8 @@ public class GameRenderer {
         areaRenderers.forEach((areaId, areaRenderer) -> areaRenderer.init(maps.get(areaId), mapScale));
         areaGateRenderers =
                 areaGates.stream().map(areaGate -> AreaGateRenderer.of(areaGate, atlas)).collect(Collectors.toSet());
+
+        InventoryRenderer.init(atlas);
     }
 
     public void renderAliveCreatures(DrawingLayer drawingLayer, GameUpdatable game) {

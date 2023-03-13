@@ -1,6 +1,6 @@
 package com.mygdx.game.pathing;
 
-import com.mygdx.game.physics.util.TilePos;
+import com.mygdx.game.model.util.Vector2Int;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,10 +12,10 @@ import java.util.Set;
 @AllArgsConstructor(staticName = "of")
 @Data
 public class AstarState {
-    Map<TilePos, AstarNode> astarGraph;
-    Set<TilePos> openSet;
-    Set<TilePos> closedSet;
-    TilePos finishPos;
+    Map<Vector2Int, AstarNode> astarGraph;
+    Set<Vector2Int> openSet;
+    Set<Vector2Int> closedSet;
+    Vector2Int finishPos;
     Boolean foundPath;
     Boolean gaveUp;
 }

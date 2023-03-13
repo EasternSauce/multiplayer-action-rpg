@@ -26,18 +26,13 @@ import java.util.stream.Collectors;
 @Data
 public class GamePhysics {
 
+    final List<PhysicsEvent> physicsEventQueue = Collections.synchronizedList(new ArrayList<>());
     Map<AreaId, PhysicsWorld> physicsWorlds;
-
     Map<CreatureId, CreatureBody> creatureBodies = new HashMap<>();
     Map<AbilityId, AbilityBody> abilityBodies = new HashMap<>();
-
     Set<AreaGateBody> areaGateBodies = new HashSet<>();
-
     Box2DDebugRenderer debugRenderer;
-
     Boolean isForceUpdateBodyPositions = false;
-
-    final List<PhysicsEvent> physicsEventQueue = Collections.synchronizedList(new ArrayList<>());
 
     public void init(Map<AreaId, TiledMap> maps, Set<AreaGate> areaGates, GameUpdatable game) {
         physicsWorlds = maps.entrySet()

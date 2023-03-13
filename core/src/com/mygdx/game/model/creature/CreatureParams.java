@@ -1,6 +1,8 @@
 package com.mygdx.game.model.creature;
 
 import com.mygdx.game.model.area.AreaId;
+import com.mygdx.game.model.item.Item;
+import com.mygdx.game.model.item.ItemTemplate;
 import com.mygdx.game.model.skill.Skill;
 import com.mygdx.game.model.skill.SkillType;
 import com.mygdx.game.model.util.SimpleTimer;
@@ -107,6 +109,9 @@ public class CreatureParams {
     Boolean justTeleportedToGate = false;
     AreaId areaWhenEnteredGate;
 
+    Map<Integer, Item> equipmentItems = new ConcurrentSkipListMap<>();
+    Map<Integer, Item> inventoryItems = new ConcurrentSkipListMap<>();
+
     public static CreatureParams of(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn) {
         return getCreatureParams(creatureId,
                                  areaId,
@@ -140,6 +145,9 @@ public class CreatureParams {
 
         params.aiStateSeed = RandomHelper.seededRandomFloat(creatureId);
         params.aiStateTime = 0f;
+
+        params.inventoryItems.put(2, Item.of(ItemTemplate.templates.get("leatherArmor"), 0.6f));
+        params.inventoryItems.put(10, Item.of(ItemTemplate.templates.get("hideGloves"), 0.9f));
         return params;
     }
 

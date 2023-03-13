@@ -8,13 +8,13 @@ import com.mygdx.game.model.action.*;
 import com.mygdx.game.model.area.Area;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.*;
+import com.mygdx.game.model.item.EquipmentSlotType;
+import com.mygdx.game.model.item.Item;
+import com.mygdx.game.model.item.ItemTemplate;
 import com.mygdx.game.model.skill.ScheduledAbility;
 import com.mygdx.game.model.skill.Skill;
 import com.mygdx.game.model.skill.SkillType;
-import com.mygdx.game.model.util.GameStateBroadcast;
-import com.mygdx.game.model.util.SimpleTimer;
-import com.mygdx.game.model.util.Vector2;
-import com.mygdx.game.model.util.WorldDirection;
+import com.mygdx.game.model.util.*;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -32,6 +32,7 @@ public class EndPointHelper {
 
         endPoint.getKryo().register(CreatureId.class);
         endPoint.getKryo().register(Vector2.class);
+        endPoint.getKryo().register(Vector2Int.class);
         endPoint.getKryo().register(AreaId.class);
         endPoint.getKryo().register(SimpleTimer.class);
         endPoint.getKryo().register(AbilityType.class);
@@ -47,6 +48,7 @@ public class EndPointHelper {
         endPoint.getKryo().register(SendChatMessageCommand.class);
         endPoint.getKryo().register(SpawnEnemyCommand.class);
         endPoint.getKryo().register(TryPerformSkillCommand.class);
+        endPoint.getKryo().register(ToggleInventoryCommand.class);
 
         endPoint.getKryo().register(Ability.class);
         endPoint.getKryo().register(SummonGhosts.class);
@@ -91,6 +93,11 @@ public class EndPointHelper {
         endPoint.getKryo().register(AbilityActivateAction.class);
         endPoint.getKryo().register(SetCreatureMovingVectorAction.class);
 
+        endPoint.getKryo().register(EquipmentSlotType.class);
+        endPoint.getKryo().register(ItemTemplate.class);
+        endPoint.getKryo().register(Item.class);
+
+        endPoint.getKryo().register(PlayerParams.class);
         endPoint.getKryo().register(ActionsHolder.class);
         endPoint.getKryo().register(GameState.class);
         endPoint.getKryo().register(GameStateBroadcast.class);

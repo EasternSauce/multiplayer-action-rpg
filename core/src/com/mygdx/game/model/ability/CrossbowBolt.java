@@ -15,6 +15,23 @@ public class CrossbowBolt extends Projectile {
 
     AbilityParams params;
 
+    public static CrossbowBolt of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
+        CrossbowBolt ability = CrossbowBolt.of();
+        ability.params =
+                abilityParams.width(1.5f)
+                             .height(1.5f)
+                             .channelTime(0f)
+                             .activeTime(30f)
+                             .textureName("arrow")
+                             .baseDamage(10f)
+                             .isChannelAnimationLooping(true)
+                             .isActiveAnimationLooping(true)
+                             .rotationShift(0f)
+                             .speed(30f);
+
+        return ability;
+    }
+
     @Override
     public Boolean isRanged() {
         return true;
@@ -58,22 +75,5 @@ public class CrossbowBolt extends Projectile {
     @Override
     public void onOtherAbilityHit(AbilityId otherAbilityId, GameUpdatable game) {
 
-    }
-
-    public static CrossbowBolt of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
-        CrossbowBolt ability = CrossbowBolt.of();
-        ability.params =
-                abilityParams.width(1.5f)
-                             .height(1.5f)
-                             .channelTime(0f)
-                             .activeTime(30f)
-                             .textureName("arrow")
-                             .baseDamage(10f)
-                             .isChannelAnimationLooping(true)
-                             .isActiveAnimationLooping(true)
-                             .rotationShift(0f)
-                             .speed(30f);
-
-        return ability;
     }
 }

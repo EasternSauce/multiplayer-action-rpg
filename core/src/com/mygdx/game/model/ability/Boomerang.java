@@ -17,6 +17,23 @@ public class Boomerang extends Projectile {
 
     AbilityParams params;
 
+    public static Boomerang of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
+        Boomerang ability = Boomerang.of();
+        ability.params =
+                abilityParams.width(1.8f)
+                             .height(1.8f)
+                             .channelTime(0f)
+                             .activeTime(10f)
+                             .textureName("boomerang")
+                             .baseDamage(25f)
+                             .isChannelAnimationLooping(true)
+                             .isActiveAnimationLooping(true)
+                             .rotationShift(0f)
+                             .speed(15f);
+
+        return ability;
+    }
+
     @Override
     public Boolean isRanged() {
         return true;
@@ -129,22 +146,5 @@ public class Boomerang extends Projectile {
     @Override
     public void onOtherAbilityHit(AbilityId otherAbilityId, GameUpdatable game) {
 
-    }
-
-    public static Boomerang of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
-        Boomerang ability = Boomerang.of();
-        ability.params =
-                abilityParams.width(1.8f)
-                             .height(1.8f)
-                             .channelTime(0f)
-                             .activeTime(10f)
-                             .textureName("boomerang")
-                             .baseDamage(25f)
-                             .isChannelAnimationLooping(true)
-                             .isActiveAnimationLooping(true)
-                             .rotationShift(0f)
-                             .speed(15f);
-
-        return ability;
     }
 }

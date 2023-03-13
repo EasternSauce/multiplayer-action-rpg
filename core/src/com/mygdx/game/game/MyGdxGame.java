@@ -1,8 +1,10 @@
 package com.mygdx.game.game;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector3;
 import com.esotericsoftware.kryonet.EndPoint;
+import com.mygdx.game.Constants;
 import com.mygdx.game.chat.Chat;
 import com.mygdx.game.game.data.TeleportEvent;
 import com.mygdx.game.game.interface_.AbilityUpdatable;
@@ -16,6 +18,7 @@ import com.mygdx.game.model.ability.AbilityState;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.*;
 import com.mygdx.game.model.skill.SkillType;
+import com.mygdx.game.model.util.PlayerParams;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.physics.GamePhysics;
 import com.mygdx.game.physics.body.AbilityBody;
@@ -32,23 +35,18 @@ import java.util.*;
 public abstract class MyGdxGame extends Game implements AbilityUpdatable, CreatureUpdatable, GameRenderable, GameActionApplicable {
     final protected GameRenderer gameRenderer = GameRenderer.of();
     final protected GamePhysics gamePhysics = GamePhysics.of();
-    protected GameState gameState = GameState.of();
     final MyGdxGamePlayScreen playScreen = MyGdxGamePlayScreen.of();
-
     @SuppressWarnings("FieldCanBeLocal")
     private final boolean isDebugEnabled = true;
     private final Chat chat = Chat.of();
-    protected CreatureId thisPlayerId = null;
-
     final List<CreatureId> creaturesToBeCreated = Collections.synchronizedList(new ArrayList<>());
     final List<AbilityId> abilitiesToBeCreated = Collections.synchronizedList(new ArrayList<>());
     final List<AbilityId> abilitiesToBeActivated = Collections.synchronizedList(new ArrayList<>());
-
     final List<CreatureId> creaturesToBeRemoved = Collections.synchronizedList(new ArrayList<>());
     final List<AbilityId> abilitiesToBeRemoved = Collections.synchronizedList(new ArrayList<>());
-
     final List<TeleportEvent> teleportEvents = Collections.synchronizedList(new ArrayList<>());
-
+    protected GameState gameState = GameState.of();
+    protected CreatureId thisPlayerId = null;
 
     public Boolean isDebugEnabled() {
         return isDebugEnabled;
@@ -480,5 +478,34 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
     @Override
     public AreaId getDefaultAreaId() {
         return gameState.defaultAreaId();
+    }
+
+    @Override
+    public void initiatePlayerParams(CreatureId playerId) {
+        gameState.playerParams().put(playerId, PlayerParams.of());
+    }
+
+    @Override
+    public PlayerParams getPlayerParams(CreatureId creatureId) {
+        return gameState.playerParams().get(creatureId);
+    }
+
+    public Vector2 mousePosRelativeToCenter() { // relative to center of screen, in in-game length units
+        Vector3 v = new Vector3((float) Gdx.input.getX(), (float) Gdx.input.getY(), 0f);
+        gameRenderer.hudCamera().unproject(v);
+        Vector2 mousePos = Vector2.of(v.x - Constants.WindowWidth / 2f, v.y - Constants.WindowHeight / 2f);
+
+        float viewportRatioX = Constants.ViewpointWorldWidth / Constants.WindowWidth;
+        float viewportRatioY = Constants.ViewpointWorldHeight / Constants.WindowHeight;
+
+
+        return Vector2.of(mousePos.x() * viewportRatioX / Constants.PPM,
+                          mousePos.y() * viewportRatioY / Constants.PPM);
+    }
+
+    public Vector2 hudMousePos() {
+        Vector3 v = new Vector3((float) Gdx.input.getX(), (float) Gdx.input.getY(), 0f);
+        gameRenderer.hudCamera().unproject(v);
+        return Vector2.of(v.x, v.y);
     }
 }

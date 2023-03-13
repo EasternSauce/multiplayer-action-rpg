@@ -14,6 +14,23 @@ public class SwordSlash extends Ability {
 
     AbilityParams params;
 
+    public static SwordSlash of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
+        SwordSlash ability = SwordSlash.of();
+        ability.params =
+                abilityParams
+                        .width(2f)
+                        .height(2f)
+                        .channelTime(0.15f)
+                        .activeTime(0.3f)
+                        .range(1.8f)
+                        .textureName("slash")
+                        .baseDamage(22f)
+                        .isChannelAnimationLooping(false)
+                        .isActiveAnimationLooping(false)
+                        .rotationShift(0f);
+        return ability;
+    }
+
     @Override
     public Boolean isPositionUpdated() {
         return true;
@@ -99,22 +116,5 @@ public class SwordSlash extends Ability {
     @Override
     public void onOtherAbilityHit(AbilityId otherAbilityId, GameUpdatable game) {
 
-    }
-
-    public static SwordSlash of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
-        SwordSlash ability = SwordSlash.of();
-        ability.params =
-                abilityParams
-                        .width(2f)
-                        .height(2f)
-                        .channelTime(0.15f)
-                        .activeTime(0.3f)
-                        .range(1.8f)
-                        .textureName("slash")
-                        .baseDamage(22f)
-                        .isChannelAnimationLooping(false)
-                        .isActiveAnimationLooping(false)
-                        .rotationShift(0f);
-        return ability;
     }
 }

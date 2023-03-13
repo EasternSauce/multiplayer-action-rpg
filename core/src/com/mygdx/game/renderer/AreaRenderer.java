@@ -17,6 +17,12 @@ public class AreaRenderer {
     AreaId id;
     OrthogonalTiledMapRenderer tiledMapRenderer;
 
+    public static AreaRenderer of(AreaId id) {
+        AreaRenderer areaRenderer = AreaRenderer.of();
+        areaRenderer.id(id);
+        return areaRenderer;
+    }
+
     public void init(TiledMap map, float mapScale) {
         tiledMapRenderer = new OrthogonalTiledMapRenderer(map, mapScale / Constants.PPM);
     }
@@ -29,14 +35,9 @@ public class AreaRenderer {
         tiledMapRenderer.setView(camera);
     }
 
+    @SuppressWarnings("unused")
     public void dispose() {
         tiledMapRenderer.dispose();
-    }
-
-    public static AreaRenderer of(AreaId id) {
-        AreaRenderer areaRenderer = AreaRenderer.of();
-        areaRenderer.id(id);
-        return areaRenderer;
     }
 
 }

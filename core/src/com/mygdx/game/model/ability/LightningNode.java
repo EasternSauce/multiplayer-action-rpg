@@ -18,6 +18,25 @@ import java.util.Set;
 public class LightningNode extends Ability {
     AbilityParams params;
 
+    public static LightningNode of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
+        LightningNode ability = LightningNode.of();
+        ability.params = abilityParams
+
+                .width(3f)
+                .height(3f)
+                .channelTime(0f)
+                .activeTime(0.4f)
+                .textureName("lightning")
+                .baseDamage(30f)
+                .isActiveAnimationLooping(true)
+                .attackWithoutMoving(true)
+                .inactiveBody(true)
+                .rotationShift(0f)
+                .delayedActionTime(0.001f);
+
+        return ability;
+    }
+
     @Override
     public Boolean isRanged() {
         return true;
@@ -97,24 +116,5 @@ public class LightningNode extends Ability {
     @Override
     public void onOtherAbilityHit(AbilityId otherAbilityId, GameUpdatable game) {
 
-    }
-
-    public static LightningNode of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
-        LightningNode ability = LightningNode.of();
-        ability.params = abilityParams
-
-                .width(3f)
-                .height(3f)
-                .channelTime(0f)
-                .activeTime(0.4f)
-                .textureName("lightning")
-                .baseDamage(30f)
-                .isActiveAnimationLooping(true)
-                .attackWithoutMoving(true)
-                .inactiveBody(true)
-                .rotationShift(0f)
-                .delayedActionTime(0.001f);
-
-        return ability;
     }
 }

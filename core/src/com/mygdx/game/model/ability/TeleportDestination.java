@@ -16,6 +16,54 @@ import lombok.NoArgsConstructor;
 public class TeleportDestination extends Ability {
     AbilityParams params;
 
+    public static TeleportDestination of(AbilityParams abilityParams,
+                                         @SuppressWarnings("unused") AbilityUpdatable game) {
+        Creature creature = game.getCreature(abilityParams.creatureId());
+
+        Vector2 teleportPos = TeleportDestination.calculatePos(creature.params()
+                                                                       .pos()
+                                                                       .add(abilityParams.dirVector()),
+                                                               creature.params().pos(),
+                                                               creature.params().areaId(),
+                                                               game);
+
+        TeleportDestination ability = TeleportDestination.of();
+        ability.params =
+                abilityParams.width(4.5f)
+                             .height(4.5f)
+                             .channelTime(0f)
+                             .activeTime(0.5f)
+                             .textureName("blast")
+                             .baseDamage(0f)
+                             .isChannelAnimationLooping(false)
+                             .isActiveAnimationLooping(false)
+                             .rotationShift(0f)
+                             .pos(teleportPos)
+                             .chainToPos(teleportPos);
+
+
+        return ability;
+    }
+
+    private static Vector2 calculatePos(Vector2 pos, Vector2 creaturePos, AreaId areaId, AbilityUpdatable game) {
+        Vector2 vectorTowards = creaturePos.vectorTowards(pos);
+
+        float maxRange = 14f;
+        Vector2 destinationPos;
+        if (vectorTowards.len() > maxRange) {
+            destinationPos = creaturePos.add(vectorTowards.normalized().multiplyBy(maxRange));
+        }
+        else {
+            destinationPos = pos;
+        }
+
+        if (!game.isLineOfSight(areaId, creaturePos, destinationPos)) {
+            return creaturePos;
+        }
+
+        return destinationPos;
+    }
+
     @Override
     public Boolean isRanged() {
         return true;
@@ -72,53 +120,5 @@ public class TeleportDestination extends Ability {
     @Override
     public void onOtherAbilityHit(AbilityId otherAbilityId, GameUpdatable game) {
 
-    }
-
-    public static TeleportDestination of(AbilityParams abilityParams,
-                                         @SuppressWarnings("unused") AbilityUpdatable game) {
-        Creature creature = game.getCreature(abilityParams.creatureId());
-
-        Vector2 teleportPos = TeleportDestination.calculatePos(creature.params()
-                                                                       .pos()
-                                                                       .add(abilityParams.dirVector()),
-                                                               creature.params().pos(),
-                                                               creature.params().areaId(),
-                                                               game);
-
-        TeleportDestination ability = TeleportDestination.of();
-        ability.params =
-                abilityParams.width(4.5f)
-                             .height(4.5f)
-                             .channelTime(0f)
-                             .activeTime(0.5f)
-                             .textureName("blast")
-                             .baseDamage(0f)
-                             .isChannelAnimationLooping(false)
-                             .isActiveAnimationLooping(false)
-                             .rotationShift(0f)
-                             .pos(teleportPos)
-                             .chainToPos(teleportPos);
-
-
-        return ability;
-    }
-
-    private static Vector2 calculatePos(Vector2 pos, Vector2 creaturePos, AreaId areaId, AbilityUpdatable game) {
-        Vector2 vectorTowards = creaturePos.vectorTowards(pos);
-
-        float maxRange = 14f;
-        Vector2 destinationPos;
-        if (vectorTowards.len() > maxRange) {
-            destinationPos = creaturePos.add(vectorTowards.normalized().multiplyBy(maxRange));
-        }
-        else {
-            destinationPos = pos;
-        }
-
-        if (!game.isLineOfSight(areaId, creaturePos, destinationPos)) {
-            return creaturePos;
-        }
-
-        return destinationPos;
     }
 }

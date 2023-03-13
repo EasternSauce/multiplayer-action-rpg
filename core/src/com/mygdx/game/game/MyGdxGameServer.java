@@ -23,10 +23,9 @@ import java.util.stream.Collectors;
 
 public class MyGdxGameServer extends MyGdxGame {
     private static MyGdxGameServer instance;
-
-    Server _endPoint;
     private final List<GameStateAction> tickActions = Collections.synchronizedList(new ArrayList<>());
     private final Map<Integer, CreatureId> clientCreatures = new ConcurrentSkipListMap<>();
+    Server _endPoint;
     Thread broadcastThread;
 
     private MyGdxGameServer() {
@@ -164,6 +163,15 @@ public class MyGdxGameServer extends MyGdxGame {
                 else if (object instanceof SpawnEnemyCommand) {
                     SpawnEnemyCommand command = (SpawnEnemyCommand) object;
                     spawnEnemy(command.creatureId(), command.areaId(), command.enemySpawn());
+
+                    endPoint().sendToAllTCP(command);
+
+                }
+                else if (object instanceof ToggleInventoryCommand) {
+                    ToggleInventoryCommand command = (ToggleInventoryCommand) object;
+
+                    boolean isInventoryVisible = gameState.playerParams().get(command.creatureId()).isVisible();
+                    gameState.playerParams().get(command.creatureId()).isVisible(!isInventoryVisible);
 
                     endPoint().sendToAllTCP(command);
 

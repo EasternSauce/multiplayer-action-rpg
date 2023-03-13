@@ -11,16 +11,6 @@ import java.util.Map;
 @AllArgsConstructor(staticName = "of")
 @Data
 public class AbilityAnimationConfig {
-    Integer textureWidth;
-    Integer textureHeight;
-    String channelSpriteType;
-    String activeSpriteType;
-    Integer channelFrameCount;
-    Integer activeFrameCount;
-    Float channelFrameDuration;
-    Float activeFrameDuration;
-    Float scale;
-
     public static Map<String, AbilityAnimationConfig> configs = new HashMap<>();
 
     static {
@@ -55,4 +45,14 @@ public class AbilityAnimationConfig {
         configs.put("blast", AbilityAnimationConfig.of(64, 64, "blast", "blast", 0, 10, 0f, 0.05f, 1.7f));
 
     }
+
+    Integer textureWidth;
+    Integer textureHeight;
+    String channelSpriteType;
+    String activeSpriteType;
+    Integer channelFrameCount;
+    Integer activeFrameCount;
+    Float channelFrameDuration;
+    Float activeFrameDuration;
+    Float scale;
 }

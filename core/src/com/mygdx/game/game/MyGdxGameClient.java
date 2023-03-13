@@ -2,7 +2,6 @@ package com.mygdx.game.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.math.Vector3;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -107,7 +106,7 @@ public class MyGdxGameClient extends MyGdxGame {
         }
         if (!getChat().isTyping()) {
             if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-                Vector2 mousePos = mousePos();
+                Vector2 mousePos = mousePosRelativeToCenter();
 
                 Creature player = gameState().creatures().get(thisPlayerId);
 
@@ -132,7 +131,7 @@ public class MyGdxGameClient extends MyGdxGame {
                 Creature player = gameState().creatures().get(thisPlayerId);
 
 
-                Vector2 dirVector = mousePos();
+                Vector2 dirVector = mousePosRelativeToCenter();
 
                 endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
                                                              SkillType.SWORD_SLASH,
@@ -146,7 +145,7 @@ public class MyGdxGameClient extends MyGdxGame {
                 Creature player = gameState().creatures().get(thisPlayerId);
 
 
-                Vector2 dirVector = mousePos();
+                Vector2 dirVector = mousePosRelativeToCenter();
 
                 endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
                                                              SkillType.FIREBALL,
@@ -160,7 +159,7 @@ public class MyGdxGameClient extends MyGdxGame {
                 Creature player = gameState().creatures().get(thisPlayerId);
 
 
-                Vector2 dirVector = mousePos();
+                Vector2 dirVector = mousePosRelativeToCenter();
 
                 Vector2 startingPos = player.params().pos().add(dirVector);
 
@@ -177,7 +176,7 @@ public class MyGdxGameClient extends MyGdxGame {
                 Creature player = gameState().creatures().get(thisPlayerId);
 
 
-                Vector2 dirVector = mousePos();
+                Vector2 dirVector = mousePosRelativeToCenter();
 
                 endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
                                                              SkillType.CROSSBOW_BOLT,
@@ -192,7 +191,7 @@ public class MyGdxGameClient extends MyGdxGame {
                 Creature player = gameState().creatures().get(thisPlayerId);
 
 
-                Vector2 dirVector = mousePos();
+                Vector2 dirVector = mousePosRelativeToCenter();
 
                 endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
                                                              SkillType.MAGIC_ORB,
@@ -206,7 +205,7 @@ public class MyGdxGameClient extends MyGdxGame {
                 Creature player = gameState().creatures().get(thisPlayerId);
 
 
-                Vector2 dirVector = mousePos();
+                Vector2 dirVector = mousePosRelativeToCenter();
 
                 endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
                                                              SkillType.VOLATILE_BUBBLE,
@@ -220,7 +219,7 @@ public class MyGdxGameClient extends MyGdxGame {
                 Creature player = gameState().creatures().get(thisPlayerId);
 
 
-                Vector2 dirVector = mousePos();
+                Vector2 dirVector = mousePosRelativeToCenter();
 
                 endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
                                                              SkillType.SUMMON_GHOSTS,
@@ -234,7 +233,7 @@ public class MyGdxGameClient extends MyGdxGame {
                 Creature player = gameState().creatures().get(thisPlayerId);
 
 
-                Vector2 dirVector = mousePos();
+                Vector2 dirVector = mousePosRelativeToCenter();
 
                 endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
                                                              SkillType.RICOCHET_BALLISTA,
@@ -245,15 +244,7 @@ public class MyGdxGameClient extends MyGdxGame {
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
 
-                Creature player = gameState().creatures().get(thisPlayerId);
-
-
-                Vector2 dirVector = mousePos();
-
-                endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
-                                                             SkillType.BOOMERANG,
-                                                             player.params().pos(),
-                                                             dirVector));
+                endPoint().sendTCP(ToggleInventoryCommand.of(thisPlayerId));
 
 
             }
@@ -262,7 +253,7 @@ public class MyGdxGameClient extends MyGdxGame {
                 Creature player = gameState().creatures().get(thisPlayerId);
 
 
-                Vector2 dirVector = mousePos();
+                Vector2 dirVector = mousePosRelativeToCenter();
 
                 endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
                                                              SkillType.SUMMON_SHIELD,
@@ -276,7 +267,7 @@ public class MyGdxGameClient extends MyGdxGame {
 
                 Creature player = gameState().creatures().get(thisPlayerId);
 
-                Vector2 dirVector = mousePos();
+                Vector2 dirVector = mousePosRelativeToCenter();
 
                 endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
                                                              SkillType.SWORD_SPIN,
@@ -290,7 +281,7 @@ public class MyGdxGameClient extends MyGdxGame {
 
                 Creature player = gameState().creatures().get(thisPlayerId);
 
-                Vector2 dirVector = mousePos();
+                Vector2 dirVector = mousePosRelativeToCenter();
 
                 endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
                                                              SkillType.TELEPORT,
@@ -484,6 +475,12 @@ public class MyGdxGameClient extends MyGdxGame {
 
                     spawnEnemy(command.creatureId(), command.areaId(), command.enemySpawn());
                 }
+                else if (object instanceof ToggleInventoryCommand) {
+                    ToggleInventoryCommand command = (ToggleInventoryCommand) object;
+
+                    boolean isInventoryVisible = gameState.playerParams().get(command.creatureId()).isVisible();
+                    gameState.playerParams().get(command.creatureId()).isVisible(!isInventoryVisible);
+                }
 
             }
 
@@ -586,18 +583,6 @@ public class MyGdxGameClient extends MyGdxGame {
         endPoint().stop();
     }
 
-    public Vector2 mousePos() { // relative to center of screen, in in-game length units
-        Vector3 v = new Vector3((float) Gdx.input.getX(), (float) Gdx.input.getY(), 0f);
-        gameRenderer.hudCamera().unproject(v);
-        Vector2 mousePos = Vector2.of(v.x - Constants.WindowWidth / 2f, v.y - Constants.WindowHeight / 2f);
-
-        float viewportRatioX = Constants.ViewpointWorldWidth / Constants.WindowWidth;
-        float viewportRatioY = Constants.ViewpointWorldHeight / Constants.WindowHeight;
-
-
-        return Vector2.of(mousePos.x() * viewportRatioX / Constants.PPM,
-                          mousePos.y() * viewportRatioY / Constants.PPM);
-    }
 
     @Override
     public void initAbilityBody(Ability ability) {

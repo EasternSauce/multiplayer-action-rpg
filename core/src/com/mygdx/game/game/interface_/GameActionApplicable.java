@@ -16,4 +16,6 @@ public interface GameActionApplicable extends GameUpdatable, AbilityUpdatable, C
     List<CreatureId> creaturesToBeRemoved();
 
     List<AbilityId> abilitiesToBeRemoved();
+
+    void initiatePlayerParams(CreatureId playerId);
 }

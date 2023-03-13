@@ -7,10 +7,10 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.Constants;
 import com.mygdx.game.model.util.Vector2;
+import com.mygdx.game.model.util.Vector2Int;
 import com.mygdx.game.pathing.Astar;
 import com.mygdx.game.pathing.PathingNode;
 import com.mygdx.game.physics.body.TerrainTileBody;
-import com.mygdx.game.physics.util.TilePos;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -26,13 +26,13 @@ public class PhysicsWorld {
 
     World b2world;
 
-    Map<TilePos, Boolean> traversables = new HashMap<>();
+    Map<Vector2Int, Boolean> traversables = new HashMap<>();
 
-    Map<TilePos, Boolean> traversablesWithMargins = new HashMap<>();
+    Map<Vector2Int, Boolean> traversablesWithMargins = new HashMap<>();
 
-    Map<TilePos, Boolean> flyover = new HashMap<>();
+    Map<Vector2Int, Boolean> flyover = new HashMap<>();
 
-    Map<TilePos, Integer> clearances = new HashMap<>();
+    Map<Vector2Int, Integer> clearances = new HashMap<>();
 
     Float tileWidth;
     Float tileHeight;
@@ -40,7 +40,7 @@ public class PhysicsWorld {
     List<TerrainTileBody> terrainTiles = new LinkedList<>();
     List<TerrainTileBody> terrainBorders = new LinkedList<>();
 
-    Map<TilePos, PathingNode> pathingGraph;
+    Map<Vector2Int, PathingNode> pathingGraph;
 
     public static PhysicsWorld of(TiledMap map) {
         PhysicsWorld world = PhysicsWorld.of();
@@ -58,17 +58,17 @@ public class PhysicsWorld {
         return layer.getHeight();
     }
 
-    public Map<TilePos, PathingNode> pathingGraph() {
+    public Map<Vector2Int, PathingNode> pathingGraph() {
         return pathingGraph;
     }
 
-    public Vector2 getTileCenter(TilePos pos) {
+    public Vector2 getTileCenter(Vector2Int pos) {
 
         return Vector2.of(pos.x() * tileWidth + tileWidth / 2, pos.y() * tileHeight + tileHeight / 2);
     }
 
-    public TilePos getClosestTile(Vector2 pos) {
-        return TilePos.of((int) (pos.x() / tileWidth), (int) (pos.y() / tileHeight));
+    public Vector2Int getClosestTile(Vector2 pos) {
+        return Vector2Int.of((int) (pos.x() / tileWidth), (int) (pos.y() / tileHeight));
     }
 
     public void init() {
@@ -81,19 +81,19 @@ public class PhysicsWorld {
 
         for (int i = 0; i < heightInTiles(); i++) {
             for (int j = 0; j < widthInTiles(); j++) {
-                traversables.put(TilePos.of(j, i), true);
+                traversables.put(Vector2Int.of(j, i), true);
             }
         }
 
         for (int i = 0; i < heightInTiles(); i++) {
             for (int j = 0; j < widthInTiles(); j++) {
-                traversablesWithMargins.put(TilePos.of(j, i), true);
+                traversablesWithMargins.put(Vector2Int.of(j, i), true);
             }
         }
 
         for (int i = 0; i < heightInTiles(); i++) {
             for (int j = 0; j < widthInTiles(); j++) {
-                flyover.put(TilePos.of(j, i), true);
+                flyover.put(Vector2Int.of(j, i), true);
             }
         }
 
@@ -120,32 +120,32 @@ public class PhysicsWorld {
                         Boolean isTileFlyover = (Boolean) cell.getTile().getProperties().get("flyover");
 
                         if (!isTileTraversable) {
-                            traversables.put(TilePos.of(x, y), false);
+                            traversables.put(Vector2Int.of(x, y), false);
 
-                            traversablesWithMargins.put(TilePos.of(x, y), false);
+                            traversablesWithMargins.put(Vector2Int.of(x, y), false);
 
-                            List<TilePos> combinations = Arrays.asList(TilePos.of(0, 1),
-                                                                       TilePos.of(1, 0),
-                                                                       TilePos.of(-1, 0),
-                                                                       TilePos.of(0, -1),
-                                                                       TilePos.of(1, 1),
-                                                                       TilePos.of(-1, 1),
-                                                                       TilePos.of(-1, -1),
-                                                                       TilePos.of(1, -1));
+                            List<Vector2Int> combinations = Arrays.asList(Vector2Int.of(0, 1),
+                                                                          Vector2Int.of(1, 0),
+                                                                          Vector2Int.of(-1, 0),
+                                                                          Vector2Int.of(0, -1),
+                                                                          Vector2Int.of(1, 1),
+                                                                          Vector2Int.of(-1, 1),
+                                                                          Vector2Int.of(-1, -1),
+                                                                          Vector2Int.of(1, -1));
 
                             final int _x = x;
                             final int _y = y;
 
                             combinations.stream()
                                         .filter(pos -> tileExists(_x + pos.x(), _y + pos.y()))
-                                        .forEach(tilePos -> traversablesWithMargins.put(TilePos.of(_x + tilePos.x(),
-                                                                                                   _y + tilePos.y()),
+                                        .forEach(tilePos -> traversablesWithMargins.put(Vector2Int.of(_x + tilePos.x(),
+                                                                                                      _y + tilePos.y()),
                                                                                         false));
 
                         }
 
                         if (!isTileFlyover) {
-                            flyover.put(TilePos.of(x, y), false);
+                            flyover.put(Vector2Int.of(x, y), false);
                         }
                     }
 
@@ -155,12 +155,12 @@ public class PhysicsWorld {
 
             for (int y = 0; y < layer.getHeight(); y++) {
                 for (int x = 0; x < layer.getWidth(); x++) {
-                    if (!traversables.get(TilePos.of(x, y))) {
-                        TerrainTileBody tile = TerrainTileBody.of(TilePos.of(x, y),
+                    if (!traversables.get(Vector2Int.of(x, y))) {
+                        TerrainTileBody tile = TerrainTileBody.of(Vector2Int.of(x, y),
                                                                   tileWidth,
                                                                   tileHeight,
                                                                   layerNum,
-                                                                  flyover.get(TilePos.of(x, y)));
+                                                                  flyover.get(Vector2Int.of(x, y)));
 
                         tile.init(this);
                         terrainTiles.add(tile);
@@ -175,20 +175,20 @@ public class PhysicsWorld {
     public void createBorders() {
 
         for (int x = 0; x < widthInTiles(); x++) {
-            TerrainTileBody tile1 = TerrainTileBody.of(TilePos.of(x, -1), tileWidth, tileHeight, 0, false);
+            TerrainTileBody tile1 = TerrainTileBody.of(Vector2Int.of(x, -1), tileWidth, tileHeight, 0, false);
             tile1.init(this);
             terrainBorders.add(tile1);
             TerrainTileBody tile2 =
-                    TerrainTileBody.of(TilePos.of(x, heightInTiles()), tileWidth, tileHeight, 0, false);
+                    TerrainTileBody.of(Vector2Int.of(x, heightInTiles()), tileWidth, tileHeight, 0, false);
             tile2.init(this);
             terrainBorders.add(tile2);
         }
         for (int y = 0; y < heightInTiles(); y++) {
-            TerrainTileBody tile1 = TerrainTileBody.of(TilePos.of(-1, y), tileWidth, tileHeight, 0, false);
+            TerrainTileBody tile1 = TerrainTileBody.of(Vector2Int.of(-1, y), tileWidth, tileHeight, 0, false);
             tile1.init(this);
             terrainBorders.add(tile1);
             TerrainTileBody tile2 =
-                    TerrainTileBody.of(TilePos.of(widthInTiles(), y), tileWidth, tileHeight, 0, false);
+                    TerrainTileBody.of(Vector2Int.of(widthInTiles(), y), tileWidth, tileHeight, 0, false);
             tile2.init(this);
             terrainBorders.add(tile2);
         }
@@ -196,7 +196,7 @@ public class PhysicsWorld {
 
     }
 
-    public void tryAddClearance(TilePos pos, Integer level) {
+    public void tryAddClearance(Vector2Int pos, Integer level) {
         if (!clearances.containsKey(pos) &&
             pos.x() >= 0 &&
             pos.y() >= 0 &&
@@ -208,20 +208,20 @@ public class PhysicsWorld {
         }
     }
 
-    public void calculateClearances(Map<TilePos, Boolean> traversables) {
+    public void calculateClearances(Map<Vector2Int, Boolean> traversables) {
         clearances = new HashMap<>();
 
         for (int y = 0; y < heightInTiles(); y++) {
             for (int x = 0; x < widthInTiles(); x++) {
-                if (!traversables.get(TilePos.of(x, y))) {
-                    tryAddClearance(TilePos.of(x - 1, y - 1), 1);
-                    tryAddClearance(TilePos.of(x, y - 1), 1);
-                    tryAddClearance(TilePos.of(x + 1, y - 1), 1);
-                    tryAddClearance(TilePos.of(x - 1, y + 1), 1);
-                    tryAddClearance(TilePos.of(x, y + 1), 1);
-                    tryAddClearance(TilePos.of(x + 1, y + 1), 1);
-                    tryAddClearance(TilePos.of(x - 1, y), 1);
-                    tryAddClearance(TilePos.of(x + 1, y), 1);
+                if (!traversables.get(Vector2Int.of(x, y))) {
+                    tryAddClearance(Vector2Int.of(x - 1, y - 1), 1);
+                    tryAddClearance(Vector2Int.of(x, y - 1), 1);
+                    tryAddClearance(Vector2Int.of(x + 1, y - 1), 1);
+                    tryAddClearance(Vector2Int.of(x - 1, y + 1), 1);
+                    tryAddClearance(Vector2Int.of(x, y + 1), 1);
+                    tryAddClearance(Vector2Int.of(x + 1, y + 1), 1);
+                    tryAddClearance(Vector2Int.of(x - 1, y), 1);
+                    tryAddClearance(Vector2Int.of(x + 1, y), 1);
                 }
             }
         }
@@ -232,25 +232,25 @@ public class PhysicsWorld {
 
             final int level = currentLevel;
 
-            List<TilePos> lowerLevelClearances = clearances.entrySet()
-                                                           .stream()
-                                                           .filter(entry -> entry.getValue() == level - 1)
-                                                           .map(Map.Entry::getKey)
-                                                           .collect(Collectors.toList());
+            List<Vector2Int> lowerLevelClearances = clearances.entrySet()
+                                                              .stream()
+                                                              .filter(entry -> entry.getValue() == level - 1)
+                                                              .map(Map.Entry::getKey)
+                                                              .collect(Collectors.toList());
 
 
             lowerLevelClearances.forEach(pos -> {
                 int x = pos.x();
                 int y = pos.y();
 
-                tryAddClearance(TilePos.of(x - 1, y - 1), level);
-                tryAddClearance(TilePos.of(x, y - 1), level);
-                tryAddClearance(TilePos.of(x + 1, y - 1), level);
-                tryAddClearance(TilePos.of(x - 1, y + 1), level);
-                tryAddClearance(TilePos.of(x, y + 1), level);
-                tryAddClearance(TilePos.of(x + 1, y + 1), level);
-                tryAddClearance(TilePos.of(x - 1, y), level);
-                tryAddClearance(TilePos.of(x + 1, y), level);
+                tryAddClearance(Vector2Int.of(x - 1, y - 1), level);
+                tryAddClearance(Vector2Int.of(x, y - 1), level);
+                tryAddClearance(Vector2Int.of(x + 1, y - 1), level);
+                tryAddClearance(Vector2Int.of(x - 1, y + 1), level);
+                tryAddClearance(Vector2Int.of(x, y + 1), level);
+                tryAddClearance(Vector2Int.of(x + 1, y + 1), level);
+                tryAddClearance(Vector2Int.of(x - 1, y), level);
+                tryAddClearance(Vector2Int.of(x + 1, y), level);
             });
 
             currentLevel++;

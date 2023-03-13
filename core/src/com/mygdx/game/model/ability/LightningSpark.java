@@ -19,6 +19,38 @@ public class LightningSpark extends Ability {
 
     AbilityParams params;
 
+    public static LightningSpark of(AbilityParams abilityParams, AbilityUpdatable game) {
+        Creature creature = game.getCreature(abilityParams.creatureId());
+
+        LightningSpark ability = LightningSpark.of();
+        ability.params =
+                abilityParams
+                        .width(3f)
+                        .height(3f)
+                        .channelTime(0f)
+                        .activeTime(0.4f)
+                        .textureName("lightning")
+                        .baseDamage(30f)
+                        .isActiveAnimationLooping(true)
+                        .attackWithoutMoving(true)
+                        .inactiveBody(true)
+                        .rotationShift(0f)
+                        .delayedActionTime(0.001f)
+                        .pos(LightningSpark.calculatePos(creature.params().pos().add(abilityParams.dirVector()),
+                                                         creature.params().pos()));
+
+        return ability;
+    }
+
+    private static Vector2 calculatePos(Vector2 pos, Vector2 creaturePos) {
+        Vector2 vectorTowards = creaturePos.vectorTowards(pos);
+
+        float maxRange = 5f;
+        if (vectorTowards.len() > maxRange) {
+            return creaturePos.add(vectorTowards.normalized().multiplyBy(maxRange));
+        }
+        return pos;
+    }
 
     @Override
     public Boolean isRanged() {
@@ -102,39 +134,6 @@ public class LightningSpark extends Ability {
     @Override
     public void onOtherAbilityHit(AbilityId otherAbilityId, GameUpdatable game) {
 
-    }
-
-    public static LightningSpark of(AbilityParams abilityParams, AbilityUpdatable game) {
-        Creature creature = game.getCreature(abilityParams.creatureId());
-
-        LightningSpark ability = LightningSpark.of();
-        ability.params =
-                abilityParams
-                        .width(3f)
-                        .height(3f)
-                        .channelTime(0f)
-                        .activeTime(0.4f)
-                        .textureName("lightning")
-                        .baseDamage(30f)
-                        .isActiveAnimationLooping(true)
-                        .attackWithoutMoving(true)
-                        .inactiveBody(true)
-                        .rotationShift(0f)
-                        .delayedActionTime(0.001f)
-                        .pos(LightningSpark.calculatePos(creature.params().pos().add(abilityParams.dirVector()),
-                                                         creature.params().pos()));
-
-        return ability;
-    }
-
-    private static Vector2 calculatePos(Vector2 pos, Vector2 creaturePos) {
-        Vector2 vectorTowards = creaturePos.vectorTowards(pos);
-
-        float maxRange = 5f;
-        if (vectorTowards.len() > maxRange) {
-            return creaturePos.add(vectorTowards.normalized().multiplyBy(maxRange));
-        }
-        return pos;
     }
 
 }

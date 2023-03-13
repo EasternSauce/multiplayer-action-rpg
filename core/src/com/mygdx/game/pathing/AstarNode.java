@@ -1,6 +1,6 @@
 package com.mygdx.game.pathing;
 
-import com.mygdx.game.physics.util.TilePos;
+import com.mygdx.game.model.util.Vector2Int;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class AstarNode {
     PathingNode pathingNode;
-    TilePos parent = null;
+    Vector2Int parent = null;
     Double f = Double.MAX_VALUE;
     Double g = Double.MAX_VALUE;
     Double h = Double.MAX_VALUE;
@@ -21,7 +21,7 @@ public class AstarNode {
         return astarNode;
     }
 
-    public TilePos pos() {
+    public Vector2Int pos() {
         return pathingNode.pos();
     }
 }

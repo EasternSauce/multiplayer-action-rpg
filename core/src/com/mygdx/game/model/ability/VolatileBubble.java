@@ -14,6 +14,26 @@ public class VolatileBubble extends Projectile {
 
     AbilityParams params;
 
+    public static VolatileBubble of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
+        VolatileBubble ability = VolatileBubble.of();
+        ability.params =
+                abilityParams
+                        .width(1.5f)
+                        .height(1.5f)
+                        .channelTime(0f)
+                        .activeTime(30f)
+                        .textureName("bubble")
+                        .baseDamage(15f)
+                        .isChannelAnimationLooping(false)
+                        .isActiveAnimationLooping(true)
+                        .rotationShift(0f)
+                        .delayedActionTime(0.001f)
+                        .speed(10f);
+
+
+        return ability;
+    }
+
     @Override
     public Boolean isRanged() {
         return true;
@@ -75,25 +95,5 @@ public class VolatileBubble extends Projectile {
     @Override
     public void onOtherAbilityHit(AbilityId otherAbilityId, GameUpdatable game) {
 
-    }
-
-    public static VolatileBubble of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
-        VolatileBubble ability = VolatileBubble.of();
-        ability.params =
-                abilityParams
-                        .width(1.5f)
-                        .height(1.5f)
-                        .channelTime(0f)
-                        .activeTime(30f)
-                        .textureName("bubble")
-                        .baseDamage(15f)
-                        .isChannelAnimationLooping(false)
-                        .isActiveAnimationLooping(true)
-                        .rotationShift(0f)
-                        .delayedActionTime(0.001f)
-                        .speed(10f);
-
-
-        return ability;
     }
 }

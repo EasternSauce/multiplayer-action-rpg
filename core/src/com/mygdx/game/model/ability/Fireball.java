@@ -14,6 +14,27 @@ import lombok.NoArgsConstructor;
 public class Fireball extends Projectile {
     AbilityParams params;
 
+    public static Fireball of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
+        Creature creature = game.getCreature(abilityParams.creatureId());
+
+        Fireball ability = Fireball.of();
+        ability.params =
+                abilityParams
+                        .width(1.5f)
+                        .height(1.5f)
+                        .channelTime(0f)
+                        .activeTime(30f)
+                        .textureName("fireball")
+                        .baseDamage(15f)
+                        .isChannelAnimationLooping(false)
+                        .isActiveAnimationLooping(true)
+                        .rotationShift(0f)
+                        .delayedActionTime(0.001f)
+                        .pos(creature.params().pos());
+
+
+        return ability;
+    }
 
     @Override
     public void onCreatureHit() {
@@ -77,27 +98,5 @@ public class Fireball extends Projectile {
     @Override
     public void onOtherAbilityHit(AbilityId otherAbilityId, GameUpdatable game) {
 
-    }
-
-    public static Fireball of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
-        Creature creature = game.getCreature(abilityParams.creatureId());
-
-        Fireball ability = Fireball.of();
-        ability.params =
-                abilityParams
-                        .width(1.5f)
-                        .height(1.5f)
-                        .channelTime(0f)
-                        .activeTime(30f)
-                        .textureName("fireball")
-                        .baseDamage(15f)
-                        .isChannelAnimationLooping(false)
-                        .isActiveAnimationLooping(true)
-                        .rotationShift(0f)
-                        .delayedActionTime(0.001f)
-                        .pos(creature.params().pos());
-
-
-        return ability;
     }
 }

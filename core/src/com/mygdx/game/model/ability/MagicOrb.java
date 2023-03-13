@@ -19,6 +19,25 @@ public class MagicOrb extends Projectile {
 
     AbilityParams params;
 
+    public static MagicOrb of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
+        MagicOrb ability = MagicOrb.of();
+        ability.params =
+                abilityParams
+                        .width(1.5f)
+                        .height(1.5f)
+                        .channelTime(0f)
+                        .activeTime(30f)
+                        .textureName("magic_orb")
+                        .baseDamage(40f)
+                        .isChannelAnimationLooping(false)
+                        .isActiveAnimationLooping(true)
+                        .rotationShift(0f)
+                        .delayedActionTime(0.001f)
+                        .speed(12f);
+
+
+        return ability;
+    }
 
     @Override
     public Boolean isRanged() {
@@ -61,7 +80,6 @@ public class MagicOrb extends Projectile {
             deactivate();
         }
     }
-
 
     private boolean isTargetingAllowed(Creature thisCreature, Creature targetCreature) {
         if (thisCreature instanceof Enemy) {
@@ -156,25 +174,5 @@ public class MagicOrb extends Projectile {
     @Override
     public void onOtherAbilityHit(AbilityId otherAbilityId, GameUpdatable game) {
 
-    }
-
-    public static MagicOrb of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
-        MagicOrb ability = MagicOrb.of();
-        ability.params =
-                abilityParams
-                        .width(1.5f)
-                        .height(1.5f)
-                        .channelTime(0f)
-                        .activeTime(30f)
-                        .textureName("magic_orb")
-                        .baseDamage(40f)
-                        .isChannelAnimationLooping(false)
-                        .isActiveAnimationLooping(true)
-                        .rotationShift(0f)
-                        .delayedActionTime(0.001f)
-                        .speed(12f);
-
-
-        return ability;
     }
 }

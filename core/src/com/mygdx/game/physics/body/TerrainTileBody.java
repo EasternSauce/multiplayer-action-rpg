@@ -1,7 +1,7 @@
 package com.mygdx.game.physics.body;
 
 import com.badlogic.gdx.physics.box2d.Body;
-import com.mygdx.game.physics.util.TilePos;
+import com.mygdx.game.model.util.Vector2Int;
 import com.mygdx.game.physics.world.PhysicsWorld;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @Data
 public class TerrainTileBody {
-    TilePos pos;
+    Vector2Int pos;
     Float tileWidth;
     Float tileHeight;
     Integer layer;
@@ -17,7 +17,11 @@ public class TerrainTileBody {
     Body b2Body;
     com.badlogic.gdx.math.Polygon polygon;
 
-    public static TerrainTileBody of(TilePos pos, Float tileWidth, Float tileHeight, Integer layer, Boolean flyover) {
+    public static TerrainTileBody of(Vector2Int pos,
+                                     Float tileWidth,
+                                     Float tileHeight,
+                                     Integer layer,
+                                     Boolean flyover) {
         TerrainTileBody body = new TerrainTileBody();
         body.pos = pos;
         body.tileWidth = tileWidth;

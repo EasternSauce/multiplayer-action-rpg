@@ -13,6 +13,7 @@ import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.renderer.DrawingLayer;
 import com.mygdx.game.renderer.GameRenderer;
+import com.mygdx.game.renderer.InventoryRenderer;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
 import java.util.Locale;
@@ -61,6 +62,8 @@ public class RendererHelper {
             RendererHelper.drawHudBars(creature, drawingLayer);
 
         }
+
+        InventoryRenderer.render(drawingLayer, game.hudMousePos(), game);
 
         drawingLayer.end();
     }

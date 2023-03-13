@@ -1,4 +1,4 @@
-package com.mygdx.game.physics.util;
+package com.mygdx.game.model.util;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-public class TilePos {
-    int x;
-    int y;
+public class PlayerParams {
+    Boolean isVisible = false;
+    Integer inventoryItemBeingMoved;
+    Integer equipmentItemBeingMoved;
 }

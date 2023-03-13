@@ -36,6 +36,7 @@ public class AddPlayerAction implements GameStateAction {
 
         game.creaturesToBeCreated().add(playerId);
 
+        game.initiatePlayerParams(playerId);
 
     }
 }
