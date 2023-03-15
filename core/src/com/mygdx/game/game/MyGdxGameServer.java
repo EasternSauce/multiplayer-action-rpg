@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 public class MyGdxGameServer extends MyGdxGame {
     private static MyGdxGameServer instance;
     private final List<GameStateAction> tickActions = Collections.synchronizedList(new ArrayList<>());
-    private final Map<Integer, CreatureId> clientCreatures = new ConcurrentSkipListMap<>();
+    private final Map<Integer, CreatureId> clientPlayers = new ConcurrentSkipListMap<>();
     Server _endPoint;
     Thread broadcastThread;
 
@@ -90,10 +90,10 @@ public class MyGdxGameServer extends MyGdxGame {
 
         Connection[] connections = endPoint().getConnections();
         for (Connection connection : connections) {
-            if (!clientCreatures.containsKey(connection.getID())) {
+            if (!clientPlayers.containsKey(connection.getID())) {
                 continue;// don't update until player is initialized
             }
-            Creature creature = gameState().creatures().get(clientCreatures.get(connection.getID()));
+            Creature creature = gameState().creatures().get(clientPlayers.get(connection.getID()));
             List<GameStateAction>
                     personalizedTickActions =
                     tickActionsCopy.stream()
@@ -139,7 +139,7 @@ public class MyGdxGameServer extends MyGdxGame {
 
                     tickActions.add(addPlayerAction);
 
-                    clientCreatures.put(connection.getID(), command.playerId());
+                    clientPlayers.put(connection.getID(), command.playerId());
                 }
                 else if (object instanceof SendChatMessageCommand) {
                     SendChatMessageCommand command = (SendChatMessageCommand) object;
@@ -164,23 +164,41 @@ public class MyGdxGameServer extends MyGdxGame {
                     SpawnEnemyCommand command = (SpawnEnemyCommand) object;
                     spawnEnemy(command.creatureId(), command.areaId(), command.enemySpawn());
 
-                    endPoint().sendToAllTCP(command);
+                    endPoint().sendToAllTCP(command); // TODO: add to tick actions instead
 
                 }
                 else if (object instanceof ToggleInventoryCommand) {
                     ToggleInventoryCommand command = (ToggleInventoryCommand) object;
 
-                    boolean isInventoryVisible = gameState.playerParams().get(command.creatureId()).isVisible();
-                    gameState.playerParams().get(command.creatureId()).isVisible(!isInventoryVisible);
-
-                    endPoint().sendToAllTCP(command);
-
+                    tickActions.add(ToggleInventoryAction.of(command.creatureId()));
                 }
+                else if (object instanceof SwapInventoryItemSlotCommand) {
+                    SwapInventoryItemSlotCommand command = (SwapInventoryItemSlotCommand) object;
+
+                    tickActions.add(SwapInventoryItemSlotAction.of(command.creatureId(),
+                                                                   command.fromSlotIndex(),
+                                                                   command.toSlotIndex()));
+                }
+                else if (object instanceof PickUpInventoryItemCommand) {
+                    PickUpInventoryItemCommand command = (PickUpInventoryItemCommand) object;
+
+                    System.out.println("command slot index: " + command.slotIndex());
+
+                    tickActions.add(PickUpInventoryItemAction.of(command.creatureId(),
+                                                                 command.slotIndex()));
+                }
+                else if (object instanceof FinishInventoryMoveCommand) {
+                    FinishInventoryMoveCommand command = (FinishInventoryMoveCommand) object;
+
+                    tickActions.add(FinishInventoryMoveAction.of(command.creatureId()));
+                }
+
+
             }
 
             @Override
             public void disconnected(Connection connection) {
-                CreatureId disconnectedCreatureId = clientCreatures.get(connection.getID());
+                CreatureId disconnectedCreatureId = clientPlayers.get(connection.getID());
 
                 RemovePlayerAction removePlayerAction = RemovePlayerAction.of(disconnectedCreatureId);
                 tickActions.add(removePlayerAction);
@@ -196,10 +214,10 @@ public class MyGdxGameServer extends MyGdxGame {
 
                     Connection[] connections = endPoint().getConnections();
                     for (Connection connection : connections) {
-                        if (!clientCreatures.containsKey(connection.getID())) {
+                        if (!clientPlayers.containsKey(connection.getID())) {
                             continue;
                         }
-                        Creature player = gameState().creatures().get(clientCreatures.get(connection.getID()));
+                        Creature player = gameState().creatures().get(clientPlayers.get(connection.getID()));
 
                         if (player == null) {
                             continue;
@@ -379,7 +397,9 @@ public class MyGdxGameServer extends MyGdxGame {
         enemySpawns.forEach(enemySpawn -> {
             CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 10000000));
             spawnEnemy(enemyId, areaId, enemySpawn);
-            endPoint().sendToAllTCP(SpawnEnemyCommand.of(enemyId, areaId, enemySpawn));
+            endPoint().sendToAllTCP(SpawnEnemyCommand.of(enemyId,
+                                                         areaId,
+                                                         enemySpawn)); // TODO: use tick actions instead
         });
     }
 
@@ -387,7 +407,7 @@ public class MyGdxGameServer extends MyGdxGame {
     public Set<CreatureId> getCreaturesToUpdate() {
         Set<CreatureId> creaturesToUpdate = new HashSet<>();
 
-        for (CreatureId clientCreatureId : clientCreatures.values()) {
+        for (CreatureId clientCreatureId : clientPlayers.values()) {
             Creature player = gameState().creatures().get(clientCreatureId);
             if (player == null) {
                 continue;
@@ -410,7 +430,7 @@ public class MyGdxGameServer extends MyGdxGame {
     public Set<AbilityId> getAbilitiesToUpdate() {
         Set<AbilityId> abilitiesToUpdate = new HashSet<>();
 
-        for (CreatureId clientCreatureId : clientCreatures.values()) {
+        for (CreatureId clientCreatureId : clientPlayers.values()) {
             Creature player = gameState().creatures().get(clientCreatureId);
             if (player == null) {
                 continue;

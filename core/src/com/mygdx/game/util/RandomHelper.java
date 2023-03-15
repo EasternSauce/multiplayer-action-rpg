@@ -17,6 +17,7 @@ public class RandomHelper {
         return generator.nextFloat();
     }
 
+    @SuppressWarnings("unused")
     public static float seededRandomFloat(AbilityId abilityId) {
         long hash = 0;
         for (char c : abilityId.value().toCharArray()) {

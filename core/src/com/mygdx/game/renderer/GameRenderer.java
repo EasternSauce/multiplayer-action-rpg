@@ -6,10 +6,11 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.game.data.AreaGate;
-import com.mygdx.game.game.interface_.GameUpdatable;
+import com.mygdx.game.game.interface_.GameRenderable;
 import com.mygdx.game.model.ability.AbilityId;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.CreatureId;
+import com.mygdx.game.util.InventoryHelper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -55,10 +56,10 @@ public class GameRenderer {
         areaGateRenderers =
                 areaGates.stream().map(areaGate -> AreaGateRenderer.of(areaGate, atlas)).collect(Collectors.toSet());
 
-        InventoryRenderer.init(atlas);
+        InventoryHelper.init(atlas);
     }
 
-    public void renderAliveCreatures(DrawingLayer drawingLayer, GameUpdatable game) {
+    public void renderAliveCreatures(DrawingLayer drawingLayer, GameRenderable game) {
         game.getCreatures().entrySet().stream().filter(entry -> entry.getValue().isAlive()).forEach(entry -> {
             if (creatureRenderers().containsKey(entry.getKey()) && entry.getValue()
                                                                         .params()
@@ -80,7 +81,7 @@ public class GameRenderer {
         });
     }
 
-    public void renderDeadCreatures(DrawingLayer drawingLayer, GameUpdatable game) {
+    public void renderDeadCreatures(DrawingLayer drawingLayer, GameRenderable game) {
         game.getCreatures().entrySet().stream().filter(entry -> !entry.getValue().isAlive()).forEach(entry -> {
             if (creatureRenderers().containsKey(entry.getKey()) && entry.getValue()
                                                                         .params()
@@ -92,7 +93,7 @@ public class GameRenderer {
         });
     }
 
-    public void renderAreaGates(DrawingLayer drawingLayer, GameUpdatable game) {
+    public void renderAreaGates(DrawingLayer drawingLayer, GameRenderable game) {
         areaGateRenderers.forEach(areaGateRenderer -> areaGateRenderer.render(drawingLayer, game));
     }
 }

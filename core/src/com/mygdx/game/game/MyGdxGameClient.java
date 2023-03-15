@@ -20,6 +20,7 @@ import com.mygdx.game.model.skill.SkillType;
 import com.mygdx.game.model.util.GameStateBroadcast;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.util.EndPointHelper;
+import com.mygdx.game.util.InventoryHelper;
 
 import java.io.IOException;
 import java.util.*;
@@ -105,14 +106,22 @@ public class MyGdxGameClient extends MyGdxGame {
             }
         }
         if (!getChat().isTyping()) {
+            if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+                if (gameState.playerParams().get(thisPlayerId).isVisible()) {
+                    InventoryHelper.moveItemClick(endPoint(), this);
+                }
+
+            }
             if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-                Vector2 mousePos = mousePosRelativeToCenter();
+                if (!gameState.playerParams().get(thisPlayerId).isVisible()) {
+                    Vector2 mousePos = mousePosRelativeToCenter();
 
-                Creature player = gameState().creatures().get(thisPlayerId);
+                    Creature player = gameState().creatures().get(thisPlayerId);
 
-                if (player != null && player.params().movementCommandsPerSecondLimitTimer().time() >
-                                      Constants.MovementCommandCooldown) {
-                    endPoint().sendTCP(PlayerMovementCommand.of(thisPlayerId, mousePos));
+                    if (player != null && player.params().movementCommandsPerSecondLimitTimer().time() >
+                                          Constants.MovementCommandCooldown) {
+                        endPoint().sendTCP(PlayerMovementCommand.of(thisPlayerId, mousePos));
+                    }
                 }
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.N)) {
@@ -474,12 +483,6 @@ public class MyGdxGameClient extends MyGdxGame {
                     SpawnEnemyCommand command = (SpawnEnemyCommand) object;
 
                     spawnEnemy(command.creatureId(), command.areaId(), command.enemySpawn());
-                }
-                else if (object instanceof ToggleInventoryCommand) {
-                    ToggleInventoryCommand command = (ToggleInventoryCommand) object;
-
-                    boolean isInventoryVisible = gameState.playerParams().get(command.creatureId()).isVisible();
-                    gameState.playerParams().get(command.creatureId()).isVisible(!isInventoryVisible);
                 }
 
             }

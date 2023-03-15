@@ -487,7 +487,10 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
 
     @Override
     public PlayerParams getPlayerParams(CreatureId creatureId) {
-        return gameState.playerParams().get(creatureId);
+        if (creatureId != null) {
+            return gameState.playerParams().get(creatureId);
+        }
+        return null;
     }
 
     public Vector2 mousePosRelativeToCenter() { // relative to center of screen, in in-game length units

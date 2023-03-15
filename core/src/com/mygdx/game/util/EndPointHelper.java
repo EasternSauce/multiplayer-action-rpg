@@ -49,6 +49,9 @@ public class EndPointHelper {
         endPoint.getKryo().register(SpawnEnemyCommand.class);
         endPoint.getKryo().register(TryPerformSkillCommand.class);
         endPoint.getKryo().register(ToggleInventoryCommand.class);
+        endPoint.getKryo().register(SwapInventoryItemSlotCommand.class);
+        endPoint.getKryo().register(PickUpInventoryItemCommand.class);
+        endPoint.getKryo().register(FinishInventoryMoveCommand.class);
 
         endPoint.getKryo().register(Ability.class);
         endPoint.getKryo().register(SummonGhosts.class);
@@ -92,6 +95,10 @@ public class EndPointHelper {
         endPoint.getKryo().register(TryPerformSkillAction.class);
         endPoint.getKryo().register(AbilityActivateAction.class);
         endPoint.getKryo().register(SetCreatureMovingVectorAction.class);
+        endPoint.getKryo().register(SwapInventoryItemSlotAction.class);
+        endPoint.getKryo().register(ToggleInventoryAction.class);
+        endPoint.getKryo().register(PickUpInventoryItemAction.class);
+        endPoint.getKryo().register(FinishInventoryMoveAction.class);
 
         endPoint.getKryo().register(EquipmentSlotType.class);
         endPoint.getKryo().register(ItemTemplate.class);

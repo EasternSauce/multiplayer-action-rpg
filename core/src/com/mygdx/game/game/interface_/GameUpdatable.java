@@ -10,6 +10,7 @@ import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.skill.SkillType;
+import com.mygdx.game.model.util.PlayerParams;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.physics.body.AbilityBody;
 import com.mygdx.game.physics.body.CreatureBody;
@@ -35,10 +36,6 @@ public interface GameUpdatable {
 
     @SuppressWarnings("unused")
     Vector2 getAbilityPos(AbilityId abilityId);
-
-    AreaId getCurrentPlayerAreaId();
-
-    CreatureId getCurrentPlayerId();
 
     Vector3 getWorldCameraPosition();
 
@@ -69,4 +66,7 @@ public interface GameUpdatable {
     void setForceUpdateBodyPositions(boolean value);
 
     AreaId getDefaultAreaId();
+
+    PlayerParams getPlayerParams(CreatureId currentPlayerId);
+
 }

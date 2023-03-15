@@ -8,12 +8,11 @@ import com.mygdx.game.Constants;
 import com.mygdx.game.assets.Assets;
 import com.mygdx.game.chat.Chat;
 import com.mygdx.game.game.interface_.GameRenderable;
-import com.mygdx.game.game.interface_.GameUpdatable;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.renderer.DrawingLayer;
 import com.mygdx.game.renderer.GameRenderer;
-import com.mygdx.game.renderer.InventoryRenderer;
+import com.mygdx.game.util.InventoryHelper;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
 import java.util.Locale;
@@ -63,12 +62,12 @@ public class RendererHelper {
 
         }
 
-        InventoryRenderer.render(drawingLayer, game.hudMousePos(), game);
+        InventoryHelper.render(drawingLayer, game);
 
         drawingLayer.end();
     }
 
-    public static void updateCamera(GameUpdatable game) {
+    public static void updateCamera(GameRenderable game) {
         Creature player = null;
 
         if (game.getCurrentPlayerId() != null) {

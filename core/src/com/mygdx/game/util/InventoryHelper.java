@@ -1,11 +1,15 @@
-package com.mygdx.game.renderer;
+package com.mygdx.game.util;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.esotericsoftware.kryonet.Client;
 import com.mygdx.game.assets.Assets;
+import com.mygdx.game.command.FinishInventoryMoveCommand;
+import com.mygdx.game.command.PickUpInventoryItemCommand;
+import com.mygdx.game.command.SwapInventoryItemSlotCommand;
 import com.mygdx.game.game.interface_.GameRenderable;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.item.EquipmentSlotType;
@@ -13,6 +17,7 @@ import com.mygdx.game.model.item.Item;
 import com.mygdx.game.model.util.PlayerParams;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.model.util.Vector2Int;
+import com.mygdx.game.renderer.DrawingLayer;
 import com.mygdx.game.renderer.util.Rect;
 
 import java.util.HashMap;
@@ -21,7 +26,7 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 
-public class InventoryRenderer {
+public class InventoryHelper {
     static Image backgroundImage;
     static TextureRegion[][] icons;
 
@@ -103,7 +108,7 @@ public class InventoryRenderer {
                (slotSize + margin + (slotSize + spaceBetweenSlots) * index);
     }
 
-    public static void render(DrawingLayer drawingLayer, Vector2 mousePosition, GameRenderable game) {
+    public static void render(DrawingLayer drawingLayer, GameRenderable game) {
         PlayerParams playerParams = game.getPlayerParams(game.getCurrentPlayerId());
 
         if (playerParams == null) {
@@ -137,14 +142,14 @@ public class InventoryRenderer {
                                 Color.DARK_GRAY);
             });
 
-            renderPlayerItems(drawingLayer, mousePosition, game);
-            renderDescription(drawingLayer, mousePosition, game);
+            renderPlayerItems(drawingLayer, game);
+            renderDescription(drawingLayer, game);
         }
 
 
     }
 
-    public static void renderPlayerItems(DrawingLayer drawingLayer, Vector2 mousePosition, GameRenderable game) {
+    public static void renderPlayerItems(DrawingLayer drawingLayer, GameRenderable game) {
         Creature player = game.getCreature(game.getCurrentPlayerId());
         PlayerParams playerParams = game.getPlayerParams(game.getCurrentPlayerId());
 
@@ -195,10 +200,14 @@ public class InventoryRenderer {
             }
         });
 
-        float x = mousePosition.x();
-        float y = mousePosition.y();
+        float x = game.hudMousePos().x();
+        float y = game.hudMousePos().y();
 
-        if (playerParams.inventoryItemBeingMoved() != null) {
+        if (playerParams.inventoryItemBeingMoved() != null &&
+            inventoryItems.containsKey(playerParams.inventoryItemBeingMoved())) {
+            System.out.println("playerParams.inventoryItemBeingMoved() " + playerParams.inventoryItemBeingMoved());
+            System.out.println("inventory = " + inventoryItems);
+
             Vector2Int iconPos = inventoryItems.get(playerParams.inventoryItemBeingMoved()).template().iconPos();
 
             drawingLayer.spriteBatch()
@@ -208,7 +217,8 @@ public class InventoryRenderer {
                               slotSize,
                               slotSize);
         }
-        if (playerParams.equipmentItemBeingMoved() != null) {
+        if (playerParams.equipmentItemBeingMoved() != null &&
+            inventoryItems.containsKey(playerParams.inventoryItemBeingMoved())) {
             Vector2Int iconPos = inventoryItems.get(playerParams.inventoryItemBeingMoved()).template().iconPos();
 
             drawingLayer.spriteBatch()
@@ -221,12 +231,12 @@ public class InventoryRenderer {
 
     }
 
-    public static void renderDescription(DrawingLayer drawingLayer, Vector2 mousePosition, GameRenderable game) {
+    public static void renderDescription(DrawingLayer drawingLayer, GameRenderable game) {
         Creature player = game.getCreature(game.getCurrentPlayerId());
         PlayerParams playerParams = game.getPlayerParams(game.getCurrentPlayerId());
 
-        float x = mousePosition.x();
-        float y = mousePosition.y();
+        float x = game.hudMousePos().x();
+        float y = game.hudMousePos().y();
 
         AtomicReference<Integer> inventorySlotMousedOver = new AtomicReference<>(null);
         AtomicReference<Integer> equipmentSlotMousedOver = new AtomicReference<>(null);
@@ -266,5 +276,107 @@ public class InventoryRenderer {
         }
     }
 
+    public static void moveItemClick(Client client, GameRenderable game) {
+        System.out.println("here1");
+        Creature player = game.getCreature(game.getCurrentPlayerId());
+        PlayerParams playerParams = game.getPlayerParams(game.getCurrentPlayerId());
+
+        AtomicReference<Integer> atomicInventorySlotClicked = new AtomicReference<>(null);
+        AtomicReference<Integer> atomicEquipmentSlotClicked = new AtomicReference<>(null);
+
+        float x = game.hudMousePos().x();
+        float y = game.hudMousePos().y();
+
+
+        if (backgroundOuterRect.contains(x, y)) {
+            inventoryRectangles.entrySet().stream().filter(entry -> entry.getValue().contains(x, y))
+                               .forEach(entry -> {
+                                   System.out.println("zzzzzzzzzzzzzzz1111111111");
+                                   atomicInventorySlotClicked.set(entry.getKey());
+                               });
+
+            equipmentRectangles.entrySet().stream().filter(entry -> entry.getValue().contains(x, y))
+                               .forEach(entry -> atomicEquipmentSlotClicked.set(entry.getKey()));
+
+            Integer inventoryItemBeingMoved = playerParams.inventoryItemBeingMoved();
+            Integer equipmentItemBeingMoved = playerParams.equipmentItemBeingMoved();
+
+            Integer inventorySlotClicked = atomicInventorySlotClicked.get();
+            Integer equipmentSlotClicked = atomicEquipmentSlotClicked.get();
+
+            System.out.println("inventoryItemBeingMoved " +
+                               inventoryItemBeingMoved +
+                               " inventorySlotClicked  " +
+                               inventorySlotClicked);
+            if (inventoryItemBeingMoved != null && inventorySlotClicked != null) {
+                System.out.println("here2");
+                SwapInventoryItemSlotCommand
+                        command =
+                        SwapInventoryItemSlotCommand.of(game.getCurrentPlayerId(),
+                                                        inventoryItemBeingMoved,
+                                                        inventorySlotClicked);
+                client.sendTCP(command);
+            }
+            else if (inventoryItemBeingMoved != null && equipmentSlotClicked != null) {
+                swapBetweenInventoryAndEquipment(inventoryItemBeingMoved, equipmentSlotClicked, game);
+            }
+            else if (equipmentItemBeingMoved != null && inventorySlotClicked != null) {
+                swapBetweenInventoryAndEquipment(equipmentItemBeingMoved, inventorySlotClicked, game);
+            }
+            else if (equipmentItemBeingMoved != null && equipmentSlotClicked != null) {
+                SwapInventoryItemSlotCommand
+                        command =
+                        SwapInventoryItemSlotCommand.of(game.getCurrentPlayerId(),
+                                                        equipmentItemBeingMoved,
+                                                        equipmentSlotClicked);
+                client.sendTCP(command);
+            }
+            else if (inventorySlotClicked != null) {
+                if (player.params().inventoryItems().containsKey(inventorySlotClicked)) {
+                    System.out.println("equipmentSlotClicked is " + inventorySlotClicked);
+                    PickUpInventoryItemCommand command = PickUpInventoryItemCommand.of(game.getCurrentPlayerId(),
+                                                                                       inventorySlotClicked);
+                    client.sendTCP(command);
+                }
+            }
+            else if (equipmentSlotClicked != null) {
+                if (player.params().equipmentItems().containsKey(equipmentSlotClicked)) {
+                    playerParams.equipmentItemBeingMoved(equipmentSlotClicked);
+                    System.out.println("zzzz2");
+
+                }
+            }
+            else {
+                System.out.println(" set null ");
+                FinishInventoryMoveCommand command = FinishInventoryMoveCommand.of(game.getCurrentPlayerId());
+
+                client.sendTCP(command);
+            }
+
+        }
+        else {
+            if (playerParams.inventoryItemBeingMoved() != null) {
+                Item item = player.params().inventoryItems().get(playerParams.inventoryItemBeingMoved());
+                playerParams.inventoryItemBeingMoved(null);
+
+                System.out.println("set null!!");
+
+                //spawn lootpile
+            }
+
+            if (playerParams.equipmentItemBeingMoved() != null) {
+                Item item = player.params().equipmentItems().get(playerParams.equipmentItemBeingMoved());
+                playerParams.equipmentItemBeingMoved(null);
+
+                //spawn lootpile
+            }
+        }
+
+
+    }
+
+    public static void swapBetweenInventoryAndEquipment(int inventoryIndex, int equipmentIndex, GameRenderable game) {
+
+    }
 
 }
