@@ -7,10 +7,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.esotericsoftware.kryonet.Client;
 import com.mygdx.game.assets.Assets;
-import com.mygdx.game.command.FinishInventoryMoveCommand;
-import com.mygdx.game.command.PickUpInventoryItemCommand;
-import com.mygdx.game.command.SwapInventoryItemSlotCommand;
+import com.mygdx.game.command.PerformActionCommand;
 import com.mygdx.game.game.interface_.GameRenderable;
+import com.mygdx.game.model.action.FinishInventoryMoveAction;
+import com.mygdx.game.model.action.PickUpInventoryItemAction;
+import com.mygdx.game.model.action.SwapInventoryItemSlotAction;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.item.EquipmentSlotType;
 import com.mygdx.game.model.item.Item;
@@ -205,8 +206,6 @@ public class InventoryHelper {
 
         if (playerParams.inventoryItemBeingMoved() != null &&
             inventoryItems.containsKey(playerParams.inventoryItemBeingMoved())) {
-            System.out.println("playerParams.inventoryItemBeingMoved() " + playerParams.inventoryItemBeingMoved());
-            System.out.println("inventory = " + inventoryItems);
 
             Vector2Int iconPos = inventoryItems.get(playerParams.inventoryItemBeingMoved()).template().iconPos();
 
@@ -277,7 +276,6 @@ public class InventoryHelper {
     }
 
     public static void moveItemClick(Client client, GameRenderable game) {
-        System.out.println("here1");
         Creature player = game.getCreature(game.getCurrentPlayerId());
         PlayerParams playerParams = game.getPlayerParams(game.getCurrentPlayerId());
 
@@ -290,10 +288,7 @@ public class InventoryHelper {
 
         if (backgroundOuterRect.contains(x, y)) {
             inventoryRectangles.entrySet().stream().filter(entry -> entry.getValue().contains(x, y))
-                               .forEach(entry -> {
-                                   System.out.println("zzzzzzzzzzzzzzz1111111111");
-                                   atomicInventorySlotClicked.set(entry.getKey());
-                               });
+                               .forEach(entry -> atomicInventorySlotClicked.set(entry.getKey()));
 
             equipmentRectangles.entrySet().stream().filter(entry -> entry.getValue().contains(x, y))
                                .forEach(entry -> atomicEquipmentSlotClicked.set(entry.getKey()));
@@ -304,18 +299,10 @@ public class InventoryHelper {
             Integer inventorySlotClicked = atomicInventorySlotClicked.get();
             Integer equipmentSlotClicked = atomicEquipmentSlotClicked.get();
 
-            System.out.println("inventoryItemBeingMoved " +
-                               inventoryItemBeingMoved +
-                               " inventorySlotClicked  " +
-                               inventorySlotClicked);
             if (inventoryItemBeingMoved != null && inventorySlotClicked != null) {
-                System.out.println("here2");
-                SwapInventoryItemSlotCommand
-                        command =
-                        SwapInventoryItemSlotCommand.of(game.getCurrentPlayerId(),
-                                                        inventoryItemBeingMoved,
-                                                        inventorySlotClicked);
-                client.sendTCP(command);
+                client.sendTCP(PerformActionCommand.of(SwapInventoryItemSlotAction.of(game.getCurrentPlayerId(),
+                                                                                      inventoryItemBeingMoved,
+                                                                                      inventorySlotClicked)));
             }
             else if (inventoryItemBeingMoved != null && equipmentSlotClicked != null) {
                 swapBetweenInventoryAndEquipment(inventoryItemBeingMoved, equipmentSlotClicked, game);
@@ -324,33 +311,23 @@ public class InventoryHelper {
                 swapBetweenInventoryAndEquipment(equipmentItemBeingMoved, inventorySlotClicked, game);
             }
             else if (equipmentItemBeingMoved != null && equipmentSlotClicked != null) {
-                SwapInventoryItemSlotCommand
-                        command =
-                        SwapInventoryItemSlotCommand.of(game.getCurrentPlayerId(),
-                                                        equipmentItemBeingMoved,
-                                                        equipmentSlotClicked);
-                client.sendTCP(command);
+                client.sendTCP(PerformActionCommand.of(SwapInventoryItemSlotAction.of(game.getCurrentPlayerId(),
+                                                                                      equipmentItemBeingMoved,
+                                                                                      equipmentSlotClicked)));
             }
             else if (inventorySlotClicked != null) {
                 if (player.params().inventoryItems().containsKey(inventorySlotClicked)) {
-                    System.out.println("equipmentSlotClicked is " + inventorySlotClicked);
-                    PickUpInventoryItemCommand command = PickUpInventoryItemCommand.of(game.getCurrentPlayerId(),
-                                                                                       inventorySlotClicked);
-                    client.sendTCP(command);
+                    client.sendTCP(PerformActionCommand.of(PickUpInventoryItemAction.of(game.getCurrentPlayerId(),
+                                                                                        inventorySlotClicked)));
                 }
             }
             else if (equipmentSlotClicked != null) {
                 if (player.params().equipmentItems().containsKey(equipmentSlotClicked)) {
                     playerParams.equipmentItemBeingMoved(equipmentSlotClicked);
-                    System.out.println("zzzz2");
-
                 }
             }
             else {
-                System.out.println(" set null ");
-                FinishInventoryMoveCommand command = FinishInventoryMoveCommand.of(game.getCurrentPlayerId());
-
-                client.sendTCP(command);
+                client.sendTCP(PerformActionCommand.of(FinishInventoryMoveAction.of(game.getCurrentPlayerId())));
             }
 
         }
@@ -358,8 +335,6 @@ public class InventoryHelper {
             if (playerParams.inventoryItemBeingMoved() != null) {
                 Item item = player.params().inventoryItems().get(playerParams.inventoryItemBeingMoved());
                 playerParams.inventoryItemBeingMoved(null);
-
-                System.out.println("set null!!");
 
                 //spawn lootpile
             }

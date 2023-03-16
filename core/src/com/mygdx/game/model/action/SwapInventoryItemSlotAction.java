@@ -27,7 +27,6 @@ public class SwapInventoryItemSlotAction implements GameStateAction {
 
     @Override
     public void applyToGame(GameActionApplicable game) {
-        System.out.println("here3");
         Creature player = game.getCreature(creatureId);
 
         Item itemFrom = player.params().inventoryItems().get(fromSlotIndex);

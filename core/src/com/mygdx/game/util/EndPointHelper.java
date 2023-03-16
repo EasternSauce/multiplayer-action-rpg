@@ -44,14 +44,10 @@ public class EndPointHelper {
         endPoint.getKryo().register(EnemyAiState.class);
 
         endPoint.getKryo().register(InitPlayerCommand.class);
-        endPoint.getKryo().register(PlayerMovementCommand.class);
         endPoint.getKryo().register(SendChatMessageCommand.class);
         endPoint.getKryo().register(SpawnEnemyCommand.class);
+        endPoint.getKryo().register(PerformActionCommand.class);
         endPoint.getKryo().register(TryPerformSkillCommand.class);
-        endPoint.getKryo().register(ToggleInventoryCommand.class);
-        endPoint.getKryo().register(SwapInventoryItemSlotCommand.class);
-        endPoint.getKryo().register(PickUpInventoryItemCommand.class);
-        endPoint.getKryo().register(FinishInventoryMoveCommand.class);
 
         endPoint.getKryo().register(Ability.class);
         endPoint.getKryo().register(SummonGhosts.class);
@@ -86,9 +82,9 @@ public class EndPointHelper {
 
 
         endPoint.getKryo().register(AddAbilityAction.class);
-        endPoint.getKryo().register(AddPlayerAction.class);
+        endPoint.getKryo().register(InitPlayerAction.class);
         endPoint.getKryo().register(CreatureDeathAction.class);
-        endPoint.getKryo().register(MovePlayerTowardsTargetAction.class);
+        endPoint.getKryo().register(MoveCreatureTowardsTargetAction.class);
         endPoint.getKryo().register(RemoveAbilityAction.class);
         endPoint.getKryo().register(RemovePlayerAction.class);
         endPoint.getKryo().register(RespawnCreatureAction.class);

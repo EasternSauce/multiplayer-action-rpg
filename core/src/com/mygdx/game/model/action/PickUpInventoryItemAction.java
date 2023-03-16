@@ -27,13 +27,10 @@ public class PickUpInventoryItemAction implements GameStateAction {
 
     @Override
     public void applyToGame(GameActionApplicable game) {
-        System.out.println("pickup action");
         PlayerParams playerParams = game.getPlayerParams(creatureId);
 
         if (playerParams != null) {
-            System.out.println("setting inventoryItemBeingMoved to " + slotIndex);
             playerParams.inventoryItemBeingMoved(slotIndex);
-            System.out.println("playerParams.inventoryItemBeingMoved: " + playerParams.inventoryItemBeingMoved());
         }
     }
 }

@@ -6,14 +6,16 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.mygdx.game.Constants;
-import com.mygdx.game.command.*;
+import com.mygdx.game.command.InitPlayerCommand;
+import com.mygdx.game.command.PerformActionCommand;
+import com.mygdx.game.command.SendChatMessageCommand;
+import com.mygdx.game.command.SpawnEnemyCommand;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityId;
 import com.mygdx.game.model.ability.AbilityParams;
 import com.mygdx.game.model.ability.AbilityType;
-import com.mygdx.game.model.action.ActionsHolder;
-import com.mygdx.game.model.action.GameStateAction;
+import com.mygdx.game.model.action.*;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.*;
 import com.mygdx.game.model.skill.SkillType;
@@ -104,6 +106,10 @@ public class MyGdxGameClient extends MyGdxGame {
                     getChat().isTyping(false);
                 }
             }
+            else if (gameState.playerParams().get(thisPlayerId).isVisible()) {
+                endPoint().sendTCP(PerformActionCommand.of(ToggleInventoryAction.of(thisPlayerId)));
+
+            }
         }
         if (!getChat().isTyping()) {
             if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
@@ -120,7 +126,8 @@ public class MyGdxGameClient extends MyGdxGame {
 
                     if (player != null && player.params().movementCommandsPerSecondLimitTimer().time() >
                                           Constants.MovementCommandCooldown) {
-                        endPoint().sendTCP(PlayerMovementCommand.of(thisPlayerId, mousePos));
+                        endPoint().sendTCP(PerformActionCommand.of(MoveCreatureTowardsTargetAction.of(thisPlayerId,
+                                                                                                      mousePos)));
                     }
                 }
             }
@@ -142,10 +149,10 @@ public class MyGdxGameClient extends MyGdxGame {
 
                 Vector2 dirVector = mousePosRelativeToCenter();
 
-                endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
-                                                             SkillType.SWORD_SLASH,
-                                                             player.params().pos(),
-                                                             dirVector));
+                endPoint().sendTCP(PerformActionCommand.of(TryPerformSkillAction.of(thisPlayerId,
+                                                                                    SkillType.SWORD_SLASH,
+                                                                                    player.params().pos(),
+                                                                                    dirVector)));
 
             }
 
@@ -156,10 +163,10 @@ public class MyGdxGameClient extends MyGdxGame {
 
                 Vector2 dirVector = mousePosRelativeToCenter();
 
-                endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
-                                                             SkillType.FIREBALL,
-                                                             player.params().pos(),
-                                                             dirVector));
+                endPoint().sendTCP(PerformActionCommand.of(TryPerformSkillAction.of(thisPlayerId,
+                                                                                    SkillType.FIREBALL,
+                                                                                    player.params().pos(),
+                                                                                    dirVector)));
 
 
             }
@@ -172,10 +179,10 @@ public class MyGdxGameClient extends MyGdxGame {
 
                 Vector2 startingPos = player.params().pos().add(dirVector);
 
-                endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
-                                                             SkillType.LIGHTNING,
-                                                             startingPos,
-                                                             dirVector));
+                endPoint().sendTCP(PerformActionCommand.of(TryPerformSkillAction.of(thisPlayerId,
+                                                                                    SkillType.LIGHTNING,
+                                                                                    startingPos,
+                                                                                    dirVector)));
 
 
             }
@@ -187,10 +194,10 @@ public class MyGdxGameClient extends MyGdxGame {
 
                 Vector2 dirVector = mousePosRelativeToCenter();
 
-                endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
-                                                             SkillType.CROSSBOW_BOLT,
-                                                             player.params().pos(),
-                                                             dirVector));
+                endPoint().sendTCP(PerformActionCommand.of(TryPerformSkillAction.of(thisPlayerId,
+                                                                                    SkillType.CROSSBOW_BOLT,
+                                                                                    player.params().pos(),
+                                                                                    dirVector)));
 
 
             }
@@ -202,10 +209,10 @@ public class MyGdxGameClient extends MyGdxGame {
 
                 Vector2 dirVector = mousePosRelativeToCenter();
 
-                endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
-                                                             SkillType.MAGIC_ORB,
-                                                             player.params().pos(),
-                                                             dirVector));
+                endPoint().sendTCP(PerformActionCommand.of(TryPerformSkillAction.of(thisPlayerId,
+                                                                                    SkillType.MAGIC_ORB,
+                                                                                    player.params().pos(),
+                                                                                    dirVector)));
 
 
             }
@@ -216,10 +223,10 @@ public class MyGdxGameClient extends MyGdxGame {
 
                 Vector2 dirVector = mousePosRelativeToCenter();
 
-                endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
-                                                             SkillType.VOLATILE_BUBBLE,
-                                                             player.params().pos(),
-                                                             dirVector));
+                endPoint().sendTCP(PerformActionCommand.of(TryPerformSkillAction.of(thisPlayerId,
+                                                                                    SkillType.VOLATILE_BUBBLE,
+                                                                                    player.params().pos(),
+                                                                                    dirVector)));
 
 
             }
@@ -230,10 +237,10 @@ public class MyGdxGameClient extends MyGdxGame {
 
                 Vector2 dirVector = mousePosRelativeToCenter();
 
-                endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
-                                                             SkillType.SUMMON_GHOSTS,
-                                                             player.params().pos(),
-                                                             dirVector));
+                endPoint().sendTCP(PerformActionCommand.of(TryPerformSkillAction.of(thisPlayerId,
+                                                                                    SkillType.SUMMON_GHOSTS,
+                                                                                    player.params().pos(),
+                                                                                    dirVector)));
 
 
             }
@@ -244,17 +251,15 @@ public class MyGdxGameClient extends MyGdxGame {
 
                 Vector2 dirVector = mousePosRelativeToCenter();
 
-                endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
-                                                             SkillType.RICOCHET_BALLISTA,
-                                                             player.params().pos(),
-                                                             dirVector));
+                endPoint().sendTCP(PerformActionCommand.of(TryPerformSkillAction.of(thisPlayerId,
+                                                                                    SkillType.RICOCHET_BALLISTA,
+                                                                                    player.params().pos(),
+                                                                                    dirVector)));
 
 
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
-
-                endPoint().sendTCP(ToggleInventoryCommand.of(thisPlayerId));
-
+                endPoint().sendTCP(PerformActionCommand.of(ToggleInventoryAction.of(thisPlayerId)));
 
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.O)) {
@@ -264,10 +269,10 @@ public class MyGdxGameClient extends MyGdxGame {
 
                 Vector2 dirVector = mousePosRelativeToCenter();
 
-                endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
-                                                             SkillType.SUMMON_SHIELD,
-                                                             player.params().pos(),
-                                                             dirVector));
+                endPoint().sendTCP(PerformActionCommand.of(TryPerformSkillAction.of(thisPlayerId,
+                                                                                    SkillType.SUMMON_SHIELD,
+                                                                                    player.params().pos(),
+                                                                                    dirVector)));
 
 
             }
@@ -278,10 +283,10 @@ public class MyGdxGameClient extends MyGdxGame {
 
                 Vector2 dirVector = mousePosRelativeToCenter();
 
-                endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
-                                                             SkillType.SWORD_SPIN,
-                                                             player.params().pos(),
-                                                             dirVector));
+                endPoint().sendTCP(PerformActionCommand.of(TryPerformSkillAction.of(thisPlayerId,
+                                                                                    SkillType.SWORD_SPIN,
+                                                                                    player.params().pos(),
+                                                                                    dirVector)));
 
 
             }
@@ -292,10 +297,10 @@ public class MyGdxGameClient extends MyGdxGame {
 
                 Vector2 dirVector = mousePosRelativeToCenter();
 
-                endPoint().sendTCP(TryPerformSkillCommand.of(thisPlayerId,
-                                                             SkillType.TELEPORT,
-                                                             player.params().pos(),
-                                                             dirVector));
+                endPoint().sendTCP(PerformActionCommand.of(TryPerformSkillAction.of(thisPlayerId,
+                                                                                    SkillType.TELEPORT,
+                                                                                    player.params().pos(),
+                                                                                    dirVector)));
 
 
             }

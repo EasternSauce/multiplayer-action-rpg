@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-public class AddPlayerAction implements GameStateAction {
+public class InitPlayerAction implements GameStateAction {
     CreatureId playerId;
     Vector2 pos;
 

@@ -4,7 +4,10 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.mygdx.game.Constants;
-import com.mygdx.game.command.*;
+import com.mygdx.game.command.InitPlayerCommand;
+import com.mygdx.game.command.PerformActionCommand;
+import com.mygdx.game.command.SendChatMessageCommand;
+import com.mygdx.game.command.SpawnEnemyCommand;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.ability.*;
 import com.mygdx.game.model.action.*;
@@ -125,19 +128,18 @@ public class MyGdxGameServer extends MyGdxGame {
 
             @Override
             public void received(Connection connection, Object object) {
-                if (object instanceof PlayerMovementCommand) {
-                    PlayerMovementCommand command = (PlayerMovementCommand) object;
-                    MovePlayerTowardsTargetAction
-                            move = MovePlayerTowardsTargetAction.of(command.playerId(), command.mousePos());
-                    tickActions.add(move);
+                if (object instanceof PerformActionCommand) {
+                    PerformActionCommand command = (PerformActionCommand) object;
+
+                    tickActions.add(command.action());
                 }
                 else if (object instanceof InitPlayerCommand) {
                     InitPlayerCommand command = (InitPlayerCommand) object;
-                    AddPlayerAction
-                            addPlayerAction =
-                            AddPlayerAction.of(command.playerId(), command.pos(), command.textureName());
+                    InitPlayerAction
+                            initPlayerAction =
+                            InitPlayerAction.of(command.playerId(), command.pos(), command.textureName());
 
-                    tickActions.add(addPlayerAction);
+                    tickActions.add(initPlayerAction);
 
                     clientPlayers.put(connection.getID(), command.playerId());
                 }
@@ -146,20 +148,6 @@ public class MyGdxGameServer extends MyGdxGame {
 
                     endPoint().sendToAllTCP(command);
                 }
-
-                else if (object instanceof TryPerformSkillCommand) {
-                    TryPerformSkillCommand command = (TryPerformSkillCommand) object;
-
-                    TryPerformSkillAction
-                            action =
-                            TryPerformSkillAction.of(command.creatureId(),
-                                                     command.skillType(),
-                                                     command.startingPos(),
-                                                     command.dirVector());
-
-                    tickActions.add(action);
-
-                }
                 else if (object instanceof SpawnEnemyCommand) {
                     SpawnEnemyCommand command = (SpawnEnemyCommand) object;
                     spawnEnemy(command.creatureId(), command.areaId(), command.enemySpawn());
@@ -167,32 +155,6 @@ public class MyGdxGameServer extends MyGdxGame {
                     endPoint().sendToAllTCP(command); // TODO: add to tick actions instead
 
                 }
-                else if (object instanceof ToggleInventoryCommand) {
-                    ToggleInventoryCommand command = (ToggleInventoryCommand) object;
-
-                    tickActions.add(ToggleInventoryAction.of(command.creatureId()));
-                }
-                else if (object instanceof SwapInventoryItemSlotCommand) {
-                    SwapInventoryItemSlotCommand command = (SwapInventoryItemSlotCommand) object;
-
-                    tickActions.add(SwapInventoryItemSlotAction.of(command.creatureId(),
-                                                                   command.fromSlotIndex(),
-                                                                   command.toSlotIndex()));
-                }
-                else if (object instanceof PickUpInventoryItemCommand) {
-                    PickUpInventoryItemCommand command = (PickUpInventoryItemCommand) object;
-
-                    System.out.println("command slot index: " + command.slotIndex());
-
-                    tickActions.add(PickUpInventoryItemAction.of(command.creatureId(),
-                                                                 command.slotIndex()));
-                }
-                else if (object instanceof FinishInventoryMoveCommand) {
-                    FinishInventoryMoveCommand command = (FinishInventoryMoveCommand) object;
-
-                    tickActions.add(FinishInventoryMoveAction.of(command.creatureId()));
-                }
-
 
             }
 
