@@ -13,8 +13,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-public class FinishInventoryMoveAction implements GameStateAction {
+public class PickUpEquipmentItemAction implements GameStateAction {
     CreatureId creatureId;
+
+    Integer slotIndex;
+
 
     @Override
     public Vector2 actionObjectPos(GameState gameState) {
@@ -27,9 +30,7 @@ public class FinishInventoryMoveAction implements GameStateAction {
         PlayerParams playerParams = game.getPlayerParams(creatureId);
 
         if (playerParams != null) {
-            System.out.println("set null");
-            playerParams.inventoryItemBeingMoved(null);
-            playerParams.equipmentItemBeingMoved(null);
+            playerParams.equipmentItemBeingMoved(slotIndex);
         }
     }
 }

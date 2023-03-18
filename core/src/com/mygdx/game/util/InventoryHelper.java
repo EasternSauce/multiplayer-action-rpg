@@ -9,10 +9,7 @@ import com.esotericsoftware.kryonet.Client;
 import com.mygdx.game.assets.Assets;
 import com.mygdx.game.command.PerformActionCommand;
 import com.mygdx.game.game.interface_.GameRenderable;
-import com.mygdx.game.model.action.FinishInventoryMoveAction;
-import com.mygdx.game.model.action.PickUpInventoryItemAction;
-import com.mygdx.game.model.action.SwapSlotsBetweenInventoryAndEquipmentAction;
-import com.mygdx.game.model.action.SwapSlotsInsideInventoryAction;
+import com.mygdx.game.model.action.*;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.item.EquipmentSlotType;
 import com.mygdx.game.model.item.Item;
@@ -218,8 +215,8 @@ public class InventoryHelper {
                               slotSize);
         }
         if (playerParams.equipmentItemBeingMoved() != null &&
-            inventoryItems.containsKey(playerParams.inventoryItemBeingMoved())) {
-            Vector2Int iconPos = inventoryItems.get(playerParams.inventoryItemBeingMoved()).template().iconPos();
+            equipmentItems.containsKey(playerParams.equipmentItemBeingMoved())) {
+            Vector2Int iconPos = equipmentItems.get(playerParams.equipmentItemBeingMoved()).template().iconPos();
 
             drawingLayer.spriteBatch()
                         .draw(icons[iconPos.y()][iconPos.x()],
@@ -301,37 +298,52 @@ public class InventoryHelper {
             Integer equipmentSlotClicked = atomicEquipmentSlotClicked.get();
 
             if (inventoryItemBeingMoved != null && inventorySlotClicked != null) {
+                System.out.println("1");
                 client.sendTCP(PerformActionCommand.of(SwapSlotsInsideInventoryAction.of(game.getCurrentPlayerId(),
                                                                                          inventoryItemBeingMoved,
                                                                                          inventorySlotClicked)));
             }
             else if (inventoryItemBeingMoved != null && equipmentSlotClicked != null) {
+                System.out.println("2");
                 client.sendTCP(PerformActionCommand.of(SwapSlotsBetweenInventoryAndEquipmentAction.of(game.getCurrentPlayerId(),
                                                                                                       inventoryItemBeingMoved,
                                                                                                       equipmentSlotClicked)));
             }
             else if (equipmentItemBeingMoved != null && inventorySlotClicked != null) {
+                System.out.println("3");
+
                 client.sendTCP(PerformActionCommand.of(SwapSlotsBetweenInventoryAndEquipmentAction.of(game.getCurrentPlayerId(),
                                                                                                       inventorySlotClicked,
                                                                                                       equipmentItemBeingMoved)));
             }
             else if (equipmentItemBeingMoved != null && equipmentSlotClicked != null) {
+                System.out.println("4");
+
                 client.sendTCP(PerformActionCommand.of(SwapSlotsInsideInventoryAction.of(game.getCurrentPlayerId(),
                                                                                          equipmentItemBeingMoved,
                                                                                          equipmentSlotClicked)));
             }
             else if (inventorySlotClicked != null) {
+                System.out.println("5");
+
                 if (player.params().inventoryItems().containsKey(inventorySlotClicked)) {
+                    System.out.println("pickup");
                     client.sendTCP(PerformActionCommand.of(PickUpInventoryItemAction.of(game.getCurrentPlayerId(),
                                                                                         inventorySlotClicked)));
                 }
             }
             else if (equipmentSlotClicked != null) {
+                System.out.println("6");
+
                 if (player.params().equipmentItems().containsKey(equipmentSlotClicked)) {
                     playerParams.equipmentItemBeingMoved(equipmentSlotClicked);
+
+                    client.sendTCP(PerformActionCommand.of(PickUpEquipmentItemAction.of(game.getCurrentPlayerId(),
+                                                                                        equipmentSlotClicked)));
                 }
             }
             else {
+                System.out.println("7");
                 client.sendTCP(PerformActionCommand.of(FinishInventoryMoveAction.of(game.getCurrentPlayerId())));
             }
 

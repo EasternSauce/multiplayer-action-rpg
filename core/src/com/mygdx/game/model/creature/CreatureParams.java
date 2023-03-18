@@ -147,6 +147,7 @@ public class CreatureParams {
         params.aiStateTime = 0f;
 
         params.inventoryItems.put(2, Item.of(ItemTemplate.templates.get("leatherArmor"), 0.6f));
+        params.inventoryItems.put(3, Item.of(ItemTemplate.templates.get("leatherArmor"), 1f));
         params.inventoryItems.put(10, Item.of(ItemTemplate.templates.get("hideGloves"), 0.9f));
         return params;
     }

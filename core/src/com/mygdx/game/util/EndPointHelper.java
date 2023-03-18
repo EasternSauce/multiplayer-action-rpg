@@ -96,6 +96,7 @@ public class EndPointHelper {
         endPoint.getKryo().register(PickUpInventoryItemAction.class);
         endPoint.getKryo().register(FinishInventoryMoveAction.class);
         endPoint.getKryo().register(SwapSlotsBetweenInventoryAndEquipmentAction.class);
+        endPoint.getKryo().register(PickUpEquipmentItemAction.class);
 
         endPoint.getKryo().register(EquipmentSlotType.class);
         endPoint.getKryo().register(ItemTemplate.class);

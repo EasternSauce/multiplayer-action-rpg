@@ -6,6 +6,7 @@ import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.item.EquipmentSlotType;
 import com.mygdx.game.model.item.Item;
+import com.mygdx.game.model.util.PlayerParams;
 import com.mygdx.game.model.util.Vector2;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,6 +30,7 @@ public class SwapSlotsBetweenInventoryAndEquipmentAction implements GameStateAct
     @Override
     public void applyToGame(GameActionApplicable game) {
         Creature player = game.getCreature(creatureId);
+        PlayerParams playerParams = game.getPlayerParams(creatureId);
 
         Item inventoryItem = player.params().inventoryItems().get(inventoryIndex);
         Item equipmentItem = player.params().equipmentItems().get(equipmentIndex);
@@ -49,6 +51,9 @@ public class SwapSlotsBetweenInventoryAndEquipmentAction implements GameStateAct
             }
 
         }
+
+        playerParams.inventoryItemBeingMoved(null);
+        playerParams.equipmentItemBeingMoved(null);
 
 
     }

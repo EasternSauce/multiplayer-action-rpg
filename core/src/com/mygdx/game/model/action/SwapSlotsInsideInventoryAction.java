@@ -5,6 +5,7 @@ import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.item.Item;
+import com.mygdx.game.model.util.PlayerParams;
 import com.mygdx.game.model.util.Vector2;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,6 +29,7 @@ public class SwapSlotsInsideInventoryAction implements GameStateAction {
     @Override
     public void applyToGame(GameActionApplicable game) {
         Creature player = game.getCreature(creatureId);
+        PlayerParams playerParams = game.getPlayerParams(creatureId);
 
         Item itemFrom = player.params().inventoryItems().get(fromSlotIndex);
         //noinspection UnnecessaryLocalVariable
@@ -48,5 +50,8 @@ public class SwapSlotsInsideInventoryAction implements GameStateAction {
         else {
             player.params().inventoryItems().remove(fromSlotIndex);
         }
+
+        playerParams.inventoryItemBeingMoved(null);
+        playerParams.equipmentItemBeingMoved(null);
     }
 }
