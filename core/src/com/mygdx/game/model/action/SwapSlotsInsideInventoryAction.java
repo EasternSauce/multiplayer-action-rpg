@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-public class SwapInventoryItemSlotAction implements GameStateAction {
+public class SwapSlotsInsideInventoryAction implements GameStateAction {
     CreatureId creatureId;
 
     Integer fromSlotIndex;

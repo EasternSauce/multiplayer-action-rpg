@@ -11,7 +11,8 @@ import com.mygdx.game.command.PerformActionCommand;
 import com.mygdx.game.game.interface_.GameRenderable;
 import com.mygdx.game.model.action.FinishInventoryMoveAction;
 import com.mygdx.game.model.action.PickUpInventoryItemAction;
-import com.mygdx.game.model.action.SwapInventoryItemSlotAction;
+import com.mygdx.game.model.action.SwapSlotsBetweenInventoryAndEquipmentAction;
+import com.mygdx.game.model.action.SwapSlotsInsideInventoryAction;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.item.EquipmentSlotType;
 import com.mygdx.game.model.item.Item;
@@ -300,20 +301,24 @@ public class InventoryHelper {
             Integer equipmentSlotClicked = atomicEquipmentSlotClicked.get();
 
             if (inventoryItemBeingMoved != null && inventorySlotClicked != null) {
-                client.sendTCP(PerformActionCommand.of(SwapInventoryItemSlotAction.of(game.getCurrentPlayerId(),
-                                                                                      inventoryItemBeingMoved,
-                                                                                      inventorySlotClicked)));
+                client.sendTCP(PerformActionCommand.of(SwapSlotsInsideInventoryAction.of(game.getCurrentPlayerId(),
+                                                                                         inventoryItemBeingMoved,
+                                                                                         inventorySlotClicked)));
             }
             else if (inventoryItemBeingMoved != null && equipmentSlotClicked != null) {
-                swapBetweenInventoryAndEquipment(inventoryItemBeingMoved, equipmentSlotClicked, game);
+                client.sendTCP(PerformActionCommand.of(SwapSlotsBetweenInventoryAndEquipmentAction.of(game.getCurrentPlayerId(),
+                                                                                                      inventoryItemBeingMoved,
+                                                                                                      equipmentSlotClicked)));
             }
             else if (equipmentItemBeingMoved != null && inventorySlotClicked != null) {
-                swapBetweenInventoryAndEquipment(equipmentItemBeingMoved, inventorySlotClicked, game);
+                client.sendTCP(PerformActionCommand.of(SwapSlotsBetweenInventoryAndEquipmentAction.of(game.getCurrentPlayerId(),
+                                                                                                      inventorySlotClicked,
+                                                                                                      equipmentItemBeingMoved)));
             }
             else if (equipmentItemBeingMoved != null && equipmentSlotClicked != null) {
-                client.sendTCP(PerformActionCommand.of(SwapInventoryItemSlotAction.of(game.getCurrentPlayerId(),
-                                                                                      equipmentItemBeingMoved,
-                                                                                      equipmentSlotClicked)));
+                client.sendTCP(PerformActionCommand.of(SwapSlotsInsideInventoryAction.of(game.getCurrentPlayerId(),
+                                                                                         equipmentItemBeingMoved,
+                                                                                         equipmentSlotClicked)));
             }
             else if (inventorySlotClicked != null) {
                 if (player.params().inventoryItems().containsKey(inventorySlotClicked)) {
@@ -347,10 +352,6 @@ public class InventoryHelper {
             }
         }
 
-
-    }
-
-    public static void swapBetweenInventoryAndEquipment(int inventoryIndex, int equipmentIndex, GameRenderable game) {
 
     }
 
