@@ -1,7 +1,8 @@
-package com.mygdx.game.model.action;
+package com.mygdx.game.model.action.inventory;
 
 import com.mygdx.game.game.interface_.GameActionApplicable;
 import com.mygdx.game.model.GameState;
+import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.item.EquipmentSlotType;
@@ -15,7 +16,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-public class SwapSlotsBetweenInventoryAndEquipmentAction implements GameStateAction {
+public class InventoryAndEquipmentSwapSlotsAction implements GameStateAction {
     CreatureId creatureId;
 
     Integer inventoryIndex;

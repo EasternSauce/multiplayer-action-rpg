@@ -1,6 +1,6 @@
 package com.mygdx.game.physics.event;
 
-import com.mygdx.game.game.data.AreaGate;
+import com.mygdx.game.model.area.AreaGate;
 import com.mygdx.game.model.creature.CreatureId;
 import lombok.AllArgsConstructor;
 import lombok.Data;

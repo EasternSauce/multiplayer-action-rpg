@@ -2,13 +2,13 @@ package com.mygdx.game.physics.body;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.mygdx.game.game.interface_.GameUpdatable;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityId;
 import com.mygdx.game.model.ability.AbilityState;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.util.Vector2;
-import com.mygdx.game.physics.GamePhysics;
 import com.mygdx.game.physics.world.PhysicsWorld;
 import lombok.Data;
 import lombok.Getter;
@@ -35,8 +35,8 @@ public class AbilityBody {
         return abilityBody;
     }
 
-    private float[] hitboxVertices(GameState gameState) {
-        Ability ability = gameState.abilities().get(abilityId);
+    private float[] hitboxVertices(GameUpdatable game) {
+        Ability ability = game.getAbility(abilityId);
 
         sprite.setSize(ability.params().width(), ability.params().height());
         sprite.setCenter(0, 0);
@@ -63,15 +63,15 @@ public class AbilityBody {
 
     }
 
-    public void init(GamePhysics physics, GameState gameState, boolean skipCreatingBody) {
-        Ability ability = gameState.abilities().get(abilityId);
+    public void init(GameUpdatable game, boolean skipCreatingBody) {
+        Ability ability = game.getAbility(abilityId);
 
         if (!isBodyInitialized && !skipCreatingBody && ability != null) {
-            world = physics.physicsWorlds().get(ability.params().areaId());
+            world = game.getPhysicsWorld(ability.params().areaId());
 
             creatureId = ability.params().creatureId();
 
-            b2Body = B2BodyFactory.createAbilityB2Body(world, this, ability.params().pos(), hitboxVertices(gameState));
+            b2Body = B2BodyFactory.createAbilityB2Body(world, this, ability.params().pos(), hitboxVertices(game));
 
             isBodyInitialized = true;
         }

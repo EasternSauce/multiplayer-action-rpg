@@ -2,8 +2,8 @@ package com.mygdx.game.renderer;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.mygdx.game.game.data.AreaGate;
 import com.mygdx.game.game.interface_.GameRenderable;
+import com.mygdx.game.model.area.AreaGate;
 import com.mygdx.game.model.area.AreaId;
 import lombok.Data;
 import lombok.NoArgsConstructor;

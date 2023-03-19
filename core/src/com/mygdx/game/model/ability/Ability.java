@@ -122,6 +122,6 @@ public abstract class Ability {
     public abstract void onOtherAbilityHit(AbilityId otherAbilityId, GameUpdatable game);
 
     public boolean bodyShouldExist() {
-        return !(params().inactiveBody() || params().state() != AbilityState.ACTIVE);
+        return !(params().isSkipCreatingBody() || params().state() != AbilityState.ACTIVE);
     }
 }

@@ -1,8 +1,7 @@
-package com.mygdx.game.game.data;
+package com.mygdx.game.model.util;
 
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.CreatureId;
-import com.mygdx.game.model.util.Vector2;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

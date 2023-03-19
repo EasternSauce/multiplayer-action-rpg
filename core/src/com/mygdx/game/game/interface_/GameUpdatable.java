@@ -1,16 +1,19 @@
 package com.mygdx.game.game.interface_;
 
 import com.badlogic.gdx.math.Vector3;
-import com.mygdx.game.game.data.TeleportEvent;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityId;
 import com.mygdx.game.model.ability.AbilityParams;
 import com.mygdx.game.model.ability.AbilityType;
+import com.mygdx.game.model.area.AreaGate;
 import com.mygdx.game.model.area.AreaId;
+import com.mygdx.game.model.area.LootPile;
+import com.mygdx.game.model.area.LootPileId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.skill.SkillType;
 import com.mygdx.game.model.util.PlayerParams;
+import com.mygdx.game.model.util.TeleportEvent;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.physics.body.AbilityBody;
 import com.mygdx.game.physics.body.CreatureBody;
@@ -69,4 +72,9 @@ public interface GameUpdatable {
 
     PlayerParams getPlayerParams(CreatureId currentPlayerId);
 
+    Set<AreaGate> getAreaGates();
+
+    LootPile getLootPile(LootPileId lootPileId);
+
+    Map<LootPileId, LootPile> getLootPiles();
 }

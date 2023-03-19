@@ -1,7 +1,8 @@
-package com.mygdx.game.model.action;
+package com.mygdx.game.model.action.creature;
 
 import com.mygdx.game.game.interface_.GameActionApplicable;
 import com.mygdx.game.model.GameState;
+import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.creature.CreatureParams;
@@ -14,7 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-public class InitPlayerAction implements GameStateAction {
+public class PlayerInitAction implements GameStateAction {
     CreatureId playerId;
     Vector2 pos;
 
@@ -34,7 +35,7 @@ public class InitPlayerAction implements GameStateAction {
         player.params().maxMana(350f);
         game.getCreatures().put(playerId, player);
 
-        game.creaturesToBeCreated().add(playerId);
+        game.getCreaturesToBeCreated().add(playerId);
 
         game.initiatePlayerParams(playerId);
 

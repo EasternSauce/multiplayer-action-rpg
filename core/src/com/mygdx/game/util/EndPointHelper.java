@@ -4,9 +4,16 @@ import com.esotericsoftware.kryonet.EndPoint;
 import com.mygdx.game.command.*;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.ability.*;
-import com.mygdx.game.model.action.*;
-import com.mygdx.game.model.area.Area;
-import com.mygdx.game.model.area.AreaId;
+import com.mygdx.game.model.action.ActionsHolder;
+import com.mygdx.game.model.action.ability.AbilityActivateAction;
+import com.mygdx.game.model.action.ability.AbilityAddAction;
+import com.mygdx.game.model.action.ability.AbilityRemoveAction;
+import com.mygdx.game.model.action.ability.SkillTryPerformAction;
+import com.mygdx.game.model.action.creature.*;
+import com.mygdx.game.model.action.inventory.*;
+import com.mygdx.game.model.action.loot.LootPileDespawnAction;
+import com.mygdx.game.model.action.loot.LootPileItemTryPickUpAction;
+import com.mygdx.game.model.area.*;
 import com.mygdx.game.model.creature.*;
 import com.mygdx.game.model.item.EquipmentSlotType;
 import com.mygdx.game.model.item.Item;
@@ -31,17 +38,20 @@ public class EndPointHelper {
         endPoint.getKryo().register(ConcurrentSkipListMap.class);
 
         endPoint.getKryo().register(CreatureId.class);
+        endPoint.getKryo().register(AreaId.class);
+        endPoint.getKryo().register(AbilityId.class);
+        endPoint.getKryo().register(LootPileId.class);
+
         endPoint.getKryo().register(Vector2.class);
         endPoint.getKryo().register(Vector2Int.class);
-        endPoint.getKryo().register(AreaId.class);
         endPoint.getKryo().register(SimpleTimer.class);
         endPoint.getKryo().register(AbilityType.class);
         endPoint.getKryo().register(AbilityState.class);
         endPoint.getKryo().register(EnemyType.class);
         endPoint.getKryo().register(SkillType.class);
         endPoint.getKryo().register(EnemySpawn.class);
-        endPoint.getKryo().register(AbilityId.class);
         endPoint.getKryo().register(EnemyAiState.class);
+        endPoint.getKryo().register(LootPile.class);
 
         endPoint.getKryo().register(InitPlayerCommand.class);
         endPoint.getKryo().register(SendChatMessageCommand.class);
@@ -79,24 +89,27 @@ public class EndPointHelper {
         endPoint.getKryo().register(WorldDirection.class);
         endPoint.getKryo().register(CreatureParams.class);
         endPoint.getKryo().register(AbilityParams.class);
+        endPoint.getKryo().register(AreaGate.class);
 
 
-        endPoint.getKryo().register(AddAbilityAction.class);
-        endPoint.getKryo().register(InitPlayerAction.class);
+        endPoint.getKryo().register(AbilityAddAction.class);
+        endPoint.getKryo().register(PlayerInitAction.class);
         endPoint.getKryo().register(CreatureDeathAction.class);
-        endPoint.getKryo().register(MoveCreatureTowardsTargetAction.class);
-        endPoint.getKryo().register(RemoveAbilityAction.class);
-        endPoint.getKryo().register(RemovePlayerAction.class);
-        endPoint.getKryo().register(RespawnCreatureAction.class);
-        endPoint.getKryo().register(TryPerformSkillAction.class);
+        endPoint.getKryo().register(CreatureMoveTowardsTargetAction.class);
+        endPoint.getKryo().register(AbilityRemoveAction.class);
+        endPoint.getKryo().register(PlayerRemoveAction.class);
+        endPoint.getKryo().register(CreatureRespawnAction.class);
+        endPoint.getKryo().register(SkillTryPerformAction.class);
         endPoint.getKryo().register(AbilityActivateAction.class);
-        endPoint.getKryo().register(SetCreatureMovingVectorAction.class);
-        endPoint.getKryo().register(SwapSlotsInsideInventoryAction.class);
-        endPoint.getKryo().register(ToggleInventoryAction.class);
-        endPoint.getKryo().register(PickUpInventoryItemAction.class);
-        endPoint.getKryo().register(FinishInventoryMoveAction.class);
-        endPoint.getKryo().register(SwapSlotsBetweenInventoryAndEquipmentAction.class);
-        endPoint.getKryo().register(PickUpEquipmentItemAction.class);
+        endPoint.getKryo().register(CreatureMovingVectorSetAction.class);
+        endPoint.getKryo().register(InventorySwapSlotsAction.class);
+        endPoint.getKryo().register(InventoryToggleAction.class);
+        endPoint.getKryo().register(InventoryMoveItemAction.class);
+        endPoint.getKryo().register(InventoryMoveFinishAction.class);
+        endPoint.getKryo().register(InventoryAndEquipmentSwapSlotsAction.class);
+        endPoint.getKryo().register(EquipmentItemPickUpAction.class);
+        endPoint.getKryo().register(LootPileDespawnAction.class);
+        endPoint.getKryo().register(LootPileItemTryPickUpAction.class);
 
         endPoint.getKryo().register(EquipmentSlotType.class);
         endPoint.getKryo().register(ItemTemplate.class);

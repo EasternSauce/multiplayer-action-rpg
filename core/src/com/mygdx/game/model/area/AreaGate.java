@@ -1,7 +1,6 @@
-package com.mygdx.game.game.data;
+package com.mygdx.game.model.area;
 
 
-import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.util.Vector2;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,11 +9,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-public class AreaGate {
+public class AreaGate implements Comparable<AreaGate> {
     AreaId areaA_Id;
     Vector2 posA;
     AreaId areaB_Id;
     Vector2 posB;
+
     Float width = 1.5f;
     Float height = 1.5f;
 
@@ -27,5 +27,10 @@ public class AreaGate {
         areaGate.posB = posB;
 
         return areaGate;
+    }
+
+    @Override
+    public int compareTo(AreaGate o) {
+        return this.toString().compareTo(o.toString());
     }
 }

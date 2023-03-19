@@ -10,9 +10,22 @@ import com.mygdx.game.command.SendChatMessageCommand;
 import com.mygdx.game.command.SpawnEnemyCommand;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.ability.*;
-import com.mygdx.game.model.action.*;
+import com.mygdx.game.model.action.ActionsHolder;
+import com.mygdx.game.model.action.GameStateAction;
+import com.mygdx.game.model.action.ability.AbilityActivateAction;
+import com.mygdx.game.model.action.ability.AbilityAddAction;
+import com.mygdx.game.model.action.ability.AbilityRemoveAction;
+import com.mygdx.game.model.action.ability.SkillTryPerformAction;
+import com.mygdx.game.model.action.creature.*;
+import com.mygdx.game.model.action.loot.LootPileDespawnAction;
+import com.mygdx.game.model.action.loot.LootPileSpawnAction;
+import com.mygdx.game.model.area.AreaGate;
 import com.mygdx.game.model.area.AreaId;
+import com.mygdx.game.model.area.LootPile;
+import com.mygdx.game.model.area.LootPileId;
 import com.mygdx.game.model.creature.*;
+import com.mygdx.game.model.item.Item;
+import com.mygdx.game.model.item.ItemTemplate;
 import com.mygdx.game.model.skill.SkillType;
 import com.mygdx.game.model.util.GameStateBroadcast;
 import com.mygdx.game.model.util.Vector2;
@@ -22,11 +35,12 @@ import com.mygdx.game.util.EndPointHelper;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.stream.Collectors;
 
 public class MyGdxGameServer extends MyGdxGame {
     private static MyGdxGameServer instance;
-    private final List<GameStateAction> tickActions = Collections.synchronizedList(new ArrayList<>());
+    private final List<GameStateAction> onTickActions = Collections.synchronizedList(new ArrayList<>());
     private final Map<Integer, CreatureId> clientPlayers = new ConcurrentSkipListMap<>();
     Server _endPoint;
     Thread broadcastThread;
@@ -60,7 +74,7 @@ public class MyGdxGameServer extends MyGdxGame {
         gameState().creatures().forEach((creatureId, creature) -> { // handle deaths server side
             if (creature.params().justDied()) { // death condition
                 CreatureDeathAction action = CreatureDeathAction.of(creatureId);
-                tickActions.add(action);
+                onTickActions.add(action);
             }
             else if (creature.params().awaitingRespawn() && creature instanceof Player &&
                      // handle respawns server side
@@ -69,9 +83,9 @@ public class MyGdxGameServer extends MyGdxGame {
                         pos =
                         Vector2.of((float) ((Math.random() * (28 - 18)) + 18),
                                    (float) ((Math.random() * (12 - 6)) + 6));
-                RespawnCreatureAction action = RespawnCreatureAction.of(creatureId, pos);
+                CreatureRespawnAction action = CreatureRespawnAction.of(creatureId, pos);
 
-                tickActions.add(action);
+                onTickActions.add(action);
             }
 
         });
@@ -85,9 +99,15 @@ public class MyGdxGameServer extends MyGdxGame {
                    .entrySet()
                    .stream()
                    .filter(entry -> entry.getValue().params().state() == AbilityState.INACTIVE)
-                   .forEach(entry -> tickActions.add(RemoveAbilityAction.of(entry.getKey())));
+                   .forEach(entry -> onTickActions.add(AbilityRemoveAction.of(entry.getKey())));
 
-        ArrayList<GameStateAction> tickActionsCopy = new ArrayList<>(tickActions);
+        gameState().lootPiles()
+                   .entrySet()
+                   .stream()
+                   .filter(entry -> entry.getValue().isFullyLooted())
+                   .forEach(entry -> onTickActions.add(LootPileDespawnAction.of(entry.getKey())));
+
+        ArrayList<GameStateAction> tickActionsCopy = new ArrayList<>(onTickActions);
 
         tickActionsCopy.forEach(gameStateAction -> gameStateAction.applyToGame(this));
 
@@ -107,7 +127,7 @@ public class MyGdxGameServer extends MyGdxGame {
             connection.sendTCP(ActionsHolder.of(personalizedTickActions));
         }
 
-        tickActions.clear();
+        onTickActions.clear();
 
 
     }
@@ -131,15 +151,15 @@ public class MyGdxGameServer extends MyGdxGame {
                 if (object instanceof PerformActionCommand) {
                     PerformActionCommand command = (PerformActionCommand) object;
 
-                    tickActions.add(command.action());
+                    onTickActions.add(command.action());
                 }
                 else if (object instanceof InitPlayerCommand) {
                     InitPlayerCommand command = (InitPlayerCommand) object;
-                    InitPlayerAction
-                            initPlayerAction =
-                            InitPlayerAction.of(command.playerId(), command.pos(), command.textureName());
+                    PlayerInitAction
+                            playerInitAction =
+                            PlayerInitAction.of(command.playerId(), command.pos(), command.textureName());
 
-                    tickActions.add(initPlayerAction);
+                    onTickActions.add(playerInitAction);
 
                     clientPlayers.put(connection.getID(), command.playerId());
                 }
@@ -162,8 +182,8 @@ public class MyGdxGameServer extends MyGdxGame {
             public void disconnected(Connection connection) {
                 CreatureId disconnectedCreatureId = clientPlayers.get(connection.getID());
 
-                RemovePlayerAction removePlayerAction = RemovePlayerAction.of(disconnectedCreatureId);
-                tickActions.add(removePlayerAction);
+                PlayerRemoveAction playerRemoveAction = PlayerRemoveAction.of(disconnectedCreatureId);
+                onTickActions.add(playerRemoveAction);
             }
 
         });
@@ -190,19 +210,17 @@ public class MyGdxGameServer extends MyGdxGame {
                                 new ConcurrentSkipListMap<>(gameState().creatures()
                                                                        .entrySet()
                                                                        .stream()
-                                                                       .filter(entry ->
-                                                                                       entry.getValue()
-                                                                                            .params()
-                                                                                            .areaId()
-                                                                                            .equals(player.params()
-                                                                                                          .areaId()) &&
-                                                                                       entry.getValue()
-                                                                                            .params()
-                                                                                            .pos()
-                                                                                            .distance(
-                                                                                                    player.params()
-                                                                                                          .pos()) <
-                                                                                       Constants.ClientGameUpdateRange)
+                                                                       .filter(entry -> entry.getValue()
+                                                                                             .params()
+                                                                                             .areaId()
+                                                                                             .equals(player.params()
+                                                                                                           .areaId()) &&
+                                                                                        entry.getValue()
+                                                                                             .params()
+                                                                                             .pos()
+                                                                                             .distance(player.params()
+                                                                                                             .pos()) <
+                                                                                        Constants.ClientGameUpdateRange)
                                                                        .collect(Collectors.toMap(Map.Entry::getKey,
                                                                                                  Map.Entry::getValue)));
                         ConcurrentSkipListMap<AbilityId, Ability>
@@ -210,27 +228,45 @@ public class MyGdxGameServer extends MyGdxGame {
                                 new ConcurrentSkipListMap<>(gameState().abilities()
                                                                        .entrySet()
                                                                        .stream()
-                                                                       .filter(entry ->
-                                                                                       entry.getValue()
-                                                                                            .params()
-                                                                                            .areaId()
-                                                                                            .equals(player.params()
-                                                                                                          .areaId()) &&
-                                                                                       entry.getValue()
-                                                                                            .params()
-                                                                                            .pos()
-                                                                                            .distance(
-                                                                                                    player.params()
-                                                                                                          .pos()) <
-                                                                                       Constants.ClientGameUpdateRange)
+                                                                       .filter(entry -> entry.getValue()
+                                                                                             .params()
+                                                                                             .areaId()
+                                                                                             .equals(player.params()
+                                                                                                           .areaId()) &&
+                                                                                        entry.getValue()
+                                                                                             .params()
+                                                                                             .pos()
+                                                                                             .distance(player.params()
+                                                                                                             .pos()) <
+                                                                                        Constants.ClientGameUpdateRange)
                                                                        .collect(Collectors.toMap(Map.Entry::getKey,
                                                                                                  Map.Entry::getValue)));
 
+                        ConcurrentSkipListMap<LootPileId, LootPile>
+                                personalizedLootPiles =
+                                new ConcurrentSkipListMap<>(gameState().lootPiles()
+                                                                       .entrySet()
+                                                                       .stream()
+                                                                       .filter(entry -> entry.getValue()
 
-                        GameState personalizedGameState =
+                                                                                             .areaId()
+                                                                                             .equals(player.params()
+                                                                                                           .areaId()) &&
+                                                                                        entry.getValue()
+
+                                                                                             .pos()
+                                                                                             .distance(player.params()
+                                                                                                             .pos()) <
+                                                                                        Constants.ClientGameUpdateRange)
+                                                                       .collect(Collectors.toMap(Map.Entry::getKey,
+                                                                                                 Map.Entry::getValue)));
+
+                        GameState
+                                personalizedGameState =
                                 GameState.of(gameState(),
                                              personalizedCreatures,
-                                             personalizedAbilities);
+                                             personalizedAbilities,
+                                             personalizedLootPiles);
 
                         connection.sendTCP(GameStateBroadcast.of(personalizedGameState));
                     }
@@ -243,22 +279,62 @@ public class MyGdxGameServer extends MyGdxGame {
 
     }
 
-    public void spawnAbility(AbilityType abilityType,
-                             AbilityParams abilityParams) {
+    public void spawnAbility(AbilityType abilityType, AbilityParams abilityParams) {
         Creature creature = getCreature(abilityParams.creatureId());
 
         if (creature != null) {
             Ability ability = AbilityFactory.produceAbility(abilityType, abilityParams, this);
 
-            AddAbilityAction action = AddAbilityAction.of(ability);
+            AbilityAddAction action = AbilityAddAction.of(ability);
 
-            tickActions.add(action);
+            onTickActions.add(action);
         }
     }
 
     @Override
     public void initState() {
+
         AreaId areaId = AreaId.of("area1");
+
+        LootPileId lootPileId = LootPileId.of("LootPile_" + (int) (Math.random() * 10000000)); // TODO: use seeded rng
+        LootPileId lootPile2Id = LootPileId.of("LootPile_" + (int) (Math.random() * 10000000)); // TODO: use seeded rng
+
+        onTickActions.add(LootPileSpawnAction.of(LootPile.of(lootPileId,
+                                                             areaId,
+                                                             Vector2.of(12, 12),
+                                                             new ConcurrentSkipListSet<>(Arrays.asList(Item.of(
+                                                                                                               ItemTemplate.templates.get("leatherArmor"),
+                                                                                                               0.9f,
+                                                                                                               lootPileId),
+                                                                                                       Item.of(ItemTemplate.templates.get(
+                                                                                                                       "hideGloves"),
+                                                                                                               0.9f,
+                                                                                                               lootPileId))))));
+
+
+        onTickActions.add(LootPileSpawnAction.of(LootPile.of(lootPile2Id,
+                                                             areaId,
+                                                             Vector2.of(13.5f, 12),
+                                                             new ConcurrentSkipListSet<>(Arrays.asList(Item.of(
+                                                                                                               ItemTemplate.templates.get("ringmailGreaves"),
+                                                                                                               0.9f,
+                                                                                                               lootPile2Id),
+                                                                                                       Item.of(ItemTemplate.templates.get(
+                                                                                                                       "hideGloves"),
+                                                                                                               0.5f,
+                                                                                                               lootPile2Id))))));
+
+        gameState.areaGates(new ConcurrentSkipListSet<>());
+        gameState.areaGates()
+                 .addAll(Arrays.asList(AreaGate.of(AreaId.of("area1"),
+                                                   Vector2.of(199.5f, 15f),
+                                                   AreaId.of("area3"),
+                                                   Vector2.of(17f, 2.5f)),
+                                       AreaGate.of(AreaId.of("area1"),
+                                                   Vector2.of(2f, 63f),
+                                                   AreaId.of("area2"),
+                                                   Vector2.of(58f, 9f))));
+
 
         List<EnemySpawn>
                 enemySpawns =
@@ -359,9 +435,7 @@ public class MyGdxGameServer extends MyGdxGame {
         enemySpawns.forEach(enemySpawn -> {
             CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 10000000));
             spawnEnemy(enemyId, areaId, enemySpawn);
-            endPoint().sendToAllTCP(SpawnEnemyCommand.of(enemyId,
-                                                         areaId,
-                                                         enemySpawn)); // TODO: use tick actions instead
+            endPoint().sendToAllTCP(SpawnEnemyCommand.of(enemyId, areaId, enemySpawn)); // TODO: use actions instead
         });
     }
 
@@ -409,18 +483,18 @@ public class MyGdxGameServer extends MyGdxGame {
     }
 
     @Override
-    public void handleAttackTarget(CreatureId attackingCreatureId,
-                                   Vector2 vectorTowardsTarget,
-                                   SkillType skillType) {
+    public void handleAttackTarget(CreatureId attackingCreatureId, Vector2 vectorTowardsTarget, SkillType skillType) {
 
         Creature attackingCreature = gameState().creatures().get(attackingCreatureId);
 
-        TryPerformSkillAction action = TryPerformSkillAction.of(attackingCreatureId,
-                                                                skillType,
-                                                                attackingCreature.params().pos(),
-                                                                vectorTowardsTarget);
+        SkillTryPerformAction
+                action =
+                SkillTryPerformAction.of(attackingCreatureId,
+                                         skillType,
+                                         attackingCreature.params().pos(),
+                                         vectorTowardsTarget);
 
-        tickActions.add(action);
+        onTickActions.add(action);
 
     }
 
@@ -432,16 +506,13 @@ public class MyGdxGameServer extends MyGdxGame {
     @Override
     public void setCreatureMovingVector(CreatureId creatureId,
                                         Vector2 dirVector) { // this is handled as an action to make movement more fluid client-side
-        SetCreatureMovingVectorAction action = SetCreatureMovingVectorAction.of(creatureId, dirVector);
+        CreatureMovingVectorSetAction action = CreatureMovingVectorSetAction.of(creatureId, dirVector);
 
-        tickActions.add(action);
+        onTickActions.add(action);
     }
 
     @Override
-    public void chainAbility(Ability chainFromAbility,
-                             AbilityType abilityType,
-                             Vector2 chainToPos,
-                             Vector2 dirVector) {
+    public void chainAbility(Ability chainFromAbility, AbilityType abilityType, Vector2 chainToPos, Vector2 dirVector) {
         AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
 
         Map<CreatureId, Float>
@@ -450,15 +521,17 @@ public class MyGdxGameServer extends MyGdxGame {
 
         Vector2 chainFromPos = chainFromAbility.params().pos();
 
-        AbilityParams abilityParams = AbilityParams.of()
-                                                   .id(abilityId)
-                                                   .areaId(chainFromAbility.params().areaId())
-                                                   .creatureId(chainFromAbility.params().creatureId())
-                                                   .creaturesAlreadyHit(creaturesAlreadyHit)
-                                                   .chainFromPos(chainFromPos)
-                                                   .chainToPos(chainToPos)
-                                                   .dirVector(dirVector)
-                                                   .skillType(chainFromAbility.params().skillType());
+        AbilityParams
+                abilityParams =
+                AbilityParams.of()
+                             .id(abilityId)
+                             .areaId(chainFromAbility.params().areaId())
+                             .creatureId(chainFromAbility.params().creatureId())
+                             .creaturesAlreadyHit(creaturesAlreadyHit)
+                             .chainFromPos(chainFromPos)
+                             .chainToPos(chainToPos)
+                             .dirVector(dirVector)
+                             .skillType(chainFromAbility.params().skillType());
 
         spawnAbility(abilityType, abilityParams);
     }
@@ -475,6 +548,6 @@ public class MyGdxGameServer extends MyGdxGame {
     public void initAbilityBody(Ability ability) {
         AbilityActivateAction action = AbilityActivateAction.of(ability);
 
-        tickActions.add(action);
+        onTickActions.add(action);
     }
 }

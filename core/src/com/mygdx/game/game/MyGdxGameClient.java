@@ -15,8 +15,14 @@ import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityId;
 import com.mygdx.game.model.ability.AbilityParams;
 import com.mygdx.game.model.ability.AbilityType;
-import com.mygdx.game.model.action.*;
+import com.mygdx.game.model.action.ActionsHolder;
+import com.mygdx.game.model.action.GameStateAction;
+import com.mygdx.game.model.action.ability.SkillTryPerformAction;
+import com.mygdx.game.model.action.creature.CreatureMoveTowardsTargetAction;
+import com.mygdx.game.model.action.inventory.InventoryToggleAction;
+import com.mygdx.game.model.action.loot.LootPileSpawnAction;
 import com.mygdx.game.model.area.AreaId;
+import com.mygdx.game.model.area.LootPileId;
 import com.mygdx.game.model.creature.*;
 import com.mygdx.game.model.skill.SkillType;
 import com.mygdx.game.model.util.GameStateBroadcast;
@@ -106,27 +112,31 @@ public class MyGdxGameClient extends MyGdxGame {
                     getChat().isTyping(false);
                 }
             }
-            else if (gameState.playerParams().get(thisPlayerId).isVisible()) {
-                endPoint().sendTCP(PerformActionCommand.of(ToggleInventoryAction.of(thisPlayerId)));
+            else if (gameState.playerParams().get(thisPlayerId).isInventoryVisible()) {
+                endPoint().sendTCP(PerformActionCommand.of(InventoryToggleAction.of(thisPlayerId)));
 
             }
         }
         if (!getChat().isTyping()) {
             if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-                if (gameState.playerParams().get(thisPlayerId).isVisible()) {
+                if (gameState.playerParams().get(thisPlayerId).isInventoryVisible()) {
                     InventoryHelper.moveItemClick(endPoint(), this);
+                }
+                else if (!gameState.playerParams().get(thisPlayerId).isInventoryVisible() &&
+                         !gameState.playerParams().get(thisPlayerId).itemPickupMenuLootPiles().isEmpty()) {
+                    InventoryHelper.itemPickupMenuClick(endPoint(), this);
                 }
 
             }
             if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-                if (!gameState.playerParams().get(thisPlayerId).isVisible()) {
+                if (!gameState.playerParams().get(thisPlayerId).isInventoryVisible()) {
                     Vector2 mousePos = mousePosRelativeToCenter();
 
                     Creature player = gameState().creatures().get(thisPlayerId);
 
                     if (player != null && player.params().movementCommandsPerSecondLimitTimer().time() >
                                           Constants.MovementCommandCooldown) {
-                        endPoint().sendTCP(PerformActionCommand.of(MoveCreatureTowardsTargetAction.of(thisPlayerId,
+                        endPoint().sendTCP(PerformActionCommand.of(CreatureMoveTowardsTargetAction.of(thisPlayerId,
                                                                                                       mousePos)));
                     }
                 }
@@ -149,7 +159,7 @@ public class MyGdxGameClient extends MyGdxGame {
 
                 Vector2 dirVector = mousePosRelativeToCenter();
 
-                endPoint().sendTCP(PerformActionCommand.of(TryPerformSkillAction.of(thisPlayerId,
+                endPoint().sendTCP(PerformActionCommand.of(SkillTryPerformAction.of(thisPlayerId,
                                                                                     SkillType.SWORD_SLASH,
                                                                                     player.params().pos(),
                                                                                     dirVector)));
@@ -163,7 +173,7 @@ public class MyGdxGameClient extends MyGdxGame {
 
                 Vector2 dirVector = mousePosRelativeToCenter();
 
-                endPoint().sendTCP(PerformActionCommand.of(TryPerformSkillAction.of(thisPlayerId,
+                endPoint().sendTCP(PerformActionCommand.of(SkillTryPerformAction.of(thisPlayerId,
                                                                                     SkillType.FIREBALL,
                                                                                     player.params().pos(),
                                                                                     dirVector)));
@@ -179,7 +189,7 @@ public class MyGdxGameClient extends MyGdxGame {
 
                 Vector2 startingPos = player.params().pos().add(dirVector);
 
-                endPoint().sendTCP(PerformActionCommand.of(TryPerformSkillAction.of(thisPlayerId,
+                endPoint().sendTCP(PerformActionCommand.of(SkillTryPerformAction.of(thisPlayerId,
                                                                                     SkillType.LIGHTNING,
                                                                                     startingPos,
                                                                                     dirVector)));
@@ -194,7 +204,7 @@ public class MyGdxGameClient extends MyGdxGame {
 
                 Vector2 dirVector = mousePosRelativeToCenter();
 
-                endPoint().sendTCP(PerformActionCommand.of(TryPerformSkillAction.of(thisPlayerId,
+                endPoint().sendTCP(PerformActionCommand.of(SkillTryPerformAction.of(thisPlayerId,
                                                                                     SkillType.CROSSBOW_BOLT,
                                                                                     player.params().pos(),
                                                                                     dirVector)));
@@ -209,7 +219,7 @@ public class MyGdxGameClient extends MyGdxGame {
 
                 Vector2 dirVector = mousePosRelativeToCenter();
 
-                endPoint().sendTCP(PerformActionCommand.of(TryPerformSkillAction.of(thisPlayerId,
+                endPoint().sendTCP(PerformActionCommand.of(SkillTryPerformAction.of(thisPlayerId,
                                                                                     SkillType.MAGIC_ORB,
                                                                                     player.params().pos(),
                                                                                     dirVector)));
@@ -223,7 +233,7 @@ public class MyGdxGameClient extends MyGdxGame {
 
                 Vector2 dirVector = mousePosRelativeToCenter();
 
-                endPoint().sendTCP(PerformActionCommand.of(TryPerformSkillAction.of(thisPlayerId,
+                endPoint().sendTCP(PerformActionCommand.of(SkillTryPerformAction.of(thisPlayerId,
                                                                                     SkillType.VOLATILE_BUBBLE,
                                                                                     player.params().pos(),
                                                                                     dirVector)));
@@ -237,7 +247,7 @@ public class MyGdxGameClient extends MyGdxGame {
 
                 Vector2 dirVector = mousePosRelativeToCenter();
 
-                endPoint().sendTCP(PerformActionCommand.of(TryPerformSkillAction.of(thisPlayerId,
+                endPoint().sendTCP(PerformActionCommand.of(SkillTryPerformAction.of(thisPlayerId,
                                                                                     SkillType.SUMMON_GHOSTS,
                                                                                     player.params().pos(),
                                                                                     dirVector)));
@@ -251,7 +261,7 @@ public class MyGdxGameClient extends MyGdxGame {
 
                 Vector2 dirVector = mousePosRelativeToCenter();
 
-                endPoint().sendTCP(PerformActionCommand.of(TryPerformSkillAction.of(thisPlayerId,
+                endPoint().sendTCP(PerformActionCommand.of(SkillTryPerformAction.of(thisPlayerId,
                                                                                     SkillType.RICOCHET_BALLISTA,
                                                                                     player.params().pos(),
                                                                                     dirVector)));
@@ -259,7 +269,7 @@ public class MyGdxGameClient extends MyGdxGame {
 
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
-                endPoint().sendTCP(PerformActionCommand.of(ToggleInventoryAction.of(thisPlayerId)));
+                endPoint().sendTCP(PerformActionCommand.of(InventoryToggleAction.of(thisPlayerId)));
 
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.O)) {
@@ -269,7 +279,7 @@ public class MyGdxGameClient extends MyGdxGame {
 
                 Vector2 dirVector = mousePosRelativeToCenter();
 
-                endPoint().sendTCP(PerformActionCommand.of(TryPerformSkillAction.of(thisPlayerId,
+                endPoint().sendTCP(PerformActionCommand.of(SkillTryPerformAction.of(thisPlayerId,
                                                                                     SkillType.SUMMON_SHIELD,
                                                                                     player.params().pos(),
                                                                                     dirVector)));
@@ -283,7 +293,7 @@ public class MyGdxGameClient extends MyGdxGame {
 
                 Vector2 dirVector = mousePosRelativeToCenter();
 
-                endPoint().sendTCP(PerformActionCommand.of(TryPerformSkillAction.of(thisPlayerId,
+                endPoint().sendTCP(PerformActionCommand.of(SkillTryPerformAction.of(thisPlayerId,
                                                                                     SkillType.SWORD_SPIN,
                                                                                     player.params().pos(),
                                                                                     dirVector)));
@@ -297,13 +307,14 @@ public class MyGdxGameClient extends MyGdxGame {
 
                 Vector2 dirVector = mousePosRelativeToCenter();
 
-                endPoint().sendTCP(PerformActionCommand.of(TryPerformSkillAction.of(thisPlayerId,
+                endPoint().sendTCP(PerformActionCommand.of(SkillTryPerformAction.of(thisPlayerId,
                                                                                     SkillType.TELEPORT,
                                                                                     player.params().pos(),
                                                                                     dirVector)));
 
 
             }
+
             if (Gdx.input.isKeyJustPressed(Input.Keys.F11)) {
 
                 List<EnemySpawn>
@@ -449,7 +460,8 @@ public class MyGdxGameClient extends MyGdxGame {
                     Set<CreatureId> newCreatureIds = newGameState.creatures().keySet();
                     Set<AbilityId> oldAbilityIds = oldGameState.abilities().keySet();
                     Set<AbilityId> newAbilityIds = newGameState.abilities().keySet();
-
+                    Set<LootPileId> oldLootPileIds = oldGameState.lootPiles().keySet();
+                    Set<LootPileId> newLootPileIds = newGameState.lootPiles().keySet();
 
                     Set<CreatureId> creaturesAddedSinceLastUpdate = new HashSet<>(newCreatureIds);
                     creaturesAddedSinceLastUpdate.removeAll(oldCreatureIds);
@@ -463,13 +475,31 @@ public class MyGdxGameClient extends MyGdxGame {
                     Set<AbilityId> abilitiesRemovedSinceLastUpdate = new HashSet<>(oldAbilityIds);
                     abilitiesRemovedSinceLastUpdate.removeAll(newAbilityIds);
 
-                    creaturesToBeCreated().addAll(creaturesAddedSinceLastUpdate);
+                    Set<LootPileId> lootPilesAddedSinceLastUpdate = new HashSet<>(newLootPileIds);
+                    lootPilesAddedSinceLastUpdate.removeAll(oldLootPileIds);
 
-                    creaturesToBeRemoved().addAll(creaturesRemovedSinceLastUpdate);
+                    Set<LootPileId> lootPilesRemovedSinceLastUpdate = new HashSet<>(oldLootPileIds);
+                    lootPilesRemovedSinceLastUpdate.removeAll(newLootPileIds);
 
-                    abilitiesToBeCreated().addAll(abilitiesAddedSinceLastUpdate);
+                    System.out.println("loot piles added " +
+                                       lootPilesAddedSinceLastUpdate.stream()
+                                                                    .map(lootPileId -> getLootPile(lootPileId))
+                                                                    .collect(
+                                                                            Collectors.toSet()));
 
-                    abilitiesToBeRemoved().addAll(abilitiesRemovedSinceLastUpdate);
+                    //TODO: copy entire game state entities here!
+
+                    getCreaturesToBeCreated().addAll(creaturesAddedSinceLastUpdate);
+
+                    getCreaturesToBeRemoved().addAll(creaturesRemovedSinceLastUpdate);
+
+                    getAbilitiesToBeCreated().addAll(abilitiesAddedSinceLastUpdate);
+
+                    getAbilitiesToBeRemoved().addAll(abilitiesRemovedSinceLastUpdate);
+
+                    getLootPilesToBeCreated().addAll(lootPilesAddedSinceLastUpdate);
+
+                    getLootPilesToBeRemoved().addAll(lootPilesRemovedSinceLastUpdate);
 
                     gameState = newGameState;
 

@@ -1,14 +1,15 @@
 package com.mygdx.game.physics.util;
 
 import com.mygdx.game.Constants;
-import com.mygdx.game.game.data.AreaGate;
-import com.mygdx.game.game.data.TeleportEvent;
 import com.mygdx.game.game.interface_.GameUpdatable;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityState;
+import com.mygdx.game.model.area.AreaGate;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.Player;
+import com.mygdx.game.model.util.PlayerParams;
+import com.mygdx.game.model.util.TeleportEvent;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.physics.event.*;
 
@@ -103,6 +104,26 @@ public class PhysicsHelper {
                     creature.params().justTeleportedToGate(false);
 
                 }
+            }
+            else if (physicsEvent instanceof CreatureHitsLootPileEvent) {
+                CreatureHitsLootPileEvent event = (CreatureHitsLootPileEvent) physicsEvent;
+
+                //                LootPile lootPile = game.getLootPile(event.lootPileId());
+
+                //                if (lootPile != null) lootPile.isLooted(true);
+
+                PlayerParams playerParams = game.getPlayerParams(event.creatureId());
+                playerParams.itemPickupMenuLootPiles().add(event.lootPileId());
+
+
+            }
+
+            else if (physicsEvent instanceof CreatureLeavesLootPileEvent) {
+                CreatureLeavesLootPileEvent event = (CreatureLeavesLootPileEvent) physicsEvent;
+
+                PlayerParams playerParams = game.getPlayerParams(event.creatureId());
+                playerParams.itemPickupMenuLootPiles().remove(event.lootPileId());
+
             }
         });
         game.getPhysicsEventQueue().clear();

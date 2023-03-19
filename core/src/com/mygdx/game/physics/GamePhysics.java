@@ -2,16 +2,13 @@ package com.mygdx.game.physics;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.physics.box2d.*;
-import com.mygdx.game.game.data.AreaGate;
 import com.mygdx.game.game.interface_.GameUpdatable;
 import com.mygdx.game.model.ability.AbilityId;
 import com.mygdx.game.model.area.AreaId;
+import com.mygdx.game.model.area.LootPileId;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.util.Vector2;
-import com.mygdx.game.physics.body.AbilityBody;
-import com.mygdx.game.physics.body.AreaGateBody;
-import com.mygdx.game.physics.body.CreatureBody;
-import com.mygdx.game.physics.body.TerrainTileBody;
+import com.mygdx.game.physics.body.*;
 import com.mygdx.game.physics.event.*;
 import com.mygdx.game.physics.world.PhysicsWorld;
 import lombok.AllArgsConstructor;
@@ -31,10 +28,13 @@ public class GamePhysics {
     Map<CreatureId, CreatureBody> creatureBodies = new HashMap<>();
     Map<AbilityId, AbilityBody> abilityBodies = new HashMap<>();
     Set<AreaGateBody> areaGateBodies = new HashSet<>();
+
+    Map<LootPileId, LootPileBody> lootPileBodies = new HashMap<>();
+
     Box2DDebugRenderer debugRenderer;
     Boolean isForceUpdateBodyPositions = false;
 
-    public void init(Map<AreaId, TiledMap> maps, Set<AreaGate> areaGates, GameUpdatable game) {
+    public void init(Map<AreaId, TiledMap> maps, GameUpdatable game) {
         physicsWorlds = maps.entrySet()
                             .stream()
                             .collect(Collectors.toMap(Map.Entry::getKey, entry -> PhysicsWorld.of(entry.getValue())));
@@ -44,7 +44,7 @@ public class GamePhysics {
             createContactListener(physicsWorld);
         });
 
-        areaGateBodies = areaGates.stream().map(AreaGateBody::of).collect(Collectors.toSet());
+        areaGateBodies = game.getAreaGates().stream().map(AreaGateBody::of).collect(Collectors.toSet());
         areaGateBodies.forEach(areaGateBody -> areaGateBody.init(game));
 
 
@@ -95,6 +95,13 @@ public class GamePhysics {
 
 
         }
+        else if (objA instanceof CreatureBody && objB instanceof LootPileBody) {
+            CreatureBody creatureBody = (CreatureBody) objA;
+            LootPileBody lootPileBody = (LootPileBody) objB;
+
+            physicsEventQueue.add(CreatureHitsLootPileEvent.of(creatureBody.creatureId(), lootPileBody.lootPileId()));
+
+        }
     }
 
     public void onContactEnd(Object objA, Object objB) {
@@ -102,6 +109,11 @@ public class GamePhysics {
             CreatureBody creatureBody = (CreatureBody) objA;
             AreaGateBody areaGateBody = (AreaGateBody) objB;
             physicsEventQueue.add(CreatureLeavesAreaGateEvent.of(creatureBody.creatureId(), areaGateBody.areaGate()));
+        }
+        else if (objA instanceof CreatureBody && objB instanceof LootPileBody) {
+            CreatureBody creatureBody = (CreatureBody) objA;
+            LootPileBody lootPileBody = (LootPileBody) objB;
+            physicsEventQueue.add(CreatureLeavesLootPileEvent.of(creatureBody.creatureId(), lootPileBody.lootPileId()));
         }
     }
 

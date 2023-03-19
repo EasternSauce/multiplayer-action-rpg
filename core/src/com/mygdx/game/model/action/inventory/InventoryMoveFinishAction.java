@@ -1,7 +1,8 @@
-package com.mygdx.game.model.action;
+package com.mygdx.game.model.action.inventory;
 
 import com.mygdx.game.game.interface_.GameActionApplicable;
 import com.mygdx.game.model.GameState;
+import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.util.PlayerParams;
@@ -13,11 +14,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-public class PickUpInventoryItemAction implements GameStateAction {
+public class InventoryMoveFinishAction implements GameStateAction {
     CreatureId creatureId;
-
-    Integer slotIndex;
-
 
     @Override
     public Vector2 actionObjectPos(GameState gameState) {
@@ -30,7 +28,8 @@ public class PickUpInventoryItemAction implements GameStateAction {
         PlayerParams playerParams = game.getPlayerParams(creatureId);
 
         if (playerParams != null) {
-            playerParams.inventoryItemBeingMoved(slotIndex);
+            playerParams.inventoryItemBeingMoved(null);
+            playerParams.equipmentItemBeingMoved(null);
         }
     }
 }

@@ -30,7 +30,7 @@ public class LightningNode extends Ability {
                 .baseDamage(30f)
                 .isActiveAnimationLooping(true)
                 .attackWithoutMoving(true)
-                .inactiveBody(true)
+                .isSkipCreatingBody(true)
                 .rotationShift(0f)
                 .delayedActionTime(0.05f);
 

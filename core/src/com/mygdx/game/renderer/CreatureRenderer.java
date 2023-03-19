@@ -34,9 +34,9 @@ public class CreatureRenderer {
     TextureRegion textureRegion;
 
     public static CreatureRenderer of(CreatureId creatureId) {
-        CreatureRenderer anim = new CreatureRenderer();
-        anim.creatureId(creatureId);
-        return anim;
+        CreatureRenderer creatureRenderer = new CreatureRenderer();
+        creatureRenderer.creatureId(creatureId);
+        return creatureRenderer;
     }
 
     public void init(TextureAtlas atlas, GameState gameState) {

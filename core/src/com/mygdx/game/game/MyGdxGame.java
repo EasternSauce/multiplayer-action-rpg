@@ -6,7 +6,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.esotericsoftware.kryonet.EndPoint;
 import com.mygdx.game.Constants;
 import com.mygdx.game.chat.Chat;
-import com.mygdx.game.game.data.TeleportEvent;
 import com.mygdx.game.game.interface_.AbilityUpdatable;
 import com.mygdx.game.game.interface_.CreatureUpdatable;
 import com.mygdx.game.game.interface_.GameActionApplicable;
@@ -15,19 +14,25 @@ import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityId;
 import com.mygdx.game.model.ability.AbilityState;
+import com.mygdx.game.model.area.AreaGate;
 import com.mygdx.game.model.area.AreaId;
+import com.mygdx.game.model.area.LootPile;
+import com.mygdx.game.model.area.LootPileId;
 import com.mygdx.game.model.creature.*;
 import com.mygdx.game.model.skill.SkillType;
 import com.mygdx.game.model.util.PlayerParams;
+import com.mygdx.game.model.util.TeleportEvent;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.physics.GamePhysics;
 import com.mygdx.game.physics.body.AbilityBody;
 import com.mygdx.game.physics.body.CreatureBody;
+import com.mygdx.game.physics.body.LootPileBody;
 import com.mygdx.game.physics.event.PhysicsEvent;
 import com.mygdx.game.physics.world.PhysicsWorld;
 import com.mygdx.game.renderer.AbilityRenderer;
 import com.mygdx.game.renderer.CreatureRenderer;
 import com.mygdx.game.renderer.GameRenderer;
+import com.mygdx.game.renderer.LootPileRenderer;
 
 import java.io.IOException;
 import java.util.*;
@@ -44,6 +49,10 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
     final List<AbilityId> abilitiesToBeActivated = Collections.synchronizedList(new ArrayList<>());
     final List<CreatureId> creaturesToBeRemoved = Collections.synchronizedList(new ArrayList<>());
     final List<AbilityId> abilitiesToBeRemoved = Collections.synchronizedList(new ArrayList<>());
+
+    final List<LootPileId> lootPilesToBeCreated = Collections.synchronizedList(new ArrayList<>());
+
+    final List<LootPileId> lootPilesToBeRemoved = Collections.synchronizedList(new ArrayList<>());
     final List<TeleportEvent> teleportEvents = Collections.synchronizedList(new ArrayList<>());
     protected GameState gameState = GameState.of();
     protected CreatureId thisPlayerId = null;
@@ -57,25 +66,41 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
         return thisPlayerId;
     }
 
-    public List<CreatureId> creaturesToBeCreated() {
+    @Override
+    public List<CreatureId> getCreaturesToBeCreated() {
         return creaturesToBeCreated;
     }
 
-    public List<AbilityId> abilitiesToBeCreated() {
+    @Override
+    public List<AbilityId> getAbilitiesToBeCreated() {
         return abilitiesToBeCreated;
     }
 
-    public List<AbilityId> abilitiesToBeActivated() {
+    @Override
+    public List<AbilityId> getAbilitiesToBeActivated() {
         return abilitiesToBeActivated;
     }
 
-    public List<CreatureId> creaturesToBeRemoved() {
+    @Override
+    public List<CreatureId> getCreaturesToBeRemoved() {
         return creaturesToBeRemoved;
     }
 
-    public List<AbilityId> abilitiesToBeRemoved() {
+    @Override
+    public List<AbilityId> getAbilitiesToBeRemoved() {
         return abilitiesToBeRemoved;
     }
+
+    @Override
+    public List<LootPileId> getLootPilesToBeCreated() {
+        return lootPilesToBeCreated;
+    }
+
+    @Override
+    public List<LootPileId> getLootPilesToBeRemoved() {
+        return lootPilesToBeRemoved;
+    }
+
 
     public List<TeleportEvent> teleportEvents() {
         return teleportEvents;
@@ -126,7 +151,7 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
             }
             if (!gamePhysics.creatureBodies().containsKey(creatureId)) {
                 CreatureBody creatureBody = CreatureBody.of(creatureId);
-                creatureBody.init(gamePhysics, gameState(), creature.params().areaId());
+                creatureBody.init(this, creature.params().areaId());
                 gamePhysics.creatureBodies().put(creatureId, creatureBody);
             }
         }
@@ -145,7 +170,7 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
             if (!gamePhysics.abilityBodies().containsKey(abilityId)) {
                 AbilityBody abilityBody = AbilityBody.of(abilityId);
                 if (ability.params().state() == AbilityState.ACTIVE) {
-                    abilityBody.init(gamePhysics, gameState(), ability.params().inactiveBody());
+                    abilityBody.init(this, ability.params().isSkipCreatingBody());
                 }
                 gamePhysics.abilityBodies().put(abilityId, abilityBody);
             }
@@ -159,14 +184,27 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
         if (ability != null && physics().abilityBodies().containsKey(ability.params().id())) {
             physics().abilityBodies()
                      .get(ability.params().id())
-                     .init(physics(),
-                           gameState(),
-                           ability.params()
-                                  .inactiveBody());
+                     .init(this, ability.params().isSkipCreatingBody());
         }
 
     }
 
+    public void createLootPile(LootPileId lootPileId) {
+        LootPile lootPile = getLootPile(lootPileId);
+
+        if (lootPile != null) {
+            if (!gameRenderer.lootPileRenderers().containsKey(lootPileId)) {
+                LootPileRenderer lootPileRenderer = LootPileRenderer.of(lootPileId);
+                lootPileRenderer.init(gameRenderer.atlas(), gameState());
+                gameRenderer.lootPileRenderers().put(lootPileId, lootPileRenderer);
+            }
+            if (!gamePhysics.lootPileBodies().containsKey(lootPileId)) {
+                LootPileBody lootPileBody = LootPileBody.of(lootPileId);
+                lootPileBody.init(this);
+                gamePhysics.lootPileBodies().put(lootPileId, lootPileBody);
+            }
+        }
+    }
 
     public void spawnEnemy(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn) {
         gameState().creatures()
@@ -178,7 +216,7 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
                                                .mainAttackSkill(enemySpawn.enemyTemplate()
                                                                           .mainAttackSkill())));
 
-        creaturesToBeCreated().add(creatureId);
+        getCreaturesToBeCreated().add(creatureId);
 
 
     }
@@ -216,6 +254,21 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
             }
         }
     }
+
+    public void removeLootPile(LootPileId lootPileId) {
+        if (lootPileId != null) {
+
+            gameState().lootPiles().remove(lootPileId);
+
+            renderer().lootPileRenderers().remove(lootPileId);
+
+            if (physics().lootPileBodies().containsKey(lootPileId)) {
+                physics().lootPileBodies().get(lootPileId).onRemove();
+                physics().lootPileBodies().remove(lootPileId);
+            }
+        }
+    }
+
 
     abstract public void handleAttackTarget(CreatureId attackingCreatureId,
                                             Vector2 vectorTowardsTarget,
@@ -366,7 +419,7 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
 
                 if (!gamePhysics.creatureBodies().containsKey(teleportEvent.creatureId())) {
                     CreatureBody creatureBody = CreatureBody.of(teleportEvent.creatureId());
-                    creatureBody.init(gamePhysics, gameState(), teleportEvent.toAreaId());
+                    creatureBody.init(this, teleportEvent.toAreaId());
                     gamePhysics.creatureBodies().put(teleportEvent.creatureId(), creatureBody);
                 }
 
@@ -510,5 +563,24 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
         Vector3 v = new Vector3((float) Gdx.input.getX(), (float) Gdx.input.getY(), 0f);
         gameRenderer.hudCamera().unproject(v);
         return Vector2.of(v.x, v.y);
+    }
+
+    @Override
+    public Set<AreaGate> getAreaGates() {
+        return gameState.areaGates();
+    }
+
+    @Override
+    public LootPile getLootPile(LootPileId lootPileId) {
+        //        System.out.println(gameState.lootPiles());
+        //        if (!gameState.lootPiles().containsKey(lootPileId)) {
+        //            return null;
+        //        }
+        return gameState.lootPiles().get(lootPileId);
+    }
+
+    @Override
+    public Map<LootPileId, LootPile> getLootPiles() {
+        return gameState.lootPiles();
     }
 }

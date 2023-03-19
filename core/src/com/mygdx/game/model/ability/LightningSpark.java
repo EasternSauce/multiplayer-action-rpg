@@ -33,7 +33,7 @@ public class LightningSpark extends Ability {
                         .baseDamage(30f)
                         .isActiveAnimationLooping(true)
                         .attackWithoutMoving(true)
-                        .inactiveBody(true)
+                        .isSkipCreatingBody(true)
                         .rotationShift(0f)
                         .delayedActionTime(0.001f)
                         .pos(LightningSpark.calculatePos(creature.params().pos().add(abilityParams.dirVector()),

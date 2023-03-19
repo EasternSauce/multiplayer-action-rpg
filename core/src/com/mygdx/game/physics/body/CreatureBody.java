@@ -1,12 +1,12 @@
 package com.mygdx.game.physics.body;
 
 import com.badlogic.gdx.physics.box2d.Body;
+import com.mygdx.game.game.interface_.GameUpdatable;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.util.Vector2;
-import com.mygdx.game.physics.GamePhysics;
 import com.mygdx.game.physics.world.PhysicsWorld;
 import lombok.NoArgsConstructor;
 
@@ -33,10 +33,10 @@ public class CreatureBody {
         return creatureId;
     }
 
-    public void init(GamePhysics gamePhysics, GameState gameState, AreaId areaId) {
-        Creature creature = gameState.creatures().get(creatureId);
+    public void init(GameUpdatable game, AreaId areaId) {
+        Creature creature = game.getCreature(creatureId);
 
-        world = gamePhysics.physicsWorlds().get(areaId);
+        world = game.getPhysicsWorld(areaId);
 
         b2Body = B2BodyFactory.createCreatureB2Body(world, this, creature);
 

@@ -35,6 +35,7 @@ public class RendererHelper {
         renderer.abilityRenderers()
                 .forEach((abilityId, abilityAnimation) -> abilityAnimation.render(drawingLayer, game));
 
+        renderer.renderLootPiles(drawingLayer, game);
 
         drawingLayer.end();
 

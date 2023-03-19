@@ -14,4 +14,5 @@ public interface GameRenderable extends GameUpdatable, CurrentPlayerRetrievable 
     Vector2 hudMousePos();
 
     Vector2 mousePosRelativeToCenter();
+
 }

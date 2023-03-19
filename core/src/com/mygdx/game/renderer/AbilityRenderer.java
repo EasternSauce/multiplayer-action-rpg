@@ -29,9 +29,9 @@ public class AbilityRenderer {
     String textureName;
 
     public static AbilityRenderer of(AbilityId abilityId) {
-        AbilityRenderer anim = new AbilityRenderer();
-        anim.abilityId(abilityId);
-        return anim;
+        AbilityRenderer abilityRenderer = new AbilityRenderer();
+        abilityRenderer.abilityId(abilityId);
+        return abilityRenderer;
     }
 
     public void init(TextureAtlas atlas, GameState gameState) {

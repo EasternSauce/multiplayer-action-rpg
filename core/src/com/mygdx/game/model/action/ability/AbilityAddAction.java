@@ -1,8 +1,9 @@
-package com.mygdx.game.model.action;
+package com.mygdx.game.model.action.ability;
 
 import com.mygdx.game.game.interface_.GameActionApplicable;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.ability.Ability;
+import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.util.Vector2;
 import lombok.AllArgsConstructor;
@@ -12,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-public class AddAbilityAction implements GameStateAction {
+public class AbilityAddAction implements GameStateAction {
 
     Ability ability;
 
@@ -30,10 +31,11 @@ public class AddAbilityAction implements GameStateAction {
             return;
         }
 
-        game.getAbilities().put(ability.params().id(), ability);
+        game.getAbilities()
+            .put(ability.params().id(), ability); // TODO: SHOULDNT THIS HAPPEN IN createAbility() METHOD???!?
 
         if (ability.params().activeTime() > 0) {
-            game.abilitiesToBeCreated().add(ability.params().id());
+            game.getAbilitiesToBeCreated().add(ability.params().id());
         }
 
         ability.init(game);

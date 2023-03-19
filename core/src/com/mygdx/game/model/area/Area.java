@@ -5,4 +5,6 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Data
-public class Area {}
+public class Area {
+
+}

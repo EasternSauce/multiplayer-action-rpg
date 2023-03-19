@@ -1,10 +1,11 @@
-package com.mygdx.game.model.action;
+package com.mygdx.game.model.action.creature;
 
-import com.mygdx.game.game.data.TeleportEvent;
 import com.mygdx.game.game.interface_.GameActionApplicable;
 import com.mygdx.game.model.GameState;
+import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
+import com.mygdx.game.model.util.TeleportEvent;
 import com.mygdx.game.model.util.Vector2;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-public class RespawnCreatureAction implements GameStateAction {
+public class CreatureRespawnAction implements GameStateAction {
     CreatureId creatureId;
     Vector2 pos;
 

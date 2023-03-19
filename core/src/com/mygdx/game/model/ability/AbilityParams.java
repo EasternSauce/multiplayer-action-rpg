@@ -51,7 +51,7 @@ public class AbilityParams {
 
     Float maxPlacementRange;
 
-    Boolean inactiveBody = false;
+    Boolean isSkipCreatingBody = false;
 
     Float rotationShift;
 

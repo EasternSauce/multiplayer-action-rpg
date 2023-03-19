@@ -29,7 +29,7 @@ public class LightningChain extends Ability {
                                                  abilityParams.chainFromPos()))
                 .rotationAngle(LightningChain.calculateRotationAngle(abilityParams.chainToPos(),
                                                                      abilityParams.chainFromPos()))
-                .inactiveBody(true)
+                .isSkipCreatingBody(true)
                 .rotationShift(90f);
 
         return ability;

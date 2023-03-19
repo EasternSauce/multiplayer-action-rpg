@@ -1,7 +1,8 @@
-package com.mygdx.game.model.action;
+package com.mygdx.game.model.action.creature;
 
 import com.mygdx.game.game.interface_.GameActionApplicable;
 import com.mygdx.game.model.GameState;
+import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.util.Vector2;
@@ -12,33 +13,28 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-public class MoveCreatureTowardsTargetAction implements GameStateAction {
-
+public class CreatureDeathAction implements GameStateAction {
     CreatureId creatureId;
 
-    Vector2 mousePos;
 
     @Override
     public Vector2 actionObjectPos(GameState gameState) {
         return gameState.creatures().get(creatureId).params().pos();
     }
 
-    @Override
     public void applyToGame(GameActionApplicable game) {
+        Creature creature = game.getCreatures().get(creatureId);
 
-        Creature creature = game.getCreature(creatureId);
-
-        if (creature != null && creature.isAlive()) {
-            Vector2 pos = creature.params().pos();
-
-            creature.moveTowards(pos.add(mousePos));
-
-            creature.params().previousPos(creature.params().pos());
-            creature.params().isStillMovingTimer().restart();
-
-
-            creature.params().movementCommandsPerSecondLimitTimer().restart();
+        if (creature == null) {
+            return;
         }
+
+        creature.params().life(0f); // just to make sure its dead on client side
+        creature.params().justDied(false);
+        creature.params().isDead(true);
+        creature.params().respawnTimer().restart();
+        creature.params().awaitingRespawn(true);
+        creature.onDeath();
 
     }
 }

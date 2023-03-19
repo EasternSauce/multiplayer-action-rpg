@@ -8,8 +8,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.esotericsoftware.kryonet.Client;
 import com.mygdx.game.assets.Assets;
 import com.mygdx.game.command.PerformActionCommand;
+import com.mygdx.game.game.MyGdxGameClient;
 import com.mygdx.game.game.interface_.GameRenderable;
-import com.mygdx.game.model.action.*;
+import com.mygdx.game.model.action.inventory.*;
+import com.mygdx.game.model.action.loot.LootPileItemTryPickUpAction;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.item.EquipmentSlotType;
 import com.mygdx.game.model.item.Item;
@@ -22,6 +24,7 @@ import com.mygdx.game.renderer.util.Rect;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 
@@ -32,20 +35,20 @@ public class InventoryHelper {
     static Rect backgroundRect;
     static Rect backgroundOuterRect;
 
-    static Integer totalRows = 5;
-    static Integer totalColumns = 8;
-    static Integer inventoryTotalSlots = totalRows * totalColumns;
-    static Integer margin = 20;
-    static Float slotSize = 40f;
-    static Integer spaceBetweenSlots = 12;
-    static Integer spaceBeforeEquipment = 270;
+    static Integer TOTAL_ROWS = 5;
+    static Integer TOTAL_COLUMNS = 8;
+    public static Integer INVENTORY_TOTAL_SLOTS = TOTAL_ROWS * TOTAL_COLUMNS;
+    static Integer MARGIN = 20;
+    static Float SLOT_SIZE = 40f;
+    static Integer SPACE_BETWEEN_SLOTS = 12;
+    static Integer SPACE_BEFORE_EQUIPMENT = 270;
 
-    static Float inventoryWidth = margin + (slotSize + spaceBetweenSlots) * totalColumns;
-    static Float inventoryHeight = margin + (slotSize + spaceBetweenSlots) * totalRows;
+    static Float INVENTORY_WIDTH = MARGIN + (SLOT_SIZE + SPACE_BETWEEN_SLOTS) * TOTAL_COLUMNS;
+    static Float INVENTORY_HEIGHT = MARGIN + (SLOT_SIZE + SPACE_BETWEEN_SLOTS) * TOTAL_ROWS;
 
     static Map<Integer, Rect> inventoryRectangles = new HashMap<>();
 
-    static Integer equipmentTotalSlots = 8;
+    static Integer EQUIPMENT_TOTAL_SLOTS = 8;
     static Map<Integer, Rect> equipmentRectangles = new HashMap<>();
 
     public static void init(TextureAtlas atlas) {
@@ -69,42 +72,42 @@ public class InventoryHelper {
 
         icons = atlas.findRegion("nice_icons").split(32, 32);
 
-        for (int i = 0; i < inventoryTotalSlots; i++) {
+        for (int i = 0; i < INVENTORY_TOTAL_SLOTS; i++) {
             inventoryRectangles.put(i,
                                     Rect.of(inventorySlotPositionX(i),
                                             inventorySlotPositionY(i),
-                                            slotSize,
-                                            slotSize));
+                                            SLOT_SIZE,
+                                            SLOT_SIZE));
         }
 
-        for (int i = 0; i < equipmentTotalSlots; i++) {
+        for (int i = 0; i < EQUIPMENT_TOTAL_SLOTS; i++) {
             equipmentRectangles.put(i,
                                     Rect.of(equipmentSlotPositionX(i),
                                             equipmentSlotPositionY(i),
-                                            slotSize,
-                                            slotSize));
+                                            SLOT_SIZE,
+                                            SLOT_SIZE));
         }
 
     }
 
     private static float inventorySlotPositionX(Integer index) {
-        int currentColumn = index % totalColumns;
-        return backgroundRect.x() + margin + (slotSize + spaceBetweenSlots) * currentColumn;
+        int currentColumn = index % TOTAL_COLUMNS;
+        return backgroundRect.x() + MARGIN + (SLOT_SIZE + SPACE_BETWEEN_SLOTS) * currentColumn;
     }
 
     private static float inventorySlotPositionY(Integer index) {
-        int currentRow = index / totalColumns;
+        int currentRow = index / TOTAL_COLUMNS;
         return backgroundRect.y() + backgroundRect.height() -
-               (slotSize + margin + (slotSize + spaceBetweenSlots) * currentRow);
+               (SLOT_SIZE + MARGIN + (SLOT_SIZE + SPACE_BETWEEN_SLOTS) * currentRow);
     }
 
     private static float equipmentSlotPositionX(@SuppressWarnings("unused") Integer index) {
-        return backgroundRect.x() + inventoryWidth + margin + spaceBeforeEquipment;
+        return backgroundRect.x() + INVENTORY_WIDTH + MARGIN + SPACE_BEFORE_EQUIPMENT;
     }
 
     private static float equipmentSlotPositionY(Integer index) {
         return backgroundRect.y() + backgroundRect.height() -
-               (slotSize + margin + (slotSize + spaceBetweenSlots) * index);
+               (SLOT_SIZE + MARGIN + (SLOT_SIZE + SPACE_BETWEEN_SLOTS) * index);
     }
 
     public static void render(DrawingLayer drawingLayer, GameRenderable game) {
@@ -114,7 +117,7 @@ public class InventoryHelper {
             return;
         }
 
-        if (playerParams.isVisible()) {
+        if (playerParams.isInventoryVisible()) {
             backgroundImage.draw(drawingLayer.spriteBatch(), 1.0f);
 
             inventoryRectangles.values().forEach(rect -> {
@@ -136,8 +139,8 @@ public class InventoryHelper {
                             .filledRectangle(rect.x(), rect.y(), rect.width(), rect.height(), Color.BROWN);
                 Assets.drawFont(drawingLayer,
                                 EquipmentSlotType.equipmentSlotNames.get(index) + ":",
-                                Vector2.of(rect.x() - slotSize / 2f - 170f,
-                                           rect.y() + slotSize / 2f + 7f),
+                                Vector2.of(rect.x() - SLOT_SIZE / 2f - 170f,
+                                           rect.y() + SLOT_SIZE / 2f + 7f),
                                 Color.DARK_GRAY);
             });
 
@@ -145,6 +148,7 @@ public class InventoryHelper {
             renderDescription(drawingLayer, game);
         }
 
+        renderPickUpMenu(drawingLayer, game);
 
     }
 
@@ -167,7 +171,7 @@ public class InventoryHelper {
             TextureRegion textureRegion = icons[iconPos.y()][iconPos.x()];
             float x = inventorySlotPositionX(entry.getKey());
             float y = inventorySlotPositionY(entry.getKey());
-            drawingLayer.spriteBatch().draw(textureRegion, x, y, slotSize, slotSize);
+            drawingLayer.spriteBatch().draw(textureRegion, x, y, SLOT_SIZE, SLOT_SIZE);
 
             if (entry.getValue().quantity() > 1) {
                 Assets.drawFont(drawingLayer,
@@ -189,7 +193,7 @@ public class InventoryHelper {
             TextureRegion textureRegion = icons[iconPos.y()][iconPos.x()];
             float x = equipmentSlotPositionX(entry.getKey());
             float y = equipmentSlotPositionY(entry.getKey());
-            drawingLayer.spriteBatch().draw(textureRegion, x, y, slotSize, slotSize);
+            drawingLayer.spriteBatch().draw(textureRegion, x, y, SLOT_SIZE, SLOT_SIZE);
 
             if (entry.getValue().quantity() > 1) {
                 Assets.drawFont(drawingLayer,
@@ -209,10 +213,10 @@ public class InventoryHelper {
 
             drawingLayer.spriteBatch()
                         .draw(icons[iconPos.y()][iconPos.x()],
-                              x - slotSize / 2f,
-                              y - slotSize / 2f,
-                              slotSize,
-                              slotSize);
+                              x - SLOT_SIZE / 2f,
+                              y - SLOT_SIZE / 2f,
+                              SLOT_SIZE,
+                              SLOT_SIZE);
         }
         if (playerParams.equipmentItemBeingMoved() != null &&
             equipmentItems.containsKey(playerParams.equipmentItemBeingMoved())) {
@@ -220,10 +224,10 @@ public class InventoryHelper {
 
             drawingLayer.spriteBatch()
                         .draw(icons[iconPos.y()][iconPos.x()],
-                              x - slotSize / 2f,
-                              y - slotSize / 2f,
-                              slotSize,
-                              slotSize);
+                              x - SLOT_SIZE / 2f,
+                              y - SLOT_SIZE / 2f,
+                              SLOT_SIZE,
+                              SLOT_SIZE);
         }
 
     }
@@ -261,16 +265,63 @@ public class InventoryHelper {
         if (item != null) {
             Assets.drawFont(drawingLayer,
                             item.template().name(),
-                            Vector2.of(backgroundRect.x() + margin,
-                                       backgroundRect.y() + backgroundRect.height() - (inventoryHeight + 5)),
+                            Vector2.of(backgroundRect.x() + MARGIN,
+                                       backgroundRect.y() + backgroundRect.height() - (INVENTORY_HEIGHT + 5)),
                             Color.DARK_GRAY);
 
             Assets.drawFont(drawingLayer,
                             item.getItemInformation(),
-                            Vector2.of(backgroundRect.x() + margin,
-                                       backgroundRect.y() + backgroundRect.height() - (inventoryHeight + 35)),
+                            Vector2.of(backgroundRect.x() + MARGIN,
+                                       backgroundRect.y() + backgroundRect.height() - (INVENTORY_HEIGHT + 35)),
                             Color.DARK_GRAY);
         }
+    }
+
+    public static void renderPickUpMenu(DrawingLayer drawingLayer, GameRenderable game) {
+        PlayerParams playerParams = game.getPlayerParams(game.getCurrentPlayerId());
+
+        if (playerParams.isInventoryVisible()) {
+            return;
+        }
+
+        float x = game.hudMousePos().x();
+        float y = game.hudMousePos().y();
+
+        AtomicInteger i = new AtomicInteger();
+        playerParams.itemPickupMenuLootPiles()
+                    .stream()
+                    .filter(lootPileId -> game.getLootPiles().containsKey(lootPileId))
+                    .flatMap(lootPileId -> game.getLootPile(
+                                                       lootPileId)
+                                               .items().stream())
+                    .forEach(item -> {
+                        Rect rect = Rect.of(Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 5f - 40f,
+                                            30f + 25f * i.get() - 17f,
+                                            Gdx.graphics.getWidth() / 6f,
+                                            20f);
+                        drawingLayer.shapeDrawer()
+                                    .filledRectangle(rect.x(),
+                                                     rect.y(),
+                                                     rect.width(),
+                                                     rect.height(),
+                                                     Color.DARK_GRAY.cpy().sub(0, 0, 0, 0.5f));
+                        if (rect.contains(x, y)) {
+                            drawingLayer.shapeDrawer()
+                                        .rectangle(rect.x(), rect.y(), rect.width(), rect.height(), Color.ORANGE);
+                        }
+                        drawingLayer.spriteBatch()
+                                    .draw(icons[item.template().iconPos().y()][item.template().iconPos().x()],
+                                          rect.x() + 10f,
+                                          rect.y(),
+                                          20f,
+                                          20f);
+                        Assets.drawFont(drawingLayer,
+                                        item.template().name(),
+                                        Vector2.of(Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 5f, 30f + 25f *
+                                                                                                                 i.get()),
+                                        Color.CYAN);
+                        i.getAndIncrement();
+                    });
     }
 
     public static void moveItemClick(Client client, GameRenderable game) {
@@ -298,53 +349,41 @@ public class InventoryHelper {
             Integer equipmentSlotClicked = atomicEquipmentSlotClicked.get();
 
             if (inventoryItemBeingMoved != null && inventorySlotClicked != null) {
-                System.out.println("1");
-                client.sendTCP(PerformActionCommand.of(SwapSlotsInsideInventoryAction.of(game.getCurrentPlayerId(),
-                                                                                         inventoryItemBeingMoved,
-                                                                                         inventorySlotClicked)));
+                client.sendTCP(PerformActionCommand.of(InventorySwapSlotsAction.of(game.getCurrentPlayerId(),
+                                                                                   inventoryItemBeingMoved,
+                                                                                   inventorySlotClicked)));
             }
             else if (inventoryItemBeingMoved != null && equipmentSlotClicked != null) {
-                System.out.println("2");
-                client.sendTCP(PerformActionCommand.of(SwapSlotsBetweenInventoryAndEquipmentAction.of(game.getCurrentPlayerId(),
-                                                                                                      inventoryItemBeingMoved,
-                                                                                                      equipmentSlotClicked)));
+                client.sendTCP(PerformActionCommand.of(InventoryAndEquipmentSwapSlotsAction.of(game.getCurrentPlayerId(),
+                                                                                               inventoryItemBeingMoved,
+                                                                                               equipmentSlotClicked)));
             }
             else if (equipmentItemBeingMoved != null && inventorySlotClicked != null) {
-                System.out.println("3");
-
-                client.sendTCP(PerformActionCommand.of(SwapSlotsBetweenInventoryAndEquipmentAction.of(game.getCurrentPlayerId(),
-                                                                                                      inventorySlotClicked,
-                                                                                                      equipmentItemBeingMoved)));
+                client.sendTCP(PerformActionCommand.of(InventoryAndEquipmentSwapSlotsAction.of(game.getCurrentPlayerId(),
+                                                                                               inventorySlotClicked,
+                                                                                               equipmentItemBeingMoved)));
             }
             else if (equipmentItemBeingMoved != null && equipmentSlotClicked != null) {
-                System.out.println("4");
-
-                client.sendTCP(PerformActionCommand.of(SwapSlotsInsideInventoryAction.of(game.getCurrentPlayerId(),
-                                                                                         equipmentItemBeingMoved,
-                                                                                         equipmentSlotClicked)));
+                client.sendTCP(PerformActionCommand.of(InventorySwapSlotsAction.of(game.getCurrentPlayerId(),
+                                                                                   equipmentItemBeingMoved,
+                                                                                   equipmentSlotClicked)));
             }
             else if (inventorySlotClicked != null) {
-                System.out.println("5");
-
                 if (player.params().inventoryItems().containsKey(inventorySlotClicked)) {
-                    System.out.println("pickup");
-                    client.sendTCP(PerformActionCommand.of(PickUpInventoryItemAction.of(game.getCurrentPlayerId(),
-                                                                                        inventorySlotClicked)));
+                    client.sendTCP(PerformActionCommand.of(InventoryMoveItemAction.of(game.getCurrentPlayerId(),
+                                                                                      inventorySlotClicked)));
                 }
             }
             else if (equipmentSlotClicked != null) {
-                System.out.println("6");
-
                 if (player.params().equipmentItems().containsKey(equipmentSlotClicked)) {
                     playerParams.equipmentItemBeingMoved(equipmentSlotClicked);
 
-                    client.sendTCP(PerformActionCommand.of(PickUpEquipmentItemAction.of(game.getCurrentPlayerId(),
+                    client.sendTCP(PerformActionCommand.of(EquipmentItemPickUpAction.of(game.getCurrentPlayerId(),
                                                                                         equipmentSlotClicked)));
                 }
             }
             else {
-                System.out.println("7");
-                client.sendTCP(PerformActionCommand.of(FinishInventoryMoveAction.of(game.getCurrentPlayerId())));
+                client.sendTCP(PerformActionCommand.of(InventoryMoveFinishAction.of(game.getCurrentPlayerId())));
             }
 
         }
@@ -353,18 +392,45 @@ public class InventoryHelper {
                 Item item = player.params().inventoryItems().get(playerParams.inventoryItemBeingMoved());
                 playerParams.inventoryItemBeingMoved(null);
 
-                //spawn lootpile
+                //TODO: spawn lootpile
             }
 
             if (playerParams.equipmentItemBeingMoved() != null) {
                 Item item = player.params().equipmentItems().get(playerParams.equipmentItemBeingMoved());
                 playerParams.equipmentItemBeingMoved(null);
 
-                //spawn lootpile
+                //TODO: spawn lootpile
             }
         }
 
 
     }
 
+    public static void itemPickupMenuClick(Client client, MyGdxGameClient game) {
+        PlayerParams playerParams = game.getPlayerParams(game.getCurrentPlayerId());
+
+        float x = game.hudMousePos().x();
+        float y = game.hudMousePos().y();
+
+        AtomicInteger i = new AtomicInteger();
+        playerParams.itemPickupMenuLootPiles()
+                    .stream()
+                    .filter(lootPileId -> game.getLootPiles().containsKey(lootPileId))
+                    .flatMap(lootPileId -> game.getLootPile(
+                                                       lootPileId)
+                                               .items().stream())
+                    .forEach(item -> {
+                        Rect rect = Rect.of(Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 5f - 40f,
+                                            30f + 25f * i.get() - 17f,
+                                            Gdx.graphics.getWidth() / 6f,
+                                            20f);
+
+                        if (rect.contains(x, y)) {
+                            client.sendTCP(PerformActionCommand.of(LootPileItemTryPickUpAction.of(game.getCurrentPlayerId(),
+                                                                                                  item)));
+                        }
+
+                        i.getAndIncrement();
+                    });
+    }
 }

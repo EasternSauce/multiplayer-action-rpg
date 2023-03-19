@@ -9,9 +9,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.game.Constants;
-import com.mygdx.game.game.data.AreaGate;
 import com.mygdx.game.model.area.AreaId;
-import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.physics.util.PhysicsHelper;
 import com.mygdx.game.renderer.DrawingLayer;
 import com.mygdx.game.renderer.util.RendererHelper;
@@ -20,10 +18,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.stream.Collectors;
 
@@ -76,20 +71,6 @@ public class MyGdxGamePlayScreen implements Screen {
 
         game.renderer().atlas(new TextureAtlas("assets/atlas/packed_atlas.atlas"));
 
-        Set<AreaGate>
-                areaGates =
-                new HashSet<>(Arrays.asList(AreaGate.of(AreaId.of("area1"),
-                                                        Vector2.of(199.5f, 15f),
-                                                        AreaId.of("area3"),
-                                                        Vector2.of(17f, 2.5f)),
-                                            AreaGate.of(AreaId.of("area1"),
-                                                        Vector2.of(2f, 63f),
-                                                        AreaId.of("area2"),
-                                                        Vector2.of(58f, 9f))));
-
-        game.renderer().init(maps, areaGates);
-
-        game.physics().init(maps, areaGates, game);
 
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
@@ -110,7 +91,13 @@ public class MyGdxGamePlayScreen implements Screen {
             throw new RuntimeException(e);
         }
 
+
+        game.renderer().init(maps, game);
+
+        game.physics().init(maps, game);
+
         game.initState();
+
 
     }
 
@@ -127,23 +114,28 @@ public class MyGdxGamePlayScreen implements Screen {
 
         game.onUpdate();
 
-        game.creaturesToBeCreated().forEach(creatureId -> game.createCreature(creatureId));
-        game.creaturesToBeCreated().clear();
+        game.getCreaturesToBeCreated().forEach(creatureId -> game.createCreature(creatureId));
+        game.getCreaturesToBeCreated().clear();
 
-        game.abilitiesToBeCreated().forEach(abilityId -> game.createAbility(abilityId));
-        game.abilitiesToBeCreated().clear();
+        game.getAbilitiesToBeCreated().forEach(abilityId -> game.createAbility(abilityId));
+        game.getAbilitiesToBeCreated().clear();
 
-        game.abilitiesToBeActivated().forEach(abilityId -> game.activateAbility(abilityId));
-        game.abilitiesToBeActivated().clear();
+        game.getAbilitiesToBeActivated().forEach(abilityId -> game.activateAbility(abilityId));
+        game.getAbilitiesToBeActivated().clear();
 
-        game.creaturesToBeRemoved().forEach(creatureId -> game.removeCreature(creatureId));
-        game.creaturesToBeRemoved().clear();
+        game.getCreaturesToBeRemoved().forEach(creatureId -> game.removeCreature(creatureId));
+        game.getCreaturesToBeRemoved().clear();
 
-        game.abilitiesToBeRemoved().forEach(abilityId -> game.removeAbility(abilityId));
-        game.abilitiesToBeRemoved().clear();
+        game.getAbilitiesToBeRemoved().forEach(abilityId -> game.removeAbility(abilityId));
+        game.getAbilitiesToBeRemoved().clear();
+
+        game.getLootPilesToBeCreated().forEach(lootPileId -> game.createLootPile(lootPileId));
+        game.getLootPilesToBeCreated().clear();
+
+        game.getLootPilesToBeRemoved().forEach(lootPileId -> game.removeLootPile(lootPileId));
+        game.getLootPilesToBeRemoved().clear();
 
         game.teleportEvents().forEach(teleportInfo -> game.teleportCreature(teleportInfo));
-
         game.teleportEvents().clear();
 
         game.gameState().generalTimer().update(delta);
