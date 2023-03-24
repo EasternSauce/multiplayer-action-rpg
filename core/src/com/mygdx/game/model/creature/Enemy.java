@@ -160,15 +160,17 @@ public class Enemy extends Creature {
         else if (params().aiState() == EnemyAiState.KEEPING_DISTANCE) {
             Vector2 targetPos = game.getCreaturePos(params().targetCreatureId());
 
-            Vector2 vectorTowards = targetPos.vectorTowards(this.params().pos());
+            if (targetPos != null) {
+                Vector2 vectorTowards = targetPos.vectorTowards(this.params().pos());
 
-            Vector2 backUpPos = targetPos.add(vectorTowards.normalized().multiplyBy(Constants.BACK_UP_DISTANCE));
+                Vector2 backUpPos = targetPos.add(vectorTowards.normalized().multiplyBy(Constants.BACK_UP_DISTANCE));
 
-            params().defensivePosition(Vector2.of(backUpPos.x() + nextFloat(),
-                                                  backUpPos.y() + nextFloat()));
+                params().defensivePosition(Vector2.of(backUpPos.x() + nextFloat(),
+                                                      backUpPos.y() + nextFloat()));
 
-            if (nextPositiveFloat() < 0.5f) {
-                params().aiState(EnemyAiState.AGGRESSIVE);
+                if (nextPositiveFloat() < 0.5f) {
+                    params().aiState(EnemyAiState.AGGRESSIVE);
+                }
             }
         }
 
@@ -231,7 +233,7 @@ public class Enemy extends Creature {
         if (condition) {
             Creature target = game.getCreature(params().targetCreatureId());
 
-            if (!game.isLineOfSight(params().areaId(), params().pos(), target.params().pos())) {
+            if (target != null && !game.isLineOfSight(params().areaId(), params().pos(), target.params().pos())) {
                 List<Vector2> mirroredPath = mirrorPathFromNearbyCreature(params().targetCreatureId(), game);
 
                 List<Vector2> path;

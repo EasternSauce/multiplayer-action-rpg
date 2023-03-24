@@ -11,8 +11,9 @@ import com.mygdx.game.chat.Chat;
 import com.mygdx.game.command.PerformActionCommand;
 import com.mygdx.game.game.MyGdxGameClient;
 import com.mygdx.game.game.interface_.GameRenderable;
-import com.mygdx.game.model.action.skillmenu.SkillPickupMenuActivateAction;
-import com.mygdx.game.model.action.skillmenu.SkillPickupMenuSlotChangeAction;
+import com.mygdx.game.model.action.skillmenu.SkillPickerMenuActivateAction;
+import com.mygdx.game.model.action.skillmenu.SkillPickerMenuDeactivateAction;
+import com.mygdx.game.model.action.skillmenu.SkillPickerMenuSlotChangeAction;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.skill.SkillType;
 import com.mygdx.game.model.util.PlayerParams;
@@ -158,11 +159,20 @@ public class RendererHelper {
     private static void drawSkillMenu(DrawingLayer drawingLayer, GameRenderable game) {
         PlayerParams playerParams = game.getPlayerParams(game.getCurrentPlayerId());
 
+        if (playerParams == null) {
+            return;
+        }
+
+        Map<Integer, String> keys = new HashMap<>();
+        keys.put(0, "Q");
+        keys.put(1, "W");
+        keys.put(2, "E");
+
         AtomicInteger i = new AtomicInteger();
         skillRectangles.values().forEach(rect -> {
             drawingLayer.shapeDrawer()
                         .filledRectangle(rect.x() - 3, rect.y() - 3, rect.width() + 6, rect.height() + 6,
-                                         Color.BROWN);
+                                         Color.WHITE);
             drawingLayer.shapeDrawer()
                         .filledRectangle(rect.x(), rect.y(), rect.width(), rect.height(), Color.BLACK);
 
@@ -171,9 +181,13 @@ public class RendererHelper {
             if (skillType != null) {
                 Assets.drawMediumFont(drawingLayer,
                                       skillType.prettyName.substring(0, 2),
-                                      Vector2.of(rect.x() + 5f, rect.y() + SLOT_SIZE - 12f),
-                                      Color.CYAN);
+                                      Vector2.of(rect.x() + 5f, rect.y() + SLOT_SIZE - 7f),
+                                      Color.GOLD);
             }
+            Assets.drawSmallFont(drawingLayer,
+                                 keys.get(i.get()),
+                                 Vector2.of(rect.x() + 2f, rect.y() + SLOT_SIZE - 27f),
+                                 Color.WHITE);
 
             i.getAndIncrement();
         });
@@ -209,7 +223,7 @@ public class RendererHelper {
                                      rect.y(),
                                      rect.width(),
                                      rect.height(),
-                                     Color.DARK_GRAY.cpy().sub(0, 0, 0, 0.5f));
+                                     Color.DARK_GRAY.cpy().sub(0, 0, 0, 0.3f));
         if (rect.contains(x, y)) {
             drawingLayer.shapeDrawer()
                         .rectangle(rect.x(), rect.y(), rect.width(), rect.height(), Color.ORANGE);
@@ -224,11 +238,12 @@ public class RendererHelper {
         Assets.drawFont(drawingLayer,
                         skillName,
                         Vector2.of(rect.x() + 40f, rect.y() + 17f),
-                        Color.CYAN);
+                        Color.GOLD);
         i.getAndIncrement();
     }
 
     // TODO: this method does not fit in this class - create MenuHelper?
+    @SuppressWarnings("UnusedReturnValue")
     public static boolean skillPickerMenuClick(Client client, MyGdxGameClient game) {
         float x = game.hudMousePos().x();
         float y = game.hudMousePos().y();
@@ -247,13 +262,18 @@ public class RendererHelper {
                                       20f);
 
                   if (rect.contains(x, y)) {
-                      client.sendTCP(PerformActionCommand.of(SkillPickupMenuSlotChangeAction.of(game.getCurrentPlayerId(),
+                      client.sendTCP(PerformActionCommand.of(SkillPickerMenuSlotChangeAction.of(game.getCurrentPlayerId(),
                                                                                                 skillType)));
                       isSuccessful.set(true);
                   }
 
                   i.getAndIncrement();
               });
+
+        if (!isSuccessful.get()) {
+            client.sendTCP(PerformActionCommand.of(SkillPickerMenuDeactivateAction.of(game.getCurrentPlayerId())));
+        }
+
         return isSuccessful.get();
     }
 
@@ -265,7 +285,7 @@ public class RendererHelper {
 
         skillRectangles.forEach((integer, rect) -> {
             if (rect.contains(x, y)) {
-                client.sendTCP(PerformActionCommand.of(SkillPickupMenuActivateAction.of(game.getCurrentPlayerId(),
+                client.sendTCP(PerformActionCommand.of(SkillPickerMenuActivateAction.of(game.getCurrentPlayerId(),
                                                                                         integer)));
                 isSuccessful.set(true);
             }

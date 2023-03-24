@@ -156,7 +156,7 @@ public class InventoryHelper {
             renderDescription(drawingLayer, game);
         }
 
-        drawPickUpMenu(drawingLayer, game);
+        drawItemPickUpMenu(drawingLayer, game);
 
     }
 
@@ -285,10 +285,10 @@ public class InventoryHelper {
         }
     }
 
-    public static void drawPickUpMenu(DrawingLayer drawingLayer, GameRenderable game) {
+    public static void drawItemPickUpMenu(DrawingLayer drawingLayer, GameRenderable game) {
         PlayerParams playerParams = game.getPlayerParams(game.getCurrentPlayerId());
 
-        if (playerParams.isInventoryVisible() || playerParams.skillMenuPickerSlotBeingChanged() == null) {
+        if (playerParams.isInventoryVisible()) {
             return;
         }
 
@@ -302,10 +302,14 @@ public class InventoryHelper {
                     .flatMap(lootPileId -> game.getLootPile(
                                                        lootPileId)
                                                .items().stream())
-                    .forEach(item -> drawPickupMenuOption(drawingLayer, x, y, i, item));
+                    .forEach(item -> drawItemPickupMenuOption(drawingLayer, x, y, i, item));
     }
 
-    private static void drawPickupMenuOption(DrawingLayer drawingLayer, float x, float y, AtomicInteger i, Item item) {
+    private static void drawItemPickupMenuOption(DrawingLayer drawingLayer,
+                                                 float x,
+                                                 float y,
+                                                 AtomicInteger i,
+                                                 Item item) {
         Rect rect = Rect.of(PICKUP_MENU_POS_X,
                             PICKUP_MENU_POS_Y + 25f * i.get(),
                             Gdx.graphics.getWidth() / 6f,
@@ -315,7 +319,7 @@ public class InventoryHelper {
                                      rect.y(),
                                      rect.width(),
                                      rect.height(),
-                                     Color.DARK_GRAY.cpy().sub(0, 0, 0, 0.5f));
+                                     Color.DARK_GRAY.cpy().sub(0, 0, 0, 0.3f));
         if (rect.contains(x, y)) {
             drawingLayer.shapeDrawer()
                         .rectangle(rect.x(), rect.y(), rect.width(), rect.height(), Color.ORANGE);

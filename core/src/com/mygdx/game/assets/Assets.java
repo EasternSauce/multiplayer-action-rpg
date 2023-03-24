@@ -14,11 +14,14 @@ public class Assets {
 
     final static BitmapFont defaultFont;
 
+    final static BitmapFont smallFont;
+
     final static BitmapFont mediumFont;
     final static BitmapFont largeFont;
 
     static {
         defaultFont = loadFont(Assets.youngSerifFontPath, 16);
+        smallFont = loadFont(Assets.youngSerifFontPath, 12);
         mediumFont = loadFont(Assets.youngSerifFontPath, 20);
         largeFont = loadFont(Assets.youngSerifFontPath, 64);
     }
@@ -37,6 +40,11 @@ public class Assets {
     public static void drawFont(DrawingLayer drawingLayer, String text, Vector2 pos, Color color) {
         defaultFont.setColor(color);
         defaultFont.draw(drawingLayer.spriteBatch(), text, pos.x(), pos.y());
+    }
+
+    public static void drawSmallFont(DrawingLayer drawingLayer, String text, Vector2 pos, Color color) {
+        smallFont.setColor(color);
+        smallFont.draw(drawingLayer.spriteBatch(), text, pos.x(), pos.y());
     }
 
     public static void drawMediumFont(DrawingLayer drawingLayer, String text, Vector2 pos, Color color) {

@@ -22,13 +22,13 @@ public class SwordSpin extends Ability {
         SwordSpin ability = SwordSpin.of();
         ability.params =
                 abilityParams
-                        .width(2.2f)
-                        .height(2.2f)
+                        .width(2.4f)
+                        .height(2.4f)
                         .channelTime(0f)
-                        .activeTime(5f)
+                        .activeTime(3f)
                         .range(2.2f)
                         .textureName("sword")
-                        .baseDamage(13f)
+                        .baseDamage(11f)
                         .isChannelAnimationLooping(false)
                         .isActiveAnimationLooping(false)
                         .rotationShift(0f)
@@ -100,7 +100,7 @@ public class SwordSpin extends Ability {
         if (isPositionUpdated()) {
             onUpdatePosition(game);
         }
-        params().dirVector(params().dirVector().rotateDeg(-7));
+        params().dirVector(params().dirVector().rotateDeg(-10));
 
         Set<CreatureId> creaturesHitRemove = new HashSet<>();
 

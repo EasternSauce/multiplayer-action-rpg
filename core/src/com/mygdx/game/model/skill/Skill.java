@@ -144,8 +144,8 @@ public class Skill {
                             creatureId,
                             singleScheduledAbility(AbilityType.SWORD_SPIN, skillType),
                             SimpleTimer.getExpiredTimer(),
-                            7f,
-                            60f,
+                            5f,
+                            80f,
                             0f);
         }
         if (skillType == SkillType.TELEPORT) {

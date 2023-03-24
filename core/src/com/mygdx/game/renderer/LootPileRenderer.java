@@ -40,7 +40,7 @@ public class LootPileRenderer {
         AreaId currentAreaId = game.getCurrentPlayerAreaId();
         LootPile lootPile = game.getLootPile(lootPileId);
 
-        if (currentAreaId.equals(lootPile.areaId())) {
+        if (lootPile != null && currentAreaId.equals(lootPile.areaId())) {
             sprite.draw(drawingLayer.spriteBatch());
         }
 

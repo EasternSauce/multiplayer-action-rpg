@@ -136,10 +136,10 @@ public class MyGdxGameClient extends MyGdxGame {
                 }
                 else if (!playerParams.isInventoryVisible() &&
                          playerParams.skillMenuPickerSlotBeingChanged() != null) {
-                    boolean isSuccessful = RendererHelper.skillPickerMenuClick(endPoint(), this);
-                    if (isSuccessful) {
-                        menuClickTime = gameState.generalTimer().time();
-                    }
+                    RendererHelper.skillPickerMenuClick(endPoint(), this);
+
+                    menuClickTime = gameState.generalTimer().time();
+
 
                 }
                 else if (!playerParams.isInventoryVisible()) {
@@ -198,11 +198,13 @@ public class MyGdxGameClient extends MyGdxGame {
 
                 Vector2 dirVector = mousePosRelativeToCenter();
 
-                endPoint().sendTCP(PerformActionCommand.of(SkillTryPerformAction.of(thisPlayerId,
-                                                                                    SkillType.FIREBALL,
-                                                                                    player.params().pos(),
-                                                                                    dirVector)));
-
+                if (playerParams.skillMenuSlots().containsKey(0)) {
+                    endPoint().sendTCP(PerformActionCommand.of(SkillTryPerformAction.of(thisPlayerId,
+                                                                                        playerParams.skillMenuSlots()
+                                                                                                    .get(0),
+                                                                                        player.params().pos(),
+                                                                                        dirVector)));
+                }
 
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
@@ -212,12 +214,13 @@ public class MyGdxGameClient extends MyGdxGame {
 
                 Vector2 dirVector = mousePosRelativeToCenter();
 
-                Vector2 startingPos = player.params().pos().add(dirVector);
-
-                endPoint().sendTCP(PerformActionCommand.of(SkillTryPerformAction.of(thisPlayerId,
-                                                                                    SkillType.LIGHTNING,
-                                                                                    startingPos,
-                                                                                    dirVector)));
+                if (playerParams.skillMenuSlots().containsKey(1)) {
+                    endPoint().sendTCP(PerformActionCommand.of(SkillTryPerformAction.of(thisPlayerId,
+                                                                                        playerParams.skillMenuSlots()
+                                                                                                    .get(1),
+                                                                                        player.params().pos(),
+                                                                                        dirVector)));
+                }
 
 
             }
@@ -229,114 +232,18 @@ public class MyGdxGameClient extends MyGdxGame {
 
                 Vector2 dirVector = mousePosRelativeToCenter();
 
-                endPoint().sendTCP(PerformActionCommand.of(SkillTryPerformAction.of(thisPlayerId,
-                                                                                    SkillType.CROSSBOW_BOLT,
-                                                                                    player.params().pos(),
-                                                                                    dirVector)));
-
-
-            }
-
-            if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
-
-                Creature player = gameState().creatures().get(thisPlayerId);
-
-
-                Vector2 dirVector = mousePosRelativeToCenter();
-
-                endPoint().sendTCP(PerformActionCommand.of(SkillTryPerformAction.of(thisPlayerId,
-                                                                                    SkillType.MAGIC_ORB,
-                                                                                    player.params().pos(),
-                                                                                    dirVector)));
-
-
-            }
-            if (Gdx.input.isKeyJustPressed(Input.Keys.T)) {
-
-                Creature player = gameState().creatures().get(thisPlayerId);
-
-
-                Vector2 dirVector = mousePosRelativeToCenter();
-
-                endPoint().sendTCP(PerformActionCommand.of(SkillTryPerformAction.of(thisPlayerId,
-                                                                                    SkillType.VOLATILE_BUBBLE,
-                                                                                    player.params().pos(),
-                                                                                    dirVector)));
-
-
-            }
-            if (Gdx.input.isKeyJustPressed(Input.Keys.Y)) {
-
-                Creature player = gameState().creatures().get(thisPlayerId);
-
-
-                Vector2 dirVector = mousePosRelativeToCenter();
-
-                endPoint().sendTCP(PerformActionCommand.of(SkillTryPerformAction.of(thisPlayerId,
-                                                                                    SkillType.SUMMON_GHOSTS,
-                                                                                    player.params().pos(),
-                                                                                    dirVector)));
-
-
-            }
-            if (Gdx.input.isKeyJustPressed(Input.Keys.U)) {
-
-                Creature player = gameState().creatures().get(thisPlayerId);
-
-
-                Vector2 dirVector = mousePosRelativeToCenter();
-
-                endPoint().sendTCP(PerformActionCommand.of(SkillTryPerformAction.of(thisPlayerId,
-                                                                                    SkillType.RICOCHET_BALLISTA,
-                                                                                    player.params().pos(),
-                                                                                    dirVector)));
+                if (playerParams.skillMenuSlots().containsKey(2)) {
+                    endPoint().sendTCP(PerformActionCommand.of(SkillTryPerformAction.of(thisPlayerId,
+                                                                                        playerParams.skillMenuSlots()
+                                                                                                    .get(2),
+                                                                                        player.params().pos(),
+                                                                                        dirVector)));
+                }
 
 
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
                 endPoint().sendTCP(PerformActionCommand.of(InventoryToggleAction.of(thisPlayerId)));
-
-            }
-            if (Gdx.input.isKeyJustPressed(Input.Keys.O)) {
-
-                Creature player = gameState().creatures().get(thisPlayerId);
-
-
-                Vector2 dirVector = mousePosRelativeToCenter();
-
-                endPoint().sendTCP(PerformActionCommand.of(SkillTryPerformAction.of(thisPlayerId,
-                                                                                    SkillType.SUMMON_SHIELD,
-                                                                                    player.params().pos(),
-                                                                                    dirVector)));
-
-
-            }
-
-            if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
-
-                Creature player = gameState().creatures().get(thisPlayerId);
-
-                Vector2 dirVector = mousePosRelativeToCenter();
-
-                endPoint().sendTCP(PerformActionCommand.of(SkillTryPerformAction.of(thisPlayerId,
-                                                                                    SkillType.SWORD_SPIN,
-                                                                                    player.params().pos(),
-                                                                                    dirVector)));
-
-
-            }
-
-            if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
-
-                Creature player = gameState().creatures().get(thisPlayerId);
-
-                Vector2 dirVector = mousePosRelativeToCenter();
-
-                endPoint().sendTCP(PerformActionCommand.of(SkillTryPerformAction.of(thisPlayerId,
-                                                                                    SkillType.TELEPORT,
-                                                                                    player.params().pos(),
-                                                                                    dirVector)));
-
 
             }
 
