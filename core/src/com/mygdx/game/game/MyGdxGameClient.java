@@ -20,7 +20,6 @@ import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.action.ability.SkillTryPerformAction;
 import com.mygdx.game.model.action.creature.CreatureMoveTowardsTargetAction;
 import com.mygdx.game.model.action.inventory.InventoryToggleAction;
-import com.mygdx.game.model.action.loot.LootPileSpawnAction;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.area.LootPileId;
 import com.mygdx.game.model.creature.*;
@@ -40,6 +39,8 @@ public class MyGdxGameClient extends MyGdxGame {
     private static MyGdxGameClient instance;
 
     Client _endPoint;
+
+    Float pickedUpItemTime = 0f; // TODO: should do it differently
 
     private MyGdxGameClient() {
         thisPlayerId = CreatureId.of("Player_" + (int) (Math.random() * 10000000));
@@ -124,7 +125,11 @@ public class MyGdxGameClient extends MyGdxGame {
                 }
                 else if (!gameState.playerParams().get(thisPlayerId).isInventoryVisible() &&
                          !gameState.playerParams().get(thisPlayerId).itemPickupMenuLootPiles().isEmpty()) {
-                    InventoryHelper.itemPickupMenuClick(endPoint(), this);
+                    boolean isSuccessful = InventoryHelper.tryItemPickupMenuClick(endPoint(), this);
+                    if (isSuccessful) {
+                        pickedUpItemTime = gameState.generalTimer().time();
+                    }
+
                 }
 
             }
@@ -134,8 +139,10 @@ public class MyGdxGameClient extends MyGdxGame {
 
                     Creature player = gameState().creatures().get(thisPlayerId);
 
-                    if (player != null && player.params().movementCommandsPerSecondLimitTimer().time() >
-                                          Constants.MovementCommandCooldown) {
+                    if (player != null &&
+                        player.params().movementCommandsPerSecondLimitTimer().time() >
+                        Constants.MovementCommandCooldown &&
+                        gameState.generalTimer().time() > pickedUpItemTime + 0.1f) {
                         endPoint().sendTCP(PerformActionCommand.of(CreatureMoveTowardsTargetAction.of(thisPlayerId,
                                                                                                       mousePos)));
                     }
@@ -481,25 +488,17 @@ public class MyGdxGameClient extends MyGdxGame {
                     Set<LootPileId> lootPilesRemovedSinceLastUpdate = new HashSet<>(oldLootPileIds);
                     lootPilesRemovedSinceLastUpdate.removeAll(newLootPileIds);
 
-                    System.out.println("loot piles added " +
-                                       lootPilesAddedSinceLastUpdate.stream()
-                                                                    .map(lootPileId -> getLootPile(lootPileId))
-                                                                    .collect(
-                                                                            Collectors.toSet()));
+                    getCreatureModelsToBeCreated().addAll(creaturesAddedSinceLastUpdate);
 
-                    //TODO: copy entire game state entities here!
+                    getCreatureModelsToBeRemoved().addAll(creaturesRemovedSinceLastUpdate);
 
-                    getCreaturesToBeCreated().addAll(creaturesAddedSinceLastUpdate);
+                    getAbilityModelsToBeCreated().addAll(abilitiesAddedSinceLastUpdate);
 
-                    getCreaturesToBeRemoved().addAll(creaturesRemovedSinceLastUpdate);
+                    getAbilityModelsToBeRemoved().addAll(abilitiesRemovedSinceLastUpdate);
 
-                    getAbilitiesToBeCreated().addAll(abilitiesAddedSinceLastUpdate);
+                    getLootPileModelsToBeCreated().addAll(lootPilesAddedSinceLastUpdate);
 
-                    getAbilitiesToBeRemoved().addAll(abilitiesRemovedSinceLastUpdate);
-
-                    getLootPilesToBeCreated().addAll(lootPilesAddedSinceLastUpdate);
-
-                    getLootPilesToBeRemoved().addAll(lootPilesRemovedSinceLastUpdate);
+                    getLootPileModelsToBeRemoved().addAll(lootPilesRemovedSinceLastUpdate);
 
                     gameState = newGameState;
 

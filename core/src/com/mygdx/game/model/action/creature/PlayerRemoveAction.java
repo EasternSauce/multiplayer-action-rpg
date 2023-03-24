@@ -22,7 +22,7 @@ public class PlayerRemoveAction implements GameStateAction {
 
     @Override
     public void applyToGame(GameActionApplicable game) {
-        game.getCreaturesToBeRemoved().add(creatureId);
+        game.getCreatureModelsToBeRemoved().add(creatureId);
 
     }
 }

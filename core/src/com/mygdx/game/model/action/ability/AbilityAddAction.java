@@ -35,7 +35,7 @@ public class AbilityAddAction implements GameStateAction {
             .put(ability.params().id(), ability); // TODO: SHOULDNT THIS HAPPEN IN createAbility() METHOD???!?
 
         if (ability.params().activeTime() > 0) {
-            game.getAbilitiesToBeCreated().add(ability.params().id());
+            game.getAbilityModelsToBeCreated().add(ability.params().id());
         }
 
         ability.init(game);

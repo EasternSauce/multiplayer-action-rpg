@@ -35,9 +35,9 @@ public class PlayerInitAction implements GameStateAction {
         player.params().maxMana(350f);
         game.getCreatures().put(playerId, player);
 
-        game.getCreaturesToBeCreated().add(playerId);
+        game.getCreatureModelsToBeCreated().add(playerId);
 
-        game.initiatePlayerParams(playerId);
+        game.initPlayerParams(playerId);
 
     }
 }

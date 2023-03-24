@@ -44,15 +44,15 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
     @SuppressWarnings("FieldCanBeLocal")
     private final boolean isDebugEnabled = true;
     private final Chat chat = Chat.of();
-    final List<CreatureId> creaturesToBeCreated = Collections.synchronizedList(new ArrayList<>());
-    final List<AbilityId> abilitiesToBeCreated = Collections.synchronizedList(new ArrayList<>());
+    final List<CreatureId> creatureModelsToBeCreated = Collections.synchronizedList(new ArrayList<>());
+    final List<AbilityId> abilityModelsToBeCreated = Collections.synchronizedList(new ArrayList<>());
     final List<AbilityId> abilitiesToBeActivated = Collections.synchronizedList(new ArrayList<>());
-    final List<CreatureId> creaturesToBeRemoved = Collections.synchronizedList(new ArrayList<>());
-    final List<AbilityId> abilitiesToBeRemoved = Collections.synchronizedList(new ArrayList<>());
+    final List<CreatureId> creatureModelsToBeRemoved = Collections.synchronizedList(new ArrayList<>());
+    final List<AbilityId> abilityModelsToBeRemoved = Collections.synchronizedList(new ArrayList<>());
 
-    final List<LootPileId> lootPilesToBeCreated = Collections.synchronizedList(new ArrayList<>());
+    final List<LootPileId> lootPileModelsToBeCreated = Collections.synchronizedList(new ArrayList<>());
 
-    final List<LootPileId> lootPilesToBeRemoved = Collections.synchronizedList(new ArrayList<>());
+    final List<LootPileId> lootPileModelsToBeRemoved = Collections.synchronizedList(new ArrayList<>());
     final List<TeleportEvent> teleportEvents = Collections.synchronizedList(new ArrayList<>());
     protected GameState gameState = GameState.of();
     protected CreatureId thisPlayerId = null;
@@ -67,13 +67,13 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
     }
 
     @Override
-    public List<CreatureId> getCreaturesToBeCreated() {
-        return creaturesToBeCreated;
+    public List<CreatureId> getCreatureModelsToBeCreated() {
+        return creatureModelsToBeCreated;
     }
 
     @Override
-    public List<AbilityId> getAbilitiesToBeCreated() {
-        return abilitiesToBeCreated;
+    public List<AbilityId> getAbilityModelsToBeCreated() {
+        return abilityModelsToBeCreated;
     }
 
     @Override
@@ -82,23 +82,23 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
     }
 
     @Override
-    public List<CreatureId> getCreaturesToBeRemoved() {
-        return creaturesToBeRemoved;
+    public List<CreatureId> getCreatureModelsToBeRemoved() {
+        return creatureModelsToBeRemoved;
     }
 
     @Override
-    public List<AbilityId> getAbilitiesToBeRemoved() {
-        return abilitiesToBeRemoved;
+    public List<AbilityId> getAbilityModelsToBeRemoved() {
+        return abilityModelsToBeRemoved;
     }
 
     @Override
-    public List<LootPileId> getLootPilesToBeCreated() {
-        return lootPilesToBeCreated;
+    public List<LootPileId> getLootPileModelsToBeCreated() {
+        return lootPileModelsToBeCreated;
     }
 
     @Override
-    public List<LootPileId> getLootPilesToBeRemoved() {
-        return lootPilesToBeRemoved;
+    public List<LootPileId> getLootPileModelsToBeRemoved() {
+        return lootPileModelsToBeRemoved;
     }
 
 
@@ -216,7 +216,7 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
                                                .mainAttackSkill(enemySpawn.enemyTemplate()
                                                                           .mainAttackSkill())));
 
-        getCreaturesToBeCreated().add(creatureId);
+        getCreatureModelsToBeCreated().add(creatureId);
 
 
     }
@@ -534,7 +534,7 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
     }
 
     @Override
-    public void initiatePlayerParams(CreatureId playerId) {
+    public void initPlayerParams(CreatureId playerId) {
         gameState.playerParams().put(playerId, PlayerParams.of());
     }
 
@@ -572,10 +572,6 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
 
     @Override
     public LootPile getLootPile(LootPileId lootPileId) {
-        //        System.out.println(gameState.lootPiles());
-        //        if (!gameState.lootPiles().containsKey(lootPileId)) {
-        //            return null;
-        //        }
         return gameState.lootPiles().get(lootPileId);
     }
 

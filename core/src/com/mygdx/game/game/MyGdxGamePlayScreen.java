@@ -114,26 +114,26 @@ public class MyGdxGamePlayScreen implements Screen {
 
         game.onUpdate();
 
-        game.getCreaturesToBeCreated().forEach(creatureId -> game.createCreature(creatureId));
-        game.getCreaturesToBeCreated().clear();
+        game.getCreatureModelsToBeCreated().forEach(creatureId -> game.createCreature(creatureId));
+        game.getCreatureModelsToBeCreated().clear();
 
-        game.getAbilitiesToBeCreated().forEach(abilityId -> game.createAbility(abilityId));
-        game.getAbilitiesToBeCreated().clear();
+        game.getAbilityModelsToBeCreated().forEach(abilityId -> game.createAbility(abilityId));
+        game.getAbilityModelsToBeCreated().clear();
 
         game.getAbilitiesToBeActivated().forEach(abilityId -> game.activateAbility(abilityId));
         game.getAbilitiesToBeActivated().clear();
 
-        game.getCreaturesToBeRemoved().forEach(creatureId -> game.removeCreature(creatureId));
-        game.getCreaturesToBeRemoved().clear();
+        game.getCreatureModelsToBeRemoved().forEach(creatureId -> game.removeCreature(creatureId));
+        game.getCreatureModelsToBeRemoved().clear();
 
-        game.getAbilitiesToBeRemoved().forEach(abilityId -> game.removeAbility(abilityId));
-        game.getAbilitiesToBeRemoved().clear();
+        game.getAbilityModelsToBeRemoved().forEach(abilityId -> game.removeAbility(abilityId));
+        game.getAbilityModelsToBeRemoved().clear();
 
-        game.getLootPilesToBeCreated().forEach(lootPileId -> game.createLootPile(lootPileId));
-        game.getLootPilesToBeCreated().clear();
+        game.getLootPileModelsToBeCreated().forEach(lootPileId -> game.createLootPile(lootPileId));
+        game.getLootPileModelsToBeCreated().clear();
 
-        game.getLootPilesToBeRemoved().forEach(lootPileId -> game.removeLootPile(lootPileId));
-        game.getLootPilesToBeRemoved().clear();
+        game.getLootPileModelsToBeRemoved().forEach(lootPileId -> game.removeLootPile(lootPileId));
+        game.getLootPileModelsToBeRemoved().clear();
 
         game.teleportEvents().forEach(teleportInfo -> game.teleportCreature(teleportInfo));
         game.teleportEvents().clear();

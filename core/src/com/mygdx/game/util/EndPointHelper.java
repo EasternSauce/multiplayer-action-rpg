@@ -13,6 +13,7 @@ import com.mygdx.game.model.action.creature.*;
 import com.mygdx.game.model.action.inventory.*;
 import com.mygdx.game.model.action.loot.LootPileDespawnAction;
 import com.mygdx.game.model.action.loot.LootPileItemTryPickUpAction;
+import com.mygdx.game.model.action.loot.LootPileSpawnAction;
 import com.mygdx.game.model.area.*;
 import com.mygdx.game.model.creature.*;
 import com.mygdx.game.model.item.EquipmentSlotType;
@@ -110,6 +111,8 @@ public class EndPointHelper {
         endPoint.getKryo().register(EquipmentItemPickUpAction.class);
         endPoint.getKryo().register(LootPileDespawnAction.class);
         endPoint.getKryo().register(LootPileItemTryPickUpAction.class);
+        endPoint.getKryo().register(LootPileSpawnAction.class);
+        endPoint.getKryo().register(PlayerCurrentItemDropAction.class);
 
         endPoint.getKryo().register(EquipmentSlotType.class);
         endPoint.getKryo().register(ItemTemplate.class);

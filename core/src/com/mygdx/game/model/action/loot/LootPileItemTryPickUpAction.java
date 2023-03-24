@@ -35,10 +35,12 @@ public class LootPileItemTryPickUpAction implements GameStateAction {
             }
         }
 
-        System.out.println("picking up " + item);
         LootPile lootPile = game.getLootPile(item.lootPileId());
         if (freeSlot != null && lootPile != null) {
-            game.getCreature(playerId).params().inventoryItems().put(freeSlot, item.lootPileId(null));
+            game.getCreature(playerId)
+                .params()
+                .inventoryItems()
+                .put(freeSlot, Item.of(item.template(), item.quantity(), item.qualityModifier(), null));
 
             lootPile.items().remove(item);
             if (lootPile.items().isEmpty()) {

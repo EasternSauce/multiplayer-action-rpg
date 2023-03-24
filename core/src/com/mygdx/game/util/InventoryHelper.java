@@ -12,6 +12,7 @@ import com.mygdx.game.game.MyGdxGameClient;
 import com.mygdx.game.game.interface_.GameRenderable;
 import com.mygdx.game.model.action.inventory.*;
 import com.mygdx.game.model.action.loot.LootPileItemTryPickUpAction;
+import com.mygdx.game.model.action.loot.LootPileSpawnAction;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.item.EquipmentSlotType;
 import com.mygdx.game.model.item.Item;
@@ -24,6 +25,9 @@ import com.mygdx.game.renderer.util.Rect;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -389,28 +393,34 @@ public class InventoryHelper {
         }
         else {
             if (playerParams.inventoryItemBeingMoved() != null) {
-                Item item = player.params().inventoryItems().get(playerParams.inventoryItemBeingMoved());
-                playerParams.inventoryItemBeingMoved(null);
-
-                //TODO: spawn lootpile
+                client.sendTCP(PerformActionCommand.of(PlayerCurrentItemDropAction.of(game.getCurrentPlayerId())));
             }
 
             if (playerParams.equipmentItemBeingMoved() != null) {
                 Item item = player.params().equipmentItems().get(playerParams.equipmentItemBeingMoved());
                 playerParams.equipmentItemBeingMoved(null);
 
-                //TODO: spawn lootpile
+                Set<Item> items = new ConcurrentSkipListSet<>();
+                items.add(item);
+
+                client.sendTCP(PerformActionCommand.of(LootPileSpawnAction.of(player.params().areaId(),
+                                                                              player.params().pos(),
+                                                                              items)));
+                client.sendTCP(PerformActionCommand.of(InventoryMoveFinishAction.of(game.getCurrentPlayerId())));
+
             }
         }
 
 
     }
 
-    public static void itemPickupMenuClick(Client client, MyGdxGameClient game) {
+    public static boolean tryItemPickupMenuClick(Client client, MyGdxGameClient game) {
         PlayerParams playerParams = game.getPlayerParams(game.getCurrentPlayerId());
 
         float x = game.hudMousePos().x();
         float y = game.hudMousePos().y();
+
+        AtomicBoolean isSuccessful = new AtomicBoolean(false);
 
         AtomicInteger i = new AtomicInteger();
         playerParams.itemPickupMenuLootPiles()
@@ -428,9 +438,11 @@ public class InventoryHelper {
                         if (rect.contains(x, y)) {
                             client.sendTCP(PerformActionCommand.of(LootPileItemTryPickUpAction.of(game.getCurrentPlayerId(),
                                                                                                   item)));
+                            isSuccessful.set(true);
                         }
 
                         i.getAndIncrement();
                     });
+        return isSuccessful.get();
     }
 }

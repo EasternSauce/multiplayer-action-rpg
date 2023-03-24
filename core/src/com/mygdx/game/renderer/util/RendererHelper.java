@@ -29,13 +29,13 @@ public class RendererHelper {
 
         renderer.renderAreaGates(drawingLayer, game);
 
+        renderer.renderLootPiles(drawingLayer, game);
+
         renderer.renderDeadCreatures(drawingLayer, game);
         renderer.renderAliveCreatures(drawingLayer, game);
 
         renderer.abilityRenderers()
                 .forEach((abilityId, abilityAnimation) -> abilityAnimation.render(drawingLayer, game));
-
-        renderer.renderLootPiles(drawingLayer, game);
 
         drawingLayer.end();
 

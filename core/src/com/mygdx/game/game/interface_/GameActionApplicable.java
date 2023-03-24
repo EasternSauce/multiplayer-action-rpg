@@ -8,19 +8,19 @@ import java.util.List;
 
 public interface GameActionApplicable extends GameUpdatable, AbilityUpdatable, CreatureUpdatable {
 
-    List<CreatureId> getCreaturesToBeCreated();
+    List<CreatureId> getCreatureModelsToBeCreated();
 
-    List<AbilityId> getAbilitiesToBeCreated();
+    List<AbilityId> getAbilityModelsToBeCreated();
 
     List<AbilityId> getAbilitiesToBeActivated();
 
-    List<CreatureId> getCreaturesToBeRemoved();
+    List<CreatureId> getCreatureModelsToBeRemoved();
 
-    List<AbilityId> getAbilitiesToBeRemoved();
+    List<AbilityId> getAbilityModelsToBeRemoved();
 
-    List<LootPileId> getLootPilesToBeCreated();
+    List<LootPileId> getLootPileModelsToBeCreated();
 
-    List<LootPileId> getLootPilesToBeRemoved();
+    List<LootPileId> getLootPileModelsToBeRemoved();
 
-    void initiatePlayerParams(CreatureId playerId);
+    void initPlayerParams(CreatureId playerId);
 }

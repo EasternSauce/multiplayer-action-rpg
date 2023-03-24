@@ -296,33 +296,28 @@ public class MyGdxGameServer extends MyGdxGame {
 
         AreaId areaId = AreaId.of("area1");
 
-        LootPileId lootPileId = LootPileId.of("LootPile_" + (int) (Math.random() * 10000000)); // TODO: use seeded rng
-        LootPileId lootPile2Id = LootPileId.of("LootPile_" + (int) (Math.random() * 10000000)); // TODO: use seeded rng
-
-        onTickActions.add(LootPileSpawnAction.of(LootPile.of(lootPileId,
-                                                             areaId,
-                                                             Vector2.of(12, 12),
-                                                             new ConcurrentSkipListSet<>(Arrays.asList(Item.of(
-                                                                                                               ItemTemplate.templates.get("leatherArmor"),
-                                                                                                               0.9f,
-                                                                                                               lootPileId),
-                                                                                                       Item.of(ItemTemplate.templates.get(
-                                                                                                                       "hideGloves"),
-                                                                                                               0.9f,
-                                                                                                               lootPileId))))));
+        onTickActions.add(LootPileSpawnAction.of(areaId,
+                                                 Vector2.of(12, 12),
+                                                 new ConcurrentSkipListSet<>(Arrays.asList(Item.of(
+                                                                                                   ItemTemplate.templates.get("leatherArmor"),
+                                                                                                   0.9f
+                                                                                                  ),
+                                                                                           Item.of(ItemTemplate.templates.get(
+                                                                                                           "hideGloves"),
+                                                                                                   0.9f
+                                                                                                  )))));
 
 
-        onTickActions.add(LootPileSpawnAction.of(LootPile.of(lootPile2Id,
-                                                             areaId,
-                                                             Vector2.of(13.5f, 12),
-                                                             new ConcurrentSkipListSet<>(Arrays.asList(Item.of(
-                                                                                                               ItemTemplate.templates.get("ringmailGreaves"),
-                                                                                                               0.9f,
-                                                                                                               lootPile2Id),
-                                                                                                       Item.of(ItemTemplate.templates.get(
-                                                                                                                       "hideGloves"),
-                                                                                                               0.5f,
-                                                                                                               lootPile2Id))))));
+        onTickActions.add(LootPileSpawnAction.of(areaId,
+                                                 Vector2.of(13.5f, 12),
+                                                 new ConcurrentSkipListSet<>(Arrays.asList(Item.of(
+                                                                                                   ItemTemplate.templates.get("ringmailGreaves"),
+                                                                                                   0.9f
+                                                                                                  ),
+                                                                                           Item.of(ItemTemplate.templates.get(
+                                                                                                           "hideGloves"),
+                                                                                                   0.5f
+                                                                                                  )))));
 
         gameState.areaGates(new ConcurrentSkipListSet<>());
         gameState.areaGates()

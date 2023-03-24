@@ -26,14 +26,13 @@ public class Item implements Comparable<Item> {
     //        return item;
     //    }
 
-    public static Item of(ItemTemplate template, float qualityModifier, LootPileId lootPileId) {
+    public static Item of(ItemTemplate template, float qualityModifier) {
         Item item = Item.of();
 
         assert qualityModifier > 0f && qualityModifier <= 1f;
 
         item.template = template;
         item.qualityModifier = qualityModifier;
-        item.lootPileId = lootPileId;
 
         return item;
     }

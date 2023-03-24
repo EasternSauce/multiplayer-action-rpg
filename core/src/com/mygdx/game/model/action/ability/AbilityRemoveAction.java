@@ -22,7 +22,7 @@ public class AbilityRemoveAction implements GameStateAction {
 
     @Override
     public void applyToGame(GameActionApplicable game) {
-        game.getAbilitiesToBeRemoved().add(abilityId);
+        game.getAbilityModelsToBeRemoved().add(abilityId);
 
     }
 }

@@ -24,6 +24,6 @@ public class LootPileDespawnAction implements GameStateAction {
 
     @Override
     public void applyToGame(GameActionApplicable game) {
-        game.getLootPilesToBeRemoved().add(lootPileId);
+        game.getLootPileModelsToBeRemoved().add(lootPileId);
     }
 }
