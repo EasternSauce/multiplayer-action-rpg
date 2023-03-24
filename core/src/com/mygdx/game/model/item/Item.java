@@ -41,15 +41,15 @@ public class Item implements Comparable<Item> {
         StringBuilder builder = new StringBuilder();
         if (template.damage() != null) {
             //noinspection StringConcatenationInsideStringBufferAppend
-            builder.append("Damage: " + (int) (template.damage() * qualityModifier) + "\n");
+            builder.append("Damage: " + damage() + "\n");
         }
         if (template.armor() != null) {
             //noinspection StringConcatenationInsideStringBufferAppend
-            builder.append("Armor: " + (int) (template.armor() * qualityModifier) + "\n");
+            builder.append("Armor: " + armor() + "\n");
         }
         if (template.worth() != null) {
             //noinspection StringConcatenationInsideStringBufferAppend
-            builder.append("Worth: " + (int) (template.worth() * qualityModifier) + "\n");
+            builder.append("Worth: " + worth() + "\n");
         }
         return builder.toString();
     }
@@ -60,5 +60,17 @@ public class Item implements Comparable<Item> {
             return this.qualityModifier.compareTo(o.qualityModifier);
         }
         return this.template.id().compareTo(o.template.id());
+    }
+
+    public Integer damage() {
+        return (int) (template.damage() * qualityModifier);
+    }
+
+    public Integer armor() {
+        return (int) (template.armor() * qualityModifier);
+    }
+
+    public Integer worth() {
+        return (int) (template.worth() * qualityModifier);
     }
 }

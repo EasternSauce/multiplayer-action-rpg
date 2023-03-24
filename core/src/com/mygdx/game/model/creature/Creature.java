@@ -141,7 +141,7 @@ public abstract class Creature {
     protected void takeLifeDamage(float damage) {
         float beforeLife = params().life();
 
-        float actualDamage = damage * 100f / (100f + params().armor());
+        float actualDamage = damage * 100f / (100f + totalArmor());
 
         if (params().life() - actualDamage > 0) {
             params().life(params().life() - actualDamage);
@@ -153,6 +153,13 @@ public abstract class Creature {
         if (beforeLife > 0f && params().life() <= 0f) {
             params().justDied(true);
         }
+    }
+
+    private float totalArmor() {
+        return params().equipmentItems()
+                       .values()
+                       .stream()
+                       .reduce(0, ((acc, item) -> acc + item.armor()), Integer::sum);
     }
 
     public void handleBeingAttacked(Boolean isRanged,

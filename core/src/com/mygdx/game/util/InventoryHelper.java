@@ -55,6 +55,10 @@ public class InventoryHelper {
     static Integer EQUIPMENT_TOTAL_SLOTS = 8;
     static Map<Integer, Rect> equipmentRectangles = new HashMap<>();
 
+    static Float PICKUP_MENU_POS_X = Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 5f - 40f;
+    static Float PICKUP_MENU_POS_Y = 13f;
+
+
     public static void init(TextureAtlas atlas) {
 
         backgroundRect = Rect.of(Gdx.graphics.getWidth() * 0.2f,
@@ -152,7 +156,7 @@ public class InventoryHelper {
             renderDescription(drawingLayer, game);
         }
 
-        renderPickUpMenu(drawingLayer, game);
+        drawPickUpMenu(drawingLayer, game);
 
     }
 
@@ -281,10 +285,10 @@ public class InventoryHelper {
         }
     }
 
-    public static void renderPickUpMenu(DrawingLayer drawingLayer, GameRenderable game) {
+    public static void drawPickUpMenu(DrawingLayer drawingLayer, GameRenderable game) {
         PlayerParams playerParams = game.getPlayerParams(game.getCurrentPlayerId());
 
-        if (playerParams.isInventoryVisible()) {
+        if (playerParams.isInventoryVisible() || playerParams.skillMenuPickerSlotBeingChanged() == null) {
             return;
         }
 
@@ -298,34 +302,35 @@ public class InventoryHelper {
                     .flatMap(lootPileId -> game.getLootPile(
                                                        lootPileId)
                                                .items().stream())
-                    .forEach(item -> {
-                        Rect rect = Rect.of(Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 5f - 40f,
-                                            30f + 25f * i.get() - 17f,
-                                            Gdx.graphics.getWidth() / 6f,
-                                            20f);
-                        drawingLayer.shapeDrawer()
-                                    .filledRectangle(rect.x(),
-                                                     rect.y(),
-                                                     rect.width(),
-                                                     rect.height(),
-                                                     Color.DARK_GRAY.cpy().sub(0, 0, 0, 0.5f));
-                        if (rect.contains(x, y)) {
-                            drawingLayer.shapeDrawer()
-                                        .rectangle(rect.x(), rect.y(), rect.width(), rect.height(), Color.ORANGE);
-                        }
-                        drawingLayer.spriteBatch()
-                                    .draw(icons[item.template().iconPos().y()][item.template().iconPos().x()],
-                                          rect.x() + 10f,
-                                          rect.y(),
-                                          20f,
-                                          20f);
-                        Assets.drawFont(drawingLayer,
-                                        item.template().name(),
-                                        Vector2.of(Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 5f, 30f + 25f *
-                                                                                                                 i.get()),
-                                        Color.CYAN);
-                        i.getAndIncrement();
-                    });
+                    .forEach(item -> drawPickupMenuOption(drawingLayer, x, y, i, item));
+    }
+
+    private static void drawPickupMenuOption(DrawingLayer drawingLayer, float x, float y, AtomicInteger i, Item item) {
+        Rect rect = Rect.of(PICKUP_MENU_POS_X,
+                            PICKUP_MENU_POS_Y + 25f * i.get(),
+                            Gdx.graphics.getWidth() / 6f,
+                            20f);
+        drawingLayer.shapeDrawer()
+                    .filledRectangle(rect.x(),
+                                     rect.y(),
+                                     rect.width(),
+                                     rect.height(),
+                                     Color.DARK_GRAY.cpy().sub(0, 0, 0, 0.5f));
+        if (rect.contains(x, y)) {
+            drawingLayer.shapeDrawer()
+                        .rectangle(rect.x(), rect.y(), rect.width(), rect.height(), Color.ORANGE);
+        }
+        drawingLayer.spriteBatch()
+                    .draw(icons[item.template().iconPos().y()][item.template().iconPos().x()],
+                          rect.x() + 10f,
+                          rect.y(),
+                          20f,
+                          20f);
+        Assets.drawFont(drawingLayer,
+                        item.template().name(),
+                        Vector2.of(rect.x() + 40f, rect.y() + 17f),
+                        Color.CYAN);
+        i.getAndIncrement();
     }
 
     public static void moveItemClick(Client client, GameRenderable game) {
@@ -445,4 +450,5 @@ public class InventoryHelper {
                     });
         return isSuccessful.get();
     }
+
 }

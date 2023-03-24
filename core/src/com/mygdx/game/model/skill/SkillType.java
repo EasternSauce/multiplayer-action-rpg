@@ -4,28 +4,32 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 public enum SkillType {
-    SWORD_SLASH,
-    FIREBALL,
-    LIGHTNING,
-    CROSSBOW_BOLT,
+    SWORD_SLASH("Sword Slash"),
+    FIREBALL("Fireball"),
+    LIGHTNING("Lightning"),
+    CROSSBOW_BOLT("Crossbow Bolt"),
 
-    MAGIC_ORB,
+    MAGIC_ORB("Magic Orb"),
 
-    SLOW_MAGIC_ORB,
+    SLOW_MAGIC_ORB("Magic Orb"),
 
-    VOLATILE_BUBBLE,
+    VOLATILE_BUBBLE("Volatile Bubble"),
 
-    SUMMON_GHOSTS,
+    SUMMON_GHOSTS("Summon Ghosts"),
 
-    RICOCHET_BALLISTA,
+    RICOCHET_BALLISTA("Ricochet Ballista"),
 
-    BOOMERANG,
+    BOOMERANG("Boomerang"),
 
-    SUMMON_SHIELD,
+    SUMMON_SHIELD("Summon Shield"),
 
-    SWORD_SPIN,
+    SWORD_SPIN("Sword Spin"),
 
-    TELEPORT
+    TELEPORT("Teleport");
 
+    public String prettyName;
 
+    SkillType(String prettyName) {
+        this.prettyName = prettyName;
+    }
 }

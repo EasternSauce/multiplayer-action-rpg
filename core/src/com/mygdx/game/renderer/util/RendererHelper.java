@@ -4,20 +4,55 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.esotericsoftware.kryonet.Client;
 import com.mygdx.game.Constants;
 import com.mygdx.game.assets.Assets;
 import com.mygdx.game.chat.Chat;
+import com.mygdx.game.command.PerformActionCommand;
+import com.mygdx.game.game.MyGdxGameClient;
 import com.mygdx.game.game.interface_.GameRenderable;
+import com.mygdx.game.model.action.skillmenu.SkillPickupMenuActivateAction;
+import com.mygdx.game.model.action.skillmenu.SkillPickupMenuSlotChangeAction;
 import com.mygdx.game.model.creature.Creature;
+import com.mygdx.game.model.skill.SkillType;
+import com.mygdx.game.model.util.PlayerParams;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.renderer.DrawingLayer;
 import com.mygdx.game.renderer.GameRenderer;
 import com.mygdx.game.util.InventoryHelper;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class RendererHelper {
+
+    static int TOTAL_SKILL_SLOTS = 3;
+    static float SLOT_SIZE = 40f;
+    static int MARGIN = 20;
+    static int SPACE_BETWEEN_SLOTS = 12;
+
+    static Map<Integer, Rect> skillRectangles = new HashMap<>();
+
+    static float SKILL_MENU_POS_X = 110f;
+    static float SKILL_MENU_POS_Y = 69f;
+
+    static float SKILL_PICKER_MENU_POS_X = 110f;
+    static float SKILL_PICKER_MENU_POS_Y = 69f;
+
+    static {
+        for (int i = 0; i < TOTAL_SKILL_SLOTS; i++) {
+            skillRectangles.put(i,
+                                Rect.of(skillSlotPositionX(i),
+                                        SkillSlotPositionY(i),
+                                        SLOT_SIZE,
+                                        SLOT_SIZE));
+        }
+    }
+
 
     public static void drawWorld(GameRenderable game) {
         GameRenderer renderer = game.getRenderer();
@@ -55,11 +90,15 @@ public class RendererHelper {
         RendererHelper.drawFpsCounter(drawingLayer);
 
         if (game.getCurrentPlayerId() != null) {
-            Creature creature = game.getCreature(game.getCurrentPlayerId());
+            Creature player = game.getCreature(game.getCurrentPlayerId());
 
-            RendererHelper.drawRespawnMessage(creature, drawingLayer);
+            RendererHelper.drawSkillMenu(drawingLayer, game);
 
-            RendererHelper.drawHudBars(creature, drawingLayer);
+            RendererHelper.drawSkillPickerMenu(player, drawingLayer, game);
+
+            RendererHelper.drawRespawnMessage(player, drawingLayer);
+
+            RendererHelper.drawHudBars(player, drawingLayer);
 
         }
 
@@ -105,6 +144,135 @@ public class RendererHelper {
     private static void drawFpsCounter(DrawingLayer drawingLayer) {
         float fps = Gdx.graphics.getFramesPerSecond();
         Assets.drawFont(drawingLayer, fps + " fps", Vector2.of(3, Constants.WindowHeight - 3), Color.WHITE);
+    }
+
+    private static float skillSlotPositionX(Integer index) {
+        int currentColumn = index;
+        return SKILL_MENU_POS_X + MARGIN + (SLOT_SIZE + SPACE_BETWEEN_SLOTS) * currentColumn;
+    }
+
+    private static float SkillSlotPositionY(@SuppressWarnings("unused") Integer index) {
+        return SKILL_MENU_POS_Y - (SLOT_SIZE + MARGIN);
+    }
+
+    private static void drawSkillMenu(DrawingLayer drawingLayer, GameRenderable game) {
+        PlayerParams playerParams = game.getPlayerParams(game.getCurrentPlayerId());
+
+        AtomicInteger i = new AtomicInteger();
+        skillRectangles.values().forEach(rect -> {
+            drawingLayer.shapeDrawer()
+                        .filledRectangle(rect.x() - 3, rect.y() - 3, rect.width() + 6, rect.height() + 6,
+                                         Color.BROWN);
+            drawingLayer.shapeDrawer()
+                        .filledRectangle(rect.x(), rect.y(), rect.width(), rect.height(), Color.BLACK);
+
+            SkillType skillType = playerParams.skillMenuSlots().get(i.get());
+
+            if (skillType != null) {
+                Assets.drawMediumFont(drawingLayer,
+                                      skillType.prettyName.substring(0, 2),
+                                      Vector2.of(rect.x() + 5f, rect.y() + SLOT_SIZE - 12f),
+                                      Color.CYAN);
+            }
+
+            i.getAndIncrement();
+        });
+    }
+
+    public static void drawSkillPickerMenu(Creature player, DrawingLayer drawingLayer, GameRenderable game) {
+        PlayerParams playerParams = game.getPlayerParams(game.getCurrentPlayerId());
+
+        if (playerParams.isInventoryVisible() || playerParams.skillMenuPickerSlotBeingChanged() == null) {
+            return;
+        }
+
+        float x = game.hudMousePos().x();
+        float y = game.hudMousePos().y();
+
+        AtomicInteger i = new AtomicInteger();
+
+        player.params().skills().keySet()
+              .forEach(skillType -> drawSkillPickerOption(drawingLayer, x, y, i, skillType.prettyName));
+    }
+
+    private static void drawSkillPickerOption(DrawingLayer drawingLayer,
+                                              float x,
+                                              float y,
+                                              AtomicInteger i,
+                                              String skillName) {
+        Rect rect = Rect.of(SKILL_PICKER_MENU_POS_X,
+                            SKILL_PICKER_MENU_POS_Y + 25f * i.get(),
+                            Gdx.graphics.getWidth() / 6f,
+                            20f);
+        drawingLayer.shapeDrawer()
+                    .filledRectangle(rect.x(),
+                                     rect.y(),
+                                     rect.width(),
+                                     rect.height(),
+                                     Color.DARK_GRAY.cpy().sub(0, 0, 0, 0.5f));
+        if (rect.contains(x, y)) {
+            drawingLayer.shapeDrawer()
+                        .rectangle(rect.x(), rect.y(), rect.width(), rect.height(), Color.ORANGE);
+        }
+        //TODO: icons
+        //        drawingLayer.spriteBatch()
+        //                    .draw(icons[item.template().iconPos().y()][item.template().iconPos().x()],
+        //                          rect.x() + 10f,
+        //                          rect.y(),
+        //                          20f,
+        //                          20f);
+        Assets.drawFont(drawingLayer,
+                        skillName,
+                        Vector2.of(rect.x() + 40f, rect.y() + 17f),
+                        Color.CYAN);
+        i.getAndIncrement();
+    }
+
+    // TODO: this method does not fit in this class - create MenuHelper?
+    public static boolean skillPickerMenuClick(Client client, MyGdxGameClient game) {
+        float x = game.hudMousePos().x();
+        float y = game.hudMousePos().y();
+
+        AtomicBoolean isSuccessful = new AtomicBoolean(false);
+
+        AtomicInteger i = new AtomicInteger();
+
+        Creature player = game.getCreature(game.getCurrentPlayerId());
+
+        player.params().skills().keySet()
+              .forEach(skillType -> {
+                  Rect rect = Rect.of(SKILL_PICKER_MENU_POS_X,
+                                      SKILL_PICKER_MENU_POS_Y + 25f * i.get(),
+                                      Gdx.graphics.getWidth() / 6f,
+                                      20f);
+
+                  if (rect.contains(x, y)) {
+                      client.sendTCP(PerformActionCommand.of(SkillPickupMenuSlotChangeAction.of(game.getCurrentPlayerId(),
+                                                                                                skillType)));
+                      isSuccessful.set(true);
+                  }
+
+                  i.getAndIncrement();
+              });
+        return isSuccessful.get();
+    }
+
+    public static boolean skillMenuClick(Client client, MyGdxGameClient game) {
+        float x = game.hudMousePos().x();
+        float y = game.hudMousePos().y();
+
+        AtomicBoolean isSuccessful = new AtomicBoolean(false);
+
+        skillRectangles.forEach((integer, rect) -> {
+            if (rect.contains(x, y)) {
+                client.sendTCP(PerformActionCommand.of(SkillPickupMenuActivateAction.of(game.getCurrentPlayerId(),
+                                                                                        integer)));
+                isSuccessful.set(true);
+            }
+        });
+
+        return isSuccessful.get();
+
     }
 
     private static void drawRespawnMessage(Creature creature, DrawingLayer drawingLayer) {

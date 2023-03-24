@@ -25,7 +25,9 @@ import com.mygdx.game.model.area.LootPileId;
 import com.mygdx.game.model.creature.*;
 import com.mygdx.game.model.skill.SkillType;
 import com.mygdx.game.model.util.GameStateBroadcast;
+import com.mygdx.game.model.util.PlayerParams;
 import com.mygdx.game.model.util.Vector2;
+import com.mygdx.game.renderer.util.RendererHelper;
 import com.mygdx.game.util.EndPointHelper;
 import com.mygdx.game.util.InventoryHelper;
 
@@ -40,7 +42,7 @@ public class MyGdxGameClient extends MyGdxGame {
 
     Client _endPoint;
 
-    Float pickedUpItemTime = 0f; // TODO: should do it differently
+    Float menuClickTime = 0f; // TODO: should do it differently
 
     private MyGdxGameClient() {
         thisPlayerId = CreatureId.of("Player_" + (int) (Math.random() * 10000000));
@@ -106,6 +108,7 @@ public class MyGdxGameClient extends MyGdxGame {
             }
         }
 
+        PlayerParams playerParams = gameState.playerParams().get(thisPlayerId);
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             if (getChat().isTyping()) {
                 if (!getChat().currentMessage().isEmpty()) {
@@ -113,28 +116,43 @@ public class MyGdxGameClient extends MyGdxGame {
                     getChat().isTyping(false);
                 }
             }
-            else if (gameState.playerParams().get(thisPlayerId).isInventoryVisible()) {
+            else if (playerParams.isInventoryVisible()) {
                 endPoint().sendTCP(PerformActionCommand.of(InventoryToggleAction.of(thisPlayerId)));
 
             }
         }
         if (!getChat().isTyping()) {
             if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-                if (gameState.playerParams().get(thisPlayerId).isInventoryVisible()) {
+                if (playerParams.isInventoryVisible()) {
                     InventoryHelper.moveItemClick(endPoint(), this);
                 }
-                else if (!gameState.playerParams().get(thisPlayerId).isInventoryVisible() &&
-                         !gameState.playerParams().get(thisPlayerId).itemPickupMenuLootPiles().isEmpty()) {
+                else if (!playerParams.isInventoryVisible() &&
+                         !playerParams.itemPickupMenuLootPiles().isEmpty()) {
                     boolean isSuccessful = InventoryHelper.tryItemPickupMenuClick(endPoint(), this);
                     if (isSuccessful) {
-                        pickedUpItemTime = gameState.generalTimer().time();
+                        menuClickTime = gameState.generalTimer().time();
+                    }
+
+                }
+                else if (!playerParams.isInventoryVisible() &&
+                         playerParams.skillMenuPickerSlotBeingChanged() != null) {
+                    boolean isSuccessful = RendererHelper.skillPickerMenuClick(endPoint(), this);
+                    if (isSuccessful) {
+                        menuClickTime = gameState.generalTimer().time();
+                    }
+
+                }
+                else if (!playerParams.isInventoryVisible()) {
+                    boolean isSuccessful = RendererHelper.skillMenuClick(endPoint(), this);
+                    if (isSuccessful) {
+                        menuClickTime = gameState.generalTimer().time();
                     }
 
                 }
 
             }
             if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-                if (!gameState.playerParams().get(thisPlayerId).isInventoryVisible()) {
+                if (!playerParams.isInventoryVisible()) {
                     Vector2 mousePos = mousePosRelativeToCenter();
 
                     Creature player = gameState().creatures().get(thisPlayerId);
@@ -142,7 +160,7 @@ public class MyGdxGameClient extends MyGdxGame {
                     if (player != null &&
                         player.params().movementCommandsPerSecondLimitTimer().time() >
                         Constants.MovementCommandCooldown &&
-                        gameState.generalTimer().time() > pickedUpItemTime + 0.1f) {
+                        gameState.generalTimer().time() > menuClickTime + 0.1f) {
                         endPoint().sendTCP(PerformActionCommand.of(CreatureMoveTowardsTargetAction.of(thisPlayerId,
                                                                                                       mousePos)));
                     }
