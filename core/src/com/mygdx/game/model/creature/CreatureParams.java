@@ -146,9 +146,19 @@ public class CreatureParams {
         params.aiStateSeed = RandomHelper.seededRandomFloat(creatureId);
         params.aiStateTime = 0f;
 
-        params.inventoryItems.put(2, Item.of(ItemTemplate.templates.get("leatherArmor"), 0.6f));
-        params.inventoryItems.put(3, Item.of(ItemTemplate.templates.get("leatherArmor"), 1f));
-        params.inventoryItems.put(10, Item.of(ItemTemplate.templates.get("hideGloves"), 0.9f));
+
+        Map<SkillType, Integer> grantedSkills1 = new ConcurrentSkipListMap<>();
+        grantedSkills1.put(SkillType.BOOMERANG, 1);
+
+        params.inventoryItems.put(2,
+                                  Item.of()
+                                      .template(ItemTemplate.templates.get("leatherArmor"))
+                                      .qualityModifier(0.6f)
+                                      .grantedSkills(grantedSkills1));
+        params.inventoryItems.put(3,
+                                  Item.of().template(ItemTemplate.templates.get("leatherArmor")).qualityModifier(1f));
+        params.inventoryItems.put(10,
+                                  Item.of().template(ItemTemplate.templates.get("hideGloves")).qualityModifier(0.9f));
         return params;
     }
 

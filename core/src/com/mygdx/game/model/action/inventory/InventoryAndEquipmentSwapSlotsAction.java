@@ -13,6 +13,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
+
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
@@ -55,6 +58,16 @@ public class InventoryAndEquipmentSwapSlotsAction implements GameStateAction {
 
         playerParams.inventoryItemBeingMoved(null);
         playerParams.equipmentItemBeingMoved(null);
+
+        playerParams.skillMenuPickerSlotBeingChanged(null);
+
+        Set<Integer> slotsToRemove = new ConcurrentSkipListSet<>();
+        playerParams.skillMenuSlots().forEach((slotIndex, skillType) -> {
+            if (!player.availableSkills().contains(skillType)) {
+                slotsToRemove.add(slotIndex);
+            }
+        });
+        slotsToRemove.forEach(slotIndex -> playerParams.skillMenuSlots().remove(slotIndex));
 
 
     }

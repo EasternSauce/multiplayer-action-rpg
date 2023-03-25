@@ -205,7 +205,7 @@ public class RendererHelper {
 
         AtomicInteger i = new AtomicInteger();
 
-        player.params().skills().keySet()
+        player.availableSkills()
               .forEach(skillType -> drawSkillPickerOption(drawingLayer, x, y, i, skillType.prettyName));
     }
 
@@ -254,7 +254,7 @@ public class RendererHelper {
 
         Creature player = game.getCreature(game.getCurrentPlayerId());
 
-        player.params().skills().keySet()
+        player.availableSkills()
               .forEach(skillType -> {
                   Rect rect = Rect.of(SKILL_PICKER_MENU_POS_X,
                                       SKILL_PICKER_MENU_POS_Y + 25f * i.get(),

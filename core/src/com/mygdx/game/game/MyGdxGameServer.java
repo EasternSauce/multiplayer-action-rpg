@@ -298,26 +298,26 @@ public class MyGdxGameServer extends MyGdxGame {
 
         onTickActions.add(LootPileSpawnAction.of(areaId,
                                                  Vector2.of(12, 12),
-                                                 new ConcurrentSkipListSet<>(Arrays.asList(Item.of(
-                                                                                                   ItemTemplate.templates.get("leatherArmor"),
-                                                                                                   0.9f
-                                                                                                  ),
-                                                                                           Item.of(ItemTemplate.templates.get(
-                                                                                                           "hideGloves"),
-                                                                                                   0.9f
-                                                                                                  )))));
+                                                 new ConcurrentSkipListSet<>(Arrays.asList(Item.of()
+                                                                                               .template(ItemTemplate.templates.get(
+                                                                                                       "leatherArmor"))
+                                                                                               .qualityModifier(0.9f),
+                                                                                           Item.of()
+                                                                                               .template(ItemTemplate.templates.get(
+                                                                                                       "hideGloves"))
+                                                                                               .qualityModifier(0.9f)))));
 
 
         onTickActions.add(LootPileSpawnAction.of(areaId,
                                                  Vector2.of(13.5f, 12),
-                                                 new ConcurrentSkipListSet<>(Arrays.asList(Item.of(
-                                                                                                   ItemTemplate.templates.get("ringmailGreaves"),
-                                                                                                   0.9f
-                                                                                                  ),
-                                                                                           Item.of(ItemTemplate.templates.get(
-                                                                                                           "hideGloves"),
-                                                                                                   0.5f
-                                                                                                  )))));
+                                                 new ConcurrentSkipListSet<>(Arrays.asList(Item.of()
+                                                                                               .template(ItemTemplate.templates.get(
+                                                                                                       "ringmailGreaves"))
+                                                                                               .qualityModifier(0.9f),
+                                                                                           Item.of()
+                                                                                               .template(ItemTemplate.templates.get(
+                                                                                                       "hideGloves"))
+                                                                                               .qualityModifier(0.5f)))));
 
         gameState.areaGates(new ConcurrentSkipListSet<>());
         gameState.areaGates()

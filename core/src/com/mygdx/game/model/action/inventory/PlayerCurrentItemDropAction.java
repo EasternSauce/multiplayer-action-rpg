@@ -58,10 +58,10 @@ public class PlayerCurrentItemDropAction implements GameStateAction {
         LootPileId lootPileId = LootPileId.of("LootPile_" + (int) (Math.random() * 10000000)); // TODO: use seeded rng
 
         Set<Item> lootPileItems = new ConcurrentSkipListSet<>();
-        lootPileItems.add(Item.of(item.template(),
-                                  item.quantity(),
-                                  item.qualityModifier(),
-                                  lootPileId));
+        lootPileItems.add(Item.of().template(item.template())
+                              .quantity(item.quantity())
+                              .qualityModifier(item.qualityModifier())
+                              .lootPileId(lootPileId));
 
         LootPile lootPile = LootPile.of(lootPileId, player.params().areaId(), player.params().pos(), lootPileItems);
 

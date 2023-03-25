@@ -256,29 +256,29 @@ public class InventoryHelper {
         equipmentRectangles.entrySet().stream().filter(entry -> entry.getValue().contains(x, y))
                            .forEach(entry -> equipmentSlotMousedOver.set(entry.getKey()));
 
-        Item item = null;
+        Item mouseOverItem = null;
 
         if (inventorySlotMousedOver.get() != null && (playerParams.inventoryItemBeingMoved() == null ||
                                                       !Objects.equals(inventorySlotMousedOver.get(),
                                                                       playerParams.inventoryItemBeingMoved()))) {
-            item = player.params().inventoryItems().get(inventorySlotMousedOver.get());
+            mouseOverItem = player.params().inventoryItems().get(inventorySlotMousedOver.get());
         }
         else if (equipmentSlotMousedOver.get() != null && (playerParams.equipmentItemBeingMoved() == null ||
                                                            !Objects.equals(equipmentSlotMousedOver.get(),
                                                                            playerParams.equipmentItemBeingMoved()))) {
-            item = player.params().equipmentItems().get(equipmentSlotMousedOver.get());
+            mouseOverItem = player.params().equipmentItems().get(equipmentSlotMousedOver.get());
 
         }
 
-        if (item != null) {
+        if (mouseOverItem != null) {
             Assets.drawFont(drawingLayer,
-                            item.template().name(),
+                            mouseOverItem.template().name(),
                             Vector2.of(backgroundRect.x() + MARGIN,
                                        backgroundRect.y() + backgroundRect.height() - (INVENTORY_HEIGHT + 5)),
                             Color.DARK_GRAY);
 
             Assets.drawFont(drawingLayer,
-                            item.getItemInformation(),
+                            mouseOverItem.getItemInformation(),
                             Vector2.of(backgroundRect.x() + MARGIN,
                                        backgroundRect.y() + backgroundRect.height() - (INVENTORY_HEIGHT + 35)),
                             Color.DARK_GRAY);
@@ -377,14 +377,15 @@ public class InventoryHelper {
                                                                                                equipmentItemBeingMoved)));
             }
             else if (equipmentItemBeingMoved != null && equipmentSlotClicked != null) {
-                client.sendTCP(PerformActionCommand.of(InventorySwapSlotsAction.of(game.getCurrentPlayerId(),
-                                                                                   equipmentItemBeingMoved,
-                                                                                   equipmentSlotClicked)));
+                //TODO: INSIDE EQUIPMENT SWAP?
+                //                client.sendTCP(PerformActionCommand.of(InventorySwapSlotsAction.of(game.getCurrentPlayerId(),
+                //                                                                                   equipmentItemBeingMoved,
+                //                                                                                   equipmentSlotClicked)));
             }
             else if (inventorySlotClicked != null) {
                 if (player.params().inventoryItems().containsKey(inventorySlotClicked)) {
-                    client.sendTCP(PerformActionCommand.of(InventoryMoveItemAction.of(game.getCurrentPlayerId(),
-                                                                                      inventorySlotClicked)));
+                    client.sendTCP(PerformActionCommand.of(InventoryItemPickUpAction.of(game.getCurrentPlayerId(),
+                                                                                        inventorySlotClicked)));
                 }
             }
             else if (equipmentSlotClicked != null) {
@@ -396,7 +397,7 @@ public class InventoryHelper {
                 }
             }
             else {
-                client.sendTCP(PerformActionCommand.of(InventoryMoveFinishAction.of(game.getCurrentPlayerId())));
+                client.sendTCP(PerformActionCommand.of(InventoryMoveCancelAction.of(game.getCurrentPlayerId())));
             }
 
         }
@@ -415,7 +416,7 @@ public class InventoryHelper {
                 client.sendTCP(PerformActionCommand.of(LootPileSpawnAction.of(player.params().areaId(),
                                                                               player.params().pos(),
                                                                               items)));
-                client.sendTCP(PerformActionCommand.of(InventoryMoveFinishAction.of(game.getCurrentPlayerId())));
+                client.sendTCP(PerformActionCommand.of(InventoryMoveCancelAction.of(game.getCurrentPlayerId())));
 
             }
         }

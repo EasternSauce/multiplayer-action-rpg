@@ -11,6 +11,9 @@ import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.model.util.WorldDirection;
 import com.mygdx.game.renderer.config.CreatureAnimationConfig;
 
+import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
+
 public abstract class Creature {
 
     public abstract CreatureParams params();
@@ -160,6 +163,14 @@ public abstract class Creature {
                        .values()
                        .stream()
                        .reduce(0, ((acc, item) -> acc + item.armor()), Integer::sum);
+    }
+
+    public Set<SkillType> availableSkills() {
+        Set<SkillType> skills = new ConcurrentSkipListSet<>();
+        params().equipmentItems()
+                .forEach((integer, item) -> item.grantedSkills()
+                                                .forEach((skillType, integer1) -> skills.add(skillType)));
+        return skills;
     }
 
     public void handleBeingAttacked(Boolean isRanged,

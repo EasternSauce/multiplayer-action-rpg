@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-public class InventoryMoveFinishAction implements GameStateAction {
+public class InventoryMoveCancelAction implements GameStateAction {
     CreatureId creatureId;
 
     @Override

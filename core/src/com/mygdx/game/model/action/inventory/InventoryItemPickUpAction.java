@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-public class InventoryMoveItemAction implements GameStateAction {
+public class InventoryItemPickUpAction implements GameStateAction {
     CreatureId creatureId;
 
     Integer slotIndex;

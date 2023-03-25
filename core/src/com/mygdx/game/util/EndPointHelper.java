@@ -108,8 +108,8 @@ public class EndPointHelper {
         endPoint.getKryo().register(CreatureMovingVectorSetAction.class);
         endPoint.getKryo().register(InventorySwapSlotsAction.class);
         endPoint.getKryo().register(InventoryToggleAction.class);
-        endPoint.getKryo().register(InventoryMoveItemAction.class);
-        endPoint.getKryo().register(InventoryMoveFinishAction.class);
+        endPoint.getKryo().register(InventoryItemPickUpAction.class);
+        endPoint.getKryo().register(InventoryMoveCancelAction.class);
         endPoint.getKryo().register(InventoryAndEquipmentSwapSlotsAction.class);
         endPoint.getKryo().register(EquipmentItemPickUpAction.class);
         endPoint.getKryo().register(LootPileDespawnAction.class);

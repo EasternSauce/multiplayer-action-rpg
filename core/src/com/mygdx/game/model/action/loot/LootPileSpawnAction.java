@@ -38,10 +38,10 @@ public class LootPileSpawnAction implements GameStateAction {
                 lootPileItems =
                 this.items()
                     .stream()
-                    .map(item -> Item.of(item.template(),
-                                         item.quantity(),
-                                         item.qualityModifier(),
-                                         lootPileId))
+                    .map(item -> Item.of().template(item.template())
+                                     .quantity(item.quantity())
+                                     .qualityModifier(item.qualityModifier())
+                                     .lootPileId(lootPileId))
                     .collect(Collectors.toCollection(ConcurrentSkipListSet::new));
 
         LootPile lootPile = LootPile.of(lootPileId, areaId, pos, lootPileItems);
