@@ -1,6 +1,7 @@
 package com.mygdx.game.model.item;
 
 
+import com.mygdx.game.model.skill.SkillType;
 import com.mygdx.game.model.util.Vector2Int;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -46,7 +47,35 @@ public class ItemTemplate {
                                                           .worth(70)
                                                           .equipable(true)
                                                           .equipmentSlotType(EquipmentSlotType.GLOVES)
-                                                          .armor(5))
+                                                          .armor(5),
+                                              ItemTemplate.of("boomerang",
+                                                              "Boomerang",
+                                                              "-",
+                                                              Vector2Int.of(5, 6))
+                                                          .worth(350)
+                                                          .equipable(true)
+                                                          .equipmentSlotType(EquipmentSlotType.WEAPON)
+                                                          .skillType(SkillType.BOOMERANG)
+                                                          .damage(18f),
+                                              ItemTemplate.of("woodenSword",
+                                                              "Wooden Sword",
+                                                              "-",
+                                                              Vector2Int.of(0, 5))
+                                                          .worth(75)
+                                                          .equipable(true)
+                                                          .equipmentSlotType(EquipmentSlotType.WEAPON)
+                                                          .skillType(SkillType.SWORD_SLASH)
+                                                          .damage(25f),
+                                              ItemTemplate.of("ironSword",
+                                                              "Iron Sword",
+                                                              "-",
+                                                              Vector2Int.of(1, 5))
+                                                          .worth(150)
+                                                          .equipable(true)
+                                                          .equipmentSlotType(EquipmentSlotType.WEAPON)
+                                                          .skillType(SkillType.SWORD_SLASH)
+                                                          .damage(30f)
+                                             )
 
                 );
         templates = new ConcurrentSkipListMap<>(list
@@ -64,8 +93,9 @@ public class ItemTemplate {
     Boolean equipable = false;
     EquipmentSlotType equipmentSlotType;
     Integer worth = 0;
-    Integer damage;
+    Float damage;
     Integer armor;
+    SkillType skillType;
 
     public static ItemTemplate of(String id,
                                   String name,

@@ -17,6 +17,9 @@ public class PlayerRemoveAction implements GameStateAction {
 
     @Override
     public Vector2 actionObjectPos(GameState gameState) {
+        if (!gameState.creatures().containsKey(creatureId)) {
+            return Vector2.of(0f, 0f);
+        }
         return gameState.creatures().get(creatureId).params().pos();
     }
 

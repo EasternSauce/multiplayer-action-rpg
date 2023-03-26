@@ -13,6 +13,7 @@ import com.mygdx.game.game.interface_.GameRenderable;
 import com.mygdx.game.model.action.inventory.*;
 import com.mygdx.game.model.action.loot.LootPileItemTryPickUpAction;
 import com.mygdx.game.model.action.loot.LootPileSpawnAction;
+import com.mygdx.game.model.action.loot.LootPileSpawnOnPlayerItemDropAction;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.item.EquipmentSlotType;
 import com.mygdx.game.model.item.Item;
@@ -376,12 +377,12 @@ public class InventoryHelper {
                                                                                                inventorySlotClicked,
                                                                                                equipmentItemBeingMoved)));
             }
-            else if (equipmentItemBeingMoved != null && equipmentSlotClicked != null) {
-                //TODO: INSIDE EQUIPMENT SWAP?
-                //                client.sendTCP(PerformActionCommand.of(InventorySwapSlotsAction.of(game.getCurrentPlayerId(),
-                //                                                                                   equipmentItemBeingMoved,
-                //                                                                                   equipmentSlotClicked)));
-            }
+            //            else if (equipmentItemBeingMoved != null && equipmentSlotClicked != null) {
+            //TODO: INSIDE EQUIPMENT SWAP?
+            //                client.sendTCP(PerformActionCommand.of(InventorySwapSlotsAction.of(game.getCurrentPlayerId(),
+            //                                                                                   equipmentItemBeingMoved,
+            //                                                                                   equipmentSlotClicked)));
+            //            }
             else if (inventorySlotClicked != null) {
                 if (player.params().inventoryItems().containsKey(inventorySlotClicked)) {
                     client.sendTCP(PerformActionCommand.of(InventoryItemPickUpAction.of(game.getCurrentPlayerId(),
@@ -403,7 +404,7 @@ public class InventoryHelper {
         }
         else {
             if (playerParams.inventoryItemBeingMoved() != null) {
-                client.sendTCP(PerformActionCommand.of(PlayerCurrentItemDropAction.of(game.getCurrentPlayerId())));
+                client.sendTCP(PerformActionCommand.of(LootPileSpawnOnPlayerItemDropAction.of(game.getCurrentPlayerId())));
             }
 
             if (playerParams.equipmentItemBeingMoved() != null) {

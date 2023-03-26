@@ -405,4 +405,5 @@ public class Enemy extends Creature {
     public boolean canPerformSkill(Skill skill) {
         return isAlive() && params().stamina() >= skill.staminaCost();
     }
+
 }

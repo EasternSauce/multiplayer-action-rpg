@@ -1,4 +1,4 @@
-package com.mygdx.game.model.action.inventory;
+package com.mygdx.game.model.action.loot;
 
 import com.mygdx.game.game.interface_.GameActionApplicable;
 import com.mygdx.game.model.GameState;
@@ -21,13 +21,15 @@ import java.util.concurrent.ConcurrentSkipListSet;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-public class PlayerCurrentItemDropAction implements GameStateAction {
+public class LootPileSpawnOnPlayerItemDropAction implements GameStateAction {
     CreatureId playerId;
 
     @Override
     public Vector2 actionObjectPos(GameState gameState) {
-        Creature creature = gameState.creatures().get(playerId);
-        return creature.params().pos();
+        if (!gameState.creatures().containsKey(playerId)) {
+            return Vector2.of(0f, 0f);
+        }
+        return gameState.creatures().get(playerId).params().pos();
     }
 
     @Override

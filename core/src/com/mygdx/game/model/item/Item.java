@@ -14,59 +14,9 @@ public class Item implements Comparable<Item> {
     ItemTemplate template;
     Integer quantity = 1;
     Float qualityModifier;
-
-
-    LootPileId lootPileId;
     Map<SkillType, Integer> grantedSkills = new ConcurrentSkipListMap<>();
 
-    //    public static Item of(ItemTemplate template, float qualityModifier) {
-    //        Item item = Item.of();
-    //
-    //        assert qualityModifier > 0f && qualityModifier <= 1f;
-    //
-    //        item.template = template;
-    //        item.qualityModifier = qualityModifier;
-    //
-    //        return item;
-    //    }
-    //
-    //    public static Item of(ItemTemplate template, float qualityModifier, Map<SkillType, Integer> grantedSkills) {
-    //        Item item = Item.of();
-    //
-    //        assert qualityModifier > 0f && qualityModifier <= 1f;
-    //
-    //        item.template = template;
-    //        item.qualityModifier = qualityModifier;
-    //        item.grantedSkills = grantedSkills;
-    //
-    //        return item;
-    //    }
-    //
-    //    public static Item of (ItemTemplate template, float qualityModifier, LootPileId lootPileId) {
-    //        Item item = Item.of();
-    //
-    //        assert qualityModifier > 0f && qualityModifier <= 1f;
-    //
-    //        item.template = template;
-    //        item.qualityModifier = qualityModifier;
-    //        item.lootPileId = lootPileId;
-    //
-    //        return item;
-    //    }
-    //
-    //    public static Item of (ItemTemplate template, float qualityModifier, Map<SkillType, Integer> grantedSkills, LootPileId lootPileId) {
-    //        Item item = Item.of();
-    //
-    //        assert qualityModifier > 0f && qualityModifier <= 1f;
-    //
-    //        item.template = template;
-    //        item.qualityModifier = qualityModifier;
-    //        item.lootPileId = lootPileId;
-    //        item.grantedSkills = grantedSkills;
-    //
-    //        return item;
-    //    }
-
+    LootPileId lootPileId;
 
     @SuppressWarnings("StringConcatenationInsideStringBufferAppend")
     public String getItemInformation() {

@@ -77,4 +77,5 @@ public interface GameUpdatable {
     LootPile getLootPile(LootPileId lootPileId);
 
     Map<LootPileId, LootPile> getLootPiles();
+
 }

@@ -46,8 +46,8 @@ public class Skill {
                             singleScheduledAbility(AbilityType.FIREBALL, skillType),
                             SimpleTimer.getExpiredTimer(),
                             0.4f,
-                            15f,
-                            30f);
+                            20f,
+                            12f);
         }
         if (skillType == SkillType.LIGHTNING) {
             return Skill.of(skillType,
@@ -126,7 +126,7 @@ public class Skill {
                             singleScheduledAbility(AbilityType.BOOMERANG, skillType),
                             SimpleTimer.getExpiredTimer(),
                             10f,
-                            25f,
+                            30f,
                             0f);
         }
 

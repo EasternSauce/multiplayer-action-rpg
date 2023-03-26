@@ -196,7 +196,9 @@ public class RendererHelper {
     public static void drawSkillPickerMenu(Creature player, DrawingLayer drawingLayer, GameRenderable game) {
         PlayerParams playerParams = game.getPlayerParams(game.getCurrentPlayerId());
 
-        if (playerParams.isInventoryVisible() || playerParams.skillMenuPickerSlotBeingChanged() == null) {
+        if (playerParams == null ||
+            playerParams.isInventoryVisible() ||
+            playerParams.skillMenuPickerSlotBeingChanged() == null) {
             return;
         }
 

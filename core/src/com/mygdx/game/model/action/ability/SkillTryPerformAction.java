@@ -26,8 +26,10 @@ public class SkillTryPerformAction implements GameStateAction {
 
     @Override
     public Vector2 actionObjectPos(GameState gameState) {
-        Creature creature = gameState.creatures().get(creatureId);
-        return creature.params().pos();
+        if (!gameState.creatures().containsKey(creatureId)) {
+            return Vector2.of(0f, 0f);
+        }
+        return gameState.creatures().get(creatureId).params().pos();
 
     }
 

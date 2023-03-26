@@ -113,8 +113,10 @@ public class PhysicsHelper {
                 //                if (lootPile != null) lootPile.isLooted(true);
 
                 PlayerParams playerParams = game.getPlayerParams(event.creatureId());
-                playerParams.itemPickupMenuLootPiles().add(event.lootPileId());
 
+                if (playerParams != null) {
+                    playerParams.itemPickupMenuLootPiles().add(event.lootPileId());
+                }
 
             }
 
@@ -122,7 +124,10 @@ public class PhysicsHelper {
                 CreatureLeavesLootPileEvent event = (CreatureLeavesLootPileEvent) physicsEvent;
 
                 PlayerParams playerParams = game.getPlayerParams(event.creatureId());
-                playerParams.itemPickupMenuLootPiles().remove(event.lootPileId());
+
+                if (playerParams != null) {
+                    playerParams.itemPickupMenuLootPiles().remove(event.lootPileId());
+                }
 
             }
         });

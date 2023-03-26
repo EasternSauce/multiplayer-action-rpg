@@ -22,6 +22,9 @@ public class LootPileItemTryPickUpAction implements GameStateAction {
 
     @Override
     public Vector2 actionObjectPos(GameState gameState) {
+        if (!gameState.creatures().containsKey(playerId)) {
+            return Vector2.of(0f, 0f);
+        }
         return gameState.creatures().get(playerId).params().pos();
     }
 
@@ -45,6 +48,7 @@ public class LootPileItemTryPickUpAction implements GameStateAction {
                          .template(item.template())
                          .quantity(item.quantity())
                          .qualityModifier(item.qualityModifier())
+                         .grantedSkills(item.grantedSkills())
                          .lootPileId(null));
 
             lootPile.items().remove(item);

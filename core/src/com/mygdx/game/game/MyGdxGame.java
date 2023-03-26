@@ -214,7 +214,8 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
                                                .attackDistance(enemySpawn.enemyTemplate()
                                                                          .attackDistance())
                                                .mainAttackSkill(enemySpawn.enemyTemplate()
-                                                                          .mainAttackSkill())));
+                                                                          .mainAttackSkill())
+                                               .dropTable(enemySpawn.enemyTemplate().dropTable())));
 
         getCreatureModelsToBeCreated().add(creatureId);
 
@@ -579,4 +580,6 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
     public Map<LootPileId, LootPile> getLootPiles() {
         return gameState.lootPiles();
     }
+
+
 }

@@ -14,6 +14,7 @@ import com.mygdx.game.model.action.inventory.*;
 import com.mygdx.game.model.action.loot.LootPileDespawnAction;
 import com.mygdx.game.model.action.loot.LootPileItemTryPickUpAction;
 import com.mygdx.game.model.action.loot.LootPileSpawnAction;
+import com.mygdx.game.model.action.loot.LootPileSpawnOnPlayerItemDropAction;
 import com.mygdx.game.model.action.skillmenu.SkillPickerMenuActivateAction;
 import com.mygdx.game.model.action.skillmenu.SkillPickerMenuDeactivateAction;
 import com.mygdx.game.model.action.skillmenu.SkillPickerMenuSlotChangeAction;
@@ -94,6 +95,7 @@ public class EndPointHelper {
         endPoint.getKryo().register(CreatureParams.class);
         endPoint.getKryo().register(AbilityParams.class);
         endPoint.getKryo().register(AreaGate.class);
+        endPoint.getKryo().register(DropTableEntry.class);
 
 
         endPoint.getKryo().register(AbilityAddAction.class);
@@ -115,7 +117,7 @@ public class EndPointHelper {
         endPoint.getKryo().register(LootPileDespawnAction.class);
         endPoint.getKryo().register(LootPileItemTryPickUpAction.class);
         endPoint.getKryo().register(LootPileSpawnAction.class);
-        endPoint.getKryo().register(PlayerCurrentItemDropAction.class);
+        endPoint.getKryo().register(LootPileSpawnOnPlayerItemDropAction.class);
         endPoint.getKryo().register(SkillPickerMenuActivateAction.class);
         endPoint.getKryo().register(SkillPickerMenuSlotChangeAction.class);
         endPoint.getKryo().register(SkillPickerMenuDeactivateAction.class);

@@ -7,13 +7,13 @@ import com.mygdx.game.model.skill.Skill;
 import com.mygdx.game.model.skill.SkillType;
 import com.mygdx.game.model.util.SimpleTimer;
 import com.mygdx.game.model.util.Vector2;
-import com.mygdx.game.util.RandomHelper;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -106,11 +106,15 @@ public class CreatureParams {
 
     SkillType mainAttackSkill;
 
+    Set<DropTableEntry> dropTable;
+
     Boolean justTeleportedToGate = false;
     AreaId areaWhenEnteredGate;
 
     Map<Integer, Item> equipmentItems = new ConcurrentSkipListMap<>();
     Map<Integer, Item> inventoryItems = new ConcurrentSkipListMap<>();
+
+    Float dropRngSeed = (float) Math.random();
 
     public static CreatureParams of(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn) {
         return getCreatureParams(creatureId,
@@ -133,9 +137,8 @@ public class CreatureParams {
         params.areaId = areaId;
         params.pos = enemySpawn;
         params.textureName = textureName;
-        params.findTargetCooldown = 0.5f + RandomHelper.seededRandomFloat(creatureId);
-        //        params.pathCalculationFailurePenalty = 10f + 5f * RandomHelper.seededRandomFloat(creatureId);
-        params.pathCalculationCooldown = 4f + 2f * RandomHelper.seededRandomFloat(creatureId);
+        params.findTargetCooldown = 0.5f + (float) Math.random();
+        params.pathCalculationCooldown = 4f + 2f * (float) Math.random();
 
         params.skills = // TODO: should we restrict which creature can perform which skill?
                 new ConcurrentSkipListMap<>(Arrays.stream(SkillType.values())
@@ -143,7 +146,7 @@ public class CreatureParams {
                                                                             skillType -> Skill.of(skillType,
                                                                                                   creatureId))));
 
-        params.aiStateSeed = RandomHelper.seededRandomFloat(creatureId);
+        params.aiStateSeed = (float) Math.random();
         params.aiStateTime = 0f;
 
 

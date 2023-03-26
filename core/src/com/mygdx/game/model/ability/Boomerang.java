@@ -25,7 +25,7 @@ public class Boomerang extends Projectile {
                              .channelTime(0f)
                              .activeTime(10f)
                              .textureName("boomerang")
-                             .baseDamage(25f)
+                             .baseDamage(22f)
                              .isChannelAnimationLooping(true)
                              .isActiveAnimationLooping(true)
                              .rotationShift(0f)
@@ -123,7 +123,7 @@ public class Boomerang extends Projectile {
                     }
                 }
 
-                float increment = 8f;
+                float increment = 10f;
 
                 if (result > increment || result < -increment) {
                     params().dirVector(params().dirVector().rotateDeg(increment));

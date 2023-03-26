@@ -34,9 +34,7 @@ public class PlayfulGhost extends Projectile {
                         .isActiveAnimationLooping(true)
                         .rotationShift(0f)
                         .delayedActionTime(0.001f)
-                        .speed(5f)
-                        .rngSeed(RandomHelper.seededRandomFloat(abilityParams.creatureId()));
-
+                        .speed(5f);
 
         return ability;
     }
@@ -181,13 +179,13 @@ public class PlayfulGhost extends Projectile {
 
     @SuppressWarnings("unused")
     public Float nextPositiveFloat() {
-        params().rngSeed(RandomHelper.seededRandomFloat(params().rngSeed()));
-        return params().rngSeed();
+        params().abilityRngSeed(RandomHelper.seededRandomFloat(params().abilityRngSeed()));
+        return params().abilityRngSeed();
     }
 
     @SuppressWarnings("unused")
     public Float nextFloat() {
-        params().rngSeed(RandomHelper.seededRandomFloat(params().rngSeed()));
-        return (params().rngSeed() - 0.5f) * 2;
+        params().abilityRngSeed(RandomHelper.seededRandomFloat(params().abilityRngSeed()));
+        return (params().abilityRngSeed() - 0.5f) * 2;
     }
 }

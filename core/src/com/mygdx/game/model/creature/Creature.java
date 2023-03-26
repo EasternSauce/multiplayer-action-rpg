@@ -10,6 +10,7 @@ import com.mygdx.game.model.skill.SkillType;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.model.util.WorldDirection;
 import com.mygdx.game.renderer.config.CreatureAnimationConfig;
+import com.mygdx.game.util.RandomHelper;
 
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
@@ -162,6 +163,7 @@ public abstract class Creature {
         return params().equipmentItems()
                        .values()
                        .stream()
+                       .filter(item -> item.template().armor() != null)
                        .reduce(0, ((acc, item) -> acc + item.armor()), Integer::sum);
     }
 
@@ -213,10 +215,6 @@ public abstract class Creature {
         }
     }
 
-    public void onDeath() {
-
-    }
-
     public void onAbilityPerformed(Ability ability) {
         if (!ability.params().attackWithoutMoving() && params().isMoving()) {
             Vector2 movementVector = params()
@@ -240,6 +238,12 @@ public abstract class Creature {
     public void onPerformSkill(Skill skill) {
         takeStaminaDamage(skill.staminaCost());
         takeManaDamage(skill.manaCost());
+    }
+
+    public Float nextDropRngValue() {
+        Float rngValue = RandomHelper.seededRandomFloat(params().dropRngSeed());
+        params().dropRngSeed(rngValue);
+        return rngValue;
     }
 
 }

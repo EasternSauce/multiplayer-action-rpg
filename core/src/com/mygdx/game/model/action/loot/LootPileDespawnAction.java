@@ -3,7 +3,6 @@ package com.mygdx.game.model.action.loot;
 import com.mygdx.game.game.interface_.GameActionApplicable;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.action.GameStateAction;
-import com.mygdx.game.model.area.LootPile;
 import com.mygdx.game.model.area.LootPileId;
 import com.mygdx.game.model.util.Vector2;
 import lombok.AllArgsConstructor;
@@ -18,8 +17,10 @@ public class LootPileDespawnAction implements GameStateAction {
 
     @Override
     public Vector2 actionObjectPos(GameState gameState) {
-        LootPile lootPile = gameState.lootPiles().get(lootPileId);
-        return lootPile.pos();
+        if (!gameState.lootPiles().containsKey(lootPileId)) {
+            return Vector2.of(0f, 0f);
+        }
+        return gameState.lootPiles().get(lootPileId).pos();
     }
 
     @Override

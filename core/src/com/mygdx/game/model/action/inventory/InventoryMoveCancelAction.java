@@ -3,7 +3,6 @@ package com.mygdx.game.model.action.inventory;
 import com.mygdx.game.game.interface_.GameActionApplicable;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.action.GameStateAction;
-import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.util.PlayerParams;
 import com.mygdx.game.model.util.Vector2;
@@ -19,8 +18,10 @@ public class InventoryMoveCancelAction implements GameStateAction {
 
     @Override
     public Vector2 actionObjectPos(GameState gameState) {
-        Creature creature = gameState.creatures().get(creatureId);
-        return creature.params().pos();
+        if (!gameState.creatures().containsKey(creatureId)) {
+            return Vector2.of(0f, 0f);
+        }
+        return gameState.creatures().get(creatureId).params().pos();
     }
 
     @Override
