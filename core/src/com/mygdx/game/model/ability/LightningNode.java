@@ -10,7 +10,9 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 @NoArgsConstructor(staticName = "of")
 @Data
@@ -60,7 +62,7 @@ public class LightningNode extends Ability {
             game.isLineOfSight(params().areaId(), params().pos(), targetCreature.params().pos())) {
             targetCreature.handleBeingAttacked(true,
                                                params().dirVector(),
-                                               params().currentDamage(),
+                                               getDamage(game),
                                                params().creatureId(),
                                                game); // TODO: can we do this in main update loop instead? introduce events etc.
 
@@ -116,5 +118,14 @@ public class LightningNode extends Ability {
     @Override
     public void onOtherAbilityHit(AbilityId otherAbilityId, GameUpdatable game) {
 
+    }
+
+    @Override
+    public Map<Integer, Float> levelScalings() {
+        ConcurrentSkipListMap<Integer, Float> scalings = new ConcurrentSkipListMap<>();
+        scalings.put(1, 1.0f);
+        scalings.put(2, 1.1f);
+        scalings.put(3, 1.2f);
+        return scalings;
     }
 }

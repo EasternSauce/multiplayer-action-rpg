@@ -60,7 +60,7 @@ public class RicochetBullet extends Projectile {
 
     @Override
     public void onCreatureHit() {
-        params.currentDamage(params().currentDamage() * 3 / 5f);
+        params.damageMultiplier(params.damageMultiplier() * 3 / 5f);
     }
 
     @Override
@@ -83,8 +83,6 @@ public class RicochetBullet extends Projectile {
 
 
         params().creaturesAlreadyHit().clear();
-
-        params.currentDamage(params().baseDamage());
 
         params().wallBounceCount(params().wallBounceCount() + 1);
 

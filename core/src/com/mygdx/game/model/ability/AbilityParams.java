@@ -38,7 +38,7 @@ public class AbilityParams {
     Float speed;
 
     Float baseDamage;
-    Float currentDamage;
+    Float damageMultiplier = 1.0f;
 
     Float channelTime;
     Float activeTime;

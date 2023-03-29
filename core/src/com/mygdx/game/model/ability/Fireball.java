@@ -8,6 +8,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentSkipListMap;
+
 @NoArgsConstructor(staticName = "of")
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -98,5 +101,14 @@ public class Fireball extends Projectile {
     @Override
     public void onOtherAbilityHit(AbilityId otherAbilityId, GameUpdatable game) {
 
+    }
+
+    @Override
+    public Map<Integer, Float> levelScalings() {
+        ConcurrentSkipListMap<Integer, Float> scalings = new ConcurrentSkipListMap<>();
+        scalings.put(1, 1.0f);
+        scalings.put(2, 1.1f);
+        scalings.put(3, 1.2f);
+        return scalings;
     }
 }

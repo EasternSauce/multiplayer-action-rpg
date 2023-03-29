@@ -8,6 +8,9 @@ import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.renderer.config.AbilityAnimationConfig;
 import lombok.Data;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentSkipListMap;
+
 @Data
 public abstract class Ability {
     AbilityParams params;
@@ -85,8 +88,6 @@ public abstract class Ability {
         params().state(AbilityState.CHANNEL);
         params().stateTimer().restart();
 
-        params().currentDamage(params().baseDamage());
-
         Creature creature = game.getCreature(params().creatureId());
 
         if (creature != null && !isPositionCalculated()) {
@@ -124,4 +125,29 @@ public abstract class Ability {
     public boolean bodyShouldExist() {
         return !(params().isSkipCreatingBody() || params().state() != AbilityState.ACTIVE);
     }
+
+    public Float getDamage(GameUpdatable game) {
+        return params().baseDamage() * params().damageMultiplier() * getLevelScaling(game);
+    }
+
+    public Integer getSkillLevel(GameUpdatable game) {
+        Creature creature = game.getCreature(params().creatureId());
+
+        if (!creature.availableSkills().containsKey(params().skillType())) {
+            return 1;
+        }
+        return creature.availableSkills().get(params().skillType());
+    }
+
+    public Map<Integer, Float> levelScalings() {
+        return new ConcurrentSkipListMap<>();
+    }
+
+    public Float getLevelScaling(GameUpdatable game) {
+        if (!levelScalings().containsKey(getSkillLevel(game))) {
+            return 1.0f;
+        }
+        return levelScalings().get(getSkillLevel(game));
+    }
+
 }

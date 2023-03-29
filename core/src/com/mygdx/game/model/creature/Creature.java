@@ -12,8 +12,8 @@ import com.mygdx.game.model.util.WorldDirection;
 import com.mygdx.game.renderer.config.CreatureAnimationConfig;
 import com.mygdx.game.util.RandomHelper;
 
-import java.util.Set;
-import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.Map;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 public abstract class Creature {
 
@@ -167,20 +167,16 @@ public abstract class Creature {
                        .reduce(0, ((acc, item) -> acc + item.armor()), Integer::sum);
     }
 
-    public Set<SkillType> availableSkills() {
-        Set<SkillType> skills = new ConcurrentSkipListSet<>();
+    public Map<SkillType, Integer> availableSkills() {
+        Map<SkillType, Integer> skills = new ConcurrentSkipListMap<>();
         params().equipmentItems()
-                .forEach((integer, item) -> item.grantedSkills()
-                                                .forEach((skillType, integer1) -> skills.add(skillType)));
+                .forEach((integer, item) -> skills.putAll(item.grantedSkills()));
         return skills;
     }
 
-    public void handleBeingAttacked(Boolean isRanged,
-                                    Vector2 dirVector,
-                                    float damage,
-                                    CreatureId attackerId,
-                                    GameUpdatable game) {
+    public boolean isAttackShielded(boolean isRanged, Vector2 dirVector, GameUpdatable game) {
         if (!isRanged) { // check if target is pointing shield at the attack
+            // TODO: if don't have shield ability return false
             Ability shieldAbility = game.getAbility(params().id(), SkillType.SUMMON_SHIELD);
             if (shieldAbility != null && shieldAbility.params().state() == AbilityState.ACTIVE) {
                 float
@@ -188,13 +184,26 @@ public abstract class Creature {
                         (dirVector.angleDeg() - shieldAbility.params().dirVector().multiplyBy(-1).angleDeg() +
                          180 +
                          360) % 360 - 180;
+                //noinspection RedundantIfStatement
                 if (angleDiff <= 60 && angleDiff >= -60) {
-                    return;
+                    return true;
                 }
             }
         }
+        return false;
+    }
 
-        takeLifeDamage(damage);
+    public void handleBeingAttacked(Boolean isRanged,
+                                    Vector2 dirVector,
+                                    float damage,
+                                    CreatureId attackerId,
+                                    GameUpdatable game) {
+
+        boolean isShielded = isAttackShielded(isRanged, dirVector, game);
+
+        if (!isShielded) {
+            takeLifeDamage(damage);
+        }
     }
 
     private void takeManaDamage(Float manaCost) {
@@ -217,11 +226,9 @@ public abstract class Creature {
 
     public void onAbilityPerformed(Ability ability) {
         if (!ability.params().attackWithoutMoving() && params().isMoving()) {
-            Vector2 movementVector = params()
-                    .pos()
-                    .vectorTowards(params().movementCommandTargetPos())
-                    .normalized()
-                    .multiplyBy(0.15f);
+            Vector2
+                    movementVector =
+                    params().pos().vectorTowards(params().movementCommandTargetPos()).normalized().multiplyBy(0.15f);
             // move slightly forward if attacking while moving
             params().movementCommandTargetPos(params().pos().add(movementVector));
         }

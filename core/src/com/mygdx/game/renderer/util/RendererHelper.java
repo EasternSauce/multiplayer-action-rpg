@@ -208,7 +208,7 @@ public class RendererHelper {
         AtomicInteger i = new AtomicInteger();
 
         player.availableSkills()
-              .forEach(skillType -> drawSkillPickerOption(drawingLayer, x, y, i, skillType.prettyName));
+              .forEach((skillType, level) -> drawSkillPickerOption(drawingLayer, x, y, i, skillType.prettyName));
     }
 
     private static void drawSkillPickerOption(DrawingLayer drawingLayer,
@@ -257,7 +257,7 @@ public class RendererHelper {
         Creature player = game.getCreature(game.getCurrentPlayerId());
 
         player.availableSkills()
-              .forEach(skillType -> {
+              .forEach((skillType, level) -> {
                   Rect rect = Rect.of(SKILL_PICKER_MENU_POS_X,
                                       SKILL_PICKER_MENU_POS_Y + 25f * i.get(),
                                       Gdx.graphics.getWidth() / 6f,

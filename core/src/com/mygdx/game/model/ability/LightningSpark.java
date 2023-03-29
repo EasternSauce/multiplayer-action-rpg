@@ -10,7 +10,9 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 @NoArgsConstructor(staticName = "of")
 @Data
@@ -79,7 +81,7 @@ public class LightningSpark extends Ability {
             game.isLineOfSight(params().areaId(), params().pos(), targetCreature.params().pos())) {
             targetCreature.handleBeingAttacked(true,
                                                params().dirVector(),
-                                               params().currentDamage(),
+                                               getDamage(game),
                                                params().creatureId(), game);
 
             params().creaturesAlreadyHit().put(targetCreature.params().id(), params().stateTimer().time());
@@ -136,4 +138,12 @@ public class LightningSpark extends Ability {
 
     }
 
+    @Override
+    public Map<Integer, Float> levelScalings() {
+        ConcurrentSkipListMap<Integer, Float> scalings = new ConcurrentSkipListMap<>();
+        scalings.put(1, 1.0f);
+        scalings.put(2, 1.1f);
+        scalings.put(3, 1.2f);
+        return scalings;
+    }
 }

@@ -65,7 +65,7 @@ public class InventoryAndEquipmentSwapSlotsAction implements GameStateAction {
 
         Set<Integer> slotsToRemove = new ConcurrentSkipListSet<>();
         playerParams.skillMenuSlots().forEach((slotIndex, skillType) -> {
-            if (!player.availableSkills().contains(skillType)) {
+            if (!player.availableSkills().containsKey(skillType)) {
                 slotsToRemove.add(slotIndex);
             }
         });

@@ -146,7 +146,7 @@ public class PhysicsHelper {
                 !ability.params().creaturesAlreadyHit().containsKey(event.destinationCreatureId())) {
                 destinationCreature.handleBeingAttacked(ability.isRanged(),
                                                         ability.params().dirVector(),
-                                                        ability.params().currentDamage(),
+                                                        ability.getDamage(game),
                                                         event.sourceCreatureId(),
                                                         game);
 
