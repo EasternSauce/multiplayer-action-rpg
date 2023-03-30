@@ -4,7 +4,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 public enum EquipmentSlotType {
-    WEAPON,
+    PRIMARY_WEAPON,
+
+    SECONDARY_WEAPON,
     HELMET,
     BODY,
     GLOVES,
@@ -27,8 +29,8 @@ public enum EquipmentSlotType {
     }
 
     static {
-        equipmentSlots.put(0, WEAPON);
-        equipmentSlots.put(1, WEAPON);
+        equipmentSlots.put(0, PRIMARY_WEAPON);
+        equipmentSlots.put(1, SECONDARY_WEAPON);
         equipmentSlots.put(2, HELMET);
         equipmentSlots.put(3, BODY);
         equipmentSlots.put(4, GLOVES);

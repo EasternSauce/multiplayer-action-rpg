@@ -51,11 +51,11 @@ public class ItemTemplate {
                                               ItemTemplate.of("boomerang",
                                                               "Boomerang",
                                                               "-",
-                                                              Vector2Int.of(5, 6))
+                                                              Vector2Int.of(6, 6))
                                                           .worth(350)
                                                           .equipable(true)
-                                                          .equipmentSlotType(EquipmentSlotType.WEAPON)
-                                                          .skillType(SkillType.BOOMERANG)
+                                                          .equipmentSlotType(EquipmentSlotType.PRIMARY_WEAPON)
+                                                          .attackSkill(SkillType.BOOMERANG)
                                                           .damage(18f),
                                               ItemTemplate.of("woodenSword",
                                                               "Wooden Sword",
@@ -63,8 +63,8 @@ public class ItemTemplate {
                                                               Vector2Int.of(0, 5))
                                                           .worth(75)
                                                           .equipable(true)
-                                                          .equipmentSlotType(EquipmentSlotType.WEAPON)
-                                                          .skillType(SkillType.SWORD_SLASH)
+                                                          .equipmentSlotType(EquipmentSlotType.PRIMARY_WEAPON)
+                                                          .attackSkill(SkillType.SWORD_SLASH)
                                                           .damage(25f),
                                               ItemTemplate.of("ironSword",
                                                               "Iron Sword",
@@ -72,8 +72,8 @@ public class ItemTemplate {
                                                               Vector2Int.of(1, 5))
                                                           .worth(150)
                                                           .equipable(true)
-                                                          .equipmentSlotType(EquipmentSlotType.WEAPON)
-                                                          .skillType(SkillType.SWORD_SLASH)
+                                                          .equipmentSlotType(EquipmentSlotType.PRIMARY_WEAPON)
+                                                          .attackSkill(SkillType.SWORD_SLASH)
                                                           .damage(30f)
                                              )
 
@@ -95,7 +95,7 @@ public class ItemTemplate {
     Integer worth = 0;
     Float damage;
     Integer armor;
-    SkillType skillType;
+    SkillType attackSkill;
 
     public static ItemTemplate of(String id,
                                   String name,

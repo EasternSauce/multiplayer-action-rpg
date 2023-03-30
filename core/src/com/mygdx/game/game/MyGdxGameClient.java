@@ -23,6 +23,8 @@ import com.mygdx.game.model.action.inventory.InventoryToggleAction;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.area.LootPileId;
 import com.mygdx.game.model.creature.*;
+import com.mygdx.game.model.item.EquipmentSlotType;
+import com.mygdx.game.model.item.Item;
 import com.mygdx.game.model.skill.SkillType;
 import com.mygdx.game.model.util.GameStateBroadcast;
 import com.mygdx.game.model.util.PlayerParams;
@@ -184,10 +186,25 @@ public class MyGdxGameClient extends MyGdxGame {
 
                 Vector2 dirVector = mousePosRelativeToCenter();
 
+                float weaponDamage;
+                SkillType attackSkill;
+
+                if (player.params().equipmentItems().containsKey(EquipmentSlotType.PRIMARY_WEAPON.ordinal())) {
+                    Item weaponItem = player.params().equipmentItems().get(EquipmentSlotType.PRIMARY_WEAPON.ordinal());
+
+                    attackSkill = weaponItem.template().attackSkill();
+                    weaponDamage = weaponItem.damage();
+                }
+                else {
+                    attackSkill = SkillType.SWORD_SLASH;
+                    weaponDamage = 20f;
+                }
+
                 endPoint().sendTCP(PerformActionCommand.of(SkillTryPerformAction.of(thisPlayerId,
-                                                                                    SkillType.SWORD_SLASH,
+                                                                                    attackSkill,
                                                                                     player.params().pos(),
-                                                                                    dirVector)));
+                                                                                    dirVector,
+                                                                                    weaponDamage)));
 
             }
 

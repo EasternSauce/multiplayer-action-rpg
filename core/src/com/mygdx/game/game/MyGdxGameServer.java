@@ -304,7 +304,7 @@ public class MyGdxGameServer extends MyGdxGame {
                                                                                                .qualityModifier(0.9f),
                                                                                            Item.of()
                                                                                                .template(ItemTemplate.templates.get(
-                                                                                                       "hideGloves"))
+                                                                                                       "boomerang"))
                                                                                                .qualityModifier(0.9f)))));
 
 

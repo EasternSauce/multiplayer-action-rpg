@@ -24,6 +24,8 @@ public class SkillTryPerformAction implements GameStateAction {
     Vector2 startingPos;
     Vector2 dirVector;
 
+    Float damage;
+
     @Override
     public Vector2 actionObjectPos(GameState gameState) {
         if (!gameState.creatures().containsKey(creatureId)) {
@@ -44,5 +46,17 @@ public class SkillTryPerformAction implements GameStateAction {
 
         }
 
+    }
+
+    public static SkillTryPerformAction of(CreatureId creatureId,
+                                           SkillType skillType,
+                                           Vector2 startingPos,
+                                           Vector2 dirVector) {
+        SkillTryPerformAction action = SkillTryPerformAction.of();
+        action.creatureId = creatureId;
+        action.skillType = skillType;
+        action.startingPos = startingPos;
+        action.dirVector = dirVector;
+        return action;
     }
 }

@@ -20,8 +20,8 @@ public class Boomerang extends Projectile {
     public static Boomerang of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
         Boomerang ability = Boomerang.of();
         ability.params =
-                abilityParams.width(1.8f)
-                             .height(1.8f)
+                abilityParams.width(1.3f)
+                             .height(1.3f)
                              .channelTime(0f)
                              .activeTime(10f)
                              .textureName("boomerang")
