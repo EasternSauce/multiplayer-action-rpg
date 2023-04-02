@@ -205,18 +205,13 @@ public abstract class Creature {
         return false;
     }
 
-    public void onBeingHit(Boolean isRanged,
-                           Vector2 dirVector,
-                           float damage,
-                           CreatureId attackerId,
-                           GameUpdatable game) {
-
-        boolean isShielded = isAttackShielded(isRanged, dirVector, game);
+    public void onBeingHit(Ability ability, GameUpdatable game) {
+        boolean isShielded = isAttackShielded(ability.isRanged(), ability.params().dirVector(), game);
 
         if (!isShielded) {
-            takeLifeDamage(damage);
+            takeLifeDamage(ability.getDamage(game));
 
-            applyEffect(CreatureEffect.STUN, 0.5f, game);
+            applyEffect(CreatureEffect.STUN, ability.getStunDuration(), game);
         }
     }
 

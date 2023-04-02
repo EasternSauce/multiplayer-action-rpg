@@ -24,6 +24,15 @@ public class LightningSpark extends Ability {
     public static LightningSpark of(AbilityParams abilityParams, AbilityUpdatable game) {
         Creature creature = game.getCreature(abilityParams.creatureId());
 
+        //        Vector2 pos;
+        //        if (abilityParams.dirVector() != null) {
+        //            pos = LightningSpark.calculatePos(creature.params().pos().add(abilityParams.dirVector()),
+        //                                              creature.params().pos());
+        //        } else {
+        //            pos = LightningSpark.calculatePos(creature.params().pos().add(Vector2.of(0f, 0f)),
+        //                                              creature.params().pos());
+        //        }
+
         LightningSpark ability = LightningSpark.of();
         ability.params =
                 abilityParams

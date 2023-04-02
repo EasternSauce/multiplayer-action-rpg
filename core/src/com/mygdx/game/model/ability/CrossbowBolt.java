@@ -76,4 +76,9 @@ public class CrossbowBolt extends Projectile {
     public void onOtherAbilityHit(AbilityId otherAbilityId, GameUpdatable game) {
 
     }
+
+    @Override
+    public Float getStunDuration() {
+        return 0.25f;
+    }
 }

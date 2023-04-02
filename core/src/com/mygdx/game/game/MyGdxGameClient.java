@@ -199,7 +199,6 @@ public class MyGdxGameClient extends MyGdxGame {
                     attackSkill = SkillType.SWORD_SLASH;
                     weaponDamage = 20f;
                 }
-
                 endPoint().sendTCP(PerformActionCommand.of(SkillTryPerformAction.of(thisPlayerId,
                                                                                     attackSkill,
                                                                                     player.params().pos(),

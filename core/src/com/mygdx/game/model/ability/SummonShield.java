@@ -15,6 +15,10 @@ public class SummonShield extends Ability {
     AbilityParams params;
 
     public static SummonShield of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
+        float flipValue;
+        abilityParams.dirVector();
+        flipValue = abilityParams.dirVector().angleDeg();
+
         SummonShield ability = SummonShield.of();
         ability.params =
                 abilityParams
@@ -28,7 +32,7 @@ public class SummonShield extends Ability {
                         .isChannelAnimationLooping(false)
                         .isActiveAnimationLooping(false)
                         .rotationShift(0f)
-                        .flip(SummonShield.calculateFlip(abilityParams.dirVector().angleDeg()));
+                        .flip(SummonShield.calculateFlip(flipValue));
         return ability;
     }
 

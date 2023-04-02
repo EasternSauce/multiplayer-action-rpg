@@ -1,7 +1,10 @@
 package com.mygdx.game.util;
 
 import com.esotericsoftware.kryonet.EndPoint;
-import com.mygdx.game.command.*;
+import com.mygdx.game.command.InitPlayerCommand;
+import com.mygdx.game.command.PerformActionCommand;
+import com.mygdx.game.command.SendChatMessageCommand;
+import com.mygdx.game.command.SpawnEnemyCommand;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.ability.*;
 import com.mygdx.game.model.action.ActionsHolder;
@@ -66,7 +69,6 @@ public class EndPointHelper {
         endPoint.getKryo().register(SendChatMessageCommand.class);
         endPoint.getKryo().register(SpawnEnemyCommand.class);
         endPoint.getKryo().register(PerformActionCommand.class);
-        endPoint.getKryo().register(TryPerformSkillCommand.class);
 
         endPoint.getKryo().register(Ability.class);
         endPoint.getKryo().register(SummonGhosts.class);

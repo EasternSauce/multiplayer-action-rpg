@@ -5,6 +5,7 @@ import com.mygdx.game.game.interface_.GameUpdatable;
 import com.mygdx.game.model.ability.AbilityType;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
+import com.mygdx.game.model.creature.effect.CreatureEffect;
 import com.mygdx.game.model.util.SimpleTimer;
 import com.mygdx.game.model.util.Vector2;
 import lombok.AllArgsConstructor;
@@ -167,19 +168,31 @@ public class Skill {
     }
 
     public void update(CreatureUpdatable game) {
+        Creature creature = game.getCreature(creatureId);
+
+        if (creature.isEffectActive(CreatureEffect.STUN, game)) {
+            abilities.forEach(ScheduledAbility::interrupt);
+        }
+
         for (ScheduledAbility scheduledAbility : abilities) {
-            if (!scheduledAbility.isPerformed() && performTimer().time() > scheduledAbility.scheduledTime()) {
+            if (scheduledAbility.readyToPerform() &&
+                !scheduledAbility.scheduleTimePassed() &&
+                performTimer().time() > scheduledAbility.scheduledTime()) {
+                scheduledAbility.scheduleTimePassed(true);
                 scheduledAbility.perform(creatureId, game);
             }
         }
 
     }
 
-
     public void tryPerform(Vector2 startingPos, Vector2 dirVector, GameUpdatable game) {
         Creature creature = game.getCreature(creatureId);
-        if (creature != null && creature.canPerformSkill(this) && performTimer.time() > cooldown) {
-            abilities.forEach(scheduledAbility -> scheduledAbility.onPerformSkill(startingPos, dirVector));
+
+        if (creature != null &&
+            creature.canPerformSkill(this) &&
+            performTimer.time() > cooldown &&
+            !creature.isEffectActive(CreatureEffect.STUN, game)) {
+            abilities.forEach(scheduledAbility -> scheduledAbility.init(startingPos, dirVector));
             creature.onPerformSkill(this);
             performTimer.restart();
         }
@@ -187,5 +200,6 @@ public class Skill {
 
     public void resetCooldown() {
         performTimer().time(cooldown);
+
     }
 }

@@ -15,24 +15,27 @@ import lombok.NoArgsConstructor;
 public class ScheduledAbility {
     AbilityType abilityType;
     Float scheduledTime;
-    Boolean isPerformed;
     Vector2 startPos;
-    Vector2 dirVector;
+    Vector2 dirVector = Vector2.of(0f, 0f);
 
     SkillType skillType;
+
+    Boolean readyToPerform = false;
+
+    Boolean scheduleTimePassed = false;
 
     public static ScheduledAbility of(AbilityType abilityType, SkillType skillType, Float scheduledTime) {
         return ScheduledAbility.of()
                                .abilityType(abilityType)
                                .scheduledTime(scheduledTime)
-                               .isPerformed(true)
                                .skillType(skillType);
     }
 
-    public void onPerformSkill(Vector2 startingPos, Vector2 dirVector) {
-        isPerformed(false);
+    public void init(Vector2 startingPos, Vector2 dirVector) {
         startPos(startingPos);
         dirVector(dirVector);
+        scheduleTimePassed(false);
+        readyToPerform(true);
     }
 
     public void perform(CreatureId creatureId, CreatureUpdatable game) {
@@ -50,6 +53,12 @@ public class ScheduledAbility {
 
         game.spawnAbility(abilityType, abilityParams);
 
-        isPerformed = true;
+        readyToPerform = false;
+
     }
+
+    public void interrupt() {
+        readyToPerform = false;
+    }
+
 }

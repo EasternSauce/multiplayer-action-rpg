@@ -42,11 +42,16 @@ public class CreatureHitAction implements GameStateAction {
     @Override
     public void applyToGame(GameActionApplicable game) {
         Creature targetCreature = game.getCreature(targetId);
-        targetCreature.onBeingHit(true,
-                                  ability.params().dirVector(),
-                                  ability.getDamage(game),
-                                  attackerId,
-                                  game);
+
+        if (targetCreature == null) {
+            return;
+        }
+
+        targetCreature.onBeingHit(ability, game);
+        ability.onCreatureHit();
+        ability.params()
+               .creaturesAlreadyHit()
+               .put(targetId, ability.params().stateTimer().time());
 
         if (targetCreature.params().previousTickLife() > 0f && targetCreature.params().life() <= 0f) {
             targetCreature.params().life(0f); // just to make sure its dead on client side
@@ -54,11 +59,6 @@ public class CreatureHitAction implements GameStateAction {
             targetCreature.params().respawnTimer().restart();
             targetCreature.params().awaitingRespawn(true);
 
-            ability.params()
-                   .creaturesAlreadyHit()
-                   .put(targetId, ability.params().stateTimer().time());
-
-            ability.onCreatureHit();
 
             spawnDrops(game);
         }

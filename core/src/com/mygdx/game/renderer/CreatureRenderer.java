@@ -171,6 +171,11 @@ public class CreatureRenderer {
         float lifeBarWidth = 2.0f;
 
         Creature creature = game.getCreature(creatureId);
+
+        if (creature == null) {
+            return;
+        }
+
         float currentLifeBarWidth = lifeBarWidth * creature.params().life() / creature.params().maxLife();
         float barPosX = creature.params().pos().x() - lifeBarWidth / 2;
         float barPosY = creature.params().pos().y() + sprite.getWidth() / 2 + 0.3125f;

@@ -117,4 +117,9 @@ public class SwordSlash extends Ability {
     public void onOtherAbilityHit(AbilityId otherAbilityId, GameUpdatable game) {
 
     }
+
+    @Override
+    public Float getStunDuration() {
+        return 0.35f;
+    }
 }

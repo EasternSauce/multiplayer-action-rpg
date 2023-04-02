@@ -7,6 +7,7 @@ import com.mygdx.game.model.util.SimpleTimer;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
@@ -22,7 +23,8 @@ public class AbilityParams {
     Float height;
     CreatureId creatureId;
     SimpleTimer stateTimer = SimpleTimer.getExpiredTimer();
-    Vector2 dirVector;
+    @NonNull
+    Vector2 dirVector = Vector2.of(0f, 0f);
     String textureName;
 
     Float rotationAngle = 0f;

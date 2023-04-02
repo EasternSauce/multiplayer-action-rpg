@@ -133,7 +133,7 @@ public abstract class Ability {
     public Integer getSkillLevel(GameUpdatable game) {
         Creature creature = game.getCreature(params().creatureId());
 
-        if (!creature.availableSkills().containsKey(params().skillType())) {
+        if (creature == null || !creature.availableSkills().containsKey(params().skillType())) {
             return 1;
         }
         return creature.availableSkills().get(params().skillType());
@@ -148,6 +148,10 @@ public abstract class Ability {
             return 1.0f;
         }
         return levelScalings().get(getSkillLevel(game));
+    }
+
+    public Float getStunDuration() {
+        return 0.5f;
     }
 
 }

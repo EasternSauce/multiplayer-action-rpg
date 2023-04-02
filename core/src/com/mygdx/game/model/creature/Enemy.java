@@ -4,6 +4,7 @@ import com.mygdx.game.Constants;
 import com.mygdx.game.game.interface_.CreatureUpdatable;
 import com.mygdx.game.game.interface_.GameRenderable;
 import com.mygdx.game.game.interface_.GameUpdatable;
+import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.creature.effect.CreatureEffect;
 import com.mygdx.game.model.skill.Skill;
 import com.mygdx.game.model.util.Vector2;
@@ -69,7 +70,8 @@ public class Enemy extends Creature {
             params().speed(params().baseSpeed());
         }
 
-        if (params().attackedByCreatureId() != null) { // if attacked, aggro no matter what
+        if (params().attackedByCreatureId() != null &&
+            game.getCreature(params().attackedByCreatureId()) instanceof Player) { // if attacked by player, aggro no matter what
             params.aggroedCreatureId(params().attackedByCreatureId());
         }
         else { // if not attacked, search around for targets
@@ -193,20 +195,17 @@ public class Enemy extends Creature {
     }
 
     @Override
-    public void onBeingHit(Boolean isRanged, Vector2 dirVector, float damage, CreatureId attackerId,
-                           GameUpdatable game) {
-        boolean isShielded = isAttackShielded(isRanged, dirVector, game);
+    public void onBeingHit(Ability ability, GameUpdatable game) {
+        boolean isShielded = isAttackShielded(ability.isRanged(), ability.params().dirVector(), game);
 
         if (!isShielded) {
-            takeLifeDamage(damage);
+            takeLifeDamage(ability.getDamage(game));
 
-            applyEffect(CreatureEffect.STUN, 0.5f, game);
+            applyEffect(CreatureEffect.STUN, ability.getStunDuration(), game);
 
-            params().attackedByCreatureId();
-            params().aggroedCreatureId(attackerId);
-            params().aggroTimer().restart();
+            params().attackedByCreatureId(ability.params().creatureId());
 
-            if (isRanged) {
+            if (ability.isRanged()) {
                 params().justAttackedFromRangeTimer().restart();
             }
         }

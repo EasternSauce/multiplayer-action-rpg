@@ -41,6 +41,10 @@ public class AbilityRenderer {
 
         AbilityAnimationConfig animationConfig = ability.animationConfig();
 
+        if (animationConfig == null) {
+            throw new RuntimeException("ability was not set up properly");
+        }
+
         channelTextureRegion = atlas.findRegion(animationConfig.channelSpriteType());
         activeTextureRegion = atlas.findRegion(animationConfig.activeSpriteType());
 
