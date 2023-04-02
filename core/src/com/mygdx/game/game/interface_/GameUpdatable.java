@@ -80,9 +80,9 @@ public interface GameUpdatable {
 
     Float getTime();
 
-    void onCreatureHit(CreatureId attackerId,
-                       CreatureId targetId,
-                       Ability ability);
+    void onAbilityHitsCreature(CreatureId attackerId,
+                               CreatureId targetId,
+                               Ability ability);
 
 
 }

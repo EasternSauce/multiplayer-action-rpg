@@ -22,7 +22,7 @@ public class FireballExplosion extends Ability {
                              .channelTime(0f)
                              .activeTime(0.35f)
                              .textureName("explosion")
-                             .baseDamage(35f)
+                             .baseDamage(30f)
                              .isChannelAnimationLooping(false)
                              .isActiveAnimationLooping(false)
                              .attackWithoutMoving(true)

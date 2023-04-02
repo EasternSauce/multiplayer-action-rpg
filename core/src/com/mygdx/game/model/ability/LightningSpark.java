@@ -35,20 +35,19 @@ public class LightningSpark extends Ability {
 
         LightningSpark ability = LightningSpark.of();
         ability.params =
-                abilityParams
-                        .width(3f)
-                        .height(3f)
-                        .channelTime(0f)
-                        .activeTime(0.4f)
-                        .textureName("lightning")
-                        .baseDamage(30f)
-                        .isActiveAnimationLooping(true)
-                        .attackWithoutMoving(true)
-                        .isSkipCreatingBody(true)
-                        .rotationShift(0f)
-                        .delayedActionTime(0.001f)
-                        .pos(LightningSpark.calculatePos(creature.params().pos().add(abilityParams.dirVector()),
-                                                         creature.params().pos()));
+                abilityParams.width(3f)
+                             .height(3f)
+                             .channelTime(0f)
+                             .activeTime(0.4f)
+                             .textureName("lightning")
+                             .baseDamage(30f)
+                             .isActiveAnimationLooping(true)
+                             .attackWithoutMoving(true)
+                             .isSkipCreatingBody(true)
+                             .rotationShift(0f)
+                             .delayedActionTime(0.001f)
+                             .pos(LightningSpark.calculatePos(creature.params().pos().add(abilityParams.dirVector()),
+                                                              creature.params().pos()));
 
         return ability;
     }
@@ -89,21 +88,17 @@ public class LightningSpark extends Ability {
         if (targetCreature != null &&
             game.isLineOfSight(params().areaId(), params().pos(), targetCreature.params().pos())) {
 
-            game.onCreatureHit(targetCreature.params().id(),
-                               params().creatureId(),
-                               this);
+            game.onAbilityHitsCreature(targetCreature.params().id(), params().creatureId(), this);
 
             params().creaturesAlreadyHit().put(targetCreature.params().id(), params().stateTimer().time());
 
             game.chainAbility(this,
                               AbilityType.LIGHTNING_CHAIN,
-                              targetCreature.params().pos(), // this pos is later changed, TODO: move it to other param?
+                              targetCreature.params().pos(),
+                              // this pos is later changed, TODO: move it to other param?
                               params.dirVector());
 
-            game.chainAbility(this,
-                              AbilityType.LIGHTNING_NODE,
-                              targetCreature.params().pos(),
-                              params.dirVector());
+            game.chainAbility(this, AbilityType.LIGHTNING_NODE, targetCreature.params().pos(), params.dirVector());
         }
     }
 

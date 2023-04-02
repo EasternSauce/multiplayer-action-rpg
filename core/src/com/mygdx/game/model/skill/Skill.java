@@ -46,9 +46,9 @@ public class Skill {
                             creatureId,
                             singleScheduledAbility(AbilityType.FIREBALL, skillType),
                             SimpleTimer.getExpiredTimer(),
-                            0.4f,
-                            20f,
-                            12f);
+                            1f,
+                            30f,
+                            20f);
         }
         if (skillType == SkillType.LIGHTNING) {
             return Skill.of(skillType,

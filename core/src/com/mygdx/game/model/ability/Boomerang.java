@@ -64,7 +64,7 @@ public class Boomerang extends Projectile {
         //        deactivate();
         params().comingBack(true);
         params().speed(20f);
-        System.out.println("coming back");
+        System.out.println("coming back " + Math.random());
     }
 
     @Override

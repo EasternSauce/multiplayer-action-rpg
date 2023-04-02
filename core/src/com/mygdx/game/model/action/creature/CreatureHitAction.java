@@ -48,10 +48,6 @@ public class CreatureHitAction implements GameStateAction {
         }
 
         targetCreature.onBeingHit(ability, game);
-        ability.onCreatureHit();
-        ability.params()
-               .creaturesAlreadyHit()
-               .put(targetId, ability.params().stateTimer().time());
 
         if (targetCreature.params().previousTickLife() > 0f && targetCreature.params().life() <= 0f) {
             targetCreature.params().life(0f); // just to make sure its dead on client side

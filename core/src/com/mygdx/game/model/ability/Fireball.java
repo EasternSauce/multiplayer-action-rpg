@@ -28,7 +28,7 @@ public class Fireball extends Projectile {
                         .channelTime(0f)
                         .activeTime(30f)
                         .textureName("fireball")
-                        .baseDamage(15f)
+                        .baseDamage(20f)
                         .isChannelAnimationLooping(false)
                         .isActiveAnimationLooping(true)
                         .rotationShift(0f)

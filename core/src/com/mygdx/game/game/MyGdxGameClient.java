@@ -479,9 +479,14 @@ public class MyGdxGameClient extends MyGdxGame {
     }
 
     @Override
-    public void onCreatureHit(CreatureId attackerId,
-                              CreatureId targetId,
-                              Ability ability) {
+    public void onAbilityHitsCreature(CreatureId attackerId,
+                                      CreatureId targetId,
+                                      Ability ability) {
+
+        ability.onCreatureHit();
+        ability.params()
+               .creaturesAlreadyHit()
+               .put(targetId, ability.params().stateTimer().time());
 
     }
 

@@ -145,9 +145,7 @@ public class PhysicsHelper {
             if ((sourceCreature instanceof Player || destinationCreature instanceof Player) &&
                 !ability.params().creaturesAlreadyHit().containsKey(event.destinationCreatureId())) {
 
-                game.onCreatureHit(event.sourceCreatureId(),
-                                   event.destinationCreatureId(),
-                                   ability);
+                game.onAbilityHitsCreature(event.sourceCreatureId(), event.destinationCreatureId(), ability);
             }
 
 

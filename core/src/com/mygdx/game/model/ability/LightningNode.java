@@ -61,21 +61,17 @@ public class LightningNode extends Ability {
             params().creaturesAlreadyHit().size() <= 10 &&
             game.isLineOfSight(params().areaId(), params().pos(), targetCreature.params().pos())) {
 
-            game.onCreatureHit(targetCreature.params().id(),
-                               params().creatureId(),
-                               this);
+            game.onAbilityHitsCreature(targetCreature.params().id(), params().creatureId(), this);
 
             params().creaturesAlreadyHit().put(targetCreature.params().id(), params().stateTimer().time());
 
             game.chainAbility(this,
                               AbilityType.LIGHTNING_CHAIN,
-                              targetCreature.params().pos(), // this pos is later changed, TODO: move it to other param?
+                              targetCreature.params().pos(),
+                              // this pos is later changed, TODO: move it to other param?
                               params.dirVector());
 
-            game.chainAbility(this,
-                              AbilityType.LIGHTNING_NODE,
-                              targetCreature.params().pos(),
-                              params.dirVector());
+            game.chainAbility(this, AbilityType.LIGHTNING_NODE, targetCreature.params().pos(), params.dirVector());
         }
     }
 
