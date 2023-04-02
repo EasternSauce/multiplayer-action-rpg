@@ -144,16 +144,19 @@ public class PhysicsHelper {
         if (ability != null && destinationCreature.isAlive()) {
             if ((sourceCreature instanceof Player || destinationCreature instanceof Player) &&
                 !ability.params().creaturesAlreadyHit().containsKey(event.destinationCreatureId())) {
-                destinationCreature.handleBeingAttacked(ability.isRanged(),
-                                                        ability.params().dirVector(),
-                                                        ability.getDamage(game),
-                                                        event.sourceCreatureId(),
-                                                        game);
 
-                ability.params()
+                game.onCreatureHit(event.sourceCreatureId(),
+                                   event.destinationCreatureId(),
+                                   ability.isRanged(),
+                                   ability.params().dirVector(),
+                                   ability.getDamage(game),
+                                   game); // TODO: just pass ability here instead
+
+                ability.params() // TODO: move to game.oncreatyurehit?
                        .creaturesAlreadyHit()
                        .put(event.destinationCreatureId(), ability.params().stateTimer().time());
-                ability.onCreatureHit();
+
+                ability.onCreatureHit(); // TODO: move to game.oncreatyurehit?
             }
 
 

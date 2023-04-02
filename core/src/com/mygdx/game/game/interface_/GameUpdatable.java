@@ -78,4 +78,14 @@ public interface GameUpdatable {
 
     Map<LootPileId, LootPile> getLootPiles();
 
+    Float getTime();
+
+    void onCreatureHit(CreatureId attackerId,
+                       CreatureId targetId,
+                       boolean isRanged,
+                       Vector2 dirVector,
+                       Float damage,
+                       GameUpdatable game);
+
+
 }

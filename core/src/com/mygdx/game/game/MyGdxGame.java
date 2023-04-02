@@ -581,5 +581,8 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
         return gameState.lootPiles();
     }
 
-
+    @Override
+    public Float getTime() {
+        return gameState.generalTimer().time();
+    }
 }

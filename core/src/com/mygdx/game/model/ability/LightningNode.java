@@ -60,11 +60,13 @@ public class LightningNode extends Ability {
         if (targetCreature != null &&
             params().creaturesAlreadyHit().size() <= 10 &&
             game.isLineOfSight(params().areaId(), params().pos(), targetCreature.params().pos())) {
-            targetCreature.handleBeingAttacked(true,
-                                               params().dirVector(),
-                                               getDamage(game),
-                                               params().creatureId(),
-                                               game); // TODO: can we do this in main update loop instead? introduce events etc.
+
+            game.onCreatureHit(targetCreature.params().id(),
+                               params().creatureId(),
+                               true,
+                               params().dirVector(),
+                               getDamage(game),
+                               game);
 
             params().creaturesAlreadyHit().put(targetCreature.params().id(), params().stateTimer().time());
 

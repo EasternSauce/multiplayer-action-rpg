@@ -18,8 +18,8 @@ public class CrossbowBolt extends Projectile {
     public static CrossbowBolt of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
         CrossbowBolt ability = CrossbowBolt.of();
         ability.params =
-                abilityParams.width(1.5f)
-                             .height(1.5f)
+                abilityParams.width(1.1f)
+                             .height(1.1f)
                              .channelTime(0f)
                              .activeTime(30f)
                              .textureName("arrow")

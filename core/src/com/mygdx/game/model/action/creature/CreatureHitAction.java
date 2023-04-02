@@ -25,36 +25,44 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-public class CreatureDeathAction implements GameStateAction {
-    CreatureId creatureId;
-
+public class CreatureHitAction implements GameStateAction {
+    CreatureId attackerId;
+    CreatureId targetId;
+    boolean isRanged;
+    Vector2 dirVector;
+    Float damage;
 
     @Override
     public Vector2 actionObjectPos(GameState gameState) {
-        if (!gameState.creatures().containsKey(creatureId)) {
+        if (!gameState.creatures().containsKey(targetId)) {
             return Vector2.of(0f, 0f);
         }
-        return gameState.creatures().get(creatureId).params().pos();
+        return gameState.creatures().get(targetId).params().pos();
     }
 
+    @Override
     public void applyToGame(GameActionApplicable game) {
-        Creature creature = game.getCreatures().get(creatureId);
+        Creature targetCreature = game.getCreature(targetId);
+        targetCreature.onBeingHit(true,
+                                  dirVector,
+                                  damage,
+                                  attackerId,
+                                  game);
 
-        if (creature == null) {
-            return;
+        if (targetCreature.params().previousTickLife() > 0f && targetCreature.params().life() <= 0f) {
+            System.out.println("ded");
+
+            targetCreature.params().life(0f); // just to make sure its dead on client side
+            targetCreature.params().isDead(true);
+            targetCreature.params().respawnTimer().restart();
+            targetCreature.params().awaitingRespawn(true);
+
+            spawnDrops(game);
         }
-
-        creature.params().life(0f); // just to make sure its dead on client side
-        creature.params().justDied(false);
-        creature.params().isDead(true);
-        creature.params().respawnTimer().restart();
-        creature.params().awaitingRespawn(true);
-
-        spawnDrops(game);
     }
 
     public void spawnDrops(GameActionApplicable game) {
-        Creature creature = game.getCreature(creatureId);
+        Creature creature = game.getCreature(targetId);
 
         Set<Item> items = new ConcurrentSkipListSet<>();
 

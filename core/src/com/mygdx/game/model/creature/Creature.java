@@ -5,6 +5,8 @@ import com.mygdx.game.game.interface_.GameRenderable;
 import com.mygdx.game.game.interface_.GameUpdatable;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityState;
+import com.mygdx.game.model.creature.effect.CreatureEffect;
+import com.mygdx.game.model.creature.effect.CreatureEffectState;
 import com.mygdx.game.model.skill.Skill;
 import com.mygdx.game.model.skill.SkillType;
 import com.mygdx.game.model.util.Vector2;
@@ -26,16 +28,21 @@ public abstract class Creature {
         regenerateStamina();
 
         if (!params().reachedTargetPos()) {
-            moveTowardsTarget(game);
+            updateMovement(game);
         }
 
-        if (params().isStillMovingTimer().time() > 0.02f) {
+        if (!isEffectActive(CreatureEffect.STUN, game) && params().isStillMovingCheckTimer().time() > 0.02f) {
+            //on stopped moving before reaching target (e.g. hit a wall)
             if (params().isMoving() && params().pos().distance(params().previousPos()) < 0.005f) {
                 stopMoving();
             }
             params().previousPos(params().pos());
-            params().isStillMovingTimer().restart();
+            params().isStillMovingCheckTimer().restart();
         }
+
+        //        if (!canMove(game)) {
+        //            stopMoving();
+        //        }
 
         if (isAlive()) {
             params().skills().forEach((skillType, skill) -> skill.update(game));
@@ -43,7 +50,7 @@ public abstract class Creature {
 
         updateAutomaticControls(game);
         updateTimers(delta);
-
+        //        updateEffects();
 
     }
 
@@ -56,7 +63,7 @@ public abstract class Creature {
         }
     }
 
-    private void moveTowardsTarget(CreatureUpdatable game) {
+    private void updateMovement(CreatureUpdatable game) {
         Vector2 currentPos = params().pos();
         Vector2 targetPos = params().movementCommandTargetPos();
 
@@ -71,7 +78,13 @@ public abstract class Creature {
 
             Vector2 dirVector = vectorBetween.normalized();
 
-            game.setCreatureMovingVector(params().id(), dirVector);
+            if (isEffectActive(CreatureEffect.STUN, game)) {
+                game.setCreatureMovingVector(params().id(), Vector2.of(0f, 0f));
+            }
+            else {
+                game.setCreatureMovingVector(params().id(), dirVector);
+            }
+
 
             params().isMoving(true);
 
@@ -83,7 +96,7 @@ public abstract class Creature {
         params().animationTimer().update(delta);
         params().pathCalculationCooldownTimer().update(delta);
         params().movementCommandsPerSecondLimitTimer().update(delta);
-        params().isStillMovingTimer().update(delta);
+        params().isStillMovingCheckTimer().update(delta);
         params().respawnTimer().update(delta);
         params().staminaRegenerationTimer().update(delta);
         params().aggroTimer().update(delta);
@@ -99,7 +112,10 @@ public abstract class Creature {
     }
 
     public WorldDirection facingDirection(GameRenderable game) {
-        float deg = params().movingVector().angleDeg();
+        Vector2 currentPos = params().pos();
+        Vector2 targetPos = params().movementCommandTargetPos();
+        float deg = currentPos.vectorTowards(targetPos).angleDeg();
+
         if (deg >= 45 && deg < 135) {
             return WorldDirection.UP;
         }
@@ -143,7 +159,7 @@ public abstract class Creature {
     }
 
     protected void takeLifeDamage(float damage) {
-        float beforeLife = params().life();
+        params().previousTickLife(params().life());
 
         float actualDamage = damage * 100f / (100f + totalArmor());
 
@@ -152,10 +168,6 @@ public abstract class Creature {
         }
         else {
             params().life(0f);
-        }
-
-        if (beforeLife > 0f && params().life() <= 0f) {
-            params().justDied(true);
         }
     }
 
@@ -193,16 +205,18 @@ public abstract class Creature {
         return false;
     }
 
-    public void handleBeingAttacked(Boolean isRanged,
-                                    Vector2 dirVector,
-                                    float damage,
-                                    CreatureId attackerId,
-                                    GameUpdatable game) {
+    public void onBeingHit(Boolean isRanged,
+                           Vector2 dirVector,
+                           float damage,
+                           CreatureId attackerId,
+                           GameUpdatable game) {
 
         boolean isShielded = isAttackShielded(isRanged, dirVector, game);
 
         if (!isShielded) {
             takeLifeDamage(damage);
+
+            applyEffect(CreatureEffect.STUN, 0.2f, game);
         }
     }
 
@@ -251,6 +265,31 @@ public abstract class Creature {
         Float rngValue = RandomHelper.seededRandomFloat(params().dropRngSeed());
         params().dropRngSeed(rngValue);
         return rngValue;
+    }
+
+
+    //    public void updateEffects() {
+    //        params().effects().forEach((effect, effectState) -> {
+    //            if (effect == CreatureEffect.SLOW) {
+    //
+    //            } else if (effect == CreatureEffect.STUN) {
+    //
+    //            } else if (effect == CreatureEffect.POISON) {
+    //
+    //            }
+    //        });
+    //    }
+    //
+    public boolean isEffectActive(CreatureEffect effect, GameUpdatable game) {
+        CreatureEffectState effectState = params().effects().get(effect);
+        return game.getTime() >= effectState.startTime() &&
+               game.getTime() < effectState.startTime() + effectState.duration();
+    }
+
+    public void applyEffect(CreatureEffect effect, float duration, GameUpdatable game) {
+        CreatureEffectState effectState = params().effects().get(effect);
+        effectState.startTime(game.getTime());
+        effectState.duration(duration);
     }
 
 }

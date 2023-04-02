@@ -17,4 +17,5 @@ public interface AbilityUpdatable extends GameUpdatable {
                       AbilityType abilityType,
                       Vector2 chainToPos,
                       Vector2 dirVector);
+
 }

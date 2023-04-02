@@ -1,6 +1,8 @@
 package com.mygdx.game.model.creature;
 
 import com.mygdx.game.model.area.AreaId;
+import com.mygdx.game.model.creature.effect.CreatureEffect;
+import com.mygdx.game.model.creature.effect.CreatureEffectState;
 import com.mygdx.game.model.item.Item;
 import com.mygdx.game.model.item.ItemTemplate;
 import com.mygdx.game.model.skill.Skill;
@@ -57,19 +59,20 @@ public class CreatureParams {
     Float maxMana = 100f;
     Float armor = 0f;
 
+    Float previousTickLife = life;
+
     String textureName;
 
     SimpleTimer movementCommandsPerSecondLimitTimer = SimpleTimer.getExpiredTimer();
     Float attackCommandsPerSecondLimit = 0.2f;
 
-    SimpleTimer isStillMovingTimer = SimpleTimer.getExpiredTimer();
+    SimpleTimer isStillMovingCheckTimer = SimpleTimer.getExpiredTimer();
 
     SimpleTimer respawnTimer = SimpleTimer.getExpiredTimer();
     Float respawnTime = 5f;
 
     Float actionCooldown = 0.7f;
 
-    Boolean justDied = false;
     Boolean isDead = false;
     Boolean awaitingRespawn = false;
 
@@ -116,6 +119,12 @@ public class CreatureParams {
 
     Float dropRngSeed = (float) Math.random();
 
+    Float appliedSlowEffectiveness = 0f;
+
+    Float appliedPoisonDamage = 0f;
+
+    Map<CreatureEffect, CreatureEffectState> effects = new ConcurrentSkipListMap<>();
+
     public static CreatureParams of(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn) {
         return getCreatureParams(creatureId,
                                  areaId,
@@ -145,6 +154,11 @@ public class CreatureParams {
                                                   .collect(Collectors.toMap(Function.identity(),
                                                                             skillType -> Skill.of(skillType,
                                                                                                   creatureId))));
+
+        params.effects =
+                new ConcurrentSkipListMap<>(Arrays.stream(CreatureEffect.values())
+                                                  .collect(Collectors.toMap(effect -> effect,
+                                                                            effect -> CreatureEffectState.of())));
 
         params.aiStateSeed = (float) Math.random();
         params.aiStateTime = 0f;

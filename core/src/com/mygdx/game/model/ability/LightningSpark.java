@@ -71,7 +71,7 @@ public class LightningSpark extends Ability {
 
     @Override
     void onDelayedAction(AbilityUpdatable game) {
-        // find closest enemy, and if they are within distance, and havent been hit yet, then start node over them
+        // find the closest enemy, and if they are within distance, and haven't been hit yet, then put node over them
         Set<CreatureId> excluded = new HashSet<>(params().creaturesAlreadyHit().keySet());
         excluded.add(params().creatureId());
 
@@ -79,10 +79,13 @@ public class LightningSpark extends Ability {
 
         if (targetCreature != null &&
             game.isLineOfSight(params().areaId(), params().pos(), targetCreature.params().pos())) {
-            targetCreature.handleBeingAttacked(true,
-                                               params().dirVector(),
-                                               getDamage(game),
-                                               params().creatureId(), game);
+
+            game.onCreatureHit(targetCreature.params().id(),
+                               params().creatureId(),
+                               true,
+                               params().dirVector(),
+                               getDamage(game),
+                               game);
 
             params().creaturesAlreadyHit().put(targetCreature.params().id(), params().stateTimer().time());
 

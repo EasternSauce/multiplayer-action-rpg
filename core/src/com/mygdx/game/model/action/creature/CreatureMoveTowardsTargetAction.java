@@ -5,6 +5,7 @@ import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
+import com.mygdx.game.model.creature.effect.CreatureEffect;
 import com.mygdx.game.model.util.Vector2;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,13 +33,13 @@ public class CreatureMoveTowardsTargetAction implements GameStateAction {
 
         Creature creature = game.getCreature(creatureId);
 
-        if (creature != null && creature.isAlive()) {
+        if (creature != null && creature.isAlive() && !creature.isEffectActive(CreatureEffect.STUN, game)) {
             Vector2 pos = creature.params().pos();
 
             creature.moveTowards(pos.add(mousePos));
 
             creature.params().previousPos(creature.params().pos());
-            creature.params().isStillMovingTimer().restart();
+            creature.params().isStillMovingCheckTimer().restart();
 
 
             creature.params().movementCommandsPerSecondLimitTimer().restart();

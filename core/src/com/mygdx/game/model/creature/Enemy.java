@@ -4,10 +4,8 @@ import com.mygdx.game.Constants;
 import com.mygdx.game.game.interface_.CreatureUpdatable;
 import com.mygdx.game.game.interface_.GameRenderable;
 import com.mygdx.game.game.interface_.GameUpdatable;
-import com.mygdx.game.model.ability.Ability;
-import com.mygdx.game.model.ability.AbilityState;
+import com.mygdx.game.model.creature.effect.CreatureEffect;
 import com.mygdx.game.model.skill.Skill;
-import com.mygdx.game.model.skill.SkillType;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.model.util.WorldDirection;
 import com.mygdx.game.pathing.Astar;
@@ -195,31 +193,24 @@ public class Enemy extends Creature {
     }
 
     @Override
-    public void handleBeingAttacked(Boolean isRanged, Vector2 dirVector, float damage, CreatureId attackerId,
-                                    GameUpdatable game) {
-        if (!isRanged) { // check if target is pointing shield at the attack
-            Ability shieldAbility = game.getAbility(params().id(), SkillType.SUMMON_SHIELD);
-            if (shieldAbility != null && shieldAbility.params().state() == AbilityState.ACTIVE) {
-                float
-                        angleDiff =
-                        (dirVector.angleDeg() - shieldAbility.params().dirVector().multiplyBy(-1).angleDeg() +
-                         180 +
-                         360) % 360 - 180;
-                if (angleDiff <= 60 && angleDiff >= -60) {
-                    return;
-                }
+    public void onBeingHit(Boolean isRanged, Vector2 dirVector, float damage, CreatureId attackerId,
+                           GameUpdatable game) {
+        boolean isShielded = isAttackShielded(isRanged, dirVector, game);
+
+        if (!isShielded) {
+            takeLifeDamage(damage);
+
+            applyEffect(CreatureEffect.STUN, 0.2f, game);
+
+            params().attackedByCreatureId();
+            params().aggroedCreatureId(attackerId);
+            params().aggroTimer().restart();
+
+            if (isRanged) {
+                params().justAttackedFromRangeTimer().restart();
             }
         }
 
-        takeLifeDamage(damage);
-
-        params().attackedByCreatureId();
-        params().aggroedCreatureId(attackerId);
-        params().aggroTimer().restart();
-
-        if (isRanged) {
-            params().justAttackedFromRangeTimer().restart();
-        }
     }
 
     private void processPathfinding(CreatureUpdatable game) {

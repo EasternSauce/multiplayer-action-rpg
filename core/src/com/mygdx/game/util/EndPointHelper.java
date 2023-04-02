@@ -20,6 +20,8 @@ import com.mygdx.game.model.action.skillmenu.SkillPickerMenuDeactivateAction;
 import com.mygdx.game.model.action.skillmenu.SkillPickerMenuSlotChangeAction;
 import com.mygdx.game.model.area.*;
 import com.mygdx.game.model.creature.*;
+import com.mygdx.game.model.creature.effect.CreatureEffect;
+import com.mygdx.game.model.creature.effect.CreatureEffectState;
 import com.mygdx.game.model.item.EquipmentSlotType;
 import com.mygdx.game.model.item.Item;
 import com.mygdx.game.model.item.ItemTemplate;
@@ -57,6 +59,8 @@ public class EndPointHelper {
         endPoint.getKryo().register(EnemySpawn.class);
         endPoint.getKryo().register(EnemyAiState.class);
         endPoint.getKryo().register(LootPile.class);
+        endPoint.getKryo().register(CreatureEffect.class);
+        endPoint.getKryo().register(CreatureEffectState.class);
 
         endPoint.getKryo().register(InitPlayerCommand.class);
         endPoint.getKryo().register(SendChatMessageCommand.class);
@@ -100,7 +104,6 @@ public class EndPointHelper {
 
         endPoint.getKryo().register(AbilityAddAction.class);
         endPoint.getKryo().register(PlayerInitAction.class);
-        endPoint.getKryo().register(CreatureDeathAction.class);
         endPoint.getKryo().register(CreatureMoveTowardsTargetAction.class);
         endPoint.getKryo().register(AbilityRemoveAction.class);
         endPoint.getKryo().register(PlayerRemoveAction.class);
@@ -121,6 +124,7 @@ public class EndPointHelper {
         endPoint.getKryo().register(SkillPickerMenuActivateAction.class);
         endPoint.getKryo().register(SkillPickerMenuSlotChangeAction.class);
         endPoint.getKryo().register(SkillPickerMenuDeactivateAction.class);
+        endPoint.getKryo().register(CreatureHitAction.class);
 
         endPoint.getKryo().register(EquipmentSlotType.class);
         endPoint.getKryo().register(ItemTemplate.class);
