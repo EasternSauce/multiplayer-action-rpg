@@ -82,10 +82,7 @@ public interface GameUpdatable {
 
     void onCreatureHit(CreatureId attackerId,
                        CreatureId targetId,
-                       boolean isRanged,
-                       Vector2 dirVector,
-                       Float damage,
-                       GameUpdatable game);
+                       Ability ability);
 
 
 }

@@ -82,10 +82,7 @@ public class LightningSpark extends Ability {
 
             game.onCreatureHit(targetCreature.params().id(),
                                params().creatureId(),
-                               true,
-                               params().dirVector(),
-                               getDamage(game),
-                               game);
+                               this);
 
             params().creaturesAlreadyHit().put(targetCreature.params().id(), params().stateTimer().time());
 

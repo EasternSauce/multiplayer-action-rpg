@@ -216,7 +216,7 @@ public abstract class Creature {
         if (!isShielded) {
             takeLifeDamage(damage);
 
-            applyEffect(CreatureEffect.STUN, 0.2f, game);
+            applyEffect(CreatureEffect.STUN, 0.5f, game);
         }
     }
 
@@ -284,6 +284,11 @@ public abstract class Creature {
         CreatureEffectState effectState = params().effects().get(effect);
         return game.getTime() >= effectState.startTime() &&
                game.getTime() < effectState.startTime() + effectState.duration();
+    }
+
+    public float getCurrentEffectDuration(CreatureEffect effect, GameUpdatable game) {
+        CreatureEffectState effectState = params().effects().get(effect);
+        return game.getTime() - effectState.startTime();
     }
 
     public void applyEffect(CreatureEffect effect, float duration, GameUpdatable game) {

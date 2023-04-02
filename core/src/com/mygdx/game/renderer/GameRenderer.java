@@ -84,6 +84,17 @@ public class GameRenderer {
 
             }
         });
+
+
+        game.getCreatures().entrySet().stream().filter(entry -> entry.getValue().isAlive()).forEach(entry -> {
+            if (creatureRenderers().containsKey(entry.getKey()) && entry.getValue()
+                                                                        .params()
+                                                                        .areaId()
+                                                                        .equals(game.getCurrentPlayerAreaId())) {
+                creatureRenderers.get(entry.getKey()).renderStunnedAnimation(drawingLayer, game);
+
+            }
+        });
     }
 
     public void renderDeadCreatures(DrawingLayer drawingLayer, GameRenderable game) {

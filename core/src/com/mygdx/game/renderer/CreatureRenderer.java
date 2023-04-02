@@ -7,10 +7,10 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.game.game.interface_.GameRenderable;
-import com.mygdx.game.game.interface_.GameUpdatable;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
+import com.mygdx.game.model.creature.effect.CreatureEffect;
 import com.mygdx.game.model.util.WorldDirection;
 import com.mygdx.game.renderer.config.CreatureAnimationConfig;
 import lombok.Data;
@@ -31,7 +31,7 @@ public class CreatureRenderer {
 
     List<Animation<TextureRegion>> runningAnimations;
 
-    TextureRegion textureRegion;
+    Animation<TextureRegion> stunnedAnimation;
 
     public static CreatureRenderer of(CreatureId creatureId) {
         CreatureRenderer creatureRenderer = new CreatureRenderer();
@@ -52,11 +52,11 @@ public class CreatureRenderer {
 
         CreatureAnimationConfig animationConfig = creature.animationConfig();
 
-        textureRegion = atlas.findRegion(animationConfig.textureName());
+        TextureRegion runningAnimationTextureRegion = atlas.findRegion(animationConfig.textureName());
 
         for (int i = 0; i < 4; i++) {
             facingTextures.set(i,
-                               new TextureRegion(textureRegion,
+                               new TextureRegion(runningAnimationTextureRegion,
                                                  animationConfig.neutralStanceFrame() * animationConfig.textureWidth(),
                                                  i * animationConfig.textureHeight(),
                                                  animationConfig.textureWidth(),
@@ -66,7 +66,7 @@ public class CreatureRenderer {
         for (int i = 0; i < 4; i++) {
             TextureRegion[] frames = new TextureRegion[animationConfig.frameCount()];
             for (int j = 0; j < animationConfig.frameCount(); j++) {
-                frames[j] = (new TextureRegion(textureRegion,
+                frames[j] = (new TextureRegion(runningAnimationTextureRegion,
                                                j * animationConfig.textureWidth(),
                                                i * animationConfig.textureHeight(),
                                                animationConfig.textureWidth(),
@@ -77,6 +77,19 @@ public class CreatureRenderer {
             runningAnimations.add(i, new Animation<>(animationConfig.frameDuration(), frames));
         }
 
+        TextureRegion stunnedAnimationTextureRegion = atlas.findRegion("stunned");
+
+        TextureRegion[] frames = new TextureRegion[8];
+        for (int i = 0; i < 8; i++) {
+            frames[i] = (new TextureRegion(stunnedAnimationTextureRegion,
+                                           i * 60,
+                                           0,
+                                           60,
+                                           30));
+        }
+
+        stunnedAnimation = new Animation<>(0.035f, frames);
+
     }
 
     public TextureRegion runningAnimation(GameRenderable game) {
@@ -86,6 +99,14 @@ public class CreatureRenderer {
 
         return runningAnimations.get(creature.animationConfig().dirMap().get(currentDirection))
                                 .getKeyFrame(creature.params().animationTimer().time(), true);
+    }
+
+    public TextureRegion stunnedAnimation(GameRenderable game) {
+        Creature creature = game.getCreature(creatureId);
+
+        float currentStunDuration = creature.getCurrentEffectDuration(CreatureEffect.STUN, game);
+
+        return stunnedAnimation.getKeyFrame(currentStunDuration, true);
     }
 
     public TextureRegion getFacingTexture(GameRenderable game) {
@@ -115,7 +136,7 @@ public class CreatureRenderer {
         if (creature.isAlive()) {
 
             TextureRegion texture;
-            if (!creature.params().isMoving()) {
+            if (!creature.params().isMoving() || creature.isEffectActive(CreatureEffect.STUN, game)) {
                 texture = getFacingTexture(game);
             }
             else {
@@ -145,7 +166,7 @@ public class CreatureRenderer {
         }
     }
 
-    public void renderLifeBar(DrawingLayer drawingLayer, GameUpdatable game) {
+    public void renderLifeBar(DrawingLayer drawingLayer, GameRenderable game) {
         float lifeBarHeight = 0.16f;
         float lifeBarWidth = 2.0f;
 
@@ -161,6 +182,20 @@ public class CreatureRenderer {
         }
         else {
             drawingLayer.filledRectangle(new Rectangle(barPosX, barPosY, lifeBarWidth, lifeBarHeight), Color.ROYAL);
+        }
+
+    }
+
+    public void renderStunnedAnimation(DrawingLayer drawingLayer, GameRenderable game) {
+        Creature creature = game.getCreature(creatureId);
+
+        float distanceFromLifeBar = 1f;
+
+        float posX = creature.params().pos().x() - 1.5f;
+        float posY = creature.params().pos().y() + sprite.getWidth() / 2 + 0.3125f - distanceFromLifeBar;
+
+        if (creature.isEffectActive(CreatureEffect.STUN, game)) {
+            drawingLayer.spriteBatch().draw(stunnedAnimation(game), posX, posY, 3f, 1.5f);
         }
 
     }

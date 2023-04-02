@@ -8,7 +8,6 @@ import com.mygdx.game.command.InitPlayerCommand;
 import com.mygdx.game.command.PerformActionCommand;
 import com.mygdx.game.command.SendChatMessageCommand;
 import com.mygdx.game.command.SpawnEnemyCommand;
-import com.mygdx.game.game.interface_.GameUpdatable;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.ability.*;
 import com.mygdx.game.model.action.ActionsHolder;
@@ -476,11 +475,8 @@ public class MyGdxGameServer extends MyGdxGame {
     @Override
     public void onCreatureHit(CreatureId attackerId,
                               CreatureId targetId,
-                              boolean isRanged,
-                              Vector2 dirVector,
-                              Float damage,
-                              GameUpdatable game) {
-        CreatureHitAction action = CreatureHitAction.of(attackerId, targetId, isRanged, dirVector, damage);
+                              Ability ability) {
+        CreatureHitAction action = CreatureHitAction.of(attackerId, targetId, ability);
 
         onTickActions.add(action);
     }

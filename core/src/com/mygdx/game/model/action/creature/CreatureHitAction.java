@@ -2,6 +2,7 @@ package com.mygdx.game.model.action.creature;
 
 import com.mygdx.game.game.interface_.GameActionApplicable;
 import com.mygdx.game.model.GameState;
+import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.area.LootPile;
 import com.mygdx.game.model.area.LootPileId;
@@ -28,9 +29,7 @@ import java.util.stream.Collectors;
 public class CreatureHitAction implements GameStateAction {
     CreatureId attackerId;
     CreatureId targetId;
-    boolean isRanged;
-    Vector2 dirVector;
-    Float damage;
+    Ability ability;
 
     @Override
     public Vector2 actionObjectPos(GameState gameState) {
@@ -44,18 +43,22 @@ public class CreatureHitAction implements GameStateAction {
     public void applyToGame(GameActionApplicable game) {
         Creature targetCreature = game.getCreature(targetId);
         targetCreature.onBeingHit(true,
-                                  dirVector,
-                                  damage,
+                                  ability.params().dirVector(),
+                                  ability.getDamage(game),
                                   attackerId,
                                   game);
 
         if (targetCreature.params().previousTickLife() > 0f && targetCreature.params().life() <= 0f) {
-            System.out.println("ded");
-
             targetCreature.params().life(0f); // just to make sure its dead on client side
             targetCreature.params().isDead(true);
             targetCreature.params().respawnTimer().restart();
             targetCreature.params().awaitingRespawn(true);
+
+            ability.params()
+                   .creaturesAlreadyHit()
+                   .put(targetId, ability.params().stateTimer().time());
+
+            ability.onCreatureHit();
 
             spawnDrops(game);
         }

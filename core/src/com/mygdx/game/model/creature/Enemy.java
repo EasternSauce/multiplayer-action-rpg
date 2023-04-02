@@ -200,7 +200,7 @@ public class Enemy extends Creature {
         if (!isShielded) {
             takeLifeDamage(damage);
 
-            applyEffect(CreatureEffect.STUN, 0.2f, game);
+            applyEffect(CreatureEffect.STUN, 0.5f, game);
 
             params().attackedByCreatureId();
             params().aggroedCreatureId(attackerId);
