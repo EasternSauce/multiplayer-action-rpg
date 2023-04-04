@@ -40,6 +40,11 @@ public class Boomerang extends Projectile {
     }
 
     @Override
+    public void updatePosition(AbilityUpdatable game) {
+
+    }
+
+    @Override
     void onAbilityStarted(AbilityUpdatable game) {
 
     }
@@ -54,17 +59,11 @@ public class Boomerang extends Projectile {
 
     }
 
-    @Override
-    void onUpdatePosition(AbilityUpdatable game) {
-
-    }
 
     @Override
     public void onCreatureHit() {
-        //        deactivate();
         params().comingBack(true);
         params().speed(20f);
-        System.out.println("coming back " + Math.random());
     }
 
     @Override

@@ -37,6 +37,11 @@ public class FireballExplosion extends Ability {
     }
 
     @Override
+    public void updatePosition(AbilityUpdatable game) {
+
+    }
+
+    @Override
     void onAbilityStarted(AbilityUpdatable game) {
 
     }
@@ -51,10 +56,6 @@ public class FireballExplosion extends Ability {
 
     }
 
-    @Override
-    void onUpdatePosition(AbilityUpdatable game) {
-
-    }
 
     @Override
     void onChannelUpdate(AbilityUpdatable game) {

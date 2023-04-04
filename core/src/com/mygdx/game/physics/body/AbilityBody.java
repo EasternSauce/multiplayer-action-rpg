@@ -82,9 +82,9 @@ public class AbilityBody {
         Ability ability = gameState.abilities().get(abilityId);
 
         if (isBodyInitialized() && ability != null && ability.bodyShouldExist()) {
-            if (ability.isPositionUpdated() && (ability.params().state() == AbilityState.CHANNEL || ability.params()
-                                                                                                           .state() ==
-                                                                                                    AbilityState.ACTIVE)) {
+            if (ability.isPositionChangedOnUpdate() &&
+                (ability.params().state() == AbilityState.CHANNEL || ability.params()
+                                                                            .state() == AbilityState.ACTIVE)) {
                 b2Body.setTransform(ability.params().pos().x(), ability.params().pos().y(), 0f);
             }
 

@@ -295,6 +295,7 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
                         .get(creatureId)
                         .params()
                         .pos(physics().creatureBodies().get(creatureId).getBodyPos());
+
             }
         });
 
@@ -321,6 +322,9 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
     public void updateAbilities(float delta) {
         Set<AbilityId> abilitiesToUpdate = getAbilitiesToUpdate();
 
+        abilitiesToUpdate.forEach(abilityId -> gameState().abilities().get(abilityId).update(delta, this));
+
+
         abilitiesToUpdate.forEach(abilityId -> {
             if (physics().abilityBodies().containsKey(abilityId)) {
                 physics().abilityBodies().get(abilityId).update(gameState());
@@ -330,7 +334,9 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
         abilitiesToUpdate.forEach(abilityId -> {
             if (physics().abilityBodies().containsKey(abilityId)) {
                 Ability ability = gameState().abilities().get(abilityId);
-                if (physics().abilityBodies().get(abilityId).isBodyInitialized() && ability.bodyShouldExist()) {
+                if (!ability.isPositionChangedOnUpdate() &&
+                    ability.bodyShouldExist() &&
+                    physics().abilityBodies().get(abilityId).isBodyInitialized()) {
                     ability.params().pos(physics().abilityBodies().get(abilityId).getBodyPos());
                 }
 
@@ -343,10 +349,6 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
                 renderer().abilityRenderers().get(abilityId).update(gameState());
             }
         });
-
-
-        abilitiesToUpdate.forEach(abilityId -> gameState().abilities().get(abilityId).update(delta, this));
-
 
     }
 

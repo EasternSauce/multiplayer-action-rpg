@@ -88,7 +88,7 @@ public class EndPointHelper {
         endPoint.getKryo().register(Boomerang.class);
         endPoint.getKryo().register(SummonShield.class);
         endPoint.getKryo().register(SwordSpin.class);
-        endPoint.getKryo().register(Teleport.class);
+        endPoint.getKryo().register(TeleportSource.class);
         endPoint.getKryo().register(TeleportDestination.class);
 
 

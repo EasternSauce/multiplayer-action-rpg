@@ -76,6 +76,11 @@ public class Fireball extends Projectile {
     }
 
     @Override
+    public void updatePosition(AbilityUpdatable game) {
+
+    }
+
+    @Override
     void onAbilityStarted(AbilityUpdatable game) {
 
     }
@@ -93,10 +98,6 @@ public class Fireball extends Projectile {
                           params.dirVector());
     }
 
-    @Override
-    void onUpdatePosition(AbilityUpdatable game) {
-
-    }
 
     @Override
     public void onOtherAbilityHit(AbilityId otherAbilityId, GameUpdatable game) {

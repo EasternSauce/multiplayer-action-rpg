@@ -45,6 +45,11 @@ public class PlayfulGhost extends Projectile {
     }
 
     @Override
+    public void updatePosition(AbilityUpdatable game) {
+
+    }
+
+    @Override
     void onAbilityStarted(AbilityUpdatable game) {
 
     }
@@ -59,10 +64,6 @@ public class PlayfulGhost extends Projectile {
 
     }
 
-    @Override
-    void onUpdatePosition(AbilityUpdatable game) {
-
-    }
 
     private boolean isTargetingAllowed(Creature thisCreature, Creature targetCreature) {
         if (thisCreature instanceof Enemy) {

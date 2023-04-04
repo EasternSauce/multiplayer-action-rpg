@@ -43,6 +43,7 @@ public class CreatureMoveTowardsTargetAction implements GameStateAction {
 
 
             creature.params().movementCommandsPerSecondLimitTimer().restart();
+
         }
 
     }

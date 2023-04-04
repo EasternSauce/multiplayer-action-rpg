@@ -29,6 +29,11 @@ public class SummonGhosts extends Ability {
     }
 
     @Override
+    public void updatePosition(AbilityUpdatable game) {
+
+    }
+
+    @Override
     void onAbilityStarted(AbilityUpdatable game) {
 
     }
@@ -52,10 +57,6 @@ public class SummonGhosts extends Ability {
                           params.dirVector().setAngleDeg(baseAngle + 30f));
     }
 
-    @Override
-    void onUpdatePosition(AbilityUpdatable game) {
-
-    }
 
     @Override
     void onChannelUpdate(AbilityUpdatable game) {

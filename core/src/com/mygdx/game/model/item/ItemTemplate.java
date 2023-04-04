@@ -74,7 +74,14 @@ public class ItemTemplate {
                                                           .equipable(true)
                                                           .equipmentSlotType(EquipmentSlotType.PRIMARY_WEAPON)
                                                           .attackSkill(SkillType.SWORD_SLASH)
-                                                          .damage(30f)
+                                                          .damage(30f),
+                                              ItemTemplate.of("woodenShield",
+                                                              "Wooden Shield",
+                                                              "-",
+                                                              Vector2Int.of(0, 6))
+                                                          .worth(300)
+                                                          .equipable(true)
+                                                          .equipmentSlotType(EquipmentSlotType.SECONDARY_WEAPON)
                                              )
 
                 );

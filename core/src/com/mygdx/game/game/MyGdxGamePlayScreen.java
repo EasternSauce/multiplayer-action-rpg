@@ -107,7 +107,6 @@ public class MyGdxGamePlayScreen implements Screen {
     }
 
     public void update(float delta) {
-
         game.performPhysicsWorldStep();
 
         PhysicsHelper.handleForceUpdateBodyPositions(game);

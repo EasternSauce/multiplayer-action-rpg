@@ -30,6 +30,8 @@ public class DropTableEntry implements Comparable<DropTableEntry> {
 
     private static Map<SkillType, Integer> rangedGrantedSkillDrops = new ConcurrentSkipListMap<>();
 
+    private static Map<SkillType, Integer> shieldGrantedSkillDrops = new ConcurrentSkipListMap<>();
+
     static {
         magicGrantedSkillDrops.put(SkillType.FIREBALL, 100);
         magicGrantedSkillDrops.put(SkillType.LIGHTNING, 70);
@@ -42,6 +44,8 @@ public class DropTableEntry implements Comparable<DropTableEntry> {
         movementGrantedSkillDrops.put(SkillType.TELEPORT, 100);
 
         rangedGrantedSkillDrops.put(SkillType.RICOCHET_BALLISTA, 100);
+
+        shieldGrantedSkillDrops.put(SkillType.SUMMON_SHIELD, 100);
 
     }
 
@@ -91,6 +95,13 @@ public class DropTableEntry implements Comparable<DropTableEntry> {
                               ItemTemplate.templates.get("boomerang"),
                               0f,
                               new ConcurrentSkipListMap<>());
+
+    public static DropTableEntry
+            shieldDrop =
+            DropTableEntry.of(0.1f,
+                              ItemTemplate.templates.get("woodenShield"),
+                              0f,
+                              shieldGrantedSkillDrops);
 
 
 }

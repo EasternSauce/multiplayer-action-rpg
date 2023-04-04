@@ -68,8 +68,8 @@ public class LightningSpark extends Ability {
     }
 
     @Override
-    public Boolean isPositionCalculated() {
-        return true;
+    public void updatePosition(AbilityUpdatable game) {
+
     }
 
     @Override
@@ -104,11 +104,6 @@ public class LightningSpark extends Ability {
 
     @Override
     void onAbilityCompleted(AbilityUpdatable game) {
-
-    }
-
-    @Override
-    void onUpdatePosition(AbilityUpdatable game) {
 
     }
 

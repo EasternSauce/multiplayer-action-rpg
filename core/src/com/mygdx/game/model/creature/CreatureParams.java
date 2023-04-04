@@ -167,6 +167,9 @@ public class CreatureParams {
         Map<SkillType, Integer> grantedSkills1 = new ConcurrentSkipListMap<>();
         grantedSkills1.put(SkillType.BOOMERANG, 1);
 
+        Map<SkillType, Integer> grantedSkills2 = new ConcurrentSkipListMap<>();
+        grantedSkills2.put(SkillType.SUMMON_SHIELD, 1);
+
         params.inventoryItems.put(2,
                                   Item.of()
                                       .template(ItemTemplate.templates.get("leatherArmor"))
@@ -176,6 +179,12 @@ public class CreatureParams {
                                   Item.of().template(ItemTemplate.templates.get("leatherArmor")).qualityModifier(1f));
         params.inventoryItems.put(10,
                                   Item.of().template(ItemTemplate.templates.get("hideGloves")).qualityModifier(0.9f));
+
+        params.inventoryItems.put(11,
+                                  Item.of()
+                                      .template(ItemTemplate.templates.get("woodenShield"))
+                                      .qualityModifier(1.0f)
+                                      .grantedSkills(grantedSkills2));
         return params;
     }
 

@@ -30,6 +30,11 @@ public class RicochetBallista extends Ability {
     }
 
     @Override
+    public void updatePosition(AbilityUpdatable game) {
+
+    }
+
+    @Override
     void onAbilityStarted(AbilityUpdatable game) {
 
     }
@@ -53,10 +58,6 @@ public class RicochetBallista extends Ability {
         game.chainAbility(this, AbilityType.RICOCHET_BULLET, rightSidePos, params.dirVector());
     }
 
-    @Override
-    void onUpdatePosition(AbilityUpdatable game) {
-
-    }
 
     @Override
     void onChannelUpdate(AbilityUpdatable game) {

@@ -112,9 +112,7 @@ public abstract class Creature {
     }
 
     public WorldDirection facingDirection(GameRenderable game) {
-        Vector2 currentPos = params().pos();
-        Vector2 targetPos = params().movementCommandTargetPos();
-        float deg = currentPos.vectorTowards(targetPos).angleDeg();
+        float deg = params().movingVector().angleDeg();
 
         if (deg >= 45 && deg < 135) {
             return WorldDirection.UP;

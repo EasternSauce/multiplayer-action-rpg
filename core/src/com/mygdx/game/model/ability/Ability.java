@@ -15,11 +15,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 public abstract class Ability {
     AbilityParams params;
 
-    public Boolean isPositionUpdated() {
-        return false;
-    }
-
-    public Boolean isPositionCalculated() {
+    public Boolean isPositionChangedOnUpdate() {
         return false;
     }
 
@@ -31,10 +27,6 @@ public abstract class Ability {
         if (state == AbilityState.CHANNEL) {
             onChannelUpdate(game);
 
-            if (isPositionUpdated()) {
-                onUpdatePosition(game);
-            }
-
             if (params().stateTimer().time() > params().channelTime()) {
                 params().state(AbilityState.ACTIVE);
                 game.initAbilityBody(this);
@@ -44,10 +36,6 @@ public abstract class Ability {
         }
         else if (state == AbilityState.ACTIVE) {
             onActiveUpdate(game);
-
-            if (isPositionUpdated()) {
-                onUpdatePosition(game);
-            }
 
             if (!params().delayedActionCompleted() &&
                 params().delayedActionTime() != null &&
@@ -67,13 +55,13 @@ public abstract class Ability {
         updateTimers(delta);
     }
 
+    abstract public void updatePosition(AbilityUpdatable game);
+
     abstract void onAbilityStarted(AbilityUpdatable game);
 
     abstract void onDelayedAction(AbilityUpdatable game);
 
     abstract void onAbilityCompleted(AbilityUpdatable game);
-
-    abstract void onUpdatePosition(AbilityUpdatable game);
 
     abstract void onChannelUpdate(AbilityUpdatable game);
 
@@ -81,16 +69,12 @@ public abstract class Ability {
 
     public void init(GameActionApplicable game) {
 
-        if (isPositionUpdated()) {
-            onUpdatePosition(game);
-        }
-
         params().state(AbilityState.CHANNEL);
         params().stateTimer().restart();
 
         Creature creature = game.getCreature(params().creatureId());
 
-        if (creature != null && !isPositionCalculated()) {
+        if (creature != null) {
             if (params().chainToPos() != null) {
                 params().pos(params().chainToPos());
             }

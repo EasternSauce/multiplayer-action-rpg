@@ -33,7 +33,8 @@ public class EnemyTemplate {
                     DropTableEntry.leatherArmorDrop,
                     DropTableEntry.hideGlovesDrop,
                     DropTableEntry.ringmailGreavesDrop,
-                    DropTableEntry.ironSwordDrop)));
+                    DropTableEntry.ironSwordDrop,
+                    DropTableEntry.shieldDrop)));
     public static EnemyTemplate
             mage =
             EnemyTemplate.of(EnemyType.MAGE, 15f, SkillType.SLOW_MAGIC_ORB, new ConcurrentSkipListSet<>(Arrays.asList(

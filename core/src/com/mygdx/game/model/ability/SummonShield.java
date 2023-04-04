@@ -1,6 +1,7 @@
 package com.mygdx.game.model.ability;
 
 import com.mygdx.game.game.interface_.AbilityUpdatable;
+import com.mygdx.game.game.interface_.GameActionApplicable;
 import com.mygdx.game.game.interface_.GameUpdatable;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
@@ -21,18 +22,17 @@ public class SummonShield extends Ability {
 
         SummonShield ability = SummonShield.of();
         ability.params =
-                abilityParams
-                        .width(2f)
-                        .height(2f)
-                        .channelTime(0f)
-                        .activeTime(1f)
-                        .range(1.2f)
-                        .textureName("shield")
-                        .baseDamage(0f)
-                        .isChannelAnimationLooping(false)
-                        .isActiveAnimationLooping(false)
-                        .rotationShift(0f)
-                        .flip(SummonShield.calculateFlip(flipValue));
+                abilityParams.width(2f)
+                             .height(2f)
+                             .channelTime(0f)
+                             .activeTime(1f)
+                             .range(1.2f)
+                             .textureName("shield")
+                             .baseDamage(0f)
+                             .isChannelAnimationLooping(false)
+                             .isActiveAnimationLooping(false)
+                             .rotationShift(0f)
+                             .flip(SummonShield.calculateFlip(flipValue));
         return ability;
     }
 
@@ -41,13 +41,23 @@ public class SummonShield extends Ability {
     }
 
     @Override
-    public Boolean isPositionUpdated() {
-        return true;
+    public void init(GameActionApplicable game) {
+
+        params().state(AbilityState.CHANNEL);
+        params().stateTimer().restart();
+
+        updatePosition(game);
+
     }
 
     @Override
     public Boolean isRanged() {
         return false;
+    }
+
+    @Override
+    public Boolean isPositionChangedOnUpdate() {
+        return true;
     }
 
     @Override
@@ -66,7 +76,7 @@ public class SummonShield extends Ability {
     }
 
     @Override
-    protected void onUpdatePosition(AbilityUpdatable game) {
+    public void updatePosition(AbilityUpdatable game) {
         Vector2 dirVector;
         if (params().dirVector().len() <= 0) {
             dirVector = Vector2.of(1, 0);
@@ -92,18 +102,14 @@ public class SummonShield extends Ability {
     }
 
     @Override
-    void onChannelUpdate(AbilityUpdatable gameState) {
-        if (isPositionUpdated()) {
-            onUpdatePosition(gameState);
-        }
+    void onChannelUpdate(AbilityUpdatable game) {
+        updatePosition(game);
 
     }
 
     @Override
     void onActiveUpdate(AbilityUpdatable game) {
-        if (isPositionUpdated()) {
-            onUpdatePosition(game);
-        }
+        updatePosition(game);
 
     }
 

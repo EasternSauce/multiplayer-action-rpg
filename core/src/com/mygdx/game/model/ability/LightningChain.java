@@ -1,7 +1,9 @@
 package com.mygdx.game.model.ability;
 
 import com.mygdx.game.game.interface_.AbilityUpdatable;
+import com.mygdx.game.game.interface_.GameActionApplicable;
 import com.mygdx.game.game.interface_.GameUpdatable;
+import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -35,6 +37,25 @@ public class LightningChain extends Ability {
         return ability;
     }
 
+    @Override
+    public void init(GameActionApplicable game) {
+
+        params().state(AbilityState.CHANNEL);
+        params().stateTimer().restart();
+
+        Creature creature = game.getCreature(params().creatureId());
+
+        if (creature != null) {
+            if (params().chainToPos() != null) {
+                params().pos(params().chainToPos());
+            }
+            else {
+                params().pos(creature.params().pos());
+            }
+        }
+
+    }
+
     private static Float calculateRotationAngle(Vector2 pos, Vector2 chainFromPos) {
         Vector2 chainDirVector = pos.vectorTowards(chainFromPos);
 
@@ -57,9 +78,10 @@ public class LightningChain extends Ability {
     }
 
     @Override
-    public Boolean isPositionCalculated() {
-        return true;
+    public void updatePosition(AbilityUpdatable game) {
+
     }
+
 
     @Override
     void onAbilityStarted(AbilityUpdatable game) {
@@ -76,10 +98,6 @@ public class LightningChain extends Ability {
 
     }
 
-    @Override
-    void onUpdatePosition(AbilityUpdatable game) {
-
-    }
 
     @Override
     void onChannelUpdate(AbilityUpdatable game) {

@@ -11,13 +11,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Teleport extends Ability {
+public class TeleportSource extends Ability {
     AbilityParams params;
 
-    public static Teleport of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
+    public static TeleportSource of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
         Creature creature = game.getCreature(abilityParams.creatureId());
 
-        Teleport ability = Teleport.of();
+        TeleportSource ability = TeleportSource.of();
         ability.params =
                 abilityParams
                         .width(4.5f)
@@ -42,6 +42,11 @@ public class Teleport extends Ability {
     }
 
     @Override
+    public void updatePosition(AbilityUpdatable game) {
+
+    }
+
+    @Override
     void onAbilityStarted(AbilityUpdatable game) {
 
     }
@@ -56,10 +61,6 @@ public class Teleport extends Ability {
 
     }
 
-    @Override
-    void onUpdatePosition(AbilityUpdatable game) {
-
-    }
 
     @Override
     void onChannelUpdate(AbilityUpdatable game) {

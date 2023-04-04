@@ -45,6 +45,11 @@ public class LightningNode extends Ability {
     }
 
     @Override
+    public void updatePosition(AbilityUpdatable game) {
+
+    }
+
+    @Override
     void onAbilityStarted(AbilityUpdatable game) {
 
     }
@@ -77,11 +82,6 @@ public class LightningNode extends Ability {
 
     @Override
     void onAbilityCompleted(AbilityUpdatable game) {
-
-    }
-
-    @Override
-    void onUpdatePosition(AbilityUpdatable game) {
 
     }
 

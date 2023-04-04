@@ -70,6 +70,11 @@ public class TeleportDestination extends Ability {
     }
 
     @Override
+    public void updatePosition(AbilityUpdatable game) {
+
+    }
+
+    @Override
     void onAbilityStarted(AbilityUpdatable game) {
         game.addTeleportEvent(TeleportEvent.of(params().creatureId(),
                                                params().pos(),
@@ -87,10 +92,6 @@ public class TeleportDestination extends Ability {
 
     }
 
-    @Override
-    void onUpdatePosition(AbilityUpdatable game) {
-
-    }
 
     @Override
     void onChannelUpdate(AbilityUpdatable game) {

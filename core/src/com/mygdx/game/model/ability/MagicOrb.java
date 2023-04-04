@@ -45,6 +45,11 @@ public class MagicOrb extends Projectile {
     }
 
     @Override
+    public void updatePosition(AbilityUpdatable game) {
+
+    }
+
+    @Override
     void onAbilityStarted(AbilityUpdatable game) {
 
     }
@@ -59,10 +64,6 @@ public class MagicOrb extends Projectile {
 
     }
 
-    @Override
-    void onUpdatePosition(AbilityUpdatable game) {
-
-    }
 
     @Override
     public void onCreatureHit() {
