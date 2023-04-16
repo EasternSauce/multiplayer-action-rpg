@@ -61,6 +61,11 @@ public class MyGdxGameServer extends MyGdxGame {
     }
 
     @Override
+    public void setStartingScreen() {
+        setScreen(gameplayScreen);
+    }
+
+    @Override
     public Server endPoint() {
         return _endPoint;
     }
@@ -503,8 +508,13 @@ public class MyGdxGameServer extends MyGdxGame {
     }
 
     @Override
-    void performPhysicsWorldStep() {
+    public void performPhysicsWorldStep() {
         physics().physicsWorlds().values().forEach(PhysicsWorld::step);
+    }
+
+    @Override
+    public void initializePlayer(String playerName) {
+
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.mygdx.game.game.interface_;
 
-import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityId;
 import com.mygdx.game.model.ability.AbilityParams;
@@ -40,9 +39,11 @@ public interface GameUpdatable {
     @SuppressWarnings("unused")
     Vector2 getAbilityPos(AbilityId abilityId);
 
-    Vector3 getWorldCameraPosition();
+    void setWorldCameraPosition(float x, float y);
 
-    void updateWorldCamera();
+    void setWorldTextCameraPosition(float x, float y);
+
+    void updateCameras();
 
     boolean isLineOfSight(AreaId areaId, Vector2 fromPos, Vector2 toPos);
 

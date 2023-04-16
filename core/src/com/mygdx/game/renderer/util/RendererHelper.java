@@ -3,7 +3,6 @@ package com.mygdx.game.renderer.util;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector3;
 import com.esotericsoftware.kryonet.Client;
 import com.mygdx.game.Constants;
 import com.mygdx.game.assets.Assets;
@@ -58,6 +57,7 @@ public class RendererHelper {
     public static void drawWorld(GameRenderable game) {
         GameRenderer renderer = game.getRenderer();
         DrawingLayer drawingLayer = renderer.worldDrawingLayer();
+        DrawingLayer textDrawingLayer = renderer.worldTextDrawingLayer();
 
         renderer.areaRenderers().get(game.getCurrentPlayerAreaId()).render(new int[]{0, 1});
 
@@ -76,6 +76,12 @@ public class RendererHelper {
                 .forEach((abilityId, abilityAnimation) -> abilityAnimation.render(drawingLayer, game));
 
         drawingLayer.end();
+
+        textDrawingLayer.begin();
+
+        renderer.renderPlayerNames(textDrawingLayer, game);
+
+        textDrawingLayer.end();
 
         renderer.areaRenderers().get(game.getCurrentPlayerAreaId()).render(new int[]{2, 3});
 
@@ -110,7 +116,7 @@ public class RendererHelper {
         drawingLayer.end();
     }
 
-    public static void updateCamera(GameRenderable game) {
+    public static void updateCameraPositions(GameRenderable game) {
         Creature player = null;
 
         if (game.getCurrentPlayerId() != null) {
@@ -132,13 +138,14 @@ public class RendererHelper {
                 camY = 0;
             }
 
-            Vector3 camPosition = game.getWorldCameraPosition();
+            float x = (float) (Math.floor(camX * 100) / 100);
+            float y = (float) (Math.floor(camY * 100) / 100);
 
+            game.setWorldCameraPosition(x, y);
+            game.setWorldTextCameraPosition(x * Constants.PPM,
+                                            y * Constants.PPM); // world text viewport is not scaled down!
 
-            camPosition.x = (float) (Math.floor(camX * 100) / 100);
-            camPosition.y = (float) (Math.floor(camY * 100) / 100);
-
-            game.updateWorldCamera();
+            game.updateCameras();
         }
 
 
@@ -146,7 +153,7 @@ public class RendererHelper {
 
     private static void drawFpsCounter(DrawingLayer drawingLayer) {
         float fps = Gdx.graphics.getFramesPerSecond();
-        Assets.drawFont(drawingLayer, fps + " fps", Vector2.of(3, Constants.WindowHeight - 3), Color.WHITE);
+        Assets.drawSmallFont(drawingLayer, fps + " fps", Vector2.of(3, Constants.WindowHeight - 3), Color.WHITE);
     }
 
     private static float skillSlotPositionX(Integer index) {
@@ -186,10 +193,10 @@ public class RendererHelper {
                                       Vector2.of(rect.x() + 5f, rect.y() + SLOT_SIZE - 7f),
                                       Color.GOLD);
             }
-            Assets.drawSmallFont(drawingLayer,
-                                 keys.get(i.get()),
-                                 Vector2.of(rect.x() + 2f, rect.y() + SLOT_SIZE - 27f),
-                                 Color.WHITE);
+            Assets.drawVerySmallFont(drawingLayer,
+                                     keys.get(i.get()),
+                                     Vector2.of(rect.x() + 2f, rect.y() + SLOT_SIZE - 27f),
+                                     Color.WHITE);
 
             i.getAndIncrement();
         });
@@ -239,10 +246,10 @@ public class RendererHelper {
         //                          rect.y(),
         //                          20f,
         //                          20f);
-        Assets.drawFont(drawingLayer,
-                        skillName,
-                        Vector2.of(rect.x() + 40f, rect.y() + 17f),
-                        Color.GOLD);
+        Assets.drawSmallFont(drawingLayer,
+                             skillName,
+                             Vector2.of(rect.x() + 40f, rect.y() + 17f),
+                             Color.GOLD);
         i.getAndIncrement();
     }
 
@@ -343,16 +350,16 @@ public class RendererHelper {
 
     private static void drawChat(Chat chat, DrawingLayer drawingLayer) {
         for (int i = 0; i < Math.min(chat.messages().size(), 6); i++) {
-            Assets.drawFont(drawingLayer,
-                            chat.messages().get(i).poster() + ": " + chat.messages().get(i).text(),
-                            Vector2.of(30, 220 - 20 * i),
-                            Color.PURPLE);
+            Assets.drawSmallFont(drawingLayer,
+                                 chat.messages().get(i).poster() + ": " + chat.messages().get(i).text(),
+                                 Vector2.of(30, 220 - 20 * i),
+                                 Color.PURPLE);
         }
 
-        Assets.drawFont(drawingLayer,
-                        (chat.isTyping() ? "> " : "") + chat.currentMessage(),
-                        Vector2.of(30, 70),
-                        Color.PURPLE);
+        Assets.drawSmallFont(drawingLayer,
+                             (chat.isTyping() ? "> " : "") + chat.currentMessage(),
+                             Vector2.of(30, 70),
+                             Color.PURPLE);
     }
 
 }

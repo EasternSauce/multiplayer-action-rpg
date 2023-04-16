@@ -19,7 +19,7 @@ public class Chat {
     String currentMessage = "";
 
     Float holdBackspaceTime;
-    Boolean holdingBackspace = false;
+    Boolean isHoldingBackspace = false;
 
     public void sendMessage(GameState gameState, String posterId, String message) {
         if (messages().size() < 6) {

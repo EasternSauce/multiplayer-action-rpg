@@ -146,11 +146,11 @@ public class InventoryHelper {
                                              Color.BROWN);
                 drawingLayer.shapeDrawer()
                             .filledRectangle(rect.x(), rect.y(), rect.width(), rect.height(), Color.BROWN);
-                Assets.drawFont(drawingLayer,
-                                EquipmentSlotType.equipmentSlotNames.get(index) + ":",
-                                Vector2.of(rect.x() - SLOT_SIZE / 2f - 170f,
-                                           rect.y() + SLOT_SIZE / 2f + 7f),
-                                Color.DARK_GRAY);
+                Assets.drawSmallFont(drawingLayer,
+                                     EquipmentSlotType.equipmentSlotNames.get(index) + ":",
+                                     Vector2.of(rect.x() - SLOT_SIZE / 2f - 170f,
+                                                rect.y() + SLOT_SIZE / 2f + 7f),
+                                     Color.DARK_GRAY);
             });
 
             renderPlayerItems(drawingLayer, game);
@@ -183,10 +183,10 @@ public class InventoryHelper {
             drawingLayer.spriteBatch().draw(textureRegion, x, y, SLOT_SIZE, SLOT_SIZE);
 
             if (entry.getValue().quantity() > 1) {
-                Assets.drawFont(drawingLayer,
-                                entry.getValue().quantity().toString(),
-                                Vector2.of(x, y + 15),
-                                Color.WHITE);
+                Assets.drawSmallFont(drawingLayer,
+                                     entry.getValue().quantity().toString(),
+                                     Vector2.of(x, y + 15),
+                                     Color.WHITE);
             }
         });
 
@@ -205,10 +205,10 @@ public class InventoryHelper {
             drawingLayer.spriteBatch().draw(textureRegion, x, y, SLOT_SIZE, SLOT_SIZE);
 
             if (entry.getValue().quantity() > 1) {
-                Assets.drawFont(drawingLayer,
-                                entry.getValue().quantity().toString(),
-                                Vector2.of(x, y + 15),
-                                Color.WHITE);
+                Assets.drawSmallFont(drawingLayer,
+                                     entry.getValue().quantity().toString(),
+                                     Vector2.of(x, y + 15),
+                                     Color.WHITE);
             }
         });
 
@@ -272,17 +272,17 @@ public class InventoryHelper {
         }
 
         if (mouseOverItem != null) {
-            Assets.drawFont(drawingLayer,
-                            mouseOverItem.template().name(),
-                            Vector2.of(backgroundRect.x() + MARGIN,
-                                       backgroundRect.y() + backgroundRect.height() - (INVENTORY_HEIGHT + 5)),
-                            Color.DARK_GRAY);
+            Assets.drawSmallFont(drawingLayer,
+                                 mouseOverItem.template().name(),
+                                 Vector2.of(backgroundRect.x() + MARGIN,
+                                            backgroundRect.y() + backgroundRect.height() - (INVENTORY_HEIGHT + 5)),
+                                 Color.DARK_GRAY);
 
-            Assets.drawFont(drawingLayer,
-                            mouseOverItem.getItemInformation(),
-                            Vector2.of(backgroundRect.x() + MARGIN,
-                                       backgroundRect.y() + backgroundRect.height() - (INVENTORY_HEIGHT + 35)),
-                            Color.DARK_GRAY);
+            Assets.drawSmallFont(drawingLayer,
+                                 mouseOverItem.getItemInformation(),
+                                 Vector2.of(backgroundRect.x() + MARGIN,
+                                            backgroundRect.y() + backgroundRect.height() - (INVENTORY_HEIGHT + 35)),
+                                 Color.DARK_GRAY);
         }
     }
 
@@ -331,10 +331,10 @@ public class InventoryHelper {
                           rect.y(),
                           20f,
                           20f);
-        Assets.drawFont(drawingLayer,
-                        item.template().name(),
-                        Vector2.of(rect.x() + 40f, rect.y() + 17f),
-                        Color.CYAN);
+        Assets.drawSmallFont(drawingLayer,
+                             item.template().name(),
+                             Vector2.of(rect.x() + 40f, rect.y() + 17f),
+                             Color.CYAN);
         i.getAndIncrement();
     }
 

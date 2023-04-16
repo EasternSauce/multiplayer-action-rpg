@@ -10,6 +10,9 @@ import com.mygdx.game.game.interface_.AbilityUpdatable;
 import com.mygdx.game.game.interface_.CreatureUpdatable;
 import com.mygdx.game.game.interface_.GameActionApplicable;
 import com.mygdx.game.game.interface_.GameRenderable;
+import com.mygdx.game.game.screen.GameplayScreen;
+import com.mygdx.game.game.screen.ConnectScreen;
+import com.mygdx.game.game.screen.MenuScreen;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityId;
@@ -40,7 +43,11 @@ import java.util.*;
 public abstract class MyGdxGame extends Game implements AbilityUpdatable, CreatureUpdatable, GameRenderable, GameActionApplicable {
     final protected GameRenderer gameRenderer = GameRenderer.of();
     final protected GamePhysics gamePhysics = GamePhysics.of();
-    final MyGdxGamePlayScreen playScreen = MyGdxGamePlayScreen.of();
+    final protected GameplayScreen gameplayScreen = GameplayScreen.of();
+
+    final protected ConnectScreen connectScreen = ConnectScreen.of();
+
+    final MenuScreen menuScreen = MenuScreen.of();
     @SuppressWarnings("FieldCanBeLocal")
     private final boolean isDebugEnabled = true;
     private final Chat chat = Chat.of();
@@ -136,9 +143,13 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
 
     @Override
     public void create() {
-        playScreen.init(this);
-        setScreen(playScreen);
+        gameplayScreen.init(this);
+        connectScreen.init(this);
+
+        setStartingScreen();
     }
+
+    public abstract void setStartingScreen();
 
     public void createCreature(CreatureId creatureId) {
         Creature creature = gameState().creatures().get(creatureId);
@@ -434,7 +445,7 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
 
     }
 
-    abstract void performPhysicsWorldStep();
+    abstract public void performPhysicsWorldStep();
 
     @Override
     public boolean isLineOfSight(AreaId areaId, Vector2 fromPos, Vector2 toPos) {
@@ -442,13 +453,21 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
     }
 
     @Override
-    public Vector3 getWorldCameraPosition() {
-        return renderer().worldCamera().position;
+    public void setWorldCameraPosition(float x, float y) {
+        renderer().worldCamera().position.x = x;
+        renderer().worldCamera().position.y = y;
     }
 
     @Override
-    public void updateWorldCamera() {
+    public void setWorldTextCameraPosition(float x, float y) {
+        renderer().worldTextCamera().position.x = x;
+        renderer().worldTextCamera().position.y = y;
+    }
+
+    @Override
+    public void updateCameras() {
         renderer().worldCamera().update();
+        renderer().worldTextCamera().update();
     }
 
     @Override
@@ -587,4 +606,10 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
     public Float getTime() {
         return gameState.generalTimer().time();
     }
+
+    public void goToGamePlayScreen() {
+        setScreen(gameplayScreen);
+    }
+
+    public abstract void initializePlayer(String playerName);
 }

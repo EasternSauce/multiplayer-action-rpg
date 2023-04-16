@@ -27,14 +27,15 @@ import java.util.stream.Collectors;
 public class GameRenderer {
     OrthographicCamera worldCamera = new OrthographicCamera();
     OrthographicCamera hudCamera = new OrthographicCamera();
+    OrthographicCamera worldTextCamera = new OrthographicCamera();
 
     Viewport worldViewport;
-
     Viewport hudViewport;
+    Viewport worldTextViewport;
 
     DrawingLayer worldDrawingLayer;
     DrawingLayer hudDrawingLayer;
-
+    DrawingLayer worldTextDrawingLayer;
 
     Map<AreaId, String> mapsToLoad;
 
@@ -71,7 +72,6 @@ public class GameRenderer {
                                                                         .areaId()
                                                                         .equals(game.getCurrentPlayerAreaId())) {
                 creatureRenderers.get(entry.getKey()).render(drawingLayer);
-
             }
         });
 
@@ -81,7 +81,6 @@ public class GameRenderer {
                                                                         .areaId()
                                                                         .equals(game.getCurrentPlayerAreaId())) {
                 creatureRenderers.get(entry.getKey()).renderLifeBar(drawingLayer, game);
-
             }
         });
 
@@ -115,5 +114,16 @@ public class GameRenderer {
 
     public void renderLootPiles(DrawingLayer drawingLayer, GameRenderable game) {
         lootPileRenderers.values().forEach(lootPileRenderer -> lootPileRenderer.render(drawingLayer, game));
+    }
+
+    public void renderPlayerNames(DrawingLayer textDrawingLayer, GameRenderable game) {
+        game.getCreatures().entrySet().stream().filter(entry -> entry.getValue().isAlive()).forEach(entry -> {
+            if (creatureRenderers().containsKey(entry.getKey()) && entry.getValue()
+                                                                        .params()
+                                                                        .areaId()
+                                                                        .equals(game.getCurrentPlayerAreaId())) {
+                creatureRenderers.get(entry.getKey()).renderPlayerName(textDrawingLayer, game);
+            }
+        });
     }
 }

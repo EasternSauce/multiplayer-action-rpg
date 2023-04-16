@@ -6,11 +6,15 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.mygdx.game.Constants;
+import com.mygdx.game.assets.Assets;
 import com.mygdx.game.game.interface_.GameRenderable;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
+import com.mygdx.game.model.creature.Player;
 import com.mygdx.game.model.creature.effect.CreatureEffect;
+import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.model.util.WorldDirection;
 import com.mygdx.game.renderer.config.CreatureAnimationConfig;
 import lombok.Data;
@@ -66,11 +70,12 @@ public class CreatureRenderer {
         for (int i = 0; i < 4; i++) {
             TextureRegion[] frames = new TextureRegion[animationConfig.frameCount()];
             for (int j = 0; j < animationConfig.frameCount(); j++) {
-                frames[j] = (new TextureRegion(runningAnimationTextureRegion,
-                                               j * animationConfig.textureWidth(),
-                                               i * animationConfig.textureHeight(),
-                                               animationConfig.textureWidth(),
-                                               animationConfig.textureHeight()));
+                frames[j] =
+                        (new TextureRegion(runningAnimationTextureRegion,
+                                           j * animationConfig.textureWidth(),
+                                           i * animationConfig.textureHeight(),
+                                           animationConfig.textureWidth(),
+                                           animationConfig.textureHeight()));
             }
 
 
@@ -81,11 +86,7 @@ public class CreatureRenderer {
 
         TextureRegion[] frames = new TextureRegion[8];
         for (int i = 0; i < 8; i++) {
-            frames[i] = (new TextureRegion(stunnedAnimationTextureRegion,
-                                           i * 60,
-                                           0,
-                                           60,
-                                           30));
+            frames[i] = (new TextureRegion(stunnedAnimationTextureRegion, i * 60, 0, 60, 30));
         }
 
         stunnedAnimation = new Animation<>(0.035f, frames);
@@ -205,4 +206,22 @@ public class CreatureRenderer {
 
     }
 
+    public void renderPlayerName(DrawingLayer drawingLayer, GameRenderable game) {
+        Creature creature = game.getCreature(creatureId);
+
+
+        if (!(creature instanceof Player)) {
+            return;
+        }
+
+        String name = creature.params().id().value();
+
+        float namePosX = creature.params().pos().x() - name.length() * 0.16f;
+        float namePosY = creature.params().pos().y() + sprite.getWidth() / 2 + 0.3125f + 1f;
+
+        Assets.drawMediumFont(drawingLayer,
+                              name,
+                              // world text viewport is not scaled down! so we scale the values every time
+                              Vector2.of(namePosX * Constants.PPM, namePosY * Constants.PPM), Color.RED);
+    }
 }

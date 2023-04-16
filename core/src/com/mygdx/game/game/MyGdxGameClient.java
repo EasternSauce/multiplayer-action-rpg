@@ -47,7 +47,7 @@ public class MyGdxGameClient extends MyGdxGame {
     Float menuClickTime = 0f; // TODO: should do it differently
 
     private MyGdxGameClient() {
-        thisPlayerId = CreatureId.of("Player_" + (int) (Math.random() * 10000000));
+        //        thisPlayerId = CreatureId.of("Player_" + (int) (Math.random() * 10000000));
     }
 
     public static MyGdxGameClient getInstance() {
@@ -61,6 +61,11 @@ public class MyGdxGameClient extends MyGdxGame {
     @Override
     public Client endPoint() {
         return _endPoint;
+    }
+
+    @Override
+    public void setStartingScreen() {
+        setScreen(connectScreen);
     }
 
     public void endPoint(Client endPoint) {
@@ -87,7 +92,7 @@ public class MyGdxGameClient extends MyGdxGame {
 
         if (Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)) {
             if (getChat().isTyping()) {
-                if (getChat().holdingBackspace()) {
+                if (getChat().isHoldingBackspace()) {
                     if (!getChat().currentMessage().isEmpty() &&
                         gameState().generalTimer().time() > getChat().holdBackspaceTime() + 0.3f) {
                         getChat().currentMessage(getChat().currentMessage()
@@ -95,18 +100,20 @@ public class MyGdxGameClient extends MyGdxGame {
                     }
                 }
                 else {
-                    getChat().holdingBackspace(true);
+                    getChat().isHoldingBackspace(true);
                     getChat().holdBackspaceTime(gameState().generalTimer().time());
-                    getChat().currentMessage(getChat().currentMessage()
-                                                      .substring(0, getChat().currentMessage().length() - 1));
+                    if (!getChat().currentMessage().isEmpty()) {
+                        getChat().currentMessage(getChat().currentMessage()
+                                                          .substring(0, getChat().currentMessage().length() - 1));
+                    }
                 }
 
             }
 
         }
         else {
-            if (getChat().holdingBackspace() && getChat().isTyping()) {
-                getChat().holdingBackspace(false);
+            if (getChat().isHoldingBackspace() && getChat().isTyping()) {
+                getChat().isHoldingBackspace(false);
             }
         }
 
@@ -426,13 +433,6 @@ public class MyGdxGameClient extends MyGdxGame {
             }
         });
 
-        String[] textures = new String[]{"male1", "male2", "female1"};
-
-        Vector2 pos = Vector2.of((float) ((Math.random() * (28 - 18)) + 18), (float) ((Math.random() * (12 - 6)) + 6));
-        //        Vector2 pos = Vector2.of(16.854788f, 94.31893f);
-
-        endPoint().sendTCP(InitPlayerCommand.of(thisPlayerId, pos, textures[((int) (Math.random() * 100) % 3)]));
-
     }
 
     @Override
@@ -497,8 +497,21 @@ public class MyGdxGameClient extends MyGdxGame {
     }
 
     @Override
-    void performPhysicsWorldStep() {
+    public void performPhysicsWorldStep() {
         physics().physicsWorlds().get(getCurrentPlayerAreaId()).step();
+
+    }
+
+    @Override
+    public void initializePlayer(String playerName) {
+        thisPlayerId = CreatureId.of(playerName);
+
+        String[] textures = new String[]{"male1", "male2", "female1"};
+
+        Vector2 pos = Vector2.of((float) ((Math.random() * (28 - 18)) + 18), (float) ((Math.random() * (12 - 6)) + 6));
+        //        Vector2 pos = Vector2.of(16.854788f, 94.31893f);
+
+        endPoint().sendTCP(InitPlayerCommand.of(thisPlayerId, pos, textures[((int) (Math.random() * 100) % 3)]));
 
     }
 
