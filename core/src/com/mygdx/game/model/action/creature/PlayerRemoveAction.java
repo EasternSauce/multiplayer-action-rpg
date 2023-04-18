@@ -13,19 +13,20 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(staticName = "of")
 @Data
 public class PlayerRemoveAction implements GameStateAction {
-    CreatureId creatureId;
+    CreatureId playerId;
 
     @Override
     public Vector2 actionObjectPos(GameState gameState) {
-        if (!gameState.creatures().containsKey(creatureId)) {
+        if (!gameState.creatures().containsKey(playerId)) {
             return Vector2.of(0f, 0f);
         }
-        return gameState.creatures().get(creatureId).params().pos();
+        return gameState.creatures().get(playerId).params().pos();
     }
 
     @Override
     public void applyToGame(GameActionApplicable game) {
-        game.getCreatureModelsToBeRemoved().add(creatureId);
+        game.getRemovedCreatures().put(playerId, game.getCreature(playerId));
 
+        game.getCreatureModelsToBeRemoved().add(playerId);
     }
 }

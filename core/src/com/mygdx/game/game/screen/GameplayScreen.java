@@ -17,7 +17,6 @@ import com.mygdx.game.renderer.util.RendererHelper;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.stream.Collectors;
@@ -76,13 +75,6 @@ public class GameplayScreen implements Screen {
 
 
         game.renderer().atlas(new TextureAtlas("assets/atlas/packed_atlas.atlas"));
-
-        try {
-            game.establishConnection();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
 
         game.renderer().init(maps, game);
 

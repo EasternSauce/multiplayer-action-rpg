@@ -20,6 +20,8 @@ import java.util.concurrent.ConcurrentSkipListSet;
 public class GameState {
 
     Map<CreatureId, Creature> creatures = new ConcurrentSkipListMap<>();
+
+    Map<CreatureId, Creature> removedCreatures = new ConcurrentSkipListMap<>();
     Map<AbilityId, Ability> abilities = new ConcurrentSkipListMap<>();
     Map<AreaId, Area> areas = new ConcurrentSkipListMap<>();
 
@@ -32,9 +34,12 @@ public class GameState {
 
     Map<LootPileId, LootPile> lootPiles = new ConcurrentSkipListMap<>();
 
+    Float lastRandomValue = (float) Math.random();
+
     public static GameState of(GameState gameState) {
         GameState newGameState = GameState.of();
         newGameState.creatures(new ConcurrentSkipListMap<>(gameState.creatures));
+        newGameState.removedCreatures(new ConcurrentSkipListMap<>(gameState.removedCreatures));
         newGameState.abilities(new ConcurrentSkipListMap<>(gameState.abilities));
         newGameState.lootPiles(new ConcurrentSkipListMap<>(gameState.lootPiles));
         newGameState.areas(new ConcurrentSkipListMap<>(gameState.areas));
@@ -42,6 +47,7 @@ public class GameState {
         newGameState.generalTimer(gameState.generalTimer);
         newGameState.playerParams(new ConcurrentSkipListMap<>(gameState.playerParams));
         newGameState.areaGates(new ConcurrentSkipListSet<>(gameState.areaGates));
+        newGameState.lastRandomValue(gameState.lastRandomValue);
 
         return newGameState;
     }
@@ -51,6 +57,7 @@ public class GameState {
                                Map<AbilityId, Ability> abilities, Map<LootPileId, LootPile> lootPiles) {
         GameState newGameState = GameState.of();
         newGameState.creatures(creatures);
+        newGameState.removedCreatures(new ConcurrentSkipListMap<>(gameState.removedCreatures));
         newGameState.abilities(abilities);
         newGameState.lootPiles(lootPiles);
         newGameState.areas(new ConcurrentSkipListMap<>(gameState.areas));
@@ -58,6 +65,7 @@ public class GameState {
         newGameState.generalTimer(gameState.generalTimer);
         newGameState.playerParams(new ConcurrentSkipListMap<>(gameState.playerParams));
         newGameState.areaGates(new ConcurrentSkipListSet<>(gameState.areaGates));
+        newGameState.lastRandomValue(gameState.lastRandomValue);
 
         return newGameState;
     }

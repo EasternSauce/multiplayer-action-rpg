@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.esotericsoftware.kryonet.Client;
 import com.mygdx.game.assets.Assets;
-import com.mygdx.game.command.PerformActionCommand;
+import com.mygdx.game.command.ActionPerformCommand;
 import com.mygdx.game.game.MyGdxGameClient;
 import com.mygdx.game.game.interface_.GameRenderable;
 import com.mygdx.game.model.action.inventory.*;
@@ -363,17 +363,17 @@ public class InventoryHelper {
             Integer equipmentSlotClicked = atomicEquipmentSlotClicked.get();
 
             if (inventoryItemBeingMoved != null && inventorySlotClicked != null) {
-                client.sendTCP(PerformActionCommand.of(InventorySwapSlotsAction.of(game.getCurrentPlayerId(),
+                client.sendTCP(ActionPerformCommand.of(InventorySwapSlotsAction.of(game.getCurrentPlayerId(),
                                                                                    inventoryItemBeingMoved,
                                                                                    inventorySlotClicked)));
             }
             else if (inventoryItemBeingMoved != null && equipmentSlotClicked != null) {
-                client.sendTCP(PerformActionCommand.of(InventoryAndEquipmentSwapSlotsAction.of(game.getCurrentPlayerId(),
+                client.sendTCP(ActionPerformCommand.of(InventoryAndEquipmentSwapSlotsAction.of(game.getCurrentPlayerId(),
                                                                                                inventoryItemBeingMoved,
                                                                                                equipmentSlotClicked)));
             }
             else if (equipmentItemBeingMoved != null && inventorySlotClicked != null) {
-                client.sendTCP(PerformActionCommand.of(InventoryAndEquipmentSwapSlotsAction.of(game.getCurrentPlayerId(),
+                client.sendTCP(ActionPerformCommand.of(InventoryAndEquipmentSwapSlotsAction.of(game.getCurrentPlayerId(),
                                                                                                inventorySlotClicked,
                                                                                                equipmentItemBeingMoved)));
             }
@@ -385,7 +385,7 @@ public class InventoryHelper {
             //            }
             else if (inventorySlotClicked != null) {
                 if (player.params().inventoryItems().containsKey(inventorySlotClicked)) {
-                    client.sendTCP(PerformActionCommand.of(InventoryItemPickUpAction.of(game.getCurrentPlayerId(),
+                    client.sendTCP(ActionPerformCommand.of(InventoryItemPickUpAction.of(game.getCurrentPlayerId(),
                                                                                         inventorySlotClicked)));
                 }
             }
@@ -393,18 +393,18 @@ public class InventoryHelper {
                 if (player.params().equipmentItems().containsKey(equipmentSlotClicked)) {
                     playerParams.equipmentItemBeingMoved(equipmentSlotClicked);
 
-                    client.sendTCP(PerformActionCommand.of(EquipmentItemPickUpAction.of(game.getCurrentPlayerId(),
+                    client.sendTCP(ActionPerformCommand.of(EquipmentItemPickUpAction.of(game.getCurrentPlayerId(),
                                                                                         equipmentSlotClicked)));
                 }
             }
             else {
-                client.sendTCP(PerformActionCommand.of(InventoryMoveCancelAction.of(game.getCurrentPlayerId())));
+                client.sendTCP(ActionPerformCommand.of(InventoryMoveCancelAction.of(game.getCurrentPlayerId())));
             }
 
         }
         else {
             if (playerParams.inventoryItemBeingMoved() != null) {
-                client.sendTCP(PerformActionCommand.of(LootPileSpawnOnPlayerItemDropAction.of(game.getCurrentPlayerId())));
+                client.sendTCP(ActionPerformCommand.of(LootPileSpawnOnPlayerItemDropAction.of(game.getCurrentPlayerId())));
             }
 
             if (playerParams.equipmentItemBeingMoved() != null) {
@@ -414,10 +414,10 @@ public class InventoryHelper {
                 Set<Item> items = new ConcurrentSkipListSet<>();
                 items.add(item);
 
-                client.sendTCP(PerformActionCommand.of(LootPileSpawnAction.of(player.params().areaId(),
+                client.sendTCP(ActionPerformCommand.of(LootPileSpawnAction.of(player.params().areaId(),
                                                                               player.params().pos(),
                                                                               items)));
-                client.sendTCP(PerformActionCommand.of(InventoryMoveCancelAction.of(game.getCurrentPlayerId())));
+                client.sendTCP(ActionPerformCommand.of(InventoryMoveCancelAction.of(game.getCurrentPlayerId())));
 
             }
         }
@@ -447,7 +447,7 @@ public class InventoryHelper {
                                             20f);
 
                         if (rect.contains(x, y)) {
-                            client.sendTCP(PerformActionCommand.of(LootPileItemTryPickUpAction.of(game.getCurrentPlayerId(),
+                            client.sendTCP(ActionPerformCommand.of(LootPileItemTryPickUpAction.of(game.getCurrentPlayerId(),
                                                                                                   item)));
                             isSuccessful.set(true);
                         }

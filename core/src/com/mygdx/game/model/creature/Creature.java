@@ -40,17 +40,12 @@ public abstract class Creature {
             params().isStillMovingCheckTimer().restart();
         }
 
-        //        if (!canMove(game)) {
-        //            stopMoving();
-        //        }
-
         if (isAlive()) {
             params().skills().forEach((skillType, skill) -> skill.update(game));
         }
 
         updateAutomaticControls(game);
         updateTimers(delta);
-        //        updateEffects();
 
     }
 

@@ -7,7 +7,7 @@ import com.esotericsoftware.kryonet.Client;
 import com.mygdx.game.Constants;
 import com.mygdx.game.assets.Assets;
 import com.mygdx.game.chat.Chat;
-import com.mygdx.game.command.PerformActionCommand;
+import com.mygdx.game.command.ActionPerformCommand;
 import com.mygdx.game.game.MyGdxGameClient;
 import com.mygdx.game.game.interface_.GameRenderable;
 import com.mygdx.game.model.action.skillmenu.SkillPickerMenuActivateAction;
@@ -273,7 +273,7 @@ public class RendererHelper {
                                       20f);
 
                   if (rect.contains(x, y)) {
-                      client.sendTCP(PerformActionCommand.of(SkillPickerMenuSlotChangeAction.of(game.getCurrentPlayerId(),
+                      client.sendTCP(ActionPerformCommand.of(SkillPickerMenuSlotChangeAction.of(game.getCurrentPlayerId(),
                                                                                                 skillType)));
                       isSuccessful.set(true);
                   }
@@ -282,7 +282,7 @@ public class RendererHelper {
               });
 
         if (!isSuccessful.get()) {
-            client.sendTCP(PerformActionCommand.of(SkillPickerMenuDeactivateAction.of(game.getCurrentPlayerId())));
+            client.sendTCP(ActionPerformCommand.of(SkillPickerMenuDeactivateAction.of(game.getCurrentPlayerId())));
         }
 
         return isSuccessful.get();
@@ -296,7 +296,7 @@ public class RendererHelper {
 
         skillRectangles.forEach((integer, rect) -> {
             if (rect.contains(x, y)) {
-                client.sendTCP(PerformActionCommand.of(SkillPickerMenuActivateAction.of(game.getCurrentPlayerId(),
+                client.sendTCP(ActionPerformCommand.of(SkillPickerMenuActivateAction.of(game.getCurrentPlayerId(),
                                                                                         integer)));
                 isSuccessful.set(true);
             }

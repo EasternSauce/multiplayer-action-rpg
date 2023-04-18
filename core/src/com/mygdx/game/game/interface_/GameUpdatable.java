@@ -26,6 +26,8 @@ import java.util.Set;
 public interface GameUpdatable {
     Map<CreatureId, Creature> getCreatures();
 
+    Map<CreatureId, Creature> getRemovedCreatures();
+
     Creature getCreature(CreatureId creatureId);
 
     Vector2 getCreaturePos(CreatureId creatureId);
@@ -84,6 +86,8 @@ public interface GameUpdatable {
     void onAbilityHitsCreature(CreatureId attackerId,
                                CreatureId targetId,
                                Ability ability);
+
+    //    Float nextRandomValue();
 
 
 }

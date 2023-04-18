@@ -10,8 +10,8 @@ import com.mygdx.game.game.interface_.AbilityUpdatable;
 import com.mygdx.game.game.interface_.CreatureUpdatable;
 import com.mygdx.game.game.interface_.GameActionApplicable;
 import com.mygdx.game.game.interface_.GameRenderable;
-import com.mygdx.game.game.screen.GameplayScreen;
 import com.mygdx.game.game.screen.ConnectScreen;
+import com.mygdx.game.game.screen.GameplayScreen;
 import com.mygdx.game.game.screen.MenuScreen;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.ability.Ability;
@@ -143,6 +143,12 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
 
     @Override
     public void create() {
+        try {
+            establishConnection();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         gameplayScreen.init(this);
         connectScreen.init(this);
 
@@ -402,6 +408,12 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
     }
 
     @Override
+    public Map<CreatureId, Creature> getRemovedCreatures() {
+        return gameState().removedCreatures();
+    }
+
+
+    @Override
     public PhysicsWorld getPhysicsWorld(AreaId areaId) {
         return physics().physicsWorlds().get(areaId);
     }
@@ -612,4 +624,13 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
     }
 
     public abstract void initializePlayer(String playerName);
+
+    //    @Override
+    //    public Float nextRandomValue() {
+    //        float result = RandomHelper.seededRandomFloat(gameState.lastRandomValue());
+    //
+    //        gameState.lastRandomValue(result);
+    //
+    //        return result;
+    //    }
 }

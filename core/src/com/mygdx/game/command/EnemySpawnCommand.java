@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-public class SpawnEnemyCommand implements GameCommand {
+public class EnemySpawnCommand implements GameCommand {
     CreatureId creatureId;
     AreaId areaId;
     EnemySpawn enemySpawn;

@@ -6,10 +6,7 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.mygdx.game.Constants;
-import com.mygdx.game.command.InitPlayerCommand;
-import com.mygdx.game.command.PerformActionCommand;
-import com.mygdx.game.command.SendChatMessageCommand;
-import com.mygdx.game.command.SpawnEnemyCommand;
+import com.mygdx.game.command.*;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityId;
@@ -81,7 +78,7 @@ public class MyGdxGameClient extends MyGdxGame {
             else {
                 getChat().isTyping(false);
                 if (!getChat().currentMessage().isEmpty()) {
-                    endPoint().sendTCP(SendChatMessageCommand.of(thisPlayerId.value(), getChat().currentMessage()));
+                    endPoint().sendTCP(ChatMessageSendCommand.of(thisPlayerId.value(), getChat().currentMessage()));
 
                     getChat().sendMessage(gameState(), thisPlayerId.value(), getChat().currentMessage());
 
@@ -126,7 +123,7 @@ public class MyGdxGameClient extends MyGdxGame {
                 }
             }
             else if (playerParams.isInventoryVisible()) {
-                endPoint().sendTCP(PerformActionCommand.of(InventoryToggleAction.of(thisPlayerId)));
+                endPoint().sendTCP(ActionPerformCommand.of(InventoryToggleAction.of(thisPlayerId)));
 
             }
         }
@@ -168,7 +165,7 @@ public class MyGdxGameClient extends MyGdxGame {
                         player.params().movementCommandsPerSecondLimitTimer().time() >
                         Constants.MovementCommandCooldown &&
                         gameState.generalTimer().time() > menuClickTime + 0.1f) {
-                        endPoint().sendTCP(PerformActionCommand.of(CreatureMoveTowardsTargetAction.of(thisPlayerId,
+                        endPoint().sendTCP(ActionPerformCommand.of(CreatureMoveTowardsTargetAction.of(thisPlayerId,
                                                                                                       mousePos)));
                     }
                 }
@@ -206,7 +203,7 @@ public class MyGdxGameClient extends MyGdxGame {
                     attackSkill = SkillType.SWORD_SLASH;
                     weaponDamage = 20f;
                 }
-                endPoint().sendTCP(PerformActionCommand.of(SkillTryPerformAction.of(thisPlayerId,
+                endPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(thisPlayerId,
                                                                                     attackSkill,
                                                                                     player.params().pos(),
                                                                                     dirVector,
@@ -222,7 +219,7 @@ public class MyGdxGameClient extends MyGdxGame {
                 Vector2 dirVector = mousePosRelativeToCenter();
 
                 if (playerParams.skillMenuSlots().containsKey(0)) {
-                    endPoint().sendTCP(PerformActionCommand.of(SkillTryPerformAction.of(thisPlayerId,
+                    endPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(thisPlayerId,
                                                                                         playerParams.skillMenuSlots()
                                                                                                     .get(0),
                                                                                         player.params().pos(),
@@ -238,7 +235,7 @@ public class MyGdxGameClient extends MyGdxGame {
                 Vector2 dirVector = mousePosRelativeToCenter();
 
                 if (playerParams.skillMenuSlots().containsKey(1)) {
-                    endPoint().sendTCP(PerformActionCommand.of(SkillTryPerformAction.of(thisPlayerId,
+                    endPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(thisPlayerId,
                                                                                         playerParams.skillMenuSlots()
                                                                                                     .get(1),
                                                                                         player.params().pos(),
@@ -256,7 +253,7 @@ public class MyGdxGameClient extends MyGdxGame {
                 Vector2 dirVector = mousePosRelativeToCenter();
 
                 if (playerParams.skillMenuSlots().containsKey(2)) {
-                    endPoint().sendTCP(PerformActionCommand.of(SkillTryPerformAction.of(thisPlayerId,
+                    endPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(thisPlayerId,
                                                                                         playerParams.skillMenuSlots()
                                                                                                     .get(2),
                                                                                         player.params().pos(),
@@ -266,7 +263,7 @@ public class MyGdxGameClient extends MyGdxGame {
 
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
-                endPoint().sendTCP(PerformActionCommand.of(InventoryToggleAction.of(thisPlayerId)));
+                endPoint().sendTCP(ActionPerformCommand.of(InventoryToggleAction.of(thisPlayerId)));
 
             }
 
@@ -328,7 +325,7 @@ public class MyGdxGameClient extends MyGdxGame {
 
                 enemySpawns.forEach(enemySpawn -> {
                     CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 10000000));
-                    endPoint().sendTCP(SpawnEnemyCommand.of(enemyId,
+                    endPoint().sendTCP(EnemySpawnCommand.of(enemyId,
                                                             areaId,
                                                             enemySpawn.pos(Vector2.of(enemySpawn.pos().x() +
                                                                                       (float) Math.random(),
@@ -410,16 +407,16 @@ public class MyGdxGameClient extends MyGdxGame {
                     gamePhysics.isForceUpdateBodyPositions(true);
 
                 }
-                else if (object instanceof SendChatMessageCommand) {
-                    SendChatMessageCommand action = (SendChatMessageCommand) object;
+                else if (object instanceof ChatMessageSendCommand) {
+                    ChatMessageSendCommand action = (ChatMessageSendCommand) object;
 
                     if (!Objects.equals(action.poster(), thisPlayerId.value())) {
                         getChat().sendMessage(gameState(), action.poster(), action.text());
                     }
 
                 }
-                else if (object instanceof SpawnEnemyCommand) {
-                    SpawnEnemyCommand command = (SpawnEnemyCommand) object;
+                else if (object instanceof EnemySpawnCommand) {
+                    EnemySpawnCommand command = (EnemySpawnCommand) object;
 
                     spawnEnemy(command.creatureId(), command.areaId(), command.enemySpawn());
                 }
@@ -432,6 +429,8 @@ public class MyGdxGameClient extends MyGdxGame {
                 System.exit(0);
             }
         });
+
+        endPoint().sendTCP(ConnectionInitCommand.of());
 
     }
 
@@ -505,13 +504,7 @@ public class MyGdxGameClient extends MyGdxGame {
     @Override
     public void initializePlayer(String playerName) {
         thisPlayerId = CreatureId.of(playerName);
-
-        String[] textures = new String[]{"male1", "male2", "female1"};
-
-        Vector2 pos = Vector2.of((float) ((Math.random() * (28 - 18)) + 18), (float) ((Math.random() * (12 - 6)) + 6));
-        //        Vector2 pos = Vector2.of(16.854788f, 94.31893f);
-
-        endPoint().sendTCP(InitPlayerCommand.of(thisPlayerId, pos, textures[((int) (Math.random() * 100) % 3)]));
+        endPoint().sendTCP(PlayerInitCommand.of(thisPlayerId));
 
     }
 
