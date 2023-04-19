@@ -130,10 +130,10 @@ public class MyGdxGameClient extends MyGdxGame {
         if (!getChat().isTyping()) {
             if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
                 if (playerParams.isInventoryVisible()) {
-                    InventoryHelper.moveItemClick(endPoint(), this);
+                    InventoryHelper.performMoveItemClick(endPoint(), this);
                 }
                 else if (!playerParams.isInventoryVisible() && !playerParams.itemPickupMenuLootPiles().isEmpty()) {
-                    boolean isSuccessful = InventoryHelper.tryItemPickupMenuClick(endPoint(), this);
+                    boolean isSuccessful = InventoryHelper.tryPerformItemPickupMenuClick(endPoint(), this);
                     if (isSuccessful) {
                         menuClickTime = gameState.generalTimer().time();
                     }
@@ -147,7 +147,7 @@ public class MyGdxGameClient extends MyGdxGame {
 
                 }
                 else if (!playerParams.isInventoryVisible()) {
-                    boolean isSuccessful = RendererHelper.skillMenuClick(endPoint(), this);
+                    boolean isSuccessful = RendererHelper.performSkillMenuClick(endPoint(), this);
                     if (isSuccessful) {
                         menuClickTime = gameState.generalTimer().time();
                     }

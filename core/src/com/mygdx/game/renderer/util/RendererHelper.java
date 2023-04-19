@@ -17,8 +17,8 @@ import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.skill.SkillType;
 import com.mygdx.game.model.util.PlayerParams;
 import com.mygdx.game.model.util.Vector2;
-import com.mygdx.game.renderer.DrawingLayer;
 import com.mygdx.game.renderer.GameRenderer;
+import com.mygdx.game.renderer.RenderingLayer;
 import com.mygdx.game.util.InventoryHelper;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
@@ -52,30 +52,30 @@ public class RendererHelper {
     }
 
 
-    public static void drawWorld(GameRenderable game) {
+    public static void renderWorld(GameRenderable game) {
         GameRenderer renderer = game.getRenderer();
-        DrawingLayer drawingLayer = renderer.worldDrawingLayer();
-        DrawingLayer worldTextDrawingLayer = renderer.worldTextDrawingLayer();
+        RenderingLayer renderingLayer = renderer.worldRenderingLayer();
+        RenderingLayer worldTextRenderingLayer = renderer.worldTextRenderingLayer();
 
         renderCurrentlyVisibleArea(renderer, game, Arrays.asList(0, 1));
 
-        drawingLayer.spriteBatch().begin();
+        renderingLayer.spriteBatch().begin();
 
-        renderer.renderAreaGates(drawingLayer, game);
+        renderer.renderAreaGates(renderingLayer, game);
 
 
-        renderer.renderDeadCreatures(drawingLayer, game);
+        renderer.renderDeadCreatures(renderingLayer, game);
 
-        renderer.renderLootPiles(drawingLayer, game);
+        renderer.renderLootPiles(renderingLayer, game);
 
-        renderer.renderAliveCreatures(drawingLayer, game);
+        renderer.renderAliveCreatures(renderingLayer, game);
 
         renderer.abilityRenderers()
-                .forEach((abilityId, abilityAnimation) -> abilityAnimation.render(drawingLayer, game));
+                .forEach((abilityId, abilityAnimation) -> abilityAnimation.render(renderingLayer, game));
 
-        drawingLayer.end();
+        renderingLayer.end();
 
-        renderWorldText(game, renderer, worldTextDrawingLayer);
+        renderWorldText(game, renderer, worldTextRenderingLayer);
 
         renderCurrentlyVisibleArea(renderer, game, Arrays.asList(2, 3));
 
@@ -89,38 +89,38 @@ public class RendererHelper {
 
     private static void renderWorldText(GameRenderable game,
                                         GameRenderer renderer,
-                                        DrawingLayer worldTextDrawingLayer) {
-        worldTextDrawingLayer.begin();
-        renderer.renderPlayerNames(worldTextDrawingLayer, game);
-        worldTextDrawingLayer.end();
+                                        RenderingLayer worldTextRenderingLayer) {
+        worldTextRenderingLayer.begin();
+        renderer.renderPlayerNames(worldTextRenderingLayer, game);
+        worldTextRenderingLayer.end();
     }
 
-    public static void drawHud(GameRenderable game) {
-        DrawingLayer drawingLayer = game.getRenderer().hudDrawingLayer();
+    public static void renderHud(GameRenderable game) {
+        RenderingLayer renderingLayer = game.getRenderer().hudRenderingLayer();
 
-        drawingLayer.begin();
+        renderingLayer.begin();
 
-        RendererHelper.drawChat(game.getChat(), drawingLayer);
+        RendererHelper.renderChat(game.getChat(), renderingLayer);
 
 
-        RendererHelper.drawFpsCounter(drawingLayer);
+        RendererHelper.renderFpsCounter(renderingLayer);
 
         if (game.getCurrentPlayerId() != null) {
             Creature player = game.getCreature(game.getCurrentPlayerId());
 
-            RendererHelper.drawSkillMenu(drawingLayer, game);
+            RendererHelper.renderSkillMenu(renderingLayer, game);
 
-            RendererHelper.drawSkillPickerMenu(player, drawingLayer, game);
+            RendererHelper.renderSkillPickerMenu(player, renderingLayer, game);
 
-            RendererHelper.drawRespawnMessage(player, drawingLayer);
+            RendererHelper.renderRespawnMessage(player, renderingLayer);
 
-            RendererHelper.drawHudBars(player, drawingLayer);
+            RendererHelper.renderHudBars(player, renderingLayer);
 
         }
 
-        InventoryHelper.render(drawingLayer, game);
+        InventoryHelper.render(renderingLayer, game);
 
-        drawingLayer.end();
+        renderingLayer.end();
     }
 
     public static void updateCameraPositions(GameRenderable game) {
@@ -158,9 +158,9 @@ public class RendererHelper {
 
     }
 
-    private static void drawFpsCounter(DrawingLayer drawingLayer) {
+    private static void renderFpsCounter(RenderingLayer renderingLayer) {
         float fps = Gdx.graphics.getFramesPerSecond();
-        Assets.drawSmallFont(drawingLayer, fps + " fps", Vector2.of(3, Constants.WindowHeight - 3), Color.WHITE);
+        Assets.renderSmallFont(renderingLayer, fps + " fps", Vector2.of(3, Constants.WindowHeight - 3), Color.WHITE);
     }
 
     private static float skillSlotPositionX(Integer index) {
@@ -172,7 +172,7 @@ public class RendererHelper {
         return SKILL_MENU_POS_Y - (SLOT_SIZE + MARGIN);
     }
 
-    private static void drawSkillMenu(DrawingLayer drawingLayer, GameRenderable game) {
+    private static void renderSkillMenu(RenderingLayer renderingLayer, GameRenderable game) {
         PlayerParams playerParams = game.getPlayerParams(game.getCurrentPlayerId());
 
         if (playerParams == null) {
@@ -186,30 +186,30 @@ public class RendererHelper {
 
         AtomicInteger i = new AtomicInteger();
         skillRectangles.values().forEach(rect -> {
-            drawingLayer.shapeDrawer()
-                        .filledRectangle(rect.x() - 3, rect.y() - 3, rect.width() + 6, rect.height() + 6,
-                                         Color.WHITE);
-            drawingLayer.shapeDrawer()
-                        .filledRectangle(rect.x(), rect.y(), rect.width(), rect.height(), Color.BLACK);
+            renderingLayer.shapeDrawer()
+                          .filledRectangle(rect.x() - 3, rect.y() - 3, rect.width() + 6, rect.height() + 6,
+                                           Color.WHITE);
+            renderingLayer.shapeDrawer()
+                          .filledRectangle(rect.x(), rect.y(), rect.width(), rect.height(), Color.BLACK);
 
             SkillType skillType = playerParams.skillMenuSlots().get(i.get());
 
             if (skillType != null) {
-                Assets.drawMediumFont(drawingLayer,
-                                      skillType.prettyName.substring(0, 2),
-                                      Vector2.of(rect.x() + 5f, rect.y() + SLOT_SIZE - 7f),
-                                      Color.GOLD);
+                Assets.renderMediumFont(renderingLayer,
+                                        skillType.prettyName.substring(0, 2),
+                                        Vector2.of(rect.x() + 5f, rect.y() + SLOT_SIZE - 7f),
+                                        Color.GOLD);
             }
-            Assets.drawVerySmallFont(drawingLayer,
-                                     keys.get(i.get()),
-                                     Vector2.of(rect.x() + 2f, rect.y() + SLOT_SIZE - 27f),
-                                     Color.WHITE);
+            Assets.renderVerySmallFont(renderingLayer,
+                                       keys.get(i.get()),
+                                       Vector2.of(rect.x() + 2f, rect.y() + SLOT_SIZE - 27f),
+                                       Color.WHITE);
 
             i.getAndIncrement();
         });
     }
 
-    public static void drawSkillPickerMenu(Creature player, DrawingLayer drawingLayer, GameRenderable game) {
+    public static void renderSkillPickerMenu(Creature player, RenderingLayer renderingLayer, GameRenderable game) {
         PlayerParams playerParams = game.getPlayerParams(game.getCurrentPlayerId());
 
         if (playerParams == null ||
@@ -224,39 +224,39 @@ public class RendererHelper {
         AtomicInteger i = new AtomicInteger();
 
         player.availableSkills()
-              .forEach((skillType, level) -> drawSkillPickerOption(drawingLayer, x, y, i, skillType.prettyName));
+              .forEach((skillType, level) -> renderSkillPickerOption(renderingLayer, x, y, i, skillType.prettyName));
     }
 
-    private static void drawSkillPickerOption(DrawingLayer drawingLayer,
-                                              float x,
-                                              float y,
-                                              AtomicInteger i,
-                                              String skillName) {
+    private static void renderSkillPickerOption(RenderingLayer renderingLayer,
+                                                float x,
+                                                float y,
+                                                AtomicInteger i,
+                                                String skillName) {
         Rect rect = Rect.of(SKILL_PICKER_MENU_POS_X,
                             SKILL_PICKER_MENU_POS_Y + 25f * i.get(),
                             Gdx.graphics.getWidth() / 6f,
                             20f);
-        drawingLayer.shapeDrawer()
-                    .filledRectangle(rect.x(),
-                                     rect.y(),
-                                     rect.width(),
-                                     rect.height(),
-                                     Color.DARK_GRAY.cpy().sub(0, 0, 0, 0.3f));
+        renderingLayer.shapeDrawer()
+                      .filledRectangle(rect.x(),
+                                       rect.y(),
+                                       rect.width(),
+                                       rect.height(),
+                                       Color.DARK_GRAY.cpy().sub(0, 0, 0, 0.3f));
         if (rect.contains(x, y)) {
-            drawingLayer.shapeDrawer()
-                        .rectangle(rect.x(), rect.y(), rect.width(), rect.height(), Color.ORANGE);
+            renderingLayer.shapeDrawer()
+                          .rectangle(rect.x(), rect.y(), rect.width(), rect.height(), Color.ORANGE);
         }
-        //TODO: icons
+        //TODO: skill icons
         //        drawingLayer.spriteBatch()
         //                    .draw(icons[item.template().iconPos().y()][item.template().iconPos().x()],
         //                          rect.x() + 10f,
         //                          rect.y(),
         //                          20f,
         //                          20f);
-        Assets.drawSmallFont(drawingLayer,
-                             skillName,
-                             Vector2.of(rect.x() + 40f, rect.y() + 17f),
-                             Color.GOLD);
+        Assets.renderSmallFont(renderingLayer,
+                               skillName,
+                               Vector2.of(rect.x() + 40f, rect.y() + 17f),
+                               Color.GOLD);
         i.getAndIncrement();
     }
 
@@ -295,7 +295,7 @@ public class RendererHelper {
         return isSuccessful.get();
     }
 
-    public static boolean skillMenuClick(Client client, MyGdxGameClient game) {
+    public static boolean performSkillMenuClick(Client client, MyGdxGameClient game) {
         float x = game.hudMousePos().x();
         float y = game.hudMousePos().y();
 
@@ -313,26 +313,26 @@ public class RendererHelper {
 
     }
 
-    private static void drawRespawnMessage(Creature creature, DrawingLayer drawingLayer) {
+    private static void renderRespawnMessage(Creature creature, RenderingLayer renderingLayer) {
         if (creature != null && !creature.isAlive()) {
             if (creature.params().respawnTimer().time() < creature.params().respawnTime()) {
-                Assets.drawLargeFont(drawingLayer,
-                                     "You are dead!\nRespawning...\n" + String.format(Locale.US,
-                                                                                      "%.2f",
-                                                                                      (creature.params()
-                                                                                               .respawnTime() -
-                                                                                       creature.params()
-                                                                                               .respawnTimer()
-                                                                                               .time())),
-                                     Vector2.of(Constants.WindowWidth / 2f - Constants.WindowWidth / 8f,
-                                                Constants.WindowHeight / 2f + Constants.WindowHeight / 5f),
-                                     Color.RED);
+                Assets.renderLargeFont(renderingLayer,
+                                       "You are dead!\nRespawning...\n" + String.format(Locale.US,
+                                                                                        "%.2f",
+                                                                                        (creature.params()
+                                                                                                 .respawnTime() -
+                                                                                         creature.params()
+                                                                                                 .respawnTimer()
+                                                                                                 .time())),
+                                       Vector2.of(Constants.WindowWidth / 2f - Constants.WindowWidth / 8f,
+                                                  Constants.WindowHeight / 2f + Constants.WindowHeight / 5f),
+                                       Color.RED);
             }
         }
     }
 
-    private static void drawHudBars(Creature creature, DrawingLayer drawingLayer) {
-        ShapeDrawer shapeDrawer = drawingLayer.shapeDrawer();
+    private static void renderHudBars(Creature creature, RenderingLayer renderingLayer) {
+        ShapeDrawer shapeDrawer = renderingLayer.shapeDrawer();
 
         if (creature != null) {
             shapeDrawer.filledRectangle(new Rectangle(10, 40, 100, 10), Color.ORANGE);
@@ -355,18 +355,18 @@ public class RendererHelper {
 
     }
 
-    private static void drawChat(Chat chat, DrawingLayer drawingLayer) {
+    private static void renderChat(Chat chat, RenderingLayer renderingLayer) {
         for (int i = 0; i < Math.min(chat.messages().size(), 6); i++) {
-            Assets.drawSmallFont(drawingLayer,
-                                 chat.messages().get(i).poster() + ": " + chat.messages().get(i).text(),
-                                 Vector2.of(30, 220 - 20 * i),
-                                 Color.PURPLE);
+            Assets.renderSmallFont(renderingLayer,
+                                   chat.messages().get(i).poster() + ": " + chat.messages().get(i).text(),
+                                   Vector2.of(30, 220 - 20 * i),
+                                   Color.PURPLE);
         }
 
-        Assets.drawSmallFont(drawingLayer,
-                             (chat.isTyping() ? "> " : "") + chat.currentMessage(),
-                             Vector2.of(30, 70),
-                             Color.PURPLE);
+        Assets.renderSmallFont(renderingLayer,
+                               (chat.isTyping() ? "> " : "") + chat.currentMessage(),
+                               Vector2.of(30, 70),
+                               Color.PURPLE);
     }
 
 }

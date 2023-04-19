@@ -11,6 +11,7 @@ import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.area.LootPileId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
+import com.mygdx.game.model.creature.Player;
 import com.mygdx.game.util.InventoryHelper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,9 +35,9 @@ public class GameRenderer {
     Viewport hudViewport;
     Viewport worldTextViewport;
 
-    DrawingLayer worldDrawingLayer;
-    DrawingLayer hudDrawingLayer;
-    DrawingLayer worldTextDrawingLayer;
+    RenderingLayer worldRenderingLayer;
+    RenderingLayer hudRenderingLayer;
+    RenderingLayer worldTextRenderingLayer;
 
     Map<AreaId, String> mapsToLoad;
 
@@ -66,32 +67,32 @@ public class GameRenderer {
         InventoryHelper.init(atlas);
     }
 
-    public void renderAliveCreatures(DrawingLayer drawingLayer, GameRenderable game) {
+    public void renderAliveCreatures(RenderingLayer renderingLayer, GameRenderable game) {
         game.getCreatures().values().stream().filter(Creature::isAlive).forEach(creature -> {
             if (creatureRenderers().containsKey(creature.id()) && isCreatureInCurrentlyVisibleArea(game, creature)) {
-                creatureRenderers.get(creature.id()).render(drawingLayer);
+                creatureRenderers.get(creature.id()).render(renderingLayer);
             }
         });
 
         game.getCreatures().values().stream().filter(Creature::isAlive).forEach(creature -> {
             if (creatureRenderers().containsKey(creature.id()) && isCreatureInCurrentlyVisibleArea(game, creature)) {
-                creatureRenderers.get(creature.id()).renderLifeBar(drawingLayer, game);
+                creatureRenderers.get(creature.id()).renderLifeBar(renderingLayer, game);
             }
         });
 
 
         game.getCreatures().values().stream().filter(Creature::isAlive).forEach(creature -> {
             if (creatureRenderers().containsKey(creature.id()) && isCreatureInCurrentlyVisibleArea(game, creature)) {
-                creatureRenderers.get(creature.id()).renderStunnedAnimation(drawingLayer, game);
+                creatureRenderers.get(creature.id()).renderStunnedAnimation(renderingLayer, game);
 
             }
         });
     }
 
-    public void renderDeadCreatures(DrawingLayer drawingLayer, GameRenderable game) {
+    public void renderDeadCreatures(RenderingLayer renderingLayer, GameRenderable game) {
         game.getCreatures().values().stream().filter(creature -> !creature.isAlive()).forEach(creature -> {
             if (creatureRenderers().containsKey(creature.id()) && isCreatureInCurrentlyVisibleArea(game, creature)) {
-                creatureRenderers.get(creature.id()).render(drawingLayer);
+                creatureRenderers.get(creature.id()).render(renderingLayer);
 
             }
         });
@@ -104,20 +105,20 @@ public class GameRenderer {
                 .equals(game.getCurrentPlayerAreaId());
     }
 
-    public void renderAreaGates(DrawingLayer drawingLayer, GameRenderable game) {
-        areaGateRenderers.forEach(areaGateRenderer -> areaGateRenderer.render(drawingLayer, game));
+    public void renderAreaGates(RenderingLayer renderingLayer, GameRenderable game) {
+        areaGateRenderers.forEach(areaGateRenderer -> areaGateRenderer.render(renderingLayer, game));
     }
 
-    public void renderLootPiles(DrawingLayer drawingLayer, GameRenderable game) {
-        lootPileRenderers.values().forEach(lootPileRenderer -> lootPileRenderer.render(drawingLayer, game));
+    public void renderLootPiles(RenderingLayer renderingLayer, GameRenderable game) {
+        lootPileRenderers.values().forEach(lootPileRenderer -> lootPileRenderer.render(renderingLayer, game));
     }
 
-    public void renderPlayerNames(DrawingLayer worldTextDrawingLayer, GameRenderable game) {
+    public void renderPlayerNames(RenderingLayer worldTextRenderingLayer, GameRenderable game) {
         game.getCreatures()
             .values()
             .stream()
-            .filter(creature -> canCreatureBeRendered(game, creature))
-            .forEach(creature -> creatureRenderers.get(creature.id()).renderPlayerName(worldTextDrawingLayer, game));
+            .filter(creature -> canCreatureBeRendered(game, creature) && creature instanceof Player)
+            .forEach(creature -> creatureRenderers.get(creature.id()).renderCreatureId(worldTextRenderingLayer, game));
     }
 
     private boolean canCreatureBeRendered(GameRenderable game, Creature creature) {

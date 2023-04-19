@@ -111,16 +111,16 @@ public class AbilityRenderer {
 
     }
 
-    public void render(DrawingLayer drawingLayer, GameUpdatable game) {
+    public void render(RenderingLayer renderingLayer, GameUpdatable game) {
         Ability ability = game.getAbility(abilityId);
 
         if (ability != null) {
             if (sprite.getTexture() != null) {
                 if (ability.params().channelTime() > 0f && ability.params().state() == AbilityState.CHANNEL) {
-                    sprite.draw(drawingLayer.spriteBatch());
+                    sprite.draw(renderingLayer.spriteBatch());
                 }
                 if (ability.params().activeTime() > 0f && ability.params().state() == AbilityState.ACTIVE) {
-                    sprite.draw(drawingLayer.spriteBatch());
+                    sprite.draw(renderingLayer.spriteBatch());
                 }
             }
         }

@@ -37,14 +37,14 @@ public class AreaGateRenderer {
 
     }
 
-    public void render(DrawingLayer drawingLayer, GameRenderable game) {
+    public void render(RenderingLayer renderingLayer, GameRenderable game) {
         AreaId currentAreaId = game.getCurrentPlayerAreaId();
 
         if (currentAreaId.equals(areaA_Id)) {
-            spriteA.draw(drawingLayer.spriteBatch());
+            spriteA.draw(renderingLayer.spriteBatch());
         }
         if (currentAreaId.equals(areaB_Id)) {
-            spriteB.draw(drawingLayer.spriteBatch());
+            spriteB.draw(renderingLayer.spriteBatch());
         }
     }
 }

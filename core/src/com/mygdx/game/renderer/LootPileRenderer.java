@@ -36,12 +36,12 @@ public class LootPileRenderer {
 
     }
 
-    public void render(DrawingLayer drawingLayer, GameRenderable game) {
+    public void render(RenderingLayer renderingLayer, GameRenderable game) {
         AreaId currentAreaId = game.getCurrentPlayerAreaId();
         LootPile lootPile = game.getLootPile(lootPileId);
 
         if (lootPile != null && currentAreaId.equals(lootPile.areaId())) {
-            sprite.draw(drawingLayer.spriteBatch());
+            sprite.draw(renderingLayer.spriteBatch());
         }
 
     }

@@ -12,7 +12,7 @@ import com.mygdx.game.Constants;
 import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.physics.util.PhysicsHelper;
-import com.mygdx.game.renderer.DrawingLayer;
+import com.mygdx.game.renderer.RenderingLayer;
 import com.mygdx.game.renderer.util.RendererHelper;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -69,9 +69,9 @@ public class GameplayScreen implements Screen {
 
         game.renderer().mapScale(4.0f);
 
-        game.renderer().worldDrawingLayer(DrawingLayer.of());
-        game.renderer().hudDrawingLayer(DrawingLayer.of());
-        game.renderer().worldTextDrawingLayer(DrawingLayer.of());
+        game.renderer().worldRenderingLayer(RenderingLayer.of());
+        game.renderer().hudRenderingLayer(RenderingLayer.of());
+        game.renderer().worldTextRenderingLayer(RenderingLayer.of());
 
 
         game.renderer().atlas(new TextureAtlas("assets/atlas/packed_atlas.atlas"));
@@ -153,9 +153,11 @@ public class GameplayScreen implements Screen {
         if (game().isInitialized()) {
             update(delta);
             if (game().isRenderingAllowed()) {
-                game.renderer().worldDrawingLayer().setProjectionMatrix(game.renderer().worldCamera().combined);
-                game.renderer().hudDrawingLayer().setProjectionMatrix(game.renderer().hudCamera().combined);
-                game.renderer().worldTextDrawingLayer().setProjectionMatrix(game.renderer().worldTextCamera().combined);
+                game.renderer().worldRenderingLayer().setProjectionMatrix(game.renderer().worldCamera().combined);
+                game.renderer().hudRenderingLayer().setProjectionMatrix(game.renderer().hudCamera().combined);
+                game.renderer()
+                    .worldTextRenderingLayer()
+                    .setProjectionMatrix(game.renderer().worldTextCamera().combined);
 
                 Gdx.gl.glClearColor(0, 0, 0, 1);
 
@@ -169,9 +171,9 @@ public class GameplayScreen implements Screen {
 
                 Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | coverageBuffer);
 
-                RendererHelper.drawWorld(game);
+                RendererHelper.renderWorld(game);
 
-                RendererHelper.drawHud(game);
+                RendererHelper.renderHud(game);
 
 
             }

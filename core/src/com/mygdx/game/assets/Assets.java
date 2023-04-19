@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.mygdx.game.model.util.Vector2;
-import com.mygdx.game.renderer.DrawingLayer;
+import com.mygdx.game.renderer.RenderingLayer;
 
 public class Assets {
 
@@ -37,23 +37,23 @@ public class Assets {
         return font;
     }
 
-    public static void drawSmallFont(DrawingLayer drawingLayer, String text, Vector2 pos, Color color) {
+    public static void renderSmallFont(RenderingLayer renderingLayer, String text, Vector2 pos, Color color) {
         smallFont.setColor(color);
-        smallFont.draw(drawingLayer.spriteBatch(), text, pos.x(), pos.y());
+        smallFont.draw(renderingLayer.spriteBatch(), text, pos.x(), pos.y());
     }
 
-    public static void drawVerySmallFont(DrawingLayer drawingLayer, String text, Vector2 pos, Color color) {
+    public static void renderVerySmallFont(RenderingLayer renderingLayer, String text, Vector2 pos, Color color) {
         verySmallFont.setColor(color);
-        verySmallFont.draw(drawingLayer.spriteBatch(), text, pos.x(), pos.y());
+        verySmallFont.draw(renderingLayer.spriteBatch(), text, pos.x(), pos.y());
     }
 
-    public static void drawMediumFont(DrawingLayer drawingLayer, String text, Vector2 pos, Color color) {
+    public static void renderMediumFont(RenderingLayer renderingLayer, String text, Vector2 pos, Color color) {
         mediumFont.setColor(color);
-        mediumFont.draw(drawingLayer.spriteBatch(), text, pos.x(), pos.y());
+        mediumFont.draw(renderingLayer.spriteBatch(), text, pos.x(), pos.y());
     }
 
-    public static void drawLargeFont(DrawingLayer drawingLayer, String text, Vector2 pos, Color color) {
+    public static void renderLargeFont(RenderingLayer renderingLayer, String text, Vector2 pos, Color color) {
         largeFont.setColor(color);
-        largeFont.draw(drawingLayer.spriteBatch(), text, pos.x(), pos.y());
+        largeFont.draw(renderingLayer.spriteBatch(), text, pos.x(), pos.y());
     }
 }

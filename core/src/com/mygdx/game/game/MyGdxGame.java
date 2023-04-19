@@ -324,7 +324,7 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
                                                        .setActive(creaturesToUpdate.contains(key)));
 
         creaturesToUpdate.forEach(creatureId -> {
-            if (renderer().creatureRenderers().containsKey(creatureId)) {
+            if (getCreatures().containsKey(creatureId) && renderer().creatureRenderers().containsKey(creatureId)) {
                 renderer().creatureRenderers().get(creatureId).update(this);
             }
         });

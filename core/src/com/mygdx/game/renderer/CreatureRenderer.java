@@ -12,7 +12,6 @@ import com.mygdx.game.game.interface_.GameRenderable;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
-import com.mygdx.game.model.creature.Player;
 import com.mygdx.game.model.creature.effect.CreatureEffect;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.model.util.WorldDirection;
@@ -21,21 +20,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @NoArgsConstructor(staticName = "of")
 @Data
 public class CreatureRenderer {
-    CreatureId creatureId;
+    private static float LIFE_BAR_WIDTH = 2.0f;
+    private static float LIFE_BAR_HEIGHT = 0.16f;
 
-    Sprite sprite;
-
-    List<TextureRegion> facingTextures;
-
-    List<Animation<TextureRegion>> runningAnimations;
-
-    Animation<TextureRegion> stunnedAnimation;
+    private CreatureId creatureId;
+    private Sprite sprite;
+    private List<TextureRegion> facingTextures;
+    private List<Animation<TextureRegion>> runningAnimations;
+    private Animation<TextureRegion> stunnedAnimation;
 
     public static CreatureRenderer of(CreatureId creatureId) {
         CreatureRenderer creatureRenderer = new CreatureRenderer();
@@ -46,42 +43,54 @@ public class CreatureRenderer {
     public void init(TextureAtlas atlas, GameState gameState) {
         sprite = new Sprite();
 
-        facingTextures = new ArrayList<>(4);
-        facingTextures.addAll(Arrays.asList(null, null, null, null));
+        CreatureAnimationConfig config = gameState.creatures().get(creatureId).animationConfig();
 
-        runningAnimations = new ArrayList<>(4);
-        runningAnimations.addAll(Arrays.asList(null, null, null, null));
+        facingTextures = prepareFacingTextures(config, atlas);
+        runningAnimations = prepareRunningAnimations(config, atlas);
+        stunnedAnimation = prepareStunnedAnimation(atlas);
+    }
 
-        Creature creature = gameState.creatures().get(creatureId);
-
-        CreatureAnimationConfig animationConfig = creature.animationConfig();
-
+    private List<Animation<TextureRegion>> prepareRunningAnimations(CreatureAnimationConfig animationConfig,
+                                                                    TextureAtlas atlas) {
         TextureRegion runningAnimationTextureRegion = atlas.findRegion(animationConfig.textureName());
 
-        for (int i = 0; i < 4; i++) {
-            facingTextures.set(i,
-                               new TextureRegion(runningAnimationTextureRegion,
-                                                 animationConfig.neutralStanceFrame() * animationConfig.textureWidth(),
-                                                 i * animationConfig.textureHeight(),
-                                                 animationConfig.textureWidth(),
-                                                 animationConfig.textureHeight()));
-        }
+        List<Animation<TextureRegion>> runningAnimations = new ArrayList<>();
 
         for (int i = 0; i < 4; i++) {
             TextureRegion[] frames = new TextureRegion[animationConfig.frameCount()];
             for (int j = 0; j < animationConfig.frameCount(); j++) {
                 frames[j] =
-                        (new TextureRegion(runningAnimationTextureRegion,
-                                           j * animationConfig.textureWidth(),
-                                           i * animationConfig.textureHeight(),
-                                           animationConfig.textureWidth(),
-                                           animationConfig.textureHeight()));
+                        new TextureRegion(runningAnimationTextureRegion,
+                                          j * animationConfig.textureWidth(),
+                                          i * animationConfig.textureHeight(),
+                                          animationConfig.textureWidth(),
+                                          animationConfig.textureHeight());
             }
-
 
             runningAnimations.add(i, new Animation<>(animationConfig.frameDuration(), frames));
         }
 
+        return runningAnimations;
+    }
+
+    private List<TextureRegion> prepareFacingTextures(CreatureAnimationConfig animationConfig, TextureAtlas atlas) {
+        TextureRegion runningAnimationTextureRegion = atlas.findRegion(animationConfig.textureName());
+
+        List<TextureRegion> facingTextures = new ArrayList<>();
+
+        for (int i = 0; i < 4; i++) {
+            facingTextures.add(new TextureRegion(runningAnimationTextureRegion,
+                                                 animationConfig.neutralStanceFrame() * animationConfig.textureWidth(),
+                                                 i * animationConfig.textureHeight(),
+                                                 animationConfig.textureWidth(),
+                                                 animationConfig.textureHeight()));
+
+        }
+
+        return facingTextures;
+    }
+
+    private Animation<TextureRegion> prepareStunnedAnimation(TextureAtlas atlas) {
         TextureRegion stunnedAnimationTextureRegion = atlas.findRegion("stunned");
 
         TextureRegion[] frames = new TextureRegion[8];
@@ -89,8 +98,7 @@ public class CreatureRenderer {
             frames[i] = (new TextureRegion(stunnedAnimationTextureRegion, i * 60, 0, 60, 30));
         }
 
-        stunnedAnimation = new Animation<>(0.035f, frames);
-
+        return new Animation<>(0.035f, frames);
     }
 
     private TextureRegion getRunningAnimation(GameRenderable game) {
@@ -117,103 +125,114 @@ public class CreatureRenderer {
     }
 
     public void update(GameRenderable game) {
-        if (!game.getCreatures().containsKey(creatureId)) {
-            return;
-        }
-
         Creature creature = game.getCreature(creatureId);
 
-        sprite.setCenter(creature.params().pos().x(), creature.params().pos().y());
-        sprite.setSize(creature.animationConfig().spriteWidth(), creature.animationConfig().spriteHeight());
+        updateCreatureSpritePosition(creature);
+        updateCreatureSpriteSize(creature);
 
         if (creature.isAlive()) {
-
-            TextureRegion texture;
-            if (!creature.params().isMoving() || creature.isEffectActive(CreatureEffect.STUN, game)) {
-                texture = getFacingTexture(creature.facingDirection(game), game);
-            }
-            else {
-                texture = getRunningAnimation(game);
-            }
-
-            sprite.setRotation(0f);
-            sprite.setColor(1, 1, 1, 1);
-
-            sprite.setRegion(texture);
-
+            configureAliveCreatureSprite(game, creature);
         }
         else {
-            TextureRegion texture = getFacingTexture(WorldDirection.RIGHT, game);
-
-            sprite.setOriginCenter();
-            sprite.setRotation(90f);
-
-            sprite.setRegion(texture);
-
+            configureDeadCreatureSprite(game);
         }
     }
 
-    public void render(DrawingLayer drawingLayer) {
+    private void updateCreatureSpritePosition(Creature creature) {
+        sprite.setCenter(creature.params().pos().x(), creature.params().pos().y());
+    }
+
+    private void updateCreatureSpriteSize(Creature creature) {
+        sprite.setSize(creature.animationConfig().spriteWidth(), creature.animationConfig().spriteHeight());
+    }
+
+
+    private void configureDeadCreatureSprite(GameRenderable game) {
+        TextureRegion texture = getFacingTexture(WorldDirection.RIGHT, game);
+
+        sprite.setOriginCenter();
+        sprite.setRotation(90f);
+
+        sprite.setRegion(texture);
+    }
+
+    private void configureAliveCreatureSprite(GameRenderable game, Creature creature) {
+        TextureRegion texture;
+        if (!creature.params().isMoving() || creature.isEffectActive(CreatureEffect.STUN, game)) {
+            texture = getFacingTexture(creature.facingDirection(game), game);
+        }
+        else {
+            texture = getRunningAnimation(game);
+        }
+
+        sprite.setRotation(0f);
+        sprite.setColor(1, 1, 1, 1);
+
+        sprite.setRegion(texture);
+    }
+
+    public void render(RenderingLayer renderingLayer) {
         if (sprite.getTexture() != null) {
-            sprite.draw(drawingLayer.spriteBatch());
+            sprite.draw(renderingLayer.spriteBatch());
         }
     }
 
-    public void renderLifeBar(DrawingLayer drawingLayer, GameRenderable game) {
-        float lifeBarHeight = 0.16f;
-        float lifeBarWidth = 2.0f;
-
+    public void renderLifeBar(RenderingLayer renderingLayer, GameRenderable game) {
         Creature creature = game.getCreature(creatureId);
 
-        if (creature == null) {
-            return;
-        }
+        if (creature != null) {
+            float currentLifeBarWidth = LIFE_BAR_WIDTH * creature.params().life() / creature.params().maxLife();
+            float barPosX = getLifeBarPosX(creature);
+            float barPosY = getLifeBarPosY(creature);
 
-        float currentLifeBarWidth = lifeBarWidth * creature.params().life() / creature.params().maxLife();
-        float barPosX = creature.params().pos().x() - lifeBarWidth / 2;
-        float barPosY = creature.params().pos().y() + sprite.getWidth() / 2 + 0.3125f;
-
-        drawingLayer.filledRectangle(new Rectangle(barPosX, barPosY, lifeBarWidth, lifeBarHeight), Color.ORANGE);
-        if (creature.params().life() <= creature.params().maxLife()) {
-            drawingLayer.filledRectangle(new Rectangle(barPosX, barPosY, currentLifeBarWidth, lifeBarHeight),
-                                         Color.RED);
+            renderBar(renderingLayer, barPosX, barPosY, LIFE_BAR_WIDTH, Color.ORANGE);
+            renderBar(renderingLayer, barPosX, barPosY, currentLifeBarWidth, Color.RED);
         }
-        else {
-            drawingLayer.filledRectangle(new Rectangle(barPosX, barPosY, lifeBarWidth, lifeBarHeight), Color.ROYAL);
-        }
-
     }
 
-    public void renderStunnedAnimation(DrawingLayer drawingLayer, GameRenderable game) {
-        Creature creature = game.getCreature(creatureId);
+    private static void renderBar(RenderingLayer renderingLayer,
+                                  float barPosX,
+                                  float barPosY,
+                                  float lifeBarWidth,
+                                  Color color) {
+        renderingLayer.filledRectangle(new Rectangle(barPosX, barPosY, lifeBarWidth, LIFE_BAR_HEIGHT),
+                                       color);
+    }
 
-        float distanceFromLifeBar = 1f;
+    public void renderStunnedAnimation(RenderingLayer renderingLayer, GameRenderable game) {
+        Creature creature = game.getCreature(creatureId);
 
         float posX = creature.params().pos().x() - 1.5f;
-        float posY = creature.params().pos().y() + sprite.getWidth() / 2 + 0.3125f - distanceFromLifeBar;
+        float posY = getLifeBarPosY(creature) - 1f;
 
         if (creature.isEffectActive(CreatureEffect.STUN, game)) {
-            drawingLayer.spriteBatch().draw(getStunnedAnimation(game), posX, posY, 3f, 1.5f);
+            renderingLayer.spriteBatch().draw(getStunnedAnimation(game), posX, posY, 3f, 1.5f);
         }
 
     }
 
-    public void renderPlayerName(DrawingLayer drawingLayer, GameRenderable game) {
+    public void renderCreatureId(RenderingLayer renderingLayer, GameRenderable game) {
         Creature creature = game.getCreature(creatureId);
-
-
-        if (!(creature instanceof Player)) {
-            return;
-        }
 
         String name = creature.id().value();
 
         float namePosX = creature.params().pos().x() - name.length() * 0.16f;
-        float namePosY = creature.params().pos().y() + sprite.getWidth() / 2 + 0.3125f + 1f;
+        float namePosY = getLifeBarPosY(creature) + 1f;
 
-        Assets.drawMediumFont(drawingLayer,
-                              name,
-                              // world text viewport is not scaled down! so we scale the values every time
-                              Vector2.of(namePosX * Constants.PPM, namePosY * Constants.PPM), Color.RED);
+        // world text viewport is not scaled down! so we scale the values every time
+        Assets.renderMediumFont(renderingLayer,
+                                name,
+                                Vector2.of(namePosX * Constants.PPM, namePosY * Constants.PPM),
+                                Color.RED);
+
+
+    }
+
+    private float getLifeBarPosX(Creature creature) {
+        return creature.params().pos().x() - LIFE_BAR_WIDTH / 2;
+    }
+
+    private float getLifeBarPosY(Creature creature) {
+        return creature.params().pos().y() + sprite.getWidth() / 2 + 0.3125f;
     }
 }

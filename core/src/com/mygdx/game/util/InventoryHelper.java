@@ -20,7 +20,7 @@ import com.mygdx.game.model.item.Item;
 import com.mygdx.game.model.util.PlayerParams;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.model.util.Vector2Int;
-import com.mygdx.game.renderer.DrawingLayer;
+import com.mygdx.game.renderer.RenderingLayer;
 import com.mygdx.game.renderer.util.Rect;
 
 import java.util.HashMap;
@@ -119,7 +119,7 @@ public class InventoryHelper {
                (SLOT_SIZE + MARGIN + (SLOT_SIZE + SPACE_BETWEEN_SLOTS) * index);
     }
 
-    public static void render(DrawingLayer drawingLayer, GameRenderable game) {
+    public static void render(RenderingLayer renderingLayer, GameRenderable game) {
         PlayerParams playerParams = game.getPlayerParams(game.getCurrentPlayerId());
 
         if (playerParams == null) {
@@ -127,41 +127,41 @@ public class InventoryHelper {
         }
 
         if (playerParams.isInventoryVisible()) {
-            backgroundImage.draw(drawingLayer.spriteBatch(), 1.0f);
+            backgroundImage.draw(renderingLayer.spriteBatch(), 1.0f);
 
             inventoryRectangles.values().forEach(rect -> {
-                drawingLayer.shapeDrawer()
-                            .filledRectangle(rect.x() - 3, rect.y() - 3, rect.width() + 6, rect.height() + 6,
-                                             Color.BROWN);
-                drawingLayer.shapeDrawer()
-                            .filledRectangle(rect.x(), rect.y(), rect.width(), rect.height(), Color.BLACK);
+                renderingLayer.shapeDrawer()
+                              .filledRectangle(rect.x() - 3, rect.y() - 3, rect.width() + 6, rect.height() + 6,
+                                               Color.BROWN);
+                renderingLayer.shapeDrawer()
+                              .filledRectangle(rect.x(), rect.y(), rect.width(), rect.height(), Color.BLACK);
             });
 
             equipmentRectangles.forEach((index, rect) -> {
-                drawingLayer.shapeDrawer()
-                            .filledRectangle(rect.x() - 3,
-                                             rect.y() - 3,
-                                             rect.width() + 6,
-                                             rect.height() + 6,
-                                             Color.BROWN);
-                drawingLayer.shapeDrawer()
-                            .filledRectangle(rect.x(), rect.y(), rect.width(), rect.height(), Color.BROWN);
-                Assets.drawSmallFont(drawingLayer,
-                                     EquipmentSlotType.equipmentSlotNames.get(index) + ":",
-                                     Vector2.of(rect.x() - SLOT_SIZE / 2f - 170f,
-                                                rect.y() + SLOT_SIZE / 2f + 7f),
-                                     Color.DARK_GRAY);
+                renderingLayer.shapeDrawer()
+                              .filledRectangle(rect.x() - 3,
+                                               rect.y() - 3,
+                                               rect.width() + 6,
+                                               rect.height() + 6,
+                                               Color.BROWN);
+                renderingLayer.shapeDrawer()
+                              .filledRectangle(rect.x(), rect.y(), rect.width(), rect.height(), Color.BROWN);
+                Assets.renderSmallFont(renderingLayer,
+                                       EquipmentSlotType.equipmentSlotNames.get(index) + ":",
+                                       Vector2.of(rect.x() - SLOT_SIZE / 2f - 170f,
+                                                  rect.y() + SLOT_SIZE / 2f + 7f),
+                                       Color.DARK_GRAY);
             });
 
-            renderPlayerItems(drawingLayer, game);
-            renderDescription(drawingLayer, game);
+            renderPlayerItems(renderingLayer, game);
+            renderDescription(renderingLayer, game);
         }
 
-        drawItemPickUpMenu(drawingLayer, game);
+        renderItemPickUpMenu(renderingLayer, game);
 
     }
 
-    public static void renderPlayerItems(DrawingLayer drawingLayer, GameRenderable game) {
+    public static void renderPlayerItems(RenderingLayer renderingLayer, GameRenderable game) {
         Creature player = game.getCreature(game.getCurrentPlayerId());
         PlayerParams playerParams = game.getPlayerParams(game.getCurrentPlayerId());
 
@@ -180,13 +180,13 @@ public class InventoryHelper {
             TextureRegion textureRegion = icons[iconPos.y()][iconPos.x()];
             float x = inventorySlotPositionX(entry.getKey());
             float y = inventorySlotPositionY(entry.getKey());
-            drawingLayer.spriteBatch().draw(textureRegion, x, y, SLOT_SIZE, SLOT_SIZE);
+            renderingLayer.spriteBatch().draw(textureRegion, x, y, SLOT_SIZE, SLOT_SIZE);
 
             if (entry.getValue().quantity() > 1) {
-                Assets.drawSmallFont(drawingLayer,
-                                     entry.getValue().quantity().toString(),
-                                     Vector2.of(x, y + 15),
-                                     Color.WHITE);
+                Assets.renderSmallFont(renderingLayer,
+                                       entry.getValue().quantity().toString(),
+                                       Vector2.of(x, y + 15),
+                                       Color.WHITE);
             }
         });
 
@@ -202,13 +202,13 @@ public class InventoryHelper {
             TextureRegion textureRegion = icons[iconPos.y()][iconPos.x()];
             float x = equipmentSlotPositionX(entry.getKey());
             float y = equipmentSlotPositionY(entry.getKey());
-            drawingLayer.spriteBatch().draw(textureRegion, x, y, SLOT_SIZE, SLOT_SIZE);
+            renderingLayer.spriteBatch().draw(textureRegion, x, y, SLOT_SIZE, SLOT_SIZE);
 
             if (entry.getValue().quantity() > 1) {
-                Assets.drawSmallFont(drawingLayer,
-                                     entry.getValue().quantity().toString(),
-                                     Vector2.of(x, y + 15),
-                                     Color.WHITE);
+                Assets.renderSmallFont(renderingLayer,
+                                       entry.getValue().quantity().toString(),
+                                       Vector2.of(x, y + 15),
+                                       Color.WHITE);
             }
         });
 
@@ -220,28 +220,28 @@ public class InventoryHelper {
 
             Vector2Int iconPos = inventoryItems.get(playerParams.inventoryItemBeingMoved()).template().iconPos();
 
-            drawingLayer.spriteBatch()
-                        .draw(icons[iconPos.y()][iconPos.x()],
-                              x - SLOT_SIZE / 2f,
-                              y - SLOT_SIZE / 2f,
-                              SLOT_SIZE,
-                              SLOT_SIZE);
+            renderingLayer.spriteBatch()
+                          .draw(icons[iconPos.y()][iconPos.x()],
+                                x - SLOT_SIZE / 2f,
+                                y - SLOT_SIZE / 2f,
+                                SLOT_SIZE,
+                                SLOT_SIZE);
         }
         if (playerParams.equipmentItemBeingMoved() != null &&
             equipmentItems.containsKey(playerParams.equipmentItemBeingMoved())) {
             Vector2Int iconPos = equipmentItems.get(playerParams.equipmentItemBeingMoved()).template().iconPos();
 
-            drawingLayer.spriteBatch()
-                        .draw(icons[iconPos.y()][iconPos.x()],
-                              x - SLOT_SIZE / 2f,
-                              y - SLOT_SIZE / 2f,
-                              SLOT_SIZE,
-                              SLOT_SIZE);
+            renderingLayer.spriteBatch()
+                          .draw(icons[iconPos.y()][iconPos.x()],
+                                x - SLOT_SIZE / 2f,
+                                y - SLOT_SIZE / 2f,
+                                SLOT_SIZE,
+                                SLOT_SIZE);
         }
 
     }
 
-    public static void renderDescription(DrawingLayer drawingLayer, GameRenderable game) {
+    public static void renderDescription(RenderingLayer renderingLayer, GameRenderable game) {
         Creature player = game.getCreature(game.getCurrentPlayerId());
         PlayerParams playerParams = game.getPlayerParams(game.getCurrentPlayerId());
 
@@ -272,21 +272,21 @@ public class InventoryHelper {
         }
 
         if (mouseOverItem != null) {
-            Assets.drawSmallFont(drawingLayer,
-                                 mouseOverItem.template().name(),
-                                 Vector2.of(backgroundRect.x() + MARGIN,
-                                            backgroundRect.y() + backgroundRect.height() - (INVENTORY_HEIGHT + 5)),
-                                 Color.DARK_GRAY);
+            Assets.renderSmallFont(renderingLayer,
+                                   mouseOverItem.template().name(),
+                                   Vector2.of(backgroundRect.x() + MARGIN,
+                                              backgroundRect.y() + backgroundRect.height() - (INVENTORY_HEIGHT + 5)),
+                                   Color.DARK_GRAY);
 
-            Assets.drawSmallFont(drawingLayer,
-                                 mouseOverItem.getItemInformation(),
-                                 Vector2.of(backgroundRect.x() + MARGIN,
-                                            backgroundRect.y() + backgroundRect.height() - (INVENTORY_HEIGHT + 35)),
-                                 Color.DARK_GRAY);
+            Assets.renderSmallFont(renderingLayer,
+                                   mouseOverItem.getItemInformation(),
+                                   Vector2.of(backgroundRect.x() + MARGIN,
+                                              backgroundRect.y() + backgroundRect.height() - (INVENTORY_HEIGHT + 35)),
+                                   Color.DARK_GRAY);
         }
     }
 
-    public static void drawItemPickUpMenu(DrawingLayer drawingLayer, GameRenderable game) {
+    public static void renderItemPickUpMenu(RenderingLayer renderingLayer, GameRenderable game) {
         PlayerParams playerParams = game.getPlayerParams(game.getCurrentPlayerId());
 
         if (playerParams.isInventoryVisible()) {
@@ -303,42 +303,43 @@ public class InventoryHelper {
                     .flatMap(lootPileId -> game.getLootPile(
                                                        lootPileId)
                                                .items().stream())
-                    .forEach(item -> drawItemPickupMenuOption(drawingLayer, x, y, i, item));
+                    .forEach(item -> renderItemPickupMenuOption(renderingLayer, x, y, i, item));
     }
 
-    private static void drawItemPickupMenuOption(DrawingLayer drawingLayer,
-                                                 float x,
-                                                 float y,
-                                                 AtomicInteger i,
-                                                 Item item) {
+    //TODO: this is rendering-related - move to inventory renderer?
+    private static void renderItemPickupMenuOption(RenderingLayer renderingLayer,
+                                                   float x,
+                                                   float y,
+                                                   AtomicInteger i,
+                                                   Item item) {
         Rect rect = Rect.of(PICKUP_MENU_POS_X,
                             PICKUP_MENU_POS_Y + 25f * i.get(),
                             Gdx.graphics.getWidth() / 6f,
                             20f);
-        drawingLayer.shapeDrawer()
-                    .filledRectangle(rect.x(),
-                                     rect.y(),
-                                     rect.width(),
-                                     rect.height(),
-                                     Color.DARK_GRAY.cpy().sub(0, 0, 0, 0.3f));
+        renderingLayer.shapeDrawer()
+                      .filledRectangle(rect.x(),
+                                       rect.y(),
+                                       rect.width(),
+                                       rect.height(),
+                                       Color.DARK_GRAY.cpy().sub(0, 0, 0, 0.3f));
         if (rect.contains(x, y)) {
-            drawingLayer.shapeDrawer()
-                        .rectangle(rect.x(), rect.y(), rect.width(), rect.height(), Color.ORANGE);
+            renderingLayer.shapeDrawer()
+                          .rectangle(rect.x(), rect.y(), rect.width(), rect.height(), Color.ORANGE);
         }
-        drawingLayer.spriteBatch()
-                    .draw(icons[item.template().iconPos().y()][item.template().iconPos().x()],
-                          rect.x() + 10f,
-                          rect.y(),
-                          20f,
-                          20f);
-        Assets.drawSmallFont(drawingLayer,
-                             item.template().name(),
-                             Vector2.of(rect.x() + 40f, rect.y() + 17f),
-                             Color.CYAN);
+        renderingLayer.spriteBatch()
+                      .draw(icons[item.template().iconPos().y()][item.template().iconPos().x()],
+                            rect.x() + 10f,
+                            rect.y(),
+                            20f,
+                            20f);
+        Assets.renderSmallFont(renderingLayer,
+                               item.template().name(),
+                               Vector2.of(rect.x() + 40f, rect.y() + 17f),
+                               Color.CYAN);
         i.getAndIncrement();
     }
 
-    public static void moveItemClick(Client client, GameRenderable game) {
+    public static void performMoveItemClick(Client client, GameRenderable game) {
         Creature player = game.getCreature(game.getCurrentPlayerId());
         PlayerParams playerParams = game.getPlayerParams(game.getCurrentPlayerId());
 
@@ -425,7 +426,7 @@ public class InventoryHelper {
 
     }
 
-    public static boolean tryItemPickupMenuClick(Client client, MyGdxGameClient game) {
+    public static boolean tryPerformItemPickupMenuClick(Client client, MyGdxGameClient game) {
         PlayerParams playerParams = game.getPlayerParams(game.getCurrentPlayerId());
 
         float x = game.hudMousePos().x();

@@ -16,7 +16,7 @@ import space.earlygrey.shapedrawer.ShapeDrawer;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-public class DrawingLayer {
+public class RenderingLayer {
 
     final SpriteBatch spriteBatch = new SpriteBatch();
     Texture texture;
