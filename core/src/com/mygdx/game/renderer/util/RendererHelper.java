@@ -22,9 +22,7 @@ import com.mygdx.game.renderer.GameRenderer;
 import com.mygdx.game.util.InventoryHelper;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -57,9 +55,9 @@ public class RendererHelper {
     public static void drawWorld(GameRenderable game) {
         GameRenderer renderer = game.getRenderer();
         DrawingLayer drawingLayer = renderer.worldDrawingLayer();
-        DrawingLayer textDrawingLayer = renderer.worldTextDrawingLayer();
+        DrawingLayer worldTextDrawingLayer = renderer.worldTextDrawingLayer();
 
-        renderer.areaRenderers().get(game.getCurrentPlayerAreaId()).render(new int[]{0, 1});
+        renderCurrentlyVisibleArea(renderer, game, Arrays.asList(0, 1));
 
         drawingLayer.spriteBatch().begin();
 
@@ -77,15 +75,24 @@ public class RendererHelper {
 
         drawingLayer.end();
 
-        textDrawingLayer.begin();
+        renderWorldText(game, renderer, worldTextDrawingLayer);
 
-        renderer.renderPlayerNames(textDrawingLayer, game);
-
-        textDrawingLayer.end();
-
-        renderer.areaRenderers().get(game.getCurrentPlayerAreaId()).render(new int[]{2, 3});
+        renderCurrentlyVisibleArea(renderer, game, Arrays.asList(2, 3));
 
         game.renderB2BodyDebug();
+    }
+
+    private static void renderCurrentlyVisibleArea(GameRenderer renderer, GameRenderable game, List<Integer> layers) {
+        int[] layersArray = layers.stream().mapToInt(Integer::intValue).toArray();
+        renderer.areaRenderers().get(game.getCurrentPlayerAreaId()).render(layersArray);
+    }
+
+    private static void renderWorldText(GameRenderable game,
+                                        GameRenderer renderer,
+                                        DrawingLayer worldTextDrawingLayer) {
+        worldTextDrawingLayer.begin();
+        renderer.renderPlayerNames(worldTextDrawingLayer, game);
+        worldTextDrawingLayer.end();
     }
 
     public static void drawHud(GameRenderable game) {

@@ -7,12 +7,14 @@ import com.mygdx.game.model.area.LootPileId;
 import com.mygdx.game.model.util.Vector2;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class LootPileDespawnAction implements GameStateAction {
+public class LootPileDespawnAction extends GameStateAction {
     LootPileId lootPileId;
 
     @Override

@@ -46,7 +46,7 @@ public class Enemy extends Creature {
                                                    creature.params().pos());
 
             if (condition && params().pos().distance(creature.params().pos()) < minDistance) {
-                minCreatureId = creature.params().id();
+                minCreatureId = creature.id();
                 minDistance = params().pos().distance(creature.params().pos());
             }
         }
@@ -259,7 +259,7 @@ public class Enemy extends Creature {
         Predicate<Creature> creaturePredicate = creature ->
                 creature instanceof Enemy &&
                 creature.params().pos().distance(this.params().pos()) < 4f &&
-                !creature.params().id().equals(this.params().id()) &&
+                !creature.id().equals(this.params().id()) &&
                 creature.params().pathTowardsTarget() != null &&
                 !creature.params().isPathMirrored() &&
                 creature.params().targetCreatureId() != null &&

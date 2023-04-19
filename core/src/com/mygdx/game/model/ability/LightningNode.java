@@ -23,7 +23,6 @@ public class LightningNode extends Ability {
     public static LightningNode of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
         LightningNode ability = LightningNode.of();
         ability.params = abilityParams
-
                 .width(3f)
                 .height(3f)
                 .channelTime(0f)
@@ -66,9 +65,9 @@ public class LightningNode extends Ability {
             params().creaturesAlreadyHit().size() <= 10 &&
             game.isLineOfSight(params().areaId(), params().pos(), targetCreature.params().pos())) {
 
-            game.onAbilityHitsCreature(targetCreature.params().id(), params().creatureId(), this);
+            game.onAbilityHitsCreature(targetCreature.id(), params().creatureId(), this);
 
-            params().creaturesAlreadyHit().put(targetCreature.params().id(), params().stateTimer().time());
+            params().creaturesAlreadyHit().put(targetCreature.id(), params().stateTimer().time());
 
             game.chainAbility(this,
                               AbilityType.LIGHTNING_CHAIN,

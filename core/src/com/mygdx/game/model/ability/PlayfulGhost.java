@@ -100,7 +100,7 @@ public class PlayfulGhost extends Projectile {
                                                                targetCreature.params().pos().distance(params().pos()) <
                                                                10f &&
                                                                !params().creaturesAlreadyHit()
-                                                                        .containsKey(targetCreature.params().id()))
+                                                                        .containsKey(targetCreature.id()))
                                      .collect(Collectors.toSet())) {
             if (creature.params().pos().distance(params().pos()) < minDistance) {
                 minCreature = creature;

@@ -14,6 +14,7 @@ import com.mygdx.game.model.skill.SkillType;
 import com.mygdx.game.model.util.Vector2;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.Map;
@@ -25,18 +26,16 @@ import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class CreatureHitAction implements GameStateAction {
+public class CreatureHitAction extends GameStateAction {
     CreatureId attackerId;
     CreatureId targetId;
     Ability ability;
 
     @Override
     public Vector2 actionObjectPos(GameState gameState) {
-        if (!gameState.creatures().containsKey(targetId)) {
-            return Vector2.of(0f, 0f);
-        }
-        return gameState.creatures().get(targetId).params().pos();
+        return getActionCreaturePos(gameState, targetId);
     }
 
     @Override

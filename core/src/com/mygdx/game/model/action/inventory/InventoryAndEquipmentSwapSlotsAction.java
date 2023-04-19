@@ -11,6 +11,7 @@ import com.mygdx.game.model.util.PlayerParams;
 import com.mygdx.game.model.util.Vector2;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.Set;
@@ -18,8 +19,9 @@ import java.util.concurrent.ConcurrentSkipListSet;
 
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class InventoryAndEquipmentSwapSlotsAction implements GameStateAction {
+public class InventoryAndEquipmentSwapSlotsAction extends GameStateAction {
     CreatureId creatureId;
 
     Integer inventoryIndex;
@@ -27,10 +29,7 @@ public class InventoryAndEquipmentSwapSlotsAction implements GameStateAction {
 
     @Override
     public Vector2 actionObjectPos(GameState gameState) {
-        if (!gameState.creatures().containsKey(creatureId)) {
-            return Vector2.of(0f, 0f);
-        }
-        return gameState.creatures().get(creatureId).params().pos();
+        return getActionCreaturePos(gameState, creatureId);
     }
 
     @Override

@@ -12,6 +12,7 @@ import com.mygdx.game.model.util.PlayerParams;
 import com.mygdx.game.model.util.Vector2;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.Map;
@@ -20,16 +21,14 @@ import java.util.concurrent.ConcurrentSkipListSet;
 
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class LootPileSpawnOnPlayerItemDropAction implements GameStateAction {
+public class LootPileSpawnOnPlayerItemDropAction extends GameStateAction {
     CreatureId playerId;
 
     @Override
     public Vector2 actionObjectPos(GameState gameState) {
-        if (!gameState.creatures().containsKey(playerId)) {
-            return Vector2.of(0f, 0f);
-        }
-        return gameState.creatures().get(playerId).params().pos();
+        return getActionCreaturePos(gameState, playerId);
     }
 
     @Override

@@ -10,12 +10,14 @@ import com.mygdx.game.model.util.PlayerParams;
 import com.mygdx.game.model.util.Vector2;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class InventorySwapSlotsAction implements GameStateAction {
+public class InventorySwapSlotsAction extends GameStateAction {
     CreatureId creatureId;
 
     Integer fromSlotIndex;
@@ -23,10 +25,7 @@ public class InventorySwapSlotsAction implements GameStateAction {
 
     @Override
     public Vector2 actionObjectPos(GameState gameState) {
-        if (!gameState.creatures().containsKey(creatureId)) {
-            return Vector2.of(0f, 0f);
-        }
-        return gameState.creatures().get(creatureId).params().pos();
+        return getActionCreaturePos(gameState, creatureId);
     }
 
     @Override

@@ -284,4 +284,7 @@ public abstract class Creature {
         effectState.duration(duration);
     }
 
+    public CreatureId id() {
+        return params().id();
+    }
 }

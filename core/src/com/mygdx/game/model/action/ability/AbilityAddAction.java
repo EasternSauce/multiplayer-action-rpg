@@ -8,12 +8,14 @@ import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.util.Vector2;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class AbilityAddAction implements GameStateAction {
+public class AbilityAddAction extends GameStateAction {
 
     Ability ability;
 

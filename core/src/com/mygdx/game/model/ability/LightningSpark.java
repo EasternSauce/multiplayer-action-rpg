@@ -88,9 +88,9 @@ public class LightningSpark extends Ability {
         if (targetCreature != null &&
             game.isLineOfSight(params().areaId(), params().pos(), targetCreature.params().pos())) {
 
-            game.onAbilityHitsCreature(targetCreature.params().id(), params().creatureId(), this);
+            game.onAbilityHitsCreature(targetCreature.id(), params().creatureId(), this);
 
-            params().creaturesAlreadyHit().put(targetCreature.params().id(), params().stateTimer().time());
+            params().creaturesAlreadyHit().put(targetCreature.id(), params().stateTimer().time());
 
             game.chainAbility(this,
                               AbilityType.LIGHTNING_CHAIN,

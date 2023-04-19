@@ -7,12 +7,14 @@ import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.util.Vector2;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class AbilityRemoveAction implements GameStateAction {
+public class AbilityRemoveAction extends GameStateAction {
     AbilityId abilityId;
 
     @Override

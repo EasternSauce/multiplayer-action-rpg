@@ -93,7 +93,7 @@ public class CreatureRenderer {
 
     }
 
-    public TextureRegion runningAnimation(GameRenderable game) {
+    private TextureRegion getRunningAnimation(GameRenderable game) {
         Creature creature = game.getCreature(creatureId);
 
         WorldDirection currentDirection = creature.facingDirection(game);
@@ -102,7 +102,7 @@ public class CreatureRenderer {
                                 .getKeyFrame(creature.params().animationTimer().time(), true);
     }
 
-    public TextureRegion stunnedAnimation(GameRenderable game) {
+    private TextureRegion getStunnedAnimation(GameRenderable game) {
         Creature creature = game.getCreature(creatureId);
 
         float currentStunDuration = creature.getCurrentEffectDuration(CreatureEffect.STUN, game);
@@ -110,18 +110,10 @@ public class CreatureRenderer {
         return stunnedAnimation.getKeyFrame(currentStunDuration, true);
     }
 
-    public TextureRegion getFacingTexture(GameRenderable game) {
+    public TextureRegion getFacingTexture(WorldDirection direction, GameRenderable game) {
         Creature creature = game.getCreature(creatureId);
 
-        WorldDirection currentDirection = creature.facingDirection(game);
-
-        return facingTextures().get(creature.animationConfig().dirMap().get(currentDirection));
-    }
-
-    public TextureRegion getFacingTexture(WorldDirection overrideDirection, GameRenderable game) {
-        Creature creature = game.getCreature(creatureId);
-
-        return facingTextures().get(creature.animationConfig().dirMap().get(overrideDirection));
+        return facingTextures().get(creature.animationConfig().dirMap().get(direction));
     }
 
     public void update(GameRenderable game) {
@@ -138,10 +130,10 @@ public class CreatureRenderer {
 
             TextureRegion texture;
             if (!creature.params().isMoving() || creature.isEffectActive(CreatureEffect.STUN, game)) {
-                texture = getFacingTexture(game);
+                texture = getFacingTexture(creature.facingDirection(game), game);
             }
             else {
-                texture = runningAnimation(game);
+                texture = getRunningAnimation(game);
             }
 
             sprite.setRotation(0f);
@@ -201,7 +193,7 @@ public class CreatureRenderer {
         float posY = creature.params().pos().y() + sprite.getWidth() / 2 + 0.3125f - distanceFromLifeBar;
 
         if (creature.isEffectActive(CreatureEffect.STUN, game)) {
-            drawingLayer.spriteBatch().draw(stunnedAnimation(game), posX, posY, 3f, 1.5f);
+            drawingLayer.spriteBatch().draw(getStunnedAnimation(game), posX, posY, 3f, 1.5f);
         }
 
     }
@@ -214,7 +206,7 @@ public class CreatureRenderer {
             return;
         }
 
-        String name = creature.params().id().value();
+        String name = creature.id().value();
 
         float namePosX = creature.params().pos().x() - name.length() * 0.16f;
         float namePosY = creature.params().pos().y() + sprite.getWidth() / 2 + 0.3125f + 1f;

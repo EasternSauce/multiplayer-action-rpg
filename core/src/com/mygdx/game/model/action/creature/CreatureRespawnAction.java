@@ -9,12 +9,14 @@ import com.mygdx.game.model.util.TeleportEvent;
 import com.mygdx.game.model.util.Vector2;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class CreatureRespawnAction implements GameStateAction {
+public class CreatureRespawnAction extends GameStateAction {
     CreatureId creatureId;
     Vector2 pos;
 

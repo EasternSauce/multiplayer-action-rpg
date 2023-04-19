@@ -9,6 +9,7 @@ import com.mygdx.game.game.interface_.GameRenderable;
 import com.mygdx.game.model.ability.AbilityId;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.area.LootPileId;
+import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.util.InventoryHelper;
 import lombok.AllArgsConstructor;
@@ -66,46 +67,41 @@ public class GameRenderer {
     }
 
     public void renderAliveCreatures(DrawingLayer drawingLayer, GameRenderable game) {
-        game.getCreatures().entrySet().stream().filter(entry -> entry.getValue().isAlive()).forEach(entry -> {
-            if (creatureRenderers().containsKey(entry.getKey()) && entry.getValue()
-                                                                        .params()
-                                                                        .areaId()
-                                                                        .equals(game.getCurrentPlayerAreaId())) {
-                creatureRenderers.get(entry.getKey()).render(drawingLayer);
+        game.getCreatures().values().stream().filter(Creature::isAlive).forEach(creature -> {
+            if (creatureRenderers().containsKey(creature.id()) && isCreatureInCurrentlyVisibleArea(game, creature)) {
+                creatureRenderers.get(creature.id()).render(drawingLayer);
             }
         });
 
-        game.getCreatures().entrySet().stream().filter(entry -> entry.getValue().isAlive()).forEach(entry -> {
-            if (creatureRenderers().containsKey(entry.getKey()) && entry.getValue()
-                                                                        .params()
-                                                                        .areaId()
-                                                                        .equals(game.getCurrentPlayerAreaId())) {
-                creatureRenderers.get(entry.getKey()).renderLifeBar(drawingLayer, game);
+        game.getCreatures().values().stream().filter(Creature::isAlive).forEach(creature -> {
+            if (creatureRenderers().containsKey(creature.id()) && isCreatureInCurrentlyVisibleArea(game, creature)) {
+                creatureRenderers.get(creature.id()).renderLifeBar(drawingLayer, game);
             }
         });
 
 
-        game.getCreatures().entrySet().stream().filter(entry -> entry.getValue().isAlive()).forEach(entry -> {
-            if (creatureRenderers().containsKey(entry.getKey()) && entry.getValue()
-                                                                        .params()
-                                                                        .areaId()
-                                                                        .equals(game.getCurrentPlayerAreaId())) {
-                creatureRenderers.get(entry.getKey()).renderStunnedAnimation(drawingLayer, game);
+        game.getCreatures().values().stream().filter(Creature::isAlive).forEach(creature -> {
+            if (creatureRenderers().containsKey(creature.id()) && isCreatureInCurrentlyVisibleArea(game, creature)) {
+                creatureRenderers.get(creature.id()).renderStunnedAnimation(drawingLayer, game);
 
             }
         });
     }
 
     public void renderDeadCreatures(DrawingLayer drawingLayer, GameRenderable game) {
-        game.getCreatures().entrySet().stream().filter(entry -> !entry.getValue().isAlive()).forEach(entry -> {
-            if (creatureRenderers().containsKey(entry.getKey()) && entry.getValue()
-                                                                        .params()
-                                                                        .areaId()
-                                                                        .equals(game.getCurrentPlayerAreaId())) {
-                creatureRenderers.get(entry.getKey()).render(drawingLayer);
+        game.getCreatures().values().stream().filter(creature -> !creature.isAlive()).forEach(creature -> {
+            if (creatureRenderers().containsKey(creature.id()) && isCreatureInCurrentlyVisibleArea(game, creature)) {
+                creatureRenderers.get(creature.id()).render(drawingLayer);
 
             }
         });
+    }
+
+    private static boolean isCreatureInCurrentlyVisibleArea(GameRenderable game, Creature creature) {
+        return creature
+                .params()
+                .areaId()
+                .equals(game.getCurrentPlayerAreaId());
     }
 
     public void renderAreaGates(DrawingLayer drawingLayer, GameRenderable game) {
@@ -116,14 +112,17 @@ public class GameRenderer {
         lootPileRenderers.values().forEach(lootPileRenderer -> lootPileRenderer.render(drawingLayer, game));
     }
 
-    public void renderPlayerNames(DrawingLayer textDrawingLayer, GameRenderable game) {
-        game.getCreatures().entrySet().stream().filter(entry -> entry.getValue().isAlive()).forEach(entry -> {
-            if (creatureRenderers().containsKey(entry.getKey()) && entry.getValue()
-                                                                        .params()
-                                                                        .areaId()
-                                                                        .equals(game.getCurrentPlayerAreaId())) {
-                creatureRenderers.get(entry.getKey()).renderPlayerName(textDrawingLayer, game);
-            }
-        });
+    public void renderPlayerNames(DrawingLayer worldTextDrawingLayer, GameRenderable game) {
+        game.getCreatures()
+            .values()
+            .stream()
+            .filter(creature -> canCreatureBeRendered(game, creature))
+            .forEach(creature -> creatureRenderers.get(creature.id()).renderPlayerName(worldTextDrawingLayer, game));
+    }
+
+    private boolean canCreatureBeRendered(GameRenderable game, Creature creature) {
+        return creature.isAlive() &&
+               creatureRenderers().containsKey(creature.id()) &&
+               isCreatureInCurrentlyVisibleArea(game, creature);
     }
 }
