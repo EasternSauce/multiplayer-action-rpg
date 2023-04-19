@@ -87,7 +87,7 @@ public interface GameUpdatable {
                                CreatureId targetId,
                                Ability ability);
 
-    //    Float nextRandomValue();
+    Float nextRandomValue();
 
 
 }

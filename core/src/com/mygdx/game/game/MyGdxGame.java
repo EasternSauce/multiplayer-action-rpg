@@ -36,6 +36,7 @@ import com.mygdx.game.renderer.AbilityRenderer;
 import com.mygdx.game.renderer.CreatureRenderer;
 import com.mygdx.game.renderer.GameRenderer;
 import com.mygdx.game.renderer.LootPileRenderer;
+import com.mygdx.game.util.RandomHelper;
 
 import java.io.IOException;
 import java.util.*;
@@ -625,12 +626,12 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
 
     public abstract void initializePlayer(String playerName);
 
-    //    @Override
-    //    public Float nextRandomValue() {
-    //        float result = RandomHelper.seededRandomFloat(gameState.lastRandomValue());
-    //
-    //        gameState.lastRandomValue(result);
-    //
-    //        return result;
-    //    }
+    @Override
+    public Float nextRandomValue() {
+        float result = RandomHelper.seededRandomFloat(gameState.lastRandomValue());
+
+        gameState.lastRandomValue(result);
+
+        return result;
+    }
 }

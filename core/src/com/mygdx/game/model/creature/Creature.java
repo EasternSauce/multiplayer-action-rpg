@@ -24,7 +24,6 @@ public abstract class Creature {
     public abstract Creature params(CreatureParams params);
 
     public void update(float delta, CreatureUpdatable game) {
-
         regenerateStamina();
 
         if (!params().reachedTargetPos()) {
