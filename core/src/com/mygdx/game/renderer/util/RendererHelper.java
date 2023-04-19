@@ -54,8 +54,8 @@ public class RendererHelper {
 
     public static void renderWorld(GameRenderable game) {
         GameRenderer renderer = game.getRenderer();
-        RenderingLayer renderingLayer = renderer.worldRenderingLayer();
-        RenderingLayer worldTextRenderingLayer = renderer.worldTextRenderingLayer();
+        RenderingLayer renderingLayer = renderer.getWorldRenderingLayer();
+        RenderingLayer worldTextRenderingLayer = renderer.getWorldTextRenderingLayer();
 
         renderCurrentlyVisibleArea(renderer, game, Arrays.asList(0, 1));
 
@@ -70,7 +70,7 @@ public class RendererHelper {
 
         renderer.renderAliveCreatures(renderingLayer, game);
 
-        renderer.abilityRenderers()
+        renderer.getAbilityRenderers()
                 .forEach((abilityId, abilityAnimation) -> abilityAnimation.render(renderingLayer, game));
 
         renderingLayer.end();
@@ -84,7 +84,7 @@ public class RendererHelper {
 
     private static void renderCurrentlyVisibleArea(GameRenderer renderer, GameRenderable game, List<Integer> layers) {
         int[] layersArray = layers.stream().mapToInt(Integer::intValue).toArray();
-        renderer.areaRenderers().get(game.getCurrentPlayerAreaId()).render(layersArray);
+        renderer.getAreaRenderers().get(game.getCurrentPlayerAreaId()).render(layersArray);
     }
 
     private static void renderWorldText(GameRenderable game,
@@ -96,7 +96,7 @@ public class RendererHelper {
     }
 
     public static void renderHud(GameRenderable game) {
-        RenderingLayer renderingLayer = game.getRenderer().hudRenderingLayer();
+        RenderingLayer renderingLayer = game.getRenderer().getHudRenderingLayer();
 
         renderingLayer.begin();
 

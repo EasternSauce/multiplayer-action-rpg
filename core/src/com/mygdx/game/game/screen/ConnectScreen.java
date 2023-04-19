@@ -78,9 +78,9 @@ public class ConnectScreen implements Screen {
         }
 
 
-        SpriteBatch spriteBatch = game.renderer().hudRenderingLayer().spriteBatch();
+        SpriteBatch spriteBatch = game.renderer().getHudRenderingLayer().spriteBatch();
 
-        TextureAtlas.AtlasRegion background2 = game.renderer().atlas().findRegion("background2");
+        TextureAtlas.AtlasRegion background2 = game.renderer().getAtlas().findRegion("background2");
         float centerX = Gdx.graphics.getWidth() / 2f;
         float centerY = Gdx.graphics.getHeight() / 2f;
 
@@ -90,12 +90,12 @@ public class ConnectScreen implements Screen {
                          (Gdx.graphics.getWidth() - background2.originalWidth) / 2f,
                          (Gdx.graphics.getHeight() - background2.originalHeight) / 2f);
 
-        Assets.renderMediumFont(game.renderer().hudRenderingLayer(),
+        Assets.renderMediumFont(game.renderer().getHudRenderingLayer(),
                                 "Your character name:",
                                 Vector2.of(centerX - 120f, centerY + 100f),
                                 Color.BLACK);
 
-        Assets.renderMediumFont(game.renderer().hudRenderingLayer(),
+        Assets.renderMediumFont(game.renderer().getHudRenderingLayer(),
                                 currentMessage,
                                 Vector2.of(centerX - 120f, centerY + 70f),
                                 Color.BLACK);

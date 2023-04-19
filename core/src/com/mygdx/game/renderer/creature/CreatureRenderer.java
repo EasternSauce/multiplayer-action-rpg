@@ -85,7 +85,5 @@ public class CreatureRenderer {
                                 name,
                                 Vector2.of(namePosX * Constants.PPM, namePosY * Constants.PPM),
                                 Color.RED);
-
-
     }
 }

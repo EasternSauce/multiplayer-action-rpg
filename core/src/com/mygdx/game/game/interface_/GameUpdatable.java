@@ -22,6 +22,7 @@ import com.mygdx.game.physics.world.PhysicsWorld;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 
 public interface GameUpdatable {
     Map<CreatureId, Creature> getCreatures();
@@ -90,4 +91,7 @@ public interface GameUpdatable {
     Float nextRandomValue();
 
 
+    void forEachAliveCreature(Consumer<Creature> creatureAction);
+
+    void forEachDeadCreature(Consumer<Creature> creatureAction);
 }

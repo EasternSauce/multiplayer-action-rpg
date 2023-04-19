@@ -31,14 +31,14 @@ public class CreatureSprite {
     public void prepareFacingTextures(CreatureAnimationConfig animationConfig, TextureAtlas atlas) {
         TextureRegion runningAnimationTextureRegion = atlas.findRegion(animationConfig.textureName());
 
-        this.facingTextures = CreatureSpriteUtils.createFacingTextures(animationConfig, runningAnimationTextureRegion);
+        this.facingTextures = CreatureSpriteHelper.createFacingTextures(animationConfig, runningAnimationTextureRegion);
     }
 
     public void prepareRunningAnimations(CreatureAnimationConfig animationConfig, TextureAtlas atlas) {
         TextureRegion runningAnimationTextureRegion = atlas.findRegion(animationConfig.textureName());
 
         this.runningAnimations =
-                CreatureSpriteUtils.createRunningAnimations(animationConfig, runningAnimationTextureRegion);
+                CreatureSpriteHelper.createRunningAnimations(animationConfig, runningAnimationTextureRegion);
     }
 
     public void updatePosition(Creature creature) {

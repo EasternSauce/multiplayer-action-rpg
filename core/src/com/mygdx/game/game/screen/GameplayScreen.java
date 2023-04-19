@@ -4,15 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.game.Constants;
 import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.physics.util.PhysicsHelper;
-import com.mygdx.game.renderer.RenderingLayer;
 import com.mygdx.game.renderer.util.RendererHelper;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,22 +33,8 @@ public class GameplayScreen implements Screen {
 
         game.physics().debugRenderer(new Box2DDebugRenderer());
 
-        game.renderer().hudCamera().position.set(Constants.WindowWidth / 2f, Constants.WindowHeight / 2f, 0);
+        game.renderer().setHudCameraPosition(Constants.WindowWidth / 2f, Constants.WindowHeight / 2f);
 
-        game.renderer()
-            .worldViewport(new FitViewport(Constants.ViewpointWorldWidth / Constants.PPM,
-                                           Constants.ViewpointWorldHeight / Constants.PPM,
-                                           game.renderer().worldCamera()));
-
-        game.renderer()
-            .hudViewport(new FitViewport((float) Constants.WindowWidth,
-                                         (float) Constants.WindowHeight,
-                                         game.renderer().hudCamera()));
-
-        game.renderer()
-            .worldTextViewport(new FitViewport(Constants.ViewpointWorldWidth,
-                                               Constants.ViewpointWorldHeight,
-                                               game.renderer().worldTextCamera()));
 
         Map<AreaId, String> mapsToLoad = new ConcurrentSkipListMap<>();
         mapsToLoad.put(AreaId.of("area1"), "assets/areas/area1");
@@ -60,21 +43,12 @@ public class GameplayScreen implements Screen {
         //        game.renderer().mapsToLoad(mapsToLoad);
 
 
-        maps(mapsToLoad.entrySet()
-                       .stream()
-                       .collect(Collectors.toMap(Map.Entry::getKey,
-                                                 entry -> game.renderer()
-                                                              .mapLoader()
-                                                              .load(entry.getValue() + "/tile_map.tmx"))));
+        maps = mapsToLoad.entrySet()
+                         .stream()
+                         .collect(Collectors.toMap(Map.Entry::getKey,
+                                                   entry -> game.renderer()
+                                                                .loadMap(entry.getValue() + "/tile_map.tmx")));
 
-        game.renderer().mapScale(4.0f);
-
-        game.renderer().worldRenderingLayer(RenderingLayer.of());
-        game.renderer().hudRenderingLayer(RenderingLayer.of());
-        game.renderer().worldTextRenderingLayer(RenderingLayer.of());
-
-
-        game.renderer().atlas(new TextureAtlas("assets/atlas/packed_atlas.atlas"));
 
         game.renderer().init(maps, game);
 
@@ -140,7 +114,7 @@ public class GameplayScreen implements Screen {
 
         PhysicsHelper.processPhysicsEventQueue(game);
 
-        game.renderer().areaRenderers().get(game.getCurrentPlayerAreaId()).setView(game.renderer().worldCamera());
+        game.renderer().getAreaRenderers().get(game.getCurrentPlayerAreaId()).setView(game.renderer().getWorldCamera());
 
         RendererHelper.updateCameraPositions(game);
 
@@ -153,11 +127,15 @@ public class GameplayScreen implements Screen {
         if (game().isInitialized()) {
             update(delta);
             if (game().isRenderingAllowed()) {
-                game.renderer().worldRenderingLayer().setProjectionMatrix(game.renderer().worldCamera().combined);
-                game.renderer().hudRenderingLayer().setProjectionMatrix(game.renderer().hudCamera().combined);
                 game.renderer()
-                    .worldTextRenderingLayer()
-                    .setProjectionMatrix(game.renderer().worldTextCamera().combined);
+                    .getWorldRenderingLayer()
+                    .setProjectionMatrix(game.renderer().getWorldCamera().combined);
+                game.renderer()
+                    .getHudRenderingLayer()
+                    .setProjectionMatrix(game.renderer().getHudCamera().combined);
+                game.renderer()
+                    .getWorldTextRenderingLayer()
+                    .setProjectionMatrix(game.renderer().getWorldTextCamera().combined);
 
                 Gdx.gl.glClearColor(0, 0, 0, 1);
 
@@ -184,9 +162,7 @@ public class GameplayScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        game.renderer().worldViewport().update(width, height);
-        game.renderer().hudViewport().update(width, height);
-        game.renderer().worldTextViewport().update(width, height);
+        game.renderer().updateViewportsOnResize(width, height);
     }
 
     @Override

@@ -7,7 +7,7 @@ import com.mygdx.game.renderer.config.CreatureAnimationConfig;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreatureSpriteUtils {
+public class CreatureSpriteHelper {
     public static List<TextureRegion> createFacingTextures(CreatureAnimationConfig animationConfig,
                                                            TextureRegion runningAnimationTextureRegion) {
         List<TextureRegion> facingTextures = new ArrayList<>();
