@@ -33,9 +33,9 @@ import com.mygdx.game.physics.body.LootPileBody;
 import com.mygdx.game.physics.event.PhysicsEvent;
 import com.mygdx.game.physics.world.PhysicsWorld;
 import com.mygdx.game.renderer.AbilityRenderer;
-import com.mygdx.game.renderer.CreatureRenderer;
 import com.mygdx.game.renderer.GameRenderer;
 import com.mygdx.game.renderer.LootPileRenderer;
+import com.mygdx.game.renderer.creature.CreatureRenderer;
 import com.mygdx.game.util.RandomHelper;
 
 import java.io.IOException;

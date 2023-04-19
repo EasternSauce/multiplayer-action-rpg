@@ -12,6 +12,7 @@ import com.mygdx.game.model.area.LootPileId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.creature.Player;
+import com.mygdx.game.renderer.creature.CreatureRenderer;
 import com.mygdx.game.util.InventoryHelper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -83,8 +84,9 @@ public class GameRenderer {
 
         game.getCreatures().values().stream().filter(Creature::isAlive).forEach(creature -> {
             if (creatureRenderers().containsKey(creature.id()) && isCreatureInCurrentlyVisibleArea(game, creature)) {
-                creatureRenderers.get(creature.id()).renderStunnedAnimation(renderingLayer, game);
-
+                CreatureRenderer creatureRenderer = creatureRenderers.get(creature.id());
+                float spriteWidth = creatureRenderer.creatureSprite().getWidth();
+                creatureRenderer.creatureStunnedAnimationRenderer().render(renderingLayer, spriteWidth, game);
             }
         });
     }
@@ -99,10 +101,7 @@ public class GameRenderer {
     }
 
     private static boolean isCreatureInCurrentlyVisibleArea(GameRenderable game, Creature creature) {
-        return creature
-                .params()
-                .areaId()
-                .equals(game.getCurrentPlayerAreaId());
+        return creature.params().areaId().equals(game.getCurrentPlayerAreaId());
     }
 
     public void renderAreaGates(RenderingLayer renderingLayer, GameRenderable game) {
