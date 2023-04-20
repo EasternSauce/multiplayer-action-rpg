@@ -22,7 +22,8 @@ import com.mygdx.game.model.area.AreaGate;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.area.LootPile;
 import com.mygdx.game.model.area.LootPileId;
-import com.mygdx.game.model.creature.*;
+import com.mygdx.game.model.creature.Creature;
+import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.skill.SkillType;
 import com.mygdx.game.model.util.PlayerParams;
 import com.mygdx.game.model.util.TeleportEvent;
@@ -42,7 +43,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 
-public abstract class MyGdxGame extends Game implements AbilityUpdatable, CreatureUpdatable, GameRenderable, GameActionApplicable {
+public abstract class CoreGame extends Game implements AbilityUpdatable, CreatureUpdatable, GameRenderable, GameActionApplicable {
     @Getter
     final private GameEntityManager entityManager = GameEntityManager.of();
 
@@ -80,7 +81,7 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
         eventProcessor.getTeleportEvents().add(teleportEvent);
     }
 
-    public abstract EndPoint endPoint();
+    public abstract EndPoint getEndPoint();
 
     public boolean isInitialized() {
         return true;
@@ -106,22 +107,6 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
 
     public abstract void setStartingScreen();
 
-
-    public void spawnEnemy(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn) {
-        getGameState().getCreatures()
-                      .put(creatureId,
-                           Enemy.of(CreatureParams.of(creatureId, areaId, enemySpawn)
-                                                  .setBaseSpeed(7f)
-                                                  .setAttackDistance(enemySpawn.getEnemyTemplate().getAttackDistance())
-                                                  .setMainAttackSkill(enemySpawn.getEnemyTemplate()
-                                                                                .getMainAttackSkill())
-                                                  .setDropTable(enemySpawn.getEnemyTemplate().getDropTable())));
-
-        eventProcessor.getCreatureModelsToBeCreated().add(creatureId);
-
-
-    }
-
     abstract public void onUpdate();
 
     abstract public void establishConnection() throws IOException;
@@ -132,101 +117,6 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
     abstract public void handleAttackTarget(CreatureId attackingCreatureId,
                                             Vector2 vectorTowardsTarget,
                                             SkillType skillType);
-
-    public void updateCreatures(float delta) {
-        Set<CreatureId> creaturesToUpdate = getCreaturesToUpdate();
-
-        creaturesToUpdate.forEach(creatureId -> {
-            if (entityManager.getGamePhysics().getCreatureBodies().containsKey(creatureId)) {
-                entityManager.getGamePhysics().getCreatureBodies().get(creatureId).update(getGameState());
-            }
-        });
-
-        // set gamestate position based on b2body position
-        creaturesToUpdate.forEach(creatureId -> {
-            if (getGameState().getCreatures().containsKey(creatureId) &&
-                entityManager.getGamePhysics().getCreatureBodies().containsKey(creatureId)) {
-
-                getGameState().getCreatures()
-                              .get(creatureId)
-                              .getParams()
-                              .setPos(entityManager.getGamePhysics().getCreatureBodies().get(creatureId).getBodyPos());
-
-            }
-        });
-
-        // if creature is to be updated, then body should be active, otherwise it should be inactive
-        entityManager.getGamePhysics()
-                     .getCreatureBodies()
-                     .forEach((key, value) -> entityManager.getGamePhysics()
-                                                           .getCreatureBodies()
-                                                           .get(key)
-                                                           .setActive(creaturesToUpdate.contains(key)));
-
-        creaturesToUpdate.forEach(creatureId -> {
-            if (getCreatures().containsKey(creatureId) &&
-                entityManager.getGameRenderer().getCreatureRenderers().containsKey(creatureId)) {
-                entityManager.getGameRenderer().getCreatureRenderers().get(creatureId).update(this);
-            }
-        });
-
-        creaturesToUpdate.forEach(creatureId -> {
-            if (getGameState().getCreatures().containsKey(creatureId)) {
-                getGameState().getCreatures().get(creatureId).update(delta, this);
-            }
-        });
-
-    }
-
-    public void updateAbilities(float delta) {
-        Set<AbilityId> abilitiesToUpdate = getAbilitiesToUpdate();
-
-        abilitiesToUpdate.forEach(abilityId -> getGameState().getAbilities().get(abilityId).update(delta, this));
-
-
-        abilitiesToUpdate.forEach(abilityId -> {
-            if (entityManager.getGamePhysics().getAbilityBodies().containsKey(abilityId)) {
-                entityManager.getGamePhysics().getAbilityBodies().get(abilityId).update(getGameState());
-            }
-        });
-
-        abilitiesToUpdate.forEach(abilityId -> {
-            if (entityManager.getGamePhysics().getAbilityBodies().containsKey(abilityId)) {
-                Ability ability = getGameState().getAbilities().get(abilityId);
-                if (!ability.isPositionChangedOnUpdate() &&
-                    ability.bodyShouldExist() &&
-                    entityManager.getGamePhysics().getAbilityBodies().get(abilityId).getIsBodyInitialized()) {
-                    ability.getParams()
-                           .setPos(entityManager.getGamePhysics().getAbilityBodies().get(abilityId).getBodyPos());
-                }
-
-            }
-
-        });
-
-        abilitiesToUpdate.forEach(abilityId -> {
-            if (entityManager.getGameRenderer().getAbilityRenderers().containsKey(abilityId)) {
-                entityManager.getGameRenderer().getAbilityRenderers().get(abilityId).update(getGameState());
-            }
-        });
-
-    }
-
-    @Override
-    public CreatureId getAliveCreatureIdClosestTo(Vector2 pos, float maxRange, Set<CreatureId> excluded) {
-
-        CreatureId minCreatureId = null;
-        float minDistance = Float.MAX_VALUE;
-        for (CreatureId creatureId : getCreaturesToUpdate()) {
-            Creature creature = getGameState().getCreatures().get(creatureId);
-            float distance = pos.distance(creature.getParams().getPos());
-            if (creature.isAlive() && distance < minDistance && distance < maxRange && !excluded.contains(creatureId)) {
-                minDistance = distance;
-                minCreatureId = creatureId;
-            }
-        }
-        return minCreatureId;
-    }
 
     @Override
     public Vector2 getCreaturePos(CreatureId creatureId) {
@@ -268,6 +158,7 @@ public abstract class MyGdxGame extends Game implements AbilityUpdatable, Creatu
         return gameState.getDefaultAreaId();
     }
 
+    // TODO: move it
     public void teleportCreature(TeleportEvent teleportEvent) {
         if (teleportEvent.getToAreaId().equals(getCreature(teleportEvent.getCreatureId()).getParams().getAreaId())) {
             entityManager.getGamePhysics()

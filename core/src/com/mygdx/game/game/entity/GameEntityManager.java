@@ -1,13 +1,14 @@
 package com.mygdx.game.game.entity;
 
+import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.game.interface_.GameUpdatable;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityId;
 import com.mygdx.game.model.ability.AbilityState;
+import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.area.LootPile;
 import com.mygdx.game.model.area.LootPileId;
-import com.mygdx.game.model.creature.Creature;
-import com.mygdx.game.model.creature.CreatureId;
+import com.mygdx.game.model.creature.*;
 import com.mygdx.game.physics.GamePhysics;
 import com.mygdx.game.physics.body.AbilityBody;
 import com.mygdx.game.physics.body.CreatureBody;
@@ -18,6 +19,8 @@ import com.mygdx.game.renderer.creature.CreatureRenderer;
 import com.mygdx.game.renderer.game.GameRenderer;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.Set;
 
 @NoArgsConstructor(staticName = "of")
 public class GameEntityManager {
@@ -132,5 +135,93 @@ public class GameEntityManager {
                 gamePhysics.getLootPileBodies().remove(lootPileId);
             }
         }
+    }
+
+    public void spawnEnemy(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn, GameUpdatable game) {
+        game.getCreatures()
+            .put(creatureId,
+                 Enemy.of(CreatureParams.of(creatureId, areaId, enemySpawn)
+                                        .setBaseSpeed(7f)
+                                        .setAttackDistance(enemySpawn.getEnemyTemplate().getAttackDistance())
+                                        .setMainAttackSkill(enemySpawn.getEnemyTemplate().getMainAttackSkill())
+                                        .setDropTable(enemySpawn.getEnemyTemplate().getDropTable())));
+
+        game.getEventProcessor().getCreatureModelsToBeCreated().add(creatureId);
+
+
+    }
+
+    public void updateCreatures(float delta, CoreGame game) {
+        Set<CreatureId> creaturesToUpdate = game.getCreaturesToUpdate();
+
+        creaturesToUpdate.forEach(creatureId -> {
+            if (getGamePhysics().getCreatureBodies().containsKey(creatureId)) {
+                getGamePhysics().getCreatureBodies().get(creatureId).update(game);
+            }
+        });
+
+        // set gamestate position based on b2body position
+        creaturesToUpdate.forEach(creatureId -> {
+            if (game.getCreatures().containsKey(creatureId) &&
+                getGamePhysics().getCreatureBodies().containsKey(creatureId)) {
+
+                game.getCreatures()
+                    .get(creatureId)
+                    .getParams()
+                    .setPos(getGamePhysics().getCreatureBodies().get(creatureId).getBodyPos());
+
+            }
+        });
+
+        // if creature is to be updated, then body should be active, otherwise it should be inactive
+        getGamePhysics().getCreatureBodies()
+                        .forEach((key, value) -> getGamePhysics().getCreatureBodies()
+                                                                 .get(key)
+                                                                 .setActive(creaturesToUpdate.contains(key)));
+
+        creaturesToUpdate.forEach(creatureId -> {
+            if (game.getCreatures().containsKey(creatureId) &&
+                getGameRenderer().getCreatureRenderers().containsKey(creatureId)) {
+                getGameRenderer().getCreatureRenderers().get(creatureId).update(game);
+            }
+        });
+
+        creaturesToUpdate.forEach(creatureId -> {
+            if (game.getCreatures().containsKey(creatureId)) {
+                game.getCreatures().get(creatureId).update(delta, game);
+            }
+        });
+
+    }
+
+    public void updateAbilities(float delta, CoreGame game) {
+        Set<AbilityId> abilitiesToUpdate = game.getAbilitiesToUpdate();
+
+        abilitiesToUpdate.forEach(abilityId -> game.getAbilities().get(abilityId).update(delta, game));
+
+
+        abilitiesToUpdate.forEach(abilityId -> {
+            if (getGamePhysics().getAbilityBodies().containsKey(abilityId)) {
+                getGamePhysics().getAbilityBodies().get(abilityId).update(game);
+            }
+        });
+
+        abilitiesToUpdate.forEach(abilityId -> {
+            if (getGamePhysics().getAbilityBodies().containsKey(abilityId)) {
+                Ability ability = game.getAbilities().get(abilityId);
+                if (!ability.isPositionChangedOnUpdate() &&
+                    ability.bodyShouldExist() &&
+                    getGamePhysics().getAbilityBodies().get(abilityId).getIsBodyInitialized()) {
+                    ability.getParams().setPos(getGamePhysics().getAbilityBodies().get(abilityId).getBodyPos());
+                }
+            }
+        });
+
+        abilitiesToUpdate.forEach(abilityId -> {
+            if (getGameRenderer().getAbilityRenderers().containsKey(abilityId)) {
+                getGameRenderer().getAbilityRenderers().get(abilityId).update(game);
+            }
+        });
+
     }
 }

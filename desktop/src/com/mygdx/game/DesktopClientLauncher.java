@@ -2,7 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.mygdx.game.game.MyGdxGameClient;
+import com.mygdx.game.game.CoreGameClient;
 
 public class DesktopClientLauncher {
     public static void main(String[] arg) {
@@ -11,6 +11,6 @@ public class DesktopClientLauncher {
         config.setWindowedMode(Constants.WindowWidth, Constants.WindowHeight);
         config.setTitle("My GDX Game");
 
-        new Lwjgl3Application(MyGdxGameClient.getInstance(), config);
+        new Lwjgl3Application(CoreGameClient.getInstance(), config);
     }
 }

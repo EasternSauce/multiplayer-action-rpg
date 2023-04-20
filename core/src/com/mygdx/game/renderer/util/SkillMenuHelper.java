@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.esotericsoftware.kryonet.Client;
 import com.mygdx.game.assets.Assets;
 import com.mygdx.game.command.ActionPerformCommand;
-import com.mygdx.game.game.MyGdxGameClient;
+import com.mygdx.game.game.CoreGameClient;
 import com.mygdx.game.game.interface_.GameRenderable;
 import com.mygdx.game.model.action.skillmenu.SkillPickerMenuActivateAction;
 import com.mygdx.game.model.action.skillmenu.SkillPickerMenuDeactivateAction;
@@ -138,7 +138,7 @@ public class SkillMenuHelper { // TODO: maybe shouldn't be a helper class
 
     // TODO: this method does not fit in this class - create MenuHelper?
     @SuppressWarnings("UnusedReturnValue")
-    public static boolean skillPickerMenuClick(Client client, MyGdxGameClient game) {
+    public static boolean skillPickerMenuClick(Client client, CoreGameClient game) {
         float x = game.hudMousePos().getX();
         float y = game.hudMousePos().getY();
 
@@ -170,7 +170,7 @@ public class SkillMenuHelper { // TODO: maybe shouldn't be a helper class
         return isSuccessful.get();
     }
 
-    public static boolean performSkillMenuClick(Client client, MyGdxGameClient game) {
+    public static boolean performSkillMenuClick(Client client, CoreGameClient game) {
         float x = game.hudMousePos().getX();
         float y = game.hudMousePos().getY();
 

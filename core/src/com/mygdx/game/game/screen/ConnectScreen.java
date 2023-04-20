@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.mygdx.game.assets.Assets;
-import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.util.SimpleTimer;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @Data
 public class ConnectScreen implements Screen {
-    private MyGdxGame game;
+    private CoreGame game;
 
     private String currentMessage = "";
     private Boolean isHoldingBackspace = false;
@@ -26,7 +26,7 @@ public class ConnectScreen implements Screen {
 
     private SimpleTimer timer = SimpleTimer.of();
 
-    public void init(MyGdxGame game) {
+    public void init(CoreGame game) {
         this.game = game;
     }
 

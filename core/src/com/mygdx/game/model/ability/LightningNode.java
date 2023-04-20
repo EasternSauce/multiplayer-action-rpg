@@ -1,5 +1,6 @@
 package com.mygdx.game.model.ability;
 
+import com.mygdx.game.game.GameStateQuery;
 import com.mygdx.game.game.interface_.AbilityUpdatable;
 import com.mygdx.game.game.interface_.GameUpdatable;
 import com.mygdx.game.model.creature.Creature;
@@ -59,7 +60,7 @@ public class LightningNode extends Ability {
         excluded.add(getParams().getCreatureId());
 
         Creature targetCreature =
-                game.getCreature(game.getAliveCreatureIdClosestTo(getParams().getPos(), 13f, excluded));
+                game.getCreature(GameStateQuery.getAliveCreatureIdClosestTo(getParams().getPos(), 13f, excluded, game));
 
         if (targetCreature != null &&
             getParams().getCreaturesAlreadyHit().size() <= 10 &&

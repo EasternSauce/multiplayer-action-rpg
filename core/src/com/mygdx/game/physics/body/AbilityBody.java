@@ -3,7 +3,6 @@ package com.mygdx.game.physics.body;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.game.game.interface_.GameUpdatable;
-import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityId;
 import com.mygdx.game.model.ability.AbilityState;
@@ -78,8 +77,8 @@ public class AbilityBody {
 
     }
 
-    public void update(GameState gameState) {
-        Ability ability = gameState.getAbilities().get(abilityId);
+    public void update(GameUpdatable game) {
+        Ability ability = game.getAbilities().get(abilityId);
 
         if (getIsBodyInitialized() && ability != null && ability.bodyShouldExist()) {
             if (ability.isPositionChangedOnUpdate() &&

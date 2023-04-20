@@ -19,7 +19,9 @@ import com.mygdx.game.model.action.creature.CreatureMoveTowardsTargetAction;
 import com.mygdx.game.model.action.inventory.InventoryToggleAction;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.area.LootPileId;
-import com.mygdx.game.model.creature.*;
+import com.mygdx.game.model.creature.Creature;
+import com.mygdx.game.model.creature.CreatureId;
+import com.mygdx.game.model.creature.EnemySpawn;
 import com.mygdx.game.model.item.EquipmentSlotType;
 import com.mygdx.game.model.item.Item;
 import com.mygdx.game.model.skill.SkillType;
@@ -29,44 +31,41 @@ import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.renderer.util.SkillMenuHelper;
 import com.mygdx.game.util.EndPointHelper;
 import com.mygdx.game.util.InventoryHelper;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.stream.Collectors;
 
-public class MyGdxGameClient extends MyGdxGame {
+public class CoreGameClient extends CoreGame {
 
-    private static MyGdxGameClient instance;
+    private static CoreGameClient instance;
 
-    Client _endPoint;
+    @Getter
+    @Setter
+    private Client endPoint;
 
-    Float menuClickTime = 0f; // TODO: should do it differently
+    private Float menuClickTime = 0f; // TODO: should do it differently
 
-    private MyGdxGameClient() {
+    private CoreGameClient() {
         //        thisPlayerId = CreatureId.of("Player_" + (int) (Math.random() * 10000000));
     }
 
-    public static MyGdxGameClient getInstance() {
+    public static CoreGameClient getInstance() {
         if (instance == null) {
-            instance = new MyGdxGameClient();
+            instance = new CoreGameClient();
         }
         return instance;
-    }
-
-
-    @Override
-    public Client endPoint() {
-        return _endPoint;
     }
 
     @Override
     public void setStartingScreen() {
         setScreen(connectScreen);
-    }
-
-    public void endPoint(Client endPoint) {
-        this._endPoint = endPoint;
     }
 
     @Override
@@ -78,8 +77,8 @@ public class MyGdxGameClient extends MyGdxGame {
             else {
                 getChat().setIsTyping(false);
                 if (!getChat().getCurrentMessage().isEmpty()) {
-                    endPoint().sendTCP(ChatMessageSendCommand.of(thisPlayerId.getValue(),
-                                                                 getChat().getCurrentMessage()));
+                    getEndPoint().sendTCP(ChatMessageSendCommand.of(thisPlayerId.getValue(),
+                                                                    getChat().getCurrentMessage()));
 
                     getChat().sendMessage(getGameState(), thisPlayerId.getValue(), getChat().getCurrentMessage());
 
@@ -124,18 +123,18 @@ public class MyGdxGameClient extends MyGdxGame {
                 }
             }
             else if (playerParams.getIsInventoryVisible()) {
-                endPoint().sendTCP(ActionPerformCommand.of(InventoryToggleAction.of(thisPlayerId)));
+                getEndPoint().sendTCP(ActionPerformCommand.of(InventoryToggleAction.of(thisPlayerId)));
 
             }
         }
         if (!getChat().getIsTyping()) {
             if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
                 if (playerParams.getIsInventoryVisible()) {
-                    InventoryHelper.performMoveItemClick(endPoint(), this);
+                    InventoryHelper.performMoveItemClick(getEndPoint(), this);
                 }
                 else if (!playerParams.getIsInventoryVisible() &&
                          !playerParams.getItemPickupMenuLootPiles().isEmpty()) {
-                    boolean isSuccessful = InventoryHelper.tryPerformItemPickupMenuClick(endPoint(), this);
+                    boolean isSuccessful = InventoryHelper.tryPerformItemPickupMenuClick(getEndPoint(), this);
                     if (isSuccessful) {
                         menuClickTime = getGameState().getGeneralTimer().getTime();
                     }
@@ -143,14 +142,14 @@ public class MyGdxGameClient extends MyGdxGame {
                 }
                 else if (!playerParams.getIsInventoryVisible() &&
                          playerParams.getIsSkillMenuPickerSlotBeingChanged() != null) {
-                    SkillMenuHelper.skillPickerMenuClick(endPoint(), this);
+                    SkillMenuHelper.skillPickerMenuClick(getEndPoint(), this);
 
                     menuClickTime = getGameState().getGeneralTimer().getTime();
 
 
                 }
                 else {
-                    boolean isSuccessful = SkillMenuHelper.performSkillMenuClick(endPoint(), this);
+                    boolean isSuccessful = SkillMenuHelper.performSkillMenuClick(getEndPoint(), this);
                     if (isSuccessful) {
                         menuClickTime = getGameState().getGeneralTimer().getTime();
                     }
@@ -168,8 +167,8 @@ public class MyGdxGameClient extends MyGdxGame {
                         player.getParams().getMovementCommandsPerSecondLimitTimer().getTime() >
                         Constants.MovementCommandCooldown &&
                         getGameState().getGeneralTimer().getTime() > menuClickTime + 0.1f) {
-                        endPoint().sendTCP(ActionPerformCommand.of(CreatureMoveTowardsTargetAction.of(thisPlayerId,
-                                                                                                      mousePos)));
+                        getEndPoint().sendTCP(ActionPerformCommand.of(CreatureMoveTowardsTargetAction.of(thisPlayerId,
+                                                                                                         mousePos)));
                     }
                 }
             }
@@ -205,11 +204,11 @@ public class MyGdxGameClient extends MyGdxGame {
                     attackSkill = SkillType.SWORD_SLASH;
                     weaponDamage = 20f;
                 }
-                endPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(thisPlayerId,
-                                                                                    attackSkill,
-                                                                                    player.getParams().getPos(),
-                                                                                    dirVector,
-                                                                                    weaponDamage)));
+                getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(thisPlayerId,
+                                                                                       attackSkill,
+                                                                                       player.getParams().getPos(),
+                                                                                       dirVector,
+                                                                                       weaponDamage)));
 
             }
 
@@ -221,11 +220,11 @@ public class MyGdxGameClient extends MyGdxGame {
                 Vector2 dirVector = mousePosRelativeToCenter();
 
                 if (playerParams.getSkillMenuSlots().containsKey(0)) {
-                    endPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(thisPlayerId,
-                                                                                        playerParams.getSkillMenuSlots()
-                                                                                                    .get(0),
-                                                                                        player.getParams().getPos(),
-                                                                                        dirVector)));
+                    getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(thisPlayerId,
+                                                                                           playerParams.getSkillMenuSlots()
+                                                                                                       .get(0),
+                                                                                           player.getParams().getPos(),
+                                                                                           dirVector)));
                 }
 
             }
@@ -237,11 +236,11 @@ public class MyGdxGameClient extends MyGdxGame {
                 Vector2 dirVector = mousePosRelativeToCenter();
 
                 if (playerParams.getSkillMenuSlots().containsKey(1)) {
-                    endPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(thisPlayerId,
-                                                                                        playerParams.getSkillMenuSlots()
-                                                                                                    .get(1),
-                                                                                        player.getParams().getPos(),
-                                                                                        dirVector)));
+                    getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(thisPlayerId,
+                                                                                           playerParams.getSkillMenuSlots()
+                                                                                                       .get(1),
+                                                                                           player.getParams().getPos(),
+                                                                                           dirVector)));
                 }
 
 
@@ -255,82 +254,34 @@ public class MyGdxGameClient extends MyGdxGame {
                 Vector2 dirVector = mousePosRelativeToCenter();
 
                 if (playerParams.getSkillMenuSlots().containsKey(2)) {
-                    endPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(thisPlayerId,
-                                                                                        playerParams.getSkillMenuSlots()
-                                                                                                    .get(2),
-                                                                                        player.getParams().getPos(),
-                                                                                        dirVector)));
+                    getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(thisPlayerId,
+                                                                                           playerParams.getSkillMenuSlots()
+                                                                                                       .get(2),
+                                                                                           player.getParams().getPos(),
+                                                                                           dirVector)));
                 }
 
 
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
-                endPoint().sendTCP(ActionPerformCommand.of(InventoryToggleAction.of(thisPlayerId)));
+                getEndPoint().sendTCP(ActionPerformCommand.of(InventoryToggleAction.of(thisPlayerId)));
 
             }
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.F11)) {
 
-                EnemyTemplate skeleton =
-                        EnemyTemplate.of(EnemyType.SKELETON, 3f, SkillType.SWORD_SLASH, new ConcurrentSkipListSet<>());
-                List<EnemySpawn> enemySpawns =
-                        Arrays.asList(EnemySpawn.of(Vector2.of(46.081165f, 15.265114f), skeleton),
-                                      EnemySpawn.of(Vector2.of(72.060196f, 31.417873f), skeleton),
-                                      EnemySpawn.of(Vector2.of(77.200066f, 31.255192f), skeleton),
-                                      EnemySpawn.of(Vector2.of(74.47733f, 25.755476f), skeleton),
-                                      EnemySpawn.of(Vector2.of(45.421207f, 45.40418f), skeleton),
-                                      EnemySpawn.of(Vector2.of(42.50976f, 42.877632f), skeleton),
-                                      EnemySpawn.of(Vector2.of(27.440567f, 32.387764f), skeleton),
-                                      EnemySpawn.of(Vector2.of(23.27239f, 31.570148f), skeleton),
-                                      EnemySpawn.of(Vector2.of(17.861256f, 29.470364f), skeleton),
-                                      EnemySpawn.of(Vector2.of(7.6982408f, 38.85155f), skeleton),
-                                      EnemySpawn.of(Vector2.of(7.5632095f, 51.08941f), skeleton),
-                                      EnemySpawn.of(Vector2.of(14.64726f, 65.53082f), skeleton),
-                                      EnemySpawn.of(Vector2.of(5.587089f, 64.38693f), skeleton),
-                                      EnemySpawn.of(Vector2.of(29.00641f, 77.44126f), skeleton),
-                                      EnemySpawn.of(Vector2.of(36.03629f, 75.34392f), skeleton),
-                                      EnemySpawn.of(Vector2.of(50.472652f, 79.4063f), skeleton),
-                                      EnemySpawn.of(Vector2.of(50.148594f, 73.69869f), skeleton),
-                                      EnemySpawn.of(Vector2.of(54.767036f, 70.07713f), skeleton),
-                                      EnemySpawn.of(Vector2.of(66.695274f, 70.41996f), skeleton),
-                                      EnemySpawn.of(Vector2.of(71.66365f, 76.8444f), skeleton),
-                                      EnemySpawn.of(Vector2.of(68.14547f, 84.64497f), skeleton),
-                                      EnemySpawn.of(Vector2.of(57.657906f, 94.204346f), skeleton),
-                                      EnemySpawn.of(Vector2.of(57.360214f, 106.31289f), skeleton),
-                                      EnemySpawn.of(Vector2.of(53.34992f, 108.87486f), skeleton),
-                                      EnemySpawn.of(Vector2.of(52.077705f, 114.31765f), skeleton),
-                                      EnemySpawn.of(Vector2.of(58.31064f, 116.29132f), skeleton),
-                                      EnemySpawn.of(Vector2.of(53.60553f, 122.53634f), skeleton),
-                                      EnemySpawn.of(Vector2.of(59.375126f, 127.002815f), skeleton),
-                                      EnemySpawn.of(Vector2.of(54.056587f, 132.49812f), skeleton),
-                                      EnemySpawn.of(Vector2.of(58.468967f, 136.74872f), skeleton),
-                                      EnemySpawn.of(Vector2.of(63.973305f, 141.23653f), skeleton),
-                                      EnemySpawn.of(Vector2.of(67.22166f, 146.12518f), skeleton),
-                                      EnemySpawn.of(Vector2.of(62.294132f, 149.34793f), skeleton),
-                                      EnemySpawn.of(Vector2.of(55.87424f, 152.88708f), skeleton),
-                                      EnemySpawn.of(Vector2.of(60.95999f, 156.84436f), skeleton),
-                                      EnemySpawn.of(Vector2.of(68.9384f, 157.29518f), skeleton),
-                                      EnemySpawn.of(Vector2.of(73.83359f, 159.6212f), skeleton),
-                                      EnemySpawn.of(Vector2.of(79.707794f, 156.41962f), skeleton),
-                                      EnemySpawn.of(Vector2.of(83.25423f, 151.24565f), skeleton),
-                                      EnemySpawn.of(Vector2.of(87.44349f, 150.14972f), skeleton),
-                                      EnemySpawn.of(Vector2.of(91.96663f, 147.12524f), skeleton),
-                                      EnemySpawn.of(Vector2.of(93.24303f, 142.64328f), skeleton),
-                                      EnemySpawn.of(Vector2.of(99.618805f, 138.7312f), skeleton),
-                                      EnemySpawn.of(Vector2.of(102.043205f, 144.3369f), skeleton),
-                                      EnemySpawn.of(Vector2.of(101.632095f, 150.43385f), skeleton),
-                                      EnemySpawn.of(Vector2.of(101.61807f, 155.82611f), skeleton));
+                List<EnemySpawn> enemySpawns = EnemySpawnUtils.area1EnemySpawns();
 
                 AreaId areaId = getCurrentPlayerAreaId();
 
                 enemySpawns.forEach(enemySpawn -> {
                     CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 10000000));
-                    endPoint().sendTCP(EnemySpawnCommand.of(enemyId,
-                                                            areaId,
-                                                            enemySpawn.setPos(Vector2.of(enemySpawn.getPos().getX() +
-                                                                                         (float) Math.random(),
-                                                                                         enemySpawn.getPos().getY() +
-                                                                                         (float) Math.random()))));
+                    getEndPoint().sendTCP(EnemySpawnCommand.of(enemyId,
+                                                               areaId,
+                                                               enemySpawn.setPos(Vector2.of(enemySpawn.getPos().getX() +
+                                                                                            (float) Math.random(),
+                                                                                            enemySpawn.getPos().getY() +
+                                                                                            (float) Math.random()))));
                 });
 
             }
@@ -341,12 +292,12 @@ public class MyGdxGameClient extends MyGdxGame {
 
     @Override
     public void establishConnection() throws IOException {
-        endPoint(new Client(6400000, 6400000));
-        EndPointHelper.registerEndPointClasses(endPoint());
-        endPoint().start();
-        endPoint().connect(12000 * 99999, "89.79.23.118", 20445, 20445);
+        setEndPoint(new Client(6400000, 6400000));
+        EndPointHelper.registerEndPointClasses(getEndPoint());
+        getEndPoint().start();
+        getEndPoint().connect(12000 * 99999, "89.79.23.118", 20445, 20445);
 
-        endPoint().addListener(new Listener() {
+        getEndPoint().addListener(new Listener() {
             @Override
             public void received(Connection connection, Object object) {
                 if (object instanceof ActionsHolder) {
@@ -355,7 +306,7 @@ public class MyGdxGameClient extends MyGdxGame {
                     List<GameStateAction> actions = actionsHolder.getActions();
 
 
-                    actions.forEach(gameStateAction -> gameStateAction.applyToGame(MyGdxGameClient.this));
+                    actions.forEach(gameStateAction -> gameStateAction.applyToGame(CoreGameClient.this));
 
 
                 }
@@ -418,7 +369,10 @@ public class MyGdxGameClient extends MyGdxGame {
                 else if (object instanceof EnemySpawnCommand) {
                     EnemySpawnCommand command = (EnemySpawnCommand) object;
 
-                    spawnEnemy(command.getCreatureId(), command.getAreaId(), command.getEnemySpawn());
+                    getEntityManager().spawnEnemy(command.getCreatureId(),
+                                                  command.getAreaId(),
+                                                  command.getEnemySpawn(),
+                                                  CoreGameClient.this);
                 }
 
             }
@@ -430,7 +384,7 @@ public class MyGdxGameClient extends MyGdxGame {
             }
         });
 
-        endPoint().sendTCP(ConnectionInitCommand.of());
+        getEndPoint().sendTCP(ConnectionInitCommand.of());
 
     }
 
@@ -502,7 +456,7 @@ public class MyGdxGameClient extends MyGdxGame {
     @Override
     public void initializePlayer(String playerName) {
         thisPlayerId = CreatureId.of(playerName);
-        endPoint().sendTCP(PlayerInitCommand.of(thisPlayerId));
+        getEndPoint().sendTCP(PlayerInitCommand.of(thisPlayerId));
 
     }
 
@@ -523,7 +477,7 @@ public class MyGdxGameClient extends MyGdxGame {
 
     @Override
     public void dispose() {
-        endPoint().stop();
+        getEndPoint().stop();
     }
 
 

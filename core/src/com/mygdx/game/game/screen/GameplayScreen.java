@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.mygdx.game.Constants;
-import com.mygdx.game.game.MyGdxGame;
+import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.physics.util.PhysicsHelper;
 import com.mygdx.game.renderer.util.GameplayRendererHelper;
@@ -22,14 +22,10 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(staticName = "of")
 @Data
 public class GameplayScreen implements Screen {
+    private CoreGame game;
+    private Map<AreaId, TiledMap> maps;
 
-    MyGdxGame game;
-
-    //    Box2DDebugRenderer debugRenderer;
-
-    Map<AreaId, TiledMap> maps;
-
-    public void init(MyGdxGame game) {
+    public void init(CoreGame game) {
         this.game = game;
 
         game.getEntityManager().getGamePhysics().setDebugRenderer(new Box2DDebugRenderer());
@@ -99,8 +95,8 @@ public class GameplayScreen implements Screen {
 
         game.getGameState().getGeneralTimer().update(delta);
 
-        game.updateCreatures(delta);
-        game.updateAbilities(delta);
+        game.getEntityManager().updateCreatures(delta, game);
+        game.getEntityManager().updateAbilities(delta, game);
 
         PhysicsHelper.processPhysicsEventQueue(game);
 
@@ -122,6 +118,7 @@ public class GameplayScreen implements Screen {
         if (getGame().isInitialized()) {
             update(delta);
             if (getGame().isRenderingAllowed()) {
+                // TODO: move this to viewports handler
                 getGame().getEntityManager()
                          .getGameRenderer()
                          .getWorldElementsRenderingLayer()

@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.esotericsoftware.kryonet.Client;
 import com.mygdx.game.assets.Assets;
 import com.mygdx.game.command.ActionPerformCommand;
-import com.mygdx.game.game.MyGdxGameClient;
+import com.mygdx.game.game.CoreGameClient;
 import com.mygdx.game.game.interface_.GameRenderable;
 import com.mygdx.game.model.action.inventory.*;
 import com.mygdx.game.model.action.loot.LootPileItemTryPickUpAction;
@@ -442,7 +442,7 @@ public class InventoryHelper {
 
     }
 
-    public static boolean tryPerformItemPickupMenuClick(Client client, MyGdxGameClient game) {
+    public static boolean tryPerformItemPickupMenuClick(Client client, CoreGameClient game) {
         PlayerParams playerParams = game.getPlayerParams(game.getCurrentPlayerId());
 
         float x = game.hudMousePos().getX();

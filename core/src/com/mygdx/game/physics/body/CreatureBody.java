@@ -2,7 +2,6 @@ package com.mygdx.game.physics.body;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.game.game.interface_.GameUpdatable;
-import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
@@ -46,12 +45,12 @@ public class CreatureBody {
         bodyCreated = true;
     }
 
-    public void update(GameState gameState) {
-        if (!gameState.getCreatures().containsKey(creatureId)) {
+    public void update(GameUpdatable game) {
+        if (!game.getCreatures().containsKey(creatureId)) {
             return;
         }
 
-        Creature creature = gameState.getCreatures().get(creatureId);
+        Creature creature = game.getCreatures().get(creatureId);
 
         setSensor(!creature.isAlive());
 

@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.mygdx.game.game.interface_.GameRenderable;
 import com.mygdx.game.game.interface_.GameUpdatable;
-import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityId;
 import com.mygdx.game.model.ability.AbilityState;
@@ -79,9 +79,9 @@ public class AbilityRenderer {
 
     }
 
-    private void updateSprite(TextureRegion texture, GameState gameState) {
+    private void updateSprite(TextureRegion texture, GameUpdatable game) {
 
-        Ability ability = gameState.getAbilities().get(abilityId);
+        Ability ability = game.getAbilities().get(abilityId);
 
         sprite.setRegion(texture);
         sprite.setSize(ability.getParams().getWidth(), ability.getParams().getHeight());
@@ -92,23 +92,23 @@ public class AbilityRenderer {
 
     }
 
-    public void update(GameState gameState) {
+    public void update(GameRenderable game) {
 
-        Ability ability = gameState.getAbilities().get(abilityId);
+        Ability ability = game.getAbilities().get(abilityId);
 
         if (ability != null) {
             if (ability.getParams().getChannelTime() > 0f && ability.getParams().getState() == AbilityState.CHANNEL) {
                 TextureRegion texture = getChannelAnimation().getKeyFrame(ability.getParams().getStateTimer().getTime(),
                                                                           ability.getParams()
                                                                                  .getIsChannelAnimationLooping());
-                updateSprite(texture, gameState);
+                updateSprite(texture, game);
             }
             else if (ability.getParams().getActiveTime() > 0f &&
                      ability.getParams().getState() == AbilityState.ACTIVE) {
                 TextureRegion texture = getActiveAnimation().getKeyFrame(ability.getParams().getStateTimer().getTime(),
                                                                          ability.getParams()
                                                                                 .getIsActiveAnimationLooping());
-                updateSprite(texture, gameState);
+                updateSprite(texture, game);
             }
         }
 
