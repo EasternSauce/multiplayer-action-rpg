@@ -13,6 +13,6 @@ public class CreatureId implements Comparable<CreatureId> {
 
     @Override
     public int compareTo(CreatureId o) {
-        return value().compareTo(o.value());
+        return getValue().compareTo(o.getValue());
     }
 }

@@ -26,7 +26,7 @@ import com.mygdx.game.model.skill.SkillType;
 import com.mygdx.game.model.util.GameStateBroadcast;
 import com.mygdx.game.model.util.PlayerParams;
 import com.mygdx.game.model.util.Vector2;
-import com.mygdx.game.renderer.util.RendererHelper;
+import com.mygdx.game.renderer.util.SkillMenuHelper;
 import com.mygdx.game.util.EndPointHelper;
 import com.mygdx.game.util.InventoryHelper;
 
@@ -72,36 +72,37 @@ public class MyGdxGameClient extends MyGdxGame {
     @Override
     public void onUpdate() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
-            if (!getChat().isTyping()) {
-                getChat().isTyping(true);
+            if (!getChat().getIsTyping()) {
+                getChat().setIsTyping(true);
             }
             else {
-                getChat().isTyping(false);
-                if (!getChat().currentMessage().isEmpty()) {
-                    endPoint().sendTCP(ChatMessageSendCommand.of(thisPlayerId.value(), getChat().currentMessage()));
+                getChat().setIsTyping(false);
+                if (!getChat().getCurrentMessage().isEmpty()) {
+                    endPoint().sendTCP(ChatMessageSendCommand.of(thisPlayerId.getValue(),
+                                                                 getChat().getCurrentMessage()));
 
-                    getChat().sendMessage(gameState(), thisPlayerId.value(), getChat().currentMessage());
+                    getChat().sendMessage(gameState(), thisPlayerId.getValue(), getChat().getCurrentMessage());
 
-                    getChat().currentMessage("");
+                    getChat().setCurrentMessage("");
                 }
             }
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)) {
-            if (getChat().isTyping()) {
-                if (getChat().isHoldingBackspace()) {
-                    if (!getChat().currentMessage().isEmpty() &&
-                        gameState().generalTimer().time() > getChat().holdBackspaceTime() + 0.3f) {
-                        getChat().currentMessage(getChat().currentMessage()
-                                                          .substring(0, getChat().currentMessage().length() - 1));
+            if (getChat().getIsTyping()) {
+                if (getChat().getIsHoldingBackspace()) {
+                    if (!getChat().getCurrentMessage().isEmpty() &&
+                        gameState().getGeneralTimer().getTime() > getChat().getHoldBackspaceTime() + 0.3f) {
+                        getChat().setCurrentMessage(getChat().getCurrentMessage()
+                                                             .substring(0, getChat().getCurrentMessage().length() - 1));
                     }
                 }
                 else {
-                    getChat().isHoldingBackspace(true);
-                    getChat().holdBackspaceTime(gameState().generalTimer().time());
-                    if (!getChat().currentMessage().isEmpty()) {
-                        getChat().currentMessage(getChat().currentMessage()
-                                                          .substring(0, getChat().currentMessage().length() - 1));
+                    getChat().setIsHoldingBackspace(true);
+                    getChat().setHoldBackspaceTime(gameState().getGeneralTimer().getTime());
+                    if (!getChat().getCurrentMessage().isEmpty()) {
+                        getChat().setCurrentMessage(getChat().getCurrentMessage()
+                                                             .substring(0, getChat().getCurrentMessage().length() - 1));
                     }
                 }
 
@@ -109,62 +110,64 @@ public class MyGdxGameClient extends MyGdxGame {
 
         }
         else {
-            if (getChat().isHoldingBackspace() && getChat().isTyping()) {
-                getChat().isHoldingBackspace(false);
+            if (getChat().getIsHoldingBackspace() && getChat().getIsTyping()) {
+                getChat().setIsHoldingBackspace(false);
             }
         }
 
-        PlayerParams playerParams = gameState.playerParams().get(thisPlayerId);
+        PlayerParams playerParams = gameState.getPlayerParams().get(thisPlayerId);
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            if (getChat().isTyping()) {
-                if (!getChat().currentMessage().isEmpty()) {
-                    getChat().currentMessage("");
-                    getChat().isTyping(false);
+            if (getChat().getIsTyping()) {
+                if (!getChat().getCurrentMessage().isEmpty()) {
+                    getChat().setCurrentMessage("");
+                    getChat().setIsTyping(false);
                 }
             }
-            else if (playerParams.isInventoryVisible()) {
+            else if (playerParams.getIsInventoryVisible()) {
                 endPoint().sendTCP(ActionPerformCommand.of(InventoryToggleAction.of(thisPlayerId)));
 
             }
         }
-        if (!getChat().isTyping()) {
+        if (!getChat().getIsTyping()) {
             if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-                if (playerParams.isInventoryVisible()) {
+                if (playerParams.getIsInventoryVisible()) {
                     InventoryHelper.performMoveItemClick(endPoint(), this);
                 }
-                else if (!playerParams.isInventoryVisible() && !playerParams.itemPickupMenuLootPiles().isEmpty()) {
+                else if (!playerParams.getIsInventoryVisible() &&
+                         !playerParams.getItemPickupMenuLootPiles().isEmpty()) {
                     boolean isSuccessful = InventoryHelper.tryPerformItemPickupMenuClick(endPoint(), this);
                     if (isSuccessful) {
-                        menuClickTime = gameState.generalTimer().time();
+                        menuClickTime = gameState.getGeneralTimer().getTime();
                     }
 
                 }
-                else if (!playerParams.isInventoryVisible() && playerParams.skillMenuPickerSlotBeingChanged() != null) {
-                    RendererHelper.skillPickerMenuClick(endPoint(), this);
+                else if (!playerParams.getIsInventoryVisible() &&
+                         playerParams.getIsSkillMenuPickerSlotBeingChanged() != null) {
+                    SkillMenuHelper.skillPickerMenuClick(endPoint(), this);
 
-                    menuClickTime = gameState.generalTimer().time();
+                    menuClickTime = gameState.getGeneralTimer().getTime();
 
 
                 }
-                else if (!playerParams.isInventoryVisible()) {
-                    boolean isSuccessful = RendererHelper.performSkillMenuClick(endPoint(), this);
+                else {
+                    boolean isSuccessful = SkillMenuHelper.performSkillMenuClick(endPoint(), this);
                     if (isSuccessful) {
-                        menuClickTime = gameState.generalTimer().time();
+                        menuClickTime = gameState.getGeneralTimer().getTime();
                     }
 
                 }
 
             }
             if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-                if (!playerParams.isInventoryVisible()) {
+                if (!playerParams.getIsInventoryVisible()) {
                     Vector2 mousePos = mousePosRelativeToCenter();
 
-                    Creature player = gameState().creatures().get(thisPlayerId);
+                    Creature player = gameState().getCreatures().get(thisPlayerId);
 
                     if (player != null &&
-                        player.params().movementCommandsPerSecondLimitTimer().time() >
+                        player.getParams().getMovementCommandsPerSecondLimitTimer().getTime() >
                         Constants.MovementCommandCooldown &&
-                        gameState.generalTimer().time() > menuClickTime + 0.1f) {
+                        gameState.getGeneralTimer().getTime() > menuClickTime + 0.1f) {
                         endPoint().sendTCP(ActionPerformCommand.of(CreatureMoveTowardsTargetAction.of(thisPlayerId,
                                                                                                       mousePos)));
                     }
@@ -172,20 +175,18 @@ public class MyGdxGameClient extends MyGdxGame {
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.N)) {
 
-                CreatureId
-                        creatureId =
-                        gameState().creatures()
-                                   .keySet()
-                                   .stream()
-                                   .filter(cId -> cId.value().startsWith("Player"))
-                                   .collect(Collectors.toList())
-                                   .get(0);
-                Vector2 pos = gameState().creatures().get(creatureId).params().pos();
-                System.out.println("Vector2.of(" + pos.x() + "f, " + pos.y() + "f),");
+                CreatureId creatureId = gameState().getCreatures()
+                                                   .keySet()
+                                                   .stream()
+                                                   .filter(cId -> cId.getValue().startsWith("Player"))
+                                                   .collect(Collectors.toList())
+                                                   .get(0);
+                Vector2 pos = gameState().getCreatures().get(creatureId).getParams().getPos();
+                System.out.println("Vector2.of(" + pos.getX() + "f, " + pos.getY() + "f),");
             }
             if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
 
-                Creature player = gameState().creatures().get(thisPlayerId);
+                Creature player = gameState().getCreatures().get(thisPlayerId);
 
 
                 Vector2 dirVector = mousePosRelativeToCenter();
@@ -193,11 +194,12 @@ public class MyGdxGameClient extends MyGdxGame {
                 float weaponDamage;
                 SkillType attackSkill;
 
-                if (player.params().equipmentItems().containsKey(EquipmentSlotType.PRIMARY_WEAPON.ordinal())) {
-                    Item weaponItem = player.params().equipmentItems().get(EquipmentSlotType.PRIMARY_WEAPON.ordinal());
+                if (player.getParams().getEquipmentItems().containsKey(EquipmentSlotType.PRIMARY_WEAPON.ordinal())) {
+                    Item weaponItem =
+                            player.getParams().getEquipmentItems().get(EquipmentSlotType.PRIMARY_WEAPON.ordinal());
 
-                    attackSkill = weaponItem.template().attackSkill();
-                    weaponDamage = weaponItem.damage();
+                    attackSkill = weaponItem.getTemplate().getAttackSkill();
+                    weaponDamage = weaponItem.getDamage();
                 }
                 else {
                     attackSkill = SkillType.SWORD_SLASH;
@@ -205,7 +207,7 @@ public class MyGdxGameClient extends MyGdxGame {
                 }
                 endPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(thisPlayerId,
                                                                                     attackSkill,
-                                                                                    player.params().pos(),
+                                                                                    player.getParams().getPos(),
                                                                                     dirVector,
                                                                                     weaponDamage)));
 
@@ -213,32 +215,32 @@ public class MyGdxGameClient extends MyGdxGame {
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
 
-                Creature player = gameState().creatures().get(thisPlayerId);
+                Creature player = gameState().getCreatures().get(thisPlayerId);
 
 
                 Vector2 dirVector = mousePosRelativeToCenter();
 
-                if (playerParams.skillMenuSlots().containsKey(0)) {
+                if (playerParams.getSkillMenuSlots().containsKey(0)) {
                     endPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(thisPlayerId,
-                                                                                        playerParams.skillMenuSlots()
+                                                                                        playerParams.getSkillMenuSlots()
                                                                                                     .get(0),
-                                                                                        player.params().pos(),
+                                                                                        player.getParams().getPos(),
                                                                                         dirVector)));
                 }
 
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
 
-                Creature player = gameState().creatures().get(thisPlayerId);
+                Creature player = gameState().getCreatures().get(thisPlayerId);
 
 
                 Vector2 dirVector = mousePosRelativeToCenter();
 
-                if (playerParams.skillMenuSlots().containsKey(1)) {
+                if (playerParams.getSkillMenuSlots().containsKey(1)) {
                     endPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(thisPlayerId,
-                                                                                        playerParams.skillMenuSlots()
+                                                                                        playerParams.getSkillMenuSlots()
                                                                                                     .get(1),
-                                                                                        player.params().pos(),
+                                                                                        player.getParams().getPos(),
                                                                                         dirVector)));
                 }
 
@@ -247,16 +249,16 @@ public class MyGdxGameClient extends MyGdxGame {
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
 
-                Creature player = gameState().creatures().get(thisPlayerId);
+                Creature player = gameState().getCreatures().get(thisPlayerId);
 
 
                 Vector2 dirVector = mousePosRelativeToCenter();
 
-                if (playerParams.skillMenuSlots().containsKey(2)) {
+                if (playerParams.getSkillMenuSlots().containsKey(2)) {
                     endPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(thisPlayerId,
-                                                                                        playerParams.skillMenuSlots()
+                                                                                        playerParams.getSkillMenuSlots()
                                                                                                     .get(2),
-                                                                                        player.params().pos(),
+                                                                                        player.getParams().getPos(),
                                                                                         dirVector)));
                 }
 
@@ -269,11 +271,9 @@ public class MyGdxGameClient extends MyGdxGame {
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.F11)) {
 
-                EnemyTemplate
-                        skeleton =
+                EnemyTemplate skeleton =
                         EnemyTemplate.of(EnemyType.SKELETON, 3f, SkillType.SWORD_SLASH, new ConcurrentSkipListSet<>());
-                List<EnemySpawn>
-                        enemySpawns =
+                List<EnemySpawn> enemySpawns =
                         Arrays.asList(EnemySpawn.of(Vector2.of(46.081165f, 15.265114f), skeleton),
                                       EnemySpawn.of(Vector2.of(72.060196f, 31.417873f), skeleton),
                                       EnemySpawn.of(Vector2.of(77.200066f, 31.255192f), skeleton),
@@ -327,10 +327,10 @@ public class MyGdxGameClient extends MyGdxGame {
                     CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 10000000));
                     endPoint().sendTCP(EnemySpawnCommand.of(enemyId,
                                                             areaId,
-                                                            enemySpawn.pos(Vector2.of(enemySpawn.pos().x() +
-                                                                                      (float) Math.random(),
-                                                                                      enemySpawn.pos().y() +
-                                                                                      (float) Math.random()))));
+                                                            enemySpawn.setPos(Vector2.of(enemySpawn.getPos().getX() +
+                                                                                         (float) Math.random(),
+                                                                                         enemySpawn.getPos().getY() +
+                                                                                         (float) Math.random()))));
                 });
 
             }
@@ -352,7 +352,7 @@ public class MyGdxGameClient extends MyGdxGame {
                 if (object instanceof ActionsHolder) {
                     ActionsHolder actionsHolder = (ActionsHolder) object;
 
-                    List<GameStateAction> actions = actionsHolder.actions();
+                    List<GameStateAction> actions = actionsHolder.getActions();
 
 
                     actions.forEach(gameStateAction -> gameStateAction.applyToGame(MyGdxGameClient.this));
@@ -363,14 +363,14 @@ public class MyGdxGameClient extends MyGdxGame {
                     GameStateBroadcast action = (GameStateBroadcast) object;
 
                     GameState oldGameState = gameState();
-                    GameState newGameState = action.gameState();
+                    GameState newGameState = action.getGameState();
 
-                    Set<CreatureId> oldCreatureIds = oldGameState.creatures().keySet();
-                    Set<CreatureId> newCreatureIds = newGameState.creatures().keySet();
-                    Set<AbilityId> oldAbilityIds = oldGameState.abilities().keySet();
-                    Set<AbilityId> newAbilityIds = newGameState.abilities().keySet();
-                    Set<LootPileId> oldLootPileIds = oldGameState.lootPiles().keySet();
-                    Set<LootPileId> newLootPileIds = newGameState.lootPiles().keySet();
+                    Set<CreatureId> oldCreatureIds = oldGameState.getCreatures().keySet();
+                    Set<CreatureId> newCreatureIds = newGameState.getCreatures().keySet();
+                    Set<AbilityId> oldAbilityIds = oldGameState.getAbilities().keySet();
+                    Set<AbilityId> newAbilityIds = newGameState.getAbilities().keySet();
+                    Set<LootPileId> oldLootPileIds = oldGameState.getLootPiles().keySet();
+                    Set<LootPileId> newLootPileIds = newGameState.getLootPiles().keySet();
 
                     Set<CreatureId> creaturesAddedSinceLastUpdate = new HashSet<>(newCreatureIds);
                     creaturesAddedSinceLastUpdate.removeAll(oldCreatureIds);
@@ -404,21 +404,21 @@ public class MyGdxGameClient extends MyGdxGame {
 
                     gameState = newGameState;
 
-                    gamePhysics.isForceUpdateBodyPositions(true);
+                    gamePhysics.setIsForceUpdateBodyPositions(true);
 
                 }
                 else if (object instanceof ChatMessageSendCommand) {
                     ChatMessageSendCommand action = (ChatMessageSendCommand) object;
 
-                    if (!Objects.equals(action.poster(), thisPlayerId.value())) {
-                        getChat().sendMessage(gameState(), action.poster(), action.text());
+                    if (!Objects.equals(action.getPoster(), thisPlayerId.getValue())) {
+                        getChat().sendMessage(gameState(), action.getPoster(), action.getText());
                     }
 
                 }
                 else if (object instanceof EnemySpawnCommand) {
                     EnemySpawnCommand command = (EnemySpawnCommand) object;
 
-                    spawnEnemy(command.creatureId(), command.areaId(), command.enemySpawn());
+                    spawnEnemy(command.getCreatureId(), command.getAreaId(), command.getEnemySpawn());
                 }
 
             }
@@ -441,16 +441,17 @@ public class MyGdxGameClient extends MyGdxGame {
 
     @Override
     public Set<CreatureId> getCreaturesToUpdate() {
-        Creature player = gameState().creatures().get(thisPlayerId);
+        Creature player = gameState().getCreatures().get(thisPlayerId);
 
         if (player == null) {
             return new HashSet<>();
         }
 
-        return gameState().creatures().keySet().stream().filter(creatureId -> {
-            Creature creature = gameState().creatures().get(creatureId);
+        return gameState().getCreatures().keySet().stream().filter(creatureId -> {
+            Creature creature = gameState().getCreatures().get(creatureId);
             if (creature != null) {
-                return creature.params().pos().distance(player.params().pos()) < Constants.ClientGameUpdateRange;
+                return creature.getParams().getPos().distance(player.getParams().getPos()) <
+                       Constants.ClientGameUpdateRange;
             }
 
             return false;
@@ -462,30 +463,27 @@ public class MyGdxGameClient extends MyGdxGame {
 
     @Override
     public Set<AbilityId> getAbilitiesToUpdate() {
-        Creature player = gameState().creatures().get(thisPlayerId);
+        Creature player = gameState().getCreatures().get(thisPlayerId);
 
         if (player == null) {
             return new ConcurrentSkipListSet<>();
         }
 
-        return gameState().abilities().keySet().stream().filter(abilityId -> {
-            Ability ability = gameState().abilities().get(abilityId);
+        return gameState().getAbilities().keySet().stream().filter(abilityId -> {
+            Ability ability = gameState().getAbilities().get(abilityId);
             if (ability != null) {
-                return ability.params().pos().distance(player.params().pos()) < Constants.ClientGameUpdateRange;
+                return ability.getParams().getPos().distance(player.getParams().getPos()) <
+                       Constants.ClientGameUpdateRange;
             }
             return false;
         }).collect(Collectors.toSet());
     }
 
     @Override
-    public void onAbilityHitsCreature(CreatureId attackerId,
-                                      CreatureId targetId,
-                                      Ability ability) {
+    public void onAbilityHitsCreature(CreatureId attackerId, CreatureId targetId, Ability ability) {
 
         ability.onCreatureHit();
-        ability.params()
-               .creaturesAlreadyHit()
-               .put(targetId, ability.params().stateTimer().time());
+        ability.getParams().getCreaturesAlreadyHit().put(targetId, ability.getParams().getStateTimer().getTime());
 
     }
 
@@ -497,7 +495,7 @@ public class MyGdxGameClient extends MyGdxGame {
 
     @Override
     public void performPhysicsWorldStep() {
-        physics().physicsWorlds().get(getCurrentPlayerAreaId()).step();
+        physics().getPhysicsWorlds().get(getCurrentPlayerAreaId()).step();
 
     }
 

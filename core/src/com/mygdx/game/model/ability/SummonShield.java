@@ -16,23 +16,20 @@ public class SummonShield extends Ability {
     AbilityParams params;
 
     public static SummonShield of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
-        float flipValue;
-        abilityParams.dirVector();
-        flipValue = abilityParams.dirVector().angleDeg();
+        float flipValue = abilityParams.getDirVector().angleDeg();
 
         SummonShield ability = SummonShield.of();
-        ability.params =
-                abilityParams.width(2f)
-                             .height(2f)
-                             .channelTime(0f)
-                             .activeTime(1f)
-                             .range(1.2f)
-                             .textureName("shield")
-                             .baseDamage(0f)
-                             .isChannelAnimationLooping(false)
-                             .isActiveAnimationLooping(false)
-                             .rotationShift(0f)
-                             .flip(SummonShield.calculateFlip(flipValue));
+        ability.params = abilityParams.setWidth(2f)
+                                      .setHeight(2f)
+                                      .setChannelTime(0f)
+                                      .setActiveTime(1f)
+                                      .setRange(1.2f)
+                                      .setTextureName("shield")
+                                      .setBaseDamage(0f)
+                                      .setIsChannelAnimationLooping(false)
+                                      .setIsActiveAnimationLooping(false)
+                                      .setRotationShift(0f)
+                                      .setIsFlip(SummonShield.calculateFlip(flipValue));
         return ability;
     }
 
@@ -43,8 +40,8 @@ public class SummonShield extends Ability {
     @Override
     public void init(GameActionApplicable game) {
 
-        params().state(AbilityState.CHANNEL);
-        params().stateTimer().restart();
+        getParams().setState(AbilityState.CHANNEL);
+        getParams().getStateTimer().restart();
 
         updatePosition(game);
 
@@ -78,26 +75,26 @@ public class SummonShield extends Ability {
     @Override
     public void updatePosition(AbilityUpdatable game) {
         Vector2 dirVector;
-        if (params().dirVector().len() <= 0) {
+        if (getParams().getDirVector().len() <= 0) {
             dirVector = Vector2.of(1, 0);
         }
         else {
-            dirVector = params().dirVector();
+            dirVector = getParams().getDirVector();
         }
 
         Float theta = dirVector.angleDeg();
 
-        float attackShiftX = dirVector.normalized().x() * params().range();
-        float attackShiftY = dirVector.normalized().y() * params().range();
+        float attackShiftX = dirVector.normalized().getX() * getParams().getRange();
+        float attackShiftY = dirVector.normalized().getY() * getParams().getRange();
 
-        Vector2 pos = game.getCreaturePos(params().creatureId());
+        Vector2 pos = game.getCreaturePos(getParams().getCreatureId());
 
         if (pos != null) {
-            float attackRectX = attackShiftX + pos.x();
-            float attackRectY = attackShiftY + pos.y();
+            float attackRectX = attackShiftX + pos.getX();
+            float attackRectY = attackShiftY + pos.getY();
 
-            params().pos(Vector2.of(attackRectX, attackRectY));
-            params().rotationAngle(theta);
+            getParams().setPos(Vector2.of(attackRectX, attackRectY));
+            getParams().setRotationAngle(theta);
         }
     }
 

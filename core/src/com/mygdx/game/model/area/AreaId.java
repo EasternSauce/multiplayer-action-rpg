@@ -12,6 +12,6 @@ public class AreaId implements Comparable<AreaId> {
 
     @Override
     public int compareTo(AreaId o) {
-        return value().compareTo(o.value());
+        return getValue().compareTo(o.getValue());
     }
 }

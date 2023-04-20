@@ -27,8 +27,8 @@ public class InventoryToggleAction extends GameStateAction {
         if (game.getPlayerParams(creatureId) == null) {
             return;
         }
-        boolean isInventoryVisible = game.getPlayerParams(creatureId).isInventoryVisible();
-        game.getPlayerParams(creatureId).isInventoryVisible(!isInventoryVisible);
+        boolean isInventoryVisible = game.getPlayerParams(creatureId).getIsInventoryVisible();
+        game.getPlayerParams(creatureId).setIsInventoryVisible(!isInventoryVisible);
 
     }
 }

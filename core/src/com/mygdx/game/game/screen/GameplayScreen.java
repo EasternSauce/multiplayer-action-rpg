@@ -10,7 +10,8 @@ import com.mygdx.game.Constants;
 import com.mygdx.game.game.MyGdxGame;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.physics.util.PhysicsHelper;
-import com.mygdx.game.renderer.util.RendererHelper;
+import com.mygdx.game.renderer.util.GameplayRendererHelper;
+import com.mygdx.game.renderer.util.HudRendererHelper;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -31,10 +32,7 @@ public class GameplayScreen implements Screen {
     public void init(MyGdxGame game) {
         this.game = game;
 
-        game.physics().debugRenderer(new Box2DDebugRenderer());
-
-        game.renderer().setHudCameraPosition(Constants.WindowWidth / 2f, Constants.WindowHeight / 2f);
-
+        game.physics().setDebugRenderer(new Box2DDebugRenderer());
 
         Map<AreaId, String> mapsToLoad = new ConcurrentSkipListMap<>();
         mapsToLoad.put(AreaId.of("area1"), "assets/areas/area1");
@@ -54,6 +52,10 @@ public class GameplayScreen implements Screen {
 
         game.physics().init(maps, game);
 
+        game.renderer()
+            .getViewportsHandler()
+            .setHudCameraPosition(Constants.WindowWidth / 2f, Constants.WindowHeight / 2f); // TODO: move it inward?
+
         game.initState();
 
 
@@ -64,13 +66,18 @@ public class GameplayScreen implements Screen {
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean keyTyped(char character) {
-                if (game.getChat().isTyping() &&
-                    character != '\b' &&
-                    (character == ' ' || !(Character.isWhitespace(character)))) {
-                    game.getChat().currentMessage(game.getChat().currentMessage() + character);
+                char backspaceCharacter = '\b';
+                if (game.getChat().getIsTyping() &&
+                    character != backspaceCharacter &&
+                    isCharacterNonWhitespaceExcludingSpace(character)) {
+                    game.getChat().setCurrentMessage(game.getChat().getCurrentMessage() + character);
                 }
 
                 return true;
+            }
+
+            private boolean isCharacterNonWhitespaceExcludingSpace(char character) {
+                return character == ' ' || !(Character.isWhitespace(character));
             }
         });
 
@@ -107,35 +114,39 @@ public class GameplayScreen implements Screen {
         game.teleportEvents().forEach(teleportInfo -> game.teleportCreature(teleportInfo));
         game.teleportEvents().clear();
 
-        game.gameState().generalTimer().update(delta);
+        game.gameState().getGeneralTimer().update(delta);
 
         game.updateCreatures(delta);
         game.updateAbilities(delta);
 
         PhysicsHelper.processPhysicsEventQueue(game);
 
-        game.renderer().getAreaRenderers().get(game.getCurrentPlayerAreaId()).setView(game.renderer().getWorldCamera());
+        game.renderer()
+            .getAreaRenderers()
+            .get(game.getCurrentPlayerAreaId())
+            .setView(game.renderer().getViewportsHandler().getWorldCamera());
 
-        RendererHelper.updateCameraPositions(game);
+        if (game.getCurrentPlayerId() != null && game.getCreature(game.getCurrentPlayerId()) != null) {
+            game.updateCameraPositions();
+        }
+
 
     }
 
     @Override
     public void render(float delta) {
-
-
-        if (game().isInitialized()) {
+        if (getGame().isInitialized()) {
             update(delta);
-            if (game().isRenderingAllowed()) {
-                game.renderer()
-                    .getWorldRenderingLayer()
-                    .setProjectionMatrix(game.renderer().getWorldCamera().combined);
-                game.renderer()
-                    .getHudRenderingLayer()
-                    .setProjectionMatrix(game.renderer().getHudCamera().combined);
-                game.renderer()
-                    .getWorldTextRenderingLayer()
-                    .setProjectionMatrix(game.renderer().getWorldTextCamera().combined);
+            if (getGame().isRenderingAllowed()) {
+                getGame().renderer()
+                         .getWorldElementsRenderingLayer()
+                         .setProjectionMatrix(getGame().renderer().getViewportsHandler().getWorldCamera().combined);
+                getGame().renderer()
+                         .getHudRenderingLayer()
+                         .setProjectionMatrix(getGame().renderer().getViewportsHandler().getHudCamera().combined);
+                getGame().renderer()
+                         .getWorldTextRenderingLayer()
+                         .setProjectionMatrix(getGame().renderer().getViewportsHandler().getWorldTextCamera().combined);
 
                 Gdx.gl.glClearColor(0, 0, 0, 1);
 
@@ -149,20 +160,17 @@ public class GameplayScreen implements Screen {
 
                 Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | coverageBuffer);
 
-                RendererHelper.renderWorld(game);
+                GameplayRendererHelper.renderGameplay(getGame());
 
-                RendererHelper.renderHud(game);
-
-
+                HudRendererHelper.renderHud(getGame());
             }
         }
-
     }
 
 
     @Override
     public void resize(int width, int height) {
-        game.renderer().updateViewportsOnResize(width, height);
+        game.renderer().getViewportsHandler().updateViewportsOnResize(width, height);
     }
 
     @Override

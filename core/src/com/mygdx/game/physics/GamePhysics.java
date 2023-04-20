@@ -55,27 +55,23 @@ public class GamePhysics {
             CreatureBody creatureBody = (CreatureBody) objA;
             AbilityBody abilityBody = (AbilityBody) objB;
 
-            physicsEventQueue.add(AbilityHitsCreatureEvent.of(abilityBody.creatureId(),
-                                                              creatureBody.creatureId(),
-                                                              abilityBody.abilityId()));
+            physicsEventQueue.add(AbilityHitsCreatureEvent.of(abilityBody.getCreatureId(),
+                                                              creatureBody.getCreatureId(),
+                                                              abilityBody.getAbilityId()));
 
 
         }
         else if (objA instanceof TerrainTileBody && objB instanceof AbilityBody) {
             TerrainTileBody terrainTileBody = (TerrainTileBody) objA;
-            if (!terrainTileBody.flyover()) {
+            if (!terrainTileBody.getIsFlyover()) {
                 AbilityBody abilityBody = (AbilityBody) objB;
-                Vector2
-                        tilePos =
-                        Vector2.of(terrainTileBody.b2Body().getWorldCenter().x,
-                                   terrainTileBody.b2Body().getWorldCenter().y);
+                Vector2 tilePos = Vector2.of(terrainTileBody.getB2Body().getWorldCenter().x,
+                                             terrainTileBody.getB2Body().getWorldCenter().y);
 
-                Vector2
-                        abilityPos =
-                        Vector2.of(abilityBody.b2Body().getWorldCenter().x,
-                                   abilityBody.b2Body().getWorldCenter().y);
+                Vector2 abilityPos = Vector2.of(abilityBody.getB2body().getWorldCenter().x,
+                                                abilityBody.getB2body().getWorldCenter().y);
 
-                physicsEventQueue.add(AbilityHitsTerrainEvent.of(abilityBody.abilityId(), abilityPos, tilePos));
+                physicsEventQueue.add(AbilityHitsTerrainEvent.of(abilityBody.getAbilityId(), abilityPos, tilePos));
             }
 
         }
@@ -83,7 +79,7 @@ public class GamePhysics {
             AbilityBody abilityBodyA = (AbilityBody) objA;
             AbilityBody abilityBodyB = (AbilityBody) objB;
 
-            physicsEventQueue.add(AbilityHitsAbilityEvent.of(abilityBodyA.abilityId(), abilityBodyB.abilityId()));
+            physicsEventQueue.add(AbilityHitsAbilityEvent.of(abilityBodyA.getAbilityId(), abilityBodyB.getAbilityId()));
 
 
         }
@@ -91,7 +87,8 @@ public class GamePhysics {
             CreatureBody creatureBody = (CreatureBody) objA;
             AreaGateBody areaGateBody = (AreaGateBody) objB;
 
-            physicsEventQueue.add(CreatureHitsAreaGateEvent.of(creatureBody.creatureId(), areaGateBody.areaGate()));
+            physicsEventQueue.add(CreatureHitsAreaGateEvent.of(creatureBody.getCreatureId(),
+                                                               areaGateBody.getAreaGate()));
 
 
         }
@@ -99,7 +96,8 @@ public class GamePhysics {
             CreatureBody creatureBody = (CreatureBody) objA;
             LootPileBody lootPileBody = (LootPileBody) objB;
 
-            physicsEventQueue.add(CreatureHitsLootPileEvent.of(creatureBody.creatureId(), lootPileBody.lootPileId()));
+            physicsEventQueue.add(CreatureHitsLootPileEvent.of(creatureBody.getCreatureId(),
+                                                               lootPileBody.getLootPileId()));
 
         }
     }
@@ -108,18 +106,20 @@ public class GamePhysics {
         if (objA instanceof CreatureBody && objB instanceof AreaGateBody) {
             CreatureBody creatureBody = (CreatureBody) objA;
             AreaGateBody areaGateBody = (AreaGateBody) objB;
-            physicsEventQueue.add(CreatureLeavesAreaGateEvent.of(creatureBody.creatureId(), areaGateBody.areaGate()));
+            physicsEventQueue.add(CreatureLeavesAreaGateEvent.of(creatureBody.getCreatureId(),
+                                                                 areaGateBody.getAreaGate()));
         }
         else if (objA instanceof CreatureBody && objB instanceof LootPileBody) {
             CreatureBody creatureBody = (CreatureBody) objA;
             LootPileBody lootPileBody = (LootPileBody) objB;
-            physicsEventQueue.add(CreatureLeavesLootPileEvent.of(creatureBody.creatureId(), lootPileBody.lootPileId()));
+            physicsEventQueue.add(CreatureLeavesLootPileEvent.of(creatureBody.getCreatureId(),
+                                                                 lootPileBody.getLootPileId()));
         }
     }
 
 
     private void createContactListener(PhysicsWorld physicsWorld) {
-        World b2World = physicsWorld.b2world();
+        World b2World = physicsWorld.getB2world();
 
         ContactListener contactListener = new ContactListener() {
             @Override

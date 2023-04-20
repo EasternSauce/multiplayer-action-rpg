@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-public
-class Circle implements BodyShape {
+public class Circle implements BodyShape {
     float radius;
 
     @Override

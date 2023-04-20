@@ -13,20 +13,18 @@ import lombok.NoArgsConstructor;
 public class FireballExplosion extends Ability {
     AbilityParams params;
 
-    public static FireballExplosion of(AbilityParams abilityParams,
-                                       @SuppressWarnings("unused") AbilityUpdatable game) {
+    public static FireballExplosion of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
         FireballExplosion ability = FireballExplosion.of();
-        ability.params =
-                abilityParams.width(9f)
-                             .height(9f)
-                             .channelTime(0f)
-                             .activeTime(0.35f)
-                             .textureName("explosion")
-                             .baseDamage(30f)
-                             .isChannelAnimationLooping(false)
-                             .isActiveAnimationLooping(false)
-                             .attackWithoutMoving(true)
-                             .rotationShift(0f);
+        ability.params = abilityParams.setWidth(9f)
+                                      .setHeight(9f)
+                                      .setChannelTime(0f)
+                                      .setActiveTime(0.35f)
+                                      .setTextureName("explosion")
+                                      .setBaseDamage(30f)
+                                      .setIsChannelAnimationLooping(false)
+                                      .setIsActiveAnimationLooping(false)
+                                      .setAttackWithoutMoving(true)
+                                      .setRotationShift(0f);
 
         return ability;
     }

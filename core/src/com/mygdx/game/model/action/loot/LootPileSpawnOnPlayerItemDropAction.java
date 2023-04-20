@@ -38,19 +38,19 @@ public class LootPileSpawnOnPlayerItemDropAction extends GameStateAction {
 
         Creature player = game.getCreature(playerId);
 
-        Map<Integer, Item> inventoryItems = player.params().inventoryItems();
-        Map<Integer, Item> equipmentItems = player.params().equipmentItems();
+        Map<Integer, Item> inventoryItems = player.getParams().getInventoryItems();
+        Map<Integer, Item> equipmentItems = player.getParams().getEquipmentItems();
 
         Item item;
-        if (playerParams.inventoryItemBeingMoved() != null) {
-            item = inventoryItems.get(playerParams.inventoryItemBeingMoved());
-            inventoryItems.remove(playerParams.inventoryItemBeingMoved());
-            playerParams.inventoryItemBeingMoved(null);
+        if (playerParams.getInventoryItemBeingMoved() != null) {
+            item = inventoryItems.get(playerParams.getInventoryItemBeingMoved());
+            inventoryItems.remove(playerParams.getInventoryItemBeingMoved());
+            playerParams.setInventoryItemBeingMoved(null);
         }
-        else if (playerParams.equipmentItemBeingMoved() != null) {
-            item = equipmentItems.get(playerParams.equipmentItemBeingMoved());
-            equipmentItems.remove(playerParams.equipmentItemBeingMoved());
-            playerParams.equipmentItemBeingMoved(null);
+        else if (playerParams.getEquipmentItemBeingMoved() != null) {
+            item = equipmentItems.get(playerParams.getEquipmentItemBeingMoved());
+            equipmentItems.remove(playerParams.getEquipmentItemBeingMoved());
+            playerParams.setEquipmentItemBeingMoved(null);
         }
         else {
             throw new RuntimeException("impossible state");
@@ -59,16 +59,18 @@ public class LootPileSpawnOnPlayerItemDropAction extends GameStateAction {
         LootPileId lootPileId = LootPileId.of("LootPile_" + (int) (Math.random() * 10000000)); // TODO: use seeded rng
 
         Set<Item> lootPileItems = new ConcurrentSkipListSet<>();
-        lootPileItems.add(Item.of().template(item.template())
-                              .quantity(item.quantity())
-                              .qualityModifier(item.qualityModifier())
-                              .lootPileId(lootPileId));
+        lootPileItems.add(Item.of()
+                              .setTemplate(item.getTemplate())
+                              .setQuantity(item.getQuantity())
+                              .setQualityModifier(item.getQualityModifier())
+                              .setLootPileId(lootPileId));
 
-        LootPile lootPile = LootPile.of(lootPileId, player.params().areaId(), player.params().pos(), lootPileItems);
+        LootPile lootPile =
+                LootPile.of(lootPileId, player.getParams().getAreaId(), player.getParams().getPos(), lootPileItems);
 
-        game.getLootPiles().put(lootPile.id(), lootPile);
+        game.getLootPiles().put(lootPile.getId(), lootPile);
 
-        game.getLootPileModelsToBeCreated().add(lootPile.id());
+        game.getLootPileModelsToBeCreated().add(lootPile.getId());
 
 
     }

@@ -19,6 +19,6 @@ public class PlayerParams {
     Integer inventoryItemBeingMoved;
     Integer equipmentItemBeingMoved;
     Set<LootPileId> itemPickupMenuLootPiles = new ConcurrentSkipListSet<>();
-    Integer skillMenuPickerSlotBeingChanged;
+    Integer isSkillMenuPickerSlotBeingChanged;
     Map<Integer, SkillType> skillMenuSlots = new ConcurrentSkipListMap<>();
 }

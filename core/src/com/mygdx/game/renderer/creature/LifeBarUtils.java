@@ -10,11 +10,11 @@ public class LifeBarUtils {
     public static float LIFE_BAR_HEIGHT = 0.16f;
 
     public static float getLifeBarPosX(Creature creature) {
-        return creature.params().pos().x() - LIFE_BAR_WIDTH / 2;
+        return creature.getParams().getPos().getX() - LIFE_BAR_WIDTH / 2;
     }
 
     public static float getLifeBarPosY(Creature creature, float spriteWidth) {
-        return creature.params().pos().y() + spriteWidth / 2 + 0.3125f;
+        return creature.getParams().getPos().getY() + spriteWidth / 2 + 0.3125f;
     }
 
     public static void renderBar(RenderingLayer renderingLayer,

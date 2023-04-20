@@ -19,10 +19,10 @@ public class LootPileDespawnAction extends GameStateAction {
 
     @Override
     public Vector2 actionObjectPos(GameState gameState) {
-        if (!gameState.lootPiles().containsKey(lootPileId)) {
+        if (!gameState.getLootPiles().containsKey(lootPileId)) {
             return Vector2.of(0f, 0f);
         }
-        return gameState.lootPiles().get(lootPileId).pos();
+        return gameState.getLootPiles().get(lootPileId).getPos();
     }
 
     @Override

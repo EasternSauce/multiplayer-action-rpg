@@ -22,19 +22,17 @@ public class PlayfulGhost extends Projectile {
 
     public static PlayfulGhost of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
         PlayfulGhost ability = PlayfulGhost.of();
-        ability.params =
-                abilityParams
-                        .width(1.5f)
-                        .height(1.5f)
-                        .channelTime(0f)
-                        .activeTime(30f)
-                        .textureName("ghost")
-                        .baseDamage(15f)
-                        .isChannelAnimationLooping(false)
-                        .isActiveAnimationLooping(true)
-                        .rotationShift(0f)
-                        .delayedActionTime(0.001f)
-                        .speed(5f);
+        ability.params = abilityParams.setWidth(1.5f)
+                                      .setHeight(1.5f)
+                                      .setChannelTime(0f)
+                                      .setActiveTime(30f)
+                                      .setTextureName("ghost")
+                                      .setBaseDamage(15f)
+                                      .setIsChannelAnimationLooping(false)
+                                      .setIsActiveAnimationLooping(true)
+                                      .setRotationShift(0f)
+                                      .setDelayedActionTime(0.001f)
+                                      .setSpeed(5f);
 
         return ability;
     }
@@ -78,42 +76,44 @@ public class PlayfulGhost extends Projectile {
 
     @Override
     void onActiveUpdate(AbilityUpdatable game) {
-        if (params().speed() != null) {
-            params().velocity(params().dirVector().normalized().multiplyBy(params().speed()));
+        if (getParams().getSpeed() != null) {
+            getParams().setVelocity(getParams().getDirVector().normalized().multiplyBy(getParams().getSpeed()));
         }
-        params().rotationAngle(params().dirVector().angleDeg());
-        params().flip(params().rotationAngle() >= 90 && params().rotationAngle() < 270);
+        getParams().setRotationAngle(getParams().getDirVector().angleDeg());
+        getParams().setIsFlip(getParams().getRotationAngle() >= 90 && getParams().getRotationAngle() < 270);
 
 
         Creature minCreature = null;
         float minDistance = Float.MAX_VALUE;
 
-        Creature thisCreature = game.getCreature(params().creatureId());
+        Creature thisCreature = game.getCreature(getParams().getCreatureId());
 
         for (Creature creature : game.getCreatures()
-                                     .values().stream()
-                                     .filter(targetCreature -> !targetCreature.params()
-                                                                              .id()
-                                                                              .equals(params().creatureId()) &&
+                                     .values()
+                                     .stream()
+                                     .filter(targetCreature -> !targetCreature.getParams()
+                                                                              .getId()
+                                                                              .equals(getParams().getCreatureId()) &&
                                                                targetCreature.isAlive() &&
                                                                isTargetingAllowed(thisCreature, targetCreature) &&
-                                                               targetCreature.params().pos().distance(params().pos()) <
-                                                               10f &&
-                                                               !params().creaturesAlreadyHit()
-                                                                        .containsKey(targetCreature.id()))
+                                                               targetCreature.getParams()
+                                                                             .getPos()
+                                                                             .distance(getParams().getPos()) < 10f &&
+                                                               !getParams().getCreaturesAlreadyHit()
+                                                                           .containsKey(targetCreature.getId()))
                                      .collect(Collectors.toSet())) {
-            if (creature.params().pos().distance(params().pos()) < minDistance) {
+            if (creature.getParams().getPos().distance(getParams().getPos()) < minDistance) {
                 minCreature = creature;
-                minDistance = creature.params().pos().distance(params().pos());
+                minDistance = creature.getParams().getPos().distance(getParams().getPos());
             }
 
 
         }
 
         if (minCreature != null) {
-            Vector2 vectorTowards = params().pos().vectorTowards(minCreature.params().pos());
+            Vector2 vectorTowards = getParams().getPos().vectorTowards(minCreature.getParams().getPos());
             float targetAngleDeg = vectorTowards.angleDeg();
-            float currentAngleDeg = params().dirVector().angleDeg();
+            float currentAngleDeg = getParams().getDirVector().angleDeg();
 
             float alpha = targetAngleDeg - currentAngleDeg;
             float beta = targetAngleDeg - currentAngleDeg + 360;
@@ -140,20 +140,20 @@ public class PlayfulGhost extends Projectile {
             float increment = 1.5f;
 
             if (result > increment) {
-                params().dirVector(params().dirVector().rotateDeg(increment));
+                getParams().setDirVector(getParams().getDirVector().rotateDeg(increment));
             }
             else if (result < -increment) {
-                params().dirVector(params().dirVector().rotateDeg(-increment));
+                getParams().setDirVector(getParams().getDirVector().rotateDeg(-increment));
             }
             else {
-                params().dirVector(params().dirVector().setAngleDeg(targetAngleDeg));
+                getParams().setDirVector(getParams().getDirVector().setAngleDeg(targetAngleDeg));
             }
 
         }
         else {
-            if (params().changeDirectionTimer().time() > 1f) {
-                params().changeDirectionTimer().restart();
-                params().dirVector(params().dirVector().rotateDeg(nextFloat() * 20f));
+            if (getParams().getChangeDirectionTimer().getTime() > 1f) {
+                getParams().getChangeDirectionTimer().restart();
+                getParams().setDirVector(getParams().getDirVector().rotateDeg(nextFloat() * 20f));
             }
         }
     }
@@ -180,13 +180,13 @@ public class PlayfulGhost extends Projectile {
 
     @SuppressWarnings("unused")
     public Float nextPositiveFloat() {
-        params().abilityRngSeed(RandomHelper.seededRandomFloat(params().abilityRngSeed()));
-        return params().abilityRngSeed();
+        getParams().setAbilityRngSeed(RandomHelper.seededRandomFloat(getParams().getAbilityRngSeed()));
+        return getParams().getAbilityRngSeed();
     }
 
     @SuppressWarnings("unused")
     public Float nextFloat() {
-        params().abilityRngSeed(RandomHelper.seededRandomFloat(params().abilityRngSeed()));
-        return (params().abilityRngSeed() - 0.5f) * 2;
+        getParams().setAbilityRngSeed(RandomHelper.seededRandomFloat(getParams().getAbilityRngSeed()));
+        return (getParams().getAbilityRngSeed() - 0.5f) * 2;
     }
 }

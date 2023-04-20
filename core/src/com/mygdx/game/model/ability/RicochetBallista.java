@@ -15,10 +15,7 @@ public class RicochetBallista extends Ability {
 
     public static RicochetBallista of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
         RicochetBallista ability = RicochetBallista.of();
-        ability.params =
-                abilityParams
-                        .channelTime(0f)
-                        .activeTime(0f);
+        ability.params = abilityParams.setChannelTime(0f).setActiveTime(0f);
 
 
         return ability;
@@ -47,15 +44,13 @@ public class RicochetBallista extends Ability {
     @Override
     void onAbilityCompleted(AbilityUpdatable game) {
 
-        Vector2 leftSidePos = params().pos().add(params.dirVector().normalized().multiplyBy(1f).rotateDeg(90));
-        Vector2 rightSidePos = params().pos().add(params.dirVector().normalized().multiplyBy(1f).rotateDeg(-90));
+        Vector2 leftSidePos = getParams().getPos().add(params.getDirVector().normalized().multiplyBy(1f).rotateDeg(90));
+        Vector2 rightSidePos =
+                getParams().getPos().add(params.getDirVector().normalized().multiplyBy(1f).rotateDeg(-90));
 
-        game.chainAbility(this,
-                          AbilityType.RICOCHET_BULLET,
-                          params().pos(),
-                          params.dirVector());
-        game.chainAbility(this, AbilityType.RICOCHET_BULLET, leftSidePos, params.dirVector());
-        game.chainAbility(this, AbilityType.RICOCHET_BULLET, rightSidePos, params.dirVector());
+        game.chainAbility(this, AbilityType.RICOCHET_BULLET, getParams().getPos(), params.getDirVector());
+        game.chainAbility(this, AbilityType.RICOCHET_BULLET, leftSidePos, params.getDirVector());
+        game.chainAbility(this, AbilityType.RICOCHET_BULLET, rightSidePos, params.getDirVector());
     }
 
 

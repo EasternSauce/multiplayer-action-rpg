@@ -25,7 +25,7 @@ import java.util.function.Predicate;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class Enemy extends Creature {
-    CreatureParams params;
+    private CreatureParams params;
 
     public static Enemy of(CreatureParams params) {
         Enemy enemy = Enemy.of();
@@ -38,16 +38,20 @@ public class Enemy extends Creature {
         CreatureId minCreatureId = null;
         for (Creature creature : game.getCreatures().values()) {
             boolean condition = creature.isAlive() &&
-                                creature.params().areaId().value().equals(params().areaId().value()) &&
+                                creature.getParams()
+                                        .getAreaId()
+                                        .getValue()
+                                        .equals(getParams().getAreaId().getValue()) &&
                                 creature instanceof Player &&
-                                creature.params().pos().distance(params().pos()) < Constants.ENEMY_SEARCH_DISTANCE &&
-                                game.isLineOfSight(this.params().areaId(),
-                                                   this.params().pos(),
-                                                   creature.params().pos());
+                                creature.getParams().getPos().distance(getParams().getPos()) <
+                                Constants.ENEMY_SEARCH_DISTANCE &&
+                                game.isLineOfSight(this.getParams().getAreaId(),
+                                                   this.getParams().getPos(),
+                                                   creature.getParams().getPos());
 
-            if (condition && params().pos().distance(creature.params().pos()) < minDistance) {
-                minCreatureId = creature.id();
-                minDistance = params().pos().distance(creature.params().pos());
+            if (condition && getParams().getPos().distance(creature.getParams().getPos()) < minDistance) {
+                minCreatureId = creature.getId();
+                minDistance = getParams().getPos().distance(creature.getParams().getPos());
             }
         }
         return minCreatureId;
@@ -57,65 +61,66 @@ public class Enemy extends Creature {
     @Override
     public void updateAutomaticControls(CreatureUpdatable game) {
 
-        if (params().aiStateTimer().time() > params().aiStateTime()) {
-            params().aiStateTimer().restart();
+        if (getParams().getAiStateTimer().getTime() > getParams().getAiStateTime()) {
+            getParams().getAiStateTimer().restart();
 
             processAiStateChangeLogic(game);
 
-            params().aiStateTime(1f + 1f * nextPositiveFloat());
+            getParams().setAiStateTime(1f + 1f * nextPositiveFloat());
         }
 
-        if (params().justAttackedFromRangeTimer().time() < Constants.JUST_ATTACKED_FROM_RANGE_TIME) {
-            params().aiState(EnemyAiState.AGGRESSIVE);
-            params().speed(params().baseSpeed());
+        if (getParams().getJustAttackedFromRangeTimer().getTime() < Constants.JUST_ATTACKED_FROM_RANGE_TIME) {
+            getParams().setAiState(EnemyAiState.AGGRESSIVE);
+            getParams().setSpeed(getParams().getBaseSpeed());
         }
 
-        if (params().attackedByCreatureId() != null &&
-            game.getCreature(params().attackedByCreatureId()) instanceof Player) { // if attacked by player, aggro no matter what
-            params.aggroedCreatureId(params().attackedByCreatureId());
+        if (getParams().getAttackedByCreatureId() != null &&
+            game.getCreature(getParams().getAttackedByCreatureId()) instanceof Player) { // if attacked by player, aggro no matter what
+            params.setAggroedCreatureId(getParams().getAttackedByCreatureId());
         }
         else { // if not attacked, search around for targets
-            CreatureId foundTargetId = params().lastFoundTargetId();
+            CreatureId foundTargetId = getParams().getLastFoundTargetId();
 
-            if (params().findTargetTimer().time() > params().findTargetCooldown()) {
+            if (getParams().getFindTargetTimer().getTime() > getParams().getFindTargetCooldown()) {
                 foundTargetId = findTarget(game);
-                params().findTargetTimer().restart();
+                getParams().getFindTargetTimer().restart();
             }
 
             if (foundTargetId != null) {
-                if (params().lastFoundTargetId() == null || !params().lastFoundTargetId().equals(foundTargetId)) {
-                    params().aiState(EnemyAiState.ALERTED);
-                    params.aggroedCreatureId(foundTargetId);
-                    params().lastFoundTargetId(foundTargetId);
+                if (getParams().getLastFoundTargetId() == null ||
+                    !getParams().getLastFoundTargetId().equals(foundTargetId)) {
+                    getParams().setAiState(EnemyAiState.ALERTED);
+                    params.setAggroedCreatureId(foundTargetId);
+                    getParams().setLastFoundTargetId(foundTargetId);
                 }
 
             }
         }
 
         Creature potentialTarget = null;
-        if (params().aggroedCreatureId() != null) {
-            potentialTarget = game.getCreature(params().aggroedCreatureId());
+        if (getParams().getAggroedCreatureId() != null) {
+            potentialTarget = game.getCreature(getParams().getAggroedCreatureId());
 
             if (potentialTarget != null) {
-                Float distance = params().pos().distance(potentialTarget.params().pos());
+                Float distance = getParams().getPos().distance(potentialTarget.getParams().getPos());
 
                 if (distance < Constants.LOSE_AGGRO_DISTANCE) {
-                    params().aggroTimer().restart();
+                    getParams().getAggroTimer().restart();
                 }
             }
 
 
         }
 
-        if (params().aggroTimer().time() < params.loseAggroTime() &&
+        if (getParams().getAggroTimer().getTime() < getParams().getLoseAggroTime() &&
             potentialTarget != null &&
             potentialTarget.isAlive() &&
             this.isAlive()) { // if aggro not timed out and potential target is found
 
-            Vector2 vectorTowardsTarget = params().pos().vectorTowards(potentialTarget.params().pos());
+            Vector2 vectorTowardsTarget = getParams().getPos().vectorTowards(potentialTarget.getParams().getPos());
 
             handleAiStateTargetDistanceLogic(potentialTarget);
-            handleNewTarget(potentialTarget.params().id()); // logic for when target changed
+            handleNewTarget(potentialTarget.getParams().getId()); // logic for when target changed
             handleMovement(potentialTarget); // set movement command, causing creature to walk towards target
             handleAttackTarget(potentialTarget, vectorTowardsTarget, game); // attack target if within range
 
@@ -132,44 +137,43 @@ public class Enemy extends Creature {
     }
 
     private void processAiStateChangeLogic(CreatureUpdatable game) {
-        if (params().targetCreatureId() == null) {
+        if (getParams().getTargetCreatureId() == null) {
             return;
         }
-        if (params().aiState() == EnemyAiState.ALERTED) {
-            Vector2 targetPos = game.getCreaturePos(params().targetCreatureId());
+        if (getParams().getAiState() == EnemyAiState.ALERTED) {
+            Vector2 targetPos = game.getCreaturePos(getParams().getTargetCreatureId());
 
-            Vector2 vectorTowards = targetPos.vectorTowards(this.params().pos());
+            Vector2 vectorTowards = targetPos.vectorTowards(this.getParams().getPos());
 
-            Vector2
-                    defensivePos =
+            Vector2 defensivePos =
                     targetPos.add(vectorTowards.normalized().multiplyBy(Constants.DEFENSIVE_POS_DISTANCE));
 
-            params().defensivePosition(Vector2.of(defensivePos.x() + nextFloat(),
-                                                  defensivePos.y() + nextFloat()));
+            getParams().setDefensivePosition(Vector2.of(defensivePos.getX() + nextFloat(),
+                                                        defensivePos.getY() + nextFloat()));
 
             if (nextPositiveFloat() < 0.1f) {
-                params().aiState(EnemyAiState.AGGRESSIVE);
+                getParams().setAiState(EnemyAiState.AGGRESSIVE);
             }
         }
-        else if (params().aiState() == EnemyAiState.AGGRESSIVE) {
+        else if (getParams().getAiState() == EnemyAiState.AGGRESSIVE) {
             if (nextPositiveFloat() < 0.5f) {
-                params().aiState(EnemyAiState.KEEPING_DISTANCE);
+                getParams().setAiState(EnemyAiState.KEEPING_DISTANCE);
 
             }
         }
-        else if (params().aiState() == EnemyAiState.KEEPING_DISTANCE) {
-            Vector2 targetPos = game.getCreaturePos(params().targetCreatureId());
+        else if (getParams().getAiState() == EnemyAiState.KEEPING_DISTANCE) {
+            Vector2 targetPos = game.getCreaturePos(getParams().getTargetCreatureId());
 
             if (targetPos != null) {
-                Vector2 vectorTowards = targetPos.vectorTowards(this.params().pos());
+                Vector2 vectorTowards = targetPos.vectorTowards(this.getParams().getPos());
 
                 Vector2 backUpPos = targetPos.add(vectorTowards.normalized().multiplyBy(Constants.BACK_UP_DISTANCE));
 
-                params().defensivePosition(Vector2.of(backUpPos.x() + nextFloat(),
-                                                      backUpPos.y() + nextFloat()));
+                getParams().setDefensivePosition(Vector2.of(backUpPos.getX() + nextFloat(),
+                                                            backUpPos.getY() + nextFloat()));
 
                 if (nextPositiveFloat() < 0.5f) {
-                    params().aiState(EnemyAiState.AGGRESSIVE);
+                    getParams().setAiState(EnemyAiState.AGGRESSIVE);
                 }
             }
         }
@@ -177,16 +181,17 @@ public class Enemy extends Creature {
     }
 
     private void handleAiStateTargetDistanceLogic(Creature potentialTarget) {
-        Float distance = params().pos().distance(potentialTarget.params().pos());
+        Float distance = getParams().getPos().distance(potentialTarget.getParams().getPos());
 
-        if (params().justAttackedFromRangeTimer().time() >= Constants.JUST_ATTACKED_FROM_RANGE_TIME) {
-            if ((params().aiState() == EnemyAiState.AGGRESSIVE ||
-                 params().aiState() == EnemyAiState.KEEPING_DISTANCE) && distance > Constants.TURN_ALERTED_DISTANCE) {
-                params().aiState(EnemyAiState.ALERTED);
+        if (getParams().getJustAttackedFromRangeTimer().getTime() >= Constants.JUST_ATTACKED_FROM_RANGE_TIME) {
+            if ((getParams().getAiState() == EnemyAiState.AGGRESSIVE ||
+                 getParams().getAiState() == EnemyAiState.KEEPING_DISTANCE) &&
+                distance > Constants.TURN_ALERTED_DISTANCE) {
+                getParams().setAiState(EnemyAiState.ALERTED);
 
             }
-            else if (params().aiState() == EnemyAiState.ALERTED && distance < Constants.TURN_AGGRESIVE_DISTANCE) {
-                params().aiState(EnemyAiState.AGGRESSIVE);
+            else if (getParams().getAiState() == EnemyAiState.ALERTED && distance < Constants.TURN_AGGRESIVE_DISTANCE) {
+                getParams().setAiState(EnemyAiState.AGGRESSIVE);
 
             }
 
@@ -196,101 +201,106 @@ public class Enemy extends Creature {
 
     @Override
     public void onBeingHit(Ability ability, GameUpdatable game) {
-        boolean isShielded = isAttackShielded(ability.isRanged(), ability.params().dirVector(), game);
+        boolean isShielded = isAttackShielded(ability.isRanged(), ability.getParams().getDirVector(), game);
 
         if (!isShielded) {
             takeLifeDamage(ability.getDamage(game));
 
             applyEffect(CreatureEffect.STUN, ability.getStunDuration(), game);
 
-            params().attackedByCreatureId(ability.params().creatureId());
+            getParams().setAttackedByCreatureId(ability.getParams().getCreatureId());
 
             if (ability.isRanged()) {
-                params().justAttackedFromRangeTimer().restart();
+                getParams().getJustAttackedFromRangeTimer().restart();
             }
         }
 
     }
 
     private void processPathfinding(CreatureUpdatable game) {
-        boolean condition = params().areaId()
-                                    .equals(game.getCurrentPlayerAreaId()) &&
-                            params().targetCreatureId() != null &&
-                            (params().forcePathCalculation()
-                             || params().pathCalculationCooldownTimer().time() >
-                                params().pathCalculationCooldown());
+        boolean condition = getParams().getAreaId().equals(game.getCurrentPlayerAreaId()) &&
+                            getParams().getTargetCreatureId() != null &&
+                            (getParams().getForcePathCalculation() ||
+                             getParams().getPathCalculationCooldownTimer().getTime() >
+                             getParams().getPathCalculationCooldown());
 
         if (condition) {
-            Creature target = game.getCreature(params().targetCreatureId());
+            Creature target = game.getCreature(getParams().getTargetCreatureId());
 
-            if (target != null && !game.isLineOfSight(params().areaId(), params().pos(), target.params().pos())) {
-                List<Vector2> mirroredPath = mirrorPathFromNearbyCreature(params().targetCreatureId(), game);
+            if (target != null &&
+                !game.isLineOfSight(getParams().getAreaId(), getParams().getPos(), target.getParams().getPos())) {
+                List<Vector2> mirroredPath = mirrorPathFromNearbyCreature(getParams().getTargetCreatureId(), game);
 
                 List<Vector2> path;
 
                 if (mirroredPath != null) {
                     path = mirroredPath;
-                    this.params().isPathMirrored(true);
+                    this.getParams().setIsPathMirrored(true);
                 }
                 else {
-                    AstarResult result =
-                            Astar.findPath(game.getPhysicsWorld(params().areaId()),
-                                           params().pos(),
-                                           target.params().pos(),
-                                           this.capability());
-                    path = result.path();
+                    AstarResult result = Astar.findPath(game.getPhysicsWorld(getParams().getAreaId()),
+                                                        getParams().getPos(),
+                                                        target.getParams().getPos(),
+                                                        this.capability());
+                    path = result.getPath();
 
-                    this.params().isPathMirrored(false);
+                    this.getParams().setIsPathMirrored(false);
                 }
 
-                params().pathTowardsTarget(path);
+                getParams().setPathTowardsTarget(path);
 
-                params().pathCalculationCooldownTimer().restart();
-                params().forcePathCalculation(false);
+                getParams().getPathCalculationCooldownTimer().restart();
+                getParams().setForcePathCalculation(false);
             }
             else {
-                params().pathTowardsTarget(null);
+                getParams().setPathTowardsTarget(null);
             }
         }
     }
 
     private List<Vector2> mirrorPathFromNearbyCreature(CreatureId targetId, CreatureUpdatable game) {
 
-        Predicate<Creature> creaturePredicate = creature ->
-                creature instanceof Enemy &&
-                creature.params().pos().distance(this.params().pos()) < 4f &&
-                !creature.id().equals(this.params().id()) &&
-                creature.params().pathTowardsTarget() != null &&
-                !creature.params().isPathMirrored() &&
-                creature.params().targetCreatureId() != null &&
-                creature.params().targetCreatureId().equals(targetId) &&
-                creature.params().pathCalculationCooldownTimer().time() < 0.5f;
+        Predicate<Creature> creaturePredicate = creature -> creature instanceof Enemy &&
+                                                            creature.getParams()
+                                                                    .getPos()
+                                                                    .distance(this.getParams().getPos()) < 4f &&
+                                                            !creature.getId().equals(this.getParams().getId()) &&
+                                                            creature.getParams().getPathTowardsTarget() != null &&
+                                                            !creature.getParams().getIsPathMirrored() &&
+                                                            creature.getParams().getTargetCreatureId() != null &&
+                                                            creature.getParams()
+                                                                    .getTargetCreatureId()
+                                                                    .equals(targetId) &&
+                                                            creature.getParams()
+                                                                    .getPathCalculationCooldownTimer()
+                                                                    .getTime() < 0.5f;
 
         Optional<Creature> otherCreature = game.getCreatures().values().stream().filter(creaturePredicate).findFirst();
 
-        return otherCreature.map(creature -> creature.params().pathTowardsTarget()).orElse(null);
+        return otherCreature.map(creature -> creature.getParams().getPathTowardsTarget()).orElse(null);
 
     }
 
     public void handleNewTarget(CreatureId potentialTargetId) {
-        if (params().targetCreatureId() == null || !params().targetCreatureId().equals(potentialTargetId)) {
-            params().forcePathCalculation(true);
-            params().targetCreatureId(potentialTargetId);
-            params().pathTowardsTarget(null);
+        if (getParams().getTargetCreatureId() == null || !getParams().getTargetCreatureId().equals(potentialTargetId)) {
+            getParams().setForcePathCalculation(true);
+            getParams().setTargetCreatureId(potentialTargetId);
+            getParams().setPathTowardsTarget(null);
         }
     }
 
 
     public void handleMovement(Creature potentialTarget) {
-        Float distance = params().pos().distance(potentialTarget.params().pos());
+        Float distance = getParams().getPos().distance(potentialTarget.getParams().getPos());
 
-        if (params().pathTowardsTarget() != null && !params().pathTowardsTarget().isEmpty()) { // path is available
-            List<Vector2> path = params().pathTowardsTarget();
+        if (getParams().getPathTowardsTarget() != null &&
+            !getParams().getPathTowardsTarget().isEmpty()) { // path is available
+            List<Vector2> path = getParams().getPathTowardsTarget();
             Vector2 nextNodeOnPath = path.get(0);
-            if (params().pos().distance(nextNodeOnPath) < 1f) {
+            if (getParams().getPos().distance(nextNodeOnPath) < 1f) {
                 List<Vector2> changedPath = new LinkedList<>(path);
                 changedPath.remove(0);
-                params().pathTowardsTarget(changedPath);
+                getParams().setPathTowardsTarget(changedPath);
             }
             else {
                 moveTowards(nextNodeOnPath);
@@ -304,25 +314,25 @@ public class Enemy extends Creature {
     }
 
     private void processStateAiHandleMovementLogic(Creature potentialTarget, Float distance) {
-        if (params().aiState() == EnemyAiState.AGGRESSIVE) {
-            if (distance > params().attackDistance() - 1f) {
-                params().speed(params().baseSpeed());
-                moveTowards(potentialTarget.params().pos());
+        if (getParams().getAiState() == EnemyAiState.AGGRESSIVE) {
+            if (distance > getParams().getAttackDistance() - 1f) {
+                getParams().setSpeed(getParams().getBaseSpeed());
+                moveTowards(potentialTarget.getParams().getPos());
             }
             else { // if no path or distance is small, then stop moving
                 stopMoving();
             }
         }
-        else if (params().aiState() == EnemyAiState.ALERTED) {
-            params().speed(params().baseSpeed() / 3);
-            if (params().defensivePosition() != null) {
-                moveTowards(params().defensivePosition());
+        else if (getParams().getAiState() == EnemyAiState.ALERTED) {
+            getParams().setSpeed(getParams().getBaseSpeed() / 3);
+            if (getParams().getDefensivePosition() != null) {
+                moveTowards(getParams().getDefensivePosition());
             }
         }
-        else if (params().aiState() == EnemyAiState.KEEPING_DISTANCE) {
-            params().speed(params().baseSpeed() / 2);
-            if (params().defensivePosition() != null) {
-                moveTowards(params().defensivePosition());
+        else if (getParams().getAiState() == EnemyAiState.KEEPING_DISTANCE) {
+            getParams().setSpeed(getParams().getBaseSpeed() / 2);
+            if (getParams().getDefensivePosition() != null) {
+                moveTowards(getParams().getDefensivePosition());
             }
         }
         else {
@@ -331,40 +341,40 @@ public class Enemy extends Creature {
     }
 
     public void handleAttackTarget(Creature potentialTarget, Vector2 vectorTowardsTarget, CreatureUpdatable game) {
-        if (potentialTarget.params().pos().distance(params().pos()) < params().attackDistance()) {
+        if (potentialTarget.getParams().getPos().distance(getParams().getPos()) < getParams().getAttackDistance()) {
 
-            game.handleAttackTarget(params().id(), vectorTowardsTarget, params().mainAttackSkill());
+            game.handleAttackTarget(getParams().getId(), vectorTowardsTarget, getParams().getMainAttackSkill());
 
         }
     }
 
     public void handleTargetLost() {
-        params().aggroedCreatureId(null);
-        params().targetCreatureId(null);
-        params().attackedByCreatureId(null);
-        params().lastFoundTargetId(null);
-        params().aiState(EnemyAiState.RESTING);
+        getParams().setAggroedCreatureId(null);
+        getParams().setTargetCreatureId(null);
+        getParams().setAttackedByCreatureId(null);
+        getParams().setLastFoundTargetId(null);
+        getParams().setAiState(EnemyAiState.RESTING);
         stopMoving();
     }
 
     public Float nextPositiveFloat() {
-        params().aiStateSeed(RandomHelper.seededRandomFloat(params().aiStateSeed()));
-        return params().aiStateSeed();
+        getParams().setAiStateSeed(RandomHelper.seededRandomFloat(getParams().getAiStateSeed()));
+        return getParams().getAiStateSeed();
     }
 
     public Float nextFloat() {
-        params().aiStateSeed(RandomHelper.seededRandomFloat(params().aiStateSeed()));
-        return (params().aiStateSeed() - 0.5f) * 2;
+        getParams().setAiStateSeed(RandomHelper.seededRandomFloat(getParams().getAiStateSeed()));
+        return (getParams().getAiStateSeed() - 0.5f) * 2;
     }
 
     @Override
     public WorldDirection facingDirection(GameRenderable game) {
 
         float deg;
-        if (params().targetCreatureId() != null) {
-            Vector2 targetPos = game.getCreaturePos(params().targetCreatureId());
+        if (getParams().getTargetCreatureId() != null) {
+            Vector2 targetPos = game.getCreaturePos(getParams().getTargetCreatureId());
             if (targetPos != null) {
-                deg = this.params().pos().vectorTowards(targetPos).angleDeg();
+                deg = this.getParams().getPos().vectorTowards(targetPos).angleDeg();
             }
             else {
                 deg = 0f;
@@ -372,7 +382,7 @@ public class Enemy extends Creature {
 
         }
         else {
-            deg = params().movingVector().angleDeg();
+            deg = getParams().getMovingVector().angleDeg();
         }
 
 
@@ -393,7 +403,7 @@ public class Enemy extends Creature {
 
     @Override
     public boolean canPerformSkill(Skill skill) {
-        return isAlive() && params().stamina() >= skill.staminaCost();
+        return isAlive() && getParams().getStamina() >= skill.getStaminaCost();
     }
 
 }

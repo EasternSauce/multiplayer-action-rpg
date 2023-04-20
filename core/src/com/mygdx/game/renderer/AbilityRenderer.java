@@ -30,14 +30,14 @@ public class AbilityRenderer {
 
     public static AbilityRenderer of(AbilityId abilityId) {
         AbilityRenderer abilityRenderer = new AbilityRenderer();
-        abilityRenderer.abilityId(abilityId);
+        abilityRenderer.setAbilityId(abilityId);
         return abilityRenderer;
     }
 
     public void init(TextureAtlas atlas, GameState gameState) {
         sprite = new Sprite();
 
-        Ability ability = gameState.abilities().get(abilityId);
+        Ability ability = gameState.getAbilities().get(abilityId);
 
         AbilityAnimationConfig animationConfig = ability.animationConfig();
 
@@ -45,66 +45,69 @@ public class AbilityRenderer {
             throw new RuntimeException("ability was not set up properly");
         }
 
-        channelTextureRegion = atlas.findRegion(animationConfig.channelSpriteType());
-        activeTextureRegion = atlas.findRegion(animationConfig.activeSpriteType());
+        channelTextureRegion = atlas.findRegion(animationConfig.getChannelSpriteType());
+        activeTextureRegion = atlas.findRegion(animationConfig.getActiveSpriteType());
 
         if (channelTextureRegion == null) {
-            throw new RuntimeException("region missing for " + animationConfig.channelSpriteType());
+            throw new RuntimeException("region missing for " + animationConfig.getChannelSpriteType());
         }
         if (activeTextureRegion == null) {
-            throw new RuntimeException("region missing for " + animationConfig.activeSpriteType());
+            throw new RuntimeException("region missing for " + animationConfig.getActiveSpriteType());
         }
 
-        TextureRegion[] channelFrames = new TextureRegion[animationConfig.channelFrameCount()];
-        for (int i = 0; i < animationConfig.channelFrameCount(); i++) {
+        TextureRegion[] channelFrames = new TextureRegion[animationConfig.getChannelFrameCount()];
+        for (int i = 0; i < animationConfig.getChannelFrameCount(); i++) {
             channelFrames[i] = new TextureRegion(channelTextureRegion,
-                                                 i * animationConfig.textureWidth(),
+                                                 i * animationConfig.getTextureWidth(),
                                                  0,
-                                                 animationConfig.textureWidth(),
-                                                 animationConfig.textureHeight());
+                                                 animationConfig.getTextureWidth(),
+                                                 animationConfig.getTextureHeight());
         }
 
-        channelAnimation = new Animation<>(animationConfig.channelFrameDuration(), channelFrames);
+        channelAnimation = new Animation<>(animationConfig.getChannelFrameDuration(), channelFrames);
 
-        TextureRegion[] activeFrames = new TextureRegion[animationConfig.activeFrameCount()];
-        for (int i = 0; i < animationConfig.activeFrameCount(); i++) {
+        TextureRegion[] activeFrames = new TextureRegion[animationConfig.getActiveFrameCount()];
+        for (int i = 0; i < animationConfig.getActiveFrameCount(); i++) {
             activeFrames[i] = new TextureRegion(activeTextureRegion,
-                                                i * animationConfig.textureWidth(),
+                                                i * animationConfig.getTextureWidth(),
                                                 0,
-                                                animationConfig.textureWidth(),
-                                                animationConfig.textureHeight());
+                                                animationConfig.getTextureWidth(),
+                                                animationConfig.getTextureHeight());
         }
 
-        activeAnimation = new Animation<>(animationConfig.activeFrameDuration(), activeFrames);
+        activeAnimation = new Animation<>(animationConfig.getActiveFrameDuration(), activeFrames);
 
     }
 
     private void updateSprite(TextureRegion texture, GameState gameState) {
 
-        Ability ability = gameState.abilities().get(abilityId);
+        Ability ability = gameState.getAbilities().get(abilityId);
 
         sprite.setRegion(texture);
-        sprite.setSize(ability.params().width(), ability.params().height());
-        sprite.setCenter(ability.params().pos().x(), ability.params().pos().y());
+        sprite.setSize(ability.getParams().getWidth(), ability.getParams().getHeight());
+        sprite.setCenter(ability.getParams().getPos().getX(), ability.getParams().getPos().getY());
         sprite.setOriginCenter();
-        sprite.setRotation(ability.params().rotationAngle() + ability.params().rotationShift());
-        sprite.setFlip(false, ability.params().flip());
+        sprite.setRotation(ability.getParams().getRotationAngle() + ability.getParams().getRotationShift());
+        sprite.setFlip(false, ability.getParams().getIsFlip());
 
     }
 
     public void update(GameState gameState) {
 
-        Ability ability = gameState.abilities().get(abilityId);
+        Ability ability = gameState.getAbilities().get(abilityId);
 
         if (ability != null) {
-            if (ability.params().channelTime() > 0f && ability.params().state() == AbilityState.CHANNEL) {
-                TextureRegion texture = channelAnimation().getKeyFrame(ability.params().stateTimer().time(),
-                                                                       ability.params().isChannelAnimationLooping());
+            if (ability.getParams().getChannelTime() > 0f && ability.getParams().getState() == AbilityState.CHANNEL) {
+                TextureRegion texture = getChannelAnimation().getKeyFrame(ability.getParams().getStateTimer().getTime(),
+                                                                          ability.getParams()
+                                                                                 .getIsChannelAnimationLooping());
                 updateSprite(texture, gameState);
             }
-            else if (ability.params().activeTime() > 0f && ability.params().state() == AbilityState.ACTIVE) {
-                TextureRegion texture = activeAnimation().getKeyFrame(ability.params().stateTimer().time(),
-                                                                      ability.params().isActiveAnimationLooping());
+            else if (ability.getParams().getActiveTime() > 0f &&
+                     ability.getParams().getState() == AbilityState.ACTIVE) {
+                TextureRegion texture = getActiveAnimation().getKeyFrame(ability.getParams().getStateTimer().getTime(),
+                                                                         ability.getParams()
+                                                                                .getIsActiveAnimationLooping());
                 updateSprite(texture, gameState);
             }
         }
@@ -116,11 +119,12 @@ public class AbilityRenderer {
 
         if (ability != null) {
             if (sprite.getTexture() != null) {
-                if (ability.params().channelTime() > 0f && ability.params().state() == AbilityState.CHANNEL) {
-                    sprite.draw(renderingLayer.spriteBatch());
+                if (ability.getParams().getChannelTime() > 0f &&
+                    ability.getParams().getState() == AbilityState.CHANNEL) {
+                    sprite.draw(renderingLayer.getSpriteBatch());
                 }
-                if (ability.params().activeTime() > 0f && ability.params().state() == AbilityState.ACTIVE) {
-                    sprite.draw(renderingLayer.spriteBatch());
+                if (ability.getParams().getActiveTime() > 0f && ability.getParams().getState() == AbilityState.ACTIVE) {
+                    sprite.draw(renderingLayer.getSpriteBatch());
                 }
             }
         }

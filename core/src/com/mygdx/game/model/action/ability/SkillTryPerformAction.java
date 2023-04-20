@@ -38,7 +38,7 @@ public class SkillTryPerformAction extends GameStateAction {
         Creature creature = game.getCreature(creatureId);
 
         if (creature != null) {
-            Skill skill = creature.params().skills().get(skillType);
+            Skill skill = creature.getParams().getSkills().get(skillType);
 
             skill.tryPerform(startingPos, dirVector, game);
 

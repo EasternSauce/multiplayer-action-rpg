@@ -11,17 +11,16 @@ import com.mygdx.game.physics.world.PhysicsWorld;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-
 public class CreatureBody {
-    CreatureId creatureId;
+    private CreatureId creatureId;
 
-    Body b2Body;
+    private Body b2Body;
 
-    Boolean bodyCreated;
+    private Boolean bodyCreated;
 
-    PhysicsWorld world;
+    private PhysicsWorld world;
 
-    Boolean isActive = true;
+    private Boolean isActive = true;
 
     public static CreatureBody of(CreatureId creatureId) {
         CreatureBody creatureBody = new CreatureBody();
@@ -48,23 +47,23 @@ public class CreatureBody {
     }
 
     public void update(GameState gameState) {
-        if (!gameState.creatures().containsKey(creatureId)) {
+        if (!gameState.getCreatures().containsKey(creatureId)) {
             return;
         }
 
-        Creature creature = gameState.creatures().get(creatureId);
+        Creature creature = gameState.getCreatures().get(creatureId);
 
         setSensor(!creature.isAlive());
 
-        float v = creature.params().speed();
+        float v = creature.getParams().getSpeed();
 
-        Vector2 normalMovingVector = creature.params().movingVector();
+        Vector2 normalMovingVector = creature.getParams().getMovingVector();
 
-        float vectorX = normalMovingVector.x() * v;
-        float vectorY = normalMovingVector.y() * v;
+        float vectorX = normalMovingVector.getX() * v;
+        float vectorY = normalMovingVector.getY() * v;
 
         if (bodyCreated) {
-            if (creature.params().isMoving()) {
+            if (creature.getParams().getIsMoving()) {
                 setVelocity(Vector2.of(vectorX, vectorY));
             }
             else {
@@ -76,7 +75,7 @@ public class CreatureBody {
     }
 
     public void setVelocity(Vector2 velocity) {
-        b2Body.setLinearVelocity(new com.badlogic.gdx.math.Vector2(velocity.x(), velocity.y()));
+        b2Body.setLinearVelocity(new com.badlogic.gdx.math.Vector2(velocity.getX(), velocity.getY()));
     }
 
     public Vector2 getBodyPos() {
@@ -84,7 +83,7 @@ public class CreatureBody {
     }
 
     public void trySetTransform(Vector2 vector) {
-        if (!world.b2world().isLocked()) {
+        if (!world.getB2world().isLocked()) {
             forceSetTransform(vector);
         }
 
@@ -92,11 +91,11 @@ public class CreatureBody {
 
 
     public void forceSetTransform(Vector2 vector) {
-        b2Body.setTransform(vector.x(), vector.y(), b2Body.getAngle());
+        b2Body.setTransform(vector.getX(), vector.getY(), b2Body.getAngle());
     }
 
     public void onRemove() {
-        world.b2world().destroyBody(b2Body);
+        world.getB2world().destroyBody(b2Body);
     }
 
 
@@ -109,5 +108,9 @@ public class CreatureBody {
             this.isActive = isActive;
             b2Body.setActive(isActive);
         }
+    }
+
+    public CreatureId getCreatureId() {
+        return creatureId;
     }
 }

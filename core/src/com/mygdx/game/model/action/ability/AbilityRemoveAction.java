@@ -19,10 +19,10 @@ public class AbilityRemoveAction extends GameStateAction {
 
     @Override
     public Vector2 actionObjectPos(GameState gameState) {
-        if (!gameState.abilities().containsKey(abilityId)) {
+        if (!gameState.getAbilities().containsKey(abilityId)) {
             return Vector2.of(0f, 0f);
         }
-        return gameState.abilities().get(abilityId).params().pos();
+        return gameState.getAbilities().get(abilityId).getParams().getPos();
     }
 
     @Override

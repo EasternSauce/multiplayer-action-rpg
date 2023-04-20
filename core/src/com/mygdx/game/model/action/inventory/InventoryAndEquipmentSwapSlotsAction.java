@@ -37,38 +37,39 @@ public class InventoryAndEquipmentSwapSlotsAction extends GameStateAction {
         Creature player = game.getCreature(creatureId);
         PlayerParams playerParams = game.getPlayerParams(creatureId);
 
-        Item inventoryItem = player.params().inventoryItems().get(inventoryIndex);
-        Item equipmentItem = player.params().equipmentItems().get(equipmentIndex);
+        Item inventoryItem = player.getParams().getInventoryItems().get(inventoryIndex);
+        Item equipmentItem = player.getParams().getEquipmentItems().get(equipmentIndex);
 
-        if (inventoryItem == null || inventoryItem.template().equipmentSlotType() ==
-                                     EquipmentSlotType.equipmentSlots.get(equipmentIndex)) {
+        if (inventoryItem == null ||
+            inventoryItem.getTemplate().getEquipmentSlotType() ==
+            EquipmentSlotType.equipmentSlots.get(equipmentIndex)) {
             if (equipmentItem != null) {
-                player.params().inventoryItems().put(inventoryIndex, equipmentItem);
+                player.getParams().getInventoryItems().put(inventoryIndex, equipmentItem);
             }
             else {
-                player.params().inventoryItems().remove(inventoryIndex);
+                player.getParams().getInventoryItems().remove(inventoryIndex);
             }
             if (inventoryItem != null) {
-                player.params().equipmentItems().put(equipmentIndex, inventoryItem);
+                player.getParams().getEquipmentItems().put(equipmentIndex, inventoryItem);
             }
             else {
-                player.params().equipmentItems().remove(equipmentIndex);
+                player.getParams().getEquipmentItems().remove(equipmentIndex);
             }
 
         }
 
-        playerParams.inventoryItemBeingMoved(null);
-        playerParams.equipmentItemBeingMoved(null);
+        playerParams.setInventoryItemBeingMoved(null);
+        playerParams.setEquipmentItemBeingMoved(null);
 
-        playerParams.skillMenuPickerSlotBeingChanged(null);
+        playerParams.setIsSkillMenuPickerSlotBeingChanged(null);
 
         Set<Integer> slotsToRemove = new ConcurrentSkipListSet<>();
-        playerParams.skillMenuSlots().forEach((slotIndex, skillType) -> {
+        playerParams.getSkillMenuSlots().forEach((slotIndex, skillType) -> {
             if (!player.availableSkills().containsKey(skillType)) {
                 slotsToRemove.add(slotIndex);
             }
         });
-        slotsToRemove.forEach(slotIndex -> playerParams.skillMenuSlots().remove(slotIndex));
+        slotsToRemove.forEach(slotIndex -> playerParams.getSkillMenuSlots().remove(slotIndex));
 
 
     }

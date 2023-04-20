@@ -21,7 +21,7 @@ public class AstarNode {
         return astarNode;
     }
 
-    public Vector2Int pos() {
-        return pathingNode.pos();
+    public Vector2Int getPos() {
+        return pathingNode.getPos();
     }
 }

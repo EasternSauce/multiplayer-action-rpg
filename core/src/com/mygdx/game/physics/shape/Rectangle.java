@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-public
-class Rectangle implements BodyShape {
+public class Rectangle implements BodyShape {
     float width;
     float height;
 

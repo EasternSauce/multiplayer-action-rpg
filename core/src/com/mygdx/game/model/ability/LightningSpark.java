@@ -22,32 +22,33 @@ public class LightningSpark extends Ability {
     AbilityParams params;
 
     public static LightningSpark of(AbilityParams abilityParams, AbilityUpdatable game) {
-        Creature creature = game.getCreature(abilityParams.creatureId());
+        Creature creature = game.getCreature(abilityParams.getCreatureId());
 
         //        Vector2 pos;
-        //        if (abilityParams.dirVector() != null) {
-        //            pos = LightningSpark.calculatePos(creature.params().pos().add(abilityParams.dirVector()),
-        //                                              creature.params().pos());
+        //        if (abilityParams.getDirVector() != null) {
+        //            pos = LightningSpark.calculatePos(creature.getParams().getPos().add(abilityParams.getDirVector()),
+        //                                              creature.getParams().getPos());
         //        } else {
-        //            pos = LightningSpark.calculatePos(creature.params().pos().add(Vector2.of(0f, 0f)),
-        //                                              creature.params().pos());
+        //            pos = LightningSpark.calculatePos(creature.getParams().getPos().add(Vector2.of(0f, 0f)),
+        //                                              creature.getParams().getPos());
         //        }
 
         LightningSpark ability = LightningSpark.of();
-        ability.params =
-                abilityParams.width(3f)
-                             .height(3f)
-                             .channelTime(0f)
-                             .activeTime(0.4f)
-                             .textureName("lightning")
-                             .baseDamage(30f)
-                             .isActiveAnimationLooping(true)
-                             .attackWithoutMoving(true)
-                             .isSkipCreatingBody(true)
-                             .rotationShift(0f)
-                             .delayedActionTime(0.001f)
-                             .pos(LightningSpark.calculatePos(creature.params().pos().add(abilityParams.dirVector()),
-                                                              creature.params().pos()));
+        ability.params = abilityParams.setWidth(3f)
+                                      .setHeight(3f)
+                                      .setChannelTime(0f)
+                                      .setActiveTime(0.4f)
+                                      .setTextureName("lightning")
+                                      .setBaseDamage(30f)
+                                      .setIsActiveAnimationLooping(true)
+                                      .setAttackWithoutMoving(true)
+                                      .setIsSkipCreatingBody(true)
+                                      .setRotationShift(0f)
+                                      .setDelayedActionTime(0.001f)
+                                      .setPos(LightningSpark.calculatePos(creature.getParams()
+                                                                                  .getPos()
+                                                                                  .add(abilityParams.getDirVector()),
+                                                                          creature.getParams().getPos()));
 
         return ability;
     }
@@ -80,25 +81,27 @@ public class LightningSpark extends Ability {
     @Override
     void onDelayedAction(AbilityUpdatable game) {
         // find the closest enemy, and if they are within distance, and haven't been hit yet, then put node over them
-        Set<CreatureId> excluded = new HashSet<>(params().creaturesAlreadyHit().keySet());
-        excluded.add(params().creatureId());
+        Set<CreatureId> excluded = new HashSet<>(getParams().getCreaturesAlreadyHit().keySet());
+        excluded.add(getParams().getCreatureId());
 
-        Creature targetCreature = game.getCreature(game.getAliveCreatureIdClosestTo(params().pos(), 13f, excluded));
+        Creature targetCreature =
+                game.getCreature(game.getAliveCreatureIdClosestTo(getParams().getPos(), 13f, excluded));
 
         if (targetCreature != null &&
-            game.isLineOfSight(params().areaId(), params().pos(), targetCreature.params().pos())) {
+            game.isLineOfSight(getParams().getAreaId(), getParams().getPos(), targetCreature.getParams().getPos())) {
 
-            game.onAbilityHitsCreature(targetCreature.id(), params().creatureId(), this);
+            game.onAbilityHitsCreature(targetCreature.getId(), getParams().getCreatureId(), this);
 
-            params().creaturesAlreadyHit().put(targetCreature.id(), params().stateTimer().time());
+            getParams().getCreaturesAlreadyHit().put(targetCreature.getId(), getParams().getStateTimer().getTime());
+
+            game.chainAbility(this, AbilityType.LIGHTNING_CHAIN, targetCreature.getParams().getPos(),
+                              // this pos is later changed, TODO: move it to other param?
+                              params.getDirVector());
 
             game.chainAbility(this,
-                              AbilityType.LIGHTNING_CHAIN,
-                              targetCreature.params().pos(),
-                              // this pos is later changed, TODO: move it to other param?
-                              params.dirVector());
-
-            game.chainAbility(this, AbilityType.LIGHTNING_NODE, targetCreature.params().pos(), params.dirVector());
+                              AbilityType.LIGHTNING_NODE,
+                              targetCreature.getParams().getPos(),
+                              params.getDirVector());
         }
     }
 

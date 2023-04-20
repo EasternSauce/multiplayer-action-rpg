@@ -64,11 +64,11 @@ public class PhysicsWorld {
 
     public Vector2 getTileCenter(Vector2Int pos) {
 
-        return Vector2.of(pos.x() * tileWidth + tileWidth / 2, pos.y() * tileHeight + tileHeight / 2);
+        return Vector2.of(pos.getX() * tileWidth + tileWidth / 2, pos.getY() * tileHeight + tileHeight / 2);
     }
 
     public Vector2Int getClosestTile(Vector2 pos) {
-        return Vector2Int.of((int) (pos.x() / tileWidth), (int) (pos.y() / tileHeight));
+        return Vector2Int.of((int) (pos.getX() / tileWidth), (int) (pos.getY() / tileHeight));
     }
 
     public void init() {
@@ -137,9 +137,11 @@ public class PhysicsWorld {
                             final int _y = y;
 
                             combinations.stream()
-                                        .filter(pos -> tileExists(_x + pos.x(), _y + pos.y()))
-                                        .forEach(tilePos -> traversablesWithMargins.put(Vector2Int.of(_x + tilePos.x(),
-                                                                                                      _y + tilePos.y()),
+                                        .filter(pos -> tileExists(_x + pos.getX(), _y + pos.getY()))
+                                        .forEach(tilePos -> traversablesWithMargins.put(Vector2Int.of(_x +
+                                                                                                      tilePos.getX(),
+                                                                                                      _y +
+                                                                                                      tilePos.getY()),
                                                                                         false));
 
                         }
@@ -198,12 +200,11 @@ public class PhysicsWorld {
 
     public void tryAddClearance(Vector2Int pos, Integer level) {
         if (!clearances.containsKey(pos) &&
-            pos.x() >= 0 &&
-            pos.y() >= 0 &&
-            pos.x() < widthInTiles() &&
-            pos.y() < heightInTiles() &&
-            traversables.get(
-                    pos)) {
+            pos.getX() >= 0 &&
+            pos.getY() >= 0 &&
+            pos.getX() < widthInTiles() &&
+            pos.getY() < heightInTiles() &&
+            traversables.get(pos)) {
             clearances.put(pos, level);
         }
     }
@@ -240,8 +241,8 @@ public class PhysicsWorld {
 
 
             lowerLevelClearances.forEach(pos -> {
-                int x = pos.x();
-                int y = pos.y();
+                int x = pos.getX();
+                int y = pos.getY();
 
                 tryAddClearance(Vector2Int.of(x - 1, y - 1), level);
                 tryAddClearance(Vector2Int.of(x, y - 1), level);
@@ -265,15 +266,14 @@ public class PhysicsWorld {
     public Boolean isLineOfSight(Vector2 fromPos, Vector2 toPos) {
         float lineWidth = 0.3f;
         com.badlogic.gdx.math.Polygon lineOfSightRect =
-                new com.badlogic.gdx.math.Polygon(new float[]{fromPos.x(), fromPos.y(), fromPos.x() +
-                                                                                        lineWidth, fromPos.y() +
-                                                                                                   lineWidth, toPos.x() +
-                                                                                                              lineWidth,
-                        toPos.y() +
-                        lineWidth, toPos.x(), toPos.y()});
+                new com.badlogic.gdx.math.Polygon(new float[]{fromPos.getX(), fromPos.getY(), fromPos.getX() +
+                                                                                              lineWidth, fromPos.getY() +
+                                                                                                         lineWidth,
+                        toPos.getX() +
+                        lineWidth, toPos.getY() + lineWidth, toPos.getX(), toPos.getY()});
 
         List<com.badlogic.gdx.math.Polygon> polygons =
-                terrainTiles.stream().map(TerrainTileBody::polygon).collect(Collectors.toList());
+                terrainTiles.stream().map(TerrainTileBody::getPolygon).collect(Collectors.toList());
 
         boolean overlaps = false;
 

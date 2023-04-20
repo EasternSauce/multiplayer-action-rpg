@@ -26,17 +26,16 @@ public class LootPileBody {
     public void init(MyGdxGame game) {
         LootPile lootPile = game.getLootPile(lootPileId);
 
-        world = game.getPhysicsWorld(lootPile.areaId());
+        world = game.getPhysicsWorld(lootPile.getAreaId());
 
-        b2Body =
-                B2BodyFactory.createLootPileB2body(world,
-                                                   this,
-                                                   lootPile.pos(),
-                                                   lootPile.width(),
-                                                   lootPile.height());
+        b2Body = B2BodyFactory.createLootPileB2body(world,
+                                                    this,
+                                                    lootPile.getPos(),
+                                                    lootPile.getWidth(),
+                                                    lootPile.getHeight());
     }
 
     public void onRemove() {
-        world.b2world().destroyBody(b2Body);
+        world.getB2world().destroyBody(b2Body);
     }
 }

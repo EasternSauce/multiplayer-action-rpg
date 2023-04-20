@@ -30,17 +30,17 @@ public class CreatureRespawnAction extends GameStateAction {
         Creature creature = game.getCreature(creatureId);
 
         if (creature != null) {
-            creature.params().awaitingRespawn(false);
-            creature.params().isDead(false);
-            creature.params().life(creature.params().maxLife());
-            creature.params().stamina(creature.params().maxStamina());
-            creature.params().mana(creature.params().maxMana());
+            creature.getParams().setIsAwaitingRespawn(false);
+            creature.getParams().setIsDead(false);
+            creature.getParams().setLife(creature.getParams().getMaxLife());
+            creature.getParams().setStamina(creature.getParams().getMaxStamina());
+            creature.getParams().setMana(creature.getParams().getMaxMana());
 
-            creature.params().pos(pos);
+            creature.getParams().setPos(pos);
             game.addTeleportEvent(TeleportEvent.of(creatureId,
                                                    pos,
-                                                   creature.params().areaId(),
-                                                   creature.params().areaId()));
+                                                   creature.getParams().getAreaId(),
+                                                   creature.getParams().getAreaId()));
         }
 
     }

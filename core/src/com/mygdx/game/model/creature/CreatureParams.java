@@ -74,7 +74,7 @@ public class CreatureParams {
     Float actionCooldown = 0.7f;
 
     Boolean isDead = false;
-    Boolean awaitingRespawn = false;
+    Boolean isAwaitingRespawn = false;
 
     SimpleTimer staminaRegenerationTimer = SimpleTimer.getStartedTimer();
     Float staminaRegenerationTickTime = 0.02f;
@@ -128,8 +128,8 @@ public class CreatureParams {
     public static CreatureParams of(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn) {
         return getCreatureParams(creatureId,
                                  areaId,
-                                 enemySpawn.pos(),
-                                 enemySpawn.enemyTemplate().enemyType().textureName);
+                                 enemySpawn.getPos(),
+                                 enemySpawn.getEnemyTemplate().getEnemyType().textureName);
     }
 
 
@@ -155,10 +155,9 @@ public class CreatureParams {
                                                                             skillType -> Skill.of(skillType,
                                                                                                   creatureId))));
 
-        params.effects =
-                new ConcurrentSkipListMap<>(Arrays.stream(CreatureEffect.values())
-                                                  .collect(Collectors.toMap(effect -> effect,
-                                                                            effect -> CreatureEffectState.of())));
+        params.effects = new ConcurrentSkipListMap<>(Arrays.stream(CreatureEffect.values())
+                                                           .collect(Collectors.toMap(effect -> effect,
+                                                                                     effect -> CreatureEffectState.of())));
 
         params.aiStateSeed = (float) Math.random();
         params.aiStateTime = 0f;
@@ -172,19 +171,23 @@ public class CreatureParams {
 
         params.inventoryItems.put(2,
                                   Item.of()
-                                      .template(ItemTemplate.templates.get("leatherArmor"))
-                                      .qualityModifier(0.6f)
-                                      .grantedSkills(grantedSkills1));
+                                      .setTemplate(ItemTemplate.templates.get("leatherArmor"))
+                                      .setQualityModifier(0.6f)
+                                      .setGrantedSkills(grantedSkills1));
         params.inventoryItems.put(3,
-                                  Item.of().template(ItemTemplate.templates.get("leatherArmor")).qualityModifier(1f));
+                                  Item.of()
+                                      .setTemplate(ItemTemplate.templates.get("leatherArmor"))
+                                      .setQualityModifier(1f));
         params.inventoryItems.put(10,
-                                  Item.of().template(ItemTemplate.templates.get("hideGloves")).qualityModifier(0.9f));
+                                  Item.of()
+                                      .setTemplate(ItemTemplate.templates.get("hideGloves"))
+                                      .setQualityModifier(0.9f));
 
         params.inventoryItems.put(11,
                                   Item.of()
-                                      .template(ItemTemplate.templates.get("woodenShield"))
-                                      .qualityModifier(1.0f)
-                                      .grantedSkills(grantedSkills2));
+                                      .setTemplate(ItemTemplate.templates.get("woodenShield"))
+                                      .setQualityModifier(1.0f)
+                                      .setGrantedSkills(grantedSkills2));
         return params;
     }
 

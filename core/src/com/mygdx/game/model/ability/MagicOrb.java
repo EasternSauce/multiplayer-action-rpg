@@ -21,19 +21,17 @@ public class MagicOrb extends Projectile {
 
     public static MagicOrb of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
         MagicOrb ability = MagicOrb.of();
-        ability.params =
-                abilityParams
-                        .width(1.5f)
-                        .height(1.5f)
-                        .channelTime(0f)
-                        .activeTime(30f)
-                        .textureName("magic_orb")
-                        .baseDamage(40f)
-                        .isChannelAnimationLooping(false)
-                        .isActiveAnimationLooping(true)
-                        .rotationShift(0f)
-                        .delayedActionTime(0.001f)
-                        .speed(12f);
+        ability.params = abilityParams.setWidth(1.5f)
+                                      .setHeight(1.5f)
+                                      .setChannelTime(0f)
+                                      .setActiveTime(30f)
+                                      .setTextureName("magic_orb")
+                                      .setBaseDamage(40f)
+                                      .setIsChannelAnimationLooping(false)
+                                      .setIsActiveAnimationLooping(true)
+                                      .setRotationShift(0f)
+                                      .setDelayedActionTime(0.001f)
+                                      .setSpeed(12f);
 
 
         return ability;
@@ -77,7 +75,7 @@ public class MagicOrb extends Projectile {
 
     @Override
     public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
-        if (params().stateTimer().time() > 0.1f) {
+        if (getParams().getStateTimer().getTime() > 0.1f) {
             deactivate();
         }
     }
@@ -95,37 +93,39 @@ public class MagicOrb extends Projectile {
 
     @Override
     void onActiveUpdate(AbilityUpdatable game) {
-        if (params().speed() != null) {
-            params().velocity(params().dirVector().normalized().multiplyBy(params().speed()));
+        if (getParams().getSpeed() != null) {
+            getParams().setVelocity(getParams().getDirVector().normalized().multiplyBy(getParams().getSpeed()));
         }
-        params().rotationAngle(params().dirVector().angleDeg());
+        getParams().setRotationAngle(getParams().getDirVector().angleDeg());
 
         Creature minCreature = null;
         float minDistance = Float.MAX_VALUE;
 
-        Creature thisCreature = game.getCreature(params().creatureId());
+        Creature thisCreature = game.getCreature(getParams().getCreatureId());
 
-        for (Creature creature : game.getCreatures().values()
+        for (Creature creature : game.getCreatures()
+                                     .values()
                                      .stream()
-                                     .filter(targetCreature -> !targetCreature.params()
-                                                                              .id()
-                                                                              .equals(params().creatureId()) &&
+                                     .filter(targetCreature -> !targetCreature.getParams()
+                                                                              .getId()
+                                                                              .equals(getParams().getCreatureId()) &&
                                                                targetCreature.isAlive() &&
                                                                isTargetingAllowed(thisCreature, targetCreature) &&
-                                                               targetCreature.params().pos().distance(params().pos()) <
-                                                               20f)
+                                                               targetCreature.getParams()
+                                                                             .getPos()
+                                                                             .distance(getParams().getPos()) < 20f)
                                      .collect(Collectors.toSet())) {
-            if (creature.params().pos().distance(params().pos()) < minDistance) {
+            if (creature.getParams().getPos().distance(getParams().getPos()) < minDistance) {
                 minCreature = creature;
-                minDistance = creature.params().pos().distance(params().pos());
+                minDistance = creature.getParams().getPos().distance(getParams().getPos());
             }
         }
 
 
         if (minCreature != null) {
-            Vector2 vectorTowards = params().pos().vectorTowards(minCreature.params().pos());
+            Vector2 vectorTowards = getParams().getPos().vectorTowards(minCreature.getParams().getPos());
             float targetAngleDeg = vectorTowards.angleDeg();
-            float currentAngleDeg = params().dirVector().angleDeg();
+            float currentAngleDeg = getParams().getDirVector().angleDeg();
 
             float alpha = targetAngleDeg - currentAngleDeg;
             float beta = targetAngleDeg - currentAngleDeg + 360;
@@ -151,21 +151,21 @@ public class MagicOrb extends Projectile {
 
             float increment = 1.5f;
 
-            if (params().stateTimer().time() > 0.5f && params().stateTimer().time() < 2f) {
-                increment = 1.5f - (params().stateTimer().time() - 0.5f) / 1.5f * 1.5f;
+            if (getParams().getStateTimer().getTime() > 0.5f && getParams().getStateTimer().getTime() < 2f) {
+                increment = 1.5f - (getParams().getStateTimer().getTime() - 0.5f) / 1.5f * 1.5f;
             }
-            else if (params().stateTimer().time() >= 2f) {
+            else if (getParams().getStateTimer().getTime() >= 2f) {
                 increment = 0f;
             }
 
             if (result > increment) {
-                params().dirVector(params().dirVector().rotateDeg(increment));
+                getParams().setDirVector(getParams().getDirVector().rotateDeg(increment));
             }
             else if (result < -increment) {
-                params().dirVector(params().dirVector().rotateDeg(-increment));
+                getParams().setDirVector(getParams().getDirVector().rotateDeg(-increment));
             }
             else {
-                params().dirVector(params().dirVector().setAngleDeg(targetAngleDeg));
+                getParams().setDirVector(getParams().getDirVector().setAngleDeg(targetAngleDeg));
             }
 
         }

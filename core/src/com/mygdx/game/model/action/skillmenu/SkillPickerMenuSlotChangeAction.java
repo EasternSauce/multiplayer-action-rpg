@@ -30,7 +30,7 @@ public class SkillPickerMenuSlotChangeAction extends GameStateAction {
     public void applyToGame(GameActionApplicable game) {
         PlayerParams playerParams = game.getPlayerParams(playerId);
 
-        playerParams.skillMenuSlots().put(playerParams.skillMenuPickerSlotBeingChanged(), skillType);
-        playerParams.skillMenuPickerSlotBeingChanged(null);
+        playerParams.getSkillMenuSlots().put(playerParams.getIsSkillMenuPickerSlotBeingChanged(), skillType);
+        playerParams.setIsSkillMenuPickerSlotBeingChanged(null);
     }
 }

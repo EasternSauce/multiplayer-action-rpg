@@ -33,27 +33,27 @@ public class InventorySwapSlotsAction extends GameStateAction {
         Creature player = game.getCreature(creatureId);
         PlayerParams playerParams = game.getPlayerParams(creatureId);
 
-        Item itemFrom = player.params().inventoryItems().get(fromSlotIndex);
+        Item itemFrom = player.getParams().getInventoryItems().get(fromSlotIndex);
         //noinspection UnnecessaryLocalVariable
-        Item itemTo = player.params().inventoryItems().get(toSlotIndex);
+        Item itemTo = player.getParams().getInventoryItems().get(toSlotIndex);
 
         //noinspection UnnecessaryLocalVariable
         Item temp = itemTo;
 
         if (itemFrom != null) {
-            player.params().inventoryItems().put(toSlotIndex, itemFrom);
+            player.getParams().getInventoryItems().put(toSlotIndex, itemFrom);
         }
         else {
-            player.params().inventoryItems().remove(toSlotIndex);
+            player.getParams().getInventoryItems().remove(toSlotIndex);
         }
         if (temp != null) {
-            player.params().inventoryItems().put(fromSlotIndex, temp);
+            player.getParams().getInventoryItems().put(fromSlotIndex, temp);
         }
         else {
-            player.params().inventoryItems().remove(fromSlotIndex);
+            player.getParams().getInventoryItems().remove(fromSlotIndex);
         }
 
-        playerParams.inventoryItemBeingMoved(null);
-        playerParams.equipmentItemBeingMoved(null);
+        playerParams.setInventoryItemBeingMoved(null);
+        playerParams.setEquipmentItemBeingMoved(null);
     }
 }

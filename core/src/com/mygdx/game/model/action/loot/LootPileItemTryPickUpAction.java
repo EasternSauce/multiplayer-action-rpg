@@ -31,28 +31,28 @@ public class LootPileItemTryPickUpAction extends GameStateAction {
     public void applyToGame(GameActionApplicable game) {
         Integer freeSlot = null;
         for (int i = 0; i < InventoryHelper.INVENTORY_TOTAL_SLOTS; i++) {
-            if (!game.getCreature(playerId).params().inventoryItems().containsKey(i)) {
+            if (!game.getCreature(playerId).getParams().getInventoryItems().containsKey(i)) {
                 freeSlot = i;
                 break;
             }
         }
 
-        LootPile lootPile = game.getLootPile(item.lootPileId());
+        LootPile lootPile = game.getLootPile(item.getLootPileId());
         if (freeSlot != null && lootPile != null) {
             game.getCreature(playerId)
-                .params()
-                .inventoryItems()
+                .getParams()
+                .getInventoryItems()
                 .put(freeSlot,
                      Item.of()
-                         .template(item.template())
-                         .quantity(item.quantity())
-                         .qualityModifier(item.qualityModifier())
-                         .grantedSkills(item.grantedSkills())
-                         .lootPileId(null));
+                         .setTemplate(item.getTemplate())
+                         .setQuantity(item.getQuantity())
+                         .setQualityModifier(item.getQualityModifier())
+                         .setGrantedSkills(item.getGrantedSkills())
+                         .setLootPileId(null));
 
-            lootPile.items().remove(item);
-            if (lootPile.items().isEmpty()) {
-                lootPile.isFullyLooted(true);
+            lootPile.getItems().remove(item);
+            if (lootPile.getItems().isEmpty()) {
+                lootPile.setIsFullyLooted(true);
             }
         }
 

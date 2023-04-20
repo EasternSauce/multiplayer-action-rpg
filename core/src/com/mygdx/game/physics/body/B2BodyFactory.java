@@ -26,9 +26,9 @@ public class B2BodyFactory {
                                     Float mass) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = bodyType;
-        bodyDef.position.set(pos.x(), pos.y());
+        bodyDef.position.set(pos.getX(), pos.getY());
 
-        Body b2body = world.b2world().createBody(bodyDef);
+        Body b2body = world.getB2world().createBody(bodyDef);
 
         b2body.setUserData(userData);
 
@@ -58,13 +58,13 @@ public class B2BodyFactory {
 
     public static Body createTerrainTileB2body(PhysicsWorld world, TerrainTileBody terrainTileBody) {
         return createB2Body(world,
-                            Vector2.of(terrainTileBody.pos().x() * terrainTileBody.tileWidth() +
-                                       terrainTileBody.tileWidth() / 2,
-                                       terrainTileBody.pos().y() * terrainTileBody.tileHeight() +
-                                       terrainTileBody.tileHeight() / 2),
+                            Vector2.of(terrainTileBody.getPos().getX() * terrainTileBody.getTileWidth() +
+                                       terrainTileBody.getTileWidth() / 2,
+                                       terrainTileBody.getPos().getY() * terrainTileBody.getTileHeight() +
+                                       terrainTileBody.getTileHeight() / 2),
                             BodyType.StaticBody,
                             terrainTileBody,
-                            Rectangle.of(terrainTileBody.tileWidth(), terrainTileBody.tileHeight()),
+                            Rectangle.of(terrainTileBody.getTileWidth(), terrainTileBody.getTileHeight()),
                             false,
                             false,
                             null,
@@ -74,10 +74,10 @@ public class B2BodyFactory {
 
     public static Body createCreatureB2Body(PhysicsWorld world, CreatureBody creatureBody, Creature creature) {
         return createB2Body(world,
-                            creature.params().pos(),
+                            creature.getParams().getPos(),
                             BodyType.DynamicBody,
                             creatureBody,
-                            Circle.of(creature.animationConfig().spriteWidth() / 2f),
+                            Circle.of(creature.animationConfig().getSpriteWidth() / 2f),
                             false,
                             false,
                             10f,

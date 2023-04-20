@@ -31,7 +31,7 @@ public class InventoryItemPickUpAction extends GameStateAction {
         PlayerParams playerParams = game.getPlayerParams(creatureId);
 
         if (playerParams != null) {
-            playerParams.inventoryItemBeingMoved(slotIndex);
+            playerParams.setInventoryItemBeingMoved(slotIndex);
         }
     }
 }

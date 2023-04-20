@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.renderer.RenderingLayer;
 
-public class Assets {
+public class Assets { // TODO: make separate font class
 
     final static String youngSerifFontPath = "assets/font/Helvetica 400.ttf";
 
@@ -39,21 +39,21 @@ public class Assets {
 
     public static void renderSmallFont(RenderingLayer renderingLayer, String text, Vector2 pos, Color color) {
         smallFont.setColor(color);
-        smallFont.draw(renderingLayer.spriteBatch(), text, pos.x(), pos.y());
+        smallFont.draw(renderingLayer.getSpriteBatch(), text, pos.getX(), pos.getY());
     }
 
     public static void renderVerySmallFont(RenderingLayer renderingLayer, String text, Vector2 pos, Color color) {
         verySmallFont.setColor(color);
-        verySmallFont.draw(renderingLayer.spriteBatch(), text, pos.x(), pos.y());
+        verySmallFont.draw(renderingLayer.getSpriteBatch(), text, pos.getX(), pos.getY());
     }
 
     public static void renderMediumFont(RenderingLayer renderingLayer, String text, Vector2 pos, Color color) {
         mediumFont.setColor(color);
-        mediumFont.draw(renderingLayer.spriteBatch(), text, pos.x(), pos.y());
+        mediumFont.draw(renderingLayer.getSpriteBatch(), text, pos.getX(), pos.getY());
     }
 
     public static void renderLargeFont(RenderingLayer renderingLayer, String text, Vector2 pos, Color color) {
         largeFont.setColor(color);
-        largeFont.draw(renderingLayer.spriteBatch(), text, pos.x(), pos.y());
+        largeFont.draw(renderingLayer.getSpriteBatch(), text, pos.getX(), pos.getY());
     }
 }

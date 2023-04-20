@@ -31,7 +31,7 @@ public class EquipmentItemPickUpAction extends GameStateAction {
         PlayerParams playerParams = game.getPlayerParams(creatureId);
 
         if (playerParams != null) {
-            playerParams.equipmentItemBeingMoved(slotIndex);
+            playerParams.setEquipmentItemBeingMoved(slotIndex);
         }
     }
 }

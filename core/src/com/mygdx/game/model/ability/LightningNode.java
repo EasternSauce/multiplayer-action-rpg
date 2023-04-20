@@ -22,18 +22,17 @@ public class LightningNode extends Ability {
 
     public static LightningNode of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
         LightningNode ability = LightningNode.of();
-        ability.params = abilityParams
-                .width(3f)
-                .height(3f)
-                .channelTime(0f)
-                .activeTime(0.4f)
-                .textureName("lightning")
-                .baseDamage(30f)
-                .isActiveAnimationLooping(true)
-                .attackWithoutMoving(true)
-                .isSkipCreatingBody(true)
-                .rotationShift(0f)
-                .delayedActionTime(0.05f);
+        ability.params = abilityParams.setWidth(3f)
+                                      .setHeight(3f)
+                                      .setChannelTime(0f)
+                                      .setActiveTime(0.4f)
+                                      .setTextureName("lightning")
+                                      .setBaseDamage(30f)
+                                      .setIsActiveAnimationLooping(true)
+                                      .setAttackWithoutMoving(true)
+                                      .setIsSkipCreatingBody(true)
+                                      .setRotationShift(0f)
+                                      .setDelayedActionTime(0.05f);
 
         return ability;
     }
@@ -56,26 +55,28 @@ public class LightningNode extends Ability {
     @Override
     void onDelayedAction(AbilityUpdatable game) {
         // find the closest enemy, and if they are within distance, and haven't been hit yet, then start node over them
-        Set<CreatureId> excluded = new HashSet<>(params().creaturesAlreadyHit().keySet());
-        excluded.add(params().creatureId());
+        Set<CreatureId> excluded = new HashSet<>(getParams().getCreaturesAlreadyHit().keySet());
+        excluded.add(getParams().getCreatureId());
 
-        Creature targetCreature = game.getCreature(game.getAliveCreatureIdClosestTo(params().pos(), 13f, excluded));
+        Creature targetCreature =
+                game.getCreature(game.getAliveCreatureIdClosestTo(getParams().getPos(), 13f, excluded));
 
         if (targetCreature != null &&
-            params().creaturesAlreadyHit().size() <= 10 &&
-            game.isLineOfSight(params().areaId(), params().pos(), targetCreature.params().pos())) {
+            getParams().getCreaturesAlreadyHit().size() <= 10 &&
+            game.isLineOfSight(getParams().getAreaId(), getParams().getPos(), targetCreature.getParams().getPos())) {
 
-            game.onAbilityHitsCreature(targetCreature.id(), params().creatureId(), this);
+            game.onAbilityHitsCreature(targetCreature.getId(), getParams().getCreatureId(), this);
 
-            params().creaturesAlreadyHit().put(targetCreature.id(), params().stateTimer().time());
+            getParams().getCreaturesAlreadyHit().put(targetCreature.getId(), getParams().getStateTimer().getTime());
+
+            game.chainAbility(this, AbilityType.LIGHTNING_CHAIN, targetCreature.getParams().getPos(),
+                              // this pos is later changed, TODO: move it to other param?
+                              params.getDirVector());
 
             game.chainAbility(this,
-                              AbilityType.LIGHTNING_CHAIN,
-                              targetCreature.params().pos(),
-                              // this pos is later changed, TODO: move it to other param?
-                              params.dirVector());
-
-            game.chainAbility(this, AbilityType.LIGHTNING_NODE, targetCreature.params().pos(), params.dirVector());
+                              AbilityType.LIGHTNING_NODE,
+                              targetCreature.getParams().getPos(),
+                              params.getDirVector());
         }
     }
 

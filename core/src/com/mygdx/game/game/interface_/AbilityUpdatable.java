@@ -13,9 +13,6 @@ public interface AbilityUpdatable extends GameUpdatable {
 
     CreatureId getAliveCreatureIdClosestTo(Vector2 pos, float maxRange, Set<CreatureId> excluded);
 
-    void chainAbility(Ability chainFromAbility,
-                      AbilityType abilityType,
-                      Vector2 chainToPos,
-                      Vector2 dirVector);
+    void chainAbility(Ability chainFromAbility, AbilityType abilityType, Vector2 chainToPos, Vector2 dirVector);
 
 }

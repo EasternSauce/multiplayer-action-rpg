@@ -18,27 +18,26 @@ public class EnemyTemplate {
     SkillType mainAttackSkill;
     Set<DropTableEntry> dropTable;
 
-    public static EnemyTemplate
-            archer =
-            EnemyTemplate.of(EnemyType.ARCHER, 15f, SkillType.CROSSBOW_BOLT, new ConcurrentSkipListSet<>(
-                    Arrays.asList(
-                            DropTableEntry.leatherArmorDrop,
-                            DropTableEntry.specialHideGlovesDrop,
-                            DropTableEntry.ringmailGreavesDrop,
-                            DropTableEntry.boomerangDrop)));
+    public static EnemyTemplate archer = EnemyTemplate.of(EnemyType.ARCHER,
+                                                          15f,
+                                                          SkillType.CROSSBOW_BOLT,
+                                                          new ConcurrentSkipListSet<>(Arrays.asList(DropTableEntry.leatherArmorDrop,
+                                                                                                    DropTableEntry.specialHideGlovesDrop,
+                                                                                                    DropTableEntry.ringmailGreavesDrop,
+                                                                                                    DropTableEntry.boomerangDrop)));
 
-    public static EnemyTemplate
-            skeleton =
-            EnemyTemplate.of(EnemyType.SKELETON, 3f, SkillType.SWORD_SLASH, new ConcurrentSkipListSet<>(Arrays.asList(
-                    DropTableEntry.leatherArmorDrop,
-                    DropTableEntry.hideGlovesDrop,
-                    DropTableEntry.ringmailGreavesDrop,
-                    DropTableEntry.ironSwordDrop,
-                    DropTableEntry.shieldDrop)));
-    public static EnemyTemplate
-            mage =
-            EnemyTemplate.of(EnemyType.MAGE, 15f, SkillType.SLOW_MAGIC_ORB, new ConcurrentSkipListSet<>(Arrays.asList(
-                    DropTableEntry.specialLeatherArmorDrop,
-                    DropTableEntry.hideGlovesDrop,
-                    DropTableEntry.ringmailGreavesDrop)));
+    public static EnemyTemplate skeleton = EnemyTemplate.of(EnemyType.SKELETON,
+                                                            3f,
+                                                            SkillType.SWORD_SLASH,
+                                                            new ConcurrentSkipListSet<>(Arrays.asList(DropTableEntry.leatherArmorDrop,
+                                                                                                      DropTableEntry.hideGlovesDrop,
+                                                                                                      DropTableEntry.ringmailGreavesDrop,
+                                                                                                      DropTableEntry.ironSwordDrop,
+                                                                                                      DropTableEntry.shieldDrop)));
+    public static EnemyTemplate mage = EnemyTemplate.of(EnemyType.MAGE,
+                                                        15f,
+                                                        SkillType.SLOW_MAGIC_ORB,
+                                                        new ConcurrentSkipListSet<>(Arrays.asList(DropTableEntry.specialLeatherArmorDrop,
+                                                                                                  DropTableEntry.hideGlovesDrop,
+                                                                                                  DropTableEntry.ringmailGreavesDrop)));
 }

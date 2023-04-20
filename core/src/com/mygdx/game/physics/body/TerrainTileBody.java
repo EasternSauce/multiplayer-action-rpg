@@ -13,7 +13,7 @@ public class TerrainTileBody {
     Float tileWidth;
     Float tileHeight;
     Integer layer;
-    Boolean flyover;
+    Boolean isFlyover;
     Body b2Body;
     com.badlogic.gdx.math.Polygon polygon;
 
@@ -21,23 +21,26 @@ public class TerrainTileBody {
                                      Float tileWidth,
                                      Float tileHeight,
                                      Integer layer,
-                                     Boolean flyover) {
+                                     Boolean isFlyover) {
         TerrainTileBody body = new TerrainTileBody();
         body.pos = pos;
         body.tileWidth = tileWidth;
         body.tileHeight = tileHeight;
         body.layer = layer;
-        body.flyover = flyover;
+        body.isFlyover = isFlyover;
         return body;
     }
 
     public void init(PhysicsWorld world) {
         b2Body = B2BodyFactory.createTerrainTileB2body(world, this);
 
-        polygon = new com.badlogic.gdx.math.Polygon(new float[]{
-                pos.x() * tileWidth, pos.y() * tileWidth, pos.x() * tileWidth + tileWidth, pos.y() * tileHeight,
-                pos.x() * tileWidth + tileWidth, pos.y() * tileHeight + tileHeight, pos.x() * tileWidth, pos.y() *
-                                                                                                         tileHeight +
-                                                                                                         tileHeight});
+        polygon = new com.badlogic.gdx.math.Polygon(new float[]{pos.getX() * tileWidth, pos.getY() *
+                                                                                        tileWidth, pos.getX() *
+                                                                                                   tileWidth +
+                                                                                                   tileWidth, pos.getY() *
+                                                                                                              tileHeight,
+                pos.getX() * tileWidth +
+                tileWidth, pos.getY() * tileHeight + tileHeight, pos.getX() * tileWidth, pos.getY() * tileHeight +
+                                                                                         tileHeight});
     }
 }

@@ -22,16 +22,16 @@ public class Chat {
     Boolean isHoldingBackspace = false;
 
     public void sendMessage(GameState gameState, String posterId, String message) {
-        if (messages().size() < 6) {
-            messages().add(ChatMessage.of(gameState.generalTimer().time(), posterId, message));
+        if (getMessages().size() < 6) {
+            getMessages().add(ChatMessage.of(gameState.getGeneralTimer().getTime(), posterId, message));
         }
         else {
             List<ChatMessage> newMessages = new ArrayList<>();
             for (int i = 0; i < 5; i++) {
-                newMessages.add(messages().get(i + 1));
+                newMessages.add(getMessages().get(i + 1));
             }
-            messages(newMessages);
-            messages().add(ChatMessage.of(gameState.generalTimer().time(), posterId, message));
+            setMessages(newMessages);
+            getMessages().add(ChatMessage.of(gameState.getGeneralTimer().getTime(), posterId, message));
         }
     }
 }

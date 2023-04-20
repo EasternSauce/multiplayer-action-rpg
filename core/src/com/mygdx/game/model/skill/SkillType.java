@@ -27,7 +27,11 @@ public enum SkillType {
 
     TELEPORT("Teleport");
 
-    public String prettyName;
+    private String prettyName;
+
+    public String getPrettyName() {
+        return prettyName;
+    }
 
     SkillType(String prettyName) {
         this.prettyName = prettyName;

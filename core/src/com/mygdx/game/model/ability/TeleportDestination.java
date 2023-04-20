@@ -18,28 +18,26 @@ public class TeleportDestination extends Ability {
 
     public static TeleportDestination of(AbilityParams abilityParams,
                                          @SuppressWarnings("unused") AbilityUpdatable game) {
-        Creature creature = game.getCreature(abilityParams.creatureId());
+        Creature creature = game.getCreature(abilityParams.getCreatureId());
 
-        Vector2 teleportPos = TeleportDestination.calculatePos(creature.params()
-                                                                       .pos()
-                                                                       .add(abilityParams.dirVector()),
-                                                               creature.params().pos(),
-                                                               creature.params().areaId(),
-                                                               game);
+        Vector2 teleportPos =
+                TeleportDestination.calculatePos(creature.getParams().getPos().add(abilityParams.getDirVector()),
+                                                 creature.getParams().getPos(),
+                                                 creature.getParams().getAreaId(),
+                                                 game);
 
         TeleportDestination ability = TeleportDestination.of();
-        ability.params =
-                abilityParams.width(4.5f)
-                             .height(4.5f)
-                             .channelTime(0f)
-                             .activeTime(0.5f)
-                             .textureName("blast")
-                             .baseDamage(0f)
-                             .isChannelAnimationLooping(false)
-                             .isActiveAnimationLooping(false)
-                             .rotationShift(0f)
-                             .pos(teleportPos)
-                             .chainToPos(teleportPos);
+        ability.params = abilityParams.setWidth(4.5f)
+                                      .setHeight(4.5f)
+                                      .setChannelTime(0f)
+                                      .setActiveTime(0.5f)
+                                      .setTextureName("blast")
+                                      .setBaseDamage(0f)
+                                      .setIsChannelAnimationLooping(false)
+                                      .setIsActiveAnimationLooping(false)
+                                      .setRotationShift(0f)
+                                      .setPos(teleportPos)
+                                      .setChainToPos(teleportPos);
 
 
         return ability;
@@ -76,10 +74,10 @@ public class TeleportDestination extends Ability {
 
     @Override
     void onAbilityStarted(AbilityUpdatable game) {
-        game.addTeleportEvent(TeleportEvent.of(params().creatureId(),
-                                               params().pos(),
-                                               params().areaId(),
-                                               params().areaId()));
+        game.addTeleportEvent(TeleportEvent.of(getParams().getCreatureId(),
+                                               getParams().getPos(),
+                                               getParams().getAreaId(),
+                                               getParams().getAreaId()));
     }
 
     @Override

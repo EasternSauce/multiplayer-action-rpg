@@ -19,7 +19,7 @@ public class AreaRenderer {
 
     public static AreaRenderer of(AreaId id) {
         AreaRenderer areaRenderer = AreaRenderer.of();
-        areaRenderer.id(id);
+        areaRenderer.setId(id);
         return areaRenderer;
     }
 

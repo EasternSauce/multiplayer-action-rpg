@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-public
-class Polygon implements BodyShape {
+public class Polygon implements BodyShape {
     float[] vertices;
 
     @Override

@@ -12,6 +12,6 @@ public class AbilityId implements Comparable<AbilityId> {
 
     @Override
     public int compareTo(AbilityId o) {
-        return value().compareTo(o.value());
+        return getValue().compareTo(o.getValue());
     }
 }

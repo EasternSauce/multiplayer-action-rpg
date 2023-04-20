@@ -58,14 +58,13 @@ public class ConnectScreen implements Screen {
         if (Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)) {
 
             if (isHoldingBackspace) {
-                if (!currentMessage.isEmpty() &&
-                    timer.time() > holdBackspaceTime + 0.3f) {
+                if (!currentMessage.isEmpty() && timer.getTime() > holdBackspaceTime + 0.3f) {
                     currentMessage = currentMessage.substring(0, currentMessage.length() - 1);
                 }
             }
             else {
                 isHoldingBackspace = true;
-                holdBackspaceTime = timer.time();
+                holdBackspaceTime = timer.getTime();
                 if (!currentMessage.isEmpty()) {
                     currentMessage = currentMessage.substring(0, currentMessage.length() - 1);
                 }
@@ -78,7 +77,7 @@ public class ConnectScreen implements Screen {
         }
 
 
-        SpriteBatch spriteBatch = game.renderer().getHudRenderingLayer().spriteBatch();
+        SpriteBatch spriteBatch = game.renderer().getHudRenderingLayer().getSpriteBatch();
 
         TextureAtlas.AtlasRegion background2 = game.renderer().getAtlas().findRegion("background2");
         float centerX = Gdx.graphics.getWidth() / 2f;

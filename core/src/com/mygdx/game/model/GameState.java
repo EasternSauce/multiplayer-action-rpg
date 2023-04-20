@@ -38,34 +38,35 @@ public class GameState {
 
     public static GameState of(GameState gameState) {
         GameState newGameState = GameState.of();
-        newGameState.creatures(new ConcurrentSkipListMap<>(gameState.creatures));
-        newGameState.removedCreatures(new ConcurrentSkipListMap<>(gameState.removedCreatures));
-        newGameState.abilities(new ConcurrentSkipListMap<>(gameState.abilities));
-        newGameState.lootPiles(new ConcurrentSkipListMap<>(gameState.lootPiles));
-        newGameState.areas(new ConcurrentSkipListMap<>(gameState.areas));
-        newGameState.defaultAreaId(gameState.defaultAreaId);
-        newGameState.generalTimer(gameState.generalTimer);
-        newGameState.playerParams(new ConcurrentSkipListMap<>(gameState.playerParams));
-        newGameState.areaGates(new ConcurrentSkipListSet<>(gameState.areaGates));
-        newGameState.lastRandomValue(gameState.lastRandomValue);
+        newGameState.setCreatures(new ConcurrentSkipListMap<>(gameState.getCreatures()));
+        newGameState.setRemovedCreatures(new ConcurrentSkipListMap<>(gameState.getRemovedCreatures()));
+        newGameState.setAbilities(new ConcurrentSkipListMap<>(gameState.getAbilities()));
+        newGameState.setLootPiles(new ConcurrentSkipListMap<>(gameState.getLootPiles()));
+        newGameState.setAreas(new ConcurrentSkipListMap<>(gameState.getAreas()));
+        newGameState.setDefaultAreaId(gameState.getDefaultAreaId());
+        newGameState.setGeneralTimer(gameState.getGeneralTimer());
+        newGameState.setPlayerParams(new ConcurrentSkipListMap<>(gameState.getPlayerParams()));
+        newGameState.setAreaGates(new ConcurrentSkipListSet<>(gameState.getAreaGates()));
+        newGameState.setLastRandomValue(gameState.getLastRandomValue());
 
         return newGameState;
     }
 
     public static GameState of(GameState gameState,
                                Map<CreatureId, Creature> creatures,
-                               Map<AbilityId, Ability> abilities, Map<LootPileId, LootPile> lootPiles) {
+                               Map<AbilityId, Ability> abilities,
+                               Map<LootPileId, LootPile> lootPiles) {
         GameState newGameState = GameState.of();
-        newGameState.creatures(creatures);
-        newGameState.removedCreatures(new ConcurrentSkipListMap<>(gameState.removedCreatures));
-        newGameState.abilities(abilities);
-        newGameState.lootPiles(lootPiles);
-        newGameState.areas(new ConcurrentSkipListMap<>(gameState.areas));
-        newGameState.defaultAreaId(gameState.defaultAreaId);
-        newGameState.generalTimer(gameState.generalTimer);
-        newGameState.playerParams(new ConcurrentSkipListMap<>(gameState.playerParams));
-        newGameState.areaGates(new ConcurrentSkipListSet<>(gameState.areaGates));
-        newGameState.lastRandomValue(gameState.lastRandomValue);
+        newGameState.setCreatures(creatures);
+        newGameState.setRemovedCreatures(new ConcurrentSkipListMap<>(gameState.getCreatures()));
+        newGameState.setAbilities(abilities);
+        newGameState.setLootPiles(lootPiles);
+        newGameState.setAreas(new ConcurrentSkipListMap<>(gameState.getAreas()));
+        newGameState.setDefaultAreaId(gameState.getDefaultAreaId());
+        newGameState.setGeneralTimer(gameState.getGeneralTimer());
+        newGameState.setPlayerParams(new ConcurrentSkipListMap<>(gameState.getPlayerParams()));
+        newGameState.setAreaGates(new ConcurrentSkipListSet<>(gameState.getAreaGates()));
+        newGameState.setLastRandomValue(gameState.getLastRandomValue());
 
         return newGameState;
     }

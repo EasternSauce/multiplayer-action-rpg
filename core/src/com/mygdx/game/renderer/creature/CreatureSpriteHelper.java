@@ -14,10 +14,11 @@ public class CreatureSpriteHelper {
 
         for (int i = 0; i < 4; i++) {
             facingTextures.add(new TextureRegion(runningAnimationTextureRegion,
-                                                 animationConfig.neutralStanceFrame() * animationConfig.textureWidth(),
-                                                 i * animationConfig.textureHeight(),
-                                                 animationConfig.textureWidth(),
-                                                 animationConfig.textureHeight()));
+                                                 animationConfig.getNeutralStanceFrame() *
+                                                 animationConfig.getTextureWidth(),
+                                                 i * animationConfig.getTextureHeight(),
+                                                 animationConfig.getTextureWidth(),
+                                                 animationConfig.getTextureHeight()));
 
         }
         return facingTextures;
@@ -28,17 +29,16 @@ public class CreatureSpriteHelper {
         List<Animation<TextureRegion>> runningAnimations = new ArrayList<>();
 
         for (int i = 0; i < 4; i++) {
-            TextureRegion[] frames = new TextureRegion[animationConfig.frameCount()];
-            for (int j = 0; j < animationConfig.frameCount(); j++) {
-                frames[j] =
-                        new TextureRegion(runningAnimationTextureRegion,
-                                          j * animationConfig.textureWidth(),
-                                          i * animationConfig.textureHeight(),
-                                          animationConfig.textureWidth(),
-                                          animationConfig.textureHeight());
+            TextureRegion[] frames = new TextureRegion[animationConfig.getFrameCount()];
+            for (int j = 0; j < animationConfig.getFrameCount(); j++) {
+                frames[j] = new TextureRegion(runningAnimationTextureRegion,
+                                              j * animationConfig.getTextureWidth(),
+                                              i * animationConfig.getTextureHeight(),
+                                              animationConfig.getTextureWidth(),
+                                              animationConfig.getTextureHeight());
             }
 
-            runningAnimations.add(i, new Animation<>(animationConfig.frameDuration(), frames));
+            runningAnimations.add(i, new Animation<>(animationConfig.getFrameDuration(), frames));
         }
         return runningAnimations;
     }

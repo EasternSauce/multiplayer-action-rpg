@@ -29,29 +29,29 @@ public class CreatureSprite {
     }
 
     public void prepareFacingTextures(CreatureAnimationConfig animationConfig, TextureAtlas atlas) {
-        TextureRegion runningAnimationTextureRegion = atlas.findRegion(animationConfig.textureName());
+        TextureRegion runningAnimationTextureRegion = atlas.findRegion(animationConfig.getTextureName());
 
         this.facingTextures = CreatureSpriteHelper.createFacingTextures(animationConfig, runningAnimationTextureRegion);
     }
 
     public void prepareRunningAnimations(CreatureAnimationConfig animationConfig, TextureAtlas atlas) {
-        TextureRegion runningAnimationTextureRegion = atlas.findRegion(animationConfig.textureName());
+        TextureRegion runningAnimationTextureRegion = atlas.findRegion(animationConfig.getTextureName());
 
         this.runningAnimations =
                 CreatureSpriteHelper.createRunningAnimations(animationConfig, runningAnimationTextureRegion);
     }
 
     public void updatePosition(Creature creature) {
-        sprite.setCenter(creature.params().pos().x(), creature.params().pos().y());
+        sprite.setCenter(creature.getParams().getPos().getX(), creature.getParams().getPos().getY());
     }
 
     public void updateSize(Creature creature) {
-        sprite.setSize(creature.animationConfig().spriteWidth(), creature.animationConfig().spriteHeight());
+        sprite.setSize(creature.animationConfig().getSpriteWidth(), creature.animationConfig().getSpriteHeight());
     }
 
     public void updateForAliveCreature(GameRenderable game, Creature creature) {
         TextureRegion texture;
-        if (!creature.params().isMoving() || creature.isEffectActive(CreatureEffect.STUN, game)) {
+        if (!creature.getParams().getIsMoving() || creature.isEffectActive(CreatureEffect.STUN, game)) {
             texture = getFacingTexture(creature, creature.facingDirection(game));
         }
         else {
@@ -80,18 +80,18 @@ public class CreatureSprite {
 
         WorldDirection currentDirection = creature.facingDirection(game);
 
-        return runningAnimations.get(creature.animationConfig().dirMap().get(currentDirection))
-                                .getKeyFrame(creature.params().animationTimer().time(), true);
+        return runningAnimations.get(creature.animationConfig().getDirMap().get(currentDirection))
+                                .getKeyFrame(creature.getParams().getAnimationTimer().getTime(), true);
     }
 
 
     private TextureRegion getFacingTexture(Creature creature, WorldDirection direction) {
-        return facingTextures.get(creature.animationConfig().dirMap().get(direction));
+        return facingTextures.get(creature.animationConfig().getDirMap().get(direction));
     }
 
     public void render(RenderingLayer renderingLayer) {
         if (sprite.getTexture() != null) {
-            sprite.draw(renderingLayer.spriteBatch());
+            sprite.draw(renderingLayer.getSpriteBatch());
         }
     }
 

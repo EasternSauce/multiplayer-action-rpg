@@ -27,20 +27,18 @@ public class AreaGateBody {
     }
 
     public void init(GameUpdatable game) {
-        worldA = game.getPhysicsWorld(areaGate.areaA_Id());
-        worldB = game.getPhysicsWorld(areaGate.areaB_Id());
+        worldA = game.getPhysicsWorld(areaGate.getAreaA_Id());
+        worldB = game.getPhysicsWorld(areaGate.getAreaB_Id());
 
-        areaGateA_b2body =
-                B2BodyFactory.createAreaGateB2body(worldA,
-                                                   this,
-                                                   areaGate.posA(),
-                                                   areaGate.width(),
-                                                   areaGate.height());
-        areaGateB_b2body =
-                B2BodyFactory.createAreaGateB2body(worldB,
-                                                   this,
-                                                   areaGate.posB(),
-                                                   areaGate.width(),
-                                                   areaGate.height());
+        areaGateA_b2body = B2BodyFactory.createAreaGateB2body(worldA,
+                                                              this,
+                                                              areaGate.getPosA(),
+                                                              areaGate.getWidth(),
+                                                              areaGate.getHeight());
+        areaGateB_b2body = B2BodyFactory.createAreaGateB2body(worldB,
+                                                              this,
+                                                              areaGate.getPosB(),
+                                                              areaGate.getWidth(),
+                                                              areaGate.getHeight());
     }
 }

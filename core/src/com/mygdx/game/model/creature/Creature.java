@@ -19,28 +19,28 @@ import java.util.concurrent.ConcurrentSkipListMap;
 
 public abstract class Creature {
 
-    public abstract CreatureParams params();
+    public abstract CreatureParams getParams();
 
-    public abstract Creature params(CreatureParams params);
+    public abstract Creature setParams(CreatureParams params);
 
     public void update(float delta, CreatureUpdatable game) {
         regenerateStamina();
 
-        if (!params().reachedTargetPos()) {
+        if (!getParams().getReachedTargetPos()) {
             updateMovement(game);
         }
 
-        if (!isEffectActive(CreatureEffect.STUN, game) && params().isStillMovingCheckTimer().time() > 0.02f) {
+        if (!isEffectActive(CreatureEffect.STUN, game) && getParams().getIsStillMovingCheckTimer().getTime() > 0.02f) {
             //on stopped moving before reaching target (e.g. hit a wall)
-            if (params().isMoving() && params().pos().distance(params().previousPos()) < 0.005f) {
+            if (getParams().getIsMoving() && getParams().getPos().distance(getParams().getPreviousPos()) < 0.005f) {
                 stopMoving();
             }
-            params().previousPos(params().pos());
-            params().isStillMovingCheckTimer().restart();
+            getParams().setPreviousPos(getParams().getPos());
+            getParams().getIsStillMovingCheckTimer().restart();
         }
 
         if (isAlive()) {
-            params().skills().forEach((skillType, skill) -> skill.update(game));
+            getParams().getSkills().forEach((skillType, skill) -> skill.update(game));
         }
 
         updateAutomaticControls(game);
@@ -49,64 +49,65 @@ public abstract class Creature {
     }
 
     private void regenerateStamina() {
-        if (params().staminaRegenerationTimer().time() > params().staminaRegenerationTickTime() && isAlive()) {
-            float afterRegeneration = params().stamina() + params().staminaRegeneration();
-            params().stamina(Math.min(afterRegeneration, params().maxStamina()));
-            params().staminaRegenerationTimer().restart();
+        if (getParams().getStaminaRegenerationTimer().getTime() > getParams().getStaminaRegenerationTickTime() &&
+            isAlive()) {
+            float afterRegeneration = getParams().getStamina() + getParams().getStaminaRegeneration();
+            getParams().setStamina(Math.min(afterRegeneration, getParams().getMaxStamina()));
+            getParams().getStaminaRegenerationTimer().restart();
 
         }
     }
 
     private void updateMovement(CreatureUpdatable game) {
-        Vector2 currentPos = params().pos();
-        Vector2 targetPos = params().movementCommandTargetPos();
+        Vector2 currentPos = getParams().getPos();
+        Vector2 targetPos = getParams().getMovementCommandTargetPos();
 
-        Vector2 vectorBetween = Vector2.of(targetPos.x() - currentPos.x(), targetPos.y() - currentPos.y());
+        Vector2 vectorBetween = Vector2.of(targetPos.getX() - currentPos.getX(), targetPos.getY() - currentPos.getY());
 
-        params().isMoving(false);
+        getParams().setIsMoving(false);
 
         if (!isAlive() || vectorBetween.len() < 0.1f) {
-            params().reachedTargetPos(true);
+            getParams().setReachedTargetPos(true);
         }
         else {
 
             Vector2 dirVector = vectorBetween.normalized();
 
             if (isEffectActive(CreatureEffect.STUN, game)) {
-                game.setCreatureMovingVector(params().id(), Vector2.of(0f, 0f));
+                game.setCreatureMovingVector(getParams().getId(), Vector2.of(0f, 0f));
             }
             else {
-                game.setCreatureMovingVector(params().id(), dirVector);
+                game.setCreatureMovingVector(getParams().getId(), dirVector);
             }
 
 
-            params().isMoving(true);
+            getParams().setIsMoving(true);
 
         }
 
     }
 
     public void updateTimers(float delta) {
-        params().animationTimer().update(delta);
-        params().pathCalculationCooldownTimer().update(delta);
-        params().movementCommandsPerSecondLimitTimer().update(delta);
-        params().isStillMovingCheckTimer().update(delta);
-        params().respawnTimer().update(delta);
-        params().staminaRegenerationTimer().update(delta);
-        params().aggroTimer().update(delta);
-        params().findTargetTimer().update(delta);
-        params().aiStateTimer().update(delta);
+        getParams().getAnimationTimer().update(delta);
+        getParams().getPathCalculationCooldownTimer().update(delta);
+        getParams().getMovementCommandsPerSecondLimitTimer().update(delta);
+        getParams().getIsStillMovingCheckTimer().update(delta);
+        getParams().getRespawnTimer().update(delta);
+        getParams().getStaminaRegenerationTimer().update(delta);
+        getParams().getAggroTimer().update(delta);
+        getParams().getFindTargetTimer().update(delta);
+        getParams().getAiStateTimer().update(delta);
 
-        params().skills().forEach((skillType, skill) -> skill.performTimer().update(delta));
+        getParams().getSkills().forEach((skillType, skill) -> skill.getPerformTimer().update(delta));
         // add other timers here...
     }
 
     public boolean isAlive() {
-        return !params().isDead();
+        return !getParams().getIsDead();
     }
 
     public WorldDirection facingDirection(GameRenderable game) {
-        float deg = params().movingVector().angleDeg();
+        float deg = getParams().getMovingVector().angleDeg();
 
         if (deg >= 45 && deg < 135) {
             return WorldDirection.UP;
@@ -124,7 +125,7 @@ public abstract class Creature {
     }
 
     public Integer capability() {
-        Float width = animationConfig().spriteWidth();
+        Float width = animationConfig().getSpriteWidth();
         if (width >= 0 && width < 2) {
             return 1;
         }
@@ -142,50 +143,48 @@ public abstract class Creature {
     }
 
     public void stopMoving() {
-        params().movementCommandTargetPos(params().pos());
+        getParams().setMovementCommandTargetPos(getParams().getPos());
     }
 
     public void moveTowards(Vector2 pos) {
-        params().movementCommandTargetPos(pos);
-        params().reachedTargetPos(false);
+        getParams().setMovementCommandTargetPos(pos);
+        getParams().setReachedTargetPos(false);
     }
 
     protected void takeLifeDamage(float damage) {
-        params().previousTickLife(params().life());
+        getParams().setPreviousTickLife(getParams().getLife());
 
         float actualDamage = damage * 100f / (100f + totalArmor());
 
-        if (params().life() - actualDamage > 0) {
-            params().life(params().life() - actualDamage);
+        if (getParams().getLife() - actualDamage > 0) {
+            getParams().setLife(getParams().getLife() - actualDamage);
         }
         else {
-            params().life(0f);
+            getParams().setLife(0f);
         }
     }
 
     private float totalArmor() {
-        return params().equipmentItems()
-                       .values()
-                       .stream()
-                       .filter(item -> item.template().armor() != null)
-                       .reduce(0, ((acc, item) -> acc + item.armor()), Integer::sum);
+        return getParams().getEquipmentItems()
+                          .values()
+                          .stream()
+                          .filter(item -> item.getTemplate().getArmor() != null)
+                          .reduce(0, ((acc, item) -> acc + item.getArmor()), Integer::sum);
     }
 
     public Map<SkillType, Integer> availableSkills() {
         Map<SkillType, Integer> skills = new ConcurrentSkipListMap<>();
-        params().equipmentItems()
-                .forEach((integer, item) -> skills.putAll(item.grantedSkills()));
+        getParams().getEquipmentItems().forEach((integer, item) -> skills.putAll(item.getGrantedSkills()));
         return skills;
     }
 
     public boolean isAttackShielded(boolean isRanged, Vector2 dirVector, GameUpdatable game) {
         if (!isRanged) { // check if target is pointing shield at the attack
             // TODO: if don't have shield ability return false
-            Ability shieldAbility = game.getAbility(params().id(), SkillType.SUMMON_SHIELD);
-            if (shieldAbility != null && shieldAbility.params().state() == AbilityState.ACTIVE) {
-                float
-                        angleDiff =
-                        (dirVector.angleDeg() - shieldAbility.params().dirVector().multiplyBy(-1).angleDeg() +
+            Ability shieldAbility = game.getAbility(getParams().getId(), SkillType.SUMMON_SHIELD);
+            if (shieldAbility != null && shieldAbility.getParams().getState() == AbilityState.ACTIVE) {
+                float angleDiff =
+                        (dirVector.angleDeg() - shieldAbility.getParams().getDirVector().multiplyBy(-1).angleDeg() +
                          180 +
                          360) % 360 - 180;
                 //noinspection RedundantIfStatement
@@ -198,7 +197,7 @@ public abstract class Creature {
     }
 
     public void onBeingHit(Ability ability, GameUpdatable game) {
-        boolean isShielded = isAttackShielded(ability.isRanged(), ability.params().dirVector(), game);
+        boolean isShielded = isAttackShielded(ability.isRanged(), ability.getParams().getDirVector(), game);
 
         if (!isShielded) {
             takeLifeDamage(ability.getDamage(game));
@@ -208,55 +207,58 @@ public abstract class Creature {
     }
 
     private void takeManaDamage(Float manaCost) {
-        if (params().mana() - manaCost > 0) {
-            params().mana(params().mana() - manaCost);
+        if (getParams().getMana() - manaCost > 0) {
+            getParams().setMana(getParams().getMana() - manaCost);
         }
         else {
-            params().mana(0f);
+            getParams().setMana(0f);
         }
     }
 
     private void takeStaminaDamage(Float staminaCost) {
-        if (params().stamina() - staminaCost > 0) {
-            params().stamina(params().stamina() - staminaCost);
+        if (getParams().getStamina() - staminaCost > 0) {
+            getParams().setStamina(getParams().getStamina() - staminaCost);
         }
         else {
-            params().stamina(0f);
+            getParams().setStamina(0f);
         }
     }
 
     public void onAbilityPerformed(Ability ability) {
-        if (!ability.params().attackWithoutMoving() && params().isMoving()) {
-            Vector2
-                    movementVector =
-                    params().pos().vectorTowards(params().movementCommandTargetPos()).normalized().multiplyBy(0.15f);
+        if (!ability.getParams().getAttackWithoutMoving() && getParams().getIsMoving()) {
+            Vector2 movementVector = getParams().getPos()
+                                                .vectorTowards(getParams().getMovementCommandTargetPos())
+                                                .normalized()
+                                                .multiplyBy(0.15f);
             // move slightly forward if attacking while moving
-            params().movementCommandTargetPos(params().pos().add(movementVector));
+            getParams().setMovementCommandTargetPos(getParams().getPos().add(movementVector));
         }
     }
 
     public CreatureAnimationConfig animationConfig() {
-        return CreatureAnimationConfig.configs.get(params().textureName());
+        return CreatureAnimationConfig.configs.get(getParams().getTextureName());
     }
 
     public boolean canPerformSkill(Skill skill) {
-        return isAlive() && params().stamina() >= skill.staminaCost() && params().mana() >= skill.manaCost();
+        return isAlive() &&
+               getParams().getStamina() >= skill.getStaminaCost() &&
+               getParams().getMana() >= skill.getManaCost();
     }
 
     public void onPerformSkill(Skill skill) {
-        takeStaminaDamage(skill.staminaCost());
-        takeManaDamage(skill.manaCost());
+        takeStaminaDamage(skill.getStaminaCost());
+        takeManaDamage(skill.getManaCost());
     }
 
     public Float nextDropRngValue() {
-        Float rngValue = RandomHelper.seededRandomFloat(params().dropRngSeed());
-        params().dropRngSeed(rngValue);
+        Float rngValue = RandomHelper.seededRandomFloat(getParams().getDropRngSeed());
+        getParams().setDropRngSeed(rngValue);
         return rngValue;
     }
 
 
     //    public void updateEffects() {
-    //        params().effects().forEach((effect, effectState) -> {
+    //        getParams().getEffects().forEach((effect, effectState) -> {
     //            if (effect == CreatureEffect.SLOW) {
     //
     //            } else if (effect == CreatureEffect.STUN) {
@@ -268,23 +270,23 @@ public abstract class Creature {
     //    }
     //
     public boolean isEffectActive(CreatureEffect effect, GameUpdatable game) {
-        CreatureEffectState effectState = params().effects().get(effect);
-        return game.getTime() >= effectState.startTime() &&
-               game.getTime() < effectState.startTime() + effectState.duration();
+        CreatureEffectState effectState = getParams().getEffects().get(effect);
+        return game.getTime() >= effectState.getStartTime() &&
+               game.getTime() < effectState.getStartTime() + effectState.getDuration();
     }
 
     public float getCurrentEffectDuration(CreatureEffect effect, GameUpdatable game) {
-        CreatureEffectState effectState = params().effects().get(effect);
-        return game.getTime() - effectState.startTime();
+        CreatureEffectState effectState = getParams().getEffects().get(effect);
+        return game.getTime() - effectState.getStartTime();
     }
 
     public void applyEffect(CreatureEffect effect, float duration, GameUpdatable game) {
-        CreatureEffectState effectState = params().effects().get(effect);
-        effectState.startTime(game.getTime());
-        effectState.duration(duration);
+        CreatureEffectState effectState = getParams().getEffects().get(effect);
+        effectState.setStartTime(game.getTime());
+        effectState.setDuration(duration);
     }
 
-    public CreatureId id() {
-        return params().id();
+    public CreatureId getId() {
+        return getParams().getId();
     }
 }

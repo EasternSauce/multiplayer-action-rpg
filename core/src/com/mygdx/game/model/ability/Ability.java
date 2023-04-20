@@ -22,32 +22,32 @@ public abstract class Ability {
     public abstract Boolean isRanged();
 
     public void update(Float delta, AbilityUpdatable game) {
-        AbilityState state = params().state();
+        AbilityState state = getParams().getState();
 
         if (state == AbilityState.CHANNEL) {
             onChannelUpdate(game);
 
-            if (params().stateTimer().time() > params().channelTime()) {
-                params().state(AbilityState.ACTIVE);
+            if (getParams().getStateTimer().getTime() > getParams().getChannelTime()) {
+                getParams().setState(AbilityState.ACTIVE);
                 game.initAbilityBody(this);
                 onAbilityStarted(game);
-                params().stateTimer().restart();
+                getParams().getStateTimer().restart();
             }
         }
         else if (state == AbilityState.ACTIVE) {
             onActiveUpdate(game);
 
-            if (!params().delayedActionCompleted() &&
-                params().delayedActionTime() != null &&
-                params().stateTimer().time() > params().delayedActionTime()) {
-                params().delayedActionCompleted(true);
+            if (!getParams().getDelayedActionCompleted() &&
+                getParams().getDelayedActionTime() != null &&
+                getParams().getStateTimer().getTime() > getParams().getDelayedActionTime()) {
+                getParams().setDelayedActionCompleted(true);
                 onDelayedAction(game);
             }
 
 
-            if (params().stateTimer().time() > params().activeTime()) {
-                params().state(AbilityState.INACTIVE);
-                params().stateTimer().restart();
+            if (getParams().getStateTimer().getTime() > getParams().getActiveTime()) {
+                getParams().setState(AbilityState.INACTIVE);
+                getParams().getStateTimer().restart();
                 onAbilityCompleted(game);
             }
         }
@@ -69,33 +69,33 @@ public abstract class Ability {
 
     public void init(GameActionApplicable game) {
 
-        params().state(AbilityState.CHANNEL);
-        params().stateTimer().restart();
+        getParams().setState(AbilityState.CHANNEL);
+        getParams().getStateTimer().restart();
 
-        Creature creature = game.getCreature(params().creatureId());
+        Creature creature = game.getCreature(getParams().getCreatureId());
 
         if (creature != null) {
-            if (params().chainToPos() != null) {
-                params().pos(params().chainToPos());
+            if (getParams().getChainToPos() != null) {
+                getParams().setPos(getParams().getChainToPos());
             }
             else {
-                params().pos(creature.params().pos());
+                getParams().setPos(creature.getParams().getPos());
             }
         }
 
     }
 
     public void updateTimers(float delta) {
-        params().stateTimer().update(delta);
-        params().changeDirectionTimer().update(delta);
+        getParams().getStateTimer().update(delta);
+        getParams().getChangeDirectionTimer().update(delta);
     }
 
     public AbilityAnimationConfig animationConfig() {
-        return AbilityAnimationConfig.configs.get(params().textureName());
+        return AbilityAnimationConfig.configs.get(getParams().getTextureName());
     }
 
     public void deactivate() {
-        params().stateTimer().time(params().activeTime());
+        getParams().getStateTimer().setTime(getParams().getActiveTime());
     }
 
     public abstract void onCreatureHit();
@@ -107,20 +107,20 @@ public abstract class Ability {
     public abstract void onOtherAbilityHit(AbilityId otherAbilityId, GameUpdatable game);
 
     public boolean bodyShouldExist() {
-        return !(params().isSkipCreatingBody() || params().state() != AbilityState.ACTIVE);
+        return !(getParams().getIsSkipCreatingBody() || getParams().getState() != AbilityState.ACTIVE);
     }
 
     public Float getDamage(GameUpdatable game) {
-        return params().baseDamage() * params().damageMultiplier() * getLevelScaling(game);
+        return getParams().getBaseDamage() * getParams().getDamageMultiplier() * getLevelScaling(game);
     }
 
     public Integer getSkillLevel(GameUpdatable game) {
-        Creature creature = game.getCreature(params().creatureId());
+        Creature creature = game.getCreature(getParams().getCreatureId());
 
-        if (creature == null || !creature.availableSkills().containsKey(params().skillType())) {
+        if (creature == null || !creature.availableSkills().containsKey(getParams().getSkillType())) {
             return 1;
         }
-        return creature.availableSkills().get(params().skillType());
+        return creature.availableSkills().get(getParams().getSkillType());
     }
 
     public Map<Integer, Float> levelScalings() {

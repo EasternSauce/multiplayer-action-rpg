@@ -15,22 +15,20 @@ public class TeleportSource extends Ability {
     AbilityParams params;
 
     public static TeleportSource of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
-        Creature creature = game.getCreature(abilityParams.creatureId());
+        Creature creature = game.getCreature(abilityParams.getCreatureId());
 
         TeleportSource ability = TeleportSource.of();
-        ability.params =
-                abilityParams
-                        .width(4.5f)
-                        .height(4.5f)
-                        .channelTime(0f)
-                        .activeTime(0.5f)
-                        .textureName("blast")
-                        .baseDamage(0f)
-                        .isChannelAnimationLooping(false)
-                        .isActiveAnimationLooping(false)
-                        .rotationShift(0f)
-                        .pos(creature.params().pos())
-                        .delayedActionTime(0.1f);
+        ability.params = abilityParams.setWidth(4.5f)
+                                      .setHeight(4.5f)
+                                      .setChannelTime(0f)
+                                      .setActiveTime(0.5f)
+                                      .setTextureName("blast")
+                                      .setBaseDamage(0f)
+                                      .setIsChannelAnimationLooping(false)
+                                      .setIsActiveAnimationLooping(false)
+                                      .setRotationShift(0f)
+                                      .setPos(creature.getParams().getPos())
+                                      .setDelayedActionTime(0.1f);
 
 
         return ability;
@@ -53,7 +51,7 @@ public class TeleportSource extends Ability {
 
     @Override
     void onDelayedAction(AbilityUpdatable game) {
-        game.chainAbility(this, AbilityType.TELEPORT_DESTINATION, params().pos(), params().dirVector());
+        game.chainAbility(this, AbilityType.TELEPORT_DESTINATION, getParams().getPos(), getParams().getDirVector());
     }
 
     @Override

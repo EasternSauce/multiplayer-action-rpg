@@ -27,6 +27,6 @@ public class SkillPickerMenuDeactivateAction extends GameStateAction {
     public void applyToGame(GameActionApplicable game) {
         PlayerParams playerParams = game.getPlayerParams(playerId);
 
-        playerParams.skillMenuPickerSlotBeingChanged(null);
+        playerParams.setIsSkillMenuPickerSlotBeingChanged(null);
     }
 }

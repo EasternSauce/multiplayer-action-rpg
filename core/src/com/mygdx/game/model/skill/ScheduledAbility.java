@@ -26,16 +26,16 @@ public class ScheduledAbility {
 
     public static ScheduledAbility of(AbilityType abilityType, SkillType skillType, Float scheduledTime) {
         return ScheduledAbility.of()
-                               .abilityType(abilityType)
-                               .scheduledTime(scheduledTime)
-                               .skillType(skillType);
+                               .setAbilityType(abilityType)
+                               .setScheduledTime(scheduledTime)
+                               .setSkillType(skillType);
     }
 
     public void init(Vector2 startingPos, Vector2 dirVector) {
-        startPos(startingPos);
-        dirVector(dirVector);
-        scheduleTimePassed(false);
-        readyToPerform(true);
+        setStartPos(startingPos);
+        setDirVector(dirVector);
+        setScheduleTimePassed(false);
+        setReadyToPerform(true);
     }
 
     public void perform(CreatureId creatureId, CreatureUpdatable game) {
@@ -44,12 +44,12 @@ public class ScheduledAbility {
         Creature creature = game.getCreature(creatureId);
 
         AbilityParams abilityParams = AbilityParams.of()
-                                                   .id(abilityId)
-                                                   .areaId(creature.params().areaId())
-                                                   .creatureId(creatureId)
-                                                   .dirVector(dirVector)
-                                                   .skillStartPos(startPos)
-                                                   .skillType(skillType);
+                                                   .setId(abilityId)
+                                                   .setAreaId(creature.getParams().getAreaId())
+                                                   .setCreatureId(creatureId)
+                                                   .setDirVector(dirVector)
+                                                   .setSkillStartPos(startPos)
+                                                   .setSkillType(skillType);
 
         game.spawnAbility(abilityType, abilityParams);
 

@@ -23,7 +23,7 @@ public class CreatureRenderer {
 
     public static CreatureRenderer of(CreatureId creatureId) {
         CreatureRenderer creatureRenderer = new CreatureRenderer();
-        creatureRenderer.creatureId(creatureId);
+        creatureRenderer.setCreatureId(creatureId);
         return creatureRenderer;
     }
 
@@ -31,7 +31,7 @@ public class CreatureRenderer {
         creatureSprite = CreatureSprite.of(creatureId);
         creatureStunnedAnimationRenderer = CreatureStunnedAnimationRenderer.of(creatureId);
 
-        CreatureAnimationConfig config = gameState.creatures().get(creatureId).animationConfig();
+        CreatureAnimationConfig config = gameState.getCreatures().get(creatureId).animationConfig();
 
         creatureSprite.prepareFacingTextures(config, atlas);
         creatureSprite.prepareRunningAnimations(config, atlas);
@@ -60,11 +60,10 @@ public class CreatureRenderer {
         Creature creature = game.getCreature(creatureId);
 
         if (creature != null) {
-            float
-                    currentLifeBarWidth =
-                    LifeBarUtils.LIFE_BAR_WIDTH * creature.params().life() / creature.params().maxLife();
+            float currentLifeBarWidth =
+                    LifeBarUtils.LIFE_BAR_WIDTH * creature.getParams().getLife() / creature.getParams().getMaxLife();
             float barPosX = LifeBarUtils.getLifeBarPosX(creature);
-            float barPosY = LifeBarUtils.getLifeBarPosY(creature, creatureSprite().getWidth());
+            float barPosY = LifeBarUtils.getLifeBarPosY(creature, getCreatureSprite().getWidth());
 
             LifeBarUtils.renderBar(renderingLayer, barPosX, barPosY, LifeBarUtils.LIFE_BAR_WIDTH, Color.ORANGE);
             LifeBarUtils.renderBar(renderingLayer, barPosX, barPosY, currentLifeBarWidth, Color.RED);
@@ -75,9 +74,9 @@ public class CreatureRenderer {
     public void renderCreatureId(RenderingLayer renderingLayer, GameRenderable game) {
         Creature creature = game.getCreature(creatureId);
 
-        String name = creature.id().value();
+        String name = creature.getId().getValue();
 
-        float namePosX = creature.params().pos().x() - name.length() * 0.16f;
+        float namePosX = creature.getParams().getPos().getX() - name.length() * 0.16f;
         float namePosY = LifeBarUtils.getLifeBarPosY(creature, creatureSprite.getWidth()) + 1f;
 
         // world text viewport is not scaled down! so we scale the values every time

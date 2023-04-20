@@ -21,40 +21,40 @@ public class Item implements Comparable<Item> {
     @SuppressWarnings("StringConcatenationInsideStringBufferAppend")
     public String getItemInformation() {
         StringBuilder builder = new StringBuilder();
-        if (template.damage() != null) {
-            builder.append("Damage: " + damage() + "\n");
+        if (template.getDamage() != null) {
+            builder.append("Damage: " + getDamage() + "\n");
         }
-        if (template.armor() != null) {
-            builder.append("Armor: " + armor() + "\n");
+        if (template.getArmor() != null) {
+            builder.append("Armor: " + getArmor() + "\n");
         }
-        grantedSkills().forEach((skillType, level) -> builder.append("Grants Level " +
-                                                                     level +
-                                                                     " " +
-                                                                     skillType.prettyName +
-                                                                     "\n"));
-        if (template.worth() != null) {
-            builder.append("Worth: " + worth() + "\n");
+        getGrantedSkills().forEach((skillType, level) -> builder.append("Grants Level " +
+                                                                        level +
+                                                                        " " +
+                                                                        skillType.getPrettyName() +
+                                                                        "\n"));
+        if (template.getWorth() != null) {
+            builder.append("Worth: " + getWorth() + "\n");
         }
         return builder.toString();
     }
 
     @Override
     public int compareTo(Item o) {
-        if (this.template.id().equals(o.template.id())) {
+        if (this.template.getId().equals(o.template.getId())) {
             return this.qualityModifier.compareTo(o.qualityModifier);
         }
-        return this.template.id().compareTo(o.template.id());
+        return this.template.getId().compareTo(o.template.getId());
     }
 
-    public Integer damage() {
-        return (int) (template.damage() * qualityModifier);
+    public Integer getDamage() {
+        return (int) (template.getDamage() * qualityModifier);
     }
 
-    public Integer armor() {
-        return (int) (template.armor() * qualityModifier);
+    public Integer getArmor() {
+        return (int) (template.getArmor() * qualityModifier);
     }
 
-    public Integer worth() {
-        return (int) (template.worth() * qualityModifier);
+    public Integer getWorth() {
+        return (int) (template.getWorth() * qualityModifier);
     }
 }

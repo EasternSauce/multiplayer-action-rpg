@@ -67,17 +67,17 @@ public class InventoryHelper {
                                  Gdx.graphics.getWidth() * 0.6f,
                                  Gdx.graphics.getHeight() * 0.6f);
 
-        backgroundOuterRect = Rect.of(backgroundRect.x() - Gdx.graphics.getWidth() * 0.1f,
-                                      backgroundRect.y() - Gdx.graphics.getHeight() * 0.1f,
-                                      backgroundRect.width() + Gdx.graphics.getWidth() * 0.2f,
-                                      backgroundRect.height() + Gdx.graphics.getHeight() * 0.2f);
+        backgroundOuterRect = Rect.of(backgroundRect.getX() - Gdx.graphics.getWidth() * 0.1f,
+                                      backgroundRect.getY() - Gdx.graphics.getHeight() * 0.1f,
+                                      backgroundRect.getWidth() + Gdx.graphics.getWidth() * 0.2f,
+                                      backgroundRect.getHeight() + Gdx.graphics.getHeight() * 0.2f);
 
         backgroundImage = new Image(atlas.findRegion("background2"));
 
-        backgroundImage.setBounds(backgroundOuterRect.x(),
-                                  backgroundOuterRect.y(),
-                                  backgroundOuterRect.width(),
-                                  backgroundOuterRect.height());
+        backgroundImage.setBounds(backgroundOuterRect.getX(),
+                                  backgroundOuterRect.getY(),
+                                  backgroundOuterRect.getWidth(),
+                                  backgroundOuterRect.getHeight());
 
         icons = atlas.findRegion("nice_icons").split(32, 32);
 
@@ -101,21 +101,21 @@ public class InventoryHelper {
 
     private static float inventorySlotPositionX(Integer index) {
         int currentColumn = index % TOTAL_COLUMNS;
-        return backgroundRect.x() + MARGIN + (SLOT_SIZE + SPACE_BETWEEN_SLOTS) * currentColumn;
+        return backgroundRect.getX() + MARGIN + (SLOT_SIZE + SPACE_BETWEEN_SLOTS) * currentColumn;
     }
 
     private static float inventorySlotPositionY(Integer index) {
         int currentRow = index / TOTAL_COLUMNS;
-        return backgroundRect.y() + backgroundRect.height() -
+        return backgroundRect.getY() + backgroundRect.getHeight() -
                (SLOT_SIZE + MARGIN + (SLOT_SIZE + SPACE_BETWEEN_SLOTS) * currentRow);
     }
 
     private static float equipmentSlotPositionX(@SuppressWarnings("unused") Integer index) {
-        return backgroundRect.x() + INVENTORY_WIDTH + MARGIN + SPACE_BEFORE_EQUIPMENT;
+        return backgroundRect.getX() + INVENTORY_WIDTH + MARGIN + SPACE_BEFORE_EQUIPMENT;
     }
 
     private static float equipmentSlotPositionY(Integer index) {
-        return backgroundRect.y() + backgroundRect.height() -
+        return backgroundRect.getY() + backgroundRect.getHeight() -
                (SLOT_SIZE + MARGIN + (SLOT_SIZE + SPACE_BETWEEN_SLOTS) * index);
     }
 
@@ -126,30 +126,41 @@ public class InventoryHelper {
             return;
         }
 
-        if (playerParams.isInventoryVisible()) {
-            backgroundImage.draw(renderingLayer.spriteBatch(), 1.0f);
+        if (playerParams.getIsInventoryVisible()) {
+            backgroundImage.draw(renderingLayer.getSpriteBatch(), 1.0f);
 
             inventoryRectangles.values().forEach(rect -> {
-                renderingLayer.shapeDrawer()
-                              .filledRectangle(rect.x() - 3, rect.y() - 3, rect.width() + 6, rect.height() + 6,
+                renderingLayer.getShapeDrawer()
+                              .filledRectangle(rect.getX() - 3,
+                                               rect.getY() - 3,
+                                               rect.getWidth() + 6,
+                                               rect.getHeight() + 6,
                                                Color.BROWN);
-                renderingLayer.shapeDrawer()
-                              .filledRectangle(rect.x(), rect.y(), rect.width(), rect.height(), Color.BLACK);
+                renderingLayer.getShapeDrawer()
+                              .filledRectangle(rect.getX(),
+                                               rect.getY(),
+                                               rect.getWidth(),
+                                               rect.getHeight(),
+                                               Color.BLACK);
             });
 
             equipmentRectangles.forEach((index, rect) -> {
-                renderingLayer.shapeDrawer()
-                              .filledRectangle(rect.x() - 3,
-                                               rect.y() - 3,
-                                               rect.width() + 6,
-                                               rect.height() + 6,
+                renderingLayer.getShapeDrawer()
+                              .filledRectangle(rect.getX() - 3,
+                                               rect.getY() - 3,
+                                               rect.getWidth() + 6,
+                                               rect.getHeight() + 6,
                                                Color.BROWN);
-                renderingLayer.shapeDrawer()
-                              .filledRectangle(rect.x(), rect.y(), rect.width(), rect.height(), Color.BROWN);
+                renderingLayer.getShapeDrawer()
+                              .filledRectangle(rect.getX(),
+                                               rect.getY(),
+                                               rect.getWidth(),
+                                               rect.getHeight(),
+                                               Color.BROWN);
                 Assets.renderSmallFont(renderingLayer,
                                        EquipmentSlotType.equipmentSlotNames.get(index) + ":",
-                                       Vector2.of(rect.x() - SLOT_SIZE / 2f - 170f,
-                                                  rect.y() + SLOT_SIZE / 2f + 7f),
+                                       Vector2.of(rect.getX() - SLOT_SIZE / 2f - 170f,
+                                                  rect.getY() + SLOT_SIZE / 2f + 7f),
                                        Color.DARK_GRAY);
             });
 
@@ -165,26 +176,25 @@ public class InventoryHelper {
         Creature player = game.getCreature(game.getCurrentPlayerId());
         PlayerParams playerParams = game.getPlayerParams(game.getCurrentPlayerId());
 
-        Map<Integer, Item> inventoryItems = player.params().inventoryItems();
-        Map<Integer, Item> equipmentItems = player.params().equipmentItems();
+        Map<Integer, Item> inventoryItems = player.getParams().getInventoryItems();
+        Map<Integer, Item> equipmentItems = player.getParams().getEquipmentItems();
 
         inventoryItems.entrySet().stream().filter(entry -> {
             boolean isInventoryItemBeingMoved = false;
-            if (playerParams.inventoryItemBeingMoved() != null) {
-                isInventoryItemBeingMoved =
-                        Objects.equals(playerParams.inventoryItemBeingMoved(), entry.getKey());
+            if (playerParams.getInventoryItemBeingMoved() != null) {
+                isInventoryItemBeingMoved = Objects.equals(playerParams.getInventoryItemBeingMoved(), entry.getKey());
             }
             return !isInventoryItemBeingMoved;
         }).forEach(entry -> {
-            Vector2Int iconPos = entry.getValue().template().iconPos();
-            TextureRegion textureRegion = icons[iconPos.y()][iconPos.x()];
+            Vector2Int iconPos = entry.getValue().getTemplate().getIconPos();
+            TextureRegion textureRegion = icons[iconPos.getY()][iconPos.getX()];
             float x = inventorySlotPositionX(entry.getKey());
             float y = inventorySlotPositionY(entry.getKey());
-            renderingLayer.spriteBatch().draw(textureRegion, x, y, SLOT_SIZE, SLOT_SIZE);
+            renderingLayer.getSpriteBatch().draw(textureRegion, x, y, SLOT_SIZE, SLOT_SIZE);
 
-            if (entry.getValue().quantity() > 1) {
+            if (entry.getValue().getQuantity() > 1) {
                 Assets.renderSmallFont(renderingLayer,
-                                       entry.getValue().quantity().toString(),
+                                       entry.getValue().getQuantity().toString(),
                                        Vector2.of(x, y + 15),
                                        Color.WHITE);
             }
@@ -192,47 +202,48 @@ public class InventoryHelper {
 
         equipmentItems.entrySet().stream().filter((entry -> {
             boolean isEquipmentItemBeingMoved = false;
-            if (playerParams.equipmentItemBeingMoved() != null) {
-                isEquipmentItemBeingMoved = Objects.equals(playerParams.equipmentItemBeingMoved(), entry
-                        .getKey());
+            if (playerParams.getEquipmentItemBeingMoved() != null) {
+                isEquipmentItemBeingMoved = Objects.equals(playerParams.getEquipmentItemBeingMoved(), entry.getKey());
             }
             return !isEquipmentItemBeingMoved;
         })).forEach(entry -> {
-            Vector2Int iconPos = entry.getValue().template().iconPos();
-            TextureRegion textureRegion = icons[iconPos.y()][iconPos.x()];
+            Vector2Int iconPos = entry.getValue().getTemplate().getIconPos();
+            TextureRegion textureRegion = icons[iconPos.getY()][iconPos.getX()];
             float x = equipmentSlotPositionX(entry.getKey());
             float y = equipmentSlotPositionY(entry.getKey());
-            renderingLayer.spriteBatch().draw(textureRegion, x, y, SLOT_SIZE, SLOT_SIZE);
+            renderingLayer.getSpriteBatch().draw(textureRegion, x, y, SLOT_SIZE, SLOT_SIZE);
 
-            if (entry.getValue().quantity() > 1) {
+            if (entry.getValue().getQuantity() > 1) {
                 Assets.renderSmallFont(renderingLayer,
-                                       entry.getValue().quantity().toString(),
+                                       entry.getValue().getQuantity().toString(),
                                        Vector2.of(x, y + 15),
                                        Color.WHITE);
             }
         });
 
-        float x = game.hudMousePos().x();
-        float y = game.hudMousePos().y();
+        float x = game.hudMousePos().getX();
+        float y = game.hudMousePos().getY();
 
-        if (playerParams.inventoryItemBeingMoved() != null &&
-            inventoryItems.containsKey(playerParams.inventoryItemBeingMoved())) {
+        if (playerParams.getInventoryItemBeingMoved() != null &&
+            inventoryItems.containsKey(playerParams.getInventoryItemBeingMoved())) {
 
-            Vector2Int iconPos = inventoryItems.get(playerParams.inventoryItemBeingMoved()).template().iconPos();
+            Vector2Int iconPos =
+                    inventoryItems.get(playerParams.getInventoryItemBeingMoved()).getTemplate().getIconPos();
 
-            renderingLayer.spriteBatch()
-                          .draw(icons[iconPos.y()][iconPos.x()],
+            renderingLayer.getSpriteBatch()
+                          .draw(icons[iconPos.getY()][iconPos.getX()],
                                 x - SLOT_SIZE / 2f,
                                 y - SLOT_SIZE / 2f,
                                 SLOT_SIZE,
                                 SLOT_SIZE);
         }
-        if (playerParams.equipmentItemBeingMoved() != null &&
-            equipmentItems.containsKey(playerParams.equipmentItemBeingMoved())) {
-            Vector2Int iconPos = equipmentItems.get(playerParams.equipmentItemBeingMoved()).template().iconPos();
+        if (playerParams.getEquipmentItemBeingMoved() != null &&
+            equipmentItems.containsKey(playerParams.getEquipmentItemBeingMoved())) {
+            Vector2Int iconPos =
+                    equipmentItems.get(playerParams.getEquipmentItemBeingMoved()).getTemplate().getIconPos();
 
-            renderingLayer.spriteBatch()
-                          .draw(icons[iconPos.y()][iconPos.x()],
+            renderingLayer.getSpriteBatch()
+                          .draw(icons[iconPos.getY()][iconPos.getX()],
                                 x - SLOT_SIZE / 2f,
                                 y - SLOT_SIZE / 2f,
                                 SLOT_SIZE,
@@ -245,43 +256,49 @@ public class InventoryHelper {
         Creature player = game.getCreature(game.getCurrentPlayerId());
         PlayerParams playerParams = game.getPlayerParams(game.getCurrentPlayerId());
 
-        float x = game.hudMousePos().x();
-        float y = game.hudMousePos().y();
+        float x = game.hudMousePos().getX();
+        float y = game.hudMousePos().getY();
 
         AtomicReference<Integer> inventorySlotMousedOver = new AtomicReference<>(null);
         AtomicReference<Integer> equipmentSlotMousedOver = new AtomicReference<>(null);
 
-        inventoryRectangles.entrySet().stream().filter(entry -> entry.getValue().contains(x, y))
+        inventoryRectangles.entrySet()
+                           .stream()
+                           .filter(entry -> entry.getValue().contains(x, y))
                            .forEach(entry -> inventorySlotMousedOver.set(entry.getKey()));
 
-        equipmentRectangles.entrySet().stream().filter(entry -> entry.getValue().contains(x, y))
+        equipmentRectangles.entrySet()
+                           .stream()
+                           .filter(entry -> entry.getValue().contains(x, y))
                            .forEach(entry -> equipmentSlotMousedOver.set(entry.getKey()));
 
         Item mouseOverItem = null;
 
-        if (inventorySlotMousedOver.get() != null && (playerParams.inventoryItemBeingMoved() == null ||
-                                                      !Objects.equals(inventorySlotMousedOver.get(),
-                                                                      playerParams.inventoryItemBeingMoved()))) {
-            mouseOverItem = player.params().inventoryItems().get(inventorySlotMousedOver.get());
+        if (inventorySlotMousedOver.get() != null &&
+            (playerParams.getInventoryItemBeingMoved() == null ||
+             !Objects.equals(inventorySlotMousedOver.get(), playerParams.getInventoryItemBeingMoved()))) {
+            mouseOverItem = player.getParams().getInventoryItems().get(inventorySlotMousedOver.get());
         }
-        else if (equipmentSlotMousedOver.get() != null && (playerParams.equipmentItemBeingMoved() == null ||
-                                                           !Objects.equals(equipmentSlotMousedOver.get(),
-                                                                           playerParams.equipmentItemBeingMoved()))) {
-            mouseOverItem = player.params().equipmentItems().get(equipmentSlotMousedOver.get());
+        else if (equipmentSlotMousedOver.get() != null &&
+                 (playerParams.getEquipmentItemBeingMoved() == null ||
+                  !Objects.equals(equipmentSlotMousedOver.get(), playerParams.getEquipmentItemBeingMoved()))) {
+            mouseOverItem = player.getParams().getEquipmentItems().get(equipmentSlotMousedOver.get());
 
         }
 
         if (mouseOverItem != null) {
             Assets.renderSmallFont(renderingLayer,
-                                   mouseOverItem.template().name(),
-                                   Vector2.of(backgroundRect.x() + MARGIN,
-                                              backgroundRect.y() + backgroundRect.height() - (INVENTORY_HEIGHT + 5)),
+                                   mouseOverItem.getTemplate().getName(),
+                                   Vector2.of(backgroundRect.getX() + MARGIN,
+                                              backgroundRect.getY() + backgroundRect.getHeight() -
+                                              (INVENTORY_HEIGHT + 5)),
                                    Color.DARK_GRAY);
 
             Assets.renderSmallFont(renderingLayer,
                                    mouseOverItem.getItemInformation(),
-                                   Vector2.of(backgroundRect.x() + MARGIN,
-                                              backgroundRect.y() + backgroundRect.height() - (INVENTORY_HEIGHT + 35)),
+                                   Vector2.of(backgroundRect.getX() + MARGIN,
+                                              backgroundRect.getY() + backgroundRect.getHeight() -
+                                              (INVENTORY_HEIGHT + 35)),
                                    Color.DARK_GRAY);
         }
     }
@@ -289,20 +306,18 @@ public class InventoryHelper {
     public static void renderItemPickUpMenu(RenderingLayer renderingLayer, GameRenderable game) {
         PlayerParams playerParams = game.getPlayerParams(game.getCurrentPlayerId());
 
-        if (playerParams.isInventoryVisible()) {
+        if (playerParams.getIsInventoryVisible()) {
             return;
         }
 
-        float x = game.hudMousePos().x();
-        float y = game.hudMousePos().y();
+        float x = game.hudMousePos().getX();
+        float y = game.hudMousePos().getY();
 
         AtomicInteger i = new AtomicInteger();
-        playerParams.itemPickupMenuLootPiles()
+        playerParams.getItemPickupMenuLootPiles()
                     .stream()
                     .filter(lootPileId -> game.getLootPiles().containsKey(lootPileId))
-                    .flatMap(lootPileId -> game.getLootPile(
-                                                       lootPileId)
-                                               .items().stream())
+                    .flatMap(lootPileId -> game.getLootPile(lootPileId).getItems().stream())
                     .forEach(item -> renderItemPickupMenuOption(renderingLayer, x, y, i, item));
     }
 
@@ -312,29 +327,26 @@ public class InventoryHelper {
                                                    float y,
                                                    AtomicInteger i,
                                                    Item item) {
-        Rect rect = Rect.of(PICKUP_MENU_POS_X,
-                            PICKUP_MENU_POS_Y + 25f * i.get(),
-                            Gdx.graphics.getWidth() / 6f,
-                            20f);
-        renderingLayer.shapeDrawer()
-                      .filledRectangle(rect.x(),
-                                       rect.y(),
-                                       rect.width(),
-                                       rect.height(),
+        Rect rect = Rect.of(PICKUP_MENU_POS_X, PICKUP_MENU_POS_Y + 25f * i.get(), Gdx.graphics.getWidth() / 6f, 20f);
+        renderingLayer.getShapeDrawer()
+                      .filledRectangle(rect.getX(),
+                                       rect.getY(),
+                                       rect.getWidth(),
+                                       rect.getHeight(),
                                        Color.DARK_GRAY.cpy().sub(0, 0, 0, 0.3f));
         if (rect.contains(x, y)) {
-            renderingLayer.shapeDrawer()
-                          .rectangle(rect.x(), rect.y(), rect.width(), rect.height(), Color.ORANGE);
+            renderingLayer.getShapeDrawer()
+                          .rectangle(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(), Color.ORANGE);
         }
-        renderingLayer.spriteBatch()
-                      .draw(icons[item.template().iconPos().y()][item.template().iconPos().x()],
-                            rect.x() + 10f,
-                            rect.y(),
+        renderingLayer.getSpriteBatch()
+                      .draw(icons[item.getTemplate().getIconPos().getY()][item.getTemplate().getIconPos().getX()],
+                            rect.getX() + 10f,
+                            rect.getY(),
                             20f,
                             20f);
         Assets.renderSmallFont(renderingLayer,
-                               item.template().name(),
-                               Vector2.of(rect.x() + 40f, rect.y() + 17f),
+                               item.getTemplate().getName(),
+                               Vector2.of(rect.getX() + 40f, rect.getY() + 17f),
                                Color.CYAN);
         i.getAndIncrement();
     }
@@ -346,19 +358,23 @@ public class InventoryHelper {
         AtomicReference<Integer> atomicInventorySlotClicked = new AtomicReference<>(null);
         AtomicReference<Integer> atomicEquipmentSlotClicked = new AtomicReference<>(null);
 
-        float x = game.hudMousePos().x();
-        float y = game.hudMousePos().y();
+        float x = game.hudMousePos().getX();
+        float y = game.hudMousePos().getY();
 
 
         if (backgroundOuterRect.contains(x, y)) {
-            inventoryRectangles.entrySet().stream().filter(entry -> entry.getValue().contains(x, y))
+            inventoryRectangles.entrySet()
+                               .stream()
+                               .filter(entry -> entry.getValue().contains(x, y))
                                .forEach(entry -> atomicInventorySlotClicked.set(entry.getKey()));
 
-            equipmentRectangles.entrySet().stream().filter(entry -> entry.getValue().contains(x, y))
+            equipmentRectangles.entrySet()
+                               .stream()
+                               .filter(entry -> entry.getValue().contains(x, y))
                                .forEach(entry -> atomicEquipmentSlotClicked.set(entry.getKey()));
 
-            Integer inventoryItemBeingMoved = playerParams.inventoryItemBeingMoved();
-            Integer equipmentItemBeingMoved = playerParams.equipmentItemBeingMoved();
+            Integer inventoryItemBeingMoved = playerParams.getInventoryItemBeingMoved();
+            Integer equipmentItemBeingMoved = playerParams.getEquipmentItemBeingMoved();
 
             Integer inventorySlotClicked = atomicInventorySlotClicked.get();
             Integer equipmentSlotClicked = atomicEquipmentSlotClicked.get();
@@ -385,14 +401,14 @@ public class InventoryHelper {
             //                                                                                   equipmentSlotClicked)));
             //            }
             else if (inventorySlotClicked != null) {
-                if (player.params().inventoryItems().containsKey(inventorySlotClicked)) {
+                if (player.getParams().getInventoryItems().containsKey(inventorySlotClicked)) {
                     client.sendTCP(ActionPerformCommand.of(InventoryItemPickUpAction.of(game.getCurrentPlayerId(),
                                                                                         inventorySlotClicked)));
                 }
             }
             else if (equipmentSlotClicked != null) {
-                if (player.params().equipmentItems().containsKey(equipmentSlotClicked)) {
-                    playerParams.equipmentItemBeingMoved(equipmentSlotClicked);
+                if (player.getParams().getEquipmentItems().containsKey(equipmentSlotClicked)) {
+                    playerParams.setEquipmentItemBeingMoved(equipmentSlotClicked);
 
                     client.sendTCP(ActionPerformCommand.of(EquipmentItemPickUpAction.of(game.getCurrentPlayerId(),
                                                                                         equipmentSlotClicked)));
@@ -404,19 +420,19 @@ public class InventoryHelper {
 
         }
         else {
-            if (playerParams.inventoryItemBeingMoved() != null) {
+            if (playerParams.getInventoryItemBeingMoved() != null) {
                 client.sendTCP(ActionPerformCommand.of(LootPileSpawnOnPlayerItemDropAction.of(game.getCurrentPlayerId())));
             }
 
-            if (playerParams.equipmentItemBeingMoved() != null) {
-                Item item = player.params().equipmentItems().get(playerParams.equipmentItemBeingMoved());
-                playerParams.equipmentItemBeingMoved(null);
+            if (playerParams.getEquipmentItemBeingMoved() != null) {
+                Item item = player.getParams().getEquipmentItems().get(playerParams.getEquipmentItemBeingMoved());
+                playerParams.setEquipmentItemBeingMoved(null);
 
                 Set<Item> items = new ConcurrentSkipListSet<>();
                 items.add(item);
 
-                client.sendTCP(ActionPerformCommand.of(LootPileSpawnAction.of(player.params().areaId(),
-                                                                              player.params().pos(),
+                client.sendTCP(ActionPerformCommand.of(LootPileSpawnAction.of(player.getParams().getAreaId(),
+                                                                              player.getParams().getPos(),
                                                                               items)));
                 client.sendTCP(ActionPerformCommand.of(InventoryMoveCancelAction.of(game.getCurrentPlayerId())));
 
@@ -429,18 +445,16 @@ public class InventoryHelper {
     public static boolean tryPerformItemPickupMenuClick(Client client, MyGdxGameClient game) {
         PlayerParams playerParams = game.getPlayerParams(game.getCurrentPlayerId());
 
-        float x = game.hudMousePos().x();
-        float y = game.hudMousePos().y();
+        float x = game.hudMousePos().getX();
+        float y = game.hudMousePos().getY();
 
         AtomicBoolean isSuccessful = new AtomicBoolean(false);
 
         AtomicInteger i = new AtomicInteger();
-        playerParams.itemPickupMenuLootPiles()
+        playerParams.getItemPickupMenuLootPiles()
                     .stream()
                     .filter(lootPileId -> game.getLootPiles().containsKey(lootPileId))
-                    .flatMap(lootPileId -> game.getLootPile(
-                                                       lootPileId)
-                                               .items().stream())
+                    .flatMap(lootPileId -> game.getLootPile(lootPileId).getItems().stream())
                     .forEach(item -> {
                         Rect rect = Rect.of(Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 5f - 40f,
                                             30f + 25f * i.get() - 17f,

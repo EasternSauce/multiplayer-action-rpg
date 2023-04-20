@@ -16,19 +16,17 @@ public class IceSpear extends Projectile {
 
     public static IceSpear of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
         IceSpear ability = IceSpear.of();
-        ability.params =
-                abilityParams
-                        .width(1.05f)
-                        .height(0.5f)
-                        .channelTime(0f)
-                        .activeTime(0.6f)
-                        .textureName("ice_shard")
-                        .baseDamage(10f)
-                        .isChannelAnimationLooping(false)
-                        .isActiveAnimationLooping(true)
-                        .rotationShift(0f)
-                        .delayedActionTime(0.001f)
-                        .speed(15f);
+        ability.params = abilityParams.setWidth(1.05f)
+                                      .setHeight(0.5f)
+                                      .setChannelTime(0f)
+                                      .setActiveTime(0.6f)
+                                      .setTextureName("ice_shard")
+                                      .setBaseDamage(10f)
+                                      .setIsChannelAnimationLooping(false)
+                                      .setIsActiveAnimationLooping(true)
+                                      .setRotationShift(0f)
+                                      .setDelayedActionTime(0.001f)
+                                      .setSpeed(15f);
 
 
         return ability;
@@ -72,7 +70,7 @@ public class IceSpear extends Projectile {
 
     @Override
     public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
-        if (params().stateTimer().time() > 0.1f) {
+        if (getParams().getStateTimer().getTime() > 0.1f) {
             deactivate();
         }
     }

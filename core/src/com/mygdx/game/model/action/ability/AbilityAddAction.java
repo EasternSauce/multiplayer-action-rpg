@@ -21,23 +21,23 @@ public class AbilityAddAction extends GameStateAction {
 
     @Override
     public Vector2 actionObjectPos(GameState gameState) {
-        return ability.params().pos();
+        return ability.getParams().getPos();
     }
 
     @Override
     public void applyToGame(GameActionApplicable game) {
 
-        Creature creature = game.getCreature(ability.params().creatureId());
+        Creature creature = game.getCreature(ability.getParams().getCreatureId());
 
         if (creature == null) {
             return;
         }
 
         game.getAbilities()
-            .put(ability.params().id(), ability); // TODO: SHOULDNT THIS HAPPEN IN createAbility() METHOD???!?
+            .put(ability.getParams().getId(), ability); // TODO: SHOULDNT THIS HAPPEN IN createAbility() METHOD???!?
 
-        if (ability.params().activeTime() > 0) {
-            game.getAbilityModelsToBeCreated().add(ability.params().id());
+        if (ability.getParams().getActiveTime() > 0) {
+            game.getAbilityModelsToBeCreated().add(ability.getParams().getId());
         }
 
         ability.init(game);

@@ -15,19 +15,17 @@ public class RicochetBullet extends Projectile {
 
     public static RicochetBullet of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
         RicochetBullet ability = RicochetBullet.of();
-        ability.params =
-                abilityParams
-                        .width(0.8f)
-                        .height(0.8f)
-                        .channelTime(0f)
-                        .activeTime(10f)
-                        .textureName("fireball")
-                        .baseDamage(12f)
-                        .isChannelAnimationLooping(false)
-                        .isActiveAnimationLooping(true)
-                        .rotationShift(0f)
-                        .delayedActionTime(0.001f)
-                        .speed(25f);
+        ability.params = abilityParams.setWidth(0.8f)
+                                      .setHeight(0.8f)
+                                      .setChannelTime(0f)
+                                      .setActiveTime(10f)
+                                      .setTextureName("fireball")
+                                      .setBaseDamage(12f)
+                                      .setIsChannelAnimationLooping(false)
+                                      .setIsActiveAnimationLooping(true)
+                                      .setRotationShift(0f)
+                                      .setDelayedActionTime(0.001f)
+                                      .setSpeed(25f);
 
 
         return ability;
@@ -61,7 +59,7 @@ public class RicochetBullet extends Projectile {
 
     @Override
     public void onCreatureHit() {
-        params.damageMultiplier(params.damageMultiplier() * 3 / 5f);
+        params.setDamageMultiplier(params.getDamageMultiplier() * 3 / 5f);
     }
 
     @Override
@@ -72,26 +70,26 @@ public class RicochetBullet extends Projectile {
     @Override
     public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
 
-        if (params().dirVector().normalized().dot(abilityPos.vectorTowards(tilePos).normalized()) <
+        if (getParams().getDirVector().normalized().dot(abilityPos.vectorTowards(tilePos).normalized()) <
             0.6f) { // check if it is facing the tile
             return;
         }
 
-        if (params().wallBounceCount() > 4) {
+        if (getParams().getWallBounceCount() > 4) {
             deactivate();
             return;
         }
 
 
-        params().creaturesAlreadyHit().clear();
+        getParams().getCreaturesAlreadyHit().clear();
 
-        params().wallBounceCount(params().wallBounceCount() + 1);
+        getParams().setWallBounceCount(getParams().getWallBounceCount() + 1);
 
         Vector2 collisionVector = abilityPos.vectorTowards(tilePos);
 
         float collisionAngle = collisionVector.angleDeg();
 
-        float angle = params.dirVector().multiplyBy(-1).angleDeg();
+        float angle = params.getDirVector().multiplyBy(-1).angleDeg();
 
 
         float reflectAngle = 0f;
@@ -128,7 +126,7 @@ public class RicochetBullet extends Projectile {
             }
         }
 
-        params.dirVector(params.dirVector().setAngleDeg(reflectAngle));
+        params.setDirVector(params.getDirVector().setAngleDeg(reflectAngle));
 
     }
 

@@ -21,27 +21,25 @@ public class SwordSpin extends Ability {
 
     public static SwordSpin of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
         SwordSpin ability = SwordSpin.of();
-        ability.params =
-                abilityParams
-                        .width(2.4f)
-                        .height(2.4f)
-                        .channelTime(0f)
-                        .activeTime(3f)
-                        .range(2.2f)
-                        .textureName("sword")
-                        .baseDamage(11f)
-                        .isChannelAnimationLooping(false)
-                        .isActiveAnimationLooping(false)
-                        .rotationShift(0f)
-                        .dirVector(abilityParams.dirVector().rotateDeg(90));
+        ability.params = abilityParams.setWidth(2.4f)
+                                      .setHeight(2.4f)
+                                      .setChannelTime(0f)
+                                      .setActiveTime(3f)
+                                      .setRange(2.2f)
+                                      .setTextureName("sword")
+                                      .setBaseDamage(11f)
+                                      .setIsChannelAnimationLooping(false)
+                                      .setIsActiveAnimationLooping(false)
+                                      .setRotationShift(0f)
+                                      .setDirVector(abilityParams.getDirVector().rotateDeg(90));
         return ability;
     }
 
     @Override
     public void init(GameActionApplicable game) {
 
-        params().state(AbilityState.CHANNEL);
-        params().stateTimer().restart();
+        getParams().setState(AbilityState.CHANNEL);
+        getParams().getStateTimer().restart();
 
         updatePosition(game);
 
@@ -76,26 +74,26 @@ public class SwordSpin extends Ability {
     @Override
     public void updatePosition(AbilityUpdatable game) {
         Vector2 dirVector;
-        if (params().dirVector().len() <= 0) {
+        if (getParams().getDirVector().len() <= 0) {
             dirVector = Vector2.of(1, 0);
         }
         else {
-            dirVector = params().dirVector();
+            dirVector = getParams().getDirVector();
         }
 
         Float theta = dirVector.angleDeg();
 
-        float attackShiftX = dirVector.normalized().x() * params().range();
-        float attackShiftY = dirVector.normalized().y() * params().range();
+        float attackShiftX = dirVector.normalized().getX() * getParams().getRange();
+        float attackShiftY = dirVector.normalized().getY() * getParams().getRange();
 
-        Vector2 pos = game.getCreaturePos(params().creatureId());
+        Vector2 pos = game.getCreaturePos(getParams().getCreatureId());
 
         if (pos != null) {
-            float attackRectX = attackShiftX + pos.x();
-            float attackRectY = attackShiftY + pos.y();
+            float attackRectX = attackShiftX + pos.getX();
+            float attackRectY = attackShiftY + pos.getY();
 
-            params().pos(Vector2.of(attackRectX, attackRectY));
-            params().rotationAngle(theta);
+            getParams().setPos(Vector2.of(attackRectX, attackRectY));
+            getParams().setRotationAngle(theta);
         }
     }
 
@@ -111,17 +109,17 @@ public class SwordSpin extends Ability {
     void onActiveUpdate(AbilityUpdatable game) {
         updatePosition(game);
 
-        params().dirVector(params().dirVector().rotateDeg(-10));
+        getParams().setDirVector(getParams().getDirVector().rotateDeg(-10));
 
         Set<CreatureId> creaturesHitRemove = new HashSet<>();
 
-        params().creaturesAlreadyHit().forEach((creatureId, time) -> {
-            if (time < params().stateTimer().time() - 0.4f) {
+        getParams().getCreaturesAlreadyHit().forEach((creatureId, time) -> {
+            if (time < getParams().getStateTimer().getTime() - 0.4f) {
                 creaturesHitRemove.add(creatureId);
             }
         });
 
-        creaturesHitRemove.forEach(creatureId -> params().creaturesAlreadyHit().remove(creatureId));
+        creaturesHitRemove.forEach(creatureId -> getParams().getCreaturesAlreadyHit().remove(creatureId));
     }
 
     @Override

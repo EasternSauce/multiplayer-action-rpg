@@ -11,17 +11,17 @@ public abstract class Projectile extends Ability {
 
     @Override
     void onChannelUpdate(AbilityUpdatable game) {
-        if (params().speed() != null) {
-            params().velocity(params().dirVector().normalized().multiplyBy(params().speed()));
+        if (getParams().getSpeed() != null) {
+            getParams().setVelocity(getParams().getDirVector().normalized().multiplyBy(getParams().getSpeed()));
         }
-        params().rotationAngle(params().dirVector().angleDeg());
+        getParams().setRotationAngle(getParams().getDirVector().angleDeg());
     }
 
     @Override
     void onActiveUpdate(AbilityUpdatable game) {
-        if (params().speed() != null) {
-            params().velocity(params().dirVector().normalized().multiplyBy(params().speed()));
+        if (getParams().getSpeed() != null) {
+            getParams().setVelocity(getParams().getDirVector().normalized().multiplyBy(getParams().getSpeed()));
         }
-        params().rotationAngle(params().dirVector().angleDeg());
+        getParams().setRotationAngle(getParams().getDirVector().angleDeg());
     }
 }

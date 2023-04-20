@@ -19,11 +19,11 @@ public class AbilityActivateAction extends GameStateAction {
 
     @Override
     public Vector2 actionObjectPos(GameState gameState) {
-        return ability.params().pos();
+        return ability.getParams().getPos();
     }
 
     @Override
     public void applyToGame(GameActionApplicable game) {
-        game.getAbilitiesToBeActivated().add(ability.params().id());
+        game.getAbilitiesToBeActivated().add(ability.getParams().getId());
     }
 }

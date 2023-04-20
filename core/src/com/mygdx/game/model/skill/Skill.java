@@ -62,12 +62,18 @@ public class Skill {
         if (skillType == SkillType.CROSSBOW_BOLT) {
             return Skill.of(skillType,
                             creatureId,
-                            Stream.of(new ScheduledAbility[]{
-                                          ScheduledAbility.of(AbilityType.CROSSBOW_BOLT, skillType, 0f),
-                                          ScheduledAbility.of(AbilityType.CROSSBOW_BOLT, skillType, 0.4f),
-                                          ScheduledAbility.of(AbilityType.CROSSBOW_BOLT, skillType, 1f),
-                                          ScheduledAbility.of(AbilityType.CROSSBOW_BOLT, skillType, 1.2f),
-                                          ScheduledAbility.of(AbilityType.CROSSBOW_BOLT, skillType, 1.4f)})
+                            Stream.of(new ScheduledAbility[]{ScheduledAbility.of(AbilityType.CROSSBOW_BOLT,
+                                                                                 skillType,
+                                                                                 0f), ScheduledAbility.of(AbilityType.CROSSBOW_BOLT,
+                                                                                                          skillType,
+                                                                                                          0.4f), ScheduledAbility.of(
+                                          AbilityType.CROSSBOW_BOLT,
+                                          skillType,
+                                          1f), ScheduledAbility.of(AbilityType.CROSSBOW_BOLT,
+                                                                   skillType,
+                                                                   1.2f), ScheduledAbility.of(AbilityType.CROSSBOW_BOLT,
+                                                                                              skillType,
+                                                                                              1.4f)})
                                   .collect(Collectors.toCollection(ArrayList::new)),
                             SimpleTimer.getExpiredTimer(),
                             2f,
@@ -162,8 +168,7 @@ public class Skill {
     }
 
     public static List<ScheduledAbility> singleScheduledAbility(AbilityType abilityType, SkillType skillType) {
-        return Stream.of(new ScheduledAbility[]{ScheduledAbility.of(abilityType, skillType,
-                                                                    0f)})
+        return Stream.of(new ScheduledAbility[]{ScheduledAbility.of(abilityType, skillType, 0f)})
                      .collect(Collectors.toCollection(ArrayList::new));
     }
 
@@ -175,10 +180,10 @@ public class Skill {
         }
 
         for (ScheduledAbility scheduledAbility : abilities) {
-            if (scheduledAbility.readyToPerform() &&
-                !scheduledAbility.scheduleTimePassed() &&
-                performTimer().time() > scheduledAbility.scheduledTime()) {
-                scheduledAbility.scheduleTimePassed(true);
+            if (scheduledAbility.getReadyToPerform() &&
+                !scheduledAbility.getScheduleTimePassed() &&
+                getPerformTimer().getTime() > scheduledAbility.getScheduledTime()) {
+                scheduledAbility.setScheduleTimePassed(true);
                 scheduledAbility.perform(creatureId, game);
             }
         }
@@ -190,7 +195,7 @@ public class Skill {
 
         if (creature != null &&
             creature.canPerformSkill(this) &&
-            performTimer.time() > cooldown &&
+            performTimer.getTime() > cooldown &&
             !creature.isEffectActive(CreatureEffect.STUN, game)) {
             abilities.forEach(scheduledAbility -> scheduledAbility.init(startingPos, dirVector));
             creature.onPerformSkill(this);
@@ -199,7 +204,7 @@ public class Skill {
     }
 
     public void resetCooldown() {
-        performTimer().time(cooldown);
+        getPerformTimer().setTime(getCooldown());
 
     }
 }

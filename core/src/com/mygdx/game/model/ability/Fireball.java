@@ -18,22 +18,20 @@ public class Fireball extends Projectile {
     AbilityParams params;
 
     public static Fireball of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
-        Creature creature = game.getCreature(abilityParams.creatureId());
+        Creature creature = game.getCreature(abilityParams.getCreatureId());
 
         Fireball ability = Fireball.of();
-        ability.params =
-                abilityParams
-                        .width(1.5f)
-                        .height(1.5f)
-                        .channelTime(0f)
-                        .activeTime(30f)
-                        .textureName("fireball")
-                        .baseDamage(20f)
-                        .isChannelAnimationLooping(false)
-                        .isActiveAnimationLooping(true)
-                        .rotationShift(0f)
-                        .delayedActionTime(0.001f)
-                        .pos(creature.params().pos());
+        ability.params = abilityParams.setWidth(1.5f)
+                                      .setHeight(1.5f)
+                                      .setChannelTime(0f)
+                                      .setActiveTime(30f)
+                                      .setTextureName("fireball")
+                                      .setBaseDamage(20f)
+                                      .setIsChannelAnimationLooping(false)
+                                      .setIsActiveAnimationLooping(true)
+                                      .setRotationShift(0f)
+                                      .setDelayedActionTime(0.001f)
+                                      .setPos(creature.getParams().getPos());
 
 
         return ability;
@@ -57,16 +55,16 @@ public class Fireball extends Projectile {
     @Override
     protected void onActiveUpdate(AbilityUpdatable game) {
         //projectile speeds up over time
-        if (params().speed() != null) {
-            params().velocity(params().dirVector().normalized().multiplyBy(params().speed()));
+        if (getParams().getSpeed() != null) {
+            getParams().setVelocity(getParams().getDirVector().normalized().multiplyBy(getParams().getSpeed()));
         }
-        params().rotationAngle(params().dirVector().angleDeg());
+        getParams().setRotationAngle(getParams().getDirVector().angleDeg());
 
-        if (params().stateTimer().time() < 2f) {
-            params().speed(5f + (params().stateTimer().time() / 2f) * 40f);
+        if (getParams().getStateTimer().getTime() < 2f) {
+            getParams().setSpeed(5f + (getParams().getStateTimer().getTime() / 2f) * 40f);
         }
         else {
-            params().speed(45f);
+            getParams().setSpeed(45f);
         }
     }
 
@@ -92,10 +90,7 @@ public class Fireball extends Projectile {
 
     @Override
     protected void onAbilityCompleted(AbilityUpdatable game) {
-        game.chainAbility(this,
-                          AbilityType.FIREBALL_EXPLOSION,
-                          params().pos(),
-                          params.dirVector());
+        game.chainAbility(this, AbilityType.FIREBALL_EXPLOSION, getParams().getPos(), params.getDirVector());
     }
 
 

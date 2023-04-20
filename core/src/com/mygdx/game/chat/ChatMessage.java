@@ -14,7 +14,7 @@ public class ChatMessage implements Comparable<ChatMessage> {
 
     @Override
     public int compareTo(ChatMessage other) {
-        if (this.time() <= other.time()) {
+        if (this.getTime() <= other.getTime()) {
             return -1;
         }
         else {

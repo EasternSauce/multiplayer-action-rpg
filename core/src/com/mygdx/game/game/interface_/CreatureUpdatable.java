@@ -8,9 +8,7 @@ public interface CreatureUpdatable extends GameUpdatable, CurrentPlayerRetrievab
 
     void setCreatureMovingVector(CreatureId creatureId, Vector2 dirVector);
 
-    void handleAttackTarget(CreatureId attackingCreatureId,
-                            Vector2 vectorTowardsTarget,
-                            SkillType skillType);
+    void handleAttackTarget(CreatureId attackingCreatureId, Vector2 vectorTowardsTarget, SkillType skillType);
 
 
 }

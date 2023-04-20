@@ -23,8 +23,7 @@ public class AbilityParams {
     Float height;
     CreatureId creatureId;
     SimpleTimer stateTimer = SimpleTimer.getExpiredTimer();
-    @NonNull
-    Vector2 dirVector = Vector2.of(0f, 0f);
+    @NonNull Vector2 dirVector = Vector2.of(0f, 0f);
     String textureName;
 
     Float rotationAngle = 0f;
@@ -57,7 +56,7 @@ public class AbilityParams {
 
     Float rotationShift;
 
-    Boolean flip = false;
+    Boolean isFlip = false;
 
     Float abilityRngSeed = (float) Math.random();
 
@@ -72,7 +71,7 @@ public class AbilityParams {
 
     Float wallBounceCount = 0f;
 
-    Boolean comingBack = false;
+    Boolean isComingBack = false;
 
     SkillType skillType;
 

@@ -42,17 +42,11 @@ public interface GameUpdatable {
     @SuppressWarnings("unused")
     Vector2 getAbilityPos(AbilityId abilityId);
 
-    void setWorldCameraPosition(float x, float y);
-
-    void setWorldTextCameraPosition(float x, float y);
-
-    void updateCameras();
+    void updateCameraPositions();
 
     boolean isLineOfSight(AreaId areaId, Vector2 fromPos, Vector2 toPos);
 
-    void spawnAbility(
-            AbilityType abilityType,
-            AbilityParams abilityParams);
+    void spawnAbility(AbilityType abilityType, AbilityParams abilityParams);
 
     PhysicsWorld getPhysicsWorld(AreaId areaId);
 
@@ -84,9 +78,7 @@ public interface GameUpdatable {
 
     Float getTime();
 
-    void onAbilityHitsCreature(CreatureId attackerId,
-                               CreatureId targetId,
-                               Ability ability);
+    void onAbilityHitsCreature(CreatureId attackerId, CreatureId targetId, Ability ability);
 
     Float nextRandomValue();
 

@@ -11,10 +11,10 @@ public abstract class GameStateAction {
     public abstract Vector2 actionObjectPos(GameState gameState);
 
     public Vector2 getActionCreaturePos(GameState gameState, CreatureId creatureId) {
-        if (!gameState.creatures().containsKey(creatureId)) {
+        if (!gameState.getCreatures().containsKey(creatureId)) {
             return Vector2.of(0f, 0f);
         }
-        return gameState.creatures().get(creatureId).params().pos();
+        return gameState.getCreatures().get(creatureId).getParams().getPos();
     }
 
     public abstract void applyToGame(GameActionApplicable game);

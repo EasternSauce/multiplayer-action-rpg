@@ -15,10 +15,7 @@ public class SummonGhosts extends Ability {
 
     public static SummonGhosts of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
         SummonGhosts ability = SummonGhosts.of();
-        ability.params = abilityParams
-
-                .channelTime(0f).activeTime(0f);
-
+        ability.params = abilityParams.setChannelTime(0f).setActiveTime(0f);
 
         return ability;
     }
@@ -45,16 +42,16 @@ public class SummonGhosts extends Ability {
 
     @Override
     void onAbilityCompleted(AbilityUpdatable game) {
-        float baseAngle = params().dirVector().angleDeg();
-        game.chainAbility(this, AbilityType.PLAYFUL_GHOST, params().pos(), params.dirVector());
+        float baseAngle = getParams().getDirVector().angleDeg();
+        game.chainAbility(this, AbilityType.PLAYFUL_GHOST, getParams().getPos(), params.getDirVector());
         game.chainAbility(this,
                           AbilityType.PLAYFUL_GHOST,
-                          params().pos(),
-                          params.dirVector().setAngleDeg(baseAngle - 30f));
+                          getParams().getPos(),
+                          params.getDirVector().setAngleDeg(baseAngle - 30f));
         game.chainAbility(this,
                           AbilityType.PLAYFUL_GHOST,
-                          params().pos(),
-                          params.dirVector().setAngleDeg(baseAngle + 30f));
+                          getParams().getPos(),
+                          params.getDirVector().setAngleDeg(baseAngle + 30f));
     }
 
 

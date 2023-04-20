@@ -19,19 +19,19 @@ public class LootPileRenderer {
 
     public static LootPileRenderer of(LootPileId lootPileId) {
         LootPileRenderer lootPileRenderer = new LootPileRenderer();
-        lootPileRenderer.lootPileId(lootPileId);
+        lootPileRenderer.setLootPileId(lootPileId);
         return lootPileRenderer;
     }
 
 
     public void init(TextureAtlas atlas, GameState gameState) { // TODO: change to UpdatableGame?
 
-        LootPile lootPile = gameState.lootPiles().get(lootPileId);
+        LootPile lootPile = gameState.getLootPiles().get(lootPileId);
 
         sprite = new Sprite();
         sprite.setRegion(atlas.findRegion("bag"));
-        sprite.setSize(lootPile.width(), lootPile.height());
-        sprite.setCenter(lootPile.pos().x(), lootPile.pos().y());
+        sprite.setSize(lootPile.getWidth(), lootPile.getHeight());
+        sprite.setCenter(lootPile.getPos().getX(), lootPile.getPos().getY());
 
 
     }
@@ -40,8 +40,8 @@ public class LootPileRenderer {
         AreaId currentAreaId = game.getCurrentPlayerAreaId();
         LootPile lootPile = game.getLootPile(lootPileId);
 
-        if (lootPile != null && currentAreaId.equals(lootPile.areaId())) {
-            sprite.draw(renderingLayer.spriteBatch());
+        if (lootPile != null && currentAreaId.equals(lootPile.getAreaId())) {
+            sprite.draw(renderingLayer.getSpriteBatch());
         }
 
     }

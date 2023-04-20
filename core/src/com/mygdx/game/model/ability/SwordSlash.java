@@ -17,26 +17,24 @@ public class SwordSlash extends Ability {
 
     public static SwordSlash of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
         SwordSlash ability = SwordSlash.of();
-        ability.params =
-                abilityParams
-                        .width(2f)
-                        .height(2f)
-                        .channelTime(0.15f)
-                        .activeTime(0.3f)
-                        .range(1.8f)
-                        .textureName("slash")
-                        .baseDamage(22f)
-                        .isChannelAnimationLooping(false)
-                        .isActiveAnimationLooping(false)
-                        .rotationShift(0f);
+        ability.params = abilityParams.setWidth(2f)
+                                      .setHeight(2f)
+                                      .setChannelTime(0.15f)
+                                      .setActiveTime(0.3f)
+                                      .setRange(1.8f)
+                                      .setTextureName("slash")
+                                      .setBaseDamage(22f)
+                                      .setIsChannelAnimationLooping(false)
+                                      .setIsActiveAnimationLooping(false)
+                                      .setRotationShift(0f);
         return ability;
     }
 
     @Override
     public void init(GameActionApplicable game) {
 
-        params().state(AbilityState.CHANNEL);
-        params().stateTimer().restart();
+        getParams().setState(AbilityState.CHANNEL);
+        getParams().getStateTimer().restart();
 
         updatePosition(game);
 
@@ -71,26 +69,26 @@ public class SwordSlash extends Ability {
     @Override
     public void updatePosition(AbilityUpdatable game) {
         Vector2 dirVector;
-        if (params().dirVector().len() <= 0) {
+        if (getParams().getDirVector().len() <= 0) {
             dirVector = Vector2.of(1, 0);
         }
         else {
-            dirVector = params().dirVector();
+            dirVector = getParams().getDirVector();
         }
 
         Float theta = dirVector.angleDeg();
 
-        float attackShiftX = dirVector.normalized().x() * params().range();
-        float attackShiftY = dirVector.normalized().y() * params().range();
+        float attackShiftX = dirVector.normalized().getX() * getParams().getRange();
+        float attackShiftY = dirVector.normalized().getY() * getParams().getRange();
 
-        Vector2 pos = game.getCreaturePos(params().creatureId());
+        Vector2 pos = game.getCreaturePos(getParams().getCreatureId());
 
         if (pos != null) {
-            float attackRectX = attackShiftX + pos.x();
-            float attackRectY = attackShiftY + pos.y();
+            float attackRectX = attackShiftX + pos.getX();
+            float attackRectY = attackShiftY + pos.getY();
 
-            params().pos(Vector2.of(attackRectX, attackRectY));
-            params().rotationAngle(theta);
+            getParams().setPos(Vector2.of(attackRectX, attackRectY));
+            getParams().setRotationAngle(theta);
         }
 
     }

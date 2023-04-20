@@ -12,6 +12,6 @@ public class LootPileId implements Comparable<LootPileId> {
 
     @Override
     public int compareTo(LootPileId o) {
-        return value().compareTo(o.value());
+        return getValue().compareTo(o.getValue());
     }
 }

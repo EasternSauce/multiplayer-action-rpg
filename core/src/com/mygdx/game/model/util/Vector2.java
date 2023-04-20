@@ -56,11 +56,11 @@ public class Vector2 {
     }
 
     public Vector2 vectorTowards(Vector2 point) {
-        return Vector2.of(point.x() - x, point.y() - y);
+        return Vector2.of(point.getX() - x, point.getY() - y);
     }
 
     public Float dot(Vector2 other) {
-        return x * other.x() + y * other.y();
+        return x * other.getX() + y * other.getY();
     }
 
     @SuppressWarnings("unused")
@@ -86,8 +86,8 @@ public class Vector2 {
         float len = len();
         Vector2 newVector = Vector2.of(x, y);
         if (len != 0) {
-            newVector.x(x / len);
-            newVector.y(y / len);
+            newVector.setX(getX() / len);
+            newVector.setY(getY() / len);
         }
         return newVector;
     }
@@ -97,11 +97,12 @@ public class Vector2 {
     }
 
     public Vector2 add(Vector2 vector) {
-        return Vector2.of(x + vector.x(), y + vector.y());
+        return Vector2.of(getX() + vector.getX(), getY() + vector.getY());
     }
 
     @SuppressWarnings("unused")
     public Vector2 midpointTowards(Vector2 vector) {
-        return Vector2.of(this.x() + 0.5f * (vector.x() - this.x()), this.y() + 0.5f * (vector.y() - this.y()));
+        return Vector2.of(this.getX() + 0.5f * (vector.getX() - this.getX()),
+                          this.getY() + 0.5f * (vector.getY() - this.getY()));
     }
 }

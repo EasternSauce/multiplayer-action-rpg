@@ -20,11 +20,11 @@ public class PhysicsHelper {
             if (physicsEvent instanceof AbilityHitsCreatureEvent) {
                 AbilityHitsCreatureEvent event = (AbilityHitsCreatureEvent) physicsEvent;
 
-                if (game.getCreaturesToUpdate().contains(event.destinationCreatureId()) &&
-                    game.getAbilitiesToUpdate().contains(event.abilityId())) {
+                if (game.getCreaturesToUpdate().contains(event.getDestinationCreatureId()) &&
+                    game.getAbilitiesToUpdate().contains(event.getAbilityId())) {
 
-                    if (event.sourceCreatureId().equals(event.destinationCreatureId())) {
-                        Ability ability = game.getAbility(event.abilityId());
+                    if (event.getSourceCreatureId().equals(event.getDestinationCreatureId())) {
+                        Ability ability = game.getAbility(event.getAbilityId());
                         ability.onThisCreatureHit(game);
                     }
                     else {
@@ -36,56 +36,56 @@ public class PhysicsHelper {
             else if (physicsEvent instanceof AbilityHitsTerrainEvent) {
                 AbilityHitsTerrainEvent event = (AbilityHitsTerrainEvent) physicsEvent;
 
-                Ability ability = game.getAbility(event.abilityId());
+                Ability ability = game.getAbility(event.getAbilityId());
 
-                if (ability != null && ability.params().state() == AbilityState.ACTIVE) {
-                    ability.onTerrainHit(event.abilityPos(), event.tilePos());
+                if (ability != null && ability.getParams().getState() == AbilityState.ACTIVE) {
+                    ability.onTerrainHit(event.getAbilityPos(), event.getTilePos());
                 }
 
             }
             else if (physicsEvent instanceof AbilityHitsAbilityEvent) {
                 AbilityHitsAbilityEvent event = (AbilityHitsAbilityEvent) physicsEvent;
 
-                Ability abilityA = game.getAbility(event.abilityA_Id());
-                Ability abilityB = game.getAbility(event.abilityB_Id());
+                Ability abilityA = game.getAbility(event.getAbilityA_Id());
+                Ability abilityB = game.getAbility(event.getAbilityB_Id());
 
-                if (abilityA != null && abilityA.params().state() == AbilityState.ACTIVE) {
-                    abilityA.onOtherAbilityHit(event.abilityB_Id(), game);
+                if (abilityA != null && abilityA.getParams().getState() == AbilityState.ACTIVE) {
+                    abilityA.onOtherAbilityHit(event.getAbilityB_Id(), game);
                 }
-                if (abilityB != null && abilityB.params().state() == AbilityState.ACTIVE) {
-                    abilityB.onOtherAbilityHit(event.abilityA_Id(), game);
+                if (abilityB != null && abilityB.getParams().getState() == AbilityState.ACTIVE) {
+                    abilityB.onOtherAbilityHit(event.getAbilityA_Id(), game);
                 }
             }
             else if (physicsEvent instanceof CreatureHitsAreaGateEvent) {
                 CreatureHitsAreaGateEvent event = (CreatureHitsAreaGateEvent) physicsEvent;
 
-                Creature creature = game.getCreature(event.creatureId());
-                AreaGate areaGate = event.areaGate();
+                Creature creature = game.getCreature(event.getCreatureId());
+                AreaGate areaGate = event.getAreaGate();
 
-                creature.params().areaWhenEnteredGate(creature.params().areaId());
+                creature.getParams().setAreaWhenEnteredGate(creature.getParams().getAreaId());
 
-                if (creature instanceof Player && !creature.params().justTeleportedToGate()) {
+                if (creature instanceof Player && !creature.getParams().getJustTeleportedToGate()) {
                     AreaId fromAreaId;
                     AreaId toAreaId;
                     Vector2 pos;
 
-                    AreaId creatureAreaId = creature.params().areaId();
+                    AreaId creatureAreaId = creature.getParams().getAreaId();
 
-                    if (creatureAreaId.equals(areaGate.areaA_Id())) {
-                        fromAreaId = areaGate.areaA_Id();
-                        toAreaId = areaGate.areaB_Id();
-                        pos = areaGate.posB();
+                    if (creatureAreaId.equals(areaGate.getAreaA_Id())) {
+                        fromAreaId = areaGate.getAreaA_Id();
+                        toAreaId = areaGate.getAreaB_Id();
+                        pos = areaGate.getPosB();
                     }
-                    else if (creatureAreaId.equals(areaGate.areaB_Id())) {
-                        fromAreaId = areaGate.areaB_Id();
-                        toAreaId = areaGate.areaA_Id();
-                        pos = areaGate.posA();
+                    else if (creatureAreaId.equals(areaGate.getAreaB_Id())) {
+                        fromAreaId = areaGate.getAreaB_Id();
+                        toAreaId = areaGate.getAreaA_Id();
+                        pos = areaGate.getPosA();
                     }
                     else {
                         throw new RuntimeException("unreachable");
                     }
 
-                    game.addTeleportEvent(TeleportEvent.of(event.creatureId(), pos, fromAreaId, toAreaId));
+                    game.addTeleportEvent(TeleportEvent.of(event.getCreatureId(), pos, fromAreaId, toAreaId));
 
 
                 }
@@ -94,28 +94,28 @@ public class PhysicsHelper {
 
                 CreatureLeavesAreaGateEvent event = (CreatureLeavesAreaGateEvent) physicsEvent;
 
-                Creature creature = game.getCreature(event.creatureId());
+                Creature creature = game.getCreature(event.getCreatureId());
 
                 if (creature instanceof Player &&
-                    creature.params().justTeleportedToGate() &&
-                    creature.params().areaWhenEnteredGate().equals(creature.params().areaId())) {
+                    creature.getParams().getJustTeleportedToGate() &&
+                    creature.getParams().getAreaWhenEnteredGate().equals(creature.getParams().getAreaId())) {
 
 
-                    creature.params().justTeleportedToGate(false);
+                    creature.getParams().setJustTeleportedToGate(false);
 
                 }
             }
             else if (physicsEvent instanceof CreatureHitsLootPileEvent) {
                 CreatureHitsLootPileEvent event = (CreatureHitsLootPileEvent) physicsEvent;
 
-                //                LootPile lootPile = game.getLootPile(event.lootPileId());
+                //                LootPile lootPile = game.getLootPile(event.getLootPileId());
 
                 //                if (lootPile != null) lootPile.isLooted(true);
 
-                PlayerParams playerParams = game.getPlayerParams(event.creatureId());
+                PlayerParams playerParams = game.getPlayerParams(event.getCreatureId());
 
                 if (playerParams != null) {
-                    playerParams.itemPickupMenuLootPiles().add(event.lootPileId());
+                    playerParams.getItemPickupMenuLootPiles().add(event.getLootPileId());
                 }
 
             }
@@ -123,10 +123,10 @@ public class PhysicsHelper {
             else if (physicsEvent instanceof CreatureLeavesLootPileEvent) {
                 CreatureLeavesLootPileEvent event = (CreatureLeavesLootPileEvent) physicsEvent;
 
-                PlayerParams playerParams = game.getPlayerParams(event.creatureId());
+                PlayerParams playerParams = game.getPlayerParams(event.getCreatureId());
 
                 if (playerParams != null) {
-                    playerParams.itemPickupMenuLootPiles().remove(event.lootPileId());
+                    playerParams.getItemPickupMenuLootPiles().remove(event.getLootPileId());
                 }
 
             }
@@ -137,15 +137,15 @@ public class PhysicsHelper {
 
     private static void handleCreatureAttacked(AbilityHitsCreatureEvent event, GameUpdatable game) {
 
-        Creature sourceCreature = game.getCreature(event.sourceCreatureId());
-        Creature destinationCreature = game.getCreature(event.destinationCreatureId());
-        Ability ability = game.getAbility(event.abilityId());
+        Creature sourceCreature = game.getCreature(event.getSourceCreatureId());
+        Creature destinationCreature = game.getCreature(event.getDestinationCreatureId());
+        Ability ability = game.getAbility(event.getAbilityId());
 
         if (ability != null && destinationCreature.isAlive()) {
             if ((sourceCreature instanceof Player || destinationCreature instanceof Player) &&
-                !ability.params().creaturesAlreadyHit().containsKey(event.destinationCreatureId())) {
+                !ability.getParams().getCreaturesAlreadyHit().containsKey(event.getDestinationCreatureId())) {
 
-                game.onAbilityHitsCreature(event.sourceCreatureId(), event.destinationCreatureId(), ability);
+                game.onAbilityHitsCreature(event.getSourceCreatureId(), event.getDestinationCreatureId(), ability);
             }
 
 
@@ -158,22 +158,22 @@ public class PhysicsHelper {
 
             game.getCreatures().forEach((creatureId, creature) -> {
                 if (game.getCreatureBodies().containsKey(creatureId) &&
-                    game.getCreatureBodies().get(creatureId).getBodyPos().distance(creature.params().pos()) >
+                    game.getCreatureBodies().get(creatureId).getBodyPos().distance(creature.getParams().getPos()) >
                     Constants.FORCE_UPDATE_MINIMUM_DISTANCE // only setTransform if positions are far apart
                 ) {
-                    game.getCreatureBodies().get(creatureId).trySetTransform(creature.params().pos());
+                    game.getCreatureBodies().get(creatureId).trySetTransform(creature.getParams().getPos());
                 }
             });
 
             game.getAbilities().forEach((abilityId, ability) -> {
                 if (game.getAbilityBodies().containsKey(abilityId) &&
-                    game.getAbilityBodies().get(abilityId).isBodyInitialized() &&
+                    game.getAbilityBodies().get(abilityId).getIsBodyInitialized() &&
                     // this is needed to fix body created client/server desync
                     ability.bodyShouldExist() &&
-                    game.getAbilityBodies().get(abilityId).getBodyPos().distance(ability.params().pos()) >
+                    game.getAbilityBodies().get(abilityId).getBodyPos().distance(ability.getParams().getPos()) >
                     Constants.FORCE_UPDATE_MINIMUM_DISTANCE // only setTransform if positions are far apart
                 ) {
-                    game.getAbilityBodies().get(abilityId).trySetTransform(ability.params().pos());
+                    game.getAbilityBodies().get(abilityId).trySetTransform(ability.getParams().getPos());
                 }
             });
         }

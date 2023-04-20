@@ -33,15 +33,15 @@ public class CreatureMoveTowardsTargetAction extends GameStateAction {
         Creature creature = game.getCreature(creatureId);
 
         if (creature != null && creature.isAlive() && !creature.isEffectActive(CreatureEffect.STUN, game)) {
-            Vector2 pos = creature.params().pos();
+            Vector2 pos = creature.getParams().getPos();
 
             creature.moveTowards(pos.add(mousePos));
 
-            creature.params().previousPos(creature.params().pos());
-            creature.params().isStillMovingCheckTimer().restart();
+            creature.getParams().setPreviousPos(creature.getParams().getPos());
+            creature.getParams().getIsStillMovingCheckTimer().restart();
 
 
-            creature.params().movementCommandsPerSecondLimitTimer().restart();
+            creature.getParams().getMovementCommandsPerSecondLimitTimer().restart();
 
         }
 

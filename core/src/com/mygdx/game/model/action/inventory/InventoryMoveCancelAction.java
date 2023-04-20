@@ -28,8 +28,8 @@ public class InventoryMoveCancelAction extends GameStateAction {
         PlayerParams playerParams = game.getPlayerParams(creatureId);
 
         if (playerParams != null) {
-            playerParams.inventoryItemBeingMoved(null);
-            playerParams.equipmentItemBeingMoved(null);
+            playerParams.setInventoryItemBeingMoved(null);
+            playerParams.setEquipmentItemBeingMoved(null);
         }
     }
 }

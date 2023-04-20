@@ -23,7 +23,7 @@ public class AbilityBody {
     AbilityId abilityId;
     @Getter
     CreatureId creatureId;
-    Body b2Body = null;
+    Body b2body = null;
     PhysicsWorld world;
 
     @Getter
@@ -38,10 +38,10 @@ public class AbilityBody {
     private float[] hitboxVertices(GameUpdatable game) {
         Ability ability = game.getAbility(abilityId);
 
-        sprite.setSize(ability.params().width(), ability.params().height());
+        sprite.setSize(ability.getParams().getWidth(), ability.getParams().getHeight());
         sprite.setCenter(0, 0);
         sprite.setOriginCenter();
-        sprite.setRotation(ability.params().rotationAngle());
+        sprite.setRotation(ability.getParams().getRotationAngle());
 
         float[] vertices = sprite.getVertices();
 
@@ -49,16 +49,16 @@ public class AbilityBody {
     }
 
     public void setVelocity(Vector2 velocity) {
-        b2Body.setLinearVelocity(new com.badlogic.gdx.math.Vector2(velocity.x(), velocity.y()));
+        b2body.setLinearVelocity(new com.badlogic.gdx.math.Vector2(velocity.getX(), velocity.getY()));
     }
 
     public Vector2 getBodyPos() {
-        return Vector2.of(b2Body.getWorldCenter().x, b2Body.getWorldCenter().y);
+        return Vector2.of(b2body.getWorldCenter().x, b2body.getWorldCenter().y);
     }
 
     public void trySetTransform(Vector2 vector) {
-        if (!world.b2world().isLocked()) {
-            b2Body.setTransform(vector.x(), vector.y(), b2Body.getAngle());
+        if (!world.getB2world().isLocked()) {
+            b2body.setTransform(vector.getX(), vector.getY(), b2body.getAngle());
         }
 
     }
@@ -67,11 +67,11 @@ public class AbilityBody {
         Ability ability = game.getAbility(abilityId);
 
         if (!isBodyInitialized && !skipCreatingBody && ability != null) {
-            world = game.getPhysicsWorld(ability.params().areaId());
+            world = game.getPhysicsWorld(ability.getParams().getAreaId());
 
-            creatureId = ability.params().creatureId();
+            creatureId = ability.getParams().getCreatureId();
 
-            b2Body = B2BodyFactory.createAbilityB2Body(world, this, ability.params().pos(), hitboxVertices(game));
+            b2body = B2BodyFactory.createAbilityB2Body(world, this, ability.getParams().getPos(), hitboxVertices(game));
 
             isBodyInitialized = true;
         }
@@ -79,17 +79,17 @@ public class AbilityBody {
     }
 
     public void update(GameState gameState) {
-        Ability ability = gameState.abilities().get(abilityId);
+        Ability ability = gameState.getAbilities().get(abilityId);
 
-        if (isBodyInitialized() && ability != null && ability.bodyShouldExist()) {
+        if (getIsBodyInitialized() && ability != null && ability.bodyShouldExist()) {
             if (ability.isPositionChangedOnUpdate() &&
-                (ability.params().state() == AbilityState.CHANNEL || ability.params()
-                                                                            .state() == AbilityState.ACTIVE)) {
-                b2Body.setTransform(ability.params().pos().x(), ability.params().pos().y(), 0f);
+                (ability.getParams().getState() == AbilityState.CHANNEL ||
+                 ability.getParams().getState() == AbilityState.ACTIVE)) {
+                b2body.setTransform(ability.getParams().getPos().getX(), ability.getParams().getPos().getY(), 0f);
             }
 
-            if (ability.params().velocity() != null) {
-                setVelocity(ability.params().velocity());
+            if (ability.getParams().getVelocity() != null) {
+                setVelocity(ability.getParams().getVelocity());
             }
 
 
@@ -97,8 +97,8 @@ public class AbilityBody {
     }
 
     public void onRemove() {
-        if (isBodyInitialized()) {
-            world.b2world().destroyBody(b2Body);
+        if (getIsBodyInitialized()) {
+            world.getB2world().destroyBody(b2body);
 
         }
 

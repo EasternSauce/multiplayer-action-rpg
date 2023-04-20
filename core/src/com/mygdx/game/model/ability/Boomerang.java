@@ -19,17 +19,16 @@ public class Boomerang extends Projectile {
 
     public static Boomerang of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
         Boomerang ability = Boomerang.of();
-        ability.params =
-                abilityParams.width(1.3f)
-                             .height(1.3f)
-                             .channelTime(0f)
-                             .activeTime(10f)
-                             .textureName("boomerang")
-                             .baseDamage(22f)
-                             .isChannelAnimationLooping(true)
-                             .isActiveAnimationLooping(true)
-                             .rotationShift(0f)
-                             .speed(15f);
+        ability.params = abilityParams.setWidth(1.3f)
+                                      .setHeight(1.3f)
+                                      .setChannelTime(0f)
+                                      .setActiveTime(10f)
+                                      .setTextureName("boomerang")
+                                      .setBaseDamage(22f)
+                                      .setIsChannelAnimationLooping(true)
+                                      .setIsActiveAnimationLooping(true)
+                                      .setRotationShift(0f)
+                                      .setSpeed(15f);
 
         return ability;
     }
@@ -62,16 +61,16 @@ public class Boomerang extends Projectile {
 
     @Override
     public void onCreatureHit() {
-        params().comingBack(true);
-        params().speed(20f);
+        getParams().setIsComingBack(true);
+        getParams().setSpeed(20f);
     }
 
     @Override
     public void onThisCreatureHit(GameUpdatable game) {
-        if (params().comingBack()) {
+        if (getParams().getIsComingBack()) {
 
-            Creature creature = game.getCreature(params().creatureId());
-            Skill skill = creature.params().skills().get(params().skillType());
+            Creature creature = game.getCreature(getParams().getCreatureId());
+            Skill skill = creature.getParams().getSkills().get(getParams().getSkillType());
 
             skill.resetCooldown();
 
@@ -81,25 +80,25 @@ public class Boomerang extends Projectile {
 
     @Override
     void onActiveUpdate(AbilityUpdatable game) {
-        if (params().speed() != null) {
-            params().velocity(params().dirVector().normalized().multiplyBy(params().speed()));
+        if (getParams().getSpeed() != null) {
+            getParams().setVelocity(getParams().getDirVector().normalized().multiplyBy(getParams().getSpeed()));
         }
-        params().rotationAngle(params().dirVector().angleDeg());
+        getParams().setRotationAngle(getParams().getDirVector().angleDeg());
 
-        Creature creature = game.getCreature(params().creatureId());
+        Creature creature = game.getCreature(getParams().getCreatureId());
 
         if (creature != null) {
-            if (!params().comingBack() && params().stateTimer().time() > 1f) {
-                params().comingBack(true);
-                params().speed(20f);
+            if (!getParams().getIsComingBack() && getParams().getStateTimer().getTime() > 1f) {
+                getParams().setIsComingBack(true);
+                getParams().setSpeed(20f);
             }
 
             // TODO: duplicate code
 
-            if (params().comingBack()) {
-                Vector2 vectorTowards = params().pos().vectorTowards(creature.params().pos());
+            if (getParams().getIsComingBack()) {
+                Vector2 vectorTowards = getParams().getPos().vectorTowards(creature.getParams().getPos());
                 float targetAngleDeg = vectorTowards.angleDeg();
-                float currentAngleDeg = params().dirVector().angleDeg();
+                float currentAngleDeg = getParams().getDirVector().angleDeg();
 
                 float alpha = targetAngleDeg - currentAngleDeg;
                 float beta = targetAngleDeg - currentAngleDeg + 360;
@@ -126,10 +125,10 @@ public class Boomerang extends Projectile {
                 float increment = 10f;
 
                 if (result > increment || result < -increment) {
-                    params().dirVector(params().dirVector().rotateDeg(increment));
+                    getParams().setDirVector(getParams().getDirVector().rotateDeg(increment));
                 }
                 else {
-                    params().dirVector(params().dirVector().setAngleDeg(targetAngleDeg));
+                    getParams().setDirVector(getParams().getDirVector().setAngleDeg(targetAngleDeg));
                 }
             }
 
@@ -139,8 +138,8 @@ public class Boomerang extends Projectile {
 
     @Override
     public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
-        params().comingBack(true);
-        params().speed(20f);
+        getParams().setIsComingBack(true);
+        getParams().setSpeed(20f);
     }
 
     @Override

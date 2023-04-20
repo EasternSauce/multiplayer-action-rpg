@@ -1,14 +1,8 @@
-package com.mygdx.game.renderer;
+package com.mygdx.game.renderer.game;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mygdx.game.Constants;
 import com.mygdx.game.game.interface_.GameRenderable;
 import com.mygdx.game.model.ability.AbilityId;
 import com.mygdx.game.model.area.AreaId;
@@ -16,9 +10,9 @@ import com.mygdx.game.model.area.LootPileId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.creature.Player;
+import com.mygdx.game.renderer.*;
 import com.mygdx.game.renderer.creature.CreatureRenderer;
 import com.mygdx.game.util.InventoryHelper;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import java.util.HashMap;
@@ -28,78 +22,48 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
-@AllArgsConstructor(staticName = "of")
 public class GameRenderer {
-    private OrthographicCamera worldCamera = new OrthographicCamera();
-    private OrthographicCamera hudCamera = new OrthographicCamera();
-    private OrthographicCamera worldTextCamera = new OrthographicCamera();
+    private ViewportsHandler viewportsHandler;
 
-    private Viewport worldViewport;
-    private Viewport hudViewport;
-    private Viewport worldTextViewport;
-
-    private RenderingLayer worldRenderingLayer;
+    private RenderingLayer worldElementsRenderingLayer;
     private RenderingLayer hudRenderingLayer;
     private RenderingLayer worldTextRenderingLayer;
 
     private float mapScale;
 
-    private TmxMapLoader mapLoader = new TmxMapLoader();
+    private final TmxMapLoader mapLoader = new TmxMapLoader();
 
     private TextureAtlas atlas;
 
-    private Map<CreatureId, CreatureRenderer> creatureRenderers = new HashMap<>();
-    private Map<AbilityId, AbilityRenderer> abilityRenderers = new HashMap<>();
-    private Map<AreaId, AreaRenderer> areaRenderers = new HashMap<>();
-
-    private Set<AreaGateRenderer> areaGateRenderers = new HashSet<>();
-
-    private Map<LootPileId, LootPileRenderer> lootPileRenderers = new HashMap<>();
+    private final Map<CreatureId, CreatureRenderer> creatureRenderers = new HashMap<>();
+    private final Map<AbilityId, AbilityRenderer> abilityRenderers = new HashMap<>();
+    private final Map<AreaId, AreaRenderer> areaRenderers = new HashMap<>();
+    private final Set<AreaGateRenderer> areaGateRenderers = new HashSet<>();
+    private final Map<LootPileId, LootPileRenderer> lootPileRenderers = new HashMap<>();
 
     public void init(Map<AreaId, TiledMap> maps, GameRenderable game) {
         mapScale = 4.0f;
 
-        worldRenderingLayer = RenderingLayer.of();
+        worldElementsRenderingLayer = RenderingLayer.of();
         hudRenderingLayer = RenderingLayer.of();
         worldTextRenderingLayer = RenderingLayer.of();
 
         atlas = new TextureAtlas("assets/atlas/packed_atlas.atlas");
 
-        areaRenderers = maps.keySet().stream().collect(Collectors.toMap(areaId -> areaId, AreaRenderer::of));
+        areaRenderers.putAll(maps.keySet().stream().collect(Collectors.toMap(areaId -> areaId, AreaRenderer::of)));
         areaRenderers.forEach((areaId, areaRenderer) -> areaRenderer.init(maps.get(areaId), mapScale));
-        areaGateRenderers =
-                game.getAreaGates()
-                    .stream()
-                    .map(areaGate -> AreaGateRenderer.of(areaGate, atlas))
-                    .collect(Collectors.toSet());
+
+        areaGateRenderers.addAll(game.getAreaGates()
+                                     .stream()
+                                     .map(areaGate -> AreaGateRenderer.of(areaGate, atlas))
+                                     .collect(Collectors.toSet()));
 
         InventoryHelper.init(atlas);
 
-        initViewports();
+        viewportsHandler = ViewportsHandler.of();
+
+        viewportsHandler.initViewports();
     }
-
-    private void initViewports() {
-        worldViewport = new FitViewport(Constants.ViewpointWorldWidth / Constants.PPM,
-                                        Constants.ViewpointWorldHeight / Constants.PPM,
-                                        worldCamera);
-
-
-        hudViewport = new FitViewport((float) Constants.WindowWidth,
-                                      (float) Constants.WindowHeight,
-                                      hudCamera);
-
-
-        worldTextViewport = new FitViewport(Constants.ViewpointWorldWidth,
-                                            Constants.ViewpointWorldHeight,
-                                            worldTextCamera);
-    }
-
-    public void updateViewportsOnResize(int width, int height) {
-        worldViewport.update(width, height);
-        hudViewport.update(width, height);
-        worldTextViewport.update(width, height);
-    }
-
 
     public void renderAliveCreatures(RenderingLayer renderingLayer, GameRenderable game) {
         game.forEachAliveCreature(creature -> renderCreatureIfPossible(renderingLayer, game, creature));
@@ -111,9 +75,9 @@ public class GameRenderer {
                                                           GameRenderable game,
                                                           Creature creature) {
         if (canCreatureBeRendered(creature, game)) {
-            CreatureRenderer creatureRenderer = creatureRenderers.get(creature.id());
-            float spriteWidth = creatureRenderer.creatureSprite().getWidth();
-            creatureRenderer.creatureStunnedAnimationRenderer().render(renderingLayer, spriteWidth, game);
+            CreatureRenderer creatureRenderer = creatureRenderers.get(creature.getId());
+            float spriteWidth = creatureRenderer.getCreatureSprite().getWidth();
+            creatureRenderer.getCreatureStunnedAnimationRenderer().render(renderingLayer, spriteWidth, game);
         }
     }
 
@@ -121,18 +85,22 @@ public class GameRenderer {
                                                  GameRenderable game,
                                                  Creature creature) {
         if (canCreatureBeRendered(creature, game)) {
-            creatureRenderers.get(creature.id()).renderLifeBar(renderingLayer, game);
+            creatureRenderers.get(creature.getId()).renderLifeBar(renderingLayer, game);
         }
     }
 
     private void renderCreatureIfPossible(RenderingLayer renderingLayer, GameRenderable game, Creature creature) {
         if (canCreatureBeRendered(creature, game)) {
-            creatureRenderers.get(creature.id()).render(renderingLayer);
+            creatureRenderers.get(creature.getId()).render(renderingLayer);
         }
     }
 
     public void renderDeadCreatures(RenderingLayer renderingLayer, GameRenderable game) {
         game.forEachDeadCreature(creature -> renderCreatureIfPossible(renderingLayer, game, creature));
+    }
+
+    public void renderAbilities(RenderingLayer renderingLayer, GameRenderable game) {
+        getAbilityRenderers().values().forEach(abilityAnimation -> abilityAnimation.render(renderingLayer, game));
     }
 
     public void renderAreaGates(RenderingLayer renderingLayer, GameRenderable game) {
@@ -150,44 +118,17 @@ public class GameRenderer {
             .filter(creature -> creature.isAlive() &&
                                 canCreatureBeRendered(creature, game) &&
                                 creature instanceof Player)
-            .forEach(creature -> creatureRenderers.get(creature.id()).renderCreatureId(worldTextRenderingLayer, game));
+            .forEach(creature -> creatureRenderers.get(creature.getId())
+                                                  .renderCreatureId(worldTextRenderingLayer, game));
     }
 
     private boolean canCreatureBeRendered(Creature creature, GameRenderable game) {
-        return creatureRenderers.containsKey(creature.id()) &&
+        return creatureRenderers.containsKey(creature.getId()) &&
                GameRendererHelper.isCreatureInCurrentlyVisibleArea(game, creature);
-    }
-
-    public void setWorldCameraPosition(float x, float y) {
-        worldCamera.position.x = x;
-        worldCamera.position.y = y;
-    }
-
-    public void setWorldTextCameraPosition(float x, float y) {
-        worldTextCamera.position.x = x;
-        worldTextCamera.position.y = y;
-    }
-
-    public void updateCameras() {
-        worldCamera.update();
-        worldTextCamera.update();
-    }
-
-
-    public Matrix4 getWorldCameraCombinedProjectionMatrix() {
-        return worldCamera.combined;
-    }
-
-    public void unprojectHudCamera(Vector3 screenCoords) {
-        hudCamera.unproject(screenCoords);
     }
 
     public TiledMap loadMap(String filePath) {
         return mapLoader.load(filePath);
-    }
-
-    public void setHudCameraPosition(float x, float y) {
-        hudCamera.position.set(x, y, 0);
     }
 
     public Map<CreatureId, CreatureRenderer> getCreatureRenderers() {
@@ -210,20 +151,8 @@ public class GameRenderer {
         return atlas;
     }
 
-    public OrthographicCamera getWorldCamera() {
-        return worldCamera;
-    }
-
-    public OrthographicCamera getHudCamera() {
-        return hudCamera;
-    }
-
-    public OrthographicCamera getWorldTextCamera() {
-        return worldTextCamera;
-    }
-
-    public RenderingLayer getWorldRenderingLayer() {
-        return worldRenderingLayer;
+    public RenderingLayer getWorldElementsRenderingLayer() {
+        return worldElementsRenderingLayer;
     }
 
     public RenderingLayer getHudRenderingLayer() {
@@ -235,4 +164,7 @@ public class GameRenderer {
         return worldTextRenderingLayer;
     }
 
+    public ViewportsHandler getViewportsHandler() {
+        return viewportsHandler;
+    }
 }
