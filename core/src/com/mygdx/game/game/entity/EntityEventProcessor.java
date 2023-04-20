@@ -44,13 +44,13 @@ public class EntityEventProcessor {
         getCreatureModelsToBeRemoved().forEach(creatureId -> gameEntityManager.removeCreatureEntity(creatureId, game));
         getCreatureModelsToBeRemoved().clear();
 
-        getAbilityModelsToBeRemoved().forEach(abilityId -> gameEntityManager.removeAbility(abilityId, game));
+        getAbilityModelsToBeRemoved().forEach(abilityId -> gameEntityManager.removeAbilityEntity(abilityId, game));
         getAbilityModelsToBeRemoved().clear();
 
         getLootPileModelsToBeCreated().forEach(lootPileId -> gameEntityManager.createLootPileEntity(lootPileId, game));
         getLootPileModelsToBeCreated().clear();
 
-        getLootPileModelsToBeRemoved().forEach(lootPileId -> gameEntityManager.removeLootPile(lootPileId, game));
+        getLootPileModelsToBeRemoved().forEach(lootPileId -> gameEntityManager.removeLootPileEntity(lootPileId, game));
         getLootPileModelsToBeRemoved().clear();
     }
 

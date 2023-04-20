@@ -181,7 +181,7 @@ public abstract class Creature {
     public boolean isAttackShielded(boolean isRanged, Vector2 dirVector, GameUpdatable game) {
         if (!isRanged) { // check if target is pointing shield at the attack
             // TODO: if don't have shield ability return false
-            Ability shieldAbility = game.getAbility(getParams().getId(), SkillType.SUMMON_SHIELD);
+            Ability shieldAbility = game.getAbilityBySkillType(getParams().getId(), SkillType.SUMMON_SHIELD);
             if (shieldAbility != null && shieldAbility.getParams().getState() == AbilityState.ACTIVE) {
                 float angleDiff =
                         (dirVector.angleDeg() - shieldAbility.getParams().getDirVector().multiplyBy(-1).angleDeg() +

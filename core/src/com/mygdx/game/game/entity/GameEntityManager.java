@@ -9,6 +9,7 @@ import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.area.LootPile;
 import com.mygdx.game.model.area.LootPileId;
 import com.mygdx.game.model.creature.*;
+import com.mygdx.game.model.util.TeleportEvent;
 import com.mygdx.game.physics.GamePhysics;
 import com.mygdx.game.physics.body.AbilityBody;
 import com.mygdx.game.physics.body.CreatureBody;
@@ -75,7 +76,6 @@ public class GameEntityManager {
                        .get(ability.getParams().getId())
                        .init(game, ability.getParams().getIsSkipCreatingBody());
         }
-
     }
 
     public void createLootPileEntity(LootPileId lootPileId, GameUpdatable game) {
@@ -108,7 +108,7 @@ public class GameEntityManager {
         }
     }
 
-    public void removeAbility(AbilityId abilityId, GameUpdatable game) {
+    public void removeAbilityEntity(AbilityId abilityId, GameUpdatable game) {
 
         if (abilityId != null) {
 
@@ -123,7 +123,7 @@ public class GameEntityManager {
         }
     }
 
-    public void removeLootPile(LootPileId lootPileId, GameUpdatable game) {
+    public void removeLootPileEntity(LootPileId lootPileId, GameUpdatable game) {
         if (lootPileId != null) {
 
             game.getLootPiles().remove(lootPileId);
@@ -222,6 +222,41 @@ public class GameEntityManager {
                 getGameRenderer().getAbilityRenderers().get(abilityId).update(game);
             }
         });
+
+    }
+
+    public void teleportCreature(TeleportEvent teleportEvent, GameUpdatable game) {
+        if (teleportEvent.getToAreaId()
+                         .equals(game.getCreature(teleportEvent.getCreatureId()).getParams().getAreaId())) {
+            getGamePhysics().getCreatureBodies()
+                            .get(teleportEvent.getCreatureId())
+                            .forceSetTransform(teleportEvent.getPos());
+        }
+        else {
+            if (teleportEvent.getCreatureId() != null) {
+                Creature creature = game.getCreature(teleportEvent.getCreatureId());
+
+                creature.getParams().setAreaId(teleportEvent.getToAreaId());
+
+                creature.getParams().setPos(teleportEvent.getPos());
+                creature.getParams().setMovementCommandTargetPos(teleportEvent.getPos());
+
+                if (getGamePhysics().getCreatureBodies().containsKey(teleportEvent.getCreatureId())) {
+                    getGamePhysics().getCreatureBodies().get(teleportEvent.getCreatureId()).onRemove();
+                    getGamePhysics().getCreatureBodies().remove(teleportEvent.getCreatureId());
+                }
+
+                if (!getGamePhysics().getCreatureBodies().containsKey(teleportEvent.getCreatureId())) {
+                    CreatureBody creatureBody = CreatureBody.of(teleportEvent.getCreatureId());
+                    creatureBody.init(game, teleportEvent.getToAreaId());
+                    getGamePhysics().getCreatureBodies().put(teleportEvent.getCreatureId(), creatureBody);
+                }
+
+                creature.getParams().setJustTeleportedToGate(true);
+
+
+            }
+        }
 
     }
 }

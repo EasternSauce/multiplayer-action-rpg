@@ -2,7 +2,6 @@ package com.mygdx.game.game.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -19,7 +18,8 @@ import lombok.NoArgsConstructor;
 public class ConnectScreen implements Screen {
     private CoreGame game;
 
-    private String currentMessage = "";
+    private ConnectScreenMessageHolder messageHolder = ConnectScreenMessageHolder.of();
+
     private Boolean isHoldingBackspace = false;
 
     private Float holdBackspaceTime = 0f;
@@ -34,16 +34,7 @@ public class ConnectScreen implements Screen {
     public void show() {
         timer.start();
 
-        Gdx.input.setInputProcessor(new InputAdapter() {
-            @Override
-            public boolean keyTyped(char character) {
-                if (character != '\b' && !(Character.isWhitespace(character)) && currentMessage.length() <= 20f) {
-                    currentMessage = currentMessage.concat("" + character);
-                }
-
-                return true;
-            }
-        });
+        game.setConnectScreenInputProcessor(messageHolder);
     }
 
     @Override
@@ -51,22 +42,28 @@ public class ConnectScreen implements Screen {
         timer.update(delta);
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
-            game.initializePlayer(currentMessage);
+            game.initializePlayer(messageHolder.getCurrentMessage());
             game.goToGamePlayScreen();
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)) {
 
             if (isHoldingBackspace) {
-                if (!currentMessage.isEmpty() && timer.getTime() > holdBackspaceTime + 0.3f) {
-                    currentMessage = currentMessage.substring(0, currentMessage.length() - 1);
+                if (!messageHolder.getCurrentMessage().isEmpty() && timer.getTime() > holdBackspaceTime + 0.3f) {
+                    messageHolder.setCurrentMessage(messageHolder.getCurrentMessage()
+                                                                 .substring(0,
+                                                                            messageHolder.getCurrentMessage().length() -
+                                                                            1));
                 }
             }
             else {
                 isHoldingBackspace = true;
                 holdBackspaceTime = timer.getTime();
-                if (!currentMessage.isEmpty()) {
-                    currentMessage = currentMessage.substring(0, currentMessage.length() - 1);
+                if (!messageHolder.getCurrentMessage().isEmpty()) {
+                    messageHolder.setCurrentMessage(messageHolder.getCurrentMessage()
+                                                                 .substring(0,
+                                                                            messageHolder.getCurrentMessage().length() -
+                                                                            1));
                 }
             }
         }
@@ -96,7 +93,7 @@ public class ConnectScreen implements Screen {
                                 Color.BLACK);
 
         Assets.renderMediumFont(game.getEntityManager().getGameRenderer().getHudRenderingLayer(),
-                                currentMessage,
+                                messageHolder.getCurrentMessage(),
                                 Vector2.of(centerX - 120f, centerY + 70f),
                                 Color.BLACK);
 

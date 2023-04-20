@@ -1,7 +1,6 @@
 package com.mygdx.game.game.screen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -12,7 +11,6 @@ import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.physics.util.PhysicsHelper;
 import com.mygdx.game.renderer.util.GameplayRendererHelper;
 import com.mygdx.game.renderer.util.HudRendererHelper;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Map;
@@ -20,7 +18,6 @@ import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
-@Data
 public class GameplayScreen implements Screen {
     private CoreGame game;
     private Map<AreaId, TiledMap> maps;
@@ -61,24 +58,7 @@ public class GameplayScreen implements Screen {
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(new InputAdapter() {
-            @Override
-            public boolean keyTyped(char character) {
-                char backspaceCharacter = '\b';
-                if (game.getChat().getIsTyping() &&
-                    character != backspaceCharacter &&
-                    isCharacterNonWhitespaceExcludingSpace(character)) {
-                    game.getChat().setCurrentMessage(game.getChat().getCurrentMessage() + character);
-                }
-
-                return true;
-            }
-
-            private boolean isCharacterNonWhitespaceExcludingSpace(char character) {
-                return character == ' ' || !(Character.isWhitespace(character));
-            }
-        });
-
+        game.setChatInputProcessor();
     }
 
     public void update(float delta) {
@@ -90,10 +70,12 @@ public class GameplayScreen implements Screen {
 
         game.getEventProcessor().process(game.getEntityManager(), game);
 
-        game.getEventProcessor().getTeleportEvents().forEach(teleportInfo -> game.teleportCreature(teleportInfo));
+        game.getEventProcessor()
+            .getTeleportEvents()
+            .forEach(teleportInfo -> game.getEntityManager().teleportCreature(teleportInfo, game));
         game.getEventProcessor().getTeleportEvents().clear();
 
-        game.getGameState().getGeneralTimer().update(delta);
+        game.getGameStateManager().getGameState().getGeneralTimer().update(delta);
 
         game.getEntityManager().updateCreatures(delta, game);
         game.getEntityManager().updateAbilities(delta, game);
@@ -115,31 +97,31 @@ public class GameplayScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        if (getGame().isInitialized()) {
+        if (game.isInitialized()) {
             update(delta);
-            if (getGame().isRenderingAllowed()) {
+            if (game.isRenderingAllowed()) {
                 // TODO: move this to viewports handler
-                getGame().getEntityManager()
-                         .getGameRenderer()
-                         .getWorldElementsRenderingLayer()
-                         .setProjectionMatrix(getGame().getEntityManager()
-                                                       .getGameRenderer()
-                                                       .getViewportsHandler()
-                                                       .getWorldCamera().combined);
-                getGame().getEntityManager()
-                         .getGameRenderer()
-                         .getHudRenderingLayer()
-                         .setProjectionMatrix(getGame().getEntityManager()
-                                                       .getGameRenderer()
-                                                       .getViewportsHandler()
-                                                       .getHudCamera().combined);
-                getGame().getEntityManager()
-                         .getGameRenderer()
-                         .getWorldTextRenderingLayer()
-                         .setProjectionMatrix(getGame().getEntityManager()
-                                                       .getGameRenderer()
-                                                       .getViewportsHandler()
-                                                       .getWorldTextCamera().combined);
+                game.getEntityManager()
+                    .getGameRenderer()
+                    .getWorldElementsRenderingLayer()
+                    .setProjectionMatrix(game.getEntityManager()
+                                             .getGameRenderer()
+                                             .getViewportsHandler()
+                                             .getWorldCamera().combined);
+                game.getEntityManager()
+                    .getGameRenderer()
+                    .getHudRenderingLayer()
+                    .setProjectionMatrix(game.getEntityManager()
+                                             .getGameRenderer()
+                                             .getViewportsHandler()
+                                             .getHudCamera().combined);
+                game.getEntityManager()
+                    .getGameRenderer()
+                    .getWorldTextRenderingLayer()
+                    .setProjectionMatrix(game.getEntityManager()
+                                             .getGameRenderer()
+                                             .getViewportsHandler()
+                                             .getWorldTextCamera().combined);
 
                 Gdx.gl.glClearColor(0, 0, 0, 1);
 
@@ -153,9 +135,9 @@ public class GameplayScreen implements Screen {
 
                 Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | coverageBuffer);
 
-                GameplayRendererHelper.renderGameplay(getGame());
+                GameplayRendererHelper.renderGameplay(game);
 
-                HudRendererHelper.renderHud(getGame());
+                HudRendererHelper.renderHud(game);
             }
         }
     }

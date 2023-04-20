@@ -7,7 +7,7 @@ import com.mygdx.game.model.util.Vector2;
 
 import java.util.Set;
 
-public class GameStateQuery {
+public class GameStateQuery { // TODO: move to game state manager
     public static CreatureId getAliveCreatureIdClosestTo(Vector2 pos,
                                                          float maxRange,
                                                          Set<CreatureId> excluded,

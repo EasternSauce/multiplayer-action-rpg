@@ -15,7 +15,6 @@ import com.mygdx.game.game.interface_.GameRenderable;
 import com.mygdx.game.game.screen.ConnectScreen;
 import com.mygdx.game.game.screen.GameplayScreen;
 import com.mygdx.game.game.screen.MenuScreen;
-import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityId;
 import com.mygdx.game.model.area.AreaGate;
@@ -34,7 +33,6 @@ import com.mygdx.game.physics.event.PhysicsEvent;
 import com.mygdx.game.physics.world.PhysicsWorld;
 import com.mygdx.game.util.RandomHelper;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.io.IOException;
 import java.util.List;
@@ -62,8 +60,7 @@ public abstract class CoreGame extends Game implements AbilityUpdatable, Creatur
     private final Chat chat = Chat.of();
 
     @Getter
-    @Setter
-    private GameState gameState = GameState.of();
+    private final GameStateManager gameStateManager = GameStateManager.of();
 
     protected CreatureId thisPlayerId = null;
 
@@ -120,31 +117,34 @@ public abstract class CoreGame extends Game implements AbilityUpdatable, Creatur
 
     @Override
     public Vector2 getCreaturePos(CreatureId creatureId) {
-        if (!getGameState().getCreatures().containsKey(creatureId)) {
+        if (!getGameStateManager().getGameState().getCreatures().containsKey(creatureId)) {
             return null;
         }
-        return getGameState().getCreatures().get(creatureId).getParams().getPos();
+        return getGameStateManager().getGameState().getCreatures().get(creatureId).getParams().getPos();
     }
 
     @Override
     public Creature getCreature(CreatureId creatureId) {
-        if (creatureId == null || !getGameState().getCreatures().containsKey(creatureId)) {
+        if (creatureId == null || !getGameStateManager().getGameState().getCreatures().containsKey(creatureId)) {
             return null;
         }
-        return getGameState().getCreatures().get(creatureId);
+        return getGameStateManager().getGameState().getCreatures().get(creatureId);
     }
-
 
     @Override
     public Map<CreatureId, Creature> getCreatures() {
-        return getGameState().getCreatures();
+        return getGameStateManager().getGameState().getCreatures();
+    }
+
+    @Override
+    public Map<AbilityId, Ability> getAbilities() {
+        return getGameStateManager().getGameState().getAbilities();
     }
 
     @Override
     public Map<CreatureId, Creature> getRemovedCreatures() {
-        return getGameState().getRemovedCreatures();
+        return getGameStateManager().getGameState().getRemovedCreatures();
     }
-
 
     @Override
     public PhysicsWorld getPhysicsWorld(AreaId areaId) {
@@ -152,46 +152,10 @@ public abstract class CoreGame extends Game implements AbilityUpdatable, Creatur
     }
 
     public AreaId getCurrentPlayerAreaId() {
-        if (thisPlayerId != null && gameState.getCreatures().containsKey(thisPlayerId)) {
+        if (thisPlayerId != null && getGameStateManager().getGameState().getCreatures().containsKey(thisPlayerId)) {
             return getCreature(thisPlayerId).getParams().getAreaId();
         }
-        return gameState.getDefaultAreaId();
-    }
-
-    // TODO: move it
-    public void teleportCreature(TeleportEvent teleportEvent) {
-        if (teleportEvent.getToAreaId().equals(getCreature(teleportEvent.getCreatureId()).getParams().getAreaId())) {
-            entityManager.getGamePhysics()
-                         .getCreatureBodies()
-                         .get(teleportEvent.getCreatureId())
-                         .forceSetTransform(teleportEvent.getPos());
-        }
-        else {
-            if (teleportEvent.getCreatureId() != null) {
-                Creature creature = getCreature(teleportEvent.getCreatureId());
-
-                creature.getParams().setAreaId(teleportEvent.getToAreaId());
-
-                creature.getParams().setPos(teleportEvent.getPos());
-                creature.getParams().setMovementCommandTargetPos(teleportEvent.getPos());
-
-                if (entityManager.getGamePhysics().getCreatureBodies().containsKey(teleportEvent.getCreatureId())) {
-                    entityManager.getGamePhysics().getCreatureBodies().get(teleportEvent.getCreatureId()).onRemove();
-                    entityManager.getGamePhysics().getCreatureBodies().remove(teleportEvent.getCreatureId());
-                }
-
-                if (!entityManager.getGamePhysics().getCreatureBodies().containsKey(teleportEvent.getCreatureId())) {
-                    CreatureBody creatureBody = CreatureBody.of(teleportEvent.getCreatureId());
-                    creatureBody.init(this, teleportEvent.getToAreaId());
-                    entityManager.getGamePhysics().getCreatureBodies().put(teleportEvent.getCreatureId(), creatureBody);
-                }
-
-                creature.getParams().setJustTeleportedToGate(true);
-
-
-            }
-        }
-
+        return getGameStateManager().getGameState().getDefaultAreaId();
     }
 
     abstract public void performPhysicsWorldStep();
@@ -206,37 +170,37 @@ public abstract class CoreGame extends Game implements AbilityUpdatable, Creatur
         entityManager.getGameRenderer().getViewportsHandler().updateCameraPositions(this);
     }
 
-    @Override
-    public Map<AbilityId, Ability> getAbilities() {
-        return gameState.getAbilities();
-    }
 
     @Override
     public Ability getAbility(AbilityId abilityId) {
-        if (abilityId == null || !getGameState().getAbilities().containsKey(abilityId)) {
+        if (abilityId == null || !getGameStateManager().getGameState().getAbilities().containsKey(abilityId)) {
             return null;
         }
-        return getGameState().getAbilities().get(abilityId);
+        return getGameStateManager().getGameState().getAbilities().get(abilityId);
     }
 
     @Override
-    public Ability getAbility(CreatureId creatureId, SkillType skillType) {
-        Optional<Ability> first = gameState.getAbilities()
-                                           .values()
-                                           .stream()
-                                           .filter(ability -> ability.getParams().getCreatureId().equals(creatureId) &&
-                                                              ability.getParams().getSkillType() == skillType)
-                                           .findFirst();
+    public Ability getAbilityBySkillType(CreatureId creatureId, SkillType skillType) {
+        Optional<Ability> first = getGameStateManager().getGameState()
+                                                       .getAbilities()
+                                                       .values()
+                                                       .stream()
+                                                       .filter(ability -> ability.getParams()
+                                                                                 .getCreatureId()
+                                                                                 .equals(creatureId) &&
+                                                                          ability.getParams().getSkillType() ==
+                                                                          skillType)
+                                                       .findFirst();
 
         return first.orElse(null);
     }
 
     @Override
     public Vector2 getAbilityPos(AbilityId abilityId) {
-        if (abilityId == null || !getGameState().getAbilities().containsKey(abilityId)) {
+        if (abilityId == null || !getGameStateManager().getGameState().getAbilities().containsKey(abilityId)) {
             return null;
         }
-        return getGameState().getAbilities().get(abilityId).getParams().getPos();
+        return getGameStateManager().getGameState().getAbilities().get(abilityId).getParams().getPos();
     }
 
     @Override
@@ -281,18 +245,18 @@ public abstract class CoreGame extends Game implements AbilityUpdatable, Creatur
 
     @Override
     public AreaId getDefaultAreaId() {
-        return gameState.getDefaultAreaId();
+        return getGameStateManager().getGameState().getDefaultAreaId();
     }
 
     @Override
     public void initPlayerParams(CreatureId playerId) {
-        gameState.getPlayerParams().put(playerId, PlayerParams.of());
+        getGameStateManager().getGameState().getPlayerParams().put(playerId, PlayerParams.of());
     }
 
     @Override
     public PlayerParams getPlayerParams(CreatureId creatureId) {
         if (creatureId != null) {
-            return gameState.getPlayerParams().get(creatureId);
+            return getGameStateManager().getGameState().getPlayerParams().get(creatureId);
         }
         return null;
     }
@@ -319,22 +283,22 @@ public abstract class CoreGame extends Game implements AbilityUpdatable, Creatur
 
     @Override
     public Set<AreaGate> getAreaGates() {
-        return gameState.getAreaGates();
+        return getGameStateManager().getGameState().getAreaGates();
     }
 
     @Override
     public LootPile getLootPile(LootPileId lootPileId) {
-        return gameState.getLootPiles().get(lootPileId);
+        return getGameStateManager().getGameState().getLootPiles().get(lootPileId);
     }
 
     @Override
     public Map<LootPileId, LootPile> getLootPiles() {
-        return gameState.getLootPiles();
+        return getGameStateManager().getGameState().getLootPiles();
     }
 
     @Override
     public Float getTime() {
-        return gameState.getGeneralTimer().getTime();
+        return getGameStateManager().getGameState().getGeneralTimer().getTime();
     }
 
     public void goToGamePlayScreen() {
@@ -345,9 +309,9 @@ public abstract class CoreGame extends Game implements AbilityUpdatable, Creatur
 
     @Override
     public Float nextRandomValue() {
-        float result = RandomHelper.seededRandomFloat(gameState.getLastRandomValue());
+        float result = RandomHelper.seededRandomFloat(getGameStateManager().getGameState().getLastRandomValue());
 
-        gameState.setLastRandomValue(result);
+        getGameStateManager().getGameState().setLastRandomValue(result);
 
         return result;
     }
@@ -361,4 +325,5 @@ public abstract class CoreGame extends Game implements AbilityUpdatable, Creatur
     public void forEachDeadCreature(Consumer<Creature> creatureAction) {
         getCreatures().values().stream().filter(creature -> !creature.isAlive()).forEach(creatureAction);
     }
+
 }

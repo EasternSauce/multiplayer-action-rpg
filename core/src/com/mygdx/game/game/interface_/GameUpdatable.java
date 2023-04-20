@@ -1,6 +1,7 @@
 package com.mygdx.game.game.interface_;
 
 import com.mygdx.game.game.entity.EntityEventProcessor;
+import com.mygdx.game.game.screen.ConnectScreenMessageHolder;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityId;
 import com.mygdx.game.model.ability.AbilityParams;
@@ -38,7 +39,7 @@ public interface GameUpdatable {
 
     Ability getAbility(AbilityId abilityId);
 
-    Ability getAbility(CreatureId creatureId, SkillType skillType);
+    Ability getAbilityBySkillType(CreatureId creatureId, SkillType skillType);
 
     @SuppressWarnings("unused")
     Vector2 getAbilityPos(AbilityId abilityId);
@@ -83,10 +84,13 @@ public interface GameUpdatable {
 
     Float nextRandomValue();
 
-
     void forEachAliveCreature(Consumer<Creature> creatureAction);
 
     void forEachDeadCreature(Consumer<Creature> creatureAction);
 
     EntityEventProcessor getEventProcessor();
+
+    void setChatInputProcessor();
+
+    void setConnectScreenInputProcessor(ConnectScreenMessageHolder messageHolder);
 }
