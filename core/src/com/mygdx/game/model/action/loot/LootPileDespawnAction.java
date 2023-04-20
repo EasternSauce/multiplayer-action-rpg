@@ -27,6 +27,6 @@ public class LootPileDespawnAction extends GameStateAction {
 
     @Override
     public void applyToGame(GameActionApplicable game) {
-        game.getLootPileModelsToBeRemoved().add(lootPileId);
+        game.getEventProcessor().getLootPileModelsToBeRemoved().add(lootPileId);
     }
 }

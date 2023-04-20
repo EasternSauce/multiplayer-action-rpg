@@ -144,7 +144,7 @@ public class CreatureHitAction extends GameStateAction {
 
         game.getLootPiles().put(lootPile.getId(), lootPile);
 
-        game.getLootPileModelsToBeCreated().add(lootPile.getId());
+        game.getEventProcessor().getLootPileModelsToBeCreated().add(lootPile.getId());
 
 
     }

@@ -34,10 +34,10 @@ public class AbilityRenderer {
         return abilityRenderer;
     }
 
-    public void init(TextureAtlas atlas, GameState gameState) {
+    public void init(TextureAtlas atlas, GameUpdatable game) {
         sprite = new Sprite();
 
-        Ability ability = gameState.getAbilities().get(abilityId);
+        Ability ability = game.getAbilities().get(abilityId);
 
         AbilityAnimationConfig animationConfig = ability.animationConfig();
 

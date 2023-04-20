@@ -3,7 +3,7 @@ package com.mygdx.game.renderer;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.mygdx.game.game.interface_.GameRenderable;
-import com.mygdx.game.model.GameState;
+import com.mygdx.game.game.interface_.GameUpdatable;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.area.LootPile;
 import com.mygdx.game.model.area.LootPileId;
@@ -24,9 +24,9 @@ public class LootPileRenderer {
     }
 
 
-    public void init(TextureAtlas atlas, GameState gameState) { // TODO: change to UpdatableGame?
+    public void init(TextureAtlas atlas, GameUpdatable game) { // TODO: change to UpdatableGame?
 
-        LootPile lootPile = gameState.getLootPiles().get(lootPileId);
+        LootPile lootPile = game.getLootPiles().get(lootPileId);
 
         sprite = new Sprite();
         sprite.setRegion(atlas.findRegion("bag"));

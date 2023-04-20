@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.mygdx.game.Constants;
 import com.mygdx.game.assets.Assets;
 import com.mygdx.game.game.interface_.GameRenderable;
-import com.mygdx.game.model.GameState;
+import com.mygdx.game.game.interface_.GameUpdatable;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.util.Vector2;
@@ -27,11 +27,11 @@ public class CreatureRenderer {
         return creatureRenderer;
     }
 
-    public void init(TextureAtlas atlas, GameState gameState) {
+    public void init(TextureAtlas atlas, GameUpdatable game) {
         creatureSprite = CreatureSprite.of(creatureId);
         creatureStunnedAnimationRenderer = CreatureStunnedAnimationRenderer.of(creatureId);
 
-        CreatureAnimationConfig config = gameState.getCreatures().get(creatureId).animationConfig();
+        CreatureAnimationConfig config = game.getCreatures().get(creatureId).animationConfig();
 
         creatureSprite.prepareFacingTextures(config, atlas);
         creatureSprite.prepareRunningAnimations(config, atlas);

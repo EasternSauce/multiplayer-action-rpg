@@ -9,7 +9,7 @@ import java.util.List;
 
 public class GameplayRendererHelper {
     public static void renderGameplay(GameRenderable game) {
-        GameRenderer renderer = game.getRenderer();
+        GameRenderer renderer = game.getEntityManager().getGameRenderer();
         RenderingLayer worldElementsRenderingLayer = renderer.getWorldElementsRenderingLayer();
         RenderingLayer worldTextRenderingLayer = renderer.getWorldTextRenderingLayer();
 

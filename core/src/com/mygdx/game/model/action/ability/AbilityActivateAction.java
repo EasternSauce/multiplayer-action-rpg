@@ -24,6 +24,6 @@ public class AbilityActivateAction extends GameStateAction {
 
     @Override
     public void applyToGame(GameActionApplicable game) {
-        game.getAbilitiesToBeActivated().add(ability.getParams().getId());
+        game.getEventProcessor().getAbilitiesToBeActivated().add(ability.getParams().getId());
     }
 }

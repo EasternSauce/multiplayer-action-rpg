@@ -1,26 +1,11 @@
 package com.mygdx.game.game.interface_;
 
-import com.mygdx.game.model.ability.AbilityId;
-import com.mygdx.game.model.area.LootPileId;
+import com.mygdx.game.game.entity.EntityEventProcessor;
 import com.mygdx.game.model.creature.CreatureId;
-
-import java.util.List;
 
 public interface GameActionApplicable extends GameUpdatable, AbilityUpdatable, CreatureUpdatable {
 
-    List<CreatureId> getCreatureModelsToBeCreated();
-
-    List<AbilityId> getAbilityModelsToBeCreated();
-
-    List<AbilityId> getAbilitiesToBeActivated();
-
-    List<CreatureId> getCreatureModelsToBeRemoved();
-
-    List<AbilityId> getAbilityModelsToBeRemoved();
-
-    List<LootPileId> getLootPileModelsToBeCreated();
-
-    List<LootPileId> getLootPileModelsToBeRemoved();
+    EntityEventProcessor getEventProcessor();
 
     void initPlayerParams(CreatureId playerId);
 }

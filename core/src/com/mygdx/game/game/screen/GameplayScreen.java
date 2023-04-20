@@ -32,7 +32,7 @@ public class GameplayScreen implements Screen {
     public void init(MyGdxGame game) {
         this.game = game;
 
-        game.physics().setDebugRenderer(new Box2DDebugRenderer());
+        game.getEntityManager().getGamePhysics().setDebugRenderer(new Box2DDebugRenderer());
 
         Map<AreaId, String> mapsToLoad = new ConcurrentSkipListMap<>();
         mapsToLoad.put(AreaId.of("area1"), "assets/areas/area1");
@@ -44,15 +44,17 @@ public class GameplayScreen implements Screen {
         maps = mapsToLoad.entrySet()
                          .stream()
                          .collect(Collectors.toMap(Map.Entry::getKey,
-                                                   entry -> game.renderer()
+                                                   entry -> game.getEntityManager()
+                                                                .getGameRenderer()
                                                                 .loadMap(entry.getValue() + "/tile_map.tmx")));
 
 
-        game.renderer().init(maps, game);
+        game.getEntityManager().getGameRenderer().init(maps, game);
 
-        game.physics().init(maps, game);
+        game.getEntityManager().getGamePhysics().init(maps, game);
 
-        game.renderer()
+        game.getEntityManager()
+            .getGameRenderer()
             .getViewportsHandler()
             .setHudCameraPosition(Constants.WindowWidth / 2f, Constants.WindowHeight / 2f); // TODO: move it inward?
 
@@ -90,41 +92,23 @@ public class GameplayScreen implements Screen {
 
         game.onUpdate();
 
-        game.getCreatureModelsToBeCreated().forEach(creatureId -> game.createCreature(creatureId));
-        game.getCreatureModelsToBeCreated().clear();
+        game.getEventProcessor().process(game.getEntityManager(), game);
 
-        game.getAbilityModelsToBeCreated().forEach(abilityId -> game.createAbility(abilityId));
-        game.getAbilityModelsToBeCreated().clear();
+        game.getEventProcessor().getTeleportEvents().forEach(teleportInfo -> game.teleportCreature(teleportInfo));
+        game.getEventProcessor().getTeleportEvents().clear();
 
-        game.getAbilitiesToBeActivated().forEach(abilityId -> game.activateAbility(abilityId));
-        game.getAbilitiesToBeActivated().clear();
-
-        game.getCreatureModelsToBeRemoved().forEach(creatureId -> game.removeCreature(creatureId));
-        game.getCreatureModelsToBeRemoved().clear();
-
-        game.getAbilityModelsToBeRemoved().forEach(abilityId -> game.removeAbility(abilityId));
-        game.getAbilityModelsToBeRemoved().clear();
-
-        game.getLootPileModelsToBeCreated().forEach(lootPileId -> game.createLootPile(lootPileId));
-        game.getLootPileModelsToBeCreated().clear();
-
-        game.getLootPileModelsToBeRemoved().forEach(lootPileId -> game.removeLootPile(lootPileId));
-        game.getLootPileModelsToBeRemoved().clear();
-
-        game.teleportEvents().forEach(teleportInfo -> game.teleportCreature(teleportInfo));
-        game.teleportEvents().clear();
-
-        game.gameState().getGeneralTimer().update(delta);
+        game.getGameState().getGeneralTimer().update(delta);
 
         game.updateCreatures(delta);
         game.updateAbilities(delta);
 
         PhysicsHelper.processPhysicsEventQueue(game);
 
-        game.renderer()
+        game.getEntityManager()
+            .getGameRenderer()
             .getAreaRenderers()
             .get(game.getCurrentPlayerAreaId())
-            .setView(game.renderer().getViewportsHandler().getWorldCamera());
+            .setView(game.getEntityManager().getGameRenderer().getViewportsHandler().getWorldCamera());
 
         if (game.getCurrentPlayerId() != null && game.getCreature(game.getCurrentPlayerId()) != null) {
             game.updateCameraPositions();
@@ -138,15 +122,27 @@ public class GameplayScreen implements Screen {
         if (getGame().isInitialized()) {
             update(delta);
             if (getGame().isRenderingAllowed()) {
-                getGame().renderer()
+                getGame().getEntityManager()
+                         .getGameRenderer()
                          .getWorldElementsRenderingLayer()
-                         .setProjectionMatrix(getGame().renderer().getViewportsHandler().getWorldCamera().combined);
-                getGame().renderer()
+                         .setProjectionMatrix(getGame().getEntityManager()
+                                                       .getGameRenderer()
+                                                       .getViewportsHandler()
+                                                       .getWorldCamera().combined);
+                getGame().getEntityManager()
+                         .getGameRenderer()
                          .getHudRenderingLayer()
-                         .setProjectionMatrix(getGame().renderer().getViewportsHandler().getHudCamera().combined);
-                getGame().renderer()
+                         .setProjectionMatrix(getGame().getEntityManager()
+                                                       .getGameRenderer()
+                                                       .getViewportsHandler()
+                                                       .getHudCamera().combined);
+                getGame().getEntityManager()
+                         .getGameRenderer()
                          .getWorldTextRenderingLayer()
-                         .setProjectionMatrix(getGame().renderer().getViewportsHandler().getWorldTextCamera().combined);
+                         .setProjectionMatrix(getGame().getEntityManager()
+                                                       .getGameRenderer()
+                                                       .getViewportsHandler()
+                                                       .getWorldTextCamera().combined);
 
                 Gdx.gl.glClearColor(0, 0, 0, 1);
 
@@ -170,7 +166,7 @@ public class GameplayScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        game.renderer().getViewportsHandler().updateViewportsOnResize(width, height);
+        game.getEntityManager().getGameRenderer().getViewportsHandler().updateViewportsOnResize(width, height);
     }
 
     @Override

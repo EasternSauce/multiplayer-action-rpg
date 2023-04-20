@@ -27,7 +27,7 @@ public class AbilityRemoveAction extends GameStateAction {
 
     @Override
     public void applyToGame(GameActionApplicable game) {
-        game.getAbilityModelsToBeRemoved().add(abilityId);
+        game.getEventProcessor().getAbilityModelsToBeRemoved().add(abilityId);
 
     }
 }

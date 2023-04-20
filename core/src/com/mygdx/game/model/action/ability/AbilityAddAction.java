@@ -37,12 +37,11 @@ public class AbilityAddAction extends GameStateAction {
             .put(ability.getParams().getId(), ability); // TODO: SHOULDNT THIS HAPPEN IN createAbility() METHOD???!?
 
         if (ability.getParams().getActiveTime() > 0) {
-            game.getAbilityModelsToBeCreated().add(ability.getParams().getId());
+            game.getEventProcessor().getAbilityModelsToBeCreated().add(ability.getParams().getId());
         }
 
         ability.init(game);
 
         creature.onAbilityPerformed(ability);
-
     }
 }
