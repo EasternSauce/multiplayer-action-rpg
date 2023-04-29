@@ -8,6 +8,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.mygdx.game.Constants;
 import com.mygdx.game.command.*;
+import com.mygdx.game.game.gamestate.ClientGameStateManager;
 import com.mygdx.game.game.screen.ConnectScreenMessageHolder;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.ability.Ability;
@@ -37,16 +38,16 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.stream.Collectors;
 
 public class CoreGameClient extends CoreGame {
 
     private static CoreGameClient instance;
+
+    @Getter
+    private final ClientGameStateManager gameStateManager = ClientGameStateManager.of();
 
     @Getter
     @Setter
@@ -79,11 +80,11 @@ public class CoreGameClient extends CoreGame {
             else {
                 getChat().setIsTyping(false);
                 if (!getChat().getCurrentMessage().isEmpty()) {
-                    getEndPoint().sendTCP(ChatMessageSendCommand.of(thisPlayerId.getValue(),
+                    getEndPoint().sendTCP(ChatMessageSendCommand.of(getThisClientPlayerId().getValue(),
                                                                     getChat().getCurrentMessage()));
 
                     getChat().sendMessage(getGameStateManager().getGameState(),
-                                          thisPlayerId.getValue(),
+                                          getThisClientPlayerId().getValue(),
                                           getChat().getCurrentMessage());
 
                     getChat().setCurrentMessage("");
@@ -119,7 +120,7 @@ public class CoreGameClient extends CoreGame {
             }
         }
 
-        PlayerParams playerParams = getGameStateManager().getGameState().getPlayerParams().get(thisPlayerId);
+        PlayerParams playerParams = getGameStateManager().getGameState().getPlayerParams().get(getThisClientPlayerId());
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             if (getChat().getIsTyping()) {
                 if (!getChat().getCurrentMessage().isEmpty()) {
@@ -128,7 +129,7 @@ public class CoreGameClient extends CoreGame {
                 }
             }
             else if (playerParams.getIsInventoryVisible()) {
-                getEndPoint().sendTCP(ActionPerformCommand.of(InventoryToggleAction.of(thisPlayerId)));
+                getEndPoint().sendTCP(ActionPerformCommand.of(InventoryToggleAction.of(getThisClientPlayerId())));
 
             }
         }
@@ -166,14 +167,15 @@ public class CoreGameClient extends CoreGame {
                 if (!playerParams.getIsInventoryVisible()) {
                     Vector2 mousePos = mousePosRelativeToCenter();
 
-                    Creature player = getGameStateManager().getGameState().getCreatures().get(thisPlayerId);
+                    Creature player = getGameStateManager().getGameState().getCreatures().get(getThisClientPlayerId());
 
                     if (player != null &&
                         player.getParams().getMovementCommandsPerSecondLimitTimer().getTime() >
                         Constants.MovementCommandCooldown &&
                         getGameStateManager().getGameState().getGeneralTimer().getTime() > menuClickTime + 0.1f) {
-                        getEndPoint().sendTCP(ActionPerformCommand.of(CreatureMoveTowardsTargetAction.of(thisPlayerId,
-                                                                                                         mousePos)));
+                        getEndPoint().sendTCP(ActionPerformCommand.of(CreatureMoveTowardsTargetAction.of(
+                                getThisClientPlayerId(),
+                                mousePos)));
                     }
                 }
             }
@@ -191,7 +193,7 @@ public class CoreGameClient extends CoreGame {
             }
             if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
 
-                Creature player = getGameStateManager().getGameState().getCreatures().get(thisPlayerId);
+                Creature player = getGameStateManager().getGameState().getCreatures().get(getThisClientPlayerId());
 
 
                 Vector2 dirVector = mousePosRelativeToCenter();
@@ -210,7 +212,7 @@ public class CoreGameClient extends CoreGame {
                     attackSkill = SkillType.SWORD_SLASH;
                     weaponDamage = 20f;
                 }
-                getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(thisPlayerId,
+                getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(getThisClientPlayerId(),
                                                                                        attackSkill,
                                                                                        player.getParams().getPos(),
                                                                                        dirVector,
@@ -220,13 +222,13 @@ public class CoreGameClient extends CoreGame {
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
 
-                Creature player = getGameStateManager().getGameState().getCreatures().get(thisPlayerId);
+                Creature player = getGameStateManager().getGameState().getCreatures().get(getThisClientPlayerId());
 
 
                 Vector2 dirVector = mousePosRelativeToCenter();
 
                 if (playerParams.getSkillMenuSlots().containsKey(0)) {
-                    getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(thisPlayerId,
+                    getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(getThisClientPlayerId(),
                                                                                            playerParams.getSkillMenuSlots()
                                                                                                        .get(0),
                                                                                            player.getParams().getPos(),
@@ -236,13 +238,13 @@ public class CoreGameClient extends CoreGame {
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
 
-                Creature player = getGameStateManager().getGameState().getCreatures().get(thisPlayerId);
+                Creature player = getGameStateManager().getGameState().getCreatures().get(getThisClientPlayerId());
 
 
                 Vector2 dirVector = mousePosRelativeToCenter();
 
                 if (playerParams.getSkillMenuSlots().containsKey(1)) {
-                    getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(thisPlayerId,
+                    getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(getThisClientPlayerId(),
                                                                                            playerParams.getSkillMenuSlots()
                                                                                                        .get(1),
                                                                                            player.getParams().getPos(),
@@ -254,13 +256,13 @@ public class CoreGameClient extends CoreGame {
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
 
-                Creature player = getGameStateManager().getGameState().getCreatures().get(thisPlayerId);
+                Creature player = getGameStateManager().getGameState().getCreatures().get(getThisClientPlayerId());
 
 
                 Vector2 dirVector = mousePosRelativeToCenter();
 
                 if (playerParams.getSkillMenuSlots().containsKey(2)) {
-                    getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(thisPlayerId,
+                    getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(getThisClientPlayerId(),
                                                                                            playerParams.getSkillMenuSlots()
                                                                                                        .get(2),
                                                                                            player.getParams().getPos(),
@@ -270,7 +272,7 @@ public class CoreGameClient extends CoreGame {
 
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
-                getEndPoint().sendTCP(ActionPerformCommand.of(InventoryToggleAction.of(thisPlayerId)));
+                getEndPoint().sendTCP(ActionPerformCommand.of(InventoryToggleAction.of(getThisClientPlayerId())));
 
             }
 
@@ -278,7 +280,7 @@ public class CoreGameClient extends CoreGame {
 
                 List<EnemySpawn> enemySpawns = EnemySpawnUtils.area1EnemySpawns();
 
-                AreaId areaId = getCurrentPlayerAreaId();
+                AreaId areaId = getCurrentAreaId();
 
                 enemySpawns.forEach(enemySpawn -> {
                     CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 10000000));
@@ -362,7 +364,7 @@ public class CoreGameClient extends CoreGame {
                 else if (object instanceof ChatMessageSendCommand) {
                     ChatMessageSendCommand action = (ChatMessageSendCommand) object;
 
-                    if (!Objects.equals(action.getPoster(), thisPlayerId.getValue())) {
+                    if (!Objects.equals(action.getPoster(), getThisClientPlayerId().getValue())) {
                         getChat().sendMessage(getGameStateManager().getGameState(),
                                               action.getPoster(),
                                               action.getText());
@@ -396,31 +398,10 @@ public class CoreGameClient extends CoreGame {
 
     }
 
-    @Override
-    public Set<CreatureId> getCreaturesToUpdate() {
-        Creature player = getGameStateManager().getGameState().getCreatures().get(thisPlayerId);
-
-        if (player == null) {
-            return new HashSet<>();
-        }
-
-        return getGameStateManager().getGameState().getCreatures().keySet().stream().filter(creatureId -> {
-            Creature creature = getGameStateManager().getGameState().getCreatures().get(creatureId);
-            if (creature != null) {
-                return creature.getParams().getPos().distance(player.getParams().getPos()) <
-                       Constants.ClientGameUpdateRange;
-            }
-
-            return false;
-
-        }).collect(Collectors.toSet());
-
-
-    }
 
     @Override
     public Set<AbilityId> getAbilitiesToUpdate() {
-        Creature player = getGameStateManager().getGameState().getCreatures().get(thisPlayerId);
+        Creature player = getGameStateManager().getGameState().getCreatures().get(getThisClientPlayerId());
 
         if (player == null) {
             return new ConcurrentSkipListSet<>();
@@ -452,14 +433,14 @@ public class CoreGameClient extends CoreGame {
 
     @Override
     public void performPhysicsWorldStep() {
-        getEntityManager().getGamePhysics().getPhysicsWorlds().get(getCurrentPlayerAreaId()).step();
+        getEntityManager().getGamePhysics().getPhysicsWorlds().get(getCurrentAreaId()).step();
 
     }
 
     @Override
     public void initializePlayer(String playerName) {
-        thisPlayerId = CreatureId.of(playerName);
-        getEndPoint().sendTCP(PlayerInitCommand.of(thisPlayerId));
+        getGameStateManager().setThisClientPlayerId(CreatureId.of(playerName));
+        getEndPoint().sendTCP(PlayerInitCommand.of(getThisClientPlayerId()));
 
     }
 
@@ -502,6 +483,15 @@ public class CoreGameClient extends CoreGame {
     }
 
     @Override
+    public AreaId getCurrentAreaId() {
+        if (!getGameStateManager().getGameState().getCreatures().containsKey(getThisClientPlayerId())) {
+            return getGameStateManager().getGameState().getDefaultAreaId();
+        }
+
+        return getCreature(getThisClientPlayerId()).getParams().getAreaId();
+    }
+
+    @Override
     public void setCreatureMovingVector(CreatureId creatureId, Vector2 dirVector) {
         // do nothing
     }
@@ -527,4 +517,13 @@ public class CoreGameClient extends CoreGame {
         // do nothing
     }
 
+    @Override
+    public CreatureId getThisClientPlayerId() {
+        return getGameStateManager().getThisClientPlayerId();
+    }
+
+    @Override
+    public Map<Integer, CreatureId> getClientPlayers() {
+        return null;
+    }
 }

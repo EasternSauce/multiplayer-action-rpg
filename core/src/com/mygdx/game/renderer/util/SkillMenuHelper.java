@@ -45,7 +45,7 @@ public class SkillMenuHelper { // TODO: maybe shouldn't be a helper class
     }
 
     public static void renderSkillMenu(RenderingLayer renderingLayer, GameRenderable game) {
-        PlayerParams playerParams = game.getPlayerParams(game.getCurrentPlayerId());
+        PlayerParams playerParams = game.getPlayerParams(game.getThisClientPlayerId());
 
         if (playerParams == null) {
             return;
@@ -85,7 +85,7 @@ public class SkillMenuHelper { // TODO: maybe shouldn't be a helper class
     }
 
     public static void renderSkillPickerMenu(Creature player, RenderingLayer renderingLayer, GameRenderable game) {
-        PlayerParams playerParams = game.getPlayerParams(game.getCurrentPlayerId());
+        PlayerParams playerParams = game.getPlayerParams(game.getThisClientPlayerId());
 
         if (playerParams == null ||
             playerParams.getIsInventoryVisible() ||
@@ -146,7 +146,7 @@ public class SkillMenuHelper { // TODO: maybe shouldn't be a helper class
 
         AtomicInteger i = new AtomicInteger();
 
-        Creature player = game.getCreature(game.getCurrentPlayerId());
+        Creature player = game.getCreature(game.getThisClientPlayerId());
 
         player.availableSkills().forEach((skillType, level) -> {
             Rect rect = Rect.of(SKILL_PICKER_MENU_POS_X,
@@ -155,7 +155,7 @@ public class SkillMenuHelper { // TODO: maybe shouldn't be a helper class
                                 20f);
 
             if (rect.contains(x, y)) {
-                client.sendTCP(ActionPerformCommand.of(SkillPickerMenuSlotChangeAction.of(game.getCurrentPlayerId(),
+                client.sendTCP(ActionPerformCommand.of(SkillPickerMenuSlotChangeAction.of(game.getThisClientPlayerId(),
                                                                                           skillType)));
                 isSuccessful.set(true);
             }
@@ -164,7 +164,7 @@ public class SkillMenuHelper { // TODO: maybe shouldn't be a helper class
         });
 
         if (!isSuccessful.get()) {
-            client.sendTCP(ActionPerformCommand.of(SkillPickerMenuDeactivateAction.of(game.getCurrentPlayerId())));
+            client.sendTCP(ActionPerformCommand.of(SkillPickerMenuDeactivateAction.of(game.getThisClientPlayerId())));
         }
 
         return isSuccessful.get();
@@ -178,7 +178,7 @@ public class SkillMenuHelper { // TODO: maybe shouldn't be a helper class
 
         skillRectangles.forEach((integer, rect) -> {
             if (rect.contains(x, y)) {
-                client.sendTCP(ActionPerformCommand.of(SkillPickerMenuActivateAction.of(game.getCurrentPlayerId(),
+                client.sendTCP(ActionPerformCommand.of(SkillPickerMenuActivateAction.of(game.getThisClientPlayerId(),
                                                                                         integer)));
                 isSuccessful.set(true);
             }

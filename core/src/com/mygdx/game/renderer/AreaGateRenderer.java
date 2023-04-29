@@ -38,7 +38,7 @@ public class AreaGateRenderer {
     }
 
     public void render(RenderingLayer renderingLayer, GameRenderable game) {
-        AreaId currentAreaId = game.getCurrentPlayerAreaId();
+        AreaId currentAreaId = game.getCurrentAreaId();
 
         if (currentAreaId.equals(areaA_Id)) {
             spriteA.draw(renderingLayer.getSpriteBatch());

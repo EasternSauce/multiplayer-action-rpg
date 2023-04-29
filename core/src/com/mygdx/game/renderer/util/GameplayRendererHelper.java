@@ -37,7 +37,7 @@ public class GameplayRendererHelper {
 
     private static void renderAreaLayers(GameRenderer renderer, GameRenderable game, List<Integer> layers) {
         int[] layersArray = layers.stream().mapToInt(Integer::intValue).toArray();
-        renderer.getAreaRenderers().get(game.getCurrentPlayerAreaId()).render(layersArray);
+        renderer.getAreaRenderers().get(game.getCurrentAreaId()).render(layersArray);
     }
 
     private static void renderWorldText(GameRenderable game,

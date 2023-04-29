@@ -120,7 +120,7 @@ public class InventoryHelper {
     }
 
     public static void render(RenderingLayer renderingLayer, GameRenderable game) {
-        PlayerParams playerParams = game.getPlayerParams(game.getCurrentPlayerId());
+        PlayerParams playerParams = game.getPlayerParams(game.getThisClientPlayerId());
 
         if (playerParams == null) {
             return;
@@ -173,8 +173,8 @@ public class InventoryHelper {
     }
 
     public static void renderPlayerItems(RenderingLayer renderingLayer, GameRenderable game) {
-        Creature player = game.getCreature(game.getCurrentPlayerId());
-        PlayerParams playerParams = game.getPlayerParams(game.getCurrentPlayerId());
+        Creature player = game.getCreature(game.getThisClientPlayerId());
+        PlayerParams playerParams = game.getPlayerParams(game.getThisClientPlayerId());
 
         Map<Integer, Item> inventoryItems = player.getParams().getInventoryItems();
         Map<Integer, Item> equipmentItems = player.getParams().getEquipmentItems();
@@ -253,8 +253,8 @@ public class InventoryHelper {
     }
 
     public static void renderDescription(RenderingLayer renderingLayer, GameRenderable game) {
-        Creature player = game.getCreature(game.getCurrentPlayerId());
-        PlayerParams playerParams = game.getPlayerParams(game.getCurrentPlayerId());
+        Creature player = game.getCreature(game.getThisClientPlayerId());
+        PlayerParams playerParams = game.getPlayerParams(game.getThisClientPlayerId());
 
         float x = game.hudMousePos().getX();
         float y = game.hudMousePos().getY();
@@ -304,7 +304,7 @@ public class InventoryHelper {
     }
 
     public static void renderItemPickUpMenu(RenderingLayer renderingLayer, GameRenderable game) {
-        PlayerParams playerParams = game.getPlayerParams(game.getCurrentPlayerId());
+        PlayerParams playerParams = game.getPlayerParams(game.getThisClientPlayerId());
 
         if (playerParams.getIsInventoryVisible()) {
             return;
@@ -352,8 +352,8 @@ public class InventoryHelper {
     }
 
     public static void performMoveItemClick(Client client, GameRenderable game) {
-        Creature player = game.getCreature(game.getCurrentPlayerId());
-        PlayerParams playerParams = game.getPlayerParams(game.getCurrentPlayerId());
+        Creature player = game.getCreature(game.getThisClientPlayerId());
+        PlayerParams playerParams = game.getPlayerParams(game.getThisClientPlayerId());
 
         AtomicReference<Integer> atomicInventorySlotClicked = new AtomicReference<>(null);
         AtomicReference<Integer> atomicEquipmentSlotClicked = new AtomicReference<>(null);
@@ -380,29 +380,29 @@ public class InventoryHelper {
             Integer equipmentSlotClicked = atomicEquipmentSlotClicked.get();
 
             if (inventoryItemBeingMoved != null && inventorySlotClicked != null) {
-                client.sendTCP(ActionPerformCommand.of(InventorySwapSlotsAction.of(game.getCurrentPlayerId(),
+                client.sendTCP(ActionPerformCommand.of(InventorySwapSlotsAction.of(game.getThisClientPlayerId(),
                                                                                    inventoryItemBeingMoved,
                                                                                    inventorySlotClicked)));
             }
             else if (inventoryItemBeingMoved != null && equipmentSlotClicked != null) {
-                client.sendTCP(ActionPerformCommand.of(InventoryAndEquipmentSwapSlotsAction.of(game.getCurrentPlayerId(),
+                client.sendTCP(ActionPerformCommand.of(InventoryAndEquipmentSwapSlotsAction.of(game.getThisClientPlayerId(),
                                                                                                inventoryItemBeingMoved,
                                                                                                equipmentSlotClicked)));
             }
             else if (equipmentItemBeingMoved != null && inventorySlotClicked != null) {
-                client.sendTCP(ActionPerformCommand.of(InventoryAndEquipmentSwapSlotsAction.of(game.getCurrentPlayerId(),
+                client.sendTCP(ActionPerformCommand.of(InventoryAndEquipmentSwapSlotsAction.of(game.getThisClientPlayerId(),
                                                                                                inventorySlotClicked,
                                                                                                equipmentItemBeingMoved)));
             }
             //            else if (equipmentItemBeingMoved != null && equipmentSlotClicked != null) {
             //TODO: INSIDE EQUIPMENT SWAP?
-            //                client.sendTCP(PerformActionCommand.of(InventorySwapSlotsAction.of(game.getCurrentPlayerId(),
+            //                client.sendTCP(PerformActionCommand.of(InventorySwapSlotsAction.of(game.getThisClientPlayerId(),
             //                                                                                   equipmentItemBeingMoved,
             //                                                                                   equipmentSlotClicked)));
             //            }
             else if (inventorySlotClicked != null) {
                 if (player.getParams().getInventoryItems().containsKey(inventorySlotClicked)) {
-                    client.sendTCP(ActionPerformCommand.of(InventoryItemPickUpAction.of(game.getCurrentPlayerId(),
+                    client.sendTCP(ActionPerformCommand.of(InventoryItemPickUpAction.of(game.getThisClientPlayerId(),
                                                                                         inventorySlotClicked)));
                 }
             }
@@ -410,18 +410,18 @@ public class InventoryHelper {
                 if (player.getParams().getEquipmentItems().containsKey(equipmentSlotClicked)) {
                     playerParams.setEquipmentItemBeingMoved(equipmentSlotClicked);
 
-                    client.sendTCP(ActionPerformCommand.of(EquipmentItemPickUpAction.of(game.getCurrentPlayerId(),
+                    client.sendTCP(ActionPerformCommand.of(EquipmentItemPickUpAction.of(game.getThisClientPlayerId(),
                                                                                         equipmentSlotClicked)));
                 }
             }
             else {
-                client.sendTCP(ActionPerformCommand.of(InventoryMoveCancelAction.of(game.getCurrentPlayerId())));
+                client.sendTCP(ActionPerformCommand.of(InventoryMoveCancelAction.of(game.getThisClientPlayerId())));
             }
 
         }
         else {
             if (playerParams.getInventoryItemBeingMoved() != null) {
-                client.sendTCP(ActionPerformCommand.of(LootPileSpawnOnPlayerItemDropAction.of(game.getCurrentPlayerId())));
+                client.sendTCP(ActionPerformCommand.of(LootPileSpawnOnPlayerItemDropAction.of(game.getThisClientPlayerId())));
             }
 
             if (playerParams.getEquipmentItemBeingMoved() != null) {
@@ -434,7 +434,7 @@ public class InventoryHelper {
                 client.sendTCP(ActionPerformCommand.of(LootPileSpawnAction.of(player.getParams().getAreaId(),
                                                                               player.getParams().getPos(),
                                                                               items)));
-                client.sendTCP(ActionPerformCommand.of(InventoryMoveCancelAction.of(game.getCurrentPlayerId())));
+                client.sendTCP(ActionPerformCommand.of(InventoryMoveCancelAction.of(game.getThisClientPlayerId())));
 
             }
         }
@@ -443,7 +443,7 @@ public class InventoryHelper {
     }
 
     public static boolean tryPerformItemPickupMenuClick(Client client, CoreGameClient game) {
-        PlayerParams playerParams = game.getPlayerParams(game.getCurrentPlayerId());
+        PlayerParams playerParams = game.getPlayerParams(game.getThisClientPlayerId());
 
         float x = game.hudMousePos().getX();
         float y = game.hudMousePos().getY();
@@ -462,7 +462,7 @@ public class InventoryHelper {
                                             20f);
 
                         if (rect.contains(x, y)) {
-                            client.sendTCP(ActionPerformCommand.of(LootPileItemTryPickUpAction.of(game.getCurrentPlayerId(),
+                            client.sendTCP(ActionPerformCommand.of(LootPileItemTryPickUpAction.of(game.getThisClientPlayerId(),
                                                                                                   item)));
                             isSuccessful.set(true);
                         }

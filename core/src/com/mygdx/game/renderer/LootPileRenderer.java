@@ -37,7 +37,7 @@ public class LootPileRenderer {
     }
 
     public void render(RenderingLayer renderingLayer, GameRenderable game) {
-        AreaId currentAreaId = game.getCurrentPlayerAreaId();
+        AreaId currentAreaId = game.getCurrentAreaId();
         LootPile lootPile = game.getLootPile(lootPileId);
 
         if (lootPile != null && currentAreaId.equals(lootPile.getAreaId())) {

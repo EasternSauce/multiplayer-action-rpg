@@ -5,6 +5,7 @@ import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.mygdx.game.Constants;
 import com.mygdx.game.command.*;
+import com.mygdx.game.game.gamestate.ServerGameStateManager;
 import com.mygdx.game.game.screen.ConnectScreenMessageHolder;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.ability.*;
@@ -44,9 +45,11 @@ import java.util.stream.Collectors;
 public class CoreGameServer extends CoreGame {
     private static CoreGameServer instance;
 
+    @Getter
+    private final ServerGameStateManager gameStateManager = ServerGameStateManager.of();
+
     private final List<GameStateAction> onTickActions = Collections.synchronizedList(new ArrayList<>());
     private final List<Integer> clientIds = Collections.synchronizedList(new ArrayList<>());
-    private final Map<Integer, CreatureId> clientPlayers = new ConcurrentSkipListMap<>();
 
     @Getter
     @Setter
@@ -120,12 +123,13 @@ public class CoreGameServer extends CoreGame {
                 continue;// don't update until player is initialized
             }
 
-            if (clientPlayers.containsKey(connection.getID()) &&
+            if (getClientPlayers().containsKey(connection.getID()) &&
                 getGameStateManager().getGameState()
                                      .getCreatures()
-                                     .containsKey(clientPlayers.get(connection.getID()))) {
-                Creature creature =
-                        getGameStateManager().getGameState().getCreatures().get(clientPlayers.get(connection.getID()));
+                                     .containsKey(getClientPlayers().get(connection.getID()))) {
+                Creature creature = getGameStateManager().getGameState()
+                                                         .getCreatures()
+                                                         .get(getClientPlayers().get(connection.getID()));
 
                 List<GameStateAction> personalizedTickActions = tickActionsCopy.stream()
                                                                                .filter(action -> action.actionObjectPos(
@@ -174,7 +178,7 @@ public class CoreGameServer extends CoreGame {
                     PlayerInitAction playerInitAction = PlayerInitAction.of(command.getPlayerId());
 
                     if (clientIds.contains(connection.getID())) {
-                        clientPlayers.put(connection.getID(), playerInitAction.getPlayerId());
+                        getClientPlayers().put(connection.getID(), playerInitAction.getPlayerId());
 
                         onTickActions.add(playerInitAction);
                     }
@@ -200,13 +204,13 @@ public class CoreGameServer extends CoreGame {
 
             @Override
             public void disconnected(Connection connection) {
-                CreatureId disconnectedCreatureId = clientPlayers.get(connection.getID());
+                CreatureId disconnectedCreatureId = getClientPlayers().get(connection.getID());
 
                 PlayerRemoveAction playerRemoveAction = PlayerRemoveAction.of(disconnectedCreatureId);
                 onTickActions.add(playerRemoveAction);
 
                 clientIds.remove((Object) connection.getID());
-                clientPlayers.remove(connection.getID());
+                getClientPlayers().remove(connection.getID());
             }
 
         });
@@ -219,10 +223,10 @@ public class CoreGameServer extends CoreGame {
 
                     Connection[] connections = getEndPoint().getConnections();
                     for (Connection connection : connections) {
-                        if (!clientPlayers.containsKey(connection.getID()) ||
+                        if (!getClientPlayers().containsKey(connection.getID()) ||
                             !getGameStateManager().getGameState()
                                                   .getCreatures()
-                                                  .containsKey(clientPlayers.get(connection.getID()))) {
+                                                  .containsKey(getClientPlayers().get(connection.getID()))) {
                             GameState personalizedGameState = GameState.of(getGameStateManager().getGameState(),
                                                                            new ConcurrentSkipListMap<>(),
                                                                            new ConcurrentSkipListMap<>(),
@@ -233,7 +237,7 @@ public class CoreGameServer extends CoreGame {
                         else {
                             Creature player = getGameStateManager().getGameState()
                                                                    .getCreatures()
-                                                                   .get(clientPlayers.get(connection.getID()));
+                                                                   .get(getClientPlayers().get(connection.getID()));
 
                             ConcurrentSkipListMap<CreatureId, Creature> personalizedCreatures =
                                     new ConcurrentSkipListMap<>(getGameStateManager().getGameState()
@@ -372,36 +376,12 @@ public class CoreGameServer extends CoreGame {
         });
     }
 
-    @Override
-    public Set<CreatureId> getCreaturesToUpdate() {
-        Set<CreatureId> creaturesToUpdate = new HashSet<>();
-
-        for (CreatureId clientCreatureId : clientPlayers.values()) {
-            Creature player = getGameStateManager().getGameState().getCreatures().get(clientCreatureId);
-            if (player == null) {
-                continue;
-            }
-
-            Set<CreatureId> creaturesToAdd =
-                    getGameStateManager().getGameState().getCreatures().keySet().stream().filter(creatureId -> {
-                        Creature creature = getGameStateManager().getGameState().getCreatures().get(creatureId);
-                        return player.getParams().getAreaId().equals(creature.getParams().getAreaId()) &&
-                               creature.getParams().getPos().distance(player.getParams().getPos()) <
-                               Constants.ClientGameUpdateRange;
-                    }).collect(Collectors.toSet());
-
-
-            creaturesToUpdate.addAll(creaturesToAdd);
-        }
-
-        return creaturesToUpdate;
-    }
 
     @Override
     public Set<AbilityId> getAbilitiesToUpdate() {
         Set<AbilityId> abilitiesToUpdate = new HashSet<>();
 
-        for (CreatureId clientCreatureId : clientPlayers.values()) {
+        for (CreatureId clientCreatureId : getClientPlayers().values()) {
             Creature player = getGameStateManager().getGameState().getCreatures().get(clientCreatureId);
             if (player == null) {
                 continue;
@@ -464,6 +444,11 @@ public class CoreGameServer extends CoreGame {
     }
 
     @Override
+    public AreaId getCurrentAreaId() {
+        return getGameStateManager().getGameState().getDefaultAreaId();
+    }
+
+    @Override
     public void setCreatureMovingVector(CreatureId creatureId,
                                         Vector2 dirVector) { // this is handled as an action to make movement more fluid client-side
         CreatureMovingVectorSetAction action = CreatureMovingVectorSetAction.of(creatureId, dirVector);
@@ -508,4 +493,13 @@ public class CoreGameServer extends CoreGame {
         onTickActions.add(action);
     }
 
+    @Override
+    public CreatureId getThisClientPlayerId() {
+        return null;
+    }
+
+    @Override
+    public Map<Integer, CreatureId> getClientPlayers() {
+        return getGameStateManager().getClientPlayers();
+    }
 }

@@ -1,6 +1,7 @@
 package com.mygdx.game.game.interface_;
 
 import com.mygdx.game.game.entity.EntityEventProcessor;
+import com.mygdx.game.game.gamestate.GameStateManager;
 import com.mygdx.game.game.screen.ConnectScreenMessageHolder;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityId;
@@ -52,8 +53,6 @@ public interface GameUpdatable {
 
     PhysicsWorld getPhysicsWorld(AreaId areaId);
 
-    Set<CreatureId> getCreaturesToUpdate();
-
     Set<AbilityId> getAbilitiesToUpdate();
 
     List<PhysicsEvent> getPhysicsEventQueue();
@@ -93,4 +92,8 @@ public interface GameUpdatable {
     void setChatInputProcessor();
 
     void setConnectScreenInputProcessor(ConnectScreenMessageHolder messageHolder);
+
+    GameStateManager getGameStateManager();
+
+    AreaId getCurrentAreaId();
 }

@@ -59,18 +59,8 @@ public abstract class CoreGame extends Game implements AbilityUpdatable, Creatur
     @Getter
     private final Chat chat = Chat.of();
 
-    @Getter
-    private final GameStateManager gameStateManager = GameStateManager.of();
-
-    protected CreatureId thisPlayerId = null;
-
     public Boolean isDebugEnabled() {
         return isDebugEnabled;
-    }
-
-    @Override
-    public CreatureId getCurrentPlayerId() {
-        return thisPlayerId;
     }
 
     @Override
@@ -151,13 +141,6 @@ public abstract class CoreGame extends Game implements AbilityUpdatable, Creatur
         return entityManager.getGamePhysics().getPhysicsWorlds().get(areaId);
     }
 
-    public AreaId getCurrentPlayerAreaId() {
-        if (thisPlayerId != null && getGameStateManager().getGameState().getCreatures().containsKey(thisPlayerId)) {
-            return getCreature(thisPlayerId).getParams().getAreaId();
-        }
-        return getGameStateManager().getGameState().getDefaultAreaId();
-    }
-
     abstract public void performPhysicsWorldStep();
 
     @Override
@@ -208,10 +191,7 @@ public abstract class CoreGame extends Game implements AbilityUpdatable, Creatur
         if (isDebugEnabled()) {
             entityManager.getGamePhysics()
                          .getDebugRenderer()
-                         .render(entityManager.getGamePhysics()
-                                              .getPhysicsWorlds()
-                                              .get(getCurrentPlayerAreaId())
-                                              .getB2world(),
+                         .render(entityManager.getGamePhysics().getPhysicsWorlds().get(getCurrentAreaId()).getB2world(),
                                  entityManager.getGameRenderer()
                                               .getViewportsHandler()
                                               .getWorldCameraCombinedProjectionMatrix());

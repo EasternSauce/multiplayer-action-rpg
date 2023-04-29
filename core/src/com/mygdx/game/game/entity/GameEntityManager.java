@@ -152,7 +152,7 @@ public class GameEntityManager {
     }
 
     public void updateCreatures(float delta, CoreGame game) {
-        Set<CreatureId> creaturesToUpdate = game.getCreaturesToUpdate();
+        Set<CreatureId> creaturesToUpdate = game.getGameStateManager().getCreaturesToUpdate();
 
         creaturesToUpdate.forEach(creatureId -> {
             if (getGamePhysics().getCreatureBodies().containsKey(creatureId)) {

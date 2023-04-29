@@ -218,7 +218,7 @@ public class Enemy extends Creature {
     }
 
     private void processPathfinding(CreatureUpdatable game) {
-        boolean condition = getParams().getAreaId().equals(game.getCurrentPlayerAreaId()) &&
+        boolean condition = getParams().getAreaId().equals(game.getCurrentAreaId()) &&
                             getParams().getTargetCreatureId() != null &&
                             (getParams().getForcePathCalculation() ||
                              getParams().getPathCalculationCooldownTimer().getTime() >

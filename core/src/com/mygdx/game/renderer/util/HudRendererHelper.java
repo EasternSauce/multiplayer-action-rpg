@@ -26,8 +26,8 @@ public class HudRendererHelper {
 
         renderFpsCounter(renderingLayer);
 
-        if (game.getCurrentPlayerId() != null) {
-            Creature player = game.getCreature(game.getCurrentPlayerId());
+        if (game.getThisClientPlayerId() != null) {
+            Creature player = game.getCreature(game.getThisClientPlayerId());
 
             SkillMenuHelper.renderSkillMenu(renderingLayer, game);
 

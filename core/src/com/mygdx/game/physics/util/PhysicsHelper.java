@@ -20,7 +20,7 @@ public class PhysicsHelper {
             if (physicsEvent instanceof AbilityHitsCreatureEvent) {
                 AbilityHitsCreatureEvent event = (AbilityHitsCreatureEvent) physicsEvent;
 
-                if (game.getCreaturesToUpdate().contains(event.getDestinationCreatureId()) &&
+                if (game.getGameStateManager().getCreaturesToUpdate().contains(event.getDestinationCreatureId()) &&
                     game.getAbilitiesToUpdate().contains(event.getAbilityId())) {
 
                     if (event.getSourceCreatureId().equals(event.getDestinationCreatureId())) {
