@@ -13,16 +13,12 @@ import com.mygdx.game.model.skill.SkillType;
 import com.mygdx.game.model.util.PlayerParams;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.util.RandomHelper;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
 public abstract class GameState {
-    @Getter
-    @Setter // TODO: this data should not be visible from outside!
     protected GameStateData gameStateData = GameStateData.of();
 
     public CreatureId getAliveCreatureIdClosestTo(Vector2 pos, float maxRange, Set<CreatureId> excluded) {
@@ -134,4 +130,7 @@ public abstract class GameState {
         gameStateData.getGeneralTimer().update(delta);
     }
 
+    public void setAreaGates(Set<AreaGate> areaGates) {
+        gameStateData.setAreaGates(areaGates);
+    }
 }

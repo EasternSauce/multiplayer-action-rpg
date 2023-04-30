@@ -11,7 +11,6 @@ import com.mygdx.game.command.*;
 import com.mygdx.game.game.gamestate.ClientGameState;
 import com.mygdx.game.game.gamestate.GameState;
 import com.mygdx.game.game.screen.ConnectScreenMessageHolder;
-import com.mygdx.game.model.GameStateData;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityId;
 import com.mygdx.game.model.ability.AbilityParams;
@@ -22,7 +21,6 @@ import com.mygdx.game.model.action.ability.SkillTryPerformAction;
 import com.mygdx.game.model.action.creature.CreatureMoveTowardsTargetAction;
 import com.mygdx.game.model.action.inventory.InventoryToggleAction;
 import com.mygdx.game.model.area.AreaId;
-import com.mygdx.game.model.area.LootPileId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.creature.EnemySpawn;
@@ -39,7 +37,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.stream.Collectors;
 
@@ -312,42 +313,8 @@ public class CoreGameClient extends CoreGame {
                 } else if (object instanceof GameStateBroadcast) {
                     GameStateBroadcast action = (GameStateBroadcast) object;
 
-                    GameState oldGameState = gameState;
-                    GameStateData newGameStateData = action.getGameStateData();
-
-                    Set<CreatureId> oldCreatureIds = oldGameState.getCreatures().keySet();
-                    Set<CreatureId> newCreatureIds = newGameStateData.getCreatures().keySet();
-                    Set<AbilityId> oldAbilityIds = oldGameState.getAbilities().keySet();
-                    Set<AbilityId> newAbilityIds = newGameStateData.getAbilities().keySet();
-                    Set<LootPileId> oldLootPileIds = oldGameState.getLootPiles().keySet();
-                    Set<LootPileId> newLootPileIds = newGameStateData.getLootPiles().keySet();
-
-                    Set<CreatureId> creaturesAddedSinceLastUpdate = new HashSet<>(newCreatureIds);
-                    creaturesAddedSinceLastUpdate.removeAll(oldCreatureIds);
-
-                    Set<CreatureId> creaturesRemovedSinceLastUpdate = new HashSet<>(oldCreatureIds);
-                    creaturesRemovedSinceLastUpdate.removeAll(newCreatureIds);
-
-                    Set<AbilityId> abilitiesAddedSinceLastUpdate = new HashSet<>(newAbilityIds);
-                    abilitiesAddedSinceLastUpdate.removeAll(oldAbilityIds);
-
-                    Set<AbilityId> abilitiesRemovedSinceLastUpdate = new HashSet<>(oldAbilityIds);
-                    abilitiesRemovedSinceLastUpdate.removeAll(newAbilityIds);
-
-                    Set<LootPileId> lootPilesAddedSinceLastUpdate = new HashSet<>(newLootPileIds);
-                    lootPilesAddedSinceLastUpdate.removeAll(oldLootPileIds);
-
-                    Set<LootPileId> lootPilesRemovedSinceLastUpdate = new HashSet<>(oldLootPileIds);
-                    lootPilesRemovedSinceLastUpdate.removeAll(newLootPileIds);
-
-                    getEventProcessor().getCreatureModelsToBeCreated().addAll(creaturesAddedSinceLastUpdate);
-                    getEventProcessor().getCreatureModelsToBeRemoved().addAll(creaturesRemovedSinceLastUpdate);
-                    getEventProcessor().getAbilityModelsToBeCreated().addAll(abilitiesAddedSinceLastUpdate);
-                    getEventProcessor().getAbilityModelsToBeRemoved().addAll(abilitiesRemovedSinceLastUpdate);
-                    getEventProcessor().getLootPileModelsToBeCreated().addAll(lootPilesAddedSinceLastUpdate);
-                    getEventProcessor().getLootPileModelsToBeRemoved().addAll(lootPilesRemovedSinceLastUpdate);
-
-                    gameState.setGameStateData(newGameStateData);
+                    gameState.createEventsFromReceivedGameStateData(action.getGameStateData(), getEventProcessor());
+                    gameState.setNewGameState(action.getGameStateData());
 
                     getEntityManager().getGamePhysics().setIsForceUpdateBodyPositions(true);
 

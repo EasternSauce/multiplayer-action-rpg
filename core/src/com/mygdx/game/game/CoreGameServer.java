@@ -7,7 +7,6 @@ import com.mygdx.game.Constants;
 import com.mygdx.game.command.*;
 import com.mygdx.game.game.gamestate.ServerGameState;
 import com.mygdx.game.game.screen.ConnectScreenMessageHolder;
-import com.mygdx.game.model.GameStateData;
 import com.mygdx.game.model.ability.*;
 import com.mygdx.game.model.action.ActionsHolder;
 import com.mygdx.game.model.action.GameStateAction;
@@ -20,8 +19,6 @@ import com.mygdx.game.model.action.loot.LootPileDespawnAction;
 import com.mygdx.game.model.action.loot.LootPileSpawnAction;
 import com.mygdx.game.model.area.AreaGate;
 import com.mygdx.game.model.area.AreaId;
-import com.mygdx.game.model.area.LootPile;
-import com.mygdx.game.model.area.LootPileId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.creature.EnemySpawn;
@@ -29,7 +26,6 @@ import com.mygdx.game.model.creature.Player;
 import com.mygdx.game.model.item.Item;
 import com.mygdx.game.model.item.ItemTemplate;
 import com.mygdx.game.model.skill.SkillType;
-import com.mygdx.game.model.util.GameStateBroadcast;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.physics.world.PhysicsWorld;
 import com.mygdx.game.util.EndPointHelper;
@@ -223,79 +219,9 @@ public class CoreGameServer extends CoreGame {
                                 !getGameState()
                                         .getCreatures()
                                         .containsKey(getClientPlayers().get(connection.getID()))) {
-                            GameStateData personalizedGameStateData = GameStateData.copyWithoutEntities(getGameState().getGameStateData());
-
-                            connection.sendTCP(GameStateBroadcast.of(personalizedGameStateData));
+                            gameState.sendGameDataWithEntitiesEmpty(connection);
                         } else {
-                            Creature player = getGameState()
-                                    .getCreatures()
-                                    .get(getClientPlayers().get(connection.getID()));
-
-                            ConcurrentSkipListMap<CreatureId, Creature> personalizedCreatures =
-                                    new ConcurrentSkipListMap<>(getGameState()
-                                            .getCreatures()
-                                            .entrySet()
-                                            .stream()
-                                            .filter(entry -> entry.getValue()
-                                                    .getParams()
-                                                    .getAreaId()
-                                                    .equals(player.getParams()
-                                                            .getAreaId()) &&
-                                                    entry.getValue()
-                                                            .getParams()
-                                                            .getPos()
-                                                            .distance(
-                                                                    player.getParams()
-                                                                            .getPos()) <
-                                                            Constants.ClientGameUpdateRange)
-                                            .collect(Collectors.toMap(Map.Entry::getKey,
-                                                    Map.Entry::getValue)));
-                            ConcurrentSkipListMap<AbilityId, Ability> personalizedAbilities =
-                                    new ConcurrentSkipListMap<>(getGameState()
-                                            .getAbilities()
-                                            .entrySet()
-                                            .stream()
-                                            .filter(entry -> entry.getValue()
-                                                    .getParams()
-                                                    .getAreaId()
-                                                    .equals(player.getParams()
-                                                            .getAreaId()) &&
-                                                    entry.getValue()
-                                                            .getParams()
-                                                            .getPos()
-                                                            .distance(
-                                                                    player.getParams()
-                                                                            .getPos()) <
-                                                            Constants.ClientGameUpdateRange)
-                                            .collect(Collectors.toMap(Map.Entry::getKey,
-                                                    Map.Entry::getValue)));
-
-                            ConcurrentSkipListMap<LootPileId, LootPile> personalizedLootPiles =
-                                    new ConcurrentSkipListMap<>(getGameState()
-                                            .getLootPiles()
-                                            .entrySet()
-                                            .stream()
-                                            .filter(entry -> entry.getValue()
-
-                                                    .getAreaId()
-                                                    .equals(player.getParams()
-                                                            .getAreaId()) &&
-                                                    entry.getValue()
-
-                                                            .getPos()
-                                                            .distance(
-                                                                    player.getParams()
-                                                                            .getPos()) <
-                                                            Constants.ClientGameUpdateRange)
-                                            .collect(Collectors.toMap(Map.Entry::getKey,
-                                                    Map.Entry::getValue)));
-
-                            GameStateData personalizedGameStateData = GameStateData.of(getGameState().getGameStateData(),
-                                    personalizedCreatures,
-                                    personalizedAbilities,
-                                    personalizedLootPiles);
-
-                            connection.sendTCP(GameStateBroadcast.of(personalizedGameStateData));
+                            gameState.sendGameDataPersonalizedForPlayer(connection);
                         }
                     }
                 }
@@ -347,7 +273,7 @@ public class CoreGameServer extends CoreGame {
                                         "hideGloves"))
                                 .setQualityModifier(0.5f)))));
 
-        getGameState().getGameStateData().setAreaGates(new ConcurrentSkipListSet<>());
+        getGameState().setAreaGates(new ConcurrentSkipListSet<>());
         getGameState()
                 .getAreaGates()
                 .addAll(Arrays.asList(AreaGate.of(AreaId.of("area1"),
