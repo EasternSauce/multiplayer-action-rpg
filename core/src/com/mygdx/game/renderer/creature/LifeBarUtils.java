@@ -23,6 +23,6 @@ public class LifeBarUtils {
                                  float lifeBarWidth,
                                  Color color) {
         renderingLayer.filledRectangle(new Rectangle(barPosX, barPosY, lifeBarWidth, LifeBarUtils.LIFE_BAR_HEIGHT),
-                                       color);
+                color);
     }
 }

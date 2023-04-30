@@ -23,16 +23,16 @@ public class PlayfulGhost extends Projectile {
     public static PlayfulGhost of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
         PlayfulGhost ability = PlayfulGhost.of();
         ability.params = abilityParams.setWidth(1.5f)
-                                      .setHeight(1.5f)
-                                      .setChannelTime(0f)
-                                      .setActiveTime(30f)
-                                      .setTextureName("ghost")
-                                      .setBaseDamage(15f)
-                                      .setIsChannelAnimationLooping(false)
-                                      .setIsActiveAnimationLooping(true)
-                                      .setRotationShift(0f)
-                                      .setDelayedActionTime(0.001f)
-                                      .setSpeed(5f);
+                .setHeight(1.5f)
+                .setChannelTime(0f)
+                .setActiveTime(30f)
+                .setTextureName("ghost")
+                .setBaseDamage(15f)
+                .setIsChannelAnimationLooping(false)
+                .setIsActiveAnimationLooping(true)
+                .setRotationShift(0f)
+                .setDelayedActionTime(0.001f)
+                .setSpeed(5f);
 
         return ability;
     }
@@ -86,22 +86,22 @@ public class PlayfulGhost extends Projectile {
         Creature minCreature = null;
         float minDistance = Float.MAX_VALUE;
 
-        Creature thisCreature = game.getCreature(getParams().getCreatureId());
+        Creature thisCreature = game.getGameState().getCreature(getParams().getCreatureId());
 
-        for (Creature creature : game.getCreatures()
-                                     .values()
-                                     .stream()
-                                     .filter(targetCreature -> !targetCreature.getParams()
-                                                                              .getId()
-                                                                              .equals(getParams().getCreatureId()) &&
-                                                               targetCreature.isAlive() &&
-                                                               isTargetingAllowed(thisCreature, targetCreature) &&
-                                                               targetCreature.getParams()
-                                                                             .getPos()
-                                                                             .distance(getParams().getPos()) < 10f &&
-                                                               !getParams().getCreaturesAlreadyHit()
-                                                                           .containsKey(targetCreature.getId()))
-                                     .collect(Collectors.toSet())) {
+        for (Creature creature : game.getGameState().getCreatures()
+                .values()
+                .stream()
+                .filter(targetCreature -> !targetCreature.getParams()
+                        .getId()
+                        .equals(getParams().getCreatureId()) &&
+                        targetCreature.isAlive() &&
+                        isTargetingAllowed(thisCreature, targetCreature) &&
+                        targetCreature.getParams()
+                                .getPos()
+                                .distance(getParams().getPos()) < 10f &&
+                        !getParams().getCreaturesAlreadyHit()
+                                .containsKey(targetCreature.getId()))
+                .collect(Collectors.toSet())) {
             if (creature.getParams().getPos().distance(getParams().getPos()) < minDistance) {
                 minCreature = creature;
                 minDistance = creature.getParams().getPos().distance(getParams().getPos());
@@ -123,16 +123,13 @@ public class PlayfulGhost extends Projectile {
             if (Math.abs(alpha) < Math.abs(beta)) {
                 if (Math.abs(alpha) < Math.abs(gamma)) {
                     result = alpha;
-                }
-                else {
+                } else {
                     result = gamma;
                 }
-            }
-            else {
+            } else {
                 if (Math.abs(beta) < Math.abs(gamma)) {
                     result = beta;
-                }
-                else {
+                } else {
                     result = gamma;
                 }
             }
@@ -141,16 +138,13 @@ public class PlayfulGhost extends Projectile {
 
             if (result > increment) {
                 getParams().setDirVector(getParams().getDirVector().rotateDeg(increment));
-            }
-            else if (result < -increment) {
+            } else if (result < -increment) {
                 getParams().setDirVector(getParams().getDirVector().rotateDeg(-increment));
-            }
-            else {
+            } else {
                 getParams().setDirVector(getParams().getDirVector().setAngleDeg(targetAngleDeg));
             }
 
-        }
-        else {
+        } else {
             if (getParams().getChangeDirectionTimer().getTime() > 1f) {
                 getParams().getChangeDirectionTimer().restart();
                 getParams().setDirVector(getParams().getDirVector().rotateDeg(nextFloat() * 20f));

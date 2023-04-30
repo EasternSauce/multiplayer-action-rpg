@@ -20,16 +20,16 @@ public class SummonShield extends Ability {
 
         SummonShield ability = SummonShield.of();
         ability.params = abilityParams.setWidth(2f)
-                                      .setHeight(2f)
-                                      .setChannelTime(0f)
-                                      .setActiveTime(1f)
-                                      .setRange(1.2f)
-                                      .setTextureName("shield")
-                                      .setBaseDamage(0f)
-                                      .setIsChannelAnimationLooping(false)
-                                      .setIsActiveAnimationLooping(false)
-                                      .setRotationShift(0f)
-                                      .setIsFlip(SummonShield.calculateFlip(flipValue));
+                .setHeight(2f)
+                .setChannelTime(0f)
+                .setActiveTime(1f)
+                .setRange(1.2f)
+                .setTextureName("shield")
+                .setBaseDamage(0f)
+                .setIsChannelAnimationLooping(false)
+                .setIsActiveAnimationLooping(false)
+                .setRotationShift(0f)
+                .setIsFlip(SummonShield.calculateFlip(flipValue));
         return ability;
     }
 
@@ -77,8 +77,7 @@ public class SummonShield extends Ability {
         Vector2 dirVector;
         if (getParams().getDirVector().len() <= 0) {
             dirVector = Vector2.of(1, 0);
-        }
-        else {
+        } else {
             dirVector = getParams().getDirVector();
         }
 
@@ -87,7 +86,7 @@ public class SummonShield extends Ability {
         float attackShiftX = dirVector.normalized().getX() * getParams().getRange();
         float attackShiftY = dirVector.normalized().getY() * getParams().getRange();
 
-        Vector2 pos = game.getCreaturePos(getParams().getCreatureId());
+        Vector2 pos = game.getGameState().getCreaturePos(getParams().getCreatureId());
 
         if (pos != null) {
             float attackRectX = attackShiftX + pos.getX();
@@ -127,7 +126,7 @@ public class SummonShield extends Ability {
 
     @Override
     public void onOtherAbilityHit(AbilityId otherAbilityId, GameUpdatable game) {
-        Ability otherAbility = game.getAbility(otherAbilityId);
+        Ability otherAbility = game.getGameState().getAbility(otherAbilityId);
         if (otherAbility != null) {
             if (otherAbility.isRanged()) {
                 otherAbility.deactivate();

@@ -1,7 +1,7 @@
 package com.mygdx.game.model.action.loot;
 
+import com.mygdx.game.game.gamestate.GameState;
 import com.mygdx.game.game.interface_.GameActionApplicable;
-import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.area.LootPile;
@@ -37,17 +37,17 @@ public class LootPileSpawnAction extends GameStateAction {
         LootPileId lootPileId = LootPileId.of("LootPile_" + (int) (Math.random() * 10000000)); // TODO: use seeded rng
 
         Set<Item> lootPileItems = this.getItems()
-                                      .stream()
-                                      .map(item -> Item.of()
-                                                       .setTemplate(item.getTemplate())
-                                                       .setQuantity(item.getQuantity())
-                                                       .setQualityModifier(item.getQualityModifier())
-                                                       .setLootPileId(lootPileId))
-                                      .collect(Collectors.toCollection(ConcurrentSkipListSet::new));
+                .stream()
+                .map(item -> Item.of()
+                        .setTemplate(item.getTemplate())
+                        .setQuantity(item.getQuantity())
+                        .setQualityModifier(item.getQualityModifier())
+                        .setLootPileId(lootPileId))
+                .collect(Collectors.toCollection(ConcurrentSkipListSet::new));
 
         LootPile lootPile = LootPile.of(lootPileId, areaId, pos, lootPileItems);
 
-        game.getLootPiles().put(lootPile.getId(), lootPile);
+        game.getGameState().getLootPiles().put(lootPile.getId(), lootPile);
 
         game.getEventProcessor().getLootPileModelsToBeCreated().add(lootPile.getId());
     }

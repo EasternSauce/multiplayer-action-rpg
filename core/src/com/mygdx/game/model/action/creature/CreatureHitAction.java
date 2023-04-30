@@ -1,7 +1,7 @@
 package com.mygdx.game.model.action.creature;
 
+import com.mygdx.game.game.gamestate.GameState;
 import com.mygdx.game.game.interface_.GameActionApplicable;
-import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.area.LootPile;
@@ -40,7 +40,7 @@ public class CreatureHitAction extends GameStateAction {
 
     @Override
     public void applyToGame(GameActionApplicable game) {
-        Creature targetCreature = game.getCreature(targetId);
+        Creature targetCreature = game.getGameState().getCreature(targetId);
 
         if (targetCreature == null) {
             return;
@@ -60,7 +60,7 @@ public class CreatureHitAction extends GameStateAction {
     }
 
     public void spawnDrops(GameActionApplicable game) {
-        Creature creature = game.getCreature(targetId);
+        Creature creature = game.getGameState().getCreature(targetId);
 
         Set<Item> items = new ConcurrentSkipListSet<>();
 
@@ -81,7 +81,7 @@ public class CreatureHitAction extends GameStateAction {
                     AtomicReference<Float> totalWeight = new AtomicReference<>((float) 0);
 
                     entry.getGrantedSkillWeights()
-                         .forEach((skillType, weight) -> totalWeight.set(totalWeight.get() + weight));
+                            .forEach((skillType, weight) -> totalWeight.set(totalWeight.get() + weight));
 
                     AtomicReference<Float> randValue =
                             new AtomicReference<>(creature.nextDropRngValue() * totalWeight.get());
@@ -103,11 +103,9 @@ public class CreatureHitAction extends GameStateAction {
                     int level;
                     if (randValue < 0.5f) {
                         level = 1;
-                    }
-                    else if (randValue < 0.8f) {
+                    } else if (randValue < 0.8f) {
                         level = 2;
-                    }
-                    else {
+                    } else {
                         level = 3;
                     }
 
@@ -115,9 +113,9 @@ public class CreatureHitAction extends GameStateAction {
                 }
 
                 Item item = Item.of()
-                                .setTemplate(entry.getTemplate())
-                                .setQualityModifier(quality)
-                                .setGrantedSkills(grantedSkills);
+                        .setTemplate(entry.getTemplate())
+                        .setQualityModifier(quality)
+                        .setGrantedSkills(grantedSkills);
 
 
                 items.add(item);
@@ -131,18 +129,18 @@ public class CreatureHitAction extends GameStateAction {
         LootPileId lootPileId = LootPileId.of("LootPile_" + (int) (Math.random() * 10000000)); // TODO: use seeded rng
 
         Set<Item> lootPileItems = items.stream()
-                                       .map(item -> Item.of()
-                                                        .setTemplate(item.getTemplate())
-                                                        .setQuantity(item.getQuantity())
-                                                        .setQualityModifier(item.getQualityModifier())
-                                                        .setGrantedSkills(item.getGrantedSkills())
-                                                        .setLootPileId(lootPileId))
-                                       .collect(Collectors.toCollection(ConcurrentSkipListSet::new));
+                .map(item -> Item.of()
+                        .setTemplate(item.getTemplate())
+                        .setQuantity(item.getQuantity())
+                        .setQualityModifier(item.getQualityModifier())
+                        .setGrantedSkills(item.getGrantedSkills())
+                        .setLootPileId(lootPileId))
+                .collect(Collectors.toCollection(ConcurrentSkipListSet::new));
 
         LootPile lootPile =
                 LootPile.of(lootPileId, creature.getParams().getAreaId(), creature.getParams().getPos(), lootPileItems);
 
-        game.getLootPiles().put(lootPile.getId(), lootPile);
+        game.getGameState().getLootPiles().put(lootPile.getId(), lootPile);
 
         game.getEventProcessor().getLootPileModelsToBeCreated().add(lootPile.getId());
 

@@ -53,10 +53,10 @@ public class GameRenderer {
         areaRenderers.putAll(maps.keySet().stream().collect(Collectors.toMap(areaId -> areaId, AreaRenderer::of)));
         areaRenderers.forEach((areaId, areaRenderer) -> areaRenderer.init(maps.get(areaId), mapScale));
 
-        areaGateRenderers.addAll(game.getAreaGates()
-                                     .stream()
-                                     .map(areaGate -> AreaGateRenderer.of(areaGate, atlas))
-                                     .collect(Collectors.toSet()));
+        areaGateRenderers.addAll(game.getGameState().getAreaGates()
+                .stream()
+                .map(areaGate -> AreaGateRenderer.of(areaGate, atlas))
+                .collect(Collectors.toSet()));
 
         InventoryHelper.init(atlas);
 
@@ -112,19 +112,19 @@ public class GameRenderer {
     }
 
     public void renderPlayerNames(RenderingLayer worldTextRenderingLayer, GameRenderable game) {
-        game.getCreatures()
-            .values()
-            .stream()
-            .filter(creature -> creature.isAlive() &&
-                                canCreatureBeRendered(creature, game) &&
-                                creature instanceof Player)
-            .forEach(creature -> creatureRenderers.get(creature.getId())
-                                                  .renderCreatureId(worldTextRenderingLayer, game));
+        game.getGameState().getCreatures()
+                .values()
+                .stream()
+                .filter(creature -> creature.isAlive() &&
+                        canCreatureBeRendered(creature, game) &&
+                        creature instanceof Player)
+                .forEach(creature -> creatureRenderers.get(creature.getId())
+                        .renderCreatureId(worldTextRenderingLayer, game));
     }
 
     private boolean canCreatureBeRendered(Creature creature, GameRenderable game) {
         return creatureRenderers.containsKey(creature.getId()) &&
-               GameRendererHelper.isCreatureInCurrentlyVisibleArea(game, creature);
+                GameRendererHelper.isCreatureInCurrentlyVisibleArea(game, creature);
     }
 
     public TiledMap loadMap(String filePath) {

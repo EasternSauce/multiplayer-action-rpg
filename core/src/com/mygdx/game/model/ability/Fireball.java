@@ -18,20 +18,20 @@ public class Fireball extends Projectile {
     AbilityParams params;
 
     public static Fireball of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
-        Creature creature = game.getCreature(abilityParams.getCreatureId());
+        Creature creature = game.getGameState().getCreature(abilityParams.getCreatureId());
 
         Fireball ability = Fireball.of();
         ability.params = abilityParams.setWidth(1.5f)
-                                      .setHeight(1.5f)
-                                      .setChannelTime(0f)
-                                      .setActiveTime(30f)
-                                      .setTextureName("fireball")
-                                      .setBaseDamage(20f)
-                                      .setIsChannelAnimationLooping(false)
-                                      .setIsActiveAnimationLooping(true)
-                                      .setRotationShift(0f)
-                                      .setDelayedActionTime(0.001f)
-                                      .setPos(creature.getParams().getPos());
+                .setHeight(1.5f)
+                .setChannelTime(0f)
+                .setActiveTime(30f)
+                .setTextureName("fireball")
+                .setBaseDamage(20f)
+                .setIsChannelAnimationLooping(false)
+                .setIsActiveAnimationLooping(true)
+                .setRotationShift(0f)
+                .setDelayedActionTime(0.001f)
+                .setPos(creature.getParams().getPos());
 
 
         return ability;
@@ -62,8 +62,7 @@ public class Fireball extends Projectile {
 
         if (getParams().getStateTimer().getTime() < 2f) {
             getParams().setSpeed(5f + (getParams().getStateTimer().getTime() / 2f) * 40f);
-        }
-        else {
+        } else {
             getParams().setSpeed(45f);
         }
     }

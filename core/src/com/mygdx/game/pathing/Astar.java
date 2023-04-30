@@ -14,9 +14,9 @@ public class Astar {
                                   Vector2Int toPos,
                                   Float weight) {
         if (0 <= toPos.getY() &&
-            toPos.getY() < world.heightInTiles() &&
-            0 <= toPos.getX() &&
-            toPos.getX() < world.widthInTiles()) {
+                toPos.getY() < world.heightInTiles() &&
+                0 <= toPos.getX() &&
+                toPos.getX() < world.widthInTiles()) {
             if (world.getTraversables().get(fromPos) && world.getTraversables().get(toPos)) {
                 PathingNode targetNode = pathingNodes.get(toPos);
                 pathingNodes.put(fromPos, pathingNodes.get(fromPos).withEdge(weight, targetNode));
@@ -29,9 +29,9 @@ public class Astar {
         for (int y = 0; y < world.heightInTiles(); y++) {
             for (int x = 0; x < world.widthInTiles(); x++) {
                 pathingNodes.put(Vector2Int.of(x, y),
-                                 PathingNode.of(Vector2Int.of(x, y),
-                                                world.getClearances()
-                                                     .getOrDefault(Vector2Int.of(x, y), Integer.MAX_VALUE)));
+                        PathingNode.of(Vector2Int.of(x, y),
+                                world.getClearances()
+                                        .getOrDefault(Vector2Int.of(x, y), Integer.MAX_VALUE)));
             }
         }
 
@@ -47,30 +47,30 @@ public class Astar {
                 tryAddEdge(pathingNodes, world, Vector2Int.of(x, y), Vector2Int.of(x, y + 1), straightWeight);
 
                 if (x - 1 >= 0 &&
-                    y - 1 >= 0 &&
-                    world.getTraversables().get(Vector2Int.of(x - 1, y)) &&
-                    world.getTraversables().get(Vector2Int.of(x, y - 1))) {
+                        y - 1 >= 0 &&
+                        world.getTraversables().get(Vector2Int.of(x - 1, y)) &&
+                        world.getTraversables().get(Vector2Int.of(x, y - 1))) {
                     tryAddEdge(pathingNodes, world, Vector2Int.of(x, y), Vector2Int.of(x - 1, y - 1), diagonalWeight);
                 }
 
                 if (x + 1 < world.widthInTiles() &&
-                    y - 1 >= 0 &&
-                    world.getTraversables().get(Vector2Int.of(x + 1, y)) &&
-                    world.getTraversables().get(Vector2Int.of(x, y - 1))) {
+                        y - 1 >= 0 &&
+                        world.getTraversables().get(Vector2Int.of(x + 1, y)) &&
+                        world.getTraversables().get(Vector2Int.of(x, y - 1))) {
                     tryAddEdge(pathingNodes, world, Vector2Int.of(x, y), Vector2Int.of(x + 1, y - 1), diagonalWeight);
                 }
 
                 if (x - 1 >= 0 &&
-                    y + 1 < world.heightInTiles() &&
-                    world.getTraversables().get(Vector2Int.of(x - 1, y)) &&
-                    world.getTraversables().get(Vector2Int.of(x, y + 1))) {
+                        y + 1 < world.heightInTiles() &&
+                        world.getTraversables().get(Vector2Int.of(x - 1, y)) &&
+                        world.getTraversables().get(Vector2Int.of(x, y + 1))) {
                     tryAddEdge(pathingNodes, world, Vector2Int.of(x, y), Vector2Int.of(x - 1, y + 1), diagonalWeight);
                 }
 
                 if (x + 1 < world.widthInTiles() &&
-                    y + 1 < world.heightInTiles() &&
-                    world.getTraversables().get(Vector2Int.of(x + 1, y)) &&
-                    world.getTraversables().get(Vector2Int.of(x, y + 1))) {
+                        y + 1 < world.heightInTiles() &&
+                        world.getTraversables().get(Vector2Int.of(x + 1, y)) &&
+                        world.getTraversables().get(Vector2Int.of(x, y + 1))) {
                     tryAddEdge(pathingNodes, world, Vector2Int.of(x, y), Vector2Int.of(x + 1, y + 1), diagonalWeight);
                 }
             }
@@ -86,7 +86,7 @@ public class Astar {
             AstarState finalAstarState = astarState;
             Vector2Int minimumTile = Collections.min(astarState.getOpenSet(), (o1, o2) -> {
                 if (Objects.equals(finalAstarState.getAstarGraph().get(o1).getF(),
-                                   finalAstarState.getAstarGraph().get(o2).getF())) {
+                        finalAstarState.getAstarGraph().get(o2).getF())) {
                     return 0;
                 }
                 if (finalAstarState.getAstarGraph().get(o1).getF() >= finalAstarState.getAstarGraph().get(o2).getF()) {
@@ -97,11 +97,11 @@ public class Astar {
             AstarNode currentNode = astarState.getAstarGraph().get(minimumTile);
 
             AstarState resultingAstarState = AstarState.of(astarState.getAstarGraph(),
-                                                           astarState.getOpenSet(),
-                                                           astarState.getClosedSet(),
-                                                           astarState.getFinishPos(),
-                                                           astarState.getFoundPath(),
-                                                           false);
+                    astarState.getOpenSet(),
+                    astarState.getClosedSet(),
+                    astarState.getFinishPos(),
+                    astarState.getFoundPath(),
+                    false);
 
             if (astarState.getClosedSet().size() > 80) { // give up once you process enough tiles [PERFORMANCE SAVER]
                 resultingAstarState.setIsGaveUp(true);
@@ -109,8 +109,7 @@ public class Astar {
 
             if (currentNode.getPos().equals(finishTilePos)) {
                 resultingAstarState.setFoundPath(true);
-            }
-            else {
+            } else {
                 HashSet<Vector2Int> modifiedOpenSet = new HashSet<>(resultingAstarState.getOpenSet());
                 modifiedOpenSet.remove(currentNode.getPos());
                 HashSet<Vector2Int> modifiedClosedSet = new HashSet<>(resultingAstarState.getClosedSet());
@@ -121,11 +120,11 @@ public class Astar {
                 for (int i = 0; i < currentNode.getPathingNode().getOutgoingEdges().size(); i++) {
                     PathingEdge pathingEdge = currentNode.getPathingNode().getOutgoingEdges().get(i);
                     resultingAstarState = processNeighbor(resultingAstarState,
-                                                          currentNode.getPos(),
-                                                          pathingEdge,
-                                                          pathingEdge.getWeight(),
-                                                          world,
-                                                          capability);
+                            currentNode.getPos(),
+                            pathingEdge,
+                            pathingEdge.getWeight(),
+                            world,
+                            capability);
                 }
 
             }
@@ -156,8 +155,8 @@ public class Astar {
                                              PhysicsWorld world,
                                              Integer capability) {
         if (astarState.getClosedSet().contains(pathingEdge.getNeighborPos()) ||
-            Astar.calculateHeuristic(originNodePos, astarState.getFinishPos()) >= 60 &&
-            world.getClearances().get(pathingEdge.getNeighborPos()) < capability) {
+                Astar.calculateHeuristic(originNodePos, astarState.getFinishPos()) >= 60 &&
+                        world.getClearances().get(pathingEdge.getNeighborPos()) < capability) {
             return astarState;
         }
 
@@ -167,10 +166,10 @@ public class Astar {
         Double tentativeGScore = originNode.getG() + distanceBetweenNodes;
 
         AstarNode updatedNode = AstarNode.of(neighborNode.getPathingNode(),
-                                             neighborNode.getParent(),
-                                             neighborNode.getF(),
-                                             neighborNode.getG(),
-                                             neighborNode.getH());
+                neighborNode.getParent(),
+                neighborNode.getF(),
+                neighborNode.getG(),
+                neighborNode.getH());
 
         if (!astarState.getOpenSet().contains(neighborNode.getPos())) {
             updatedNode.setH(Astar.calculateHeuristic(neighborNode.getPos(), astarState.getFinishPos()));
@@ -179,11 +178,11 @@ public class Astar {
             updatedNode.setF(updatedNode.getG() + updatedNode.getH());
 
             AstarState updatedAstarState = AstarState.of(astarState.getAstarGraph(),
-                                                         astarState.getOpenSet(),
-                                                         astarState.getClosedSet(),
-                                                         astarState.getFinishPos(),
-                                                         astarState.getFoundPath(),
-                                                         astarState.getIsGaveUp());
+                    astarState.getOpenSet(),
+                    astarState.getClosedSet(),
+                    astarState.getFinishPos(),
+                    astarState.getFoundPath(),
+                    astarState.getIsGaveUp());
 
             Map<Vector2Int, AstarNode> updatedAstarGraph = new HashMap<>(astarState.getAstarGraph());
             updatedAstarGraph.put(neighborNode.getPos(), updatedNode);
@@ -202,11 +201,11 @@ public class Astar {
             updatedNode.setF(updatedNode.getG() + updatedNode.getH());
 
             AstarState updatedAstarState = AstarState.of(astarState.getAstarGraph(),
-                                                         astarState.getOpenSet(),
-                                                         astarState.getClosedSet(),
-                                                         astarState.getFinishPos(),
-                                                         astarState.getFoundPath(),
-                                                         astarState.getIsGaveUp());
+                    astarState.getOpenSet(),
+                    astarState.getClosedSet(),
+                    astarState.getFinishPos(),
+                    astarState.getFoundPath(),
+                    astarState.getIsGaveUp());
 
             Map<Vector2Int, AstarNode> updatedAstarGraph = new HashMap<>(astarState.getAstarGraph());
             updatedAstarGraph.put(neighborNode.getPos(), updatedNode);
@@ -227,11 +226,11 @@ public class Astar {
         freshAstarGraph.get(startTilePos).setG(0.0);
 
         AstarState astarState = AstarState.of(freshAstarGraph,
-                                              new HashSet<>(Collections.singletonList(startTilePos)),
-                                              new HashSet<>(),
-                                              finishTilePos,
-                                              false,
-                                              false);
+                new HashSet<>(Collections.singletonList(startTilePos)),
+                new HashSet<>(),
+                finishTilePos,
+                false,
+                false);
 
         AstarState result = traverse(astarState, finishTilePos, world, capability);
 
@@ -249,7 +248,7 @@ public class Astar {
 
     public static Map<Vector2Int, AstarNode> getAstarGraph(Map<Vector2Int, PathingNode> pathingGraph) {
         return pathingGraph.entrySet()
-                           .stream()
-                           .collect(Collectors.toMap(Map.Entry::getKey, stuff -> AstarNode.of(stuff.getValue())));
+                .stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, stuff -> AstarNode.of(stuff.getValue())));
     }
 }

@@ -1,7 +1,7 @@
 package com.mygdx.game.model.action.inventory;
 
+import com.mygdx.game.game.gamestate.GameState;
 import com.mygdx.game.game.interface_.GameActionApplicable;
-import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
@@ -30,8 +30,8 @@ public class InventorySwapSlotsAction extends GameStateAction {
 
     @Override
     public void applyToGame(GameActionApplicable game) {
-        Creature player = game.getCreature(creatureId);
-        PlayerParams playerParams = game.getPlayerParams(creatureId);
+        Creature player = game.getGameState().getCreature(creatureId);
+        PlayerParams playerParams = game.getGameState().getPlayerParams(creatureId);
 
         Item itemFrom = player.getParams().getInventoryItems().get(fromSlotIndex);
         //noinspection UnnecessaryLocalVariable
@@ -42,14 +42,12 @@ public class InventorySwapSlotsAction extends GameStateAction {
 
         if (itemFrom != null) {
             player.getParams().getInventoryItems().put(toSlotIndex, itemFrom);
-        }
-        else {
+        } else {
             player.getParams().getInventoryItems().remove(toSlotIndex);
         }
         if (temp != null) {
             player.getParams().getInventoryItems().put(fromSlotIndex, temp);
-        }
-        else {
+        } else {
             player.getParams().getInventoryItems().remove(fromSlotIndex);
         }
 

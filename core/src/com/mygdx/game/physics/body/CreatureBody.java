@@ -32,7 +32,7 @@ public class CreatureBody {
     }
 
     public void init(GameUpdatable game, AreaId areaId) {
-        Creature creature = game.getCreature(creatureId);
+        Creature creature = game.getGameState().getCreature(creatureId);
 
         world = game.getPhysicsWorld(areaId);
 
@@ -46,11 +46,11 @@ public class CreatureBody {
     }
 
     public void update(GameUpdatable game) {
-        if (!game.getCreatures().containsKey(creatureId)) {
+        if (!game.getGameState().getCreatures().containsKey(creatureId)) {
             return;
         }
 
-        Creature creature = game.getCreatures().get(creatureId);
+        Creature creature = game.getGameState().getCreatures().get(creatureId);
 
         setSensor(!creature.isAlive());
 
@@ -64,8 +64,7 @@ public class CreatureBody {
         if (bodyCreated) {
             if (creature.getParams().getIsMoving()) {
                 setVelocity(Vector2.of(vectorX, vectorY));
-            }
-            else {
+            } else {
                 setVelocity(Vector2.of(0, 0));
             }
 

@@ -16,16 +16,16 @@ public class RicochetBullet extends Projectile {
     public static RicochetBullet of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
         RicochetBullet ability = RicochetBullet.of();
         ability.params = abilityParams.setWidth(0.8f)
-                                      .setHeight(0.8f)
-                                      .setChannelTime(0f)
-                                      .setActiveTime(10f)
-                                      .setTextureName("fireball")
-                                      .setBaseDamage(12f)
-                                      .setIsChannelAnimationLooping(false)
-                                      .setIsActiveAnimationLooping(true)
-                                      .setRotationShift(0f)
-                                      .setDelayedActionTime(0.001f)
-                                      .setSpeed(25f);
+                .setHeight(0.8f)
+                .setChannelTime(0f)
+                .setActiveTime(10f)
+                .setTextureName("fireball")
+                .setBaseDamage(12f)
+                .setIsChannelAnimationLooping(false)
+                .setIsActiveAnimationLooping(true)
+                .setRotationShift(0f)
+                .setDelayedActionTime(0.001f)
+                .setSpeed(25f);
 
 
         return ability;
@@ -71,7 +71,7 @@ public class RicochetBullet extends Projectile {
     public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
 
         if (getParams().getDirVector().normalized().dot(abilityPos.vectorTowards(tilePos).normalized()) <
-            0.6f) { // check if it is facing the tile
+                0.6f) { // check if it is facing the tile
             return;
         }
 
@@ -96,32 +96,28 @@ public class RicochetBullet extends Projectile {
         if (collisionAngle >= 45f && collisionAngle < 135f) {
             if (angle < 90f) {
                 reflectAngle = 90f + Math.abs(angle - 90f);
-            }
-            else {
+            } else {
                 reflectAngle = 90f - Math.abs(angle - 90f);
             }
         }
         if (collisionAngle >= 135f && collisionAngle < 225f) {
             if (angle < 180f) {
                 reflectAngle = 180f + Math.abs(angle - 180f);
-            }
-            else {
+            } else {
                 reflectAngle = 180f - Math.abs(angle - 180f);
             }
         }
         if (collisionAngle >= 225f && collisionAngle < 315f) {
             if (angle < 270f) {
                 reflectAngle = 270f + Math.abs(angle - 270f);
-            }
-            else {
+            } else {
                 reflectAngle = 270f - Math.abs(angle - 270f);
             }
         }
         if ((collisionAngle >= 315f && collisionAngle < 360f) || (collisionAngle >= 0f && collisionAngle < 45f)) {
             if (angle >= 315f && angle < 360f) {
                 reflectAngle = Math.abs(angle - 360f);
-            }
-            else {
+            } else {
                 reflectAngle = 360f - Math.abs(angle - 360f);
             }
         }

@@ -31,7 +31,7 @@ public class GameEntityManager {
     private final GamePhysics gamePhysics = GamePhysics.of();
 
     public void createCreatureEntity(CreatureId creatureId, GameUpdatable game) {
-        Creature creature = game.getCreatures().get(creatureId);
+        Creature creature = game.getGameState().getCreatures().get(creatureId);
 
         if (creature != null) {
             if (!gameRenderer.getCreatureRenderers().containsKey(creatureId)) {
@@ -48,7 +48,7 @@ public class GameEntityManager {
     }
 
     public void createAbilityEntity(AbilityId abilityId, GameUpdatable game) {
-        Ability ability = game.getAbilities().get(abilityId);
+        Ability ability = game.getGameState().getAbilities().get(abilityId);
 
         if (ability != null) {
 
@@ -69,17 +69,17 @@ public class GameEntityManager {
     }
 
     public void activateAbility(AbilityId abilityId, GameUpdatable game) {
-        Ability ability = game.getAbilities().get(abilityId);
+        Ability ability = game.getGameState().getAbilities().get(abilityId);
 
         if (ability != null && gamePhysics.getAbilityBodies().containsKey(ability.getParams().getId())) {
             gamePhysics.getAbilityBodies()
-                       .get(ability.getParams().getId())
-                       .init(game, ability.getParams().getIsSkipCreatingBody());
+                    .get(ability.getParams().getId())
+                    .init(game, ability.getParams().getIsSkipCreatingBody());
         }
     }
 
     public void createLootPileEntity(LootPileId lootPileId, GameUpdatable game) {
-        LootPile lootPile = game.getLootPile(lootPileId);
+        LootPile lootPile = game.getGameState().getLootPile(lootPileId);
 
         if (lootPile != null) {
             if (!gameRenderer.getLootPileRenderers().containsKey(lootPileId)) {
@@ -97,7 +97,7 @@ public class GameEntityManager {
 
     public void removeCreatureEntity(CreatureId creatureId, GameUpdatable game) {
         if (creatureId != null) {
-            game.getCreatures().remove(creatureId);
+            game.getGameState().getCreatures().remove(creatureId);
 
             getGameRenderer().getCreatureRenderers().remove(creatureId);
 
@@ -112,7 +112,7 @@ public class GameEntityManager {
 
         if (abilityId != null) {
 
-            game.getAbilities().remove(abilityId);
+            game.getGameState().getAbilities().remove(abilityId);
 
             getGameRenderer().getAbilityRenderers().remove(abilityId);
 
@@ -126,7 +126,7 @@ public class GameEntityManager {
     public void removeLootPileEntity(LootPileId lootPileId, GameUpdatable game) {
         if (lootPileId != null) {
 
-            game.getLootPiles().remove(lootPileId);
+            game.getGameState().getLootPiles().remove(lootPileId);
 
             getGameRenderer().getLootPileRenderers().remove(lootPileId);
 
@@ -138,13 +138,13 @@ public class GameEntityManager {
     }
 
     public void spawnEnemy(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn, GameUpdatable game) {
-        game.getCreatures()
-            .put(creatureId,
-                 Enemy.of(CreatureParams.of(creatureId, areaId, enemySpawn)
-                                        .setBaseSpeed(7f)
-                                        .setAttackDistance(enemySpawn.getEnemyTemplate().getAttackDistance())
-                                        .setMainAttackSkill(enemySpawn.getEnemyTemplate().getMainAttackSkill())
-                                        .setDropTable(enemySpawn.getEnemyTemplate().getDropTable())));
+        game.getGameState().getCreatures()
+                .put(creatureId,
+                        Enemy.of(CreatureParams.of(creatureId, areaId, enemySpawn)
+                                .setBaseSpeed(7f)
+                                .setAttackDistance(enemySpawn.getEnemyTemplate().getAttackDistance())
+                                .setMainAttackSkill(enemySpawn.getEnemyTemplate().getMainAttackSkill())
+                                .setDropTable(enemySpawn.getEnemyTemplate().getDropTable())));
 
         game.getEventProcessor().getCreatureModelsToBeCreated().add(creatureId);
 
@@ -152,7 +152,7 @@ public class GameEntityManager {
     }
 
     public void updateCreatures(float delta, CoreGame game) {
-        Set<CreatureId> creaturesToUpdate = game.getGameStateManager().getCreaturesToUpdate();
+        Set<CreatureId> creaturesToUpdate = game.getGameState().getCreaturesToUpdate();
 
         creaturesToUpdate.forEach(creatureId -> {
             if (getGamePhysics().getCreatureBodies().containsKey(creatureId)) {
@@ -162,33 +162,33 @@ public class GameEntityManager {
 
         // set gamestate position based on b2body position
         creaturesToUpdate.forEach(creatureId -> {
-            if (game.getCreatures().containsKey(creatureId) &&
-                getGamePhysics().getCreatureBodies().containsKey(creatureId)) {
+            if (game.getGameState().getCreatures().containsKey(creatureId) &&
+                    getGamePhysics().getCreatureBodies().containsKey(creatureId)) {
 
-                game.getCreatures()
-                    .get(creatureId)
-                    .getParams()
-                    .setPos(getGamePhysics().getCreatureBodies().get(creatureId).getBodyPos());
+                game.getGameState().getCreatures()
+                        .get(creatureId)
+                        .getParams()
+                        .setPos(getGamePhysics().getCreatureBodies().get(creatureId).getBodyPos());
 
             }
         });
 
         // if creature is to be updated, then body should be active, otherwise it should be inactive
         getGamePhysics().getCreatureBodies()
-                        .forEach((key, value) -> getGamePhysics().getCreatureBodies()
-                                                                 .get(key)
-                                                                 .setActive(creaturesToUpdate.contains(key)));
+                .forEach((key, value) -> getGamePhysics().getCreatureBodies()
+                        .get(key)
+                        .setActive(creaturesToUpdate.contains(key)));
 
         creaturesToUpdate.forEach(creatureId -> {
-            if (game.getCreatures().containsKey(creatureId) &&
-                getGameRenderer().getCreatureRenderers().containsKey(creatureId)) {
+            if (game.getGameState().getCreatures().containsKey(creatureId) &&
+                    getGameRenderer().getCreatureRenderers().containsKey(creatureId)) {
                 getGameRenderer().getCreatureRenderers().get(creatureId).update(game);
             }
         });
 
         creaturesToUpdate.forEach(creatureId -> {
-            if (game.getCreatures().containsKey(creatureId)) {
-                game.getCreatures().get(creatureId).update(delta, game);
+            if (game.getGameState().getCreatures().containsKey(creatureId)) {
+                game.getGameState().getCreatures().get(creatureId).update(delta, game);
             }
         });
 
@@ -197,7 +197,7 @@ public class GameEntityManager {
     public void updateAbilities(float delta, CoreGame game) {
         Set<AbilityId> abilitiesToUpdate = game.getAbilitiesToUpdate();
 
-        abilitiesToUpdate.forEach(abilityId -> game.getAbilities().get(abilityId).update(delta, game));
+        abilitiesToUpdate.forEach(abilityId -> game.getGameState().getAbilities().get(abilityId).update(delta, game));
 
 
         abilitiesToUpdate.forEach(abilityId -> {
@@ -208,10 +208,10 @@ public class GameEntityManager {
 
         abilitiesToUpdate.forEach(abilityId -> {
             if (getGamePhysics().getAbilityBodies().containsKey(abilityId)) {
-                Ability ability = game.getAbilities().get(abilityId);
+                Ability ability = game.getGameState().getAbilities().get(abilityId);
                 if (!ability.isPositionChangedOnUpdate() &&
-                    ability.bodyShouldExist() &&
-                    getGamePhysics().getAbilityBodies().get(abilityId).getIsBodyInitialized()) {
+                        ability.bodyShouldExist() &&
+                        getGamePhysics().getAbilityBodies().get(abilityId).getIsBodyInitialized()) {
                     ability.getParams().setPos(getGamePhysics().getAbilityBodies().get(abilityId).getBodyPos());
                 }
             }
@@ -227,14 +227,13 @@ public class GameEntityManager {
 
     public void teleportCreature(TeleportEvent teleportEvent, GameUpdatable game) {
         if (teleportEvent.getToAreaId()
-                         .equals(game.getCreature(teleportEvent.getCreatureId()).getParams().getAreaId())) {
+                .equals(game.getGameState().getCreature(teleportEvent.getCreatureId()).getParams().getAreaId())) {
             getGamePhysics().getCreatureBodies()
-                            .get(teleportEvent.getCreatureId())
-                            .forceSetTransform(teleportEvent.getPos());
-        }
-        else {
+                    .get(teleportEvent.getCreatureId())
+                    .forceSetTransform(teleportEvent.getPos());
+        } else {
             if (teleportEvent.getCreatureId() != null) {
-                Creature creature = game.getCreature(teleportEvent.getCreatureId());
+                Creature creature = game.getGameState().getCreature(teleportEvent.getCreatureId());
 
                 creature.getParams().setAreaId(teleportEvent.getToAreaId());
 
@@ -259,4 +258,5 @@ public class GameEntityManager {
         }
 
     }
+
 }

@@ -45,13 +45,13 @@ public class SummonGhosts extends Ability {
         float baseAngle = getParams().getDirVector().angleDeg();
         game.chainAbility(this, AbilityType.PLAYFUL_GHOST, getParams().getPos(), params.getDirVector());
         game.chainAbility(this,
-                          AbilityType.PLAYFUL_GHOST,
-                          getParams().getPos(),
-                          params.getDirVector().setAngleDeg(baseAngle - 30f));
+                AbilityType.PLAYFUL_GHOST,
+                getParams().getPos(),
+                params.getDirVector().setAngleDeg(baseAngle - 30f));
         game.chainAbility(this,
-                          AbilityType.PLAYFUL_GHOST,
-                          getParams().getPos(),
-                          params.getDirVector().setAngleDeg(baseAngle + 30f));
+                AbilityType.PLAYFUL_GHOST,
+                getParams().getPos(),
+                params.getDirVector().setAngleDeg(baseAngle + 30f));
     }
 
 

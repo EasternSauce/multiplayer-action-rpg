@@ -1,7 +1,7 @@
 package com.mygdx.game.model.action.creature;
 
+import com.mygdx.game.game.gamestate.GameState;
 import com.mygdx.game.game.interface_.GameActionApplicable;
-import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.util.Vector2;
@@ -24,7 +24,7 @@ public class PlayerRemoveAction extends GameStateAction {
 
     @Override
     public void applyToGame(GameActionApplicable game) {
-        game.getRemovedCreatures().put(playerId, game.getCreature(playerId));
+        game.getGameState().getRemovedCreatures().put(playerId, game.getGameState().getCreature(playerId));
 
         game.getEventProcessor().getCreatureModelsToBeRemoved().add(playerId);
     }

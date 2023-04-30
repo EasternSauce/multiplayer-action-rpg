@@ -15,20 +15,20 @@ public class TeleportSource extends Ability {
     AbilityParams params;
 
     public static TeleportSource of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
-        Creature creature = game.getCreature(abilityParams.getCreatureId());
+        Creature creature = game.getGameState().getCreature(abilityParams.getCreatureId());
 
         TeleportSource ability = TeleportSource.of();
         ability.params = abilityParams.setWidth(4.5f)
-                                      .setHeight(4.5f)
-                                      .setChannelTime(0f)
-                                      .setActiveTime(0.5f)
-                                      .setTextureName("blast")
-                                      .setBaseDamage(0f)
-                                      .setIsChannelAnimationLooping(false)
-                                      .setIsActiveAnimationLooping(false)
-                                      .setRotationShift(0f)
-                                      .setPos(creature.getParams().getPos())
-                                      .setDelayedActionTime(0.1f);
+                .setHeight(4.5f)
+                .setChannelTime(0f)
+                .setActiveTime(0.5f)
+                .setTextureName("blast")
+                .setBaseDamage(0f)
+                .setIsChannelAnimationLooping(false)
+                .setIsActiveAnimationLooping(false)
+                .setRotationShift(0f)
+                .setPos(creature.getParams().getPos())
+                .setDelayedActionTime(0.1f);
 
 
         return ability;

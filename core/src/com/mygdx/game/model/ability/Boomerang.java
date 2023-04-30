@@ -20,15 +20,15 @@ public class Boomerang extends Projectile {
     public static Boomerang of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
         Boomerang ability = Boomerang.of();
         ability.params = abilityParams.setWidth(1.3f)
-                                      .setHeight(1.3f)
-                                      .setChannelTime(0f)
-                                      .setActiveTime(10f)
-                                      .setTextureName("boomerang")
-                                      .setBaseDamage(22f)
-                                      .setIsChannelAnimationLooping(true)
-                                      .setIsActiveAnimationLooping(true)
-                                      .setRotationShift(0f)
-                                      .setSpeed(15f);
+                .setHeight(1.3f)
+                .setChannelTime(0f)
+                .setActiveTime(10f)
+                .setTextureName("boomerang")
+                .setBaseDamage(22f)
+                .setIsChannelAnimationLooping(true)
+                .setIsActiveAnimationLooping(true)
+                .setRotationShift(0f)
+                .setSpeed(15f);
 
         return ability;
     }
@@ -69,7 +69,7 @@ public class Boomerang extends Projectile {
     public void onThisCreatureHit(GameUpdatable game) {
         if (getParams().getIsComingBack()) {
 
-            Creature creature = game.getCreature(getParams().getCreatureId());
+            Creature creature = game.getGameState().getCreature(getParams().getCreatureId());
             Skill skill = creature.getParams().getSkills().get(getParams().getSkillType());
 
             skill.resetCooldown();
@@ -85,7 +85,7 @@ public class Boomerang extends Projectile {
         }
         getParams().setRotationAngle(getParams().getDirVector().angleDeg());
 
-        Creature creature = game.getCreature(getParams().getCreatureId());
+        Creature creature = game.getGameState().getCreature(getParams().getCreatureId());
 
         if (creature != null) {
             if (!getParams().getIsComingBack() && getParams().getStateTimer().getTime() > 1f) {
@@ -108,16 +108,13 @@ public class Boomerang extends Projectile {
                 if (Math.abs(alpha) < Math.abs(beta)) {
                     if (Math.abs(alpha) < Math.abs(gamma)) {
                         result = alpha;
-                    }
-                    else {
+                    } else {
                         result = gamma;
                     }
-                }
-                else {
+                } else {
                     if (Math.abs(beta) < Math.abs(gamma)) {
                         result = beta;
-                    }
-                    else {
+                    } else {
                         result = gamma;
                     }
                 }
@@ -126,8 +123,7 @@ public class Boomerang extends Projectile {
 
                 if (result > increment || result < -increment) {
                     getParams().setDirVector(getParams().getDirVector().rotateDeg(increment));
-                }
-                else {
+                } else {
                     getParams().setDirVector(getParams().getDirVector().setAngleDeg(targetAngleDeg));
                 }
             }

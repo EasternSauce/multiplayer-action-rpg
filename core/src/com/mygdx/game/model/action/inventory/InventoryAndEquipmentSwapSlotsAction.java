@@ -1,7 +1,7 @@
 package com.mygdx.game.model.action.inventory;
 
+import com.mygdx.game.game.gamestate.GameState;
 import com.mygdx.game.game.interface_.GameActionApplicable;
-import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
@@ -34,25 +34,23 @@ public class InventoryAndEquipmentSwapSlotsAction extends GameStateAction {
 
     @Override
     public void applyToGame(GameActionApplicable game) {
-        Creature player = game.getCreature(creatureId);
-        PlayerParams playerParams = game.getPlayerParams(creatureId);
+        Creature player = game.getGameState().getCreature(creatureId);
+        PlayerParams playerParams = game.getGameState().getPlayerParams(creatureId);
 
         Item inventoryItem = player.getParams().getInventoryItems().get(inventoryIndex);
         Item equipmentItem = player.getParams().getEquipmentItems().get(equipmentIndex);
 
         if (inventoryItem == null ||
-            inventoryItem.getTemplate().getEquipmentSlotType() ==
-            EquipmentSlotType.equipmentSlots.get(equipmentIndex)) {
+                inventoryItem.getTemplate().getEquipmentSlotType() ==
+                        EquipmentSlotType.equipmentSlots.get(equipmentIndex)) {
             if (equipmentItem != null) {
                 player.getParams().getInventoryItems().put(inventoryIndex, equipmentItem);
-            }
-            else {
+            } else {
                 player.getParams().getInventoryItems().remove(inventoryIndex);
             }
             if (inventoryItem != null) {
                 player.getParams().getEquipmentItems().put(equipmentIndex, inventoryItem);
-            }
-            else {
+            } else {
                 player.getParams().getEquipmentItems().remove(equipmentIndex);
             }
 

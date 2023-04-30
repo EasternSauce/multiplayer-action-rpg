@@ -26,7 +26,7 @@ public class LootPileRenderer {
 
     public void init(TextureAtlas atlas, GameUpdatable game) { // TODO: change to UpdatableGame?
 
-        LootPile lootPile = game.getLootPiles().get(lootPileId);
+        LootPile lootPile = game.getGameState().getLootPiles().get(lootPileId);
 
         sprite = new Sprite();
         sprite.setRegion(atlas.findRegion("bag"));
@@ -38,7 +38,7 @@ public class LootPileRenderer {
 
     public void render(RenderingLayer renderingLayer, GameRenderable game) {
         AreaId currentAreaId = game.getCurrentAreaId();
-        LootPile lootPile = game.getLootPile(lootPileId);
+        LootPile lootPile = game.getGameState().getLootPile(lootPileId);
 
         if (lootPile != null && currentAreaId.equals(lootPile.getAreaId())) {
             sprite.draw(renderingLayer.getSpriteBatch());

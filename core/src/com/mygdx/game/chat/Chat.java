@@ -1,6 +1,6 @@
 package com.mygdx.game.chat;
 
-import com.mygdx.game.model.GameState;
+import com.mygdx.game.game.gamestate.GameState;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,15 +23,14 @@ public class Chat {
 
     public void sendMessage(GameState gameState, String posterId, String message) {
         if (getMessages().size() < 6) {
-            getMessages().add(ChatMessage.of(gameState.getGeneralTimer().getTime(), posterId, message));
-        }
-        else {
+            getMessages().add(ChatMessage.of(gameState.getTime(), posterId, message));
+        } else {
             List<ChatMessage> newMessages = new ArrayList<>();
             for (int i = 0; i < 5; i++) {
                 newMessages.add(getMessages().get(i + 1));
             }
             setMessages(newMessages);
-            getMessages().add(ChatMessage.of(gameState.getGeneralTimer().getTime(), posterId, message));
+            getMessages().add(ChatMessage.of(gameState.getTime(), posterId, message));
         }
     }
 }

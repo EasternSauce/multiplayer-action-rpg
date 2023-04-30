@@ -33,7 +33,7 @@ public class CreatureStunnedAnimationRenderer {
     }
 
     private TextureRegion getStunnedAnimationFrame(GameRenderable game) {
-        Creature creature = game.getCreature(creatureId);
+        Creature creature = game.getGameState().getCreature(creatureId);
 
         float currentStunDuration = creature.getCurrentEffectDuration(CreatureEffect.STUN, game);
 
@@ -41,7 +41,7 @@ public class CreatureStunnedAnimationRenderer {
     }
 
     public void render(RenderingLayer renderingLayer, float spriteWidth, GameRenderable game) {
-        Creature creature = game.getCreature(creatureId);
+        Creature creature = game.getGameState().getCreature(creatureId);
 
         float posX = creature.getParams().getPos().getX() - 1.5f;
         float posY = LifeBarUtils.getLifeBarPosY(creature, spriteWidth) - 1f;

@@ -1,7 +1,7 @@
 package com.mygdx.game.model.action.skillmenu;
 
+import com.mygdx.game.game.gamestate.GameState;
 import com.mygdx.game.game.interface_.GameActionApplicable;
-import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.util.PlayerParams;
@@ -27,7 +27,7 @@ public class SkillPickerMenuActivateAction extends GameStateAction {
 
     @Override
     public void applyToGame(GameActionApplicable game) {
-        PlayerParams playerParams = game.getPlayerParams(playerId);
+        PlayerParams playerParams = game.getGameState().getPlayerParams(playerId);
 
         playerParams.setIsSkillMenuPickerSlotBeingChanged(slotNum);
     }

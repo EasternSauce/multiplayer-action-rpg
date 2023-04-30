@@ -33,13 +33,12 @@ public abstract class Ability {
                 onAbilityStarted(game);
                 getParams().getStateTimer().restart();
             }
-        }
-        else if (state == AbilityState.ACTIVE) {
+        } else if (state == AbilityState.ACTIVE) {
             onActiveUpdate(game);
 
             if (!getParams().getDelayedActionCompleted() &&
-                getParams().getDelayedActionTime() != null &&
-                getParams().getStateTimer().getTime() > getParams().getDelayedActionTime()) {
+                    getParams().getDelayedActionTime() != null &&
+                    getParams().getStateTimer().getTime() > getParams().getDelayedActionTime()) {
                 getParams().setDelayedActionCompleted(true);
                 onDelayedAction(game);
             }
@@ -72,13 +71,12 @@ public abstract class Ability {
         getParams().setState(AbilityState.CHANNEL);
         getParams().getStateTimer().restart();
 
-        Creature creature = game.getCreature(getParams().getCreatureId());
+        Creature creature = game.getGameState().getCreature(getParams().getCreatureId());
 
         if (creature != null) {
             if (getParams().getChainToPos() != null) {
                 getParams().setPos(getParams().getChainToPos());
-            }
-            else {
+            } else {
                 getParams().setPos(creature.getParams().getPos());
             }
         }
@@ -115,7 +113,7 @@ public abstract class Ability {
     }
 
     public Integer getSkillLevel(GameUpdatable game) {
-        Creature creature = game.getCreature(getParams().getCreatureId());
+        Creature creature = game.getGameState().getCreature(getParams().getCreatureId());
 
         if (creature == null || !creature.availableSkills().containsKey(getParams().getSkillType())) {
             return 1;

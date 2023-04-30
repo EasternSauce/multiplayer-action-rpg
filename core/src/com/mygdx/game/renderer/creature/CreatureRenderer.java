@@ -31,7 +31,7 @@ public class CreatureRenderer {
         creatureSprite = CreatureSprite.of(creatureId);
         creatureStunnedAnimationRenderer = CreatureStunnedAnimationRenderer.of(creatureId);
 
-        CreatureAnimationConfig config = game.getCreatures().get(creatureId).animationConfig();
+        CreatureAnimationConfig config = game.getGameState().getCreatures().get(creatureId).animationConfig();
 
         creatureSprite.prepareFacingTextures(config, atlas);
         creatureSprite.prepareRunningAnimations(config, atlas);
@@ -39,15 +39,14 @@ public class CreatureRenderer {
     }
 
     public void update(GameRenderable game) {
-        Creature creature = game.getCreature(creatureId);
+        Creature creature = game.getGameState().getCreature(creatureId);
 
         creatureSprite.updatePosition(creature);
         creatureSprite.updateSize(creature);
 
         if (creature.isAlive()) {
             creatureSprite.updateForAliveCreature(game, creature);
-        }
-        else {
+        } else {
             creatureSprite.updateForDeadCreature(game);
         }
     }
@@ -57,7 +56,7 @@ public class CreatureRenderer {
     }
 
     public void renderLifeBar(RenderingLayer renderingLayer, GameRenderable game) {
-        Creature creature = game.getCreature(creatureId);
+        Creature creature = game.getGameState().getCreature(creatureId);
 
         if (creature != null) {
             float currentLifeBarWidth =
@@ -72,7 +71,7 @@ public class CreatureRenderer {
 
 
     public void renderCreatureId(RenderingLayer renderingLayer, GameRenderable game) {
-        Creature creature = game.getCreature(creatureId);
+        Creature creature = game.getGameState().getCreature(creatureId);
 
         String name = creature.getId().getValue();
 
@@ -81,8 +80,8 @@ public class CreatureRenderer {
 
         // world text viewport is not scaled down! so we scale the values every time
         Assets.renderMediumFont(renderingLayer,
-                                name,
-                                Vector2.of(namePosX * Constants.PPM, namePosY * Constants.PPM),
-                                Color.RED);
+                name,
+                Vector2.of(namePosX * Constants.PPM, namePosY * Constants.PPM),
+                Color.RED);
     }
 }

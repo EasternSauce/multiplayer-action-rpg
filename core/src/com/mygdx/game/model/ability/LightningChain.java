@@ -18,20 +18,20 @@ public class LightningChain extends Ability {
     public static LightningChain of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
         LightningChain ability = LightningChain.of();
         ability.params = abilityParams.setWidth(1f)
-                                      .setHeight(abilityParams.getChainFromPos()
-                                                              .distance(abilityParams.getChainToPos()))
-                                      .setChannelTime(0f)
-                                      .setActiveTime(0.4f)
-                                      .setTextureName("lightning_chain")
-                                      .setBaseDamage(0f)
-                                      .setIsActiveAnimationLooping(true)
-                                      .setAttackWithoutMoving(true)
-                                      .setPos(LightningChain.calculatePos(abilityParams.getChainToPos(),
-                                                                          abilityParams.getChainFromPos()))
-                                      .setRotationAngle(LightningChain.calculateRotationAngle(abilityParams.getChainToPos(),
-                                                                                              abilityParams.getChainFromPos()))
-                                      .setIsSkipCreatingBody(true)
-                                      .setRotationShift(90f);
+                .setHeight(abilityParams.getChainFromPos()
+                        .distance(abilityParams.getChainToPos()))
+                .setChannelTime(0f)
+                .setActiveTime(0.4f)
+                .setTextureName("lightning_chain")
+                .setBaseDamage(0f)
+                .setIsActiveAnimationLooping(true)
+                .setAttackWithoutMoving(true)
+                .setPos(LightningChain.calculatePos(abilityParams.getChainToPos(),
+                        abilityParams.getChainFromPos()))
+                .setRotationAngle(LightningChain.calculateRotationAngle(abilityParams.getChainToPos(),
+                        abilityParams.getChainFromPos()))
+                .setIsSkipCreatingBody(true)
+                .setRotationShift(90f);
 
         return ability;
     }
@@ -42,13 +42,12 @@ public class LightningChain extends Ability {
         getParams().setState(AbilityState.CHANNEL);
         getParams().getStateTimer().restart();
 
-        Creature creature = game.getCreature(getParams().getCreatureId());
+        Creature creature = game.getGameState().getCreature(getParams().getCreatureId());
 
         if (creature != null) {
             if (getParams().getChainToPos() != null) {
                 getParams().setPos(getParams().getChainToPos());
-            }
-            else {
+            } else {
                 getParams().setPos(creature.getParams().getPos());
             }
         }

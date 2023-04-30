@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
-public class ServerGameStateManager extends GameStateManager {
+public class ServerGameState extends GameState {
 
     @Getter
     private final Map<Integer, CreatureId> clientPlayers = new ConcurrentSkipListMap<>();
@@ -23,16 +23,16 @@ public class ServerGameStateManager extends GameStateManager {
         Set<CreatureId> creaturesToUpdate = new HashSet<>();
 
         for (CreatureId clientCreatureId : getClientPlayers().values()) {
-            Creature player = getGameState().getCreatures().get(clientCreatureId);
+            Creature player = gameStateData.getCreatures().get(clientCreatureId);
             if (player == null) {
                 continue;
             }
 
-            Set<CreatureId> creaturesToAdd = getGameState().getCreatures().keySet().stream().filter(creatureId -> {
-                Creature creature = getGameState().getCreatures().get(creatureId);
+            Set<CreatureId> creaturesToAdd = gameStateData.getCreatures().keySet().stream().filter(creatureId -> {
+                Creature creature = gameStateData.getCreatures().get(creatureId);
                 return player.getParams().getAreaId().equals(creature.getParams().getAreaId()) &&
-                       creature.getParams().getPos().distance(player.getParams().getPos()) <
-                       Constants.ClientGameUpdateRange;
+                        creature.getParams().getPos().distance(player.getParams().getPos()) <
+                                Constants.ClientGameUpdateRange;
             }).collect(Collectors.toSet());
 
 

@@ -1,7 +1,7 @@
 package com.mygdx.game.model.action.inventory;
 
+import com.mygdx.game.game.gamestate.GameState;
 import com.mygdx.game.game.interface_.GameActionApplicable;
-import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.util.Vector2;
@@ -24,11 +24,11 @@ public class InventoryToggleAction extends GameStateAction {
 
     @Override
     public void applyToGame(GameActionApplicable game) {
-        if (game.getPlayerParams(creatureId) == null) {
+        if (game.getGameState().getPlayerParams(creatureId) == null) {
             return;
         }
-        boolean isInventoryVisible = game.getPlayerParams(creatureId).getIsInventoryVisible();
-        game.getPlayerParams(creatureId).setIsInventoryVisible(!isInventoryVisible);
+        boolean isInventoryVisible = game.getGameState().getPlayerParams(creatureId).getIsInventoryVisible();
+        game.getGameState().getPlayerParams(creatureId).setIsInventoryVisible(!isInventoryVisible);
 
     }
 }

@@ -12,24 +12,24 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
-public class ClientGameStateManager extends GameStateManager {
+public class ClientGameState extends GameState {
     @Getter
     @Setter
     private CreatureId thisClientPlayerId;
 
     @Override
     public Set<CreatureId> getCreaturesToUpdate() {
-        Creature player = getGameState().getCreatures().get(getThisClientPlayerId());
+        Creature player = gameStateData.getCreatures().get(getThisClientPlayerId());
 
         if (player == null) {
             return new HashSet<>();
         }
 
-        return getGameState().getCreatures().keySet().stream().filter(creatureId -> {
-            Creature creature = getGameState().getCreatures().get(creatureId);
+        return gameStateData.getCreatures().keySet().stream().filter(creatureId -> {
+            Creature creature = gameStateData.getCreatures().get(creatureId);
             if (creature != null) {
                 return creature.getParams().getPos().distance(player.getParams().getPos()) <
-                       Constants.ClientGameUpdateRange;
+                        Constants.ClientGameUpdateRange;
             }
 
             return false;

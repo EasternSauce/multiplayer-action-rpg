@@ -35,7 +35,7 @@ public class AbilityBody {
     }
 
     private float[] hitboxVertices(GameUpdatable game) {
-        Ability ability = game.getAbility(abilityId);
+        Ability ability = game.getGameState().getAbility(abilityId);
 
         sprite.setSize(ability.getParams().getWidth(), ability.getParams().getHeight());
         sprite.setCenter(0, 0);
@@ -63,7 +63,7 @@ public class AbilityBody {
     }
 
     public void init(GameUpdatable game, boolean skipCreatingBody) {
-        Ability ability = game.getAbility(abilityId);
+        Ability ability = game.getGameState().getAbility(abilityId);
 
         if (!isBodyInitialized && !skipCreatingBody && ability != null) {
             world = game.getPhysicsWorld(ability.getParams().getAreaId());
@@ -78,12 +78,12 @@ public class AbilityBody {
     }
 
     public void update(GameUpdatable game) {
-        Ability ability = game.getAbilities().get(abilityId);
+        Ability ability = game.getGameState().getAbilities().get(abilityId);
 
         if (getIsBodyInitialized() && ability != null && ability.bodyShouldExist()) {
             if (ability.isPositionChangedOnUpdate() &&
-                (ability.getParams().getState() == AbilityState.CHANNEL ||
-                 ability.getParams().getState() == AbilityState.ACTIVE)) {
+                    (ability.getParams().getState() == AbilityState.CHANNEL ||
+                            ability.getParams().getState() == AbilityState.ACTIVE)) {
                 b2body.setTransform(ability.getParams().getPos().getX(), ability.getParams().getPos().getY(), 0f);
             }
 

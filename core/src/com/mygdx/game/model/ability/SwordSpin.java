@@ -22,16 +22,16 @@ public class SwordSpin extends Ability {
     public static SwordSpin of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
         SwordSpin ability = SwordSpin.of();
         ability.params = abilityParams.setWidth(2.4f)
-                                      .setHeight(2.4f)
-                                      .setChannelTime(0f)
-                                      .setActiveTime(3f)
-                                      .setRange(2.2f)
-                                      .setTextureName("sword")
-                                      .setBaseDamage(11f)
-                                      .setIsChannelAnimationLooping(false)
-                                      .setIsActiveAnimationLooping(false)
-                                      .setRotationShift(0f)
-                                      .setDirVector(abilityParams.getDirVector().rotateDeg(90));
+                .setHeight(2.4f)
+                .setChannelTime(0f)
+                .setActiveTime(3f)
+                .setRange(2.2f)
+                .setTextureName("sword")
+                .setBaseDamage(11f)
+                .setIsChannelAnimationLooping(false)
+                .setIsActiveAnimationLooping(false)
+                .setRotationShift(0f)
+                .setDirVector(abilityParams.getDirVector().rotateDeg(90));
         return ability;
     }
 
@@ -76,8 +76,7 @@ public class SwordSpin extends Ability {
         Vector2 dirVector;
         if (getParams().getDirVector().len() <= 0) {
             dirVector = Vector2.of(1, 0);
-        }
-        else {
+        } else {
             dirVector = getParams().getDirVector();
         }
 
@@ -86,7 +85,7 @@ public class SwordSpin extends Ability {
         float attackShiftX = dirVector.normalized().getX() * getParams().getRange();
         float attackShiftY = dirVector.normalized().getY() * getParams().getRange();
 
-        Vector2 pos = game.getCreaturePos(getParams().getCreatureId());
+        Vector2 pos = game.getGameState().getCreaturePos(getParams().getCreatureId());
 
         if (pos != null) {
             float attackRectX = attackShiftX + pos.getX();

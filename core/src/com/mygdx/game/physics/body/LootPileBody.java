@@ -24,15 +24,15 @@ public class LootPileBody {
     }
 
     public void init(GameUpdatable game) {
-        LootPile lootPile = game.getLootPile(lootPileId);
+        LootPile lootPile = game.getGameState().getLootPile(lootPileId);
 
         world = game.getPhysicsWorld(lootPile.getAreaId());
 
         b2Body = B2BodyFactory.createLootPileB2body(world,
-                                                    this,
-                                                    lootPile.getPos(),
-                                                    lootPile.getWidth(),
-                                                    lootPile.getHeight());
+                this,
+                lootPile.getPos(),
+                lootPile.getWidth(),
+                lootPile.getHeight());
     }
 
     public void onRemove() {

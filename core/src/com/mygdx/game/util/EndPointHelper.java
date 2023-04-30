@@ -2,7 +2,7 @@ package com.mygdx.game.util;
 
 import com.esotericsoftware.kryonet.EndPoint;
 import com.mygdx.game.command.*;
-import com.mygdx.game.model.GameState;
+import com.mygdx.game.model.GameStateData;
 import com.mygdx.game.model.ability.*;
 import com.mygdx.game.model.action.ActionsHolder;
 import com.mygdx.game.model.action.ability.AbilityActivateAction;
@@ -132,7 +132,7 @@ public class EndPointHelper {
 
         endPoint.getKryo().register(PlayerParams.class);
         endPoint.getKryo().register(ActionsHolder.class);
-        endPoint.getKryo().register(GameState.class);
+        endPoint.getKryo().register(GameStateData.class);
         endPoint.getKryo().register(GameStateBroadcast.class);
 
     }

@@ -18,15 +18,15 @@ public class SwordSlash extends Ability {
     public static SwordSlash of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
         SwordSlash ability = SwordSlash.of();
         ability.params = abilityParams.setWidth(2f)
-                                      .setHeight(2f)
-                                      .setChannelTime(0.15f)
-                                      .setActiveTime(0.3f)
-                                      .setRange(1.8f)
-                                      .setTextureName("slash")
-                                      .setBaseDamage(22f)
-                                      .setIsChannelAnimationLooping(false)
-                                      .setIsActiveAnimationLooping(false)
-                                      .setRotationShift(0f);
+                .setHeight(2f)
+                .setChannelTime(0.15f)
+                .setActiveTime(0.3f)
+                .setRange(1.8f)
+                .setTextureName("slash")
+                .setBaseDamage(22f)
+                .setIsChannelAnimationLooping(false)
+                .setIsActiveAnimationLooping(false)
+                .setRotationShift(0f);
         return ability;
     }
 
@@ -71,8 +71,7 @@ public class SwordSlash extends Ability {
         Vector2 dirVector;
         if (getParams().getDirVector().len() <= 0) {
             dirVector = Vector2.of(1, 0);
-        }
-        else {
+        } else {
             dirVector = getParams().getDirVector();
         }
 
@@ -81,7 +80,7 @@ public class SwordSlash extends Ability {
         float attackShiftX = dirVector.normalized().getX() * getParams().getRange();
         float attackShiftY = dirVector.normalized().getY() * getParams().getRange();
 
-        Vector2 pos = game.getCreaturePos(getParams().getCreatureId());
+        Vector2 pos = game.getGameState().getCreaturePos(getParams().getCreatureId());
 
         if (pos != null) {
             float attackRectX = attackShiftX + pos.getX();

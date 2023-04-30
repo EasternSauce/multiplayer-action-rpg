@@ -26,9 +26,9 @@ public class ScheduledAbility {
 
     public static ScheduledAbility of(AbilityType abilityType, SkillType skillType, Float scheduledTime) {
         return ScheduledAbility.of()
-                               .setAbilityType(abilityType)
-                               .setScheduledTime(scheduledTime)
-                               .setSkillType(skillType);
+                .setAbilityType(abilityType)
+                .setScheduledTime(scheduledTime)
+                .setSkillType(skillType);
     }
 
     public void init(Vector2 startingPos, Vector2 dirVector) {
@@ -41,15 +41,15 @@ public class ScheduledAbility {
     public void perform(CreatureId creatureId, CreatureUpdatable game) {
         AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
 
-        Creature creature = game.getCreature(creatureId);
+        Creature creature = game.getGameState().getCreature(creatureId);
 
         AbilityParams abilityParams = AbilityParams.of()
-                                                   .setId(abilityId)
-                                                   .setAreaId(creature.getParams().getAreaId())
-                                                   .setCreatureId(creatureId)
-                                                   .setDirVector(dirVector)
-                                                   .setSkillStartPos(startPos)
-                                                   .setSkillType(skillType);
+                .setId(abilityId)
+                .setAreaId(creature.getParams().getAreaId())
+                .setCreatureId(creatureId)
+                .setDirVector(dirVector)
+                .setSkillStartPos(startPos)
+                .setSkillType(skillType);
 
         game.spawnAbility(abilityType, abilityParams);
 

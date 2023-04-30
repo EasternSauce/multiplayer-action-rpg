@@ -1,20 +1,15 @@
 package com.mygdx.game.game.interface_;
 
 import com.mygdx.game.game.entity.EntityEventProcessor;
-import com.mygdx.game.game.gamestate.GameStateManager;
+import com.mygdx.game.game.gamestate.GameState;
 import com.mygdx.game.game.screen.ConnectScreenMessageHolder;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityId;
 import com.mygdx.game.model.ability.AbilityParams;
 import com.mygdx.game.model.ability.AbilityType;
-import com.mygdx.game.model.area.AreaGate;
 import com.mygdx.game.model.area.AreaId;
-import com.mygdx.game.model.area.LootPile;
-import com.mygdx.game.model.area.LootPileId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
-import com.mygdx.game.model.skill.SkillType;
-import com.mygdx.game.model.util.PlayerParams;
 import com.mygdx.game.model.util.TeleportEvent;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.physics.body.AbilityBody;
@@ -28,22 +23,6 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 public interface GameUpdatable {
-    Map<CreatureId, Creature> getCreatures();
-
-    Map<CreatureId, Creature> getRemovedCreatures();
-
-    Creature getCreature(CreatureId creatureId);
-
-    Vector2 getCreaturePos(CreatureId creatureId);
-
-    Map<AbilityId, Ability> getAbilities();
-
-    Ability getAbility(AbilityId abilityId);
-
-    Ability getAbilityBySkillType(CreatureId creatureId, SkillType skillType);
-
-    @SuppressWarnings("unused")
-    Vector2 getAbilityPos(AbilityId abilityId);
 
     void updateCameraPositions();
 
@@ -67,21 +46,7 @@ public interface GameUpdatable {
 
     void setForceUpdateBodyPositions(boolean value);
 
-    AreaId getDefaultAreaId();
-
-    PlayerParams getPlayerParams(CreatureId currentPlayerId);
-
-    Set<AreaGate> getAreaGates();
-
-    LootPile getLootPile(LootPileId lootPileId);
-
-    Map<LootPileId, LootPile> getLootPiles();
-
-    Float getTime();
-
     void onAbilityHitsCreature(CreatureId attackerId, CreatureId targetId, Ability ability);
-
-    Float nextRandomValue();
 
     void forEachAliveCreature(Consumer<Creature> creatureAction);
 
@@ -93,7 +58,7 @@ public interface GameUpdatable {
 
     void setConnectScreenInputProcessor(ConnectScreenMessageHolder messageHolder);
 
-    GameStateManager getGameStateManager();
+    GameState getGameState();
 
     AreaId getCurrentAreaId();
 }

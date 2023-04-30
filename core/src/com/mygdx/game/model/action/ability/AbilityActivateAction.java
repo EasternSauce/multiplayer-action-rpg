@@ -1,7 +1,7 @@
 package com.mygdx.game.model.action.ability;
 
+import com.mygdx.game.game.gamestate.GameState;
 import com.mygdx.game.game.interface_.GameActionApplicable;
-import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.util.Vector2;

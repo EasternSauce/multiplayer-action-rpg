@@ -17,16 +17,16 @@ public class VolatileBubble extends Projectile {
     public static VolatileBubble of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
         VolatileBubble ability = VolatileBubble.of();
         ability.params = abilityParams.setWidth(1.5f)
-                                      .setHeight(1.5f)
-                                      .setChannelTime(0f)
-                                      .setActiveTime(30f)
-                                      .setTextureName("bubble")
-                                      .setBaseDamage(15f)
-                                      .setIsChannelAnimationLooping(false)
-                                      .setIsActiveAnimationLooping(true)
-                                      .setRotationShift(0f)
-                                      .setDelayedActionTime(0.001f)
-                                      .setSpeed(10f);
+                .setHeight(1.5f)
+                .setChannelTime(0f)
+                .setActiveTime(30f)
+                .setTextureName("bubble")
+                .setBaseDamage(15f)
+                .setIsChannelAnimationLooping(false)
+                .setIsActiveAnimationLooping(true)
+                .setRotationShift(0f)
+                .setDelayedActionTime(0.001f)
+                .setSpeed(10f);
 
 
         return ability;
@@ -58,21 +58,21 @@ public class VolatileBubble extends Projectile {
 
         game.chainAbility(this, AbilityType.ICE_SPEAR, getParams().getPos(), params.getDirVector());
         game.chainAbility(this,
-                          AbilityType.ICE_SPEAR,
-                          getParams().getPos(),
-                          params.getDirVector().setAngleDeg(baseAngle + 72f));
+                AbilityType.ICE_SPEAR,
+                getParams().getPos(),
+                params.getDirVector().setAngleDeg(baseAngle + 72f));
         game.chainAbility(this,
-                          AbilityType.ICE_SPEAR,
-                          getParams().getPos(),
-                          params.getDirVector().setAngleDeg(baseAngle + 144f));
+                AbilityType.ICE_SPEAR,
+                getParams().getPos(),
+                params.getDirVector().setAngleDeg(baseAngle + 144f));
         game.chainAbility(this,
-                          AbilityType.ICE_SPEAR,
-                          getParams().getPos(),
-                          params.getDirVector().setAngleDeg(baseAngle + 216f));
+                AbilityType.ICE_SPEAR,
+                getParams().getPos(),
+                params.getDirVector().setAngleDeg(baseAngle + 216f));
         game.chainAbility(this,
-                          AbilityType.ICE_SPEAR,
-                          getParams().getPos(),
-                          params.getDirVector().setAngleDeg(baseAngle + 288f));
+                AbilityType.ICE_SPEAR,
+                getParams().getPos(),
+                params.getDirVector().setAngleDeg(baseAngle + 288f));
     }
 
 

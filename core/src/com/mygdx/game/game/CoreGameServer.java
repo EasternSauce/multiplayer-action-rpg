@@ -5,9 +5,9 @@ import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.mygdx.game.Constants;
 import com.mygdx.game.command.*;
-import com.mygdx.game.game.gamestate.ServerGameStateManager;
+import com.mygdx.game.game.gamestate.ServerGameState;
 import com.mygdx.game.game.screen.ConnectScreenMessageHolder;
-import com.mygdx.game.model.GameState;
+import com.mygdx.game.model.GameStateData;
 import com.mygdx.game.model.ability.*;
 import com.mygdx.game.model.action.ActionsHolder;
 import com.mygdx.game.model.action.GameStateAction;
@@ -46,7 +46,7 @@ public class CoreGameServer extends CoreGame {
     private static CoreGameServer instance;
 
     @Getter
-    private final ServerGameStateManager gameStateManager = ServerGameStateManager.of();
+    private final ServerGameState gameState = ServerGameState.of();
 
     private final List<GameStateAction> onTickActions = Collections.synchronizedList(new ArrayList<>());
     private final List<Integer> clientIds = Collections.synchronizedList(new ArrayList<>());
@@ -78,40 +78,40 @@ public class CoreGameServer extends CoreGame {
 
     @Override
     public void onUpdate() {
-        getGameStateManager().getGameState()
-                             .getCreatures()
-                             .forEach((creatureId, creature) -> { // handle deaths server side
-                                 if (creature.getParams().getIsAwaitingRespawn() && creature instanceof Player &&
-                                     // handle respawns server side
-                                     creature.getParams().getRespawnTimer().getTime() >
-                                     creature.getParams().getRespawnTime()) {
-                                     Vector2 pos = Vector2.of((float) ((Math.random() * (28 - 18)) + 18),
-                                                              (float) ((Math.random() * (12 - 6)) + 6));
-                                     CreatureRespawnAction action = CreatureRespawnAction.of(creatureId, pos);
+        getGameState()
+                .getCreatures()
+                .forEach((creatureId, creature) -> { // handle deaths server side
+                    if (creature.getParams().getIsAwaitingRespawn() && creature instanceof Player &&
+                            // handle respawns server side
+                            creature.getParams().getRespawnTimer().getTime() >
+                                    creature.getParams().getRespawnTime()) {
+                        Vector2 pos = Vector2.of((float) ((Math.random() * (28 - 18)) + 18),
+                                (float) ((Math.random() * (12 - 6)) + 6));
+                        CreatureRespawnAction action = CreatureRespawnAction.of(creatureId, pos);
 
-                                     onTickActions.add(action);
-                                 }
+                        onTickActions.add(action);
+                    }
 
-                             });
+                });
 
 
         //TODO: play sound on getting hit
 
 
         // remove expired abilities
-        getGameStateManager().getGameState()
-                             .getAbilities()
-                             .entrySet()
-                             .stream()
-                             .filter(entry -> entry.getValue().getParams().getState() == AbilityState.INACTIVE)
-                             .forEach(entry -> onTickActions.add(AbilityRemoveAction.of(entry.getKey())));
+        getGameState()
+                .getAbilities()
+                .entrySet()
+                .stream()
+                .filter(entry -> entry.getValue().getParams().getState() == AbilityState.INACTIVE)
+                .forEach(entry -> onTickActions.add(AbilityRemoveAction.of(entry.getKey())));
 
-        getGameStateManager().getGameState()
-                             .getLootPiles()
-                             .entrySet()
-                             .stream()
-                             .filter(entry -> entry.getValue().getIsFullyLooted())
-                             .forEach(entry -> onTickActions.add(LootPileDespawnAction.of(entry.getKey())));
+        getGameState()
+                .getLootPiles()
+                .entrySet()
+                .stream()
+                .filter(entry -> entry.getValue().getIsFullyLooted())
+                .forEach(entry -> onTickActions.add(LootPileDespawnAction.of(entry.getKey())));
 
         ArrayList<GameStateAction> tickActionsCopy = new ArrayList<>(onTickActions);
 
@@ -124,21 +124,21 @@ public class CoreGameServer extends CoreGame {
             }
 
             if (getClientPlayers().containsKey(connection.getID()) &&
-                getGameStateManager().getGameState()
-                                     .getCreatures()
-                                     .containsKey(getClientPlayers().get(connection.getID()))) {
-                Creature creature = getGameStateManager().getGameState()
-                                                         .getCreatures()
-                                                         .get(getClientPlayers().get(connection.getID()));
+                    getGameState()
+                            .getCreatures()
+                            .containsKey(getClientPlayers().get(connection.getID()))) {
+                Creature creature = getGameState()
+                        .getCreatures()
+                        .get(getClientPlayers().get(connection.getID()));
 
                 List<GameStateAction> personalizedTickActions = tickActionsCopy.stream()
-                                                                               .filter(action -> action.actionObjectPos(
-                                                                                                               getGameStateManager().getGameState())
-                                                                                                       .distance(
-                                                                                                               creature.getParams()
-                                                                                                                       .getPos()) <
-                                                                                                 Constants.ClientGameUpdateRange)
-                                                                               .collect(Collectors.toList());
+                        .filter(action -> action.actionObjectPos(
+                                        getGameState())
+                                .distance(
+                                        creature.getParams()
+                                                .getPos()) <
+                                Constants.ClientGameUpdateRange)
+                        .collect(Collectors.toList());
                 connection.sendTCP(ActionsHolder.of(personalizedTickActions));
             }
 
@@ -169,11 +169,9 @@ public class CoreGameServer extends CoreGame {
                     ActionPerformCommand command = (ActionPerformCommand) object;
 
                     onTickActions.add(command.getAction());
-                }
-                else if (object instanceof ConnectionInitCommand) {
+                } else if (object instanceof ConnectionInitCommand) {
                     clientIds.add(connection.getID());
-                }
-                else if (object instanceof PlayerInitCommand) {
+                } else if (object instanceof PlayerInitCommand) {
                     PlayerInitCommand command = (PlayerInitCommand) object;
                     PlayerInitAction playerInitAction = PlayerInitAction.of(command.getPlayerId());
 
@@ -183,18 +181,16 @@ public class CoreGameServer extends CoreGame {
                         onTickActions.add(playerInitAction);
                     }
 
-                }
-                else if (object instanceof ChatMessageSendCommand) {
+                } else if (object instanceof ChatMessageSendCommand) {
                     ChatMessageSendCommand command = (ChatMessageSendCommand) object;
 
                     getEndPoint().sendToAllTCP(command);
-                }
-                else if (object instanceof EnemySpawnCommand) {
+                } else if (object instanceof EnemySpawnCommand) {
                     EnemySpawnCommand command = (EnemySpawnCommand) object;
                     getEntityManager().spawnEnemy(command.getCreatureId(),
-                                                  command.getAreaId(),
-                                                  command.getEnemySpawn(),
-                                                  CoreGameServer.this);
+                            command.getAreaId(),
+                            command.getEnemySpawn(),
+                            CoreGameServer.this);
 
                     getEndPoint().sendToAllTCP(command); // TODO: add to tick actions instead
 
@@ -224,86 +220,82 @@ public class CoreGameServer extends CoreGame {
                     Connection[] connections = getEndPoint().getConnections();
                     for (Connection connection : connections) {
                         if (!getClientPlayers().containsKey(connection.getID()) ||
-                            !getGameStateManager().getGameState()
-                                                  .getCreatures()
-                                                  .containsKey(getClientPlayers().get(connection.getID()))) {
-                            GameState personalizedGameState = GameState.of(getGameStateManager().getGameState(),
-                                                                           new ConcurrentSkipListMap<>(),
-                                                                           new ConcurrentSkipListMap<>(),
-                                                                           new ConcurrentSkipListMap<>()); // TODO: make new factory method
+                                !getGameState()
+                                        .getCreatures()
+                                        .containsKey(getClientPlayers().get(connection.getID()))) {
+                            GameStateData personalizedGameStateData = GameStateData.copyWithoutEntities(getGameState().getGameStateData());
 
-                            connection.sendTCP(GameStateBroadcast.of(personalizedGameState));
-                        }
-                        else {
-                            Creature player = getGameStateManager().getGameState()
-                                                                   .getCreatures()
-                                                                   .get(getClientPlayers().get(connection.getID()));
+                            connection.sendTCP(GameStateBroadcast.of(personalizedGameStateData));
+                        } else {
+                            Creature player = getGameState()
+                                    .getCreatures()
+                                    .get(getClientPlayers().get(connection.getID()));
 
                             ConcurrentSkipListMap<CreatureId, Creature> personalizedCreatures =
-                                    new ConcurrentSkipListMap<>(getGameStateManager().getGameState()
-                                                                                     .getCreatures()
-                                                                                     .entrySet()
-                                                                                     .stream()
-                                                                                     .filter(entry -> entry.getValue()
-                                                                                                           .getParams()
-                                                                                                           .getAreaId()
-                                                                                                           .equals(player.getParams()
-                                                                                                                         .getAreaId()) &&
-                                                                                                      entry.getValue()
-                                                                                                           .getParams()
-                                                                                                           .getPos()
-                                                                                                           .distance(
-                                                                                                                   player.getParams()
-                                                                                                                         .getPos()) <
-                                                                                                      Constants.ClientGameUpdateRange)
-                                                                                     .collect(Collectors.toMap(Map.Entry::getKey,
-                                                                                                               Map.Entry::getValue)));
+                                    new ConcurrentSkipListMap<>(getGameState()
+                                            .getCreatures()
+                                            .entrySet()
+                                            .stream()
+                                            .filter(entry -> entry.getValue()
+                                                    .getParams()
+                                                    .getAreaId()
+                                                    .equals(player.getParams()
+                                                            .getAreaId()) &&
+                                                    entry.getValue()
+                                                            .getParams()
+                                                            .getPos()
+                                                            .distance(
+                                                                    player.getParams()
+                                                                            .getPos()) <
+                                                            Constants.ClientGameUpdateRange)
+                                            .collect(Collectors.toMap(Map.Entry::getKey,
+                                                    Map.Entry::getValue)));
                             ConcurrentSkipListMap<AbilityId, Ability> personalizedAbilities =
-                                    new ConcurrentSkipListMap<>(getGameStateManager().getGameState()
-                                                                                     .getAbilities()
-                                                                                     .entrySet()
-                                                                                     .stream()
-                                                                                     .filter(entry -> entry.getValue()
-                                                                                                           .getParams()
-                                                                                                           .getAreaId()
-                                                                                                           .equals(player.getParams()
-                                                                                                                         .getAreaId()) &&
-                                                                                                      entry.getValue()
-                                                                                                           .getParams()
-                                                                                                           .getPos()
-                                                                                                           .distance(
-                                                                                                                   player.getParams()
-                                                                                                                         .getPos()) <
-                                                                                                      Constants.ClientGameUpdateRange)
-                                                                                     .collect(Collectors.toMap(Map.Entry::getKey,
-                                                                                                               Map.Entry::getValue)));
+                                    new ConcurrentSkipListMap<>(getGameState()
+                                            .getAbilities()
+                                            .entrySet()
+                                            .stream()
+                                            .filter(entry -> entry.getValue()
+                                                    .getParams()
+                                                    .getAreaId()
+                                                    .equals(player.getParams()
+                                                            .getAreaId()) &&
+                                                    entry.getValue()
+                                                            .getParams()
+                                                            .getPos()
+                                                            .distance(
+                                                                    player.getParams()
+                                                                            .getPos()) <
+                                                            Constants.ClientGameUpdateRange)
+                                            .collect(Collectors.toMap(Map.Entry::getKey,
+                                                    Map.Entry::getValue)));
 
                             ConcurrentSkipListMap<LootPileId, LootPile> personalizedLootPiles =
-                                    new ConcurrentSkipListMap<>(getGameStateManager().getGameState()
-                                                                                     .getLootPiles()
-                                                                                     .entrySet()
-                                                                                     .stream()
-                                                                                     .filter(entry -> entry.getValue()
+                                    new ConcurrentSkipListMap<>(getGameState()
+                                            .getLootPiles()
+                                            .entrySet()
+                                            .stream()
+                                            .filter(entry -> entry.getValue()
 
-                                                                                                           .getAreaId()
-                                                                                                           .equals(player.getParams()
-                                                                                                                         .getAreaId()) &&
-                                                                                                      entry.getValue()
+                                                    .getAreaId()
+                                                    .equals(player.getParams()
+                                                            .getAreaId()) &&
+                                                    entry.getValue()
 
-                                                                                                           .getPos()
-                                                                                                           .distance(
-                                                                                                                   player.getParams()
-                                                                                                                         .getPos()) <
-                                                                                                      Constants.ClientGameUpdateRange)
-                                                                                     .collect(Collectors.toMap(Map.Entry::getKey,
-                                                                                                               Map.Entry::getValue)));
+                                                            .getPos()
+                                                            .distance(
+                                                                    player.getParams()
+                                                                            .getPos()) <
+                                                            Constants.ClientGameUpdateRange)
+                                            .collect(Collectors.toMap(Map.Entry::getKey,
+                                                    Map.Entry::getValue)));
 
-                            GameState personalizedGameState = GameState.of(getGameStateManager().getGameState(),
-                                                                           personalizedCreatures,
-                                                                           personalizedAbilities,
-                                                                           personalizedLootPiles);
+                            GameStateData personalizedGameStateData = GameStateData.of(getGameState().getGameStateData(),
+                                    personalizedCreatures,
+                                    personalizedAbilities,
+                                    personalizedLootPiles);
 
-                            connection.sendTCP(GameStateBroadcast.of(personalizedGameState));
+                            connection.sendTCP(GameStateBroadcast.of(personalizedGameStateData));
                         }
                     }
                 }
@@ -316,7 +308,7 @@ public class CoreGameServer extends CoreGame {
     }
 
     public void spawnAbility(AbilityType abilityType, AbilityParams abilityParams) {
-        Creature creature = getCreature(abilityParams.getCreatureId());
+        Creature creature = getGameState().getCreature(abilityParams.getCreatureId());
 
         if (creature != null) {
             Ability ability = AbilityFactory.produceAbility(abilityType, abilityParams, this);
@@ -333,39 +325,39 @@ public class CoreGameServer extends CoreGame {
         AreaId areaId = AreaId.of("area1");
 
         onTickActions.add(LootPileSpawnAction.of(areaId,
-                                                 Vector2.of(12, 12),
-                                                 new ConcurrentSkipListSet<>(Arrays.asList(Item.of()
-                                                                                               .setTemplate(ItemTemplate.templates.get(
-                                                                                                       "leatherArmor"))
-                                                                                               .setQualityModifier(0.9f),
-                                                                                           Item.of()
-                                                                                               .setTemplate(ItemTemplate.templates.get(
-                                                                                                       "boomerang"))
-                                                                                               .setQualityModifier(0.9f)))));
+                Vector2.of(12, 12),
+                new ConcurrentSkipListSet<>(Arrays.asList(Item.of()
+                                .setTemplate(ItemTemplate.templates.get(
+                                        "leatherArmor"))
+                                .setQualityModifier(0.9f),
+                        Item.of()
+                                .setTemplate(ItemTemplate.templates.get(
+                                        "boomerang"))
+                                .setQualityModifier(0.9f)))));
 
 
         onTickActions.add(LootPileSpawnAction.of(areaId,
-                                                 Vector2.of(13.5f, 12),
-                                                 new ConcurrentSkipListSet<>(Arrays.asList(Item.of()
-                                                                                               .setTemplate(ItemTemplate.templates.get(
-                                                                                                       "ringmailGreaves"))
-                                                                                               .setQualityModifier(0.9f),
-                                                                                           Item.of()
-                                                                                               .setTemplate(ItemTemplate.templates.get(
-                                                                                                       "hideGloves"))
-                                                                                               .setQualityModifier(0.5f)))));
+                Vector2.of(13.5f, 12),
+                new ConcurrentSkipListSet<>(Arrays.asList(Item.of()
+                                .setTemplate(ItemTemplate.templates.get(
+                                        "ringmailGreaves"))
+                                .setQualityModifier(0.9f),
+                        Item.of()
+                                .setTemplate(ItemTemplate.templates.get(
+                                        "hideGloves"))
+                                .setQualityModifier(0.5f)))));
 
-        getGameStateManager().getGameState().setAreaGates(new ConcurrentSkipListSet<>());
-        getGameStateManager().getGameState()
-                             .getAreaGates()
-                             .addAll(Arrays.asList(AreaGate.of(AreaId.of("area1"),
-                                                               Vector2.of(199.5f, 15f),
-                                                               AreaId.of("area3"),
-                                                               Vector2.of(17f, 2.5f)),
-                                                   AreaGate.of(AreaId.of("area1"),
-                                                               Vector2.of(2f, 63f),
-                                                               AreaId.of("area2"),
-                                                               Vector2.of(58f, 9f))));
+        getGameState().getGameStateData().setAreaGates(new ConcurrentSkipListSet<>());
+        getGameState()
+                .getAreaGates()
+                .addAll(Arrays.asList(AreaGate.of(AreaId.of("area1"),
+                                Vector2.of(199.5f, 15f),
+                                AreaId.of("area3"),
+                                Vector2.of(17f, 2.5f)),
+                        AreaGate.of(AreaId.of("area1"),
+                                Vector2.of(2f, 63f),
+                                AreaId.of("area2"),
+                                Vector2.of(58f, 9f))));
 
         List<EnemySpawn> enemySpawns = EnemySpawnUtils.area1EnemySpawns();
 
@@ -382,16 +374,16 @@ public class CoreGameServer extends CoreGame {
         Set<AbilityId> abilitiesToUpdate = new HashSet<>();
 
         for (CreatureId clientCreatureId : getClientPlayers().values()) {
-            Creature player = getGameStateManager().getGameState().getCreatures().get(clientCreatureId);
+            Creature player = getGameState().getCreatures().get(clientCreatureId);
             if (player == null) {
                 continue;
             }
 
             Set<AbilityId> abilitiesToAdd =
-                    getGameStateManager().getGameState().getAbilities().keySet().stream().filter(abilityId -> {
-                        Ability ability = getGameStateManager().getGameState().getAbilities().get(abilityId);
+                    getGameState().getAbilities().keySet().stream().filter(abilityId -> {
+                        Ability ability = getGameState().getAbilities().get(abilityId);
                         return ability.getParams().getPos().distance(player.getParams().getPos()) <
-                               Constants.ClientGameUpdateRange;
+                                Constants.ClientGameUpdateRange;
                     }).collect(Collectors.toSet());
             abilitiesToUpdate.addAll(abilitiesToAdd);
         }
@@ -412,12 +404,12 @@ public class CoreGameServer extends CoreGame {
     @Override
     public void handleAttackTarget(CreatureId attackingCreatureId, Vector2 vectorTowardsTarget, SkillType skillType) {
 
-        Creature attackingCreature = getGameStateManager().getGameState().getCreatures().get(attackingCreatureId);
+        Creature attackingCreature = getGameState().getCreatures().get(attackingCreatureId);
 
         SkillTryPerformAction action = SkillTryPerformAction.of(attackingCreatureId,
-                                                                skillType,
-                                                                attackingCreature.getParams().getPos(),
-                                                                vectorTowardsTarget);
+                skillType,
+                attackingCreature.getParams().getPos(),
+                vectorTowardsTarget);
 
         onTickActions.add(action);
 
@@ -445,7 +437,7 @@ public class CoreGameServer extends CoreGame {
 
     @Override
     public AreaId getCurrentAreaId() {
-        return getGameStateManager().getGameState().getDefaultAreaId();
+        return getGameState().getDefaultAreaId();
     }
 
     @Override
@@ -466,14 +458,14 @@ public class CoreGameServer extends CoreGame {
         Vector2 chainFromPos = chainFromAbility.getParams().getPos();
 
         AbilityParams abilityParams = AbilityParams.of()
-                                                   .setId(abilityId)
-                                                   .setAreaId(chainFromAbility.getParams().getAreaId())
-                                                   .setCreatureId(chainFromAbility.getParams().getCreatureId())
-                                                   .setCreaturesAlreadyHit(creaturesAlreadyHit)
-                                                   .setChainFromPos(chainFromPos)
-                                                   .setChainToPos(chainToPos)
-                                                   .setDirVector(dirVector)
-                                                   .setSkillType(chainFromAbility.getParams().getSkillType());
+                .setId(abilityId)
+                .setAreaId(chainFromAbility.getParams().getAreaId())
+                .setCreatureId(chainFromAbility.getParams().getCreatureId())
+                .setCreaturesAlreadyHit(creaturesAlreadyHit)
+                .setChainFromPos(chainFromPos)
+                .setChainToPos(chainToPos)
+                .setDirVector(dirVector)
+                .setSkillType(chainFromAbility.getParams().getSkillType());
 
         spawnAbility(abilityType, abilityParams);
     }
@@ -500,6 +492,7 @@ public class CoreGameServer extends CoreGame {
 
     @Override
     public Map<Integer, CreatureId> getClientPlayers() {
-        return getGameStateManager().getClientPlayers();
+        return getGameState().getClientPlayers();
     }
+
 }

@@ -22,16 +22,16 @@ public class MagicOrb extends Projectile {
     public static MagicOrb of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
         MagicOrb ability = MagicOrb.of();
         ability.params = abilityParams.setWidth(1.5f)
-                                      .setHeight(1.5f)
-                                      .setChannelTime(0f)
-                                      .setActiveTime(30f)
-                                      .setTextureName("magic_orb")
-                                      .setBaseDamage(40f)
-                                      .setIsChannelAnimationLooping(false)
-                                      .setIsActiveAnimationLooping(true)
-                                      .setRotationShift(0f)
-                                      .setDelayedActionTime(0.001f)
-                                      .setSpeed(12f);
+                .setHeight(1.5f)
+                .setChannelTime(0f)
+                .setActiveTime(30f)
+                .setTextureName("magic_orb")
+                .setBaseDamage(40f)
+                .setIsChannelAnimationLooping(false)
+                .setIsActiveAnimationLooping(true)
+                .setRotationShift(0f)
+                .setDelayedActionTime(0.001f)
+                .setSpeed(12f);
 
 
         return ability;
@@ -101,20 +101,20 @@ public class MagicOrb extends Projectile {
         Creature minCreature = null;
         float minDistance = Float.MAX_VALUE;
 
-        Creature thisCreature = game.getCreature(getParams().getCreatureId());
+        Creature thisCreature = game.getGameState().getCreature(getParams().getCreatureId());
 
-        for (Creature creature : game.getCreatures()
-                                     .values()
-                                     .stream()
-                                     .filter(targetCreature -> !targetCreature.getParams()
-                                                                              .getId()
-                                                                              .equals(getParams().getCreatureId()) &&
-                                                               targetCreature.isAlive() &&
-                                                               isTargetingAllowed(thisCreature, targetCreature) &&
-                                                               targetCreature.getParams()
-                                                                             .getPos()
-                                                                             .distance(getParams().getPos()) < 20f)
-                                     .collect(Collectors.toSet())) {
+        for (Creature creature : game.getGameState().getCreatures()
+                .values()
+                .stream()
+                .filter(targetCreature -> !targetCreature.getParams()
+                        .getId()
+                        .equals(getParams().getCreatureId()) &&
+                        targetCreature.isAlive() &&
+                        isTargetingAllowed(thisCreature, targetCreature) &&
+                        targetCreature.getParams()
+                                .getPos()
+                                .distance(getParams().getPos()) < 20f)
+                .collect(Collectors.toSet())) {
             if (creature.getParams().getPos().distance(getParams().getPos()) < minDistance) {
                 minCreature = creature;
                 minDistance = creature.getParams().getPos().distance(getParams().getPos());
@@ -135,16 +135,13 @@ public class MagicOrb extends Projectile {
             if (Math.abs(alpha) < Math.abs(beta)) {
                 if (Math.abs(alpha) < Math.abs(gamma)) {
                     result = alpha;
-                }
-                else {
+                } else {
                     result = gamma;
                 }
-            }
-            else {
+            } else {
                 if (Math.abs(beta) < Math.abs(gamma)) {
                     result = beta;
-                }
-                else {
+                } else {
                     result = gamma;
                 }
             }
@@ -153,18 +150,15 @@ public class MagicOrb extends Projectile {
 
             if (getParams().getStateTimer().getTime() > 0.5f && getParams().getStateTimer().getTime() < 2f) {
                 increment = 1.5f - (getParams().getStateTimer().getTime() - 0.5f) / 1.5f * 1.5f;
-            }
-            else if (getParams().getStateTimer().getTime() >= 2f) {
+            } else if (getParams().getStateTimer().getTime() >= 2f) {
                 increment = 0f;
             }
 
             if (result > increment) {
                 getParams().setDirVector(getParams().getDirVector().rotateDeg(increment));
-            }
-            else if (result < -increment) {
+            } else if (result < -increment) {
                 getParams().setDirVector(getParams().getDirVector().rotateDeg(-increment));
-            }
-            else {
+            } else {
                 getParams().setDirVector(getParams().getDirVector().setAngleDeg(targetAngleDeg));
             }
 
