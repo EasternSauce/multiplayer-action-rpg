@@ -1,11 +1,9 @@
 package com.mygdx.game.game.gamestate;
 
-import com.mygdx.game.Constants;
 import com.mygdx.game.game.entity.EntityEventProcessor;
 import com.mygdx.game.model.GameStateData;
 import com.mygdx.game.model.ability.AbilityId;
 import com.mygdx.game.model.area.LootPileId;
-import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +11,6 @@ import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
 public class ClientGameState extends GameState {
@@ -23,24 +20,7 @@ public class ClientGameState extends GameState {
 
     @Override
     public Set<CreatureId> getCreaturesToUpdate() {
-        Creature player = gameStateData.getCreatures().get(getThisClientPlayerId());
-
-        if (player == null) {
-            return new HashSet<>();
-        }
-
-        return gameStateData.getCreatures().keySet().stream().filter(creatureId -> {
-            Creature creature = gameStateData.getCreatures().get(creatureId);
-            if (creature != null) {
-                return creature.getParams().getPos().distance(player.getParams().getPos()) <
-                        Constants.ClientGameUpdateRange;
-            }
-
-            return false;
-
-        }).collect(Collectors.toSet());
-
-
+        return getCreaturesToUpdateForPlayerCreatureId(getThisClientPlayerId());
     }
 
     public void createEventsFromReceivedGameStateData(GameStateData receivedGameStateData, EntityEventProcessor eventProcessor) {

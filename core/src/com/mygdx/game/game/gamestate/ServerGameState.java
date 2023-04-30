@@ -30,18 +30,7 @@ public class ServerGameState extends GameState {
         Set<CreatureId> creaturesToUpdate = new HashSet<>();
 
         for (CreatureId clientCreatureId : getClientPlayers().values()) {
-            Creature player = gameStateData.getCreatures().get(clientCreatureId);
-            if (player == null) {
-                continue;
-            }
-
-            Set<CreatureId> creaturesToAdd = gameStateData.getCreatures().keySet().stream().filter(creatureId -> {
-                Creature creature = gameStateData.getCreatures().get(creatureId);
-                return player.getParams().getAreaId().equals(creature.getParams().getAreaId()) &&
-                        creature.getParams().getPos().distance(player.getParams().getPos()) <
-                                Constants.ClientGameUpdateRange;
-            }).collect(Collectors.toSet());
-
+            Set<CreatureId> creaturesToAdd = getCreaturesToUpdateForPlayerCreatureId(clientCreatureId);
 
             creaturesToUpdate.addAll(creaturesToAdd);
         }

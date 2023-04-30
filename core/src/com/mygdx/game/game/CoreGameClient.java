@@ -57,7 +57,6 @@ public class CoreGameClient extends CoreGame {
     private Float menuClickTime = 0f; // TODO: should do it differently
 
     private CoreGameClient() {
-        //        thisPlayerId = CreatureId.of("Player_" + (int) (Math.random() * 10000000));
     }
 
     public static CoreGameClient getInstance() {

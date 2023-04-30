@@ -294,7 +294,6 @@ public class CoreGameServer extends CoreGame {
         });
     }
 
-
     @Override
     public Set<AbilityId> getAbilitiesToUpdate() {
         Set<AbilityId> abilitiesToUpdate = new HashSet<>();

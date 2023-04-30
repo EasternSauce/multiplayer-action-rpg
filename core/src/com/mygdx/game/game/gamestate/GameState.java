@@ -1,5 +1,6 @@
 package com.mygdx.game.game.gamestate;
 
+import com.mygdx.game.Constants;
 import com.mygdx.game.model.GameStateData;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityId;
@@ -14,9 +15,11 @@ import com.mygdx.game.model.util.PlayerParams;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.util.RandomHelper;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public abstract class GameState {
     protected GameStateData gameStateData = GameStateData.of();
@@ -132,5 +135,24 @@ public abstract class GameState {
 
     public void setAreaGates(Set<AreaGate> areaGates) {
         gameStateData.setAreaGates(areaGates);
+    }
+
+    public Set<CreatureId> getCreaturesToUpdateForPlayerCreatureId(CreatureId playerCreatureId) {
+        Creature player = gameStateData.getCreatures().get(playerCreatureId);
+
+        if (player == null) {
+            return new HashSet<>();
+        }
+
+        return gameStateData.getCreatures().keySet().stream().filter(creatureId -> {
+            Creature creature = gameStateData.getCreatures().get(creatureId);
+            if (creature != null) {
+                return player.getParams().getAreaId().equals(creature.getParams().getAreaId()) && creature.getParams().getPos().distance(player.getParams().getPos()) <
+                        Constants.ClientGameUpdateRange;
+            }
+
+            return false;
+
+        }).collect(Collectors.toSet());
     }
 }
