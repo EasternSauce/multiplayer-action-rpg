@@ -1,7 +1,6 @@
 package com.mygdx.game.model.ability;
 
-import com.mygdx.game.game.interface_.AbilityUpdatable;
-import com.mygdx.game.game.interface_.GameUpdatable;
+import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
@@ -14,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class TeleportSource extends Ability {
     AbilityParams params;
 
-    public static TeleportSource of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
+    public static TeleportSource of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         Creature creature = game.getGameState().getCreature(abilityParams.getCreatureId());
 
         TeleportSource ability = TeleportSource.of();
@@ -40,33 +39,32 @@ public class TeleportSource extends Ability {
     }
 
     @Override
-    public void updatePosition(AbilityUpdatable game) {
+    public void updatePosition(CoreGame game) {
 
     }
 
     @Override
-    void onAbilityStarted(AbilityUpdatable game) {
+    void onAbilityStarted(CoreGame game) {
 
     }
 
     @Override
-    void onDelayedAction(AbilityUpdatable game) {
-        game.chainAbility(this, AbilityType.TELEPORT_DESTINATION, getParams().getPos(), getParams().getDirVector());
+    void onDelayedAction(CoreGame game) {
+        game.getGameState().chainAbility(this, AbilityType.TELEPORT_DESTINATION, getParams().getPos(), getParams().getDirVector(), game);
     }
 
     @Override
-    void onAbilityCompleted(AbilityUpdatable game) {
-
-    }
-
-
-    @Override
-    void onChannelUpdate(AbilityUpdatable game) {
+    void onAbilityCompleted(CoreGame game) {
 
     }
 
     @Override
-    void onActiveUpdate(AbilityUpdatable game) {
+    void onChannelUpdate(CoreGame game) {
+
+    }
+
+    @Override
+    void onActiveUpdate(CoreGame game) {
 
     }
 
@@ -76,7 +74,7 @@ public class TeleportSource extends Ability {
     }
 
     @Override
-    public void onThisCreatureHit(GameUpdatable game) {
+    public void onThisCreatureHit(CoreGame game) {
 
     }
 
@@ -86,7 +84,7 @@ public class TeleportSource extends Ability {
     }
 
     @Override
-    public void onOtherAbilityHit(AbilityId otherAbilityId, GameUpdatable game) {
+    public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
 
     }
 }

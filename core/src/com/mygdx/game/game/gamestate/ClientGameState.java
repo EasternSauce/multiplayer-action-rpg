@@ -4,6 +4,7 @@ import com.mygdx.game.game.entity.EntityEventProcessor;
 import com.mygdx.game.model.GameStateData;
 import com.mygdx.game.model.ability.AbilityId;
 import com.mygdx.game.model.action.GameStateAction;
+import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.area.LootPileId;
 import com.mygdx.game.model.creature.CreatureId;
 import lombok.Getter;
@@ -67,6 +68,15 @@ public class ClientGameState extends GameState {
     @Override
     public void scheduleServerSideAction(GameStateAction action) {
         // do nothing on client side
+    }
+
+    @Override
+    public AreaId getCurrentAreaId() {
+        if (!getCreatures().containsKey(getThisClientPlayerId())) {
+            return getDefaultAreaId();
+        }
+
+        return getCreature(getThisClientPlayerId()).getParams().getAreaId();
     }
 
 }

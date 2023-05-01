@@ -2,7 +2,7 @@ package com.mygdx.game.physics.body;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.mygdx.game.game.interface_.GameUpdatable;
+import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityId;
 import com.mygdx.game.model.ability.AbilityState;
@@ -34,7 +34,7 @@ public class AbilityBody {
         return abilityBody;
     }
 
-    private float[] hitboxVertices(GameUpdatable game) {
+    private float[] hitboxVertices(CoreGame game) {
         Ability ability = game.getGameState().getAbility(abilityId);
 
         sprite.setSize(ability.getParams().getWidth(), ability.getParams().getHeight());
@@ -62,7 +62,7 @@ public class AbilityBody {
 
     }
 
-    public void init(GameUpdatable game, boolean skipCreatingBody) {
+    public void init(boolean skipCreatingBody, CoreGame game) {
         Ability ability = game.getGameState().getAbility(abilityId);
 
         if (!isBodyInitialized && !skipCreatingBody && ability != null) {
@@ -77,7 +77,7 @@ public class AbilityBody {
 
     }
 
-    public void update(GameUpdatable game) {
+    public void update(CoreGame game) {
         Ability ability = game.getGameState().getAbilities().get(abilityId);
 
         if (getIsBodyInitialized() && ability != null && ability.bodyShouldExist()) {

@@ -1,7 +1,6 @@
 package com.mygdx.game.model.action.loot;
 
-import com.mygdx.game.game.gamestate.GameState;
-import com.mygdx.game.game.interface_.GameActionApplicable;
+import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.area.LootPileId;
 import com.mygdx.game.model.util.Vector2;
@@ -16,15 +15,15 @@ public class LootPileDespawnAction extends GameStateAction {
     private LootPileId lootPileId;
 
     @Override
-    public Vector2 actionObjectPos(GameState gameState) {
-        if (!gameState.getLootPiles().containsKey(lootPileId)) {
+    public Vector2 actionObjectPos(CoreGame game) {
+        if (!game.getGameState().getLootPiles().containsKey(lootPileId)) {
             return Vector2.of(0f, 0f);
         }
-        return gameState.getLootPiles().get(lootPileId).getPos();
+        return game.getGameState().getLootPiles().get(lootPileId).getPos();
     }
 
     @Override
-    public void applyToGame(GameActionApplicable game) {
+    public void applyToGame(CoreGame game) {
         game.getEventProcessor().getLootPileModelsToBeRemoved().add(lootPileId);
     }
 

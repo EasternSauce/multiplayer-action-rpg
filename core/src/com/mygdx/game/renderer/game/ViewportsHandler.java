@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Constants;
-import com.mygdx.game.game.interface_.GameRenderable;
+import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.creature.Creature;
 import lombok.NoArgsConstructor;
 
@@ -39,8 +39,8 @@ public class ViewportsHandler {
         worldTextViewport.update(width, height);
     }
 
-    public void updateCameraPositions(GameRenderable game) {
-        Creature player = game.getGameState().getCreature(game.getThisClientPlayerId());
+    public void updateCameraPositions(CoreGame game) {
+        Creature player = game.getGameState().getCreature(game.getGameState().getThisClientPlayerId());
 
         float cameraX = player.getParams().getPos().getX();
         float cameraY = player.getParams().getPos().getY();

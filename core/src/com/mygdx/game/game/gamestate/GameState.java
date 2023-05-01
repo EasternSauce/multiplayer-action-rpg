@@ -1,10 +1,15 @@
 package com.mygdx.game.game.gamestate;
 
 import com.mygdx.game.Constants;
+import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.GameStateData;
-import com.mygdx.game.model.ability.Ability;
-import com.mygdx.game.model.ability.AbilityId;
+import com.mygdx.game.model.ability.*;
 import com.mygdx.game.model.action.GameStateAction;
+import com.mygdx.game.model.action.ability.AbilityActivateAction;
+import com.mygdx.game.model.action.ability.AbilityAddAction;
+import com.mygdx.game.model.action.ability.SkillTryPerformAction;
+import com.mygdx.game.model.action.creature.CreatureHitAction;
+import com.mygdx.game.model.action.creature.CreatureMovingVectorSetAction;
 import com.mygdx.game.model.area.AreaGate;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.area.LootPile;
@@ -20,6 +25,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public abstract class GameState {
@@ -157,6 +164,93 @@ public abstract class GameState {
         }).collect(Collectors.toSet());
     }
 
+    public void spawnAbility(AbilityType abilityType, AbilityParams abilityParams, CoreGame game) {
+        Creature creature = getCreature(abilityParams.getCreatureId());
+
+        if (creature != null) {
+            Ability ability = AbilityFactory.produceAbility(abilityType, abilityParams, game);
+
+            AbilityAddAction action = AbilityAddAction.of(ability);
+
+            scheduleServerSideAction(action);
+        }
+    }
+
     public abstract void scheduleServerSideAction(GameStateAction action);
 
+    public void chainAbility(Ability chainFromAbility, AbilityType abilityType, Vector2 chainToPos, Vector2 dirVector, CoreGame game) {
+        AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
+
+        Map<CreatureId, Float> creaturesAlreadyHit =
+                new ConcurrentSkipListMap<>(chainFromAbility.getParams().getCreaturesAlreadyHit());
+
+        Vector2 chainFromPos = chainFromAbility.getParams().getPos();
+
+        AbilityParams abilityParams = AbilityParams.of()
+                .setId(abilityId)
+                .setAreaId(chainFromAbility.getParams().getAreaId())
+                .setCreatureId(chainFromAbility.getParams().getCreatureId())
+                .setCreaturesAlreadyHit(creaturesAlreadyHit)
+                .setChainFromPos(chainFromPos)
+                .setChainToPos(chainToPos)
+                .setDirVector(dirVector)
+                .setSkillType(chainFromAbility.getParams().getSkillType());
+
+        spawnAbility(abilityType, abilityParams, game);
+    }
+
+    public abstract CreatureId getThisClientPlayerId();
+
+    public void setCreatureMovingVector(CreatureId creatureId, Vector2 dirVector) {
+        CreatureMovingVectorSetAction action = CreatureMovingVectorSetAction.of(creatureId, dirVector);
+
+        scheduleServerSideAction(action);
+    }
+
+    public void activateAbility(Ability ability) {
+        AbilityActivateAction action = AbilityActivateAction.of(ability);
+
+        scheduleServerSideAction(action);
+    }
+
+    public void forEachAliveCreature(Consumer<Creature> creatureAction) {
+        getCreatures().values().stream().filter(Creature::isAlive).forEach(creatureAction);
+    }
+
+    public void forEachDeadCreature(Consumer<Creature> creatureAction) {
+        getCreatures().values().stream().filter(creature -> !creature.isAlive()).forEach(creatureAction);
+    }
+
+    public void onAbilityHitsCreature(CreatureId attackerId, CreatureId targetId, Ability ability) {
+        ability.onCreatureHit();
+        ability.getParams().getCreaturesAlreadyHit().put(targetId, ability.getParams().getStateTimer().getTime());
+
+        CreatureHitAction action = CreatureHitAction.of(attackerId, targetId, ability);
+
+        scheduleServerSideAction(action);
+    }
+
+    public void handleAttackTarget(CreatureId attackingCreatureId, Vector2 vectorTowardsTarget, SkillType skillType) {
+        Creature attackingCreature = getCreatures().get(attackingCreatureId);
+
+        SkillTryPerformAction action = SkillTryPerformAction.of(attackingCreatureId,
+                skillType,
+                attackingCreature.getParams().getPos(),
+                vectorTowardsTarget);
+
+        scheduleServerSideAction(action);
+    }
+
+    public Set<AbilityId> getAbilitiesWithinRange(Creature player) {
+        return getAbilities().keySet().stream().filter(abilityId -> {
+            Ability ability = getAbilities().get(abilityId);
+            if (ability != null) {
+                return ability.getParams().getPos().distance(player.getParams().getPos()) <
+                        Constants.ClientGameUpdateRange;
+            }
+            return false;
+        }).collect(Collectors.toSet());
+    }
+
+    public abstract AreaId getCurrentAreaId();
 }

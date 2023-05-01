@@ -1,7 +1,6 @@
 package com.mygdx.game.model.action.inventory;
 
-import com.mygdx.game.game.gamestate.GameState;
-import com.mygdx.game.game.interface_.GameActionApplicable;
+import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
@@ -26,12 +25,12 @@ public class InventoryAndEquipmentSwapSlotsAction extends GameStateAction {
     private Integer equipmentIndex;
 
     @Override
-    public Vector2 actionObjectPos(GameState gameState) {
-        return getActionCreaturePos(gameState, creatureId);
+    public Vector2 actionObjectPos(CoreGame game) {
+        return getActionCreaturePos(creatureId, game);
     }
 
     @Override
-    public void applyToGame(GameActionApplicable game) {
+    public void applyToGame(CoreGame game) {
         Creature player = game.getGameState().getCreature(creatureId);
         PlayerParams playerParams = game.getGameState().getPlayerParams(creatureId);
 

@@ -5,8 +5,12 @@ import com.mygdx.game.Constants;
 import com.mygdx.game.model.GameStateData;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityId;
+import com.mygdx.game.model.ability.AbilityState;
 import com.mygdx.game.model.action.GameStateAction;
+import com.mygdx.game.model.action.ability.AbilityRemoveAction;
 import com.mygdx.game.model.action.creature.CreatureRespawnAction;
+import com.mygdx.game.model.action.loot.LootPileDespawnAction;
+import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.area.LootPile;
 import com.mygdx.game.model.area.LootPileId;
 import com.mygdx.game.model.creature.Creature;
@@ -136,9 +140,34 @@ public class ServerGameState extends GameState {
                 });
     }
 
+    public void handleExpiredLootPiles() {
+        getLootPiles()
+                .entrySet()
+                .stream()
+                .filter(entry -> entry.getValue().getIsFullyLooted())
+                .forEach(entry -> scheduleServerSideAction(LootPileDespawnAction.of(entry.getKey())));
+    }
+
+    public void handleExpiredAbilities() {
+        getAbilities()
+                .entrySet()
+                .stream()
+                .filter(entry -> entry.getValue().getParams().getState() == AbilityState.INACTIVE)
+                .forEach(entry -> scheduleServerSideAction(AbilityRemoveAction.of(entry.getKey())));
+    }
 
     @Override
     public void scheduleServerSideAction(GameStateAction action) {
         onTickActions.add(action);
+    }
+
+    @Override
+    public CreatureId getThisClientPlayerId() {
+        return null;
+    }
+
+    @Override
+    public AreaId getCurrentAreaId() { // TODO: does it make sense for server?
+        return getDefaultAreaId();
     }
 }

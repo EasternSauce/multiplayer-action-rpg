@@ -5,8 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.esotericsoftware.kryonet.Client;
 import com.mygdx.game.assets.Assets;
 import com.mygdx.game.command.ActionPerformCommand;
-import com.mygdx.game.game.CoreGameClient;
-import com.mygdx.game.game.interface_.GameRenderable;
+import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.action.skillmenu.SkillPickerMenuActivateAction;
 import com.mygdx.game.model.action.skillmenu.SkillPickerMenuDeactivateAction;
 import com.mygdx.game.model.action.skillmenu.SkillPickerMenuSlotChangeAction;
@@ -44,8 +43,8 @@ public class SkillMenuHelper { // TODO: maybe shouldn't be a helper class
         }
     }
 
-    public static void renderSkillMenu(RenderingLayer renderingLayer, GameRenderable game) {
-        PlayerParams playerParams = game.getGameState().getPlayerParams(game.getThisClientPlayerId());
+    public static void renderSkillMenu(RenderingLayer renderingLayer, CoreGame game) {
+        PlayerParams playerParams = game.getGameState().getPlayerParams(game.getGameState().getThisClientPlayerId());
 
         if (playerParams == null) {
             return;
@@ -84,8 +83,8 @@ public class SkillMenuHelper { // TODO: maybe shouldn't be a helper class
         });
     }
 
-    public static void renderSkillPickerMenu(Creature player, RenderingLayer renderingLayer, GameRenderable game) {
-        PlayerParams playerParams = game.getGameState().getPlayerParams(game.getThisClientPlayerId());
+    public static void renderSkillPickerMenu(Creature player, RenderingLayer renderingLayer, CoreGame game) {
+        PlayerParams playerParams = game.getGameState().getPlayerParams(game.getGameState().getThisClientPlayerId());
 
         if (playerParams == null ||
                 playerParams.getIsInventoryVisible() ||
@@ -138,7 +137,7 @@ public class SkillMenuHelper { // TODO: maybe shouldn't be a helper class
 
     // TODO: this method does not fit in this class - create MenuHelper?
     @SuppressWarnings("UnusedReturnValue")
-    public static boolean skillPickerMenuClick(Client client, CoreGameClient game) {
+    public static boolean skillPickerMenuClick(Client client, CoreGame game) {
         float x = game.hudMousePos().getX();
         float y = game.hudMousePos().getY();
 
@@ -146,7 +145,7 @@ public class SkillMenuHelper { // TODO: maybe shouldn't be a helper class
 
         AtomicInteger i = new AtomicInteger();
 
-        Creature player = game.getGameState().getCreature(game.getThisClientPlayerId());
+        Creature player = game.getGameState().getCreature(game.getGameState().getThisClientPlayerId());
 
         player.availableSkills().forEach((skillType, level) -> {
             Rect rect = Rect.of(SKILL_PICKER_MENU_POS_X,
@@ -155,7 +154,7 @@ public class SkillMenuHelper { // TODO: maybe shouldn't be a helper class
                     20f);
 
             if (rect.contains(x, y)) {
-                client.sendTCP(ActionPerformCommand.of(SkillPickerMenuSlotChangeAction.of(game.getThisClientPlayerId(),
+                client.sendTCP(ActionPerformCommand.of(SkillPickerMenuSlotChangeAction.of(game.getGameState().getThisClientPlayerId(),
                         skillType)));
                 isSuccessful.set(true);
             }
@@ -164,13 +163,13 @@ public class SkillMenuHelper { // TODO: maybe shouldn't be a helper class
         });
 
         if (!isSuccessful.get()) {
-            client.sendTCP(ActionPerformCommand.of(SkillPickerMenuDeactivateAction.of(game.getThisClientPlayerId())));
+            client.sendTCP(ActionPerformCommand.of(SkillPickerMenuDeactivateAction.of(game.getGameState().getThisClientPlayerId())));
         }
 
         return isSuccessful.get();
     }
 
-    public static boolean performSkillMenuClick(Client client, CoreGameClient game) {
+    public static boolean performSkillMenuClick(Client client, CoreGame game) {
         float x = game.hudMousePos().getX();
         float y = game.hudMousePos().getY();
 
@@ -178,7 +177,7 @@ public class SkillMenuHelper { // TODO: maybe shouldn't be a helper class
 
         skillRectangles.forEach((slotNum, rect) -> {
             if (rect.contains(x, y)) {
-                client.sendTCP(ActionPerformCommand.of(SkillPickerMenuActivateAction.of(game.getThisClientPlayerId(),
+                client.sendTCP(ActionPerformCommand.of(SkillPickerMenuActivateAction.of(game.getGameState().getThisClientPlayerId(),
                         slotNum)));
                 isSuccessful.set(true);
             }

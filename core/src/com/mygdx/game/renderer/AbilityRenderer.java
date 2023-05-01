@@ -4,8 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.mygdx.game.game.interface_.GameRenderable;
-import com.mygdx.game.game.interface_.GameUpdatable;
+import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityId;
 import com.mygdx.game.model.ability.AbilityState;
@@ -34,7 +33,7 @@ public class AbilityRenderer {
         return abilityRenderer;
     }
 
-    public void init(TextureAtlas atlas, GameUpdatable game) {
+    public void init(TextureAtlas atlas, CoreGame game) {
         sprite = new Sprite();
 
         Ability ability = game.getGameState().getAbilities().get(abilityId);
@@ -79,7 +78,7 @@ public class AbilityRenderer {
 
     }
 
-    private void updateSprite(TextureRegion texture, GameUpdatable game) {
+    private void updateSprite(TextureRegion texture, CoreGame game) {
 
         Ability ability = game.getGameState().getAbilities().get(abilityId);
 
@@ -92,7 +91,7 @@ public class AbilityRenderer {
 
     }
 
-    public void update(GameRenderable game) {
+    public void update(CoreGame game) {
 
         Ability ability = game.getGameState().getAbilities().get(abilityId);
 
@@ -113,7 +112,7 @@ public class AbilityRenderer {
 
     }
 
-    public void render(RenderingLayer renderingLayer, GameUpdatable game) {
+    public void render(RenderingLayer renderingLayer, CoreGame game) {
         Ability ability = game.getGameState().getAbility(abilityId);
 
         if (ability != null) {

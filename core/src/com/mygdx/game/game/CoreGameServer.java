@@ -7,18 +7,11 @@ import com.mygdx.game.Constants;
 import com.mygdx.game.command.*;
 import com.mygdx.game.game.gamestate.ServerGameState;
 import com.mygdx.game.game.screen.ConnectScreenMessageHolder;
-import com.mygdx.game.model.ability.*;
+import com.mygdx.game.model.ability.AbilityId;
 import com.mygdx.game.model.action.ActionsHolder;
 import com.mygdx.game.model.action.GameStateAction;
-import com.mygdx.game.model.action.ability.AbilityActivateAction;
-import com.mygdx.game.model.action.ability.AbilityAddAction;
-import com.mygdx.game.model.action.ability.AbilityRemoveAction;
-import com.mygdx.game.model.action.ability.SkillTryPerformAction;
-import com.mygdx.game.model.action.creature.CreatureHitAction;
-import com.mygdx.game.model.action.creature.CreatureMovingVectorSetAction;
 import com.mygdx.game.model.action.creature.PlayerInitAction;
 import com.mygdx.game.model.action.creature.PlayerRemoveAction;
-import com.mygdx.game.model.action.loot.LootPileDespawnAction;
 import com.mygdx.game.model.action.loot.LootPileSpawnAction;
 import com.mygdx.game.model.area.AreaGate;
 import com.mygdx.game.model.area.AreaId;
@@ -27,7 +20,6 @@ import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.creature.EnemySpawn;
 import com.mygdx.game.model.item.Item;
 import com.mygdx.game.model.item.ItemTemplate;
-import com.mygdx.game.model.skill.SkillType;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.physics.world.PhysicsWorld;
 import com.mygdx.game.util.EndPointHelper;
@@ -36,7 +28,6 @@ import lombok.Setter;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.stream.Collectors;
 
@@ -77,24 +68,9 @@ public class CoreGameServer extends CoreGame {
     public void onUpdate() {
         gameState.handleCreatureDeaths();
 
+        gameState.handleExpiredAbilities();
 
-        //TODO: play sound on getting hit
-
-
-        // remove expired abilities
-        getGameState()
-                .getAbilities()
-                .entrySet()
-                .stream()
-                .filter(entry -> entry.getValue().getParams().getState() == AbilityState.INACTIVE)
-                .forEach(entry -> gameState.scheduleServerSideAction(AbilityRemoveAction.of(entry.getKey())));
-
-        getGameState()
-                .getLootPiles()
-                .entrySet()
-                .stream()
-                .filter(entry -> entry.getValue().getIsFullyLooted())
-                .forEach(entry -> gameState.scheduleServerSideAction(LootPileDespawnAction.of(entry.getKey())));
+        gameState.handleExpiredLootPiles();
 
         ArrayList<GameStateAction> tickActionsCopy = new ArrayList<>(gameState.getOnTickActions());
 
@@ -115,8 +91,7 @@ public class CoreGameServer extends CoreGame {
                         .get(getClientPlayers().get(connection.getID()));
 
                 List<GameStateAction> personalizedTickActions = tickActionsCopy.stream()
-                        .filter(action -> action.actionObjectPos(
-                                        getGameState())
+                        .filter(action -> action.actionObjectPos(this)
                                 .distance(
                                         creature.getParams()
                                                 .getPos()) <
@@ -220,18 +195,6 @@ public class CoreGameServer extends CoreGame {
 
     }
 
-    public void spawnAbility(AbilityType abilityType, AbilityParams abilityParams) {
-        Creature creature = getGameState().getCreature(abilityParams.getCreatureId());
-
-        if (creature != null) {
-            Ability ability = AbilityFactory.produceAbility(abilityType, abilityParams, this);
-
-            AbilityAddAction action = AbilityAddAction.of(ability);
-
-            gameState.scheduleServerSideAction(action);
-        }
-    }
-
     @Override
     public void initState() {
 
@@ -291,40 +254,10 @@ public class CoreGameServer extends CoreGame {
                 continue;
             }
 
-            Set<AbilityId> abilitiesToAdd =
-                    getGameState().getAbilities().keySet().stream().filter(abilityId -> {
-                        Ability ability = getGameState().getAbilities().get(abilityId);
-                        return ability.getParams().getPos().distance(player.getParams().getPos()) <
-                                Constants.ClientGameUpdateRange;
-                    }).collect(Collectors.toSet());
-            abilitiesToUpdate.addAll(abilitiesToAdd);
+            abilitiesToUpdate.addAll(getGameState().getAbilitiesWithinRange(player));
         }
 
         return abilitiesToUpdate;
-    }
-
-    @Override
-    public void onAbilityHitsCreature(CreatureId attackerId, CreatureId targetId, Ability ability) {
-        ability.onCreatureHit();
-        ability.getParams().getCreaturesAlreadyHit().put(targetId, ability.getParams().getStateTimer().getTime());
-
-        CreatureHitAction action = CreatureHitAction.of(attackerId, targetId, ability);
-
-        gameState.scheduleServerSideAction(action);
-    }
-
-    @Override
-    public void handleAttackTarget(CreatureId attackingCreatureId, Vector2 vectorTowardsTarget, SkillType skillType) {
-
-        Creature attackingCreature = getGameState().getCreatures().get(attackingCreatureId);
-
-        SkillTryPerformAction action = SkillTryPerformAction.of(attackingCreatureId,
-                skillType,
-                attackingCreature.getParams().getPos(),
-                vectorTowardsTarget);
-
-        gameState.scheduleServerSideAction(action);
-
     }
 
     @Override
@@ -348,61 +281,12 @@ public class CoreGameServer extends CoreGame {
     }
 
     @Override
-    public AreaId getCurrentAreaId() {
-        return getGameState().getDefaultAreaId();
-    }
-
-    @Override
-    public void setCreatureMovingVector(CreatureId creatureId,
-                                        Vector2 dirVector) { // this is handled as an action to make movement more fluid client-side
-        CreatureMovingVectorSetAction action = CreatureMovingVectorSetAction.of(creatureId, dirVector);
-
-        gameState.scheduleServerSideAction(action);
-    }
-
-    @Override
-    public void chainAbility(Ability chainFromAbility, AbilityType abilityType, Vector2 chainToPos, Vector2 dirVector) {
-        AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
-
-        Map<CreatureId, Float> creaturesAlreadyHit =
-                new ConcurrentSkipListMap<>(chainFromAbility.getParams().getCreaturesAlreadyHit());
-
-        Vector2 chainFromPos = chainFromAbility.getParams().getPos();
-
-        AbilityParams abilityParams = AbilityParams.of()
-                .setId(abilityId)
-                .setAreaId(chainFromAbility.getParams().getAreaId())
-                .setCreatureId(chainFromAbility.getParams().getCreatureId())
-                .setCreaturesAlreadyHit(creaturesAlreadyHit)
-                .setChainFromPos(chainFromPos)
-                .setChainToPos(chainToPos)
-                .setDirVector(dirVector)
-                .setSkillType(chainFromAbility.getParams().getSkillType());
-
-        spawnAbility(abilityType, abilityParams);
-    }
-
-
-    @Override
     public void dispose() {
         getEndPoint().stop();
         broadcastThread.interrupt();
 
     }
 
-    @Override
-    public void initAbilityBody(Ability ability) {
-        AbilityActivateAction action = AbilityActivateAction.of(ability);
-
-        gameState.scheduleServerSideAction(action);
-    }
-
-    @Override
-    public CreatureId getThisClientPlayerId() {
-        return null;
-    }
-
-    @Override
     public Map<Integer, CreatureId> getClientPlayers() {
         return getGameState().getClientPlayers();
     }

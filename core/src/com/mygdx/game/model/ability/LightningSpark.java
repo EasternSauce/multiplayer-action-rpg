@@ -1,7 +1,6 @@
 package com.mygdx.game.model.ability;
 
-import com.mygdx.game.game.interface_.AbilityUpdatable;
-import com.mygdx.game.game.interface_.GameUpdatable;
+import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.util.Vector2;
@@ -21,7 +20,7 @@ public class LightningSpark extends Ability {
 
     AbilityParams params;
 
-    public static LightningSpark of(AbilityParams abilityParams, AbilityUpdatable game) {
+    public static LightningSpark of(AbilityParams abilityParams, CoreGame game) {
         Creature creature = game.getGameState().getCreature(abilityParams.getCreatureId());
 
         //        Vector2 pos;
@@ -69,17 +68,17 @@ public class LightningSpark extends Ability {
     }
 
     @Override
-    public void updatePosition(AbilityUpdatable game) {
+    public void updatePosition(CoreGame game) {
 
     }
 
     @Override
-    void onAbilityStarted(AbilityUpdatable game) {
+    void onAbilityStarted(CoreGame game) {
 
     }
 
     @Override
-    void onDelayedAction(AbilityUpdatable game) {
+    void onDelayedAction(CoreGame game) {
         // find the closest enemy, and if they are within distance, and haven't been hit yet, then put node over them
         Set<CreatureId> excluded = new HashSet<>(getParams().getCreaturesAlreadyHit().keySet());
         excluded.add(getParams().getCreatureId());
@@ -92,33 +91,33 @@ public class LightningSpark extends Ability {
         if (targetCreature != null &&
                 game.isLineOfSight(getParams().getAreaId(), getParams().getPos(), targetCreature.getParams().getPos())) {
 
-            game.onAbilityHitsCreature(targetCreature.getId(), getParams().getCreatureId(), this);
+            game.getGameState().onAbilityHitsCreature(targetCreature.getId(), getParams().getCreatureId(), this);
 
             getParams().getCreaturesAlreadyHit().put(targetCreature.getId(), getParams().getStateTimer().getTime());
 
-            game.chainAbility(this, AbilityType.LIGHTNING_CHAIN, targetCreature.getParams().getPos(),
+            game.getGameState().chainAbility(this, AbilityType.LIGHTNING_CHAIN, targetCreature.getParams().getPos(),
                     // this pos is later changed, TODO: move it to other param?
-                    params.getDirVector());
+                    params.getDirVector(), game);
 
-            game.chainAbility(this,
+            game.getGameState().chainAbility(this,
                     AbilityType.LIGHTNING_NODE,
                     targetCreature.getParams().getPos(),
-                    params.getDirVector());
+                    params.getDirVector(), game);
         }
     }
 
     @Override
-    void onAbilityCompleted(AbilityUpdatable game) {
+    void onAbilityCompleted(CoreGame game) {
 
     }
 
     @Override
-    void onChannelUpdate(AbilityUpdatable game) {
+    void onChannelUpdate(CoreGame game) {
 
     }
 
     @Override
-    void onActiveUpdate(AbilityUpdatable game) {
+    void onActiveUpdate(CoreGame game) {
 
     }
 
@@ -128,7 +127,7 @@ public class LightningSpark extends Ability {
     }
 
     @Override
-    public void onThisCreatureHit(GameUpdatable game) {
+    public void onThisCreatureHit(CoreGame game) {
 
     }
 
@@ -138,7 +137,7 @@ public class LightningSpark extends Ability {
     }
 
     @Override
-    public void onOtherAbilityHit(AbilityId otherAbilityId, GameUpdatable game) {
+    public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
 
     }
 

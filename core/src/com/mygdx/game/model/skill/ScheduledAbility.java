@@ -1,6 +1,6 @@
 package com.mygdx.game.model.skill;
 
-import com.mygdx.game.game.interface_.CreatureUpdatable;
+import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.ability.AbilityId;
 import com.mygdx.game.model.ability.AbilityParams;
 import com.mygdx.game.model.ability.AbilityType;
@@ -38,7 +38,7 @@ public class ScheduledAbility {
         setReadyToPerform(true);
     }
 
-    public void perform(CreatureId creatureId, CreatureUpdatable game) {
+    public void perform(CreatureId creatureId, CoreGame game) {
         AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
 
         Creature creature = game.getGameState().getCreature(creatureId);
@@ -51,7 +51,7 @@ public class ScheduledAbility {
                 .setSkillStartPos(startPos)
                 .setSkillType(skillType);
 
-        game.spawnAbility(abilityType, abilityParams);
+        game.getGameState().spawnAbility(abilityType, abilityParams, game);
 
         readyToPerform = false;
 

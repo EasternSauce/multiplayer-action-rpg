@@ -1,7 +1,6 @@
 package com.mygdx.game.model.ability;
 
-import com.mygdx.game.game.interface_.AbilityUpdatable;
-import com.mygdx.game.game.interface_.GameUpdatable;
+import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
@@ -17,7 +16,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 public class Fireball extends Projectile {
     AbilityParams params;
 
-    public static Fireball of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
+    public static Fireball of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         Creature creature = game.getGameState().getCreature(abilityParams.getCreatureId());
 
         Fireball ability = Fireball.of();
@@ -43,7 +42,7 @@ public class Fireball extends Projectile {
     }
 
     @Override
-    public void onThisCreatureHit(GameUpdatable game) {
+    public void onThisCreatureHit(CoreGame game) {
 
     }
 
@@ -53,7 +52,7 @@ public class Fireball extends Projectile {
     }
 
     @Override
-    protected void onActiveUpdate(AbilityUpdatable game) {
+    protected void onActiveUpdate(CoreGame game) {
         //projectile speeds up over time
         if (getParams().getSpeed() != null) {
             getParams().setVelocity(getParams().getDirVector().normalized().multiplyBy(getParams().getSpeed()));
@@ -73,28 +72,28 @@ public class Fireball extends Projectile {
     }
 
     @Override
-    public void updatePosition(AbilityUpdatable game) {
+    public void updatePosition(CoreGame game) {
 
     }
 
     @Override
-    void onAbilityStarted(AbilityUpdatable game) {
+    void onAbilityStarted(CoreGame game) {
 
     }
 
     @Override
-    void onDelayedAction(AbilityUpdatable game) {
+    void onDelayedAction(CoreGame game) {
 
     }
 
     @Override
-    protected void onAbilityCompleted(AbilityUpdatable game) {
-        game.chainAbility(this, AbilityType.FIREBALL_EXPLOSION, getParams().getPos(), params.getDirVector());
+    protected void onAbilityCompleted(CoreGame game) {
+        game.getGameState().chainAbility(this, AbilityType.FIREBALL_EXPLOSION, getParams().getPos(), params.getDirVector(), game);
     }
 
 
     @Override
-    public void onOtherAbilityHit(AbilityId otherAbilityId, GameUpdatable game) {
+    public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
 
     }
 

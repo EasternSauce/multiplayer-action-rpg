@@ -11,10 +11,7 @@ import com.mygdx.game.command.*;
 import com.mygdx.game.game.gamestate.ClientGameState;
 import com.mygdx.game.game.gamestate.GameState;
 import com.mygdx.game.game.screen.ConnectScreenMessageHolder;
-import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityId;
-import com.mygdx.game.model.ability.AbilityParams;
-import com.mygdx.game.model.ability.AbilityType;
 import com.mygdx.game.model.action.ActionsHolder;
 import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.action.ability.SkillTryPerformAction;
@@ -38,7 +35,6 @@ import lombok.Setter;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
@@ -79,9 +75,9 @@ public class CoreGameClient extends CoreGame {
             } else {
                 getChat().setIsTyping(false);
                 if (!getChat().getCurrentMessage().isEmpty()) {
-                    getEndPoint().sendTCP(ChatMessageSendCommand.of(getThisClientPlayerId().getValue(), getChat().getCurrentMessage()));
+                    getEndPoint().sendTCP(ChatMessageSendCommand.of(getGameState().getThisClientPlayerId().getValue(), getChat().getCurrentMessage()));
 
-                    getChat().sendMessage(gameState, getThisClientPlayerId().getValue(), getChat().getCurrentMessage());
+                    getChat().sendMessage(getGameState().getThisClientPlayerId().getValue(), getChat().getCurrentMessage(), this);
 
                     getChat().setCurrentMessage("");
                 }
@@ -110,7 +106,7 @@ public class CoreGameClient extends CoreGame {
             }
         }
 
-        PlayerParams playerParams = gameState.getPlayerParams(getThisClientPlayerId());
+        PlayerParams playerParams = gameState.getPlayerParams(getGameState().getThisClientPlayerId());
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             if (getChat().getIsTyping()) {
                 if (!getChat().getCurrentMessage().isEmpty()) {
@@ -118,7 +114,7 @@ public class CoreGameClient extends CoreGame {
                     getChat().setIsTyping(false);
                 }
             } else if (playerParams.getIsInventoryVisible()) {
-                getEndPoint().sendTCP(ActionPerformCommand.of(InventoryToggleAction.of(getThisClientPlayerId())));
+                getEndPoint().sendTCP(ActionPerformCommand.of(InventoryToggleAction.of(getGameState().getThisClientPlayerId())));
 
             }
         }
@@ -151,10 +147,10 @@ public class CoreGameClient extends CoreGame {
                 if (!playerParams.getIsInventoryVisible()) {
                     Vector2 mousePos = mousePosRelativeToCenter();
 
-                    Creature player = gameState.getCreatures().get(getThisClientPlayerId());
+                    Creature player = gameState.getCreatures().get(getGameState().getThisClientPlayerId());
 
                     if (player != null && player.getParams().getMovementCommandsPerSecondLimitTimer().getTime() > Constants.MovementCommandCooldown && gameState.getTime() > menuClickTime + 0.1f) {
-                        getEndPoint().sendTCP(ActionPerformCommand.of(CreatureMoveTowardsTargetAction.of(getThisClientPlayerId(), mousePos)));
+                        getEndPoint().sendTCP(ActionPerformCommand.of(CreatureMoveTowardsTargetAction.of(getGameState().getThisClientPlayerId(), mousePos)));
                     }
                 }
             }
@@ -165,9 +161,7 @@ public class CoreGameClient extends CoreGame {
                 System.out.println("Vector2.of(" + pos.getX() + "f, " + pos.getY() + "f),");
             }
             if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
-
-                Creature player = gameState.getCreatures().get(getThisClientPlayerId());
-
+                Creature player = gameState.getCreatures().get(getGameState().getThisClientPlayerId());
 
                 Vector2 dirVector = mousePosRelativeToCenter();
 
@@ -183,59 +177,53 @@ public class CoreGameClient extends CoreGame {
                     attackSkill = SkillType.SWORD_SLASH;
                     weaponDamage = 20f;
                 }
-                getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(getThisClientPlayerId(), attackSkill, player.getParams().getPos(), dirVector, weaponDamage)));
+                getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(getGameState().getThisClientPlayerId(), attackSkill, player.getParams().getPos(), dirVector, weaponDamage)));
 
             }
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
-
-                Creature player = gameState.getCreatures().get(getThisClientPlayerId());
-
+                Creature player = gameState.getCreatures().get(getGameState().getThisClientPlayerId());
 
                 Vector2 dirVector = mousePosRelativeToCenter();
 
                 if (playerParams.getSkillMenuSlots().containsKey(0)) {
-                    getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(getThisClientPlayerId(), playerParams.getSkillMenuSlots().get(0), player.getParams().getPos(), dirVector)));
+                    getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(getGameState().getThisClientPlayerId(), playerParams.getSkillMenuSlots().get(0), player.getParams().getPos(), dirVector)));
                 }
 
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
-
-                Creature player = gameState.getCreatures().get(getThisClientPlayerId());
-
+                Creature player = gameState.getCreatures().get(getGameState().getThisClientPlayerId());
 
                 Vector2 dirVector = mousePosRelativeToCenter();
 
                 if (playerParams.getSkillMenuSlots().containsKey(1)) {
-                    getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(getThisClientPlayerId(), playerParams.getSkillMenuSlots().get(1), player.getParams().getPos(), dirVector)));
+                    getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(getGameState().getThisClientPlayerId(), playerParams.getSkillMenuSlots().get(1), player.getParams().getPos(), dirVector)));
                 }
 
 
             }
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
-
-                Creature player = gameState.getCreatures().get(getThisClientPlayerId());
+                Creature player = gameState.getCreatures().get(getGameState().getThisClientPlayerId());
 
 
                 Vector2 dirVector = mousePosRelativeToCenter();
 
                 if (playerParams.getSkillMenuSlots().containsKey(2)) {
-                    getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(getThisClientPlayerId(), playerParams.getSkillMenuSlots().get(2), player.getParams().getPos(), dirVector)));
+                    getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(getGameState().getThisClientPlayerId(), playerParams.getSkillMenuSlots().get(2), player.getParams().getPos(), dirVector)));
                 }
 
 
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
-                getEndPoint().sendTCP(ActionPerformCommand.of(InventoryToggleAction.of(getThisClientPlayerId())));
+                getEndPoint().sendTCP(ActionPerformCommand.of(InventoryToggleAction.of(getGameState().getThisClientPlayerId())));
 
             }
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.F11)) {
-
                 List<EnemySpawn> enemySpawns = EnemySpawnUtils.area1EnemySpawns();
 
-                AreaId areaId = getCurrentAreaId();
+                AreaId areaId = getGameState().getCurrentAreaId();
 
                 enemySpawns.forEach(enemySpawn -> {
                     CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 10000000));
@@ -276,8 +264,8 @@ public class CoreGameClient extends CoreGame {
                 } else if (object instanceof ChatMessageSendCommand) {
                     ChatMessageSendCommand action = (ChatMessageSendCommand) object;
 
-                    if (!Objects.equals(action.getPoster(), getThisClientPlayerId().getValue())) {
-                        getChat().sendMessage(gameState, action.getPoster(), action.getText());
+                    if (!Objects.equals(action.getPoster(), getGameState().getThisClientPlayerId().getValue())) {
+                        getChat().sendMessage(action.getPoster(), action.getText(), CoreGameClient.this);
                     }
 
                 } else if (object instanceof EnemySpawnCommand) {
@@ -304,48 +292,27 @@ public class CoreGameClient extends CoreGame {
 
     }
 
-
     @Override
     public Set<AbilityId> getAbilitiesToUpdate() {
-        Creature player = gameState.getCreatures().get(getThisClientPlayerId());
+        Creature player = getGameState().getCreatures().get(getGameState().getThisClientPlayerId());
 
         if (player == null) {
             return new ConcurrentSkipListSet<>();
         }
 
-        return gameState.getAbilities().keySet().stream().filter(abilityId -> {
-            Ability ability = gameState.getAbilities().get(abilityId);
-            if (ability != null) {
-                return ability.getParams().getPos().distance(player.getParams().getPos()) < Constants.ClientGameUpdateRange;
-            }
-            return false;
-        }).collect(Collectors.toSet());
-    }
-
-    @Override
-    public void onAbilityHitsCreature(CreatureId attackerId, CreatureId targetId, Ability ability) {
-
-        ability.onCreatureHit();
-        ability.getParams().getCreaturesAlreadyHit().put(targetId, ability.getParams().getStateTimer().getTime());
-
-    }
-
-
-    @Override
-    public void handleAttackTarget(CreatureId attackingCreatureId, Vector2 vectorTowardsTarget, SkillType skillType) {
-        // do nothing
+        return getGameState().getAbilitiesWithinRange(player);
     }
 
     @Override
     public void performPhysicsWorldStep() {
-        getEntityManager().getGamePhysics().getPhysicsWorlds().get(getCurrentAreaId()).step();
+        getEntityManager().getGamePhysics().getPhysicsWorlds().get(getGameState().getCurrentAreaId()).step();
 
     }
 
     @Override
     public void initializePlayer(String playerName) {
         gameState.setThisClientPlayerId(CreatureId.of(playerName));
-        getEndPoint().sendTCP(PlayerInitCommand.of(getThisClientPlayerId()));
+        getEndPoint().sendTCP(PlayerInitCommand.of(getGameState().getThisClientPlayerId()));
 
     }
 
@@ -384,50 +351,9 @@ public class CoreGameClient extends CoreGame {
     }
 
     @Override
-    public AreaId getCurrentAreaId() {
-        if (!gameState.getCreatures().containsKey(getThisClientPlayerId())) {
-            return gameState.getDefaultAreaId();
-        }
-
-        return gameState.getCreature(getThisClientPlayerId()).getParams().getAreaId();
-    }
-
-    @Override
-    public void setCreatureMovingVector(CreatureId creatureId, Vector2 dirVector) {
-        // do nothing
-    }
-
-    @Override
-    public void spawnAbility(AbilityType abilityType, AbilityParams abilityParams) {
-        // do nothing, wait for server action
-    }
-
-    @Override
-    public void chainAbility(Ability chainFromAbility, AbilityType abilityType, Vector2 chainToPos, Vector2 dirVector) {
-        // do nothing
-    }
-
-    @Override
     public void dispose() {
         getEndPoint().stop();
     }
-
-
-    @Override
-    public void initAbilityBody(Ability ability) {
-        // do nothing
-    }
-
-    @Override
-    public CreatureId getThisClientPlayerId() {
-        return gameState.getThisClientPlayerId();
-    }
-
-    @Override
-    public Map<Integer, CreatureId> getClientPlayers() {
-        return null;
-    }
-
 
     @Override
     public GameState getGameState() {

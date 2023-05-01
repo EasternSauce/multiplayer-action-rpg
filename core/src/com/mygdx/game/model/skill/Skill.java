@@ -1,7 +1,6 @@
 package com.mygdx.game.model.skill;
 
-import com.mygdx.game.game.interface_.CreatureUpdatable;
-import com.mygdx.game.game.interface_.GameUpdatable;
+import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.ability.AbilityType;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
@@ -172,7 +171,7 @@ public class Skill {
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
-    public void update(CreatureUpdatable game) {
+    public void update(CoreGame game) {
         Creature creature = game.getGameState().getCreature(creatureId);
 
         if (creature.isEffectActive(CreatureEffect.STUN, game)) {
@@ -190,7 +189,7 @@ public class Skill {
 
     }
 
-    public void tryPerform(Vector2 startingPos, Vector2 dirVector, GameUpdatable game) {
+    public void tryPerform(Vector2 startingPos, Vector2 dirVector, CoreGame game) {
         Creature creature = game.getGameState().getCreature(creatureId);
 
         if (creature != null &&

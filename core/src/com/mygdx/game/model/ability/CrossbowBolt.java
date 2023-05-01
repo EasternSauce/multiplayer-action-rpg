@@ -1,8 +1,7 @@
 package com.mygdx.game.model.ability;
 
 
-import com.mygdx.game.game.interface_.AbilityUpdatable;
-import com.mygdx.game.game.interface_.GameUpdatable;
+import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,7 +14,7 @@ public class CrossbowBolt extends Projectile {
 
     AbilityParams params;
 
-    public static CrossbowBolt of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
+    public static CrossbowBolt of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         CrossbowBolt ability = CrossbowBolt.of();
         ability.params = abilityParams.setWidth(1.1f)
                 .setHeight(1.1f)
@@ -37,22 +36,22 @@ public class CrossbowBolt extends Projectile {
     }
 
     @Override
-    public void updatePosition(AbilityUpdatable game) {
+    public void updatePosition(CoreGame game) {
 
     }
 
     @Override
-    void onAbilityStarted(AbilityUpdatable game) {
+    void onAbilityStarted(CoreGame game) {
 
     }
 
     @Override
-    void onDelayedAction(AbilityUpdatable game) {
+    void onDelayedAction(CoreGame game) {
 
     }
 
     @Override
-    void onAbilityCompleted(AbilityUpdatable game) {
+    void onAbilityCompleted(CoreGame game) {
 
     }
 
@@ -63,7 +62,7 @@ public class CrossbowBolt extends Projectile {
     }
 
     @Override
-    public void onThisCreatureHit(GameUpdatable game) {
+    public void onThisCreatureHit(CoreGame game) {
 
     }
 
@@ -73,7 +72,7 @@ public class CrossbowBolt extends Projectile {
     }
 
     @Override
-    public void onOtherAbilityHit(AbilityId otherAbilityId, GameUpdatable game) {
+    public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
 
     }
 

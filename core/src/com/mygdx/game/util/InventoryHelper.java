@@ -8,8 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.esotericsoftware.kryonet.Client;
 import com.mygdx.game.assets.Assets;
 import com.mygdx.game.command.ActionPerformCommand;
-import com.mygdx.game.game.CoreGameClient;
-import com.mygdx.game.game.interface_.GameRenderable;
+import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.action.inventory.*;
 import com.mygdx.game.model.action.loot.LootPileItemTryPickUpAction;
 import com.mygdx.game.model.action.loot.LootPileSpawnAction;
@@ -119,8 +118,8 @@ public class InventoryHelper {
                 (SLOT_SIZE + MARGIN + (SLOT_SIZE + SPACE_BETWEEN_SLOTS) * index);
     }
 
-    public static void render(RenderingLayer renderingLayer, GameRenderable game) {
-        PlayerParams playerParams = game.getGameState().getPlayerParams(game.getThisClientPlayerId());
+    public static void render(RenderingLayer renderingLayer, CoreGame game) {
+        PlayerParams playerParams = game.getGameState().getPlayerParams(game.getGameState().getThisClientPlayerId());
 
         if (playerParams == null) {
             return;
@@ -172,9 +171,9 @@ public class InventoryHelper {
 
     }
 
-    public static void renderPlayerItems(RenderingLayer renderingLayer, GameRenderable game) {
-        Creature player = game.getGameState().getCreature(game.getThisClientPlayerId());
-        PlayerParams playerParams = game.getGameState().getPlayerParams(game.getThisClientPlayerId());
+    public static void renderPlayerItems(RenderingLayer renderingLayer, CoreGame game) {
+        Creature player = game.getGameState().getCreature(game.getGameState().getThisClientPlayerId());
+        PlayerParams playerParams = game.getGameState().getPlayerParams(game.getGameState().getThisClientPlayerId());
 
         Map<Integer, Item> inventoryItems = player.getParams().getInventoryItems();
         Map<Integer, Item> equipmentItems = player.getParams().getEquipmentItems();
@@ -252,9 +251,9 @@ public class InventoryHelper {
 
     }
 
-    public static void renderDescription(RenderingLayer renderingLayer, GameRenderable game) {
-        Creature player = game.getGameState().getCreature(game.getThisClientPlayerId());
-        PlayerParams playerParams = game.getGameState().getPlayerParams(game.getThisClientPlayerId());
+    public static void renderDescription(RenderingLayer renderingLayer, CoreGame game) {
+        Creature player = game.getGameState().getCreature(game.getGameState().getThisClientPlayerId());
+        PlayerParams playerParams = game.getGameState().getPlayerParams(game.getGameState().getThisClientPlayerId());
 
         float x = game.hudMousePos().getX();
         float y = game.hudMousePos().getY();
@@ -302,8 +301,8 @@ public class InventoryHelper {
         }
     }
 
-    public static void renderItemPickUpMenu(RenderingLayer renderingLayer, GameRenderable game) {
-        PlayerParams playerParams = game.getGameState().getPlayerParams(game.getThisClientPlayerId());
+    public static void renderItemPickUpMenu(RenderingLayer renderingLayer, CoreGame game) {
+        PlayerParams playerParams = game.getGameState().getPlayerParams(game.getGameState().getThisClientPlayerId());
 
         if (playerParams.getIsInventoryVisible()) {
             return;
@@ -350,9 +349,9 @@ public class InventoryHelper {
         i.getAndIncrement();
     }
 
-    public static void performMoveItemClick(Client client, GameRenderable game) {
-        Creature player = game.getGameState().getCreature(game.getThisClientPlayerId());
-        PlayerParams playerParams = game.getGameState().getPlayerParams(game.getThisClientPlayerId());
+    public static void performMoveItemClick(Client client, CoreGame game) {
+        Creature player = game.getGameState().getCreature(game.getGameState().getThisClientPlayerId());
+        PlayerParams playerParams = game.getGameState().getPlayerParams(game.getGameState().getThisClientPlayerId());
 
         AtomicReference<Integer> atomicInventorySlotClicked = new AtomicReference<>(null);
         AtomicReference<Integer> atomicEquipmentSlotClicked = new AtomicReference<>(null);
@@ -379,43 +378,43 @@ public class InventoryHelper {
             Integer equipmentSlotClicked = atomicEquipmentSlotClicked.get();
 
             if (inventoryItemBeingMoved != null && inventorySlotClicked != null) {
-                client.sendTCP(ActionPerformCommand.of(InventorySwapSlotsAction.of(game.getThisClientPlayerId(),
+                client.sendTCP(ActionPerformCommand.of(InventorySwapSlotsAction.of(game.getGameState().getThisClientPlayerId(),
                         inventoryItemBeingMoved,
                         inventorySlotClicked)));
             } else if (inventoryItemBeingMoved != null && equipmentSlotClicked != null) {
-                client.sendTCP(ActionPerformCommand.of(InventoryAndEquipmentSwapSlotsAction.of(game.getThisClientPlayerId(),
+                client.sendTCP(ActionPerformCommand.of(InventoryAndEquipmentSwapSlotsAction.of(game.getGameState().getThisClientPlayerId(),
                         inventoryItemBeingMoved,
                         equipmentSlotClicked)));
             } else if (equipmentItemBeingMoved != null && inventorySlotClicked != null) {
-                client.sendTCP(ActionPerformCommand.of(InventoryAndEquipmentSwapSlotsAction.of(game.getThisClientPlayerId(),
+                client.sendTCP(ActionPerformCommand.of(InventoryAndEquipmentSwapSlotsAction.of(game.getGameState().getThisClientPlayerId(),
                         inventorySlotClicked,
                         equipmentItemBeingMoved)));
             }
             //            else if (equipmentItemBeingMoved != null && equipmentSlotClicked != null) {
             //TODO: INSIDE EQUIPMENT SWAP?
-            //                client.sendTCP(PerformActionCommand.of(InventorySwapSlotsAction.of(game.getThisClientPlayerId(),
+            //                client.sendTCP(PerformActionCommand.of(InventorySwapSlotsAction.of(gameState.getThisClientPlayerId(),
             //                                                                                   equipmentItemBeingMoved,
             //                                                                                   equipmentSlotClicked)));
             //            }
             else if (inventorySlotClicked != null) {
                 if (player.getParams().getInventoryItems().containsKey(inventorySlotClicked)) {
-                    client.sendTCP(ActionPerformCommand.of(InventoryItemPickUpAction.of(game.getThisClientPlayerId(),
+                    client.sendTCP(ActionPerformCommand.of(InventoryItemPickUpAction.of(game.getGameState().getThisClientPlayerId(),
                             inventorySlotClicked)));
                 }
             } else if (equipmentSlotClicked != null) {
                 if (player.getParams().getEquipmentItems().containsKey(equipmentSlotClicked)) {
                     playerParams.setEquipmentItemBeingMoved(equipmentSlotClicked);
 
-                    client.sendTCP(ActionPerformCommand.of(EquipmentItemPickUpAction.of(game.getThisClientPlayerId(),
+                    client.sendTCP(ActionPerformCommand.of(EquipmentItemPickUpAction.of(game.getGameState().getThisClientPlayerId(),
                             equipmentSlotClicked)));
                 }
             } else {
-                client.sendTCP(ActionPerformCommand.of(InventoryMoveCancelAction.of(game.getThisClientPlayerId())));
+                client.sendTCP(ActionPerformCommand.of(InventoryMoveCancelAction.of(game.getGameState().getThisClientPlayerId())));
             }
 
         } else {
             if (playerParams.getInventoryItemBeingMoved() != null) {
-                client.sendTCP(ActionPerformCommand.of(LootPileSpawnOnPlayerItemDropAction.of(game.getThisClientPlayerId())));
+                client.sendTCP(ActionPerformCommand.of(LootPileSpawnOnPlayerItemDropAction.of(game.getGameState().getThisClientPlayerId())));
             }
 
             if (playerParams.getEquipmentItemBeingMoved() != null) {
@@ -428,7 +427,7 @@ public class InventoryHelper {
                 client.sendTCP(ActionPerformCommand.of(LootPileSpawnAction.of(player.getParams().getAreaId(),
                         player.getParams().getPos(),
                         items)));
-                client.sendTCP(ActionPerformCommand.of(InventoryMoveCancelAction.of(game.getThisClientPlayerId())));
+                client.sendTCP(ActionPerformCommand.of(InventoryMoveCancelAction.of(game.getGameState().getThisClientPlayerId())));
 
             }
         }
@@ -436,8 +435,8 @@ public class InventoryHelper {
 
     }
 
-    public static boolean tryPerformItemPickupMenuClick(Client client, CoreGameClient game) {
-        PlayerParams playerParams = game.getGameState().getPlayerParams(game.getThisClientPlayerId());
+    public static boolean tryPerformItemPickupMenuClick(Client client, CoreGame game) {
+        PlayerParams playerParams = game.getGameState().getPlayerParams(game.getGameState().getThisClientPlayerId());
 
         float x = game.hudMousePos().getX();
         float y = game.hudMousePos().getY();
@@ -456,7 +455,7 @@ public class InventoryHelper {
                             20f);
 
                     if (rect.contains(x, y)) {
-                        client.sendTCP(ActionPerformCommand.of(LootPileItemTryPickUpAction.of(game.getThisClientPlayerId(),
+                        client.sendTCP(ActionPerformCommand.of(LootPileItemTryPickUpAction.of(game.getGameState().getThisClientPlayerId(),
                                 item)));
                         isSuccessful.set(true);
                     }

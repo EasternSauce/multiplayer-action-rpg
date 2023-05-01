@@ -1,7 +1,7 @@
 package com.mygdx.game.physics.body;
 
 import com.badlogic.gdx.physics.box2d.Body;
-import com.mygdx.game.game.interface_.GameUpdatable;
+import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
@@ -31,7 +31,7 @@ public class CreatureBody {
         return creatureId;
     }
 
-    public void init(GameUpdatable game, AreaId areaId) {
+    public void init(AreaId areaId, CoreGame game) {
         Creature creature = game.getGameState().getCreature(creatureId);
 
         world = game.getPhysicsWorld(areaId);
@@ -45,7 +45,7 @@ public class CreatureBody {
         bodyCreated = true;
     }
 
-    public void update(GameUpdatable game) {
+    public void update(CoreGame game) {
         if (!game.getGameState().getCreatures().containsKey(creatureId)) {
             return;
         }

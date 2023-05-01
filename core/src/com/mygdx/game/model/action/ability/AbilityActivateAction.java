@@ -1,7 +1,6 @@
 package com.mygdx.game.model.action.ability;
 
-import com.mygdx.game.game.gamestate.GameState;
-import com.mygdx.game.game.interface_.GameActionApplicable;
+import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.util.Vector2;
@@ -16,12 +15,12 @@ public class AbilityActivateAction extends GameStateAction {
     private Ability ability;
 
     @Override
-    public Vector2 actionObjectPos(GameState gameState) {
+    public Vector2 actionObjectPos(CoreGame game) {
         return ability.getParams().getPos();
     }
 
     @Override
-    public void applyToGame(GameActionApplicable game) {
+    public void applyToGame(CoreGame game) {
         game.getEventProcessor().getAbilitiesToBeActivated().add(ability.getParams().getId());
     }
 

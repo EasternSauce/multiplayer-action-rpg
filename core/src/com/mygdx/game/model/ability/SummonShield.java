@@ -1,8 +1,6 @@
 package com.mygdx.game.model.ability;
 
-import com.mygdx.game.game.interface_.AbilityUpdatable;
-import com.mygdx.game.game.interface_.GameActionApplicable;
-import com.mygdx.game.game.interface_.GameUpdatable;
+import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,7 +13,7 @@ public class SummonShield extends Ability {
 
     AbilityParams params;
 
-    public static SummonShield of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
+    public static SummonShield of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         float flipValue = abilityParams.getDirVector().angleDeg();
 
         SummonShield ability = SummonShield.of();
@@ -38,7 +36,7 @@ public class SummonShield extends Ability {
     }
 
     @Override
-    public void init(GameActionApplicable game) {
+    public void init(CoreGame game) {
 
         getParams().setState(AbilityState.CHANNEL);
         getParams().getStateTimer().restart();
@@ -58,22 +56,22 @@ public class SummonShield extends Ability {
     }
 
     @Override
-    void onAbilityStarted(AbilityUpdatable game) {
+    void onAbilityStarted(CoreGame game) {
 
     }
 
     @Override
-    void onDelayedAction(AbilityUpdatable game) {
+    void onDelayedAction(CoreGame game) {
 
     }
 
     @Override
-    void onAbilityCompleted(AbilityUpdatable game) {
+    void onAbilityCompleted(CoreGame game) {
 
     }
 
     @Override
-    public void updatePosition(AbilityUpdatable game) {
+    public void updatePosition(CoreGame game) {
         Vector2 dirVector;
         if (getParams().getDirVector().len() <= 0) {
             dirVector = Vector2.of(1, 0);
@@ -98,13 +96,13 @@ public class SummonShield extends Ability {
     }
 
     @Override
-    void onChannelUpdate(AbilityUpdatable game) {
+    void onChannelUpdate(CoreGame game) {
         updatePosition(game);
 
     }
 
     @Override
-    void onActiveUpdate(AbilityUpdatable game) {
+    void onActiveUpdate(CoreGame game) {
         updatePosition(game);
 
     }
@@ -115,7 +113,7 @@ public class SummonShield extends Ability {
     }
 
     @Override
-    public void onThisCreatureHit(GameUpdatable game) {
+    public void onThisCreatureHit(CoreGame game) {
 
     }
 
@@ -125,7 +123,7 @@ public class SummonShield extends Ability {
     }
 
     @Override
-    public void onOtherAbilityHit(AbilityId otherAbilityId, GameUpdatable game) {
+    public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
         Ability otherAbility = game.getGameState().getAbility(otherAbilityId);
         if (otherAbility != null) {
             if (otherAbility.isRanged()) {

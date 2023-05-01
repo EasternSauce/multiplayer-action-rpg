@@ -1,6 +1,6 @@
 package com.mygdx.game.game.entity;
 
-import com.mygdx.game.game.interface_.GameUpdatable;
+import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.ability.AbilityId;
 import com.mygdx.game.model.area.LootPileId;
 import com.mygdx.game.model.creature.CreatureId;
@@ -31,7 +31,7 @@ public class EntityEventProcessor {
     @Getter
     private final List<TeleportEvent> teleportEvents = Collections.synchronizedList(new ArrayList<>());
 
-    public void process(GameEntityManager gameEntityManager, GameUpdatable game) {
+    public void process(GameEntityManager gameEntityManager, CoreGame game) {
         getCreatureModelsToBeCreated().forEach(creatureId -> gameEntityManager.createCreatureEntity(creatureId, game));
         getCreatureModelsToBeCreated().clear();
 

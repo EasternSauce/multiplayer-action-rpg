@@ -1,7 +1,6 @@
 package com.mygdx.game.model.action.loot;
 
-import com.mygdx.game.game.gamestate.GameState;
-import com.mygdx.game.game.interface_.GameActionApplicable;
+import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.area.LootPile;
 import com.mygdx.game.model.creature.CreatureId;
@@ -21,12 +20,12 @@ public class LootPileItemTryPickUpAction extends GameStateAction {
     private Item item;
 
     @Override
-    public Vector2 actionObjectPos(GameState gameState) {
-        return getActionCreaturePos(gameState, playerId);
+    public Vector2 actionObjectPos(CoreGame game) {
+        return getActionCreaturePos(playerId, game);
     }
 
     @Override
-    public void applyToGame(GameActionApplicable game) {
+    public void applyToGame(CoreGame game) {
         Integer freeSlot = null;
         for (int i = 0; i < InventoryHelper.INVENTORY_TOTAL_SLOTS; i++) {
             if (!game.getGameState().getCreature(playerId).getParams().getInventoryItems().containsKey(i)) {

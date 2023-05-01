@@ -4,8 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.mygdx.game.Constants;
 import com.mygdx.game.assets.Assets;
-import com.mygdx.game.game.interface_.GameRenderable;
-import com.mygdx.game.game.interface_.GameUpdatable;
+import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.util.Vector2;
@@ -27,7 +26,7 @@ public class CreatureRenderer {
         return creatureRenderer;
     }
 
-    public void init(TextureAtlas atlas, GameUpdatable game) {
+    public void init(TextureAtlas atlas, CoreGame game) {
         creatureSprite = CreatureSprite.of(creatureId);
         creatureStunnedAnimationRenderer = CreatureStunnedAnimationRenderer.of(creatureId);
 
@@ -38,7 +37,7 @@ public class CreatureRenderer {
         creatureStunnedAnimationRenderer.prepareAnimation(atlas);
     }
 
-    public void update(GameRenderable game) {
+    public void update(CoreGame game) {
         Creature creature = game.getGameState().getCreature(creatureId);
 
         creatureSprite.updatePosition(creature);
@@ -55,7 +54,7 @@ public class CreatureRenderer {
         creatureSprite.render(renderingLayer);
     }
 
-    public void renderLifeBar(RenderingLayer renderingLayer, GameRenderable game) {
+    public void renderLifeBar(RenderingLayer renderingLayer, CoreGame game) {
         Creature creature = game.getGameState().getCreature(creatureId);
 
         if (creature != null) {
@@ -70,7 +69,7 @@ public class CreatureRenderer {
     }
 
 
-    public void renderCreatureId(RenderingLayer renderingLayer, GameRenderable game) {
+    public void renderCreatureId(RenderingLayer renderingLayer, CoreGame game) {
         Creature creature = game.getGameState().getCreature(creatureId);
 
         String name = creature.getId().getValue();

@@ -1,7 +1,6 @@
 package com.mygdx.game.model.action.creature;
 
-import com.mygdx.game.game.gamestate.GameState;
-import com.mygdx.game.game.interface_.GameActionApplicable;
+import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.area.LootPile;
@@ -32,12 +31,12 @@ public class CreatureHitAction extends GameStateAction {
     private Ability ability;
 
     @Override
-    public Vector2 actionObjectPos(GameState gameState) {
-        return getActionCreaturePos(gameState, targetId);
+    public Vector2 actionObjectPos(CoreGame game) {
+        return getActionCreaturePos(targetId, game);
     }
 
     @Override
-    public void applyToGame(GameActionApplicable game) {
+    public void applyToGame(CoreGame game) {
         Creature targetCreature = game.getGameState().getCreature(targetId);
 
         if (targetCreature == null) {
@@ -57,7 +56,7 @@ public class CreatureHitAction extends GameStateAction {
         }
     }
 
-    public void spawnDrops(GameActionApplicable game) {
+    public void spawnDrops(CoreGame game) {
         Creature creature = game.getGameState().getCreature(targetId);
 
         Set<Item> items = new ConcurrentSkipListSet<>();

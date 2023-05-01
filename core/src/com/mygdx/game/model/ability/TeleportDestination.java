@@ -1,7 +1,6 @@
 package com.mygdx.game.model.ability;
 
-import com.mygdx.game.game.interface_.AbilityUpdatable;
-import com.mygdx.game.game.interface_.GameUpdatable;
+import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.util.TeleportEvent;
@@ -17,7 +16,7 @@ public class TeleportDestination extends Ability {
     AbilityParams params;
 
     public static TeleportDestination of(AbilityParams abilityParams,
-                                         @SuppressWarnings("unused") AbilityUpdatable game) {
+                                         @SuppressWarnings("unused") CoreGame game) {
         Creature creature = game.getGameState().getCreature(abilityParams.getCreatureId());
 
         Vector2 teleportPos =
@@ -43,7 +42,7 @@ public class TeleportDestination extends Ability {
         return ability;
     }
 
-    private static Vector2 calculatePos(Vector2 pos, Vector2 creaturePos, AreaId areaId, AbilityUpdatable game) {
+    private static Vector2 calculatePos(Vector2 pos, Vector2 creaturePos, AreaId areaId, CoreGame game) {
         Vector2 vectorTowards = creaturePos.vectorTowards(pos);
 
         float maxRange = 14f;
@@ -67,12 +66,12 @@ public class TeleportDestination extends Ability {
     }
 
     @Override
-    public void updatePosition(AbilityUpdatable game) {
+    public void updatePosition(CoreGame game) {
 
     }
 
     @Override
-    void onAbilityStarted(AbilityUpdatable game) {
+    void onAbilityStarted(CoreGame game) {
         game.addTeleportEvent(TeleportEvent.of(getParams().getCreatureId(),
                 getParams().getPos(),
                 getParams().getAreaId(),
@@ -80,23 +79,23 @@ public class TeleportDestination extends Ability {
     }
 
     @Override
-    void onDelayedAction(AbilityUpdatable game) {
+    void onDelayedAction(CoreGame game) {
 
     }
 
     @Override
-    void onAbilityCompleted(AbilityUpdatable game) {
+    void onAbilityCompleted(CoreGame game) {
 
     }
 
 
     @Override
-    void onChannelUpdate(AbilityUpdatable game) {
+    void onChannelUpdate(CoreGame game) {
 
     }
 
     @Override
-    void onActiveUpdate(AbilityUpdatable game) {
+    void onActiveUpdate(CoreGame game) {
 
     }
 
@@ -106,7 +105,7 @@ public class TeleportDestination extends Ability {
     }
 
     @Override
-    public void onThisCreatureHit(GameUpdatable game) {
+    public void onThisCreatureHit(CoreGame game) {
 
     }
 
@@ -116,7 +115,7 @@ public class TeleportDestination extends Ability {
     }
 
     @Override
-    public void onOtherAbilityHit(AbilityId otherAbilityId, GameUpdatable game) {
+    public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
 
     }
 }

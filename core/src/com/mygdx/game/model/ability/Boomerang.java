@@ -1,8 +1,7 @@
 package com.mygdx.game.model.ability;
 
 
-import com.mygdx.game.game.interface_.AbilityUpdatable;
-import com.mygdx.game.game.interface_.GameUpdatable;
+import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.skill.Skill;
 import com.mygdx.game.model.util.Vector2;
@@ -17,7 +16,7 @@ public class Boomerang extends Projectile {
 
     AbilityParams params;
 
-    public static Boomerang of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
+    public static Boomerang of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         Boomerang ability = Boomerang.of();
         ability.params = abilityParams.setWidth(1.3f)
                 .setHeight(1.3f)
@@ -39,22 +38,22 @@ public class Boomerang extends Projectile {
     }
 
     @Override
-    public void updatePosition(AbilityUpdatable game) {
+    public void updatePosition(CoreGame game) {
 
     }
 
     @Override
-    void onAbilityStarted(AbilityUpdatable game) {
+    void onAbilityStarted(CoreGame game) {
 
     }
 
     @Override
-    void onDelayedAction(AbilityUpdatable game) {
+    void onDelayedAction(CoreGame game) {
 
     }
 
     @Override
-    void onAbilityCompleted(AbilityUpdatable game) {
+    void onAbilityCompleted(CoreGame game) {
 
     }
 
@@ -66,7 +65,7 @@ public class Boomerang extends Projectile {
     }
 
     @Override
-    public void onThisCreatureHit(GameUpdatable game) {
+    public void onThisCreatureHit(CoreGame game) {
         if (getParams().getIsComingBack()) {
 
             Creature creature = game.getGameState().getCreature(getParams().getCreatureId());
@@ -79,7 +78,7 @@ public class Boomerang extends Projectile {
     }
 
     @Override
-    void onActiveUpdate(AbilityUpdatable game) {
+    void onActiveUpdate(CoreGame game) {
         if (getParams().getSpeed() != null) {
             getParams().setVelocity(getParams().getDirVector().normalized().multiplyBy(getParams().getSpeed()));
         }
@@ -139,7 +138,7 @@ public class Boomerang extends Projectile {
     }
 
     @Override
-    public void onOtherAbilityHit(AbilityId otherAbilityId, GameUpdatable game) {
+    public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
 
     }
 }

@@ -1,7 +1,6 @@
 package com.mygdx.game.model.ability;
 
-import com.mygdx.game.game.interface_.AbilityUpdatable;
-import com.mygdx.game.game.interface_.GameUpdatable;
+import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.Enemy;
 import com.mygdx.game.model.creature.Player;
@@ -20,7 +19,7 @@ public class PlayfulGhost extends Projectile {
 
     AbilityParams params;
 
-    public static PlayfulGhost of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
+    public static PlayfulGhost of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         PlayfulGhost ability = PlayfulGhost.of();
         ability.params = abilityParams.setWidth(1.5f)
                 .setHeight(1.5f)
@@ -43,22 +42,22 @@ public class PlayfulGhost extends Projectile {
     }
 
     @Override
-    public void updatePosition(AbilityUpdatable game) {
+    public void updatePosition(CoreGame game) {
 
     }
 
     @Override
-    void onAbilityStarted(AbilityUpdatable game) {
+    void onAbilityStarted(CoreGame game) {
 
     }
 
     @Override
-    void onDelayedAction(AbilityUpdatable game) {
+    void onDelayedAction(CoreGame game) {
 
     }
 
     @Override
-    void onAbilityCompleted(AbilityUpdatable game) {
+    void onAbilityCompleted(CoreGame game) {
 
     }
 
@@ -75,7 +74,7 @@ public class PlayfulGhost extends Projectile {
     }
 
     @Override
-    void onActiveUpdate(AbilityUpdatable game) {
+    void onActiveUpdate(CoreGame game) {
         if (getParams().getSpeed() != null) {
             getParams().setVelocity(getParams().getDirVector().normalized().multiplyBy(getParams().getSpeed()));
         }
@@ -158,7 +157,7 @@ public class PlayfulGhost extends Projectile {
     }
 
     @Override
-    public void onThisCreatureHit(GameUpdatable game) {
+    public void onThisCreatureHit(CoreGame game) {
 
     }
 
@@ -168,7 +167,7 @@ public class PlayfulGhost extends Projectile {
     }
 
     @Override
-    public void onOtherAbilityHit(AbilityId otherAbilityId, GameUpdatable game) {
+    public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
 
     }
 

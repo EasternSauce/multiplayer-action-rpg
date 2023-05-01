@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.game.Constants;
 import com.mygdx.game.assets.Assets;
 import com.mygdx.game.chat.Chat;
-import com.mygdx.game.game.interface_.GameRenderable;
+import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.renderer.RenderingLayer;
@@ -16,7 +16,7 @@ import space.earlygrey.shapedrawer.ShapeDrawer;
 import java.util.Locale;
 
 public class HudRendererHelper {
-    public static void renderHud(GameRenderable game) {
+    public static void renderHud(CoreGame game) {
         RenderingLayer renderingLayer = game.getEntityManager().getGameRenderer().getHudRenderingLayer();
 
         renderingLayer.begin();
@@ -26,8 +26,8 @@ public class HudRendererHelper {
 
         renderFpsCounter(renderingLayer);
 
-        if (game.getThisClientPlayerId() != null) {
-            Creature player = game.getGameState().getCreature(game.getThisClientPlayerId());
+        if (game.getGameState().getThisClientPlayerId() != null) {
+            Creature player = game.getGameState().getCreature(game.getGameState().getThisClientPlayerId());
 
             SkillMenuHelper.renderSkillMenu(renderingLayer, game);
 

@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.mygdx.game.game.interface_.GameRenderable;
+import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.creature.effect.CreatureEffect;
@@ -49,7 +49,7 @@ public class CreatureSprite {
         sprite.setSize(creature.animationConfig().getSpriteWidth(), creature.animationConfig().getSpriteHeight());
     }
 
-    public void updateForAliveCreature(GameRenderable game, Creature creature) {
+    public void updateForAliveCreature(CoreGame game, Creature creature) {
         TextureRegion texture;
         if (!creature.getParams().getIsMoving() || creature.isEffectActive(CreatureEffect.STUN, game)) {
             texture = getFacingTexture(creature, creature.facingDirection(game));
@@ -63,7 +63,7 @@ public class CreatureSprite {
         sprite.setRegion(texture);
     }
 
-    public void updateForDeadCreature(GameRenderable game) {
+    public void updateForDeadCreature(CoreGame game) {
         Creature creature = game.getGameState().getCreature(creatureId);
 
         TextureRegion texture = getFacingTexture(creature, WorldDirection.RIGHT);
@@ -74,7 +74,7 @@ public class CreatureSprite {
         sprite.setRegion(texture);
     }
 
-    public TextureRegion getRunningAnimationFrame(GameRenderable game) {
+    public TextureRegion getRunningAnimationFrame(CoreGame game) {
         Creature creature = game.getGameState().getCreature(creatureId);
 
         WorldDirection currentDirection = creature.facingDirection(game);

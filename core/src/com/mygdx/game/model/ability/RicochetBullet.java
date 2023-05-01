@@ -1,7 +1,6 @@
 package com.mygdx.game.model.ability;
 
-import com.mygdx.game.game.interface_.AbilityUpdatable;
-import com.mygdx.game.game.interface_.GameUpdatable;
+import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class RicochetBullet extends Projectile {
     AbilityParams params;
 
-    public static RicochetBullet of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
+    public static RicochetBullet of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         RicochetBullet ability = RicochetBullet.of();
         ability.params = abilityParams.setWidth(0.8f)
                 .setHeight(0.8f)
@@ -37,22 +36,22 @@ public class RicochetBullet extends Projectile {
     }
 
     @Override
-    public void updatePosition(AbilityUpdatable game) {
+    public void updatePosition(CoreGame game) {
 
     }
 
     @Override
-    void onAbilityStarted(AbilityUpdatable game) {
+    void onAbilityStarted(CoreGame game) {
 
     }
 
     @Override
-    void onDelayedAction(AbilityUpdatable game) {
+    void onDelayedAction(CoreGame game) {
 
     }
 
     @Override
-    void onAbilityCompleted(AbilityUpdatable game) {
+    void onAbilityCompleted(CoreGame game) {
 
     }
 
@@ -63,7 +62,7 @@ public class RicochetBullet extends Projectile {
     }
 
     @Override
-    public void onThisCreatureHit(GameUpdatable game) {
+    public void onThisCreatureHit(CoreGame game) {
 
     }
 
@@ -127,7 +126,7 @@ public class RicochetBullet extends Projectile {
     }
 
     @Override
-    public void onOtherAbilityHit(AbilityId otherAbilityId, GameUpdatable game) {
+    public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
 
     }
 

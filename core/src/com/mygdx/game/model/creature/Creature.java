@@ -1,8 +1,6 @@
 package com.mygdx.game.model.creature;
 
-import com.mygdx.game.game.interface_.CreatureUpdatable;
-import com.mygdx.game.game.interface_.GameRenderable;
-import com.mygdx.game.game.interface_.GameUpdatable;
+import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityState;
 import com.mygdx.game.model.creature.effect.CreatureEffect;
@@ -23,7 +21,7 @@ public abstract class Creature {
 
     public abstract Creature setParams(CreatureParams params);
 
-    public void update(float delta, CreatureUpdatable game) {
+    public void update(float delta, CoreGame game) {
         regenerateStamina();
 
         if (!getParams().getReachedTargetPos()) {
@@ -58,7 +56,7 @@ public abstract class Creature {
         }
     }
 
-    private void updateMovement(CreatureUpdatable game) {
+    private void updateMovement(CoreGame game) {
         Vector2 currentPos = getParams().getPos();
         Vector2 targetPos = getParams().getMovementCommandTargetPos();
 
@@ -73,9 +71,9 @@ public abstract class Creature {
             Vector2 dirVector = vectorBetween.normalized();
 
             if (isEffectActive(CreatureEffect.STUN, game)) {
-                game.setCreatureMovingVector(getParams().getId(), Vector2.of(0f, 0f));
+                game.getGameState().setCreatureMovingVector(getParams().getId(), Vector2.of(0f, 0f));
             } else {
-                game.setCreatureMovingVector(getParams().getId(), dirVector);
+                game.getGameState().setCreatureMovingVector(getParams().getId(), dirVector);
             }
 
 
@@ -104,7 +102,7 @@ public abstract class Creature {
         return !getParams().getIsDead();
     }
 
-    public WorldDirection facingDirection(GameRenderable game) {
+    public WorldDirection facingDirection(CoreGame game) {
         float deg = getParams().getMovingVector().angleDeg();
 
         if (deg >= 45 && deg < 135) {
@@ -131,7 +129,7 @@ public abstract class Creature {
         return 4;
     }
 
-    public void updateAutomaticControls(CreatureUpdatable game) {
+    public void updateAutomaticControls(CoreGame game) {
 
     }
 
@@ -170,7 +168,7 @@ public abstract class Creature {
         return skills;
     }
 
-    public boolean isAttackShielded(boolean isRanged, Vector2 dirVector, GameUpdatable game) {
+    public boolean isAttackShielded(boolean isRanged, Vector2 dirVector, CoreGame game) {
         if (!isRanged) { // check if target is pointing shield at the attack
             // TODO: if don't have shield ability return false
             Ability shieldAbility = game.getGameState().getAbilityBySkillType(getParams().getId(), SkillType.SUMMON_SHIELD);
@@ -188,7 +186,7 @@ public abstract class Creature {
         return false;
     }
 
-    public void onBeingHit(Ability ability, GameUpdatable game) {
+    public void onBeingHit(Ability ability, CoreGame game) {
         boolean isShielded = isAttackShielded(ability.isRanged(), ability.getParams().getDirVector(), game);
 
         if (!isShielded) {
@@ -259,18 +257,18 @@ public abstract class Creature {
     //        });
     //    }
     //
-    public boolean isEffectActive(CreatureEffect effect, GameUpdatable game) {
+    public boolean isEffectActive(CreatureEffect effect, CoreGame game) {
         CreatureEffectState effectState = getParams().getEffects().get(effect);
         return game.getGameState().getTime() >= effectState.getStartTime() &&
                 game.getGameState().getTime() < effectState.getStartTime() + effectState.getDuration();
     }
 
-    public float getCurrentEffectDuration(CreatureEffect effect, GameUpdatable game) {
+    public float getCurrentEffectDuration(CreatureEffect effect, CoreGame game) {
         CreatureEffectState effectState = getParams().getEffects().get(effect);
         return game.getGameState().getTime() - effectState.getStartTime();
     }
 
-    public void applyEffect(CreatureEffect effect, float duration, GameUpdatable game) {
+    public void applyEffect(CreatureEffect effect, float duration, CoreGame game) {
         CreatureEffectState effectState = getParams().getEffects().get(effect);
         effectState.setStartTime(game.getGameState().getTime());
         effectState.setDuration(duration);

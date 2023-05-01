@@ -1,7 +1,7 @@
 package com.mygdx.game.physics.util;
 
 import com.mygdx.game.Constants;
-import com.mygdx.game.game.interface_.GameUpdatable;
+import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityState;
 import com.mygdx.game.model.area.AreaGate;
@@ -15,7 +15,7 @@ import com.mygdx.game.physics.event.*;
 
 public class PhysicsHelper {
 
-    public static void processPhysicsEventQueue(GameUpdatable game) {
+    public static void processPhysicsEventQueue(CoreGame game) {
         game.getPhysicsEventQueue().forEach(physicsEvent -> {
             if (physicsEvent instanceof AbilityHitsCreatureEvent) {
                 AbilityHitsCreatureEvent event = (AbilityHitsCreatureEvent) physicsEvent;
@@ -125,8 +125,7 @@ public class PhysicsHelper {
 
     }
 
-    private static void handleCreatureAttacked(AbilityHitsCreatureEvent event, GameUpdatable game) {
-
+    private static void handleCreatureAttacked(AbilityHitsCreatureEvent event, CoreGame game) {
         Creature sourceCreature = game.getGameState().getCreature(event.getSourceCreatureId());
         Creature destinationCreature = game.getGameState().getCreature(event.getDestinationCreatureId());
         Ability ability = game.getGameState().getAbility(event.getAbilityId());
@@ -135,15 +134,15 @@ public class PhysicsHelper {
             if ((sourceCreature instanceof Player || destinationCreature instanceof Player) &&
                     !ability.getParams().getCreaturesAlreadyHit().containsKey(event.getDestinationCreatureId())) {
 
-                game.onAbilityHitsCreature(event.getSourceCreatureId(), event.getDestinationCreatureId(), ability);
+                game.getGameState().onAbilityHitsCreature(event.getSourceCreatureId(), event.getDestinationCreatureId(), ability);
             }
 
 
         }
     }
 
-    public static void handleForceUpdateBodyPositions(GameUpdatable game) {
-        if (game.isForceUpdateBodyPositions()) { // only runs after receiving game state update
+    public static void handleForceUpdateBodyPositions(CoreGame game) {
+        if (game.isForceUpdateBodyPositions()) { // only runs after receiving gameState state update
             game.setForceUpdateBodyPositions(false);
 
             game.getGameState().getCreatures().forEach((creatureId, creature) -> {

@@ -1,13 +1,13 @@
 package com.mygdx.game.model.ability;
 
 
-import com.mygdx.game.game.interface_.AbilityUpdatable;
+import com.mygdx.game.game.CoreGame;
 
 import java.util.function.BiFunction;
 
 public class AbilityFactory {
 
-    public static BiFunction<AbilityParams, AbilityUpdatable, Ability> getAbilityByType(AbilityType abilityType) {
+    public static BiFunction<AbilityParams, CoreGame, Ability> getAbilityByType(AbilityType abilityType) {
         switch (abilityType) {
             case SLASH:
                 return SwordSlash::of;
@@ -53,7 +53,7 @@ public class AbilityFactory {
 
     }
 
-    public static Ability produceAbility(AbilityType abilityType, AbilityParams abilityParams, AbilityUpdatable game) {
+    public static Ability produceAbility(AbilityType abilityType, AbilityParams abilityParams, CoreGame game) {
 
         return getAbilityByType(abilityType).apply(abilityParams, game);
     }

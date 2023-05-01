@@ -1,7 +1,6 @@
 package com.mygdx.game.model.action.loot;
 
-import com.mygdx.game.game.gamestate.GameState;
-import com.mygdx.game.game.interface_.GameActionApplicable;
+import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.area.LootPile;
@@ -26,12 +25,12 @@ public class LootPileSpawnAction extends GameStateAction {
     private Set<Item> items;
 
     @Override
-    public Vector2 actionObjectPos(GameState gameState) {
+    public Vector2 actionObjectPos(CoreGame game) {
         return pos;
     }
 
     @Override
-    public void applyToGame(GameActionApplicable game) {
+    public void applyToGame(CoreGame game) {
         LootPileId lootPileId = LootPileId.of("LootPile_" + (int) (Math.random() * 10000000)); // TODO: use seeded rng
 
         Set<Item> lootPileItems = this.getItems()

@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(staticName = "of")
 public class GameplayScreen implements Screen {
     private CoreGame game;
+    @SuppressWarnings("FieldCanBeLocal")
     private Map<AreaId, TiledMap> maps;
 
     public void init(CoreGame game) {
@@ -85,10 +86,10 @@ public class GameplayScreen implements Screen {
         game.getEntityManager()
                 .getGameRenderer()
                 .getAreaRenderers()
-                .get(game.getCurrentAreaId())
+                .get(game.getGameState().getCurrentAreaId())
                 .setView(game.getEntityManager().getGameRenderer().getViewportsHandler().getWorldCamera());
 
-        if (game.getThisClientPlayerId() != null && game.getGameState().getCreature(game.getThisClientPlayerId()) != null) {
+        if (game.getGameState().getThisClientPlayerId() != null && game.getGameState().getCreature(game.getGameState().getThisClientPlayerId()) != null) {
             game.updateCameraPositions();
         }
 

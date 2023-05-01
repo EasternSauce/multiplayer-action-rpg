@@ -1,8 +1,6 @@
 package com.mygdx.game.model.ability;
 
-import com.mygdx.game.game.interface_.AbilityUpdatable;
-import com.mygdx.game.game.interface_.GameActionApplicable;
-import com.mygdx.game.game.interface_.GameUpdatable;
+import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.renderer.config.AbilityAnimationConfig;
@@ -21,7 +19,7 @@ public abstract class Ability {
 
     public abstract Boolean isRanged();
 
-    public void update(Float delta, AbilityUpdatable game) {
+    public void update(Float delta, CoreGame game) {
         AbilityState state = getParams().getState();
 
         if (state == AbilityState.CHANNEL) {
@@ -29,7 +27,7 @@ public abstract class Ability {
 
             if (getParams().getStateTimer().getTime() > getParams().getChannelTime()) {
                 getParams().setState(AbilityState.ACTIVE);
-                game.initAbilityBody(this);
+                game.getGameState().activateAbility(this);
                 onAbilityStarted(game);
                 getParams().getStateTimer().restart();
             }
@@ -54,19 +52,19 @@ public abstract class Ability {
         updateTimers(delta);
     }
 
-    abstract public void updatePosition(AbilityUpdatable game);
+    abstract public void updatePosition(CoreGame game);
 
-    abstract void onAbilityStarted(AbilityUpdatable game);
+    abstract void onAbilityStarted(CoreGame game);
 
-    abstract void onDelayedAction(AbilityUpdatable game);
+    abstract void onDelayedAction(CoreGame game);
 
-    abstract void onAbilityCompleted(AbilityUpdatable game);
+    abstract void onAbilityCompleted(CoreGame game);
 
-    abstract void onChannelUpdate(AbilityUpdatable game);
+    abstract void onChannelUpdate(CoreGame game);
 
-    abstract void onActiveUpdate(AbilityUpdatable game);
+    abstract void onActiveUpdate(CoreGame game);
 
-    public void init(GameActionApplicable game) {
+    public void init(CoreGame game) {
 
         getParams().setState(AbilityState.CHANNEL);
         getParams().getStateTimer().restart();
@@ -98,21 +96,21 @@ public abstract class Ability {
 
     public abstract void onCreatureHit();
 
-    public abstract void onThisCreatureHit(GameUpdatable game);
+    public abstract void onThisCreatureHit(CoreGame game);
 
     public abstract void onTerrainHit(Vector2 abilityPos, Vector2 tilePos);
 
-    public abstract void onOtherAbilityHit(AbilityId otherAbilityId, GameUpdatable game);
+    public abstract void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game);
 
     public boolean bodyShouldExist() {
         return !(getParams().getIsSkipCreatingBody() || getParams().getState() != AbilityState.ACTIVE);
     }
 
-    public Float getDamage(GameUpdatable game) {
+    public Float getDamage(CoreGame game) {
         return getParams().getBaseDamage() * getParams().getDamageMultiplier() * getLevelScaling(game);
     }
 
-    public Integer getSkillLevel(GameUpdatable game) {
+    public Integer getSkillLevel(CoreGame game) {
         Creature creature = game.getGameState().getCreature(getParams().getCreatureId());
 
         if (creature == null || !creature.availableSkills().containsKey(getParams().getSkillType())) {
@@ -125,7 +123,7 @@ public abstract class Ability {
         return new ConcurrentSkipListMap<>();
     }
 
-    public Float getLevelScaling(GameUpdatable game) {
+    public Float getLevelScaling(CoreGame game) {
         if (!levelScalings().containsKey(getSkillLevel(game))) {
             return 1.0f;
         }

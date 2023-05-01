@@ -1,7 +1,6 @@
 package com.mygdx.game.model.ability;
 
-import com.mygdx.game.game.interface_.AbilityUpdatable;
-import com.mygdx.game.game.interface_.GameUpdatable;
+import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class RicochetBallista extends Ability {
     AbilityParams params;
 
-    public static RicochetBallista of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
+    public static RicochetBallista of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         RicochetBallista ability = RicochetBallista.of();
         ability.params = abilityParams.setChannelTime(0f).setActiveTime(0f);
 
@@ -27,40 +26,40 @@ public class RicochetBallista extends Ability {
     }
 
     @Override
-    public void updatePosition(AbilityUpdatable game) {
+    public void updatePosition(CoreGame game) {
 
     }
 
     @Override
-    void onAbilityStarted(AbilityUpdatable game) {
+    void onAbilityStarted(CoreGame game) {
 
     }
 
     @Override
-    void onDelayedAction(AbilityUpdatable game) {
+    void onDelayedAction(CoreGame game) {
 
     }
 
     @Override
-    void onAbilityCompleted(AbilityUpdatable game) {
+    void onAbilityCompleted(CoreGame game) {
 
         Vector2 leftSidePos = getParams().getPos().add(params.getDirVector().normalized().multiplyBy(1f).rotateDeg(90));
         Vector2 rightSidePos =
                 getParams().getPos().add(params.getDirVector().normalized().multiplyBy(1f).rotateDeg(-90));
 
-        game.chainAbility(this, AbilityType.RICOCHET_BULLET, getParams().getPos(), params.getDirVector());
-        game.chainAbility(this, AbilityType.RICOCHET_BULLET, leftSidePos, params.getDirVector());
-        game.chainAbility(this, AbilityType.RICOCHET_BULLET, rightSidePos, params.getDirVector());
+        game.getGameState().chainAbility(this, AbilityType.RICOCHET_BULLET, getParams().getPos(), params.getDirVector(), game);
+        game.getGameState().chainAbility(this, AbilityType.RICOCHET_BULLET, leftSidePos, params.getDirVector(), game);
+        game.getGameState().chainAbility(this, AbilityType.RICOCHET_BULLET, rightSidePos, params.getDirVector(), game);
     }
 
 
     @Override
-    void onChannelUpdate(AbilityUpdatable game) {
+    void onChannelUpdate(CoreGame game) {
 
     }
 
     @Override
-    void onActiveUpdate(AbilityUpdatable game) {
+    void onActiveUpdate(CoreGame game) {
 
     }
 
@@ -70,7 +69,7 @@ public class RicochetBallista extends Ability {
     }
 
     @Override
-    public void onThisCreatureHit(GameUpdatable game) {
+    public void onThisCreatureHit(CoreGame game) {
 
     }
 
@@ -80,7 +79,7 @@ public class RicochetBallista extends Ability {
     }
 
     @Override
-    public void onOtherAbilityHit(AbilityId otherAbilityId, GameUpdatable game) {
+    public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
 
     }
 }

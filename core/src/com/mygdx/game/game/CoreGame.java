@@ -8,18 +8,14 @@ import com.mygdx.game.Constants;
 import com.mygdx.game.chat.Chat;
 import com.mygdx.game.game.entity.EntityEventProcessor;
 import com.mygdx.game.game.entity.GameEntityManager;
-import com.mygdx.game.game.interface_.AbilityUpdatable;
-import com.mygdx.game.game.interface_.CreatureUpdatable;
-import com.mygdx.game.game.interface_.GameActionApplicable;
-import com.mygdx.game.game.interface_.GameRenderable;
+import com.mygdx.game.game.gamestate.GameState;
 import com.mygdx.game.game.screen.ConnectScreen;
+import com.mygdx.game.game.screen.ConnectScreenMessageHolder;
 import com.mygdx.game.game.screen.GameplayScreen;
 import com.mygdx.game.game.screen.MenuScreen;
 import com.mygdx.game.model.ability.AbilityId;
 import com.mygdx.game.model.area.AreaId;
-import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
-import com.mygdx.game.model.skill.SkillType;
 import com.mygdx.game.model.util.TeleportEvent;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.physics.body.AbilityBody;
@@ -31,9 +27,9 @@ import lombok.Getter;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
+import java.util.Set;
 
-public abstract class CoreGame extends Game implements AbilityUpdatable, CreatureUpdatable, GameRenderable, GameActionApplicable {
+public abstract class CoreGame extends Game {
     @Getter
     final private GameEntityManager entityManager = GameEntityManager.of();
 
@@ -44,6 +40,7 @@ public abstract class CoreGame extends Game implements AbilityUpdatable, Creatur
     @Getter
     final private EntityEventProcessor eventProcessor = EntityEventProcessor.of();
 
+    @SuppressWarnings("unused")
     final MenuScreen menuScreen = MenuScreen.of();
     @SuppressWarnings("FieldCanBeLocal")
     private final boolean isDebugEnabled = true;
@@ -55,7 +52,7 @@ public abstract class CoreGame extends Game implements AbilityUpdatable, Creatur
         return isDebugEnabled;
     }
 
-    @Override
+
     public void addTeleportEvent(TeleportEvent teleportEvent) {
         eventProcessor.getTeleportEvents().add(teleportEvent);
     }
@@ -93,60 +90,57 @@ public abstract class CoreGame extends Game implements AbilityUpdatable, Creatur
     abstract public void initState();
 
 
-    abstract public void handleAttackTarget(CreatureId attackingCreatureId,
-                                            Vector2 vectorTowardsTarget,
-                                            SkillType skillType);
+    public abstract Set<AbilityId> getAbilitiesToUpdate();
 
-    @Override
     public PhysicsWorld getPhysicsWorld(AreaId areaId) {
         return entityManager.getGamePhysics().getPhysicsWorlds().get(areaId);
     }
 
     abstract public void performPhysicsWorldStep();
 
-    @Override
+
     public boolean isLineOfSight(AreaId areaId, Vector2 fromPos, Vector2 toPos) {
         return entityManager.getGamePhysics().getPhysicsWorlds().get(areaId).isLineOfSight(fromPos, toPos);
     }
 
-    @Override
+
     public void updateCameraPositions() {
         entityManager.getGameRenderer().getViewportsHandler().updateCameraPositions(this);
     }
 
-    @Override
+
     public void renderB2BodyDebug() {
         if (isDebugEnabled()) {
             entityManager.getGamePhysics()
                     .getDebugRenderer()
-                    .render(entityManager.getGamePhysics().getPhysicsWorlds().get(getCurrentAreaId()).getB2world(),
+                    .render(entityManager.getGamePhysics().getPhysicsWorlds().get(getGameState().getCurrentAreaId()).getB2world(),
                             entityManager.getGameRenderer()
                                     .getViewportsHandler()
                                     .getWorldCameraCombinedProjectionMatrix());
         }
     }
 
-    @Override
+
     public List<PhysicsEvent> getPhysicsEventQueue() {
         return entityManager.getGamePhysics().getPhysicsEventQueue();
     }
 
-    @Override
+
     public Map<CreatureId, CreatureBody> getCreatureBodies() {
         return entityManager.getGamePhysics().getCreatureBodies();
     }
 
-    @Override
+
     public Map<AbilityId, AbilityBody> getAbilityBodies() {
         return entityManager.getGamePhysics().getAbilityBodies();
     }
 
-    @Override
+
     public boolean isForceUpdateBodyPositions() {
         return entityManager.getGamePhysics().getIsForceUpdateBodyPositions();
     }
 
-    @Override
+
     public void setForceUpdateBodyPositions(boolean value) {
         entityManager.getGamePhysics().setIsForceUpdateBodyPositions(value);
     }
@@ -177,14 +171,9 @@ public abstract class CoreGame extends Game implements AbilityUpdatable, Creatur
 
     public abstract void initializePlayer(String playerName);
 
-    @Override
-    public void forEachAliveCreature(Consumer<Creature> creatureAction) {
-        getGameState().getCreatures().values().stream().filter(Creature::isAlive).forEach(creatureAction);
-    }
+    public abstract GameState getGameState();
 
-    @Override
-    public void forEachDeadCreature(Consumer<Creature> creatureAction) {
-        getGameState().getCreatures().values().stream().filter(creature -> !creature.isAlive()).forEach(creatureAction);
-    }
+    public abstract void setConnectScreenInputProcessor(ConnectScreenMessageHolder messageHolder);
 
+    public abstract void setChatInputProcessor();
 }

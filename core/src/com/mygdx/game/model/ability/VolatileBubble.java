@@ -1,7 +1,6 @@
 package com.mygdx.game.model.ability;
 
-import com.mygdx.game.game.interface_.AbilityUpdatable;
-import com.mygdx.game.game.interface_.GameUpdatable;
+import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -14,7 +13,7 @@ public class VolatileBubble extends Projectile {
 
     AbilityParams params;
 
-    public static VolatileBubble of(AbilityParams abilityParams, @SuppressWarnings("unused") AbilityUpdatable game) {
+    public static VolatileBubble of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         VolatileBubble ability = VolatileBubble.of();
         ability.params = abilityParams.setWidth(1.5f)
                 .setHeight(1.5f)
@@ -38,41 +37,41 @@ public class VolatileBubble extends Projectile {
     }
 
     @Override
-    public void updatePosition(AbilityUpdatable game) {
+    public void updatePosition(CoreGame game) {
 
     }
 
     @Override
-    void onAbilityStarted(AbilityUpdatable game) {
+    void onAbilityStarted(CoreGame game) {
 
     }
 
     @Override
-    void onDelayedAction(AbilityUpdatable game) {
+    void onDelayedAction(CoreGame game) {
 
     }
 
     @Override
-    void onAbilityCompleted(AbilityUpdatable game) {
+    void onAbilityCompleted(CoreGame game) {
         float baseAngle = getParams().getDirVector().angleDeg();
 
-        game.chainAbility(this, AbilityType.ICE_SPEAR, getParams().getPos(), params.getDirVector());
-        game.chainAbility(this,
+        game.getGameState().chainAbility(this, AbilityType.ICE_SPEAR, getParams().getPos(), params.getDirVector(), game);
+        game.getGameState().chainAbility(this,
                 AbilityType.ICE_SPEAR,
                 getParams().getPos(),
-                params.getDirVector().setAngleDeg(baseAngle + 72f));
-        game.chainAbility(this,
+                params.getDirVector().setAngleDeg(baseAngle + 72f), game);
+        game.getGameState().chainAbility(this,
                 AbilityType.ICE_SPEAR,
                 getParams().getPos(),
-                params.getDirVector().setAngleDeg(baseAngle + 144f));
-        game.chainAbility(this,
+                params.getDirVector().setAngleDeg(baseAngle + 144f), game);
+        game.getGameState().chainAbility(this,
                 AbilityType.ICE_SPEAR,
                 getParams().getPos(),
-                params.getDirVector().setAngleDeg(baseAngle + 216f));
-        game.chainAbility(this,
+                params.getDirVector().setAngleDeg(baseAngle + 216f), game);
+        game.getGameState().chainAbility(this,
                 AbilityType.ICE_SPEAR,
                 getParams().getPos(),
-                params.getDirVector().setAngleDeg(baseAngle + 288f));
+                params.getDirVector().setAngleDeg(baseAngle + 288f), game);
     }
 
 
@@ -82,7 +81,7 @@ public class VolatileBubble extends Projectile {
     }
 
     @Override
-    public void onThisCreatureHit(GameUpdatable game) {
+    public void onThisCreatureHit(CoreGame game) {
 
     }
 
@@ -92,7 +91,7 @@ public class VolatileBubble extends Projectile {
     }
 
     @Override
-    public void onOtherAbilityHit(AbilityId otherAbilityId, GameUpdatable game) {
+    public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
 
     }
 }

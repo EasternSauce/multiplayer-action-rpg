@@ -3,7 +3,7 @@ package com.mygdx.game.renderer.creature;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.mygdx.game.game.interface_.GameRenderable;
+import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.creature.effect.CreatureEffect;
@@ -32,7 +32,7 @@ public class CreatureStunnedAnimationRenderer {
         this.stunnedAnimation = new Animation<>(0.035f, frames);
     }
 
-    private TextureRegion getStunnedAnimationFrame(GameRenderable game) {
+    private TextureRegion getStunnedAnimationFrame(CoreGame game) {
         Creature creature = game.getGameState().getCreature(creatureId);
 
         float currentStunDuration = creature.getCurrentEffectDuration(CreatureEffect.STUN, game);
@@ -40,7 +40,7 @@ public class CreatureStunnedAnimationRenderer {
         return stunnedAnimation.getKeyFrame(currentStunDuration, true);
     }
 
-    public void render(RenderingLayer renderingLayer, float spriteWidth, GameRenderable game) {
+    public void render(RenderingLayer renderingLayer, float spriteWidth, CoreGame game) {
         Creature creature = game.getGameState().getCreature(creatureId);
 
         float posX = creature.getParams().getPos().getX() - 1.5f;

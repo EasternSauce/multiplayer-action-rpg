@@ -1,7 +1,7 @@
 package com.mygdx.game.physics.body;
 
 import com.badlogic.gdx.physics.box2d.Body;
-import com.mygdx.game.game.interface_.GameUpdatable;
+import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.area.LootPile;
 import com.mygdx.game.model.area.LootPileId;
 import com.mygdx.game.physics.world.PhysicsWorld;
@@ -23,7 +23,7 @@ public class LootPileBody {
         return lootPileBody;
     }
 
-    public void init(GameUpdatable game) {
+    public void init(CoreGame game) {
         LootPile lootPile = game.getGameState().getLootPile(lootPileId);
 
         world = game.getPhysicsWorld(lootPile.getAreaId());

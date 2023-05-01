@@ -1,7 +1,6 @@
 package com.mygdx.game.model.action.creature;
 
-import com.mygdx.game.game.gamestate.GameState;
-import com.mygdx.game.game.interface_.GameActionApplicable;
+import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
@@ -19,11 +18,11 @@ public class PlayerInitAction extends GameStateAction {
     private CreatureId playerId;
 
     @Override
-    public Vector2 actionObjectPos(GameState gameState) {
-        return getActionCreaturePos(gameState, playerId);
+    public Vector2 actionObjectPos(CoreGame game) {
+        return getActionCreaturePos(playerId, game);
     }
 
-    public void applyToGame(GameActionApplicable game) {
+    public void applyToGame(CoreGame game) {
         Creature player;
 
         if (game.getGameState().getRemovedCreatures().containsKey(playerId)) {
@@ -41,7 +40,7 @@ public class PlayerInitAction extends GameStateAction {
 
     }
 
-    private Creature createNewPlayer(GameActionApplicable game) {
+    private Creature createNewPlayer(CoreGame game) {
         Creature player;
         String[] textures = new String[]{"male1", "male2", "female1"};
 
@@ -58,7 +57,7 @@ public class PlayerInitAction extends GameStateAction {
         return player;
     }
 
-    private Creature loadExistingPlayerData(GameActionApplicable game) {
+    private Creature loadExistingPlayerData(CoreGame game) {
         Creature player;
         player = game.getGameState().getRemovedCreatures().get(playerId);
         game.getGameState().getRemovedCreatures().remove(playerId);

@@ -1,7 +1,7 @@
 package com.mygdx.game.physics.body;
 
 import com.badlogic.gdx.physics.box2d.Body;
-import com.mygdx.game.game.interface_.GameUpdatable;
+import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.area.AreaGate;
 import com.mygdx.game.physics.world.PhysicsWorld;
 import lombok.Data;
@@ -26,7 +26,7 @@ public class AreaGateBody {
         return areaGateBody;
     }
 
-    public void init(GameUpdatable game) {
+    public void init(CoreGame game) {
         worldA = game.getPhysicsWorld(areaGate.getAreaA_Id());
         worldB = game.getPhysicsWorld(areaGate.getAreaB_Id());
 
