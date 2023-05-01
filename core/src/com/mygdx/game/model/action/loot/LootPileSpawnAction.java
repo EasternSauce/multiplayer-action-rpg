@@ -8,7 +8,6 @@ import com.mygdx.game.model.area.LootPile;
 import com.mygdx.game.model.area.LootPileId;
 import com.mygdx.game.model.item.Item;
 import com.mygdx.game.model.util.Vector2;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -18,14 +17,14 @@ import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
-@AllArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class LootPileSpawnAction extends GameStateAction {
-    AreaId areaId;
+    private Boolean isServerSideOnly = false;
+    private AreaId areaId;
 
-    Vector2 pos;
-    Set<Item> items;
+    private Vector2 pos;
+    private Set<Item> items;
 
     @Override
     public Vector2 actionObjectPos(GameState gameState) {
@@ -50,5 +49,13 @@ public class LootPileSpawnAction extends GameStateAction {
         game.getGameState().getLootPiles().put(lootPile.getId(), lootPile);
 
         game.getEventProcessor().getLootPileModelsToBeCreated().add(lootPile.getId());
+    }
+
+    public static LootPileSpawnAction of(AreaId areaId, Vector2 pos, Set<Item> items) {
+        LootPileSpawnAction action = LootPileSpawnAction.of();
+        action.areaId = areaId;
+        action.pos = pos;
+        action.items = items;
+        return action;
     }
 }

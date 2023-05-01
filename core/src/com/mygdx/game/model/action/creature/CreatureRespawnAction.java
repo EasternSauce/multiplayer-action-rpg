@@ -7,18 +7,17 @@ import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.util.TeleportEvent;
 import com.mygdx.game.model.util.Vector2;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-@AllArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class CreatureRespawnAction extends GameStateAction {
-    CreatureId creatureId;
-    Vector2 pos;
+    private Boolean isServerSideOnly = false;
+    private CreatureId creatureId;
+    private Vector2 pos;
 
     @Override
     public Vector2 actionObjectPos(GameState gameState) {
@@ -43,5 +42,12 @@ public class CreatureRespawnAction extends GameStateAction {
                     creature.getParams().getAreaId()));
         }
 
+    }
+
+    public static CreatureRespawnAction of(CreatureId creatureId, Vector2 pos) {
+        CreatureRespawnAction action = CreatureRespawnAction.of();
+        action.creatureId = creatureId;
+        action.pos = pos;
+        return action;
     }
 }

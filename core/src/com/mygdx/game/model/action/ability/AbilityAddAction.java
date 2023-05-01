@@ -6,18 +6,16 @@ import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.util.Vector2;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-@AllArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class AbilityAddAction extends GameStateAction {
-
-    Ability ability;
+    private Boolean isServerSideOnly = false;
+    private Ability ability;
 
     @Override
     public Vector2 actionObjectPos(GameState gameState) {
@@ -43,5 +41,11 @@ public class AbilityAddAction extends GameStateAction {
         ability.init(game);
 
         creature.onAbilityPerformed(ability);
+    }
+
+    public static AbilityAddAction of(Ability ability) {
+        AbilityAddAction action = AbilityAddAction.of();
+        action.ability = ability;
+        return action;
     }
 }

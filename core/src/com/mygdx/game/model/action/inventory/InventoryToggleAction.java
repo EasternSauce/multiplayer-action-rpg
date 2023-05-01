@@ -5,17 +5,16 @@ import com.mygdx.game.game.interface_.GameActionApplicable;
 import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.util.Vector2;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-@AllArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class InventoryToggleAction extends GameStateAction {
-    CreatureId creatureId;
+    private Boolean isServerSideOnly = false;
+    private CreatureId creatureId;
 
     @Override
     public Vector2 actionObjectPos(GameState gameState) {
@@ -30,5 +29,11 @@ public class InventoryToggleAction extends GameStateAction {
         boolean isInventoryVisible = game.getGameState().getPlayerParams(creatureId).getIsInventoryVisible();
         game.getGameState().getPlayerParams(creatureId).setIsInventoryVisible(!isInventoryVisible);
 
+    }
+
+    public static InventoryToggleAction of(CreatureId creatureId) {
+        InventoryToggleAction action = InventoryToggleAction.of();
+        action.creatureId = creatureId;
+        return action;
     }
 }

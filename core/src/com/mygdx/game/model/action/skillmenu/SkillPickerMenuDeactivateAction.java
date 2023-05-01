@@ -6,17 +6,16 @@ import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.util.PlayerParams;
 import com.mygdx.game.model.util.Vector2;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-@AllArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class SkillPickerMenuDeactivateAction extends GameStateAction {
-    CreatureId playerId;
+    private Boolean isServerSideOnly = false;
+    private CreatureId playerId;
 
     @Override
     public Vector2 actionObjectPos(GameState gameState) {
@@ -28,5 +27,11 @@ public class SkillPickerMenuDeactivateAction extends GameStateAction {
         PlayerParams playerParams = game.getGameState().getPlayerParams(playerId);
 
         playerParams.setIsSkillMenuPickerSlotBeingChanged(null);
+    }
+
+    public static SkillPickerMenuDeactivateAction of(CreatureId playerId) {
+        SkillPickerMenuDeactivateAction action = SkillPickerMenuDeactivateAction.of();
+        action.playerId = playerId;
+        return action;
     }
 }

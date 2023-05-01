@@ -8,19 +8,18 @@ import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.item.Item;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.util.InventoryHelper;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-@AllArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class LootPileItemTryPickUpAction extends GameStateAction {
-    CreatureId playerId;
+    private Boolean isServerSideOnly = false;
+    private CreatureId playerId;
 
-    Item item;
+    private Item item;
 
     @Override
     public Vector2 actionObjectPos(GameState gameState) {
@@ -56,5 +55,12 @@ public class LootPileItemTryPickUpAction extends GameStateAction {
             }
         }
 
+    }
+
+    public static LootPileItemTryPickUpAction of(CreatureId playerId, Item item) {
+        LootPileItemTryPickUpAction action = LootPileItemTryPickUpAction.of();
+        action.playerId = playerId;
+        action.item = item;
+        return action;
     }
 }

@@ -9,7 +9,6 @@ import com.mygdx.game.model.item.EquipmentSlotType;
 import com.mygdx.game.model.item.Item;
 import com.mygdx.game.model.util.PlayerParams;
 import com.mygdx.game.model.util.Vector2;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -18,14 +17,14 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 @NoArgsConstructor(staticName = "of")
-@AllArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class InventoryAndEquipmentSwapSlotsAction extends GameStateAction {
-    CreatureId creatureId;
+    private Boolean isServerSideOnly = false;
+    private CreatureId creatureId;
 
-    Integer inventoryIndex;
-    Integer equipmentIndex;
+    private Integer inventoryIndex;
+    private Integer equipmentIndex;
 
     @Override
     public Vector2 actionObjectPos(GameState gameState) {
@@ -68,7 +67,13 @@ public class InventoryAndEquipmentSwapSlotsAction extends GameStateAction {
             }
         });
         slotsToRemove.forEach(slotIndex -> playerParams.getSkillMenuSlots().remove(slotIndex));
+    }
 
-
+    public static InventoryAndEquipmentSwapSlotsAction of(CreatureId creatureId, Integer inventoryIndex, Integer equipmentIndex) {
+        InventoryAndEquipmentSwapSlotsAction action = InventoryAndEquipmentSwapSlotsAction.of();
+        action.creatureId = creatureId;
+        action.inventoryIndex = inventoryIndex;
+        action.equipmentIndex = equipmentIndex;
+        return action;
     }
 }

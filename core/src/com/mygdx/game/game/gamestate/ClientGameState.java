@@ -23,10 +23,8 @@ public class ClientGameState extends GameState {
         return getCreaturesToUpdateForPlayerCreatureId(getThisClientPlayerId());
     }
 
-    public void createEventsFromReceivedGameStateData(GameStateData receivedGameStateData, EntityEventProcessor eventProcessor) {
+    public void createEventsFromReceivedGameStateData(GameStateData newGameStateData, EntityEventProcessor eventProcessor) {
         GameStateData oldGameStateData = gameStateData;
-        //noinspection UnnecessaryLocalVariable
-        GameStateData newGameStateData = receivedGameStateData;
 
         Set<CreatureId> oldCreatureIds = oldGameStateData.getCreatures().keySet();
         Set<CreatureId> newCreatureIds = newGameStateData.getCreatures().keySet();

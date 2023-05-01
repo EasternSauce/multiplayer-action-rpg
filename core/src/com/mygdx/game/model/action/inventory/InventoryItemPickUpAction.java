@@ -6,19 +6,18 @@ import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.util.PlayerParams;
 import com.mygdx.game.model.util.Vector2;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-@AllArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class InventoryItemPickUpAction extends GameStateAction {
-    CreatureId creatureId;
+    private Boolean isServerSideOnly = false;
+    private CreatureId creatureId;
 
-    Integer slotIndex;
+    private Integer slotIndex;
 
 
     @Override
@@ -33,5 +32,12 @@ public class InventoryItemPickUpAction extends GameStateAction {
         if (playerParams != null) {
             playerParams.setInventoryItemBeingMoved(slotIndex);
         }
+    }
+
+    public static InventoryItemPickUpAction of(CreatureId creatureId, Integer slotIndex) {
+        InventoryItemPickUpAction action = InventoryItemPickUpAction.of();
+        action.creatureId = creatureId;
+        action.slotIndex = slotIndex;
+        return action;
     }
 }

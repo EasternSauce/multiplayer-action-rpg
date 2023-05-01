@@ -5,17 +5,16 @@ import com.mygdx.game.game.interface_.GameActionApplicable;
 import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.util.Vector2;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-@AllArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class PlayerRemoveAction extends GameStateAction {
-    CreatureId playerId;
+    private Boolean isServerSideOnly = false;
+    private CreatureId playerId;
 
     @Override
     public Vector2 actionObjectPos(GameState gameState) {
@@ -27,5 +26,11 @@ public class PlayerRemoveAction extends GameStateAction {
         game.getGameState().getRemovedCreatures().put(playerId, game.getGameState().getCreature(playerId));
 
         game.getEventProcessor().getCreatureModelsToBeRemoved().add(playerId);
+    }
+
+    public static PlayerRemoveAction of(CreatureId playerId) {
+        PlayerRemoveAction action = PlayerRemoveAction.of();
+        action.playerId = playerId;
+        return action;
     }
 }

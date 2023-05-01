@@ -7,19 +7,18 @@ import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.skill.SkillType;
 import com.mygdx.game.model.util.PlayerParams;
 import com.mygdx.game.model.util.Vector2;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-@AllArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class SkillPickerMenuSlotChangeAction extends GameStateAction {
-    CreatureId playerId;
+    private Boolean isServerSideOnly = false;
+    private CreatureId playerId;
 
-    SkillType skillType;
+    private SkillType skillType;
 
     @Override
     public Vector2 actionObjectPos(GameState gameState) {
@@ -32,5 +31,12 @@ public class SkillPickerMenuSlotChangeAction extends GameStateAction {
 
         playerParams.getSkillMenuSlots().put(playerParams.getIsSkillMenuPickerSlotBeingChanged(), skillType);
         playerParams.setIsSkillMenuPickerSlotBeingChanged(null);
+    }
+
+    public static SkillPickerMenuSlotChangeAction of(CreatureId playerId, SkillType skillType) {
+        SkillPickerMenuSlotChangeAction action = SkillPickerMenuSlotChangeAction.of();
+        action.playerId = playerId;
+        action.skillType = skillType;
+        return action;
     }
 }

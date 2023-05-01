@@ -176,10 +176,10 @@ public class SkillMenuHelper { // TODO: maybe shouldn't be a helper class
 
         AtomicBoolean isSuccessful = new AtomicBoolean(false);
 
-        skillRectangles.forEach((integer, rect) -> {
+        skillRectangles.forEach((slotNum, rect) -> {
             if (rect.contains(x, y)) {
                 client.sendTCP(ActionPerformCommand.of(SkillPickerMenuActivateAction.of(game.getThisClientPlayerId(),
-                        integer)));
+                        slotNum)));
                 isSuccessful.set(true);
             }
         });

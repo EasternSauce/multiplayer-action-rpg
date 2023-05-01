@@ -8,20 +8,19 @@ import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.item.Item;
 import com.mygdx.game.model.util.PlayerParams;
 import com.mygdx.game.model.util.Vector2;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-@AllArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class InventorySwapSlotsAction extends GameStateAction {
-    CreatureId creatureId;
+    private Boolean isServerSideOnly = false;
+    private CreatureId creatureId;
 
-    Integer fromSlotIndex;
-    Integer toSlotIndex;
+    private Integer fromSlotIndex;
+    private Integer toSlotIndex;
 
     @Override
     public Vector2 actionObjectPos(GameState gameState) {
@@ -53,5 +52,13 @@ public class InventorySwapSlotsAction extends GameStateAction {
 
         playerParams.setInventoryItemBeingMoved(null);
         playerParams.setEquipmentItemBeingMoved(null);
+    }
+
+    public static InventorySwapSlotsAction of(CreatureId creatureId, Integer fromSlotIndex, Integer toSlotIndex) {
+        InventorySwapSlotsAction action = InventorySwapSlotsAction.of();
+        action.creatureId = creatureId;
+        action.fromSlotIndex = fromSlotIndex;
+        action.toSlotIndex = toSlotIndex;
+        return action;
     }
 }

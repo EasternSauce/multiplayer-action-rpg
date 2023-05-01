@@ -6,19 +6,18 @@ import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.util.PlayerParams;
 import com.mygdx.game.model.util.Vector2;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-@AllArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class EquipmentItemPickUpAction extends GameStateAction {
-    CreatureId creatureId;
+    private Boolean isServerSideOnly = false;
+    private CreatureId creatureId;
 
-    Integer slotIndex;
+    private Integer slotIndex;
 
 
     @Override
@@ -33,5 +32,12 @@ public class EquipmentItemPickUpAction extends GameStateAction {
         if (playerParams != null) {
             playerParams.setEquipmentItemBeingMoved(slotIndex);
         }
+    }
+
+    public static EquipmentItemPickUpAction of(CreatureId creatureId, Integer slotIndex) {
+        EquipmentItemPickUpAction action = EquipmentItemPickUpAction.of();
+        action.creatureId = creatureId;
+        action.slotIndex = slotIndex;
+        return action;
     }
 }

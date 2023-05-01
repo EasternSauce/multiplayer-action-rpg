@@ -10,7 +10,6 @@ import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.item.Item;
 import com.mygdx.game.model.util.PlayerParams;
 import com.mygdx.game.model.util.Vector2;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -20,11 +19,11 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 @NoArgsConstructor(staticName = "of")
-@AllArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class LootPileSpawnOnPlayerItemDropAction extends GameStateAction {
-    CreatureId playerId;
+    private Boolean isServerSideOnly = false;
+    private CreatureId playerId;
 
     @Override
     public Vector2 actionObjectPos(GameState gameState) {
@@ -71,5 +70,11 @@ public class LootPileSpawnOnPlayerItemDropAction extends GameStateAction {
         game.getEventProcessor().getLootPileModelsToBeCreated().add(lootPile.getId());
 
 
+    }
+
+    public static LootPileSpawnOnPlayerItemDropAction of(CreatureId playerId) {
+        LootPileSpawnOnPlayerItemDropAction action = LootPileSpawnOnPlayerItemDropAction.of();
+        action.playerId = playerId;
+        return action;
     }
 }

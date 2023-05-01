@@ -6,18 +6,17 @@ import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.util.Vector2;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-@AllArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class CreatureMovingVectorSetAction extends GameStateAction {
-    CreatureId creatureId;
-    Vector2 movingVector;
+    private Boolean isServerSideOnly = false;
+    private CreatureId creatureId;
+    private Vector2 movingVector;
 
     @Override
     public Vector2 actionObjectPos(GameState gameState) {
@@ -32,5 +31,12 @@ public class CreatureMovingVectorSetAction extends GameStateAction {
             creature.getParams().setMovingVector(movingVector);
         }
 
+    }
+
+    public static CreatureMovingVectorSetAction of(CreatureId creatureId, Vector2 movingVector) {
+        CreatureMovingVectorSetAction action = CreatureMovingVectorSetAction.of();
+        action.creatureId = creatureId;
+        action.movingVector = movingVector;
+        return action;
     }
 }

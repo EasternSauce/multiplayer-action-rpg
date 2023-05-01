@@ -8,25 +8,23 @@ import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.skill.Skill;
 import com.mygdx.game.model.skill.SkillType;
 import com.mygdx.game.model.util.Vector2;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-@AllArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class SkillTryPerformAction extends GameStateAction {
+    private Boolean isServerSideOnly = false;
 
-    CreatureId creatureId;
-    SkillType skillType;
+    private CreatureId creatureId;
+    private SkillType skillType;
 
+    private Vector2 startingPos;
+    private Vector2 dirVector;
 
-    Vector2 startingPos;
-    Vector2 dirVector;
-
-    Float damage;
+    private Float damage;
 
     @Override
     public Vector2 actionObjectPos(GameState gameState) {
@@ -55,6 +53,20 @@ public class SkillTryPerformAction extends GameStateAction {
         action.skillType = skillType;
         action.startingPos = startingPos;
         action.dirVector = dirVector;
+        return action;
+    }
+
+    public static SkillTryPerformAction of(CreatureId creatureId,
+                                           SkillType skillType,
+                                           Vector2 startingPos,
+                                           Vector2 dirVector,
+                                           Float damage) {
+        SkillTryPerformAction action = SkillTryPerformAction.of();
+        action.creatureId = creatureId;
+        action.skillType = skillType;
+        action.startingPos = startingPos;
+        action.dirVector = dirVector;
+        action.damage = damage;
         return action;
     }
 }

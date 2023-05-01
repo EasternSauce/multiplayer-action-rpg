@@ -5,17 +5,16 @@ import com.mygdx.game.game.interface_.GameActionApplicable;
 import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.area.LootPileId;
 import com.mygdx.game.model.util.Vector2;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-@AllArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class LootPileDespawnAction extends GameStateAction {
-    LootPileId lootPileId;
+    private Boolean isServerSideOnly = false;
+    private LootPileId lootPileId;
 
     @Override
     public Vector2 actionObjectPos(GameState gameState) {
@@ -28,5 +27,11 @@ public class LootPileDespawnAction extends GameStateAction {
     @Override
     public void applyToGame(GameActionApplicable game) {
         game.getEventProcessor().getLootPileModelsToBeRemoved().add(lootPileId);
+    }
+
+    public static LootPileDespawnAction of(LootPileId lootPileId) {
+        LootPileDespawnAction action = LootPileDespawnAction.of();
+        action.lootPileId = lootPileId;
+        return action;
     }
 }

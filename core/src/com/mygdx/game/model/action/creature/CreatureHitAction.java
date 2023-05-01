@@ -12,7 +12,6 @@ import com.mygdx.game.model.creature.DropTableEntry;
 import com.mygdx.game.model.item.Item;
 import com.mygdx.game.model.skill.SkillType;
 import com.mygdx.game.model.util.Vector2;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -25,13 +24,13 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
-@AllArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class CreatureHitAction extends GameStateAction {
-    CreatureId attackerId;
-    CreatureId targetId;
-    Ability ability;
+    private Boolean isServerSideOnly = false;
+    private CreatureId attackerId;
+    private CreatureId targetId;
+    private Ability ability;
 
     @Override
     public Vector2 actionObjectPos(GameState gameState) {
@@ -143,7 +142,13 @@ public class CreatureHitAction extends GameStateAction {
         game.getGameState().getLootPiles().put(lootPile.getId(), lootPile);
 
         game.getEventProcessor().getLootPileModelsToBeCreated().add(lootPile.getId());
+    }
 
-
+    public static CreatureHitAction of(CreatureId attackerId, CreatureId targetId, Ability ability) {
+        CreatureHitAction action = CreatureHitAction.of();
+        action.attackerId = attackerId;
+        action.targetId = targetId;
+        action.ability = ability;
+        return action;
     }
 }

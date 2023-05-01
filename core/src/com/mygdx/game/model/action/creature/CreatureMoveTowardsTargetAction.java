@@ -7,20 +7,18 @@ import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.creature.effect.CreatureEffect;
 import com.mygdx.game.model.util.Vector2;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-@AllArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class CreatureMoveTowardsTargetAction extends GameStateAction {
+    private Boolean isServerSideOnly = false;
+    private CreatureId creatureId;
 
-    CreatureId creatureId;
-
-    Vector2 mousePos;
+    private Vector2 mousePos;
 
     @Override
     public Vector2 actionObjectPos(GameState gameState) {
@@ -45,5 +43,12 @@ public class CreatureMoveTowardsTargetAction extends GameStateAction {
 
         }
 
+    }
+
+    public static CreatureMoveTowardsTargetAction of(CreatureId creatureId, Vector2 mousePos) {
+        CreatureMoveTowardsTargetAction action = CreatureMoveTowardsTargetAction.of();
+        action.creatureId = creatureId;
+        action.mousePos = mousePos;
+        return action;
     }
 }
