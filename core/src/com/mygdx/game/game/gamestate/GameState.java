@@ -4,6 +4,7 @@ import com.mygdx.game.Constants;
 import com.mygdx.game.model.GameStateData;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityId;
+import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.area.AreaGate;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.area.LootPile;
@@ -155,4 +156,7 @@ public abstract class GameState {
 
         }).collect(Collectors.toSet());
     }
+
+    public abstract void scheduleServerSideAction(GameStateAction action);
+
 }

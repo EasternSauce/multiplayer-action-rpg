@@ -16,7 +16,6 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class SkillTryPerformAction extends GameStateAction {
-    private Boolean isServerSideOnly = false;
 
     private CreatureId creatureId;
     private SkillType skillType;

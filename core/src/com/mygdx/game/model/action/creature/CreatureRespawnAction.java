@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class CreatureRespawnAction extends GameStateAction {
-    private Boolean isServerSideOnly = false;
     private CreatureId creatureId;
     private Vector2 pos;
 

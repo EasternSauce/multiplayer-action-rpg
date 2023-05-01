@@ -16,7 +16,6 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class PlayerInitAction extends GameStateAction {
-    private Boolean isServerSideOnly = false;
     private CreatureId playerId;
 
     @Override

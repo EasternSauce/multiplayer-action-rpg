@@ -22,7 +22,6 @@ import java.util.concurrent.ConcurrentSkipListSet;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class LootPileSpawnOnPlayerItemDropAction extends GameStateAction {
-    private Boolean isServerSideOnly = false;
     private CreatureId playerId;
 
     @Override

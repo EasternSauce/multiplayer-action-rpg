@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class EquipmentItemPickUpAction extends GameStateAction {
-    private Boolean isServerSideOnly = false;
     private CreatureId creatureId;
 
     private Integer slotIndex;

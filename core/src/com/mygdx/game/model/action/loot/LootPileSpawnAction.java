@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class LootPileSpawnAction extends GameStateAction {
-    private Boolean isServerSideOnly = false;
     private AreaId areaId;
 
     private Vector2 pos;

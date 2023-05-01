@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class SkillPickerMenuSlotChangeAction extends GameStateAction {
-    private Boolean isServerSideOnly = false;
     private CreatureId playerId;
 
     private SkillType skillType;

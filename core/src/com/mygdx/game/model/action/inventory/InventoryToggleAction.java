@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class InventoryToggleAction extends GameStateAction {
-    private Boolean isServerSideOnly = false;
     private CreatureId creatureId;
 
     @Override

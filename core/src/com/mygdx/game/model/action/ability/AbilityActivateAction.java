@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class AbilityActivateAction extends GameStateAction {
-    private Boolean isServerSideOnly = false;
     private Ability ability;
 
     @Override

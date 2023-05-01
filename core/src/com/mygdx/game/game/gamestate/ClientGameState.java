@@ -3,6 +3,7 @@ package com.mygdx.game.game.gamestate;
 import com.mygdx.game.game.entity.EntityEventProcessor;
 import com.mygdx.game.model.GameStateData;
 import com.mygdx.game.model.ability.AbilityId;
+import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.area.LootPileId;
 import com.mygdx.game.model.creature.CreatureId;
 import lombok.Getter;
@@ -62,4 +63,10 @@ public class ClientGameState extends GameState {
     public void setNewGameState(GameStateData receivedGameStateData) {
         gameStateData = receivedGameStateData;
     }
+
+    @Override
+    public void scheduleServerSideAction(GameStateAction action) {
+        // do nothing on client side
+    }
+
 }

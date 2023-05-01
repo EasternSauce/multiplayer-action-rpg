@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class LootPileDespawnAction extends GameStateAction {
-    private Boolean isServerSideOnly = false;
     private LootPileId lootPileId;
 
     @Override

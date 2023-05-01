@@ -20,7 +20,6 @@ import java.util.concurrent.ConcurrentSkipListSet;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class InventoryAndEquipmentSwapSlotsAction extends GameStateAction {
-    private Boolean isServerSideOnly = false;
     private CreatureId creatureId;
 
     private Integer inventoryIndex;

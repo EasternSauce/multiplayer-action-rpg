@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class SkillPickerMenuDeactivateAction extends GameStateAction {
-    private Boolean isServerSideOnly = false;
     private CreatureId playerId;
 
     @Override

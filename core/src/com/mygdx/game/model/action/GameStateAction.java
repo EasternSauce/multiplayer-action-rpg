@@ -19,7 +19,4 @@ public abstract class GameStateAction {
 
     public abstract void applyToGame(GameActionApplicable game);
 
-    public abstract Boolean getIsServerSideOnly();
-
-    public abstract GameStateAction setIsServerSideOnly(Boolean isServerSideOnly);
 }

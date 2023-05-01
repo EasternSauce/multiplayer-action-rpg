@@ -27,7 +27,6 @@ import java.util.stream.Collectors;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class CreatureHitAction extends GameStateAction {
-    private Boolean isServerSideOnly = false;
     private CreatureId attackerId;
     private CreatureId targetId;
     private Ability ability;

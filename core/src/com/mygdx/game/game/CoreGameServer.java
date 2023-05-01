@@ -14,7 +14,10 @@ import com.mygdx.game.model.action.ability.AbilityActivateAction;
 import com.mygdx.game.model.action.ability.AbilityAddAction;
 import com.mygdx.game.model.action.ability.AbilityRemoveAction;
 import com.mygdx.game.model.action.ability.SkillTryPerformAction;
-import com.mygdx.game.model.action.creature.*;
+import com.mygdx.game.model.action.creature.CreatureHitAction;
+import com.mygdx.game.model.action.creature.CreatureMovingVectorSetAction;
+import com.mygdx.game.model.action.creature.PlayerInitAction;
+import com.mygdx.game.model.action.creature.PlayerRemoveAction;
 import com.mygdx.game.model.action.loot.LootPileDespawnAction;
 import com.mygdx.game.model.action.loot.LootPileSpawnAction;
 import com.mygdx.game.model.area.AreaGate;
@@ -22,7 +25,6 @@ import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.creature.EnemySpawn;
-import com.mygdx.game.model.creature.Player;
 import com.mygdx.game.model.item.Item;
 import com.mygdx.game.model.item.ItemTemplate;
 import com.mygdx.game.model.skill.SkillType;
@@ -44,7 +46,6 @@ public class CoreGameServer extends CoreGame {
     @Getter
     private final ServerGameState gameState = ServerGameState.of();
 
-    private final List<GameStateAction> onTickActions = Collections.synchronizedList(new ArrayList<>());
     private final List<Integer> clientIds = Collections.synchronizedList(new ArrayList<>());
 
     @Getter
@@ -74,21 +75,7 @@ public class CoreGameServer extends CoreGame {
 
     @Override
     public void onUpdate() {
-        getGameState()
-                .getCreatures()
-                .forEach((creatureId, creature) -> { // handle deaths server side
-                    if (creature.getParams().getIsAwaitingRespawn() && creature instanceof Player &&
-                            // handle respawns server side
-                            creature.getParams().getRespawnTimer().getTime() >
-                                    creature.getParams().getRespawnTime()) {
-                        Vector2 pos = Vector2.of((float) ((Math.random() * (28 - 18)) + 18),
-                                (float) ((Math.random() * (12 - 6)) + 6));
-                        CreatureRespawnAction action = CreatureRespawnAction.of(creatureId, pos);
-
-                        onTickActions.add(action);
-                    }
-
-                });
+        gameState.handleCreatureDeaths();
 
 
         //TODO: play sound on getting hit
@@ -100,16 +87,16 @@ public class CoreGameServer extends CoreGame {
                 .entrySet()
                 .stream()
                 .filter(entry -> entry.getValue().getParams().getState() == AbilityState.INACTIVE)
-                .forEach(entry -> onTickActions.add(AbilityRemoveAction.of(entry.getKey())));
+                .forEach(entry -> gameState.scheduleServerSideAction(AbilityRemoveAction.of(entry.getKey())));
 
         getGameState()
                 .getLootPiles()
                 .entrySet()
                 .stream()
                 .filter(entry -> entry.getValue().getIsFullyLooted())
-                .forEach(entry -> onTickActions.add(LootPileDespawnAction.of(entry.getKey())));
+                .forEach(entry -> gameState.scheduleServerSideAction(LootPileDespawnAction.of(entry.getKey())));
 
-        ArrayList<GameStateAction> tickActionsCopy = new ArrayList<>(onTickActions);
+        ArrayList<GameStateAction> tickActionsCopy = new ArrayList<>(gameState.getOnTickActions());
 
         tickActionsCopy.forEach(gameStateAction -> gameStateAction.applyToGame(this));
 
@@ -140,7 +127,7 @@ public class CoreGameServer extends CoreGame {
 
         }
 
-        onTickActions.clear();
+        gameState.getOnTickActions().clear();
 
 
     }
@@ -164,7 +151,7 @@ public class CoreGameServer extends CoreGame {
                 if (object instanceof ActionPerformCommand) {
                     ActionPerformCommand command = (ActionPerformCommand) object;
 
-                    onTickActions.add(command.getAction());
+                    gameState.scheduleServerSideAction(command.getAction());
                 } else if (object instanceof ConnectionInitCommand) {
                     clientIds.add(connection.getID());
                 } else if (object instanceof PlayerInitCommand) {
@@ -174,7 +161,7 @@ public class CoreGameServer extends CoreGame {
                     if (clientIds.contains(connection.getID())) {
                         getClientPlayers().put(connection.getID(), playerInitAction.getPlayerId());
 
-                        onTickActions.add(playerInitAction);
+                        gameState.scheduleServerSideAction(playerInitAction);
                     }
 
                 } else if (object instanceof ChatMessageSendCommand) {
@@ -199,7 +186,7 @@ public class CoreGameServer extends CoreGame {
                 CreatureId disconnectedCreatureId = getClientPlayers().get(connection.getID());
 
                 PlayerRemoveAction playerRemoveAction = PlayerRemoveAction.of(disconnectedCreatureId);
-                onTickActions.add(playerRemoveAction);
+                gameState.scheduleServerSideAction(playerRemoveAction);
 
                 clientIds.remove((Object) connection.getID());
                 getClientPlayers().remove(connection.getID());
@@ -241,7 +228,7 @@ public class CoreGameServer extends CoreGame {
 
             AbilityAddAction action = AbilityAddAction.of(ability);
 
-            onTickActions.add(action);
+            gameState.scheduleServerSideAction(action);
         }
     }
 
@@ -250,7 +237,7 @@ public class CoreGameServer extends CoreGame {
 
         AreaId areaId = AreaId.of("area1");
 
-        onTickActions.add(LootPileSpawnAction.of(areaId,
+        gameState.scheduleServerSideAction(LootPileSpawnAction.of(areaId,
                 Vector2.of(12, 12),
                 new ConcurrentSkipListSet<>(Arrays.asList(Item.of()
                                 .setTemplate(ItemTemplate.templates.get(
@@ -262,7 +249,7 @@ public class CoreGameServer extends CoreGame {
                                 .setQualityModifier(0.9f)))));
 
 
-        onTickActions.add(LootPileSpawnAction.of(areaId,
+        gameState.scheduleServerSideAction(LootPileSpawnAction.of(areaId,
                 Vector2.of(13.5f, 12),
                 new ConcurrentSkipListSet<>(Arrays.asList(Item.of()
                                 .setTemplate(ItemTemplate.templates.get(
@@ -323,7 +310,7 @@ public class CoreGameServer extends CoreGame {
 
         CreatureHitAction action = CreatureHitAction.of(attackerId, targetId, ability);
 
-        onTickActions.add(action);
+        gameState.scheduleServerSideAction(action);
     }
 
     @Override
@@ -336,7 +323,7 @@ public class CoreGameServer extends CoreGame {
                 attackingCreature.getParams().getPos(),
                 vectorTowardsTarget);
 
-        onTickActions.add(action);
+        gameState.scheduleServerSideAction(action);
 
     }
 
@@ -370,7 +357,7 @@ public class CoreGameServer extends CoreGame {
                                         Vector2 dirVector) { // this is handled as an action to make movement more fluid client-side
         CreatureMovingVectorSetAction action = CreatureMovingVectorSetAction.of(creatureId, dirVector);
 
-        onTickActions.add(action);
+        gameState.scheduleServerSideAction(action);
     }
 
     @Override
@@ -407,7 +394,7 @@ public class CoreGameServer extends CoreGame {
     public void initAbilityBody(Ability ability) {
         AbilityActivateAction action = AbilityActivateAction.of(ability);
 
-        onTickActions.add(action);
+        gameState.scheduleServerSideAction(action);
     }
 
     @Override
