@@ -145,7 +145,7 @@ public class SkillMenuHelper { // TODO: maybe shouldn't be a helper class
 
         AtomicInteger i = new AtomicInteger();
 
-        Creature player = game.getGameState().getCreature(game.getGameState().getThisClientPlayerId());
+        Creature player = game.getGameState().accessCreatures().getCreature(game.getGameState().getThisClientPlayerId());
 
         player.availableSkills().forEach((skillType, level) -> {
             Rect rect = Rect.of(SKILL_PICKER_MENU_POS_X,

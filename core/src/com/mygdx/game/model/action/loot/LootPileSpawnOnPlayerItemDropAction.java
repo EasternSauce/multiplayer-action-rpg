@@ -33,7 +33,7 @@ public class LootPileSpawnOnPlayerItemDropAction extends GameStateAction {
 
         PlayerParams playerParams = game.getGameState().getPlayerParams(playerId);
 
-        Creature player = game.getGameState().getCreature(playerId);
+        Creature player = game.getGameState().accessCreatures().getCreature(playerId);
 
         Map<Integer, Item> inventoryItems = player.getParams().getInventoryItems();
         Map<Integer, Item> equipmentItems = player.getParams().getEquipmentItems();

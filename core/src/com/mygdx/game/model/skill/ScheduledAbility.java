@@ -41,7 +41,7 @@ public class ScheduledAbility {
     public void perform(CreatureId creatureId, CoreGame game) {
         AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
 
-        Creature creature = game.getGameState().getCreature(creatureId);
+        Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
         AbilityParams abilityParams = AbilityParams.of()
                 .setId(abilityId)
@@ -51,7 +51,7 @@ public class ScheduledAbility {
                 .setSkillStartPos(startPos)
                 .setSkillType(skillType);
 
-        game.getGameState().spawnAbility(abilityType, abilityParams, game);
+        game.getGameState().accessAbilities().spawnAbility(abilityType, abilityParams, game);
 
         readyToPerform = false;
 

@@ -8,10 +8,10 @@ import com.mygdx.game.model.util.Vector2;
 public abstract class GameStateAction {
 
     public Vector2 getActionCreaturePos(CreatureId creatureId, CoreGame game) {
-        if (!game.getGameState().getCreatures().containsKey(creatureId)) {
+        if (!game.getGameState().accessCreatures().getCreatures().containsKey(creatureId)) {
             return Vector2.of(0f, 0f);
         }
-        return game.getGameState().getCreatures().get(creatureId).getParams().getPos();
+        return game.getGameState().accessCreatures().getCreatures().get(creatureId).getParams().getPos();
     }
 
     public abstract Vector2 actionObjectPos(CoreGame game);

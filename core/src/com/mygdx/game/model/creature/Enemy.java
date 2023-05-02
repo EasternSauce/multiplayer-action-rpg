@@ -34,7 +34,7 @@ public class Enemy extends Creature {
     public CreatureId findTarget(CoreGame game) {
         Float minDistance = Float.MAX_VALUE;
         CreatureId minCreatureId = null;
-        for (Creature creature : game.getGameState().getCreatures().values()) {
+        for (Creature creature : game.getGameState().accessCreatures().getCreatures().values()) {
             boolean condition = creature.isAlive() && creature.getParams().getAreaId().getValue().equals(getParams().getAreaId().getValue()) && creature instanceof Player && creature.getParams().getPos().distance(getParams().getPos()) < Constants.ENEMY_SEARCH_DISTANCE && game.isLineOfSight(this.getParams().getAreaId(), this.getParams().getPos(), creature.getParams().getPos());
 
             if (condition && getParams().getPos().distance(creature.getParams().getPos()) < minDistance) {
@@ -62,7 +62,7 @@ public class Enemy extends Creature {
             getParams().setSpeed(getParams().getBaseSpeed());
         }
 
-        if (getParams().getAttackedByCreatureId() != null && game.getGameState().getCreature(getParams().getAttackedByCreatureId()) instanceof Player) { // if attacked by player, aggro no matter what
+        if (getParams().getAttackedByCreatureId() != null && game.getGameState().accessCreatures().getCreature(getParams().getAttackedByCreatureId()) instanceof Player) { // if attacked by player, aggro no matter what
             params.setAggroedCreatureId(getParams().getAttackedByCreatureId());
         } else { // if not attacked, search around for targets
             CreatureId foundTargetId = getParams().getLastFoundTargetId();
@@ -84,7 +84,7 @@ public class Enemy extends Creature {
 
         Creature potentialTarget = null;
         if (getParams().getAggroedCreatureId() != null) {
-            potentialTarget = game.getGameState().getCreature(getParams().getAggroedCreatureId());
+            potentialTarget = game.getGameState().accessCreatures().getCreature(getParams().getAggroedCreatureId());
 
             if (potentialTarget != null) {
                 Float distance = getParams().getPos().distance(potentialTarget.getParams().getPos());
@@ -122,7 +122,7 @@ public class Enemy extends Creature {
             return;
         }
         if (getParams().getAiState() == EnemyAiState.ALERTED) {
-            Vector2 targetPos = game.getGameState().getCreaturePos(getParams().getTargetCreatureId());
+            Vector2 targetPos = game.getGameState().accessCreatures().getCreaturePos(getParams().getTargetCreatureId());
 
             Vector2 vectorTowards = targetPos.vectorTowards(this.getParams().getPos());
 
@@ -139,7 +139,7 @@ public class Enemy extends Creature {
 
             }
         } else if (getParams().getAiState() == EnemyAiState.KEEPING_DISTANCE) {
-            Vector2 targetPos = game.getGameState().getCreaturePos(getParams().getTargetCreatureId());
+            Vector2 targetPos = game.getGameState().accessCreatures().getCreaturePos(getParams().getTargetCreatureId());
 
             if (targetPos != null) {
                 Vector2 vectorTowards = targetPos.vectorTowards(this.getParams().getPos());
@@ -194,7 +194,7 @@ public class Enemy extends Creature {
         boolean condition = getParams().getAreaId().equals(game.getGameState().getCurrentAreaId()) && getParams().getTargetCreatureId() != null && (getParams().getForcePathCalculation() || getParams().getPathCalculationCooldownTimer().getTime() > getParams().getPathCalculationCooldown());
 
         if (condition) {
-            Creature target = game.getGameState().getCreature(getParams().getTargetCreatureId());
+            Creature target = game.getGameState().accessCreatures().getCreature(getParams().getTargetCreatureId());
 
             if (target != null && !game.isLineOfSight(getParams().getAreaId(), getParams().getPos(), target.getParams().getPos())) {
                 List<Vector2> mirroredPath = mirrorPathFromNearbyCreature(getParams().getTargetCreatureId(), game);
@@ -225,7 +225,7 @@ public class Enemy extends Creature {
 
         Predicate<Creature> creaturePredicate = creature -> creature instanceof Enemy && creature.getParams().getPos().distance(this.getParams().getPos()) < 4f && !creature.getId().equals(this.getParams().getId()) && creature.getParams().getPathTowardsTarget() != null && !creature.getParams().getIsPathMirrored() && creature.getParams().getTargetCreatureId() != null && creature.getParams().getTargetCreatureId().equals(targetId) && creature.getParams().getPathCalculationCooldownTimer().getTime() < 0.5f;
 
-        Optional<Creature> otherCreature = game.getGameState().getCreatures().values().stream().filter(creaturePredicate).findFirst();
+        Optional<Creature> otherCreature = game.getGameState().accessCreatures().getCreatures().values().stream().filter(creaturePredicate).findFirst();
 
         return otherCreature.map(creature -> creature.getParams().getPathTowardsTarget()).orElse(null);
 
@@ -285,7 +285,7 @@ public class Enemy extends Creature {
 
     public void handleAttackTarget(Creature potentialTarget, Vector2 vectorTowardsTarget, CoreGame game) {
         if (potentialTarget.getParams().getPos().distance(getParams().getPos()) < getParams().getAttackDistance()) {
-            game.getGameState().handleAttackTarget(getParams().getId(), vectorTowardsTarget, getParams().getMainAttackSkill());
+            game.getGameState().accessCreatures().handleCreatureAttackTarget(getParams().getId(), vectorTowardsTarget, getParams().getMainAttackSkill());
         }
     }
 
@@ -313,7 +313,7 @@ public class Enemy extends Creature {
 
         float deg;
         if (getParams().getTargetCreatureId() != null) {
-            Vector2 targetPos = game.getGameState().getCreaturePos(getParams().getTargetCreatureId());
+            Vector2 targetPos = game.getGameState().accessCreatures().getCreaturePos(getParams().getTargetCreatureId());
             if (targetPos != null) {
                 deg = this.getParams().getPos().vectorTowards(targetPos).angleDeg();
             } else {

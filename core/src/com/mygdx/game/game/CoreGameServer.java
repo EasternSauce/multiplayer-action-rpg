@@ -84,10 +84,10 @@ public class CoreGameServer extends CoreGame {
 
             if (getClientPlayers().containsKey(connection.getID()) &&
                     getGameState()
-                            .getCreatures()
+                            .accessCreatures().getCreatures()
                             .containsKey(getClientPlayers().get(connection.getID()))) {
                 Creature creature = getGameState()
-                        .getCreatures()
+                        .accessCreatures().getCreatures()
                         .get(getClientPlayers().get(connection.getID()));
 
                 List<GameStateAction> personalizedTickActions = tickActionsCopy.stream()
@@ -179,7 +179,7 @@ public class CoreGameServer extends CoreGame {
                     for (Connection connection : connections) {
                         if (!getClientPlayers().containsKey(connection.getID()) ||
                                 !getGameState()
-                                        .getCreatures()
+                                        .accessCreatures().getCreatures()
                                         .containsKey(getClientPlayers().get(connection.getID()))) {
                             gameState.sendGameDataWithEntitiesEmpty(connection);
                         } else {
@@ -249,12 +249,12 @@ public class CoreGameServer extends CoreGame {
         Set<AbilityId> abilitiesToUpdate = new HashSet<>();
 
         for (CreatureId clientCreatureId : getClientPlayers().values()) {
-            Creature player = getGameState().getCreatures().get(clientCreatureId);
+            Creature player = getGameState().accessCreatures().getCreatures().get(clientCreatureId);
             if (player == null) {
                 continue;
             }
 
-            abilitiesToUpdate.addAll(getGameState().getAbilitiesWithinRange(player));
+            abilitiesToUpdate.addAll(getGameState().accessAbilities().getAbilitiesWithinRange(player));
         }
 
         return abilitiesToUpdate;

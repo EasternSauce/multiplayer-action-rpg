@@ -28,7 +28,7 @@ public class LootPileItemTryPickUpAction extends GameStateAction {
     public void applyToGame(CoreGame game) {
         Integer freeSlot = null;
         for (int i = 0; i < InventoryHelper.INVENTORY_TOTAL_SLOTS; i++) {
-            if (!game.getGameState().getCreature(playerId).getParams().getInventoryItems().containsKey(i)) {
+            if (!game.getGameState().accessCreatures().getCreature(playerId).getParams().getInventoryItems().containsKey(i)) {
                 freeSlot = i;
                 break;
             }
@@ -36,7 +36,7 @@ public class LootPileItemTryPickUpAction extends GameStateAction {
 
         LootPile lootPile = game.getGameState().getLootPile(item.getLootPileId());
         if (freeSlot != null && lootPile != null) {
-            game.getGameState().getCreature(playerId)
+            game.getGameState().accessCreatures().getCreature(playerId)
                     .getParams()
                     .getInventoryItems()
                     .put(freeSlot,

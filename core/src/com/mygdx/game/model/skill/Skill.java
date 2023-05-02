@@ -172,7 +172,7 @@ public class Skill {
     }
 
     public void update(CoreGame game) {
-        Creature creature = game.getGameState().getCreature(creatureId);
+        Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
         if (creature.isEffectActive(CreatureEffect.STUN, game)) {
             abilities.forEach(ScheduledAbility::interrupt);
@@ -190,7 +190,7 @@ public class Skill {
     }
 
     public void tryPerform(Vector2 startingPos, Vector2 dirVector, CoreGame game) {
-        Creature creature = game.getGameState().getCreature(creatureId);
+        Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
         if (creature != null &&
                 creature.canPerformSkill(this) &&

@@ -84,7 +84,7 @@ public class SummonShield extends Ability {
         float attackShiftX = dirVector.normalized().getX() * getParams().getRange();
         float attackShiftY = dirVector.normalized().getY() * getParams().getRange();
 
-        Vector2 pos = game.getGameState().getCreaturePos(getParams().getCreatureId());
+        Vector2 pos = game.getGameState().accessCreatures().getCreaturePos(getParams().getCreatureId());
 
         if (pos != null) {
             float attackRectX = attackShiftX + pos.getX();
@@ -124,7 +124,7 @@ public class SummonShield extends Ability {
 
     @Override
     public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
-        Ability otherAbility = game.getGameState().getAbility(otherAbilityId);
+        Ability otherAbility = game.getGameState().accessAbilities().getAbility(otherAbilityId);
         if (otherAbility != null) {
             if (otherAbility.isRanged()) {
                 otherAbility.deactivate();

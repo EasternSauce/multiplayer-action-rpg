@@ -21,7 +21,7 @@ public class PlayerRemoveAction extends GameStateAction {
 
     @Override
     public void applyToGame(CoreGame game) {
-        game.getGameState().getRemovedCreatures().put(playerId, game.getGameState().getCreature(playerId));
+        game.getGameState().accessCreatures().getRemovedCreatures().put(playerId, game.getGameState().accessCreatures().getCreature(playerId));
 
         game.getEventProcessor().getCreatureModelsToBeRemoved().add(playerId);
     }

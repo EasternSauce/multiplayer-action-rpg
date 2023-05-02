@@ -17,7 +17,7 @@ public class Fireball extends Projectile {
     AbilityParams params;
 
     public static Fireball of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        Creature creature = game.getGameState().getCreature(abilityParams.getCreatureId());
+        Creature creature = game.getGameState().accessCreatures().getCreature(abilityParams.getCreatureId());
 
         Fireball ability = Fireball.of();
         ability.params = abilityParams.setWidth(1.5f)
@@ -88,7 +88,7 @@ public class Fireball extends Projectile {
 
     @Override
     protected void onAbilityCompleted(CoreGame game) {
-        game.getGameState().chainAbility(this, AbilityType.FIREBALL_EXPLOSION, getParams().getPos(), params.getDirVector(), game);
+        game.getGameState().accessAbilities().chainAnotherAbility(this, AbilityType.FIREBALL_EXPLOSION, getParams().getPos(), params.getDirVector(), game);
     }
 
 

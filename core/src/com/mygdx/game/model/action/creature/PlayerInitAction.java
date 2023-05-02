@@ -25,14 +25,14 @@ public class PlayerInitAction extends GameStateAction {
     public void applyToGame(CoreGame game) {
         Creature player;
 
-        if (game.getGameState().getRemovedCreatures().containsKey(playerId)) {
+        if (game.getGameState().accessCreatures().getRemovedCreatures().containsKey(playerId)) {
             player = loadExistingPlayerData(game);
         } else {
             player = createNewPlayer(game);
         }
 
 
-        game.getGameState().getCreatures().put(playerId, player);
+        game.getGameState().accessCreatures().getCreatures().put(playerId, player);
 
         game.getEventProcessor().getCreatureModelsToBeCreated().add(playerId);
 
@@ -59,8 +59,8 @@ public class PlayerInitAction extends GameStateAction {
 
     private Creature loadExistingPlayerData(CoreGame game) {
         Creature player;
-        player = game.getGameState().getRemovedCreatures().get(playerId);
-        game.getGameState().getRemovedCreatures().remove(playerId);
+        player = game.getGameState().accessCreatures().getRemovedCreatures().get(playerId);
+        game.getGameState().accessCreatures().getRemovedCreatures().remove(playerId);
         return player;
     }
 

@@ -21,7 +21,7 @@ public class AbilityActivateAction extends GameStateAction {
 
     @Override
     public void applyToGame(CoreGame game) {
-        game.getEventProcessor().getAbilitiesToBeActivated().add(ability.getParams().getId());
+        game.getEventProcessor().getAbilityModelsToBeActivated().add(ability.getParams().getId());
     }
 
     public static AbilityActivateAction of(Ability ability) {

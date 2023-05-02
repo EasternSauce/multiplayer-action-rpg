@@ -172,7 +172,7 @@ public class InventoryHelper {
     }
 
     public static void renderPlayerItems(RenderingLayer renderingLayer, CoreGame game) {
-        Creature player = game.getGameState().getCreature(game.getGameState().getThisClientPlayerId());
+        Creature player = game.getGameState().accessCreatures().getCreature(game.getGameState().getThisClientPlayerId());
         PlayerParams playerParams = game.getGameState().getPlayerParams(game.getGameState().getThisClientPlayerId());
 
         Map<Integer, Item> inventoryItems = player.getParams().getInventoryItems();
@@ -252,7 +252,7 @@ public class InventoryHelper {
     }
 
     public static void renderDescription(RenderingLayer renderingLayer, CoreGame game) {
-        Creature player = game.getGameState().getCreature(game.getGameState().getThisClientPlayerId());
+        Creature player = game.getGameState().accessCreatures().getCreature(game.getGameState().getThisClientPlayerId());
         PlayerParams playerParams = game.getGameState().getPlayerParams(game.getGameState().getThisClientPlayerId());
 
         float x = game.hudMousePos().getX();
@@ -350,7 +350,7 @@ public class InventoryHelper {
     }
 
     public static void performMoveItemClick(Client client, CoreGame game) {
-        Creature player = game.getGameState().getCreature(game.getGameState().getThisClientPlayerId());
+        Creature player = game.getGameState().accessCreatures().getCreature(game.getGameState().getThisClientPlayerId());
         PlayerParams playerParams = game.getGameState().getPlayerParams(game.getGameState().getThisClientPlayerId());
 
         AtomicReference<Integer> atomicInventorySlotClicked = new AtomicReference<>(null);

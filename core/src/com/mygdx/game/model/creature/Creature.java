@@ -71,9 +71,9 @@ public abstract class Creature {
             Vector2 dirVector = vectorBetween.normalized();
 
             if (isEffectActive(CreatureEffect.STUN, game)) {
-                game.getGameState().setCreatureMovingVector(getParams().getId(), Vector2.of(0f, 0f));
+                game.getGameState().accessCreatures().setCreatureMovingVector(getParams().getId(), Vector2.of(0f, 0f));
             } else {
-                game.getGameState().setCreatureMovingVector(getParams().getId(), dirVector);
+                game.getGameState().accessCreatures().setCreatureMovingVector(getParams().getId(), dirVector);
             }
 
 
@@ -171,7 +171,7 @@ public abstract class Creature {
     public boolean isAttackShielded(boolean isRanged, Vector2 dirVector, CoreGame game) {
         if (!isRanged) { // check if target is pointing shield at the attack
             // TODO: if don't have shield ability return false
-            Ability shieldAbility = game.getGameState().getAbilityBySkillType(getParams().getId(), SkillType.SUMMON_SHIELD);
+            Ability shieldAbility = game.getGameState().accessAbilities().getAbilityBySkillType(getParams().getId(), SkillType.SUMMON_SHIELD);
             if (shieldAbility != null && shieldAbility.getParams().getState() == AbilityState.ACTIVE) {
                 float angleDiff =
                         (dirVector.angleDeg() - shieldAbility.getParams().getDirVector().multiplyBy(-1).angleDeg() +

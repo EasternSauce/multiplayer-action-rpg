@@ -36,7 +36,7 @@ public class AbilityRenderer {
     public void init(TextureAtlas atlas, CoreGame game) {
         sprite = new Sprite();
 
-        Ability ability = game.getGameState().getAbilities().get(abilityId);
+        Ability ability = game.getGameState().accessAbilities().getAbilities().get(abilityId);
 
         AbilityAnimationConfig animationConfig = ability.animationConfig();
 
@@ -80,7 +80,7 @@ public class AbilityRenderer {
 
     private void updateSprite(TextureRegion texture, CoreGame game) {
 
-        Ability ability = game.getGameState().getAbilities().get(abilityId);
+        Ability ability = game.getGameState().accessAbilities().getAbilities().get(abilityId);
 
         sprite.setRegion(texture);
         sprite.setSize(ability.getParams().getWidth(), ability.getParams().getHeight());
@@ -93,7 +93,7 @@ public class AbilityRenderer {
 
     public void update(CoreGame game) {
 
-        Ability ability = game.getGameState().getAbilities().get(abilityId);
+        Ability ability = game.getGameState().accessAbilities().getAbilities().get(abilityId);
 
         if (ability != null) {
             if (ability.getParams().getChannelTime() > 0f && ability.getParams().getState() == AbilityState.CHANNEL) {
@@ -113,7 +113,7 @@ public class AbilityRenderer {
     }
 
     public void render(RenderingLayer renderingLayer, CoreGame game) {
-        Ability ability = game.getGameState().getAbility(abilityId);
+        Ability ability = game.getGameState().accessAbilities().getAbility(abilityId);
 
         if (ability != null) {
             if (sprite.getTexture() != null) {

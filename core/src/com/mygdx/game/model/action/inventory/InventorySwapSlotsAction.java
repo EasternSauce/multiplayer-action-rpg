@@ -27,7 +27,7 @@ public class InventorySwapSlotsAction extends GameStateAction {
 
     @Override
     public void applyToGame(CoreGame game) {
-        Creature player = game.getGameState().getCreature(creatureId);
+        Creature player = game.getGameState().accessCreatures().getCreature(creatureId);
         PlayerParams playerParams = game.getGameState().getPlayerParams(creatureId);
 
         Item itemFrom = player.getParams().getInventoryItems().get(fromSlotIndex);

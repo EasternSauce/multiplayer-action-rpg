@@ -22,11 +22,11 @@ public class ClientGameState extends GameState {
 
     @Override
     public Set<CreatureId> getCreaturesToUpdate() {
-        return getCreaturesToUpdateForPlayerCreatureId(getThisClientPlayerId());
+        return accessCreatures().getCreaturesToUpdateForPlayerCreatureId(getThisClientPlayerId());
     }
 
     public void createEventsFromReceivedGameStateData(GameStateData newGameStateData, EntityEventProcessor eventProcessor) {
-        GameStateData oldGameStateData = gameStateData;
+        GameStateData oldGameStateData = data;
 
         Set<CreatureId> oldCreatureIds = oldGameStateData.getCreatures().keySet();
         Set<CreatureId> newCreatureIds = newGameStateData.getCreatures().keySet();
@@ -62,7 +62,7 @@ public class ClientGameState extends GameState {
     }
 
     public void setNewGameState(GameStateData receivedGameStateData) {
-        gameStateData = receivedGameStateData;
+        data = receivedGameStateData;
     }
 
     @Override
@@ -72,11 +72,11 @@ public class ClientGameState extends GameState {
 
     @Override
     public AreaId getCurrentAreaId() {
-        if (!getCreatures().containsKey(getThisClientPlayerId())) {
+        if (!accessCreatures().getCreatures().containsKey(getThisClientPlayerId())) {
             return getDefaultAreaId();
         }
 
-        return getCreature(getThisClientPlayerId()).getParams().getAreaId();
+        return accessCreatures().getCreature(getThisClientPlayerId()).getParams().getAreaId();
     }
 
 }

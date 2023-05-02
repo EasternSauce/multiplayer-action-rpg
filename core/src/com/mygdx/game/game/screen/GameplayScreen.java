@@ -89,7 +89,7 @@ public class GameplayScreen implements Screen {
                 .get(game.getGameState().getCurrentAreaId())
                 .setView(game.getEntityManager().getGameRenderer().getViewportsHandler().getWorldCamera());
 
-        if (game.getGameState().getThisClientPlayerId() != null && game.getGameState().getCreature(game.getGameState().getThisClientPlayerId()) != null) {
+        if (game.getGameState().getThisClientPlayerId() != null && game.getGameState().accessCreatures().getCreature(game.getGameState().getThisClientPlayerId()) != null) {
             game.updateCameraPositions();
         }
 

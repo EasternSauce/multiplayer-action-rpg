@@ -23,7 +23,7 @@ public class CreatureMovingVectorSetAction extends GameStateAction {
 
     @Override
     public void applyToGame(CoreGame game) {
-        Creature creature = game.getGameState().getCreature(creatureId);
+        Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
         if (creature != null) {
             creature.getParams().setMovingVector(movingVector);

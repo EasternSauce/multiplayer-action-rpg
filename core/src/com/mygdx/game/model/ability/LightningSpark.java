@@ -21,7 +21,7 @@ public class LightningSpark extends Ability {
     AbilityParams params;
 
     public static LightningSpark of(AbilityParams abilityParams, CoreGame game) {
-        Creature creature = game.getGameState().getCreature(abilityParams.getCreatureId());
+        Creature creature = game.getGameState().accessCreatures().getCreature(abilityParams.getCreatureId());
 
         //        Vector2 pos;
         //        if (abilityParams.getDirVector() != null) {
@@ -83,23 +83,23 @@ public class LightningSpark extends Ability {
         Set<CreatureId> excluded = new HashSet<>(getParams().getCreaturesAlreadyHit().keySet());
         excluded.add(getParams().getCreatureId());
 
-        Creature targetCreature = game.getGameState().getCreature(game.getGameState()
-                .getAliveCreatureIdClosestTo(getParams().getPos(),
+        Creature targetCreature = game.getGameState().accessCreatures().getCreature(game.getGameState()
+                .accessCreatures().getAliveCreatureIdClosestTo(getParams().getPos(),
                         13f,
                         excluded));
 
         if (targetCreature != null &&
                 game.isLineOfSight(getParams().getAreaId(), getParams().getPos(), targetCreature.getParams().getPos())) {
 
-            game.getGameState().onAbilityHitsCreature(targetCreature.getId(), getParams().getCreatureId(), this);
+            game.getGameState().accessAbilities().onAbilityHitsCreature(targetCreature.getId(), getParams().getCreatureId(), this);
 
             getParams().getCreaturesAlreadyHit().put(targetCreature.getId(), getParams().getStateTimer().getTime());
 
-            game.getGameState().chainAbility(this, AbilityType.LIGHTNING_CHAIN, targetCreature.getParams().getPos(),
+            game.getGameState().accessAbilities().chainAnotherAbility(this, AbilityType.LIGHTNING_CHAIN, targetCreature.getParams().getPos(),
                     // this pos is later changed, TODO: move it to other param?
                     params.getDirVector(), game);
 
-            game.getGameState().chainAbility(this,
+            game.getGameState().accessAbilities().chainAnotherAbility(this,
                     AbilityType.LIGHTNING_NODE,
                     targetCreature.getParams().getPos(),
                     params.getDirVector(), game);

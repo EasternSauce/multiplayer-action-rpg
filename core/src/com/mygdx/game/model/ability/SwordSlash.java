@@ -78,7 +78,7 @@ public class SwordSlash extends Ability {
         float attackShiftX = dirVector.normalized().getX() * getParams().getRange();
         float attackShiftY = dirVector.normalized().getY() * getParams().getRange();
 
-        Vector2 pos = game.getGameState().getCreaturePos(getParams().getCreatureId());
+        Vector2 pos = game.getGameState().accessCreatures().getCreaturePos(getParams().getCreatureId());
 
         if (pos != null) {
             float attackRectX = attackShiftX + pos.getX();

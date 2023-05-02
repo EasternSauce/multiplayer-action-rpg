@@ -30,7 +30,7 @@ public class CreatureRenderer {
         creatureSprite = CreatureSprite.of(creatureId);
         creatureStunnedAnimationRenderer = CreatureStunnedAnimationRenderer.of(creatureId);
 
-        CreatureAnimationConfig config = game.getGameState().getCreatures().get(creatureId).animationConfig();
+        CreatureAnimationConfig config = game.getGameState().accessCreatures().getCreatures().get(creatureId).animationConfig();
 
         creatureSprite.prepareFacingTextures(config, atlas);
         creatureSprite.prepareRunningAnimations(config, atlas);
@@ -38,7 +38,7 @@ public class CreatureRenderer {
     }
 
     public void update(CoreGame game) {
-        Creature creature = game.getGameState().getCreature(creatureId);
+        Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
         creatureSprite.updatePosition(creature);
         creatureSprite.updateSize(creature);
@@ -55,7 +55,7 @@ public class CreatureRenderer {
     }
 
     public void renderLifeBar(RenderingLayer renderingLayer, CoreGame game) {
-        Creature creature = game.getGameState().getCreature(creatureId);
+        Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
         if (creature != null) {
             float currentLifeBarWidth =
@@ -70,7 +70,7 @@ public class CreatureRenderer {
 
 
     public void renderCreatureId(RenderingLayer renderingLayer, CoreGame game) {
-        Creature creature = game.getGameState().getCreature(creatureId);
+        Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
         String name = creature.getId().getValue();
 

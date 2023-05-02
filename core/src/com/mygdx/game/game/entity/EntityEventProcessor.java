@@ -19,7 +19,7 @@ public class EntityEventProcessor {
     @Getter
     private final List<AbilityId> abilityModelsToBeCreated = Collections.synchronizedList(new ArrayList<>());
     @Getter
-    private final List<AbilityId> abilitiesToBeActivated = Collections.synchronizedList(new ArrayList<>());
+    private final List<AbilityId> abilityModelsToBeActivated = Collections.synchronizedList(new ArrayList<>());
     @Getter
     private final List<CreatureId> creatureModelsToBeRemoved = Collections.synchronizedList(new ArrayList<>());
     @Getter
@@ -38,8 +38,8 @@ public class EntityEventProcessor {
         getAbilityModelsToBeCreated().forEach(abilityId -> gameEntityManager.createAbilityEntity(abilityId, game));
         getAbilityModelsToBeCreated().clear();
 
-        getAbilitiesToBeActivated().forEach(abilityId -> gameEntityManager.activateAbility(abilityId, game));
-        getAbilitiesToBeActivated().clear();
+        getAbilityModelsToBeActivated().forEach(abilityId -> gameEntityManager.activateAbility(abilityId, game));
+        getAbilityModelsToBeActivated().clear();
 
         getCreatureModelsToBeRemoved().forEach(creatureId -> gameEntityManager.removeCreatureEntity(creatureId, game));
         getCreatureModelsToBeRemoved().clear();

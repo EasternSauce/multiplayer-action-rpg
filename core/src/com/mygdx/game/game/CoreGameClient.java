@@ -147,7 +147,7 @@ public class CoreGameClient extends CoreGame {
                 if (!playerParams.getIsInventoryVisible()) {
                     Vector2 mousePos = mousePosRelativeToCenter();
 
-                    Creature player = gameState.getCreatures().get(getGameState().getThisClientPlayerId());
+                    Creature player = gameState.accessCreatures().getCreatures().get(getGameState().getThisClientPlayerId());
 
                     if (player != null && player.getParams().getMovementCommandsPerSecondLimitTimer().getTime() > Constants.MovementCommandCooldown && gameState.getTime() > menuClickTime + 0.1f) {
                         getEndPoint().sendTCP(ActionPerformCommand.of(CreatureMoveTowardsTargetAction.of(getGameState().getThisClientPlayerId(), mousePos)));
@@ -156,12 +156,12 @@ public class CoreGameClient extends CoreGame {
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.N)) {
 
-                CreatureId creatureId = gameState.getCreatures().keySet().stream().filter(cId -> cId.getValue().startsWith("Player")).collect(Collectors.toList()).get(0);
-                Vector2 pos = gameState.getCreatures().get(creatureId).getParams().getPos();
+                CreatureId creatureId = gameState.accessCreatures().getCreatures().keySet().stream().filter(cId -> cId.getValue().startsWith("Player")).collect(Collectors.toList()).get(0);
+                Vector2 pos = gameState.accessCreatures().getCreatures().get(creatureId).getParams().getPos();
                 System.out.println("Vector2.of(" + pos.getX() + "f, " + pos.getY() + "f),");
             }
             if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
-                Creature player = gameState.getCreatures().get(getGameState().getThisClientPlayerId());
+                Creature player = gameState.accessCreatures().getCreatures().get(getGameState().getThisClientPlayerId());
 
                 Vector2 dirVector = mousePosRelativeToCenter();
 
@@ -182,7 +182,7 @@ public class CoreGameClient extends CoreGame {
             }
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
-                Creature player = gameState.getCreatures().get(getGameState().getThisClientPlayerId());
+                Creature player = gameState.accessCreatures().getCreatures().get(getGameState().getThisClientPlayerId());
 
                 Vector2 dirVector = mousePosRelativeToCenter();
 
@@ -192,7 +192,7 @@ public class CoreGameClient extends CoreGame {
 
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
-                Creature player = gameState.getCreatures().get(getGameState().getThisClientPlayerId());
+                Creature player = gameState.accessCreatures().getCreatures().get(getGameState().getThisClientPlayerId());
 
                 Vector2 dirVector = mousePosRelativeToCenter();
 
@@ -204,7 +204,7 @@ public class CoreGameClient extends CoreGame {
             }
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
-                Creature player = gameState.getCreatures().get(getGameState().getThisClientPlayerId());
+                Creature player = gameState.accessCreatures().getCreatures().get(getGameState().getThisClientPlayerId());
 
 
                 Vector2 dirVector = mousePosRelativeToCenter();
@@ -294,13 +294,13 @@ public class CoreGameClient extends CoreGame {
 
     @Override
     public Set<AbilityId> getAbilitiesToUpdate() {
-        Creature player = getGameState().getCreatures().get(getGameState().getThisClientPlayerId());
+        Creature player = getGameState().accessCreatures().getCreatures().get(getGameState().getThisClientPlayerId());
 
         if (player == null) {
             return new ConcurrentSkipListSet<>();
         }
 
-        return getGameState().getAbilitiesWithinRange(player);
+        return getGameState().accessAbilities().getAbilitiesWithinRange(player);
     }
 
     @Override

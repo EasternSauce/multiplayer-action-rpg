@@ -37,7 +37,7 @@ public class CreatureHitAction extends GameStateAction {
 
     @Override
     public void applyToGame(CoreGame game) {
-        Creature targetCreature = game.getGameState().getCreature(targetId);
+        Creature targetCreature = game.getGameState().accessCreatures().getCreature(targetId);
 
         if (targetCreature == null) {
             return;
@@ -57,7 +57,7 @@ public class CreatureHitAction extends GameStateAction {
     }
 
     public void spawnDrops(CoreGame game) {
-        Creature creature = game.getGameState().getCreature(targetId);
+        Creature creature = game.getGameState().accessCreatures().getCreature(targetId);
 
         Set<Item> items = new ConcurrentSkipListSet<>();
 

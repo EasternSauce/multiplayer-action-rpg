@@ -68,7 +68,7 @@ public class Boomerang extends Projectile {
     public void onThisCreatureHit(CoreGame game) {
         if (getParams().getIsComingBack()) {
 
-            Creature creature = game.getGameState().getCreature(getParams().getCreatureId());
+            Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
             Skill skill = creature.getParams().getSkills().get(getParams().getSkillType());
 
             skill.resetCooldown();
@@ -84,7 +84,7 @@ public class Boomerang extends Projectile {
         }
         getParams().setRotationAngle(getParams().getDirVector().angleDeg());
 
-        Creature creature = game.getGameState().getCreature(getParams().getCreatureId());
+        Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
 
         if (creature != null) {
             if (!getParams().getIsComingBack() && getParams().getStateTimer().getTime() > 1f) {

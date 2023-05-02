@@ -23,13 +23,13 @@ public class AbilityAddAction extends GameStateAction {
     @Override
     public void applyToGame(CoreGame game) {
 
-        Creature creature = game.getGameState().getCreature(ability.getParams().getCreatureId());
+        Creature creature = game.getGameState().accessCreatures().getCreature(ability.getParams().getCreatureId());
 
         if (creature == null) {
             return;
         }
 
-        game.getGameState().getAbilities()
+        game.getGameState().accessAbilities().getAbilities()
                 .put(ability.getParams().getId(), ability); // TODO: SHOULDNT THIS HAPPEN IN createAbility() METHOD???!?
 
         if (ability.getParams().getActiveTime() > 0) {

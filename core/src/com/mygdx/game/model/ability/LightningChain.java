@@ -40,7 +40,7 @@ public class LightningChain extends Ability {
         getParams().setState(AbilityState.CHANNEL);
         getParams().getStateTimer().restart();
 
-        Creature creature = game.getGameState().getCreature(getParams().getCreatureId());
+        Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
 
         if (creature != null) {
             if (getParams().getChainToPos() != null) {

@@ -35,7 +35,7 @@ public class AbilityBody {
     }
 
     private float[] hitboxVertices(CoreGame game) {
-        Ability ability = game.getGameState().getAbility(abilityId);
+        Ability ability = game.getGameState().accessAbilities().getAbility(abilityId);
 
         sprite.setSize(ability.getParams().getWidth(), ability.getParams().getHeight());
         sprite.setCenter(0, 0);
@@ -63,7 +63,7 @@ public class AbilityBody {
     }
 
     public void init(boolean skipCreatingBody, CoreGame game) {
-        Ability ability = game.getGameState().getAbility(abilityId);
+        Ability ability = game.getGameState().accessAbilities().getAbility(abilityId);
 
         if (!isBodyInitialized && !skipCreatingBody && ability != null) {
             world = game.getPhysicsWorld(ability.getParams().getAreaId());
@@ -78,7 +78,7 @@ public class AbilityBody {
     }
 
     public void update(CoreGame game) {
-        Ability ability = game.getGameState().getAbilities().get(abilityId);
+        Ability ability = game.getGameState().accessAbilities().getAbilities().get(abilityId);
 
         if (getIsBodyInitialized() && ability != null && ability.bodyShouldExist()) {
             if (ability.isPositionChangedOnUpdate() &&

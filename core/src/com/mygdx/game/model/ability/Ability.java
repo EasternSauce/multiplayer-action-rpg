@@ -27,7 +27,7 @@ public abstract class Ability {
 
             if (getParams().getStateTimer().getTime() > getParams().getChannelTime()) {
                 getParams().setState(AbilityState.ACTIVE);
-                game.getGameState().activateAbility(this);
+                game.getGameState().accessAbilities().activateAbility(this);
                 onAbilityStarted(game);
                 getParams().getStateTimer().restart();
             }
@@ -69,7 +69,7 @@ public abstract class Ability {
         getParams().setState(AbilityState.CHANNEL);
         getParams().getStateTimer().restart();
 
-        Creature creature = game.getGameState().getCreature(getParams().getCreatureId());
+        Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
 
         if (creature != null) {
             if (getParams().getChainToPos() != null) {
@@ -111,7 +111,7 @@ public abstract class Ability {
     }
 
     public Integer getSkillLevel(CoreGame game) {
-        Creature creature = game.getGameState().getCreature(getParams().getCreatureId());
+        Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
 
         if (creature == null || !creature.availableSkills().containsKey(getParams().getSkillType())) {
             return 1;

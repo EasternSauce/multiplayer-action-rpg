@@ -66,9 +66,9 @@ public class GameRenderer {
     }
 
     public void renderAliveCreatures(RenderingLayer renderingLayer, CoreGame game) {
-        game.getGameState().forEachAliveCreature(creature -> renderCreatureIfPossible(renderingLayer, creature, game));
-        game.getGameState().forEachAliveCreature(creature -> renderCreatureLifeBarIfPossible(renderingLayer, creature, game));
-        game.getGameState().forEachAliveCreature(creature -> renderCreatureStunnedAnimationIfPossible(renderingLayer, creature, game));
+        game.getGameState().accessCreatures().forEachAliveCreature(creature -> renderCreatureIfPossible(renderingLayer, creature, game));
+        game.getGameState().accessCreatures().forEachAliveCreature(creature -> renderCreatureLifeBarIfPossible(renderingLayer, creature, game));
+        game.getGameState().accessCreatures().forEachAliveCreature(creature -> renderCreatureStunnedAnimationIfPossible(renderingLayer, creature, game));
     }
 
     private void renderCreatureStunnedAnimationIfPossible(RenderingLayer renderingLayer,
@@ -98,7 +98,7 @@ public class GameRenderer {
     }
 
     public void renderDeadCreatures(RenderingLayer renderingLayer, CoreGame game) {
-        game.getGameState().forEachDeadCreature(creature -> renderCreatureIfPossible(renderingLayer, creature, game));
+        game.getGameState().accessCreatures().forEachDeadCreature(creature -> renderCreatureIfPossible(renderingLayer, creature, game));
     }
 
     public void renderAbilities(RenderingLayer renderingLayer, CoreGame game) {
@@ -114,7 +114,7 @@ public class GameRenderer {
     }
 
     public void renderPlayerNames(RenderingLayer worldTextRenderingLayer, CoreGame game) {
-        game.getGameState().getCreatures()
+        game.getGameState().accessCreatures().getCreatures()
                 .values()
                 .stream()
                 .filter(creature -> creature.isAlive() &&

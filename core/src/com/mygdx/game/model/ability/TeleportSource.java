@@ -14,7 +14,7 @@ public class TeleportSource extends Ability {
     AbilityParams params;
 
     public static TeleportSource of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        Creature creature = game.getGameState().getCreature(abilityParams.getCreatureId());
+        Creature creature = game.getGameState().accessCreatures().getCreature(abilityParams.getCreatureId());
 
         TeleportSource ability = TeleportSource.of();
         ability.params = abilityParams.setWidth(4.5f)
@@ -50,7 +50,7 @@ public class TeleportSource extends Ability {
 
     @Override
     void onDelayedAction(CoreGame game) {
-        game.getGameState().chainAbility(this, AbilityType.TELEPORT_DESTINATION, getParams().getPos(), getParams().getDirVector(), game);
+        game.getGameState().accessAbilities().chainAnotherAbility(this, AbilityType.TELEPORT_DESTINATION, getParams().getPos(), getParams().getDirVector(), game);
     }
 
     @Override

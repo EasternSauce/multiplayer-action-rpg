@@ -17,7 +17,7 @@ public class TeleportDestination extends Ability {
 
     public static TeleportDestination of(AbilityParams abilityParams,
                                          @SuppressWarnings("unused") CoreGame game) {
-        Creature creature = game.getGameState().getCreature(abilityParams.getCreatureId());
+        Creature creature = game.getGameState().accessCreatures().getCreature(abilityParams.getCreatureId());
 
         Vector2 teleportPos =
                 TeleportDestination.calculatePos(creature.getParams().getPos().add(abilityParams.getDirVector()),

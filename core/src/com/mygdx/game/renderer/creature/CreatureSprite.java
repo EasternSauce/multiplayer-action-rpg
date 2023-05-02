@@ -64,7 +64,7 @@ public class CreatureSprite {
     }
 
     public void updateForDeadCreature(CoreGame game) {
-        Creature creature = game.getGameState().getCreature(creatureId);
+        Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
         TextureRegion texture = getFacingTexture(creature, WorldDirection.RIGHT);
 
@@ -75,7 +75,7 @@ public class CreatureSprite {
     }
 
     public TextureRegion getRunningAnimationFrame(CoreGame game) {
-        Creature creature = game.getGameState().getCreature(creatureId);
+        Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
         WorldDirection currentDirection = creature.facingDirection(game);
 

@@ -39,7 +39,7 @@ public class ServerGameState extends GameState {
         Set<CreatureId> creaturesToUpdate = new HashSet<>();
 
         for (CreatureId clientCreatureId : getClientPlayers().values()) {
-            Set<CreatureId> creaturesToAdd = getCreaturesToUpdateForPlayerCreatureId(clientCreatureId);
+            Set<CreatureId> creaturesToAdd = accessCreatures().getCreaturesToUpdateForPlayerCreatureId(clientCreatureId);
 
             creaturesToUpdate.addAll(creaturesToAdd);
         }
@@ -48,11 +48,11 @@ public class ServerGameState extends GameState {
     }
 
     public void sendGameDataPersonalizedForPlayer(Connection connection) {
-        Creature player = getCreatures().get(getClientPlayers().get(connection.getID()));
+        Creature player = accessCreatures().getCreatures().get(getClientPlayers().get(connection.getID()));
 
         ConcurrentSkipListMap<CreatureId, Creature> personalizedCreatures =
                 new ConcurrentSkipListMap<>(
-                        getCreatures()
+                        accessCreatures().getCreatures()
                                 .entrySet()
                                 .stream()
                                 .filter(entry -> entry.getValue()
@@ -71,7 +71,7 @@ public class ServerGameState extends GameState {
                                         Map.Entry::getValue)));
         ConcurrentSkipListMap<AbilityId, Ability> personalizedAbilities =
                 new ConcurrentSkipListMap<>(
-                        getAbilities()
+                        accessAbilities().getAbilities()
                                 .entrySet()
                                 .stream()
                                 .filter(entry -> entry.getValue()
@@ -108,7 +108,7 @@ public class ServerGameState extends GameState {
                                 .collect(Collectors.toMap(Map.Entry::getKey,
                                         Map.Entry::getValue)));
 
-        GameStateData personalizedGameStateData = GameStateData.of(gameStateData,
+        GameStateData personalizedGameStateData = GameStateData.of(data,
                 personalizedCreatures,
                 personalizedAbilities,
                 personalizedLootPiles);
@@ -117,14 +117,13 @@ public class ServerGameState extends GameState {
     }
 
     public void sendGameDataWithEntitiesEmpty(Connection connection) {
-        GameStateData gameStateDataWithoutEntities = GameStateData.copyWithoutEntities(gameStateData);
+        GameStateData gameStateDataWithoutEntities = GameStateData.copyWithoutEntities(data);
 
         connection.sendTCP(GameStateBroadcast.of(gameStateDataWithoutEntities));
     }
 
     public void handleCreatureDeaths() {
-
-        getCreatures()
+        accessCreatures().getCreatures()
                 .forEach((creatureId, creature) -> { // handle deaths server side
                     if (creature.getParams().getIsAwaitingRespawn() && creature instanceof Player &&
                             // handle respawns server side
@@ -149,7 +148,7 @@ public class ServerGameState extends GameState {
     }
 
     public void handleExpiredAbilities() {
-        getAbilities()
+        accessAbilities().getAbilities()
                 .entrySet()
                 .stream()
                 .filter(entry -> entry.getValue().getParams().getState() == AbilityState.INACTIVE)
