@@ -15,6 +15,7 @@ import com.mygdx.game.model.area.LootPile;
 import com.mygdx.game.model.area.LootPileId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
+import com.mygdx.game.model.creature.Enemy;
 import com.mygdx.game.model.creature.Player;
 import com.mygdx.game.model.util.GameStateBroadcast;
 import com.mygdx.game.model.util.Vector2;
@@ -125,15 +126,23 @@ public class ServerGameState extends GameState {
     public void handleCreatureDeaths() {
         accessCreatures().getCreatures()
                 .forEach((creatureId, creature) -> { // handle deaths server side
-                    if (creature.getParams().getIsAwaitingRespawn() && creature instanceof Player &&
+                    if (creature.getParams().getIsAwaitingRespawn() &&
                             // handle respawns server side
                             creature.getParams().getRespawnTimer().getTime() >
                                     creature.getParams().getRespawnTime()) {
-                        Vector2 pos = Vector2.of((float) ((Math.random() * (28 - 18)) + 18),
-                                (float) ((Math.random() * (12 - 6)) + 6));
-                        CreatureRespawnAction action = CreatureRespawnAction.of(creatureId, pos);
+                        if (creature instanceof Player) {
+                            Vector2 pos = Vector2.of((float) ((Math.random() * (28 - 18)) + 18),
+                                    (float) ((Math.random() * (12 - 6)) + 6));
+                            CreatureRespawnAction action = CreatureRespawnAction.of(creatureId, pos);
 
-                        scheduleServerSideAction(action);
+                            scheduleServerSideAction(action);
+                        } else if (creature instanceof Enemy) {
+                            Vector2 pos = creature.getParams().getInitialPos();
+                            CreatureRespawnAction action = CreatureRespawnAction.of(creatureId, pos);
+
+                            scheduleServerSideAction(action);
+                        }
+
                     }
 
                 });

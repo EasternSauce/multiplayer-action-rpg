@@ -282,7 +282,7 @@ public abstract class Creature {
     public void onKillEffect() {
         float missingManaPercent = 1f - getParams().getMana() / getParams().getMaxMana();
 
-        float manaAfterOnKillRecovery = getParams().getMana() + missingManaPercent * 130;
+        float manaAfterOnKillRecovery = getParams().getMana() + missingManaPercent * 110;
 
         if (manaAfterOnKillRecovery > getParams().getMaxMana()) {
             getParams().setMana(getParams().getMaxMana());

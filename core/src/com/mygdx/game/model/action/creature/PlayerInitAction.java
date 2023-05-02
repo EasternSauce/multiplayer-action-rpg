@@ -47,6 +47,8 @@ public class PlayerInitAction extends GameStateAction {
         Vector2 pos =
                 Vector2.of(((game.getGameState().nextRandomValue() * (28 - 18)) + 18), ((game.getGameState().nextRandomValue() * (12 - 6)) + 6));
 
+//        Vector2 pos = Vector2.of(194.16289f, 13.253256f);
+
         String textureName = textures[((int) (Math.random() * 100) % 3)];
 
         player = Player.of(CreatureParams.of(playerId, game.getGameState().getDefaultAreaId(), pos, textureName));

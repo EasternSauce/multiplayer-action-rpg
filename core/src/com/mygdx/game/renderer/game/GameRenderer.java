@@ -37,11 +37,11 @@ public class GameRenderer {
 
     private final Map<CreatureId, CreatureRenderer> creatureRenderers = new HashMap<>();
     private final Map<AbilityId, AbilityRenderer> abilityRenderers = new HashMap<>();
-    private final Map<AreaId, AreaRenderer> areaRenderers = new HashMap<>();
-    private final Set<AreaGateRenderer> areaGateRenderers = new HashSet<>();
+    private Map<AreaId, AreaRenderer> areaRenderers = new HashMap<>();
+    private Set<AreaGateRenderer> areaGateRenderers = new HashSet<>();
     private final Map<LootPileId, LootPileRenderer> lootPileRenderers = new HashMap<>();
 
-    public void init(Map<AreaId, TiledMap> maps, CoreGame game) {
+    public void init() {
         mapScale = 4.0f;
 
         worldElementsRenderingLayer = RenderingLayer.of();
@@ -50,19 +50,23 @@ public class GameRenderer {
 
         atlas = new TextureAtlas("assets/atlas/packed_atlas.atlas");
 
-        areaRenderers.putAll(maps.keySet().stream().collect(Collectors.toMap(areaId -> areaId, AreaRenderer::of)));
-        areaRenderers.forEach((areaId, areaRenderer) -> areaRenderer.init(maps.get(areaId), mapScale));
-
-        areaGateRenderers.addAll(game.getGameState().getAreaGates()
-                .stream()
-                .map(areaGate -> AreaGateRenderer.of(areaGate, atlas))
-                .collect(Collectors.toSet()));
-
         InventoryHelper.init(atlas);
 
         viewportsHandler = ViewportsHandler.of();
 
         viewportsHandler.initViewports();
+    }
+
+    public void setupInitialRendererState(Map<AreaId, TiledMap> maps, CoreGame game) {
+        areaRenderers = new HashMap<>();
+        areaRenderers.putAll(maps.keySet().stream().collect(Collectors.toMap(areaId -> areaId, AreaRenderer::of)));
+        areaRenderers.forEach((areaId, areaRenderer) -> areaRenderer.init(maps.get(areaId), mapScale));
+
+        areaGateRenderers = new HashSet<>();
+        areaGateRenderers.addAll(game.getGameState().getAreaGates()
+                .stream()
+                .map(areaGate -> AreaGateRenderer.of(areaGate, atlas))
+                .collect(Collectors.toSet()));
     }
 
     public void renderAliveCreatures(RenderingLayer renderingLayer, CoreGame game) {

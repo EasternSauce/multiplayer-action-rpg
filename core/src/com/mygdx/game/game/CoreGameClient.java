@@ -156,7 +156,7 @@ public class CoreGameClient extends CoreGame {
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.N)) {
 
-                CreatureId creatureId = gameState.accessCreatures().getCreatures().keySet().stream().filter(cId -> cId.getValue().startsWith("Player")).collect(Collectors.toList()).get(0);
+                CreatureId creatureId = gameState.accessCreatures().getCreatures().keySet().stream().filter(cId -> cId.getValue().startsWith("kamil")).collect(Collectors.toList()).get(0);
                 Vector2 pos = gameState.accessCreatures().getCreatures().get(creatureId).getParams().getPos();
                 System.out.println("Vector2.of(" + pos.getX() + "f, " + pos.getY() + "f),");
             }

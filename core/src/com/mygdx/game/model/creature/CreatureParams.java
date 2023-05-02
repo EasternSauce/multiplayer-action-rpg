@@ -4,7 +4,6 @@ import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.effect.CreatureEffect;
 import com.mygdx.game.model.creature.effect.CreatureEffectState;
 import com.mygdx.game.model.item.Item;
-import com.mygdx.game.model.item.ItemTemplate;
 import com.mygdx.game.model.skill.Skill;
 import com.mygdx.game.model.skill.SkillType;
 import com.mygdx.game.model.util.SimpleTimer;
@@ -28,6 +27,7 @@ public class CreatureParams {
     AreaId areaId;
 
     Vector2 pos;
+    Vector2 initialPos;
     Vector2 previousPos;
 
     SimpleTimer animationTimer = SimpleTimer.getStartedTimer();
@@ -145,6 +145,7 @@ public class CreatureParams {
         params.id = creatureId;
         params.areaId = areaId;
         params.pos = enemySpawn;
+        params.initialPos = enemySpawn;
         params.textureName = textureName;
         params.findTargetCooldown = 0.5f + (float) Math.random();
         params.pathCalculationCooldown = 4f + 2f * (float) Math.random();
@@ -162,32 +163,31 @@ public class CreatureParams {
         params.aiStateSeed = (float) Math.random();
         params.aiStateTime = 0f;
 
+//        Map<SkillType, Integer> grantedSkills1 = new ConcurrentSkipListMap<>();
+//        grantedSkills1.put(SkillType.BOOMERANG, 1);
+//
+//        Map<SkillType, Integer> grantedSkills2 = new ConcurrentSkipListMap<>();
+//        grantedSkills2.put(SkillType.SUMMON_SHIELD, 1);
 
-        Map<SkillType, Integer> grantedSkills1 = new ConcurrentSkipListMap<>();
-        grantedSkills1.put(SkillType.BOOMERANG, 1);
-
-        Map<SkillType, Integer> grantedSkills2 = new ConcurrentSkipListMap<>();
-        grantedSkills2.put(SkillType.SUMMON_SHIELD, 1);
-
-        params.inventoryItems.put(2,
-                Item.of()
-                        .setTemplate(ItemTemplate.templates.get("leatherArmor"))
-                        .setQualityModifier(0.6f)
-                        .setGrantedSkills(grantedSkills1));
-        params.inventoryItems.put(3,
-                Item.of()
-                        .setTemplate(ItemTemplate.templates.get("leatherArmor"))
-                        .setQualityModifier(1f));
-        params.inventoryItems.put(10,
-                Item.of()
-                        .setTemplate(ItemTemplate.templates.get("hideGloves"))
-                        .setQualityModifier(0.9f));
-
-        params.inventoryItems.put(11,
-                Item.of()
-                        .setTemplate(ItemTemplate.templates.get("woodenShield"))
-                        .setQualityModifier(1.0f)
-                        .setGrantedSkills(grantedSkills2));
+//        params.inventoryItems.put(2,
+//                Item.of()
+//                        .setTemplate(ItemTemplate.templates.get("leatherArmor"))
+//                        .setQualityModifier(0.6f)
+//                        .setGrantedSkills(grantedSkills1));
+//        params.inventoryItems.put(3,
+//                Item.of()
+//                        .setTemplate(ItemTemplate.templates.get("leatherArmor"))
+//                        .setQualityModifier(1f));
+//        params.inventoryItems.put(10,
+//                Item.of()
+//                        .setTemplate(ItemTemplate.templates.get("hideGloves"))
+//                        .setQualityModifier(0.9f));
+//
+//        params.inventoryItems.put(11,
+//                Item.of()
+//                        .setTemplate(ItemTemplate.templates.get("woodenShield"))
+//                        .setQualityModifier(1.0f)
+//                        .setGrantedSkills(grantedSkills2));
         return params;
     }
 

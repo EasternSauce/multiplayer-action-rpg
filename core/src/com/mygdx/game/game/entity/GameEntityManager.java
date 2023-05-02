@@ -143,7 +143,10 @@ public class GameEntityManager {
                                 .setBaseSpeed(7f)
                                 .setAttackDistance(enemySpawn.getEnemyTemplate().getAttackDistance())
                                 .setMainAttackSkill(enemySpawn.getEnemyTemplate().getMainAttackSkill())
-                                .setDropTable(enemySpawn.getEnemyTemplate().getDropTable())));
+                                .setDropTable(enemySpawn.getEnemyTemplate().getDropTable())
+                                .setRespawnTime(60f)// TODO: move it to enemy class?
+                        ));
+
 
         game.getEventProcessor().getCreatureModelsToBeCreated().add(creatureId);
 

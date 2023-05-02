@@ -59,7 +59,7 @@ public abstract class CoreGame extends Game {
 
     public abstract EndPoint getEndPoint();
 
-    public boolean isInitialized() {
+    public boolean isInitialized() { // this is pointless right now TODO
         return true;
     }
 

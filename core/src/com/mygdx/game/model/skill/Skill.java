@@ -56,7 +56,7 @@ public class Skill {
                     SimpleTimer.getExpiredTimer(),
                     1f,
                     20f,
-                    26f);
+                    20f);
         }
         if (skillType == SkillType.CROSSBOW_BOLT) {
             return Skill.of(skillType,

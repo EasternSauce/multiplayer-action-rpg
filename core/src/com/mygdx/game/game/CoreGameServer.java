@@ -12,14 +12,11 @@ import com.mygdx.game.model.action.ActionsHolder;
 import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.action.creature.PlayerInitAction;
 import com.mygdx.game.model.action.creature.PlayerRemoveAction;
-import com.mygdx.game.model.action.loot.LootPileSpawnAction;
 import com.mygdx.game.model.area.AreaGate;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.creature.EnemySpawn;
-import com.mygdx.game.model.item.Item;
-import com.mygdx.game.model.item.ItemTemplate;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.physics.world.PhysicsWorld;
 import com.mygdx.game.util.EndPointHelper;
@@ -197,31 +194,30 @@ public class CoreGameServer extends CoreGame {
 
     @Override
     public void initState() {
-
         AreaId areaId = AreaId.of("area1");
 
-        gameState.scheduleServerSideAction(LootPileSpawnAction.of(areaId,
-                Vector2.of(12, 12),
-                new ConcurrentSkipListSet<>(Arrays.asList(Item.of()
-                                .setTemplate(ItemTemplate.templates.get(
-                                        "leatherArmor"))
-                                .setQualityModifier(0.9f),
-                        Item.of()
-                                .setTemplate(ItemTemplate.templates.get(
-                                        "boomerang"))
-                                .setQualityModifier(0.9f)))));
+//        gameState.scheduleServerSideAction(LootPileSpawnAction.of(areaId,
+//                Vector2.of(12, 12),
+//                new ConcurrentSkipListSet<>(Arrays.asList(Item.of()
+//                                .setTemplate(ItemTemplate.templates.get(
+//                                        "leatherArmor"))
+//                                .setQualityModifier(0.9f),
+//                        Item.of()
+//                                .setTemplate(ItemTemplate.templates.get(
+//                                        "boomerang"))
+//                                .setQualityModifier(0.9f)))));
 
 
-        gameState.scheduleServerSideAction(LootPileSpawnAction.of(areaId,
-                Vector2.of(13.5f, 12),
-                new ConcurrentSkipListSet<>(Arrays.asList(Item.of()
-                                .setTemplate(ItemTemplate.templates.get(
-                                        "ringmailGreaves"))
-                                .setQualityModifier(0.9f),
-                        Item.of()
-                                .setTemplate(ItemTemplate.templates.get(
-                                        "hideGloves"))
-                                .setQualityModifier(0.5f)))));
+//        gameState.scheduleServerSideAction(LootPileSpawnAction.of(areaId,
+//                Vector2.of(13.5f, 12),
+//                new ConcurrentSkipListSet<>(Arrays.asList(Item.of()
+//                                .setTemplate(ItemTemplate.templates.get(
+//                                        "ringmailGreaves"))
+//                                .setQualityModifier(0.9f),
+//                        Item.of()
+//                                .setTemplate(ItemTemplate.templates.get(
+//                                        "hideGloves"))
+//                                .setQualityModifier(0.5f)))));
 
         getGameState().setAreaGates(new ConcurrentSkipListSet<>());
         getGameState()
@@ -235,12 +231,19 @@ public class CoreGameServer extends CoreGame {
                                 AreaId.of("area2"),
                                 Vector2.of(58f, 9f))));
 
-        List<EnemySpawn> enemySpawns = EnemySpawnUtils.area1EnemySpawns();
+        List<EnemySpawn> enemySpawns1 = EnemySpawnUtils.area1EnemySpawns();
 
-        enemySpawns.forEach(enemySpawn -> {
+        enemySpawns1.forEach(enemySpawn -> {
             CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 10000000));
             getEntityManager().spawnEnemy(enemyId, areaId, enemySpawn, this);
             getEndPoint().sendToAllTCP(EnemySpawnCommand.of(enemyId, areaId, enemySpawn)); // TODO: use actions instead
+        });
+
+        List<EnemySpawn> enemySpawns3 = EnemySpawnUtils.area3EnemySpawns();
+        enemySpawns3.forEach(enemySpawn -> {
+            CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 10000000));
+            getEntityManager().spawnEnemy(enemyId, AreaId.of("area3"), enemySpawn, this);
+            getEndPoint().sendToAllTCP(EnemySpawnCommand.of(enemyId, AreaId.of("area3"), enemySpawn));
         });
     }
 

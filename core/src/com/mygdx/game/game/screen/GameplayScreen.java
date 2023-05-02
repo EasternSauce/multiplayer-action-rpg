@@ -32,8 +32,6 @@ public class GameplayScreen implements Screen {
         mapsToLoad.put(AreaId.of("area1"), "assets/areas/area1");
         mapsToLoad.put(AreaId.of("area2"), "assets/areas/area2");
         mapsToLoad.put(AreaId.of("area3"), "assets/areas/area3");
-        //        game.renderer().mapsToLoad(mapsToLoad);
-
 
         maps = mapsToLoad.entrySet()
                 .stream()
@@ -43,7 +41,9 @@ public class GameplayScreen implements Screen {
                                 .loadMap(entry.getValue() + "/tile_map.tmx")));
 
 
-        game.getEntityManager().getGameRenderer().init(maps, game);
+        game.initState();
+
+        game.getEntityManager().getGameRenderer().init();
 
         game.getEntityManager().getGamePhysics().init(maps, game);
 
@@ -52,14 +52,13 @@ public class GameplayScreen implements Screen {
                 .getViewportsHandler()
                 .setHudCameraPosition(Constants.WindowWidth / 2f, Constants.WindowHeight / 2f); // TODO: move it inward?
 
-        game.initState();
-
-
     }
 
     @Override
     public void show() {
         game.setChatInputProcessor();
+
+        game.getEntityManager().getGameRenderer().setupInitialRendererState(maps, game);
     }
 
     public void update(float delta) {

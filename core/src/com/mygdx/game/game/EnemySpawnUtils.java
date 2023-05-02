@@ -56,4 +56,17 @@ public class EnemySpawnUtils {
                 EnemySpawn.of(Vector2.of(101.632095f, 150.43385f), EnemyTemplate.skeleton),
                 EnemySpawn.of(Vector2.of(101.61807f, 155.82611f), EnemyTemplate.skeleton));
     }
+
+    public static List<EnemySpawn> area3EnemySpawns() {
+        return Arrays.asList(EnemySpawn.of(Vector2.of(33.971928f, 21.07241f), EnemyTemplate.archer),
+                EnemySpawn.of(Vector2.of(36.3834f, 28.55842f), EnemyTemplate.skeleton),
+                EnemySpawn.of(Vector2.of(49.971405f, 33.947628f), EnemyTemplate.skeleton),
+                EnemySpawn.of(Vector2.of(52.668243f, 45.00484f), EnemyTemplate.mage),
+                EnemySpawn.of(Vector2.of(43.850334f, 56.680363f), EnemyTemplate.skeleton),
+                EnemySpawn.of(Vector2.of(54.796265f, 63.825066f), EnemyTemplate.skeleton),
+                EnemySpawn.of(Vector2.of(66.79386f, 61.955425f), EnemyTemplate.skeleton),
+                EnemySpawn.of(Vector2.of(72.42107f, 75.001045f), EnemyTemplate.skeleton),
+                EnemySpawn.of(Vector2.of(60.70875f, 84.34951f), EnemyTemplate.skeleton),
+                EnemySpawn.of(Vector2.of(53.97292f, 96.57185f), EnemyTemplate.skeleton));
+    }
 }
