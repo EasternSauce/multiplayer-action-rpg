@@ -43,10 +43,9 @@ public class CreatureStunnedAnimationRenderer {
     public void render(RenderingLayer renderingLayer, float spriteWidth, CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
-        float posX = creature.getParams().getPos().getX() - 1.5f;
-        float posY = LifeBarUtils.getLifeBarPosY(creature, spriteWidth) - 1f;
-
-        if (creature.isEffectActive(CreatureEffect.STUN, game)) {
+        if (creature != null && creature.isEffectActive(CreatureEffect.STUN, game)) {
+            float posX = creature.getParams().getPos().getX() - 1.5f;
+            float posY = LifeBarUtils.getLifeBarPosY(creature, spriteWidth) - 1f;
             renderingLayer.getSpriteBatch().draw(getStunnedAnimationFrame(game), posX, posY, 3f, 1.5f);
         }
 

@@ -13,31 +13,34 @@ import java.util.concurrent.ConcurrentSkipListSet;
 @AllArgsConstructor(staticName = "of")
 @Data
 public class EnemyTemplate {
-    EnemyType enemyType;
-    Float attackDistance;
-    SkillType mainAttackSkill;
-    Set<DropTableEntry> dropTable;
+    private EnemyType enemyType;
+    private Float attackDistance;
+    private SkillType mainAttackSkill;
+    private Set<DropTableEntry> dropTable;
+
+    private static Set<DropTableEntry> randomDropSet = new ConcurrentSkipListSet<>(Arrays.asList(
+            DropTableEntry.leatherArmorDrop,
+            DropTableEntry.specialLeatherArmorDrop,
+            DropTableEntry.hideGlovesDrop,
+            DropTableEntry.specialHideGlovesDrop,
+            DropTableEntry.ringmailGreavesDrop,
+            DropTableEntry.specialRingmailGreavesDrop,
+            DropTableEntry.ironSwordDrop,
+            DropTableEntry.specialIronSwordDrop,
+            DropTableEntry.boomerangDrop,
+            DropTableEntry.shieldDrop));
 
     public static EnemyTemplate archer = EnemyTemplate.of(EnemyType.ARCHER,
             15f,
             SkillType.CROSSBOW_BOLT,
-            new ConcurrentSkipListSet<>(Arrays.asList(DropTableEntry.leatherArmorDrop,
-                    DropTableEntry.specialHideGlovesDrop,
-                    DropTableEntry.ringmailGreavesDrop,
-                    DropTableEntry.boomerangDrop)));
+            randomDropSet);
 
     public static EnemyTemplate skeleton = EnemyTemplate.of(EnemyType.SKELETON,
             3f,
             SkillType.SWORD_SLASH,
-            new ConcurrentSkipListSet<>(Arrays.asList(DropTableEntry.leatherArmorDrop,
-                    DropTableEntry.hideGlovesDrop,
-                    DropTableEntry.ringmailGreavesDrop,
-                    DropTableEntry.ironSwordDrop,
-                    DropTableEntry.shieldDrop)));
+            randomDropSet);
     public static EnemyTemplate mage = EnemyTemplate.of(EnemyType.MAGE,
             15f,
             SkillType.SLOW_MAGIC_ORB,
-            new ConcurrentSkipListSet<>(Arrays.asList(DropTableEntry.specialLeatherArmorDrop,
-                    DropTableEntry.hideGlovesDrop,
-                    DropTableEntry.ringmailGreavesDrop)));
+            randomDropSet);
 }

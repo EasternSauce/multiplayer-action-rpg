@@ -66,7 +66,7 @@ public class LightningNode extends Ability {
                 getParams().getCreaturesAlreadyHit().size() <= 10 &&
                 game.isLineOfSight(getParams().getAreaId(), getParams().getPos(), targetCreature.getParams().getPos())) {
 
-            game.getGameState().accessAbilities().onAbilityHitsCreature(targetCreature.getId(), getParams().getCreatureId(), this);
+            game.getGameState().accessAbilities().onAbilityHitsCreature(getParams().getCreatureId(), targetCreature.getId(), this);
 
             getParams().getCreaturesAlreadyHit().put(targetCreature.getId(), getParams().getStateTimer().getTime());
 

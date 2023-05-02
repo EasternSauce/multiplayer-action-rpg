@@ -55,8 +55,8 @@ public class Skill {
                     singleScheduledAbility(AbilityType.LIGHTNING_SPARK, skillType),
                     SimpleTimer.getExpiredTimer(),
                     1f,
-                    15f,
-                    20f);
+                    20f,
+                    26f);
         }
         if (skillType == SkillType.CROSSBOW_BOLT) {
             return Skill.of(skillType,
@@ -131,7 +131,7 @@ public class Skill {
                     creatureId,
                     singleScheduledAbility(AbilityType.BOOMERANG, skillType),
                     SimpleTimer.getExpiredTimer(),
-                    10f,
+                    6f,
                     30f,
                     0f);
         }
@@ -150,8 +150,8 @@ public class Skill {
                     creatureId,
                     singleScheduledAbility(AbilityType.SWORD_SPIN, skillType),
                     SimpleTimer.getExpiredTimer(),
-                    5f,
-                    80f,
+                    4f,
+                    40f,
                     0f);
         }
         if (skillType == SkillType.TELEPORT) {

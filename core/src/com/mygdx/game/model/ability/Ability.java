@@ -78,7 +78,6 @@ public abstract class Ability {
                 getParams().setPos(creature.getParams().getPos());
             }
         }
-
     }
 
     public void updateTimers(float delta) {

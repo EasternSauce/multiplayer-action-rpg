@@ -31,6 +31,7 @@ public class DropTableEntry implements Comparable<DropTableEntry> {
     private static Map<SkillType, Integer> rangedGrantedSkillDrops = new ConcurrentSkipListMap<>();
 
     private static Map<SkillType, Integer> shieldGrantedSkillDrops = new ConcurrentSkipListMap<>();
+    private static Map<SkillType, Integer> ironSwordGrantedSkillDrops = new ConcurrentSkipListMap<>();
 
     static {
         magicGrantedSkillDrops.put(SkillType.FIREBALL, 100);
@@ -44,32 +45,41 @@ public class DropTableEntry implements Comparable<DropTableEntry> {
         movementGrantedSkillDrops.put(SkillType.TELEPORT, 100);
 
         rangedGrantedSkillDrops.put(SkillType.RICOCHET_BALLISTA, 100);
+        rangedGrantedSkillDrops.put(SkillType.SUMMON_GHOSTS, 80);
 
         shieldGrantedSkillDrops.put(SkillType.SUMMON_SHIELD, 100);
+
+        ironSwordGrantedSkillDrops.put(SkillType.SWORD_SPIN, 100);
 
     }
 
     public static DropTableEntry leatherArmorDrop =
-            DropTableEntry.of(0.25f, ItemTemplate.templates.get("leatherArmor"), 0.5f, magicGrantedSkillDrops);
+            DropTableEntry.of(0.05f, ItemTemplate.templates.get("leatherArmor"), 1f, magicGrantedSkillDrops);
 
     public static DropTableEntry specialLeatherArmorDrop =
-            DropTableEntry.of(0.25f, ItemTemplate.templates.get("leatherArmor"), 1f, specialMagicGrantedSkillDrops);
+            DropTableEntry.of(0.05f, ItemTemplate.templates.get("leatherArmor"), 1f, specialMagicGrantedSkillDrops);
     public static DropTableEntry hideGlovesDrop =
-            DropTableEntry.of(0.2f, ItemTemplate.templates.get("hideGloves"), 0.5f, new ConcurrentSkipListMap<>());
+            DropTableEntry.of(0.05f, ItemTemplate.templates.get("hideGloves"), 0f, new ConcurrentSkipListMap<>());
 
     public static DropTableEntry specialHideGlovesDrop =
-            DropTableEntry.of(0.25f, ItemTemplate.templates.get("hideGloves"), 0.5f, rangedGrantedSkillDrops);
+            DropTableEntry.of(0.05f, ItemTemplate.templates.get("hideGloves"), 1f, rangedGrantedSkillDrops);
+
     public static DropTableEntry ringmailGreavesDrop =
-            DropTableEntry.of(0.25f, ItemTemplate.templates.get("ringmailGreaves"), 0f, new ConcurrentSkipListMap<>());
+            DropTableEntry.of(0.05f, ItemTemplate.templates.get("ringmailGreaves"), 0f, new ConcurrentSkipListMap<>());
+
+    public static DropTableEntry specialRingmailGreavesDrop =
+            DropTableEntry.of(0.05f, ItemTemplate.templates.get("ringmailGreaves"), 1f, movementGrantedSkillDrops);
 
     public static DropTableEntry ironSwordDrop =
-            DropTableEntry.of(0.1f, ItemTemplate.templates.get("ironSword"), 0.5f, movementGrantedSkillDrops);
+            DropTableEntry.of(0.05f, ItemTemplate.templates.get("ironSword"), 0f, new ConcurrentSkipListMap<>());
+
+    public static DropTableEntry specialIronSwordDrop =
+            DropTableEntry.of(0.05f, ItemTemplate.templates.get("ironSword"), 1f, ironSwordGrantedSkillDrops);
 
     public static DropTableEntry boomerangDrop =
-            DropTableEntry.of(0.1f, ItemTemplate.templates.get("boomerang"), 0f, new ConcurrentSkipListMap<>());
+            DropTableEntry.of(0.05f, ItemTemplate.templates.get("boomerang"), 0f, new ConcurrentSkipListMap<>());
 
     public static DropTableEntry shieldDrop =
-            DropTableEntry.of(0.1f, ItemTemplate.templates.get("woodenShield"), 0f, shieldGrantedSkillDrops);
-
+            DropTableEntry.of(0.05f, ItemTemplate.templates.get("woodenShield"), 1f, shieldGrantedSkillDrops);
 
 }

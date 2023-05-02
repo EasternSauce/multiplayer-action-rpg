@@ -22,7 +22,6 @@ public class AbilityAddAction extends GameStateAction {
 
     @Override
     public void applyToGame(CoreGame game) {
-
         Creature creature = game.getGameState().accessCreatures().getCreature(ability.getParams().getCreatureId());
 
         if (creature == null) {

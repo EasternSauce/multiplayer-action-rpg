@@ -38,6 +38,7 @@ public class CreatureHitAction extends GameStateAction {
     @Override
     public void applyToGame(CoreGame game) {
         Creature targetCreature = game.getGameState().accessCreatures().getCreature(targetId);
+        Creature attackerCreature = game.getGameState().accessCreatures().getCreature(attackerId);
 
         if (targetCreature == null) {
             return;
@@ -50,7 +51,7 @@ public class CreatureHitAction extends GameStateAction {
             targetCreature.getParams().setIsDead(true);
             targetCreature.getParams().getRespawnTimer().restart();
             targetCreature.getParams().setIsAwaitingRespawn(true);
-
+            attackerCreature.onKillEffect();
 
             spawnDrops(game);
         }

@@ -194,6 +194,7 @@ public abstract class Creature {
 
             applyEffect(CreatureEffect.STUN, ability.getStunDuration(), game);
         }
+
     }
 
     private void takeManaDamage(Float manaCost) {
@@ -276,5 +277,27 @@ public abstract class Creature {
 
     public CreatureId getId() {
         return getParams().getId();
+    }
+
+    public void onKillEffect() {
+        float missingManaPercent = 1f - getParams().getMana() / getParams().getMaxMana();
+
+        float manaAfterOnKillRecovery = getParams().getMana() + missingManaPercent * 130;
+
+        if (manaAfterOnKillRecovery > getParams().getMaxMana()) {
+            getParams().setMana(getParams().getMaxMana());
+        } else {
+            getParams().setMana(manaAfterOnKillRecovery);
+        }
+
+        float missingLifePercent = 1f - getParams().getLife() / getParams().getMaxLife();
+
+        float lifeAfterOnKillRecovery = getParams().getLife() + missingLifePercent * 100;
+
+        if (lifeAfterOnKillRecovery > getParams().getMaxLife()) {
+            getParams().setLife(getParams().getMaxLife());
+        } else {
+            getParams().setLife(lifeAfterOnKillRecovery);
+        }
     }
 }

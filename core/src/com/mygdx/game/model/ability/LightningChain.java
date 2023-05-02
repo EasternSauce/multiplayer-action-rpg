@@ -1,7 +1,6 @@
 package com.mygdx.game.model.ability;
 
 import com.mygdx.game.game.CoreGame;
-import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -36,19 +35,10 @@ public class LightningChain extends Ability {
 
     @Override
     public void init(CoreGame game) {
-
         getParams().setState(AbilityState.CHANNEL);
         getParams().getStateTimer().restart();
 
-        Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
-
-        if (creature != null) {
-            if (getParams().getChainToPos() != null) {
-                getParams().setPos(getParams().getChainToPos());
-            } else {
-                getParams().setPos(creature.getParams().getPos());
-            }
-        }
+        // overriding like this is bug-inducing, TODO: FIX
 
     }
 
