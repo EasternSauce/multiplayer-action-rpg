@@ -241,7 +241,7 @@ public class CoreGameClient extends CoreGame {
         setEndPoint(new Client(6400000, 6400000));
         EndPointHelper.registerEndPointClasses(getEndPoint());
         getEndPoint().start();
-        getEndPoint().connect(12000 * 99999, "", 20445, 20445);
+        getEndPoint().connect(12000 * 99999, "172.0.0.1", 20445, 20445);
 
         getEndPoint().addListener(new Listener() {
             @Override

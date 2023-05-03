@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
@@ -24,14 +25,15 @@ public class PlayfulGhost extends Projectile {
         ability.params = abilityParams.setWidth(1.5f)
                 .setHeight(1.5f)
                 .setChannelTime(0f)
-                .setActiveTime(30f)
+                .setActiveTime(10f)
                 .setTextureName("ghost")
                 .setBaseDamage(15f)
                 .setIsChannelAnimationLooping(false)
                 .setIsActiveAnimationLooping(true)
                 .setRotationShift(0f)
                 .setDelayedActionTime(0.001f)
-                .setSpeed(5f);
+                .setSpeed(5f)
+                .setAbilityRngSeed((float) Math.random());
 
         return ability;
     }
@@ -90,9 +92,10 @@ public class PlayfulGhost extends Projectile {
         for (Creature creature : game.getGameState().accessCreatures().getCreatures()
                 .values()
                 .stream()
-                .filter(targetCreature -> !targetCreature.getParams()
-                        .getId()
-                        .equals(getParams().getCreatureId()) &&
+                .filter(targetCreature -> Objects.equals(targetCreature.getParams().getAreaId().getValue(), getParams().getAreaId().getValue()) &&
+                        !targetCreature.getParams()
+                                .getId()
+                                .equals(getParams().getCreatureId()) &&
                         targetCreature.isAlive() &&
                         isTargetingAllowed(thisCreature, targetCreature) &&
                         targetCreature.getParams()
@@ -174,12 +177,14 @@ public class PlayfulGhost extends Projectile {
     @SuppressWarnings("unused")
     public Float nextPositiveFloat() {
         getParams().setAbilityRngSeed(RandomHelper.seededRandomFloat(getParams().getAbilityRngSeed()));
+        System.out.println("random: " + getParams().getAbilityRngSeed());
         return getParams().getAbilityRngSeed();
     }
 
     @SuppressWarnings("unused")
     public Float nextFloat() {
         getParams().setAbilityRngSeed(RandomHelper.seededRandomFloat(getParams().getAbilityRngSeed()));
+        System.out.println("random: " + ((getParams().getAbilityRngSeed() - 0.5f) * 2));
         return (getParams().getAbilityRngSeed() - 0.5f) * 2;
     }
 }

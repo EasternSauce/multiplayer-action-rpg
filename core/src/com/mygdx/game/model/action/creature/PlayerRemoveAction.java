@@ -2,6 +2,7 @@ package com.mygdx.game.model.action.creature;
 
 import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.action.GameStateAction;
+import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
@@ -21,9 +22,12 @@ public class PlayerRemoveAction extends GameStateAction {
 
     @Override
     public void applyToGame(CoreGame game) {
-        game.getGameState().accessCreatures().getRemovedCreatures().put(playerId, game.getGameState().accessCreatures().getCreature(playerId));
+        Creature creature = game.getGameState().accessCreatures().getCreature(playerId);
+        if (creature != null) {
+            game.getGameState().accessCreatures().getRemovedCreatures().put(playerId, creature);
 
-        game.getEventProcessor().getCreatureModelsToBeRemoved().add(playerId);
+            game.getEventProcessor().getCreatureModelsToBeRemoved().add(playerId);
+        }
     }
 
     public static PlayerRemoveAction of(CreatureId playerId) {

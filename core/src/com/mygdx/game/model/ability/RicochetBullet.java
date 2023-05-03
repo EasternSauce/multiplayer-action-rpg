@@ -19,7 +19,7 @@ public class RicochetBullet extends Projectile {
                 .setChannelTime(0f)
                 .setActiveTime(10f)
                 .setTextureName("fireball")
-                .setBaseDamage(12f)
+                .setBaseDamage(30f)
                 .setIsChannelAnimationLooping(false)
                 .setIsActiveAnimationLooping(true)
                 .setRotationShift(0f)

@@ -52,6 +52,8 @@ public class CreatureBody {
 
         Creature creature = game.getGameState().accessCreatures().getCreatures().get(creatureId);
 
+        if (creature == null) return;
+
         setSensor(!creature.isAlive());
 
         float v = creature.getParams().getSpeed();

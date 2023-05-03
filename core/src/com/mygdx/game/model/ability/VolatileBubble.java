@@ -20,7 +20,7 @@ public class VolatileBubble extends Projectile {
                 .setChannelTime(0f)
                 .setActiveTime(30f)
                 .setTextureName("bubble")
-                .setBaseDamage(15f)
+                .setBaseDamage(32f)
                 .setIsChannelAnimationLooping(false)
                 .setIsActiveAnimationLooping(true)
                 .setRotationShift(0f)
@@ -59,19 +59,31 @@ public class VolatileBubble extends Projectile {
         game.getGameState().accessAbilities().chainAnotherAbility(this,
                 AbilityType.ICE_SPEAR,
                 getParams().getPos(),
-                params.getDirVector().setAngleDeg(baseAngle + 72f), game);
+                params.getDirVector().setAngleDeg(baseAngle + 45f), game);
         game.getGameState().accessAbilities().chainAnotherAbility(this,
                 AbilityType.ICE_SPEAR,
                 getParams().getPos(),
-                params.getDirVector().setAngleDeg(baseAngle + 144f), game);
+                params.getDirVector().setAngleDeg(baseAngle + 90f), game);
         game.getGameState().accessAbilities().chainAnotherAbility(this,
                 AbilityType.ICE_SPEAR,
                 getParams().getPos(),
-                params.getDirVector().setAngleDeg(baseAngle + 216f), game);
+                params.getDirVector().setAngleDeg(baseAngle + 135f), game);
         game.getGameState().accessAbilities().chainAnotherAbility(this,
                 AbilityType.ICE_SPEAR,
                 getParams().getPos(),
-                params.getDirVector().setAngleDeg(baseAngle + 288f), game);
+                params.getDirVector().setAngleDeg(baseAngle + 180f), game);
+        game.getGameState().accessAbilities().chainAnotherAbility(this,
+                AbilityType.ICE_SPEAR,
+                getParams().getPos(),
+                params.getDirVector().setAngleDeg(baseAngle + 225f), game);
+        game.getGameState().accessAbilities().chainAnotherAbility(this,
+                AbilityType.ICE_SPEAR,
+                getParams().getPos(),
+                params.getDirVector().setAngleDeg(baseAngle + 270f), game);
+        game.getGameState().accessAbilities().chainAnotherAbility(this,
+                AbilityType.ICE_SPEAR,
+                getParams().getPos(),
+                params.getDirVector().setAngleDeg(baseAngle + 315f), game);
     }
 
 

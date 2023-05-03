@@ -100,8 +100,6 @@ public class CoreGameServer extends CoreGame {
         }
 
         gameState.getOnTickActions().clear();
-
-
     }
 
     @Override
@@ -170,7 +168,7 @@ public class CoreGameServer extends CoreGame {
             try {
                 while (true) {
                     //noinspection BusyWait
-                    Thread.sleep(300);
+                    Thread.sleep(400);
 
                     Connection[] connections = getEndPoint().getConnections();
                     for (Connection connection : connections) {

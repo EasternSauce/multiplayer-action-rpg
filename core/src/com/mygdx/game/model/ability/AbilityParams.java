@@ -58,7 +58,7 @@ public class AbilityParams {
 
     Boolean isFlip = false;
 
-    Float abilityRngSeed = (float) Math.random();
+    Float abilityRngSeed;
 
     SimpleTimer changeDirectionTimer = SimpleTimer.getStartedTimer();
 

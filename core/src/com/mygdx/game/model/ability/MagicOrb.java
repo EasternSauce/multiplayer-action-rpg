@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
@@ -105,7 +106,8 @@ public class MagicOrb extends Projectile {
         for (Creature creature : game.getGameState().accessCreatures().getCreatures()
                 .values()
                 .stream()
-                .filter(targetCreature -> !targetCreature.getParams()
+                .filter(targetCreature -> Objects.equals(targetCreature.getParams().getAreaId().getValue(), getParams().getAreaId().getValue())
+                        && !targetCreature.getParams()
                         .getId()
                         .equals(getParams().getCreatureId()) &&
                         targetCreature.isAlive() &&

@@ -56,7 +56,7 @@ public class Skill {
                     SimpleTimer.getExpiredTimer(),
                     1f,
                     20f,
-                    20f);
+                    26f);
         }
         if (skillType == SkillType.CROSSBOW_BOLT) {
             return Skill.of(skillType,
@@ -151,7 +151,7 @@ public class Skill {
                     singleScheduledAbility(AbilityType.SWORD_SPIN, skillType),
                     SimpleTimer.getExpiredTimer(),
                     4f,
-                    40f,
+                    30f,
                     0f);
         }
         if (skillType == SkillType.TELEPORT) {
