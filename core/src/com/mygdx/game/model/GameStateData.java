@@ -58,7 +58,7 @@ public class GameStateData {
                                    Map<LootPileId, LootPile> lootPiles) {
         GameStateData newGameStateData = GameStateData.of();
         newGameStateData.setCreatures(creatures);
-        newGameStateData.setRemovedCreatures(new ConcurrentSkipListMap<>(gameStateData.getCreatures()));
+        newGameStateData.setRemovedCreatures(new ConcurrentSkipListMap<>(gameStateData.getRemovedCreatures()));
         newGameStateData.setAbilities(abilities);
         newGameStateData.setLootPiles(lootPiles);
         newGameStateData.setAreas(new ConcurrentSkipListMap<>(gameStateData.getAreas()));
@@ -74,7 +74,7 @@ public class GameStateData {
     public static GameStateData copyWithoutEntities(GameStateData gameStateData) {
         GameStateData newGameStateData = GameStateData.of();
         newGameStateData.setCreatures(new ConcurrentSkipListMap<>());
-        newGameStateData.setRemovedCreatures(new ConcurrentSkipListMap<>(gameStateData.getCreatures()));
+        newGameStateData.setRemovedCreatures(new ConcurrentSkipListMap<>(gameStateData.getRemovedCreatures()));
         newGameStateData.setAbilities(new ConcurrentSkipListMap<>());
         newGameStateData.setLootPiles(new ConcurrentSkipListMap<>());
         newGameStateData.setAreas(new ConcurrentSkipListMap<>(gameStateData.getAreas()));
