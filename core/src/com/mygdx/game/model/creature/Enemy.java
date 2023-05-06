@@ -35,12 +35,11 @@ public class Enemy extends Creature {
         Float minDistance = Float.MAX_VALUE;
         CreatureId minCreatureId = null;
         for (Creature creature : game.getGameState().accessCreatures().getCreatures().values()) {
-            boolean condition = creature.isAlive() &&
-                                creature.getParams().getAreaId().getValue().equals(getParams().getAreaId().getValue()) &&
-                                creature instanceof Player &&
-                                creature.getParams().getPos().distance(getParams().getPos()) < Constants.ENEMY_SEARCH_DISTANCE &&
-                                game.isLineOfSight(this.getParams().getAreaId(), this.getParams().getPos(), creature.getParams()
-                                        .getPos());
+            boolean condition =
+                creature.isAlive() && creature.getParams().getAreaId().getValue().equals(getParams().getAreaId().getValue()) &&
+                creature instanceof Player &&
+                creature.getParams().getPos().distance(getParams().getPos()) < Constants.ENEMY_SEARCH_DISTANCE &&
+                game.isLineOfSight(this.getParams().getAreaId(), this.getParams().getPos(), creature.getParams().getPos());
 
             if (condition && getParams().getPos().distance(creature.getParams().getPos()) < minDistance) {
                 minCreatureId = creature.getId();
@@ -67,9 +66,10 @@ public class Enemy extends Creature {
             getParams().setSpeed(getParams().getBaseSpeed());
         }
 
-        if (getParams().getAttackedByCreatureId() != null && game.getGameState()
-                .accessCreatures()
-                .getCreature(getParams().getAttackedByCreatureId()) instanceof Player) { // if attacked by player,
+        if (getParams().getAttackedByCreatureId() != null && game
+            .getGameState()
+            .accessCreatures()
+            .getCreature(getParams().getAttackedByCreatureId()) instanceof Player) { // if attacked by player,
             // aggro no matter what
             params.setAggroedCreatureId(getParams().getAttackedByCreatureId());
         }
@@ -207,11 +207,10 @@ public class Enemy extends Creature {
     }
 
     private void processPathfinding(CoreGame game) {
-        boolean condition = getParams().getAreaId().equals(game.getGameState().getCurrentAreaId()) &&
-                            getParams().getTargetCreatureId() != null && (getParams().getForcePathCalculation() ||
-                                                                          getParams().getPathCalculationCooldownTimer()
-                                                                                  .getTime() >
-                                                                          getParams().getPathCalculationCooldown());
+        boolean condition =
+            getParams().getAreaId().equals(game.getGameState().getCurrentAreaId()) && getParams().getTargetCreatureId() != null &&
+            (getParams().getForcePathCalculation() ||
+             getParams().getPathCalculationCooldownTimer().getTime() > getParams().getPathCalculationCooldown());
 
         if (condition) {
             Creature target = game.getGameState().accessCreatures().getCreature(getParams().getTargetCreatureId());
@@ -227,9 +226,10 @@ public class Enemy extends Creature {
                     this.getParams().setIsPathMirrored(true);
                 }
                 else {
-                    AstarResult result = Astar.findPath(game.getPhysicsWorld(getParams().getAreaId()), getParams().getPos(),
-                                                        target.getParams()
-                            .getPos(), this.capability());
+                    AstarResult result = Astar.findPath(game.getPhysicsWorld(getParams().getAreaId()),
+                                                        getParams().getPos(),
+                                                        target.getParams().getPos(),
+                                                        this.capability());
                     path = result.getPath();
 
                     this.getParams().setIsPathMirrored(false);
@@ -258,13 +258,14 @@ public class Enemy extends Creature {
                                                             creature.getParams().getPathCalculationCooldownTimer().getTime() <
                                                             0.5f;
 
-        Optional<Creature> otherCreature = game.getGameState()
-                .accessCreatures()
-                .getCreatures()
-                .values()
-                .stream()
-                .filter(creaturePredicate)
-                .findFirst();
+        Optional<Creature> otherCreature = game
+            .getGameState()
+            .accessCreatures()
+            .getCreatures()
+            .values()
+            .stream()
+            .filter(creaturePredicate)
+            .findFirst();
 
         return otherCreature.map(creature -> creature.getParams().getPathTowardsTarget()).orElse(null);
 
@@ -330,9 +331,10 @@ public class Enemy extends Creature {
 
     public void handleAttackTarget(Creature potentialTarget, Vector2 vectorTowardsTarget, CoreGame game) {
         if (potentialTarget.getParams().getPos().distance(getParams().getPos()) < getParams().getAttackDistance()) {
-            game.getGameState()
-                    .accessCreatures()
-                    .handleCreatureAttackTarget(getParams().getId(), vectorTowardsTarget, getParams().getMainAttackSkill());
+            game
+                .getGameState()
+                .accessCreatures()
+                .handleCreatureAttackTarget(getParams().getId(), vectorTowardsTarget, getParams().getMainAttackSkill());
         }
     }
 

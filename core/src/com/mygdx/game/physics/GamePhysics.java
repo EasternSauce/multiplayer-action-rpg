@@ -35,9 +35,10 @@ public class GamePhysics {
     Boolean isForceUpdateBodyPositions = false;
 
     public void init(Map<AreaId, TiledMap> maps, CoreGame game) {
-        physicsWorlds = maps.entrySet()
-                .stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, entry -> PhysicsWorld.of(entry.getValue())));
+        physicsWorlds = maps
+            .entrySet()
+            .stream()
+            .collect(Collectors.toMap(Map.Entry::getKey, entry -> PhysicsWorld.of(entry.getValue())));
 
         physicsWorlds.forEach((areaId, physicsWorld) -> {
             physicsWorld.init();
@@ -55,7 +56,8 @@ public class GamePhysics {
             CreatureBody creatureBody = (CreatureBody) objA;
             AbilityBody abilityBody = (AbilityBody) objB;
 
-            physicsEventQueue.add(AbilityHitsCreatureEvent.of(abilityBody.getCreatureId(), creatureBody.getCreatureId(),
+            physicsEventQueue.add(AbilityHitsCreatureEvent.of(abilityBody.getCreatureId(),
+                                                              creatureBody.getCreatureId(),
                                                               abilityBody.getAbilityId()));
 
 
@@ -64,11 +66,11 @@ public class GamePhysics {
             TerrainTileBody terrainTileBody = (TerrainTileBody) objA;
             if (!terrainTileBody.getIsFlyover()) {
                 AbilityBody abilityBody = (AbilityBody) objB;
-                Vector2 tilePos = Vector2.of(terrainTileBody.getB2Body().getWorldCenter().x, terrainTileBody.getB2Body()
-                        .getWorldCenter().y);
+                Vector2 tilePos = Vector2.of(terrainTileBody.getB2Body().getWorldCenter().x,
+                                             terrainTileBody.getB2Body().getWorldCenter().y);
 
-                Vector2 abilityPos = Vector2.of(abilityBody.getB2body().getWorldCenter().x, abilityBody.getB2body()
-                        .getWorldCenter().y);
+                Vector2 abilityPos = Vector2.of(abilityBody.getB2body().getWorldCenter().x,
+                                                abilityBody.getB2body().getWorldCenter().y);
 
                 physicsEventQueue.add(AbilityHitsTerrainEvent.of(abilityBody.getAbilityId(), abilityPos, tilePos));
             }

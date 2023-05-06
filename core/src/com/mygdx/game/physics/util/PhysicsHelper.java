@@ -142,9 +142,10 @@ public class PhysicsHelper {
             if ((sourceCreature instanceof Player || destinationCreature instanceof Player) &&
                 !ability.getParams().getCreaturesAlreadyHit().containsKey(event.getDestinationCreatureId())) {
 
-                game.getGameState()
-                        .accessAbilities()
-                        .onAbilityHitsCreature(event.getSourceCreatureId(), event.getDestinationCreatureId(), ability);
+                game
+                    .getGameState()
+                    .accessAbilities()
+                    .onAbilityHitsCreature(event.getSourceCreatureId(), event.getDestinationCreatureId(), ability);
             }
 
 

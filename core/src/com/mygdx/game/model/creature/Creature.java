@@ -162,11 +162,12 @@ public abstract class Creature {
     }
 
     private float totalArmor() {
-        return getParams().getEquipmentItems()
-                .values()
-                .stream()
-                .filter(item -> item.getTemplate().getArmor() != null)
-                .reduce(0, ((acc, item) -> acc + item.getArmor()), Integer::sum);
+        return getParams()
+            .getEquipmentItems()
+            .values()
+            .stream()
+            .filter(item -> item.getTemplate().getArmor() != null)
+            .reduce(0, ((acc, item) -> acc + item.getArmor()), Integer::sum);
     }
 
     public Map<SkillType, Integer> availableSkills() {
@@ -178,13 +179,14 @@ public abstract class Creature {
     public boolean isAttackShielded(boolean isRanged, Vector2 dirVector, CoreGame game) {
         if (!isRanged) { // check if target is pointing shield at the attack
             // TODO: if don't have shield ability return false
-            Ability shieldAbility = game.getGameState()
-                    .accessAbilities()
-                    .getAbilityBySkillType(getParams().getId(), SkillType.SUMMON_SHIELD);
+            Ability shieldAbility = game
+                .getGameState()
+                .accessAbilities()
+                .getAbilityBySkillType(getParams().getId(), SkillType.SUMMON_SHIELD);
             if (shieldAbility != null && shieldAbility.getParams().getState() == AbilityState.ACTIVE) {
                 float angleDiff =
-                        (dirVector.angleDeg() - shieldAbility.getParams().getDirVector().multiplyBy(-1).angleDeg() + 180 + 360) %
-                        360 - 180;
+                    (dirVector.angleDeg() - shieldAbility.getParams().getDirVector().multiplyBy(-1).angleDeg() + 180 + 360) %
+                    360 - 180;
                 //noinspection RedundantIfStatement
                 if (angleDiff <= 60 && angleDiff >= -60) {
                     return true;
@@ -225,10 +227,11 @@ public abstract class Creature {
 
     public void onAbilityPerformed(Ability ability) {
         if (!ability.getParams().getAttackWithoutMoving() && getParams().getIsMoving()) {
-            Vector2 movementVector = getParams().getPos()
-                    .vectorTowards(getParams().getMovementCommandTargetPos())
-                    .normalized()
-                    .multiplyBy(0.15f);
+            Vector2 movementVector = getParams()
+                .getPos()
+                .vectorTowards(getParams().getMovementCommandTargetPos())
+                .normalized()
+                .multiplyBy(0.15f);
             // move slightly forward if attacking while moving
             getParams().setMovementCommandTargetPos(getParams().getPos().add(movementVector));
         }

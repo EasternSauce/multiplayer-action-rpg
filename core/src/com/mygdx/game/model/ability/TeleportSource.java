@@ -17,17 +17,18 @@ public class TeleportSource extends Ability {
         Creature creature = game.getGameState().accessCreatures().getCreature(abilityParams.getCreatureId());
 
         TeleportSource ability = TeleportSource.of();
-        ability.params = abilityParams.setWidth(4.5f)
-                .setHeight(4.5f)
-                .setChannelTime(0f)
-                .setActiveTime(0.5f)
-                .setTextureName("blast")
-                .setBaseDamage(0f)
-                .setIsChannelAnimationLooping(false)
-                .setIsActiveAnimationLooping(false)
-                .setRotationShift(0f)
-                .setPos(creature.getParams().getPos())
-                .setDelayedActionTime(0.1f);
+        ability.params = abilityParams
+            .setWidth(4.5f)
+            .setHeight(4.5f)
+            .setChannelTime(0f)
+            .setActiveTime(0.5f)
+            .setTextureName("blast")
+            .setBaseDamage(0f)
+            .setIsChannelAnimationLooping(false)
+            .setIsActiveAnimationLooping(false)
+            .setRotationShift(0f)
+            .setPos(creature.getParams().getPos())
+            .setDelayedActionTime(0.1f);
 
 
         return ability;
@@ -50,10 +51,10 @@ public class TeleportSource extends Ability {
 
     @Override
     void onDelayedAction(CoreGame game) {
-        game.getGameState()
-                .accessAbilities()
-                .chainAnotherAbility(this, AbilityType.TELEPORT_DESTINATION, getParams().getPos(), getParams().getDirVector(),
-                                     game);
+        game
+            .getGameState()
+            .accessAbilities()
+            .chainAnotherAbility(this, AbilityType.TELEPORT_DESTINATION, getParams().getPos(), getParams().getDirVector(), game);
     }
 
     @Override

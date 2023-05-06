@@ -23,8 +23,9 @@ public class Astar {
         Map<Vector2Int, PathingNode> pathingNodes = new HashMap<>();
         for (int y = 0; y < world.heightInTiles(); y++) {
             for (int x = 0; x < world.widthInTiles(); x++) {
-                pathingNodes.put(Vector2Int.of(x, y), PathingNode.of(Vector2Int.of(x, y), world.getClearances()
-                        .getOrDefault(Vector2Int.of(x, y), Integer.MAX_VALUE)));
+                pathingNodes.put(Vector2Int.of(x, y),
+                                 PathingNode.of(Vector2Int.of(x, y),
+                                                world.getClearances().getOrDefault(Vector2Int.of(x, y), Integer.MAX_VALUE)));
             }
         }
 
@@ -68,9 +69,8 @@ public class Astar {
         while (!astarState.getIsGaveUp() && !astarState.getOpenSet().isEmpty() && !astarState.getFoundPath()) {
             AstarState finalAstarState = astarState;
             Vector2Int minimumTile = Collections.min(astarState.getOpenSet(), (o1, o2) -> {
-                if (Objects.equals(finalAstarState.getAstarGraph().get(o1).getF(), finalAstarState.getAstarGraph()
-                        .get(o2)
-                        .getF())) {
+                if (Objects.equals(finalAstarState.getAstarGraph().get(o1).getF(),
+                                   finalAstarState.getAstarGraph().get(o2).getF())) {
                     return 0;
                 }
                 if (finalAstarState.getAstarGraph().get(o1).getF() >= finalAstarState.getAstarGraph().get(o2).getF()) {
@@ -80,9 +80,12 @@ public class Astar {
             });
             AstarNode currentNode = astarState.getAstarGraph().get(minimumTile);
 
-            AstarState resultingAstarState = AstarState.of(astarState.getAstarGraph(), astarState.getOpenSet(),
-                                                           astarState.getClosedSet(), astarState.getFinishPos(),
-                                                           astarState.getFoundPath(), false);
+            AstarState resultingAstarState = AstarState.of(astarState.getAstarGraph(),
+                                                           astarState.getOpenSet(),
+                                                           astarState.getClosedSet(),
+                                                           astarState.getFinishPos(),
+                                                           astarState.getFoundPath(),
+                                                           false);
 
             if (astarState.getClosedSet().size() > 80) { // give up once you process enough tiles [PERFORMANCE SAVER]
                 resultingAstarState.setIsGaveUp(true);
@@ -101,8 +104,12 @@ public class Astar {
 
                 for (int i = 0; i < currentNode.getPathingNode().getOutgoingEdges().size(); i++) {
                     PathingEdge pathingEdge = currentNode.getPathingNode().getOutgoingEdges().get(i);
-                    resultingAstarState = processNeighbor(resultingAstarState, currentNode.getPos(), pathingEdge,
-                                                          pathingEdge.getWeight(), world, capability);
+                    resultingAstarState = processNeighbor(resultingAstarState,
+                                                          currentNode.getPos(),
+                                                          pathingEdge,
+                                                          pathingEdge.getWeight(),
+                                                          world,
+                                                          capability);
                 }
 
             }
@@ -138,8 +145,11 @@ public class Astar {
 
         Double tentativeGScore = originNode.getG() + distanceBetweenNodes;
 
-        AstarNode updatedNode = AstarNode.of(neighborNode.getPathingNode(), neighborNode.getParent(), neighborNode.getF(),
-                                             neighborNode.getG(), neighborNode.getH());
+        AstarNode updatedNode = AstarNode.of(neighborNode.getPathingNode(),
+                                             neighborNode.getParent(),
+                                             neighborNode.getF(),
+                                             neighborNode.getG(),
+                                             neighborNode.getH());
 
         if (!astarState.getOpenSet().contains(neighborNode.getPos())) {
             updatedNode.setH(Astar.calculateHeuristic(neighborNode.getPos(), astarState.getFinishPos()));
@@ -147,9 +157,12 @@ public class Astar {
             updatedNode.setG(tentativeGScore);
             updatedNode.setF(updatedNode.getG() + updatedNode.getH());
 
-            AstarState updatedAstarState = AstarState.of(astarState.getAstarGraph(), astarState.getOpenSet(),
-                                                         astarState.getClosedSet(), astarState.getFinishPos(),
-                                                         astarState.getFoundPath(), astarState.getIsGaveUp());
+            AstarState updatedAstarState = AstarState.of(astarState.getAstarGraph(),
+                                                         astarState.getOpenSet(),
+                                                         astarState.getClosedSet(),
+                                                         astarState.getFinishPos(),
+                                                         astarState.getFoundPath(),
+                                                         astarState.getIsGaveUp());
 
             Map<Vector2Int, AstarNode> updatedAstarGraph = new HashMap<>(astarState.getAstarGraph());
             updatedAstarGraph.put(neighborNode.getPos(), updatedNode);
@@ -167,9 +180,12 @@ public class Astar {
             updatedNode.setG(tentativeGScore);
             updatedNode.setF(updatedNode.getG() + updatedNode.getH());
 
-            AstarState updatedAstarState = AstarState.of(astarState.getAstarGraph(), astarState.getOpenSet(),
-                                                         astarState.getClosedSet(), astarState.getFinishPos(),
-                                                         astarState.getFoundPath(), astarState.getIsGaveUp());
+            AstarState updatedAstarState = AstarState.of(astarState.getAstarGraph(),
+                                                         astarState.getOpenSet(),
+                                                         astarState.getClosedSet(),
+                                                         astarState.getFinishPos(),
+                                                         astarState.getFoundPath(),
+                                                         astarState.getIsGaveUp());
 
             Map<Vector2Int, AstarNode> updatedAstarGraph = new HashMap<>(astarState.getAstarGraph());
             updatedAstarGraph.put(neighborNode.getPos(), updatedNode);
@@ -189,8 +205,12 @@ public class Astar {
         Map<Vector2Int, AstarNode> freshAstarGraph = Astar.getAstarGraph(world.pathingGraph());
         freshAstarGraph.get(startTilePos).setG(0.0);
 
-        AstarState astarState = AstarState.of(freshAstarGraph, new HashSet<>(Collections.singletonList(startTilePos)),
-                                              new HashSet<>(), finishTilePos, false, false);
+        AstarState astarState = AstarState.of(freshAstarGraph,
+                                              new HashSet<>(Collections.singletonList(startTilePos)),
+                                              new HashSet<>(),
+                                              finishTilePos,
+                                              false,
+                                              false);
 
         AstarState result = traverse(astarState, finishTilePos, world, capability);
 
@@ -207,8 +227,9 @@ public class Astar {
     }
 
     public static Map<Vector2Int, AstarNode> getAstarGraph(Map<Vector2Int, PathingNode> pathingGraph) {
-        return pathingGraph.entrySet()
-                .stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, stuff -> AstarNode.of(stuff.getValue())));
+        return pathingGraph
+            .entrySet()
+            .stream()
+            .collect(Collectors.toMap(Map.Entry::getKey, stuff -> AstarNode.of(stuff.getValue())));
     }
 }

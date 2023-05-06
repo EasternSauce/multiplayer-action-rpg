@@ -53,13 +53,14 @@ public class HudRendererHelper {
         if (creature != null && !creature.isAlive()) {
             if (creature.getParams().getRespawnTimer().getTime() < creature.getParams().getRespawnTime()) {
                 float timeRemainingBeforeRespawn =
-                        creature.getParams().getRespawnTime() - creature.getParams().getRespawnTimer().getTime();
+                    creature.getParams().getRespawnTime() - creature.getParams().getRespawnTimer().getTime();
                 String timeRemainingBeforeRespawnText = String.format(Locale.US, "%.2f", timeRemainingBeforeRespawn);
 
                 Assets.renderLargeFont(renderingLayer,
-                                       "You are dead!\nRespawning...\n" + timeRemainingBeforeRespawnText, Vector2.of(
-                                Constants.WindowWidth / 2f - Constants.WindowWidth / 8f,
-                                Constants.WindowHeight / 2f + Constants.WindowHeight / 5f), Color.RED);
+                                       "You are dead!\nRespawning...\n" + timeRemainingBeforeRespawnText,
+                                       Vector2.of(Constants.WindowWidth / 2f - Constants.WindowWidth / 8f,
+                                                  Constants.WindowHeight / 2f + Constants.WindowHeight / 5f),
+                                       Color.RED);
             }
         }
     }
@@ -69,26 +70,36 @@ public class HudRendererHelper {
 
         if (creature != null) {
             shapeDrawer.filledRectangle(new Rectangle(10, 40, 100, 10), Color.ORANGE);
-            shapeDrawer.filledRectangle(new Rectangle(10, 40, 100 * creature.getParams().getLife() /
-                                                              creature.getParams().getMaxLife(), 10), Color.RED);
+            shapeDrawer.filledRectangle(new Rectangle(10,
+                                                      40,
+                                                      100 * creature.getParams().getLife() / creature.getParams().getMaxLife(),
+                                                      10), Color.RED);
             shapeDrawer.filledRectangle(new Rectangle(10, 25, 100, 10), Color.ORANGE);
-            shapeDrawer.filledRectangle(new Rectangle(10, 25, 100 * creature.getParams().getStamina() /
-                                                              creature.getParams().getMaxStamina(), 10), Color.GREEN);
+            shapeDrawer.filledRectangle(new Rectangle(10,
+                                                      25,
+                                                      100 * creature.getParams().getStamina() /
+                                                      creature.getParams().getMaxStamina(),
+                                                      10), Color.GREEN);
             shapeDrawer.filledRectangle(new Rectangle(10, 10, 100, 10), Color.ORANGE);
-            shapeDrawer.filledRectangle(new Rectangle(10, 10, 100 * creature.getParams().getMana() /
-                                                              creature.getParams().getMaxMana(), 10), Color.BLUE);
+            shapeDrawer.filledRectangle(new Rectangle(10,
+                                                      10,
+                                                      100 * creature.getParams().getMana() / creature.getParams().getMaxMana(),
+                                                      10), Color.BLUE);
         }
 
     }
 
     private static void renderChat(Chat chat, RenderingLayer renderingLayer) {
         for (int i = 0; i < Math.min(chat.getMessages().size(), 6); i++) {
-            Assets.renderSmallFont(renderingLayer, chat.getMessages().get(i).getPoster() + ": " +
-                                                   chat.getMessages().get(i).getText(), Vector2.of(30,
-                                                                                                   220 - 20 * i), Color.PURPLE);
+            Assets.renderSmallFont(renderingLayer,
+                                   chat.getMessages().get(i).getPoster() + ": " + chat.getMessages().get(i).getText(),
+                                   Vector2.of(30, 220 - 20 * i),
+                                   Color.PURPLE);
         }
 
         Assets.renderSmallFont(renderingLayer,
-                               (chat.getIsTyping() ? "> " : "") + chat.getCurrentMessage(), Vector2.of(30, 70), Color.PURPLE);
+                               (chat.getIsTyping() ? "> " : "") + chat.getCurrentMessage(),
+                               Vector2.of(30, 70),
+                               Color.PURPLE);
     }
 }

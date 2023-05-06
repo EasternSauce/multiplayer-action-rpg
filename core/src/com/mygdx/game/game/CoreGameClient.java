@@ -76,8 +76,8 @@ public class CoreGameClient extends CoreGame {
             else {
                 getChat().setIsTyping(false);
                 if (!getChat().getCurrentMessage().isEmpty()) {
-                    getEndPoint().sendTCP(ChatMessageSendCommand.of(getGameState().getThisClientPlayerId()
-                                                                            .getValue(), getChat().getCurrentMessage()));
+                    getEndPoint().sendTCP(ChatMessageSendCommand.of(getGameState().getThisClientPlayerId().getValue(),
+                                                                    getChat().getCurrentMessage()));
 
                     getChat().sendMessage(getGameState().getThisClientPlayerId().getValue(), getChat().getCurrentMessage(), this);
 
@@ -91,16 +91,18 @@ public class CoreGameClient extends CoreGame {
                 if (getChat().getIsHoldingBackspace()) {
                     if (!getChat().getCurrentMessage().isEmpty() &&
                         gameState.getTime() > getChat().getHoldBackspaceTime() + 0.3f) {
-                        getChat().setCurrentMessage(getChat().getCurrentMessage()
-                                                            .substring(0, getChat().getCurrentMessage().length() - 1));
+                        getChat().setCurrentMessage(getChat()
+                                                        .getCurrentMessage()
+                                                        .substring(0, getChat().getCurrentMessage().length() - 1));
                     }
                 }
                 else {
                     getChat().setIsHoldingBackspace(true);
                     getChat().setHoldBackspaceTime(gameState.getTime());
                     if (!getChat().getCurrentMessage().isEmpty()) {
-                        getChat().setCurrentMessage(getChat().getCurrentMessage()
-                                                            .substring(0, getChat().getCurrentMessage().length() - 1));
+                        getChat().setCurrentMessage(getChat()
+                                                        .getCurrentMessage()
+                                                        .substring(0, getChat().getCurrentMessage().length() - 1));
                     }
                 }
 
@@ -162,19 +164,21 @@ public class CoreGameClient extends CoreGame {
 
                     if (player != null && player.getParams().getMovementCommandsPerSecondLimitTimer().getTime() >
                                           Constants.MovementCommandCooldown && gameState.getTime() > menuClickTime + 0.1f) {
-                        getEndPoint().sendTCP(ActionPerformCommand.of(CreatureMoveTowardsTargetAction.of(getGameState().getThisClientPlayerId(), mousePos)));
+                        getEndPoint().sendTCP(ActionPerformCommand.of(CreatureMoveTowardsTargetAction.of(getGameState().getThisClientPlayerId(),
+                                                                                                         mousePos)));
                     }
                 }
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.N)) {
 
-                CreatureId creatureId = gameState.accessCreatures()
-                        .getCreatures()
-                        .keySet()
-                        .stream()
-                        .filter(cId -> cId.getValue().startsWith("kamil"))
-                        .collect(Collectors.toList())
-                        .get(0);
+                CreatureId creatureId = gameState
+                    .accessCreatures()
+                    .getCreatures()
+                    .keySet()
+                    .stream()
+                    .filter(cId -> cId.getValue().startsWith("kamil"))
+                    .collect(Collectors.toList())
+                    .get(0);
                 Vector2 pos = gameState.accessCreatures().getCreatures().get(creatureId).getParams().getPos();
                 System.out.println("Vector2.of(" + pos.getX() + "f, " + pos.getY() + "f),");
             }
@@ -197,8 +201,10 @@ public class CoreGameClient extends CoreGame {
                     weaponDamage = 20f;
                 }
                 getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(getGameState().getThisClientPlayerId(),
-                                                                                       attackSkill, player.getParams()
-                        .getPos(), dirVector, weaponDamage)));
+                                                                                       attackSkill,
+                                                                                       player.getParams().getPos(),
+                                                                                       dirVector,
+                                                                                       weaponDamage)));
 
             }
 
@@ -208,8 +214,12 @@ public class CoreGameClient extends CoreGame {
                 Vector2 dirVector = mousePosRelativeToCenter();
 
                 if (playerParams.getSkillMenuSlots().containsKey(0)) {
-                    getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(getGameState().getThisClientPlayerId(), playerParams.getSkillMenuSlots()
-                            .get(0), player.getParams().getPos(), dirVector)));
+                    getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(getGameState().getThisClientPlayerId(),
+                                                                                           playerParams
+                                                                                               .getSkillMenuSlots()
+                                                                                               .get(0),
+                                                                                           player.getParams().getPos(),
+                                                                                           dirVector)));
                 }
 
             }
@@ -219,8 +229,12 @@ public class CoreGameClient extends CoreGame {
                 Vector2 dirVector = mousePosRelativeToCenter();
 
                 if (playerParams.getSkillMenuSlots().containsKey(1)) {
-                    getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(getGameState().getThisClientPlayerId(), playerParams.getSkillMenuSlots()
-                            .get(1), player.getParams().getPos(), dirVector)));
+                    getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(getGameState().getThisClientPlayerId(),
+                                                                                           playerParams
+                                                                                               .getSkillMenuSlots()
+                                                                                               .get(1),
+                                                                                           player.getParams().getPos(),
+                                                                                           dirVector)));
                 }
 
 
@@ -233,8 +247,12 @@ public class CoreGameClient extends CoreGame {
                 Vector2 dirVector = mousePosRelativeToCenter();
 
                 if (playerParams.getSkillMenuSlots().containsKey(2)) {
-                    getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(getGameState().getThisClientPlayerId(), playerParams.getSkillMenuSlots()
-                            .get(2), player.getParams().getPos(), dirVector)));
+                    getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(getGameState().getThisClientPlayerId(),
+                                                                                           playerParams
+                                                                                               .getSkillMenuSlots()
+                                                                                               .get(2),
+                                                                                           player.getParams().getPos(),
+                                                                                           dirVector)));
                 }
 
 
@@ -251,9 +269,11 @@ public class CoreGameClient extends CoreGame {
 
                 enemySpawns.forEach(enemySpawn -> {
                     CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 10000000));
-                    getEndPoint().sendTCP(EnemySpawnCommand.of(enemyId, areaId, enemySpawn.setPos(Vector2.of(
-                            enemySpawn.getPos().getX() + (float) Math.random(),
-                            enemySpawn.getPos().getY() + (float) Math.random()))));
+                    getEndPoint().sendTCP(EnemySpawnCommand.of(enemyId,
+                                                               areaId,
+                                                               enemySpawn.setPos(Vector2.of(
+                                                                   enemySpawn.getPos().getX() + (float) Math.random(),
+                                                                   enemySpawn.getPos().getY() + (float) Math.random()))));
                 });
 
             }
@@ -300,7 +320,9 @@ public class CoreGameClient extends CoreGame {
                 else if (object instanceof EnemySpawnCommand) {
                     EnemySpawnCommand command = (EnemySpawnCommand) object;
 
-                    getEntityManager().spawnEnemy(command.getCreatureId(), command.getAreaId(), command.getEnemySpawn(),
+                    getEntityManager().spawnEnemy(command.getCreatureId(),
+                                                  command.getAreaId(),
+                                                  command.getEnemySpawn(),
                                                   CoreGameClient.this);
                 }
 

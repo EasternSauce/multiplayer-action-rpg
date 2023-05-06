@@ -124,18 +124,23 @@ public class PhysicsWorld {
 
                             traversablesWithMargins.put(Vector2Int.of(x, y), false);
 
-                            List<Vector2Int> combinations = Arrays.asList(Vector2Int.of(0, 1), Vector2Int.of(1, 0),
-                                                                          Vector2Int.of(-1, 0), Vector2Int.of(0, -1),
-                                                                          Vector2Int.of(1, 1), Vector2Int.of(-1, 1),
-                                                                          Vector2Int.of(-1, -1), Vector2Int.of(1, -1));
+                            List<Vector2Int> combinations = Arrays.asList(Vector2Int.of(0, 1),
+                                                                          Vector2Int.of(1, 0),
+                                                                          Vector2Int.of(-1, 0),
+                                                                          Vector2Int.of(0, -1),
+                                                                          Vector2Int.of(1, 1),
+                                                                          Vector2Int.of(-1, 1),
+                                                                          Vector2Int.of(-1, -1),
+                                                                          Vector2Int.of(1, -1));
 
                             final int _x = x;
                             final int _y = y;
 
-                            combinations.stream()
-                                    .filter(pos -> tileExists(_x + pos.getX(), _y + pos.getY()))
-                                    .forEach(tilePos -> traversablesWithMargins.put(Vector2Int.of(
-                                            _x + tilePos.getX(), _y + tilePos.getY()), false));
+                            combinations
+                                .stream()
+                                .filter(pos -> tileExists(_x + pos.getX(), _y + pos.getY()))
+                                .forEach(tilePos -> traversablesWithMargins.put(Vector2Int.of(_x + tilePos.getX(),
+                                                                                              _y + tilePos.getY()), false));
 
                         }
 
@@ -151,7 +156,10 @@ public class PhysicsWorld {
             for (int y = 0; y < layer.getHeight(); y++) {
                 for (int x = 0; x < layer.getWidth(); x++) {
                     if (!traversables.get(Vector2Int.of(x, y))) {
-                        TerrainTileBody tile = TerrainTileBody.of(Vector2Int.of(x, y), tileWidth, tileHeight, layerNum,
+                        TerrainTileBody tile = TerrainTileBody.of(Vector2Int.of(x, y),
+                                                                  tileWidth,
+                                                                  tileHeight,
+                                                                  layerNum,
                                                                   flyover.get(Vector2Int.of(x, y)));
 
                         tile.init(this);
@@ -217,11 +225,12 @@ public class PhysicsWorld {
 
             final int level = currentLevel;
 
-            List<Vector2Int> lowerLevelClearances = clearances.entrySet()
-                    .stream()
-                    .filter(entry -> entry.getValue() == level - 1)
-                    .map(Map.Entry::getKey)
-                    .collect(Collectors.toList());
+            List<Vector2Int> lowerLevelClearances = clearances
+                .entrySet()
+                .stream()
+                .filter(entry -> entry.getValue() == level - 1)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
 
 
             lowerLevelClearances.forEach(pos -> {
@@ -250,13 +259,14 @@ public class PhysicsWorld {
     public Boolean isLineOfSight(Vector2 fromPos, Vector2 toPos) {
         float lineWidth = 0.3f;
         com.badlogic.gdx.math.Polygon lineOfSightRect = new com.badlogic.gdx.math.Polygon(new float[]{fromPos.getX(),
-                fromPos.getY(),
-                fromPos.getX() + lineWidth,
-                fromPos.getY() + lineWidth, toPos.getX() + lineWidth, toPos.getY() + lineWidth, toPos.getX(), toPos.getY()});
+            fromPos.getY(),
+            fromPos.getX() + lineWidth,
+            fromPos.getY() + lineWidth, toPos.getX() + lineWidth, toPos.getY() + lineWidth, toPos.getX(), toPos.getY()});
 
-        List<com.badlogic.gdx.math.Polygon> polygons = terrainTiles.stream()
-                .map(TerrainTileBody::getPolygon)
-                .collect(Collectors.toList());
+        List<com.badlogic.gdx.math.Polygon> polygons = terrainTiles
+            .stream()
+            .map(TerrainTileBody::getPolygon)
+            .collect(Collectors.toList());
 
         boolean overlaps = false;
 

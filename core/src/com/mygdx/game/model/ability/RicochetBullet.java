@@ -14,17 +14,18 @@ public class RicochetBullet extends Projectile {
 
     public static RicochetBullet of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         RicochetBullet ability = RicochetBullet.of();
-        ability.params = abilityParams.setWidth(0.8f)
-                .setHeight(0.8f)
-                .setChannelTime(0f)
-                .setActiveTime(10f)
-                .setTextureName("fireball")
-                .setBaseDamage(30f)
-                .setIsChannelAnimationLooping(false)
-                .setIsActiveAnimationLooping(true)
-                .setRotationShift(0f)
-                .setDelayedActionTime(0.001f)
-                .setSpeed(25f);
+        ability.params = abilityParams
+            .setWidth(0.8f)
+            .setHeight(0.8f)
+            .setChannelTime(0f)
+            .setActiveTime(10f)
+            .setTextureName("fireball")
+            .setBaseDamage(30f)
+            .setIsChannelAnimationLooping(false)
+            .setIsActiveAnimationLooping(true)
+            .setRotationShift(0f)
+            .setDelayedActionTime(0.001f)
+            .setSpeed(25f);
 
 
         return ability;

@@ -111,14 +111,11 @@ public abstract class CoreGame extends Game {
 
     public void renderB2BodyDebug() {
         if (isDebugEnabled()) {
-            entityManager.getGamePhysics()
-                    .getDebugRenderer()
-                    .render(entityManager.getGamePhysics()
-                                    .getPhysicsWorlds()
-                                    .get(getGameState().getCurrentAreaId())
-                                    .getB2world(), entityManager.getGameRenderer()
-                                    .getViewportsHandler()
-                                    .getWorldCameraCombinedProjectionMatrix());
+            entityManager
+                .getGamePhysics()
+                .getDebugRenderer()
+                .render(entityManager.getGamePhysics().getPhysicsWorlds().get(getGameState().getCurrentAreaId()).getB2world(),
+                        entityManager.getGameRenderer().getViewportsHandler().getWorldCameraCombinedProjectionMatrix());
         }
     }
 

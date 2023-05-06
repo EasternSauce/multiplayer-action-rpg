@@ -57,19 +57,25 @@ public class SkillMenuHelper { // TODO: maybe shouldn't be a helper class
 
         AtomicInteger i = new AtomicInteger();
         skillRectangles.values().forEach(rect -> {
-            renderingLayer.getShapeDrawer()
-                    .filledRectangle(rect.getX() - 3, rect.getY() - 3, rect.getWidth() + 6, rect.getHeight() + 6, Color.WHITE);
-            renderingLayer.getShapeDrawer()
-                    .filledRectangle(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(), Color.BLACK);
+            renderingLayer
+                .getShapeDrawer()
+                .filledRectangle(rect.getX() - 3, rect.getY() - 3, rect.getWidth() + 6, rect.getHeight() + 6, Color.WHITE);
+            renderingLayer
+                .getShapeDrawer()
+                .filledRectangle(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(), Color.BLACK);
 
             SkillType skillType = playerParams.getSkillMenuSlots().get(i.get());
 
             if (skillType != null) {
-                Assets.renderMediumFont(renderingLayer, skillType.getPrettyName().substring(0, 2), Vector2.of(
-                        rect.getX() + 5f, rect.getY() + SLOT_SIZE - 7f), Color.GOLD);
+                Assets.renderMediumFont(renderingLayer,
+                                        skillType.getPrettyName().substring(0, 2),
+                                        Vector2.of(rect.getX() + 5f, rect.getY() + SLOT_SIZE - 7f),
+                                        Color.GOLD);
             }
-            Assets.renderVerySmallFont(renderingLayer, keys.get(i.get()), Vector2.of(
-                    rect.getX() + 2f, rect.getY() + SLOT_SIZE - 27f), Color.WHITE);
+            Assets.renderVerySmallFont(renderingLayer,
+                                       keys.get(i.get()),
+                                       Vector2.of(rect.getX() + 2f, rect.getY() + SLOT_SIZE - 27f),
+                                       Color.WHITE);
 
             i.getAndIncrement();
         });
@@ -88,16 +94,21 @@ public class SkillMenuHelper { // TODO: maybe shouldn't be a helper class
 
         AtomicInteger i = new AtomicInteger();
 
-        player.availableSkills()
-                .forEach((skillType, level) -> renderSkillPickerOption(renderingLayer, x, y, i, skillType.getPrettyName()));
+        player
+            .availableSkills()
+            .forEach((skillType, level) -> renderSkillPickerOption(renderingLayer, x, y, i, skillType.getPrettyName()));
     }
 
     public static void renderSkillPickerOption(RenderingLayer renderingLayer, float x, float y, AtomicInteger i,
                                                String skillName) {
         Rect rect = Rect.of(SKILL_PICKER_MENU_POS_X, SKILL_PICKER_MENU_POS_Y + 25f * i.get(), Gdx.graphics.getWidth() / 6f, 20f);
-        renderingLayer.getShapeDrawer()
-                .filledRectangle(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(), Color.DARK_GRAY.cpy()
-                        .sub(0, 0, 0, 0.3f));
+        renderingLayer
+            .getShapeDrawer()
+            .filledRectangle(rect.getX(),
+                             rect.getY(),
+                             rect.getWidth(),
+                             rect.getHeight(),
+                             Color.DARK_GRAY.cpy().sub(0, 0, 0, 0.3f));
         if (rect.contains(x, y)) {
             renderingLayer.getShapeDrawer().rectangle(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(), Color.ORANGE);
         }
@@ -126,11 +137,14 @@ public class SkillMenuHelper { // TODO: maybe shouldn't be a helper class
 
         player.availableSkills().forEach((skillType, level) -> {
             Rect rect = Rect.of(SKILL_PICKER_MENU_POS_X,
-                                SKILL_PICKER_MENU_POS_Y + 25f * i.get(), Gdx.graphics.getWidth() / 6f, 20f);
+                                SKILL_PICKER_MENU_POS_Y + 25f * i.get(),
+                                Gdx.graphics.getWidth() / 6f,
+                                20f);
 
             if (rect.contains(x, y)) {
-                client.sendTCP(ActionPerformCommand.of(SkillPickerMenuSlotChangeAction.of(game.getGameState()
-                                                                                                  .getThisClientPlayerId(),
+                client.sendTCP(ActionPerformCommand.of(SkillPickerMenuSlotChangeAction.of(game
+                                                                                              .getGameState()
+                                                                                              .getThisClientPlayerId(),
                                                                                           skillType)));
                 isSuccessful.set(true);
             }
@@ -139,8 +153,9 @@ public class SkillMenuHelper { // TODO: maybe shouldn't be a helper class
         });
 
         if (!isSuccessful.get()) {
-            client.sendTCP(ActionPerformCommand.of(SkillPickerMenuDeactivateAction.of(game.getGameState()
-                                                                                              .getThisClientPlayerId())));
+            client.sendTCP(ActionPerformCommand.of(SkillPickerMenuDeactivateAction.of(game
+                                                                                          .getGameState()
+                                                                                          .getThisClientPlayerId())));
         }
 
         return isSuccessful.get();
@@ -154,9 +169,9 @@ public class SkillMenuHelper { // TODO: maybe shouldn't be a helper class
 
         skillRectangles.forEach((slotNum, rect) -> {
             if (rect.contains(x, y)) {
-                client.sendTCP(ActionPerformCommand.of(SkillPickerMenuActivateAction.of(game.getGameState()
-                                                                                                .getThisClientPlayerId(),
-                                                                                        slotNum)));
+                client.sendTCP(ActionPerformCommand.of(SkillPickerMenuActivateAction.of(game
+                                                                                            .getGameState()
+                                                                                            .getThisClientPlayerId(), slotNum)));
                 isSuccessful.set(true);
             }
         });

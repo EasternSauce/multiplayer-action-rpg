@@ -76,19 +76,22 @@ public class GameStateCreatureAccessor {
     }
 
     public void forEachDeadCreature(Consumer<Creature> creatureAction) {
-        gameState.accessCreatures()
-                .getCreatures()
-                .values()
-                .stream()
-                .filter(creature -> !creature.isAlive())
-                .forEach(creatureAction);
+        gameState
+            .accessCreatures()
+            .getCreatures()
+            .values()
+            .stream()
+            .filter(creature -> !creature.isAlive())
+            .forEach(creatureAction);
     }
 
     public void handleCreatureAttackTarget(CreatureId attackingCreatureId, Vector2 vectorTowardsTarget, SkillType skillType) {
         Creature attackingCreature = gameState.accessCreatures().getCreatures().get(attackingCreatureId);
 
-        SkillTryPerformAction action = SkillTryPerformAction.of(attackingCreatureId, skillType, attackingCreature.getParams()
-                .getPos(), vectorTowardsTarget);
+        SkillTryPerformAction action = SkillTryPerformAction.of(attackingCreatureId,
+                                                                skillType,
+                                                                attackingCreature.getParams().getPos(),
+                                                                vectorTowardsTarget);
 
         gameState.scheduleServerSideAction(action);
     }

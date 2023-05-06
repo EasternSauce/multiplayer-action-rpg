@@ -18,13 +18,16 @@ public class EnemyTemplate {
     private SkillType mainAttackSkill;
     private Set<DropTableEntry> dropTable;
 
-    private static Set<DropTableEntry> randomDropSet =
-            new ConcurrentSkipListSet<>(Arrays.asList(DropTableEntry.leatherArmorDrop, DropTableEntry.specialLeatherArmorDrop,
-                                                      DropTableEntry.hideGlovesDrop, DropTableEntry.specialHideGlovesDrop,
-                                                      DropTableEntry.ringmailGreavesDrop,
-                                                      DropTableEntry.specialRingmailGreavesDrop, DropTableEntry.ironSwordDrop,
-                                                      DropTableEntry.specialIronSwordDrop, DropTableEntry.boomerangDrop,
-                                                      DropTableEntry.shieldDrop));
+    private static Set<DropTableEntry> randomDropSet = new ConcurrentSkipListSet<>(Arrays.asList(DropTableEntry.leatherArmorDrop,
+                                                                                                 DropTableEntry.specialLeatherArmorDrop,
+                                                                                                 DropTableEntry.hideGlovesDrop,
+                                                                                                 DropTableEntry.specialHideGlovesDrop,
+                                                                                                 DropTableEntry.ringmailGreavesDrop,
+                                                                                                 DropTableEntry.specialRingmailGreavesDrop,
+                                                                                                 DropTableEntry.ironSwordDrop,
+                                                                                                 DropTableEntry.specialIronSwordDrop,
+                                                                                                 DropTableEntry.boomerangDrop,
+                                                                                                 DropTableEntry.shieldDrop));
 
     public static EnemyTemplate archer = EnemyTemplate.of(EnemyType.ARCHER, 15f, SkillType.CROSSBOW_BOLT, randomDropSet);
 

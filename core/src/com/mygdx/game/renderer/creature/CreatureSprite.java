@@ -79,8 +79,9 @@ public class CreatureSprite {
 
         WorldDirection currentDirection = creature.facingDirection(game);
 
-        return runningAnimations.get(creature.animationConfig().getDirMap().get(currentDirection))
-                .getKeyFrame(creature.getParams().getAnimationTimer().getTime(), true);
+        return runningAnimations
+            .get(creature.animationConfig().getDirMap().get(currentDirection))
+            .getKeyFrame(creature.getParams().getAnimationTimer().getTime(), true);
     }
 
 

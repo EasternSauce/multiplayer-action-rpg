@@ -18,16 +18,17 @@ public class Boomerang extends Projectile {
 
     public static Boomerang of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         Boomerang ability = Boomerang.of();
-        ability.params = abilityParams.setWidth(1.3f)
-                .setHeight(1.3f)
-                .setChannelTime(0f)
-                .setActiveTime(10f)
-                .setTextureName("boomerang")
-                .setBaseDamage(22f)
-                .setIsChannelAnimationLooping(true)
-                .setIsActiveAnimationLooping(true)
-                .setRotationShift(0f)
-                .setSpeed(15f);
+        ability.params = abilityParams
+            .setWidth(1.3f)
+            .setHeight(1.3f)
+            .setChannelTime(0f)
+            .setActiveTime(10f)
+            .setTextureName("boomerang")
+            .setBaseDamage(22f)
+            .setIsChannelAnimationLooping(true)
+            .setIsActiveAnimationLooping(true)
+            .setRotationShift(0f)
+            .setSpeed(15f);
 
         return ability;
     }

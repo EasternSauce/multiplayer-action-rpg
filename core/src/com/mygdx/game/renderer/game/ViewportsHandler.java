@@ -21,8 +21,9 @@ public class ViewportsHandler {
     private final OrthographicCamera worldTextCamera = new OrthographicCamera();
 
     public void initViewports() {
-        worldViewport = new FitViewport(
-                Constants.ViewpointWorldWidth / Constants.PPM, Constants.ViewpointWorldHeight / Constants.PPM, worldCamera);
+        worldViewport = new FitViewport(Constants.ViewpointWorldWidth / Constants.PPM,
+                                        Constants.ViewpointWorldHeight / Constants.PPM,
+                                        worldCamera);
 
 
         hudViewport = new FitViewport((float) Constants.WindowWidth, (float) Constants.WindowHeight, hudCamera);

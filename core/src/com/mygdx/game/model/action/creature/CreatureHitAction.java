@@ -110,10 +110,11 @@ public class CreatureHitAction extends GameStateAction {
                     grantedSkills.put(weightedSkillType.get(), level);
                 }
 
-                Item item = Item.of()
-                        .setTemplate(entry.getTemplate())
-                        .setQualityModifier(quality)
-                        .setGrantedSkills(grantedSkills);
+                Item item = Item
+                    .of()
+                    .setTemplate(entry.getTemplate())
+                    .setQualityModifier(quality)
+                    .setGrantedSkills(grantedSkills);
 
 
                 items.add(item);
@@ -126,17 +127,21 @@ public class CreatureHitAction extends GameStateAction {
 
         LootPileId lootPileId = LootPileId.of("LootPile_" + (int) (Math.random() * 10000000)); // TODO: use seeded rng
 
-        Set<Item> lootPileItems = items.stream()
-                .map(item -> Item.of()
-                        .setTemplate(item.getTemplate())
-                        .setQuantity(item.getQuantity())
-                        .setQualityModifier(item.getQualityModifier())
-                        .setGrantedSkills(item.getGrantedSkills())
-                        .setLootPileId(lootPileId))
-                .collect(Collectors.toCollection(ConcurrentSkipListSet::new));
+        Set<Item> lootPileItems = items
+            .stream()
+            .map(item -> Item
+                .of()
+                .setTemplate(item.getTemplate())
+                .setQuantity(item.getQuantity())
+                .setQualityModifier(item.getQualityModifier())
+                .setGrantedSkills(item.getGrantedSkills())
+                .setLootPileId(lootPileId))
+            .collect(Collectors.toCollection(ConcurrentSkipListSet::new));
 
-        LootPile lootPile = LootPile.of(lootPileId, creature.getParams().getAreaId(), creature.getParams()
-                .getPos(), lootPileItems);
+        LootPile lootPile = LootPile.of(lootPileId,
+                                        creature.getParams().getAreaId(),
+                                        creature.getParams().getPos(),
+                                        lootPileItems);
 
         game.getGameState().getLootPiles().put(lootPile.getId(), lootPile);
 

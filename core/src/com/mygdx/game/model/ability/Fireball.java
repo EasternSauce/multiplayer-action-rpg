@@ -20,17 +20,18 @@ public class Fireball extends Projectile {
         Creature creature = game.getGameState().accessCreatures().getCreature(abilityParams.getCreatureId());
 
         Fireball ability = Fireball.of();
-        ability.params = abilityParams.setWidth(1.5f)
-                .setHeight(1.5f)
-                .setChannelTime(0f)
-                .setActiveTime(30f)
-                .setTextureName("fireball")
-                .setBaseDamage(20f)
-                .setIsChannelAnimationLooping(false)
-                .setIsActiveAnimationLooping(true)
-                .setRotationShift(0f)
-                .setDelayedActionTime(0.001f)
-                .setPos(creature.getParams().getPos());
+        ability.params = abilityParams
+            .setWidth(1.5f)
+            .setHeight(1.5f)
+            .setChannelTime(0f)
+            .setActiveTime(30f)
+            .setTextureName("fireball")
+            .setBaseDamage(20f)
+            .setIsChannelAnimationLooping(false)
+            .setIsActiveAnimationLooping(true)
+            .setRotationShift(0f)
+            .setDelayedActionTime(0.001f)
+            .setPos(creature.getParams().getPos());
 
 
         return ability;
@@ -89,9 +90,10 @@ public class Fireball extends Projectile {
 
     @Override
     protected void onAbilityCompleted(CoreGame game) {
-        game.getGameState()
-                .accessAbilities()
-                .chainAnotherAbility(this, AbilityType.FIREBALL_EXPLOSION, getParams().getPos(), params.getDirVector(), game);
+        game
+            .getGameState()
+            .accessAbilities()
+            .chainAnotherAbility(this, AbilityType.FIREBALL_EXPLOSION, getParams().getPos(), params.getDirVector(), game);
     }
 
 

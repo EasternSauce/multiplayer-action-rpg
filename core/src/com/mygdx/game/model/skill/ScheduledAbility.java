@@ -40,13 +40,14 @@ public class ScheduledAbility {
 
         Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
-        AbilityParams abilityParams = AbilityParams.of()
-                .setId(abilityId)
-                .setAreaId(creature.getParams().getAreaId())
-                .setCreatureId(creatureId)
-                .setDirVector(dirVector)
-                .setSkillStartPos(startPos)
-                .setSkillType(skillType);
+        AbilityParams abilityParams = AbilityParams
+            .of()
+            .setId(abilityId)
+            .setAreaId(creature.getParams().getAreaId())
+            .setCreatureId(creatureId)
+            .setDirVector(dirVector)
+            .setSkillStartPos(startPos)
+            .setSkillType(skillType);
 
         game.getGameState().accessAbilities().spawnAbility(abilityType, abilityParams, game);
 

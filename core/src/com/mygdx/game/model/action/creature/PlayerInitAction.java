@@ -46,8 +46,8 @@ public class PlayerInitAction extends GameStateAction {
         Creature player;
         String[] textures = new String[]{"male1", "male2", "female1"};
 
-        Vector2 pos = Vector2.of(((game.getGameState().nextRandomValue() * (28 - 18)) + 18), (
-                (game.getGameState().nextRandomValue() * (12 - 6)) + 6));
+        Vector2 pos = Vector2.of(((game.getGameState().nextRandomValue() * (28 - 18)) + 18),
+                                 ((game.getGameState().nextRandomValue() * (12 - 6)) + 6));
 
         //        Vector2 pos = Vector2.of(194.16289f, 13.253256f);
 
