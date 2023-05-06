@@ -21,16 +21,14 @@ public class ViewportsHandler {
     private final OrthographicCamera worldTextCamera = new OrthographicCamera();
 
     public void initViewports() {
-        worldViewport = new FitViewport(Constants.ViewpointWorldWidth / Constants.PPM,
-                                        Constants.ViewpointWorldHeight / Constants.PPM,
-                                        worldCamera);
+        worldViewport = new FitViewport(
+                Constants.ViewpointWorldWidth / Constants.PPM, Constants.ViewpointWorldHeight / Constants.PPM, worldCamera);
 
 
         hudViewport = new FitViewport((float) Constants.WindowWidth, (float) Constants.WindowHeight, hudCamera);
 
 
-        worldTextViewport =
-                new FitViewport(Constants.ViewpointWorldWidth, Constants.ViewpointWorldHeight, worldTextCamera);
+        worldTextViewport = new FitViewport(Constants.ViewpointWorldWidth, Constants.ViewpointWorldHeight, worldTextCamera);
     }
 
     public void updateViewportsOnResize(int width, int height) {
@@ -40,8 +38,7 @@ public class ViewportsHandler {
     }
 
     public void updateCameraPositions(CoreGame game) {
-        Creature player =
-                game.getGameState().accessCreatures().getCreature(game.getGameState().getThisClientPlayerId());
+        Creature player = game.getGameState().accessCreatures().getCreature(game.getGameState().getThisClientPlayerId());
 
         float cameraX = player.getParams().getPos().getX();
         float cameraY = player.getParams().getPos().getY();

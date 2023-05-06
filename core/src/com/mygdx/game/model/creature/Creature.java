@@ -47,8 +47,7 @@ public abstract class Creature {
     }
 
     private void regenerateStamina() {
-        if (getParams().getStaminaRegenerationTimer().getTime() > getParams().getStaminaRegenerationTickTime() &&
-            isAlive()) {
+        if (getParams().getStaminaRegenerationTimer().getTime() > getParams().getStaminaRegenerationTickTime() && isAlive()) {
             float afterRegeneration = getParams().getStamina() + getParams().getStaminaRegeneration();
             getParams().setStamina(Math.min(afterRegeneration, getParams().getMaxStamina()));
             getParams().getStaminaRegenerationTimer().restart();
@@ -164,10 +163,10 @@ public abstract class Creature {
 
     private float totalArmor() {
         return getParams().getEquipmentItems()
-                          .values()
-                          .stream()
-                          .filter(item -> item.getTemplate().getArmor() != null)
-                          .reduce(0, ((acc, item) -> acc + item.getArmor()), Integer::sum);
+                .values()
+                .stream()
+                .filter(item -> item.getTemplate().getArmor() != null)
+                .reduce(0, ((acc, item) -> acc + item.getArmor()), Integer::sum);
     }
 
     public Map<SkillType, Integer> availableSkills() {
@@ -180,13 +179,12 @@ public abstract class Creature {
         if (!isRanged) { // check if target is pointing shield at the attack
             // TODO: if don't have shield ability return false
             Ability shieldAbility = game.getGameState()
-                                        .accessAbilities()
-                                        .getAbilityBySkillType(getParams().getId(), SkillType.SUMMON_SHIELD);
+                    .accessAbilities()
+                    .getAbilityBySkillType(getParams().getId(), SkillType.SUMMON_SHIELD);
             if (shieldAbility != null && shieldAbility.getParams().getState() == AbilityState.ACTIVE) {
                 float angleDiff =
-                        (dirVector.angleDeg() - shieldAbility.getParams().getDirVector().multiplyBy(-1).angleDeg() +
-                         180 +
-                         360) % 360 - 180;
+                        (dirVector.angleDeg() - shieldAbility.getParams().getDirVector().multiplyBy(-1).angleDeg() + 180 + 360) %
+                        360 - 180;
                 //noinspection RedundantIfStatement
                 if (angleDiff <= 60 && angleDiff >= -60) {
                     return true;
@@ -228,9 +226,9 @@ public abstract class Creature {
     public void onAbilityPerformed(Ability ability) {
         if (!ability.getParams().getAttackWithoutMoving() && getParams().getIsMoving()) {
             Vector2 movementVector = getParams().getPos()
-                                                .vectorTowards(getParams().getMovementCommandTargetPos())
-                                                .normalized()
-                                                .multiplyBy(0.15f);
+                    .vectorTowards(getParams().getMovementCommandTargetPos())
+                    .normalized()
+                    .multiplyBy(0.15f);
             // move slightly forward if attacking while moving
             getParams().setMovementCommandTargetPos(getParams().getPos().add(movementVector));
         }
@@ -241,9 +239,7 @@ public abstract class Creature {
     }
 
     public boolean canPerformSkill(Skill skill) {
-        return isAlive() &&
-               getParams().getStamina() >= skill.getStaminaCost() &&
-               getParams().getMana() >= skill.getManaCost();
+        return isAlive() && getParams().getStamina() >= skill.getStaminaCost() && getParams().getMana() >= skill.getManaCost();
     }
 
     public void onPerformSkill(Skill skill) {

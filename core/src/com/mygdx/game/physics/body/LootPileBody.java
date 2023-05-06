@@ -28,11 +28,7 @@ public class LootPileBody {
 
         world = game.getPhysicsWorld(lootPile.getAreaId());
 
-        b2Body = B2BodyFactory.createLootPileB2body(world,
-                                                    this,
-                                                    lootPile.getPos(),
-                                                    lootPile.getWidth(),
-                                                    lootPile.getHeight());
+        b2Body = B2BodyFactory.createLootPileB2body(world, this, lootPile.getPos(), lootPile.getWidth(), lootPile.getHeight());
     }
 
     public void onRemove() {

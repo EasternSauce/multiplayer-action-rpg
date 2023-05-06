@@ -112,14 +112,13 @@ public abstract class CoreGame extends Game {
     public void renderB2BodyDebug() {
         if (isDebugEnabled()) {
             entityManager.getGamePhysics()
-                         .getDebugRenderer()
-                         .render(entityManager.getGamePhysics()
-                                              .getPhysicsWorlds()
-                                              .get(getGameState().getCurrentAreaId())
-                                              .getB2world(),
-                                 entityManager.getGameRenderer()
-                                              .getViewportsHandler()
-                                              .getWorldCameraCombinedProjectionMatrix());
+                    .getDebugRenderer()
+                    .render(entityManager.getGamePhysics()
+                                    .getPhysicsWorlds()
+                                    .get(getGameState().getCurrentAreaId())
+                                    .getB2world(), entityManager.getGameRenderer()
+                                    .getViewportsHandler()
+                                    .getWorldCameraCombinedProjectionMatrix());
         }
     }
 
@@ -151,15 +150,13 @@ public abstract class CoreGame extends Game {
     public Vector2 mousePosRelativeToCenter() { // relative to center of screen, in in-game length units
         Vector3 screenCoords = new Vector3((float) Gdx.input.getX(), (float) Gdx.input.getY(), 0f);
         entityManager.getGameRenderer().getViewportsHandler().unprojectHudCamera(screenCoords);
-        Vector2 mousePos =
-                Vector2.of(screenCoords.x - Constants.WindowWidth / 2f, screenCoords.y - Constants.WindowHeight / 2f);
+        Vector2 mousePos = Vector2.of(screenCoords.x - Constants.WindowWidth / 2f, screenCoords.y - Constants.WindowHeight / 2f);
 
         float viewportRatioX = Constants.ViewpointWorldWidth / Constants.WindowWidth;
         float viewportRatioY = Constants.ViewpointWorldHeight / Constants.WindowHeight;
 
 
-        return Vector2.of(mousePos.getX() * viewportRatioX / Constants.PPM,
-                          mousePos.getY() * viewportRatioY / Constants.PPM);
+        return Vector2.of(mousePos.getX() * viewportRatioX / Constants.PPM, mousePos.getY() * viewportRatioY / Constants.PPM);
     }
 
     public Vector2 hudMousePos() {

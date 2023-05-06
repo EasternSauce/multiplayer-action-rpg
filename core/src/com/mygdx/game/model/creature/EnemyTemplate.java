@@ -19,21 +19,15 @@ public class EnemyTemplate {
     private Set<DropTableEntry> dropTable;
 
     private static Set<DropTableEntry> randomDropSet =
-            new ConcurrentSkipListSet<>(Arrays.asList(DropTableEntry.leatherArmorDrop,
-                                                      DropTableEntry.specialLeatherArmorDrop,
-                                                      DropTableEntry.hideGlovesDrop,
-                                                      DropTableEntry.specialHideGlovesDrop,
+            new ConcurrentSkipListSet<>(Arrays.asList(DropTableEntry.leatherArmorDrop, DropTableEntry.specialLeatherArmorDrop,
+                                                      DropTableEntry.hideGlovesDrop, DropTableEntry.specialHideGlovesDrop,
                                                       DropTableEntry.ringmailGreavesDrop,
-                                                      DropTableEntry.specialRingmailGreavesDrop,
-                                                      DropTableEntry.ironSwordDrop,
-                                                      DropTableEntry.specialIronSwordDrop,
-                                                      DropTableEntry.boomerangDrop,
+                                                      DropTableEntry.specialRingmailGreavesDrop, DropTableEntry.ironSwordDrop,
+                                                      DropTableEntry.specialIronSwordDrop, DropTableEntry.boomerangDrop,
                                                       DropTableEntry.shieldDrop));
 
-    public static EnemyTemplate archer =
-            EnemyTemplate.of(EnemyType.ARCHER, 15f, SkillType.CROSSBOW_BOLT, randomDropSet);
+    public static EnemyTemplate archer = EnemyTemplate.of(EnemyType.ARCHER, 15f, SkillType.CROSSBOW_BOLT, randomDropSet);
 
-    public static EnemyTemplate skeleton =
-            EnemyTemplate.of(EnemyType.SKELETON, 3f, SkillType.SWORD_SLASH, randomDropSet);
+    public static EnemyTemplate skeleton = EnemyTemplate.of(EnemyType.SKELETON, 3f, SkillType.SWORD_SLASH, randomDropSet);
     public static EnemyTemplate mage = EnemyTemplate.of(EnemyType.MAGE, 15f, SkillType.SLOW_MAGIC_ORB, randomDropSet);
 }

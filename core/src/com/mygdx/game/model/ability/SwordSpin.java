@@ -20,16 +20,16 @@ public class SwordSpin extends Ability {
     public static SwordSpin of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         SwordSpin ability = SwordSpin.of();
         ability.params = abilityParams.setWidth(2.4f)
-                                      .setHeight(2.4f)
-                                      .setChannelTime(0f)
-                                      .setActiveTime(3f)
-                                      .setRange(2.4f)
-                                      .setTextureName("sword")
-                                      .setBaseDamage(13f)
-                                      .setIsChannelAnimationLooping(false)
-                                      .setIsActiveAnimationLooping(false)
-                                      .setRotationShift(0f)
-                                      .setDirVector(abilityParams.getDirVector().rotateDeg(90));
+                .setHeight(2.4f)
+                .setChannelTime(0f)
+                .setActiveTime(3f)
+                .setRange(2.4f)
+                .setTextureName("sword")
+                .setBaseDamage(13f)
+                .setIsChannelAnimationLooping(false)
+                .setIsActiveAnimationLooping(false)
+                .setRotationShift(0f)
+                .setDirVector(abilityParams.getDirVector().rotateDeg(90));
         return ability;
     }
 

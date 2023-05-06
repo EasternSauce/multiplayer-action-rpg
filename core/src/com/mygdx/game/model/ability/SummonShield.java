@@ -18,16 +18,16 @@ public class SummonShield extends Ability {
 
         SummonShield ability = SummonShield.of();
         ability.params = abilityParams.setWidth(2f)
-                                      .setHeight(2f)
-                                      .setChannelTime(0f)
-                                      .setActiveTime(1f)
-                                      .setRange(1.2f)
-                                      .setTextureName("shield")
-                                      .setBaseDamage(0f)
-                                      .setIsChannelAnimationLooping(false)
-                                      .setIsActiveAnimationLooping(false)
-                                      .setRotationShift(0f)
-                                      .setIsFlip(SummonShield.calculateFlip(flipValue));
+                .setHeight(2f)
+                .setChannelTime(0f)
+                .setActiveTime(1f)
+                .setRange(1.2f)
+                .setTextureName("shield")
+                .setBaseDamage(0f)
+                .setIsChannelAnimationLooping(false)
+                .setIsActiveAnimationLooping(false)
+                .setRotationShift(0f)
+                .setIsFlip(SummonShield.calculateFlip(flipValue));
         return ability;
     }
 

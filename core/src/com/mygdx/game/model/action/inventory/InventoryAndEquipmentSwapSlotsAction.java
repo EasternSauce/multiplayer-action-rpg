@@ -38,8 +38,7 @@ public class InventoryAndEquipmentSwapSlotsAction extends GameStateAction {
         Item equipmentItem = player.getParams().getEquipmentItems().get(equipmentIndex);
 
         if (inventoryItem == null ||
-            inventoryItem.getTemplate().getEquipmentSlotType() ==
-            EquipmentSlotType.equipmentSlots.get(equipmentIndex)) {
+            inventoryItem.getTemplate().getEquipmentSlotType() == EquipmentSlotType.equipmentSlots.get(equipmentIndex)) {
             if (equipmentItem != null) {
                 player.getParams().getInventoryItems().put(inventoryIndex, equipmentItem);
             }
@@ -69,9 +68,7 @@ public class InventoryAndEquipmentSwapSlotsAction extends GameStateAction {
         slotsToRemove.forEach(slotIndex -> playerParams.getSkillMenuSlots().remove(slotIndex));
     }
 
-    public static InventoryAndEquipmentSwapSlotsAction of(CreatureId creatureId,
-                                                          Integer inventoryIndex,
-                                                          Integer equipmentIndex) {
+    public static InventoryAndEquipmentSwapSlotsAction of(CreatureId creatureId, Integer inventoryIndex, Integer equipmentIndex) {
         InventoryAndEquipmentSwapSlotsAction action = InventoryAndEquipmentSwapSlotsAction.of();
         action.creatureId = creatureId;
         action.inventoryIndex = inventoryIndex;

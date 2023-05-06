@@ -21,9 +21,7 @@ public class GameplayRendererHelper {
         game.renderB2BodyDebug();
     }
 
-    private static void renderWorldElements(GameRenderer renderer,
-                                            RenderingLayer worldElementsRenderingLayer,
-                                            CoreGame game) {
+    private static void renderWorldElements(GameRenderer renderer, RenderingLayer worldElementsRenderingLayer, CoreGame game) {
         worldElementsRenderingLayer.getSpriteBatch().begin();
 
         renderer.renderAreaGates(worldElementsRenderingLayer, game);

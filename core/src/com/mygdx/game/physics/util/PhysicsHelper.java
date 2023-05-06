@@ -96,8 +96,7 @@ public class PhysicsHelper {
 
                 Creature creature = game.getGameState().accessCreatures().getCreature(event.getCreatureId());
 
-                if (creature instanceof Player &&
-                    creature.getParams().getJustTeleportedToGate() &&
+                if (creature instanceof Player && creature.getParams().getJustTeleportedToGate() &&
                     creature.getParams().getAreaWhenEnteredGate().equals(creature.getParams().getAreaId())) {
 
 
@@ -136,8 +135,7 @@ public class PhysicsHelper {
 
     private static void handleCreatureAttacked(AbilityHitsCreatureEvent event, CoreGame game) {
         Creature sourceCreature = game.getGameState().accessCreatures().getCreature(event.getSourceCreatureId());
-        Creature destinationCreature =
-                game.getGameState().accessCreatures().getCreature(event.getDestinationCreatureId());
+        Creature destinationCreature = game.getGameState().accessCreatures().getCreature(event.getDestinationCreatureId());
         Ability ability = game.getGameState().accessAbilities().getAbility(event.getAbilityId());
 
         if (ability != null && destinationCreature.isAlive()) {
@@ -145,8 +143,8 @@ public class PhysicsHelper {
                 !ability.getParams().getCreaturesAlreadyHit().containsKey(event.getDestinationCreatureId())) {
 
                 game.getGameState()
-                    .accessAbilities()
-                    .onAbilityHitsCreature(event.getSourceCreatureId(), event.getDestinationCreatureId(), ability);
+                        .accessAbilities()
+                        .onAbilityHitsCreature(event.getSourceCreatureId(), event.getDestinationCreatureId(), ability);
             }
 
 
@@ -160,7 +158,8 @@ public class PhysicsHelper {
             game.getGameState().accessCreatures().getCreatures().forEach((creatureId, creature) -> {
                 if (game.getCreatureBodies().containsKey(creatureId) &&
                     game.getCreatureBodies().get(creatureId).getBodyPos().distance(creature.getParams().getPos()) >
-                    Constants.FORCE_UPDATE_MINIMUM_DISTANCE // only setTransform if positions are far apart
+                    Constants.FORCE_UPDATE_MINIMUM_DISTANCE // only setTransform if positions
+                    // are far apart
                 ) {
                     game.getCreatureBodies().get(creatureId).trySetTransform(creature.getParams().getPos());
                 }
@@ -172,7 +171,8 @@ public class PhysicsHelper {
                     // this is needed to fix body created client/server desync
                     ability.bodyShouldExist() &&
                     game.getAbilityBodies().get(abilityId).getBodyPos().distance(ability.getParams().getPos()) >
-                    Constants.FORCE_UPDATE_MINIMUM_DISTANCE // only setTransform if positions are far apart
+                    Constants.FORCE_UPDATE_MINIMUM_DISTANCE
+                    // only setTransform if positions are far apart
                 ) {
                     game.getAbilityBodies().get(abilityId).trySetTransform(ability.getParams().getPos());
                 }

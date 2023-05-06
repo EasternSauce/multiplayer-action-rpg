@@ -37,8 +37,7 @@ public class CreatureSprite {
     public void prepareRunningAnimations(CreatureAnimationConfig animationConfig, TextureAtlas atlas) {
         TextureRegion runningAnimationTextureRegion = atlas.findRegion(animationConfig.getTextureName());
 
-        this.runningAnimations =
-                CreatureSpriteHelper.createRunningAnimations(animationConfig, runningAnimationTextureRegion);
+        this.runningAnimations = CreatureSpriteHelper.createRunningAnimations(animationConfig, runningAnimationTextureRegion);
     }
 
     public void updatePosition(Creature creature) {
@@ -81,7 +80,7 @@ public class CreatureSprite {
         WorldDirection currentDirection = creature.facingDirection(game);
 
         return runningAnimations.get(creature.animationConfig().getDirMap().get(currentDirection))
-                                .getKeyFrame(creature.getParams().getAnimationTimer().getTime(), true);
+                .getKeyFrame(creature.getParams().getAnimationTimer().getTime(), true);
     }
 
 

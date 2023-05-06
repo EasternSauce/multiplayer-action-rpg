@@ -30,8 +30,7 @@ public class CreatureRenderer {
         creatureSprite = CreatureSprite.of(creatureId);
         creatureStunnedAnimationRenderer = CreatureStunnedAnimationRenderer.of(creatureId);
 
-        CreatureAnimationConfig config =
-                game.getGameState().accessCreatures().getCreatures().get(creatureId).animationConfig();
+        CreatureAnimationConfig config = game.getGameState().accessCreatures().getCreatures().get(creatureId).animationConfig();
 
         creatureSprite.prepareFacingTextures(config, atlas);
         creatureSprite.prepareRunningAnimations(config, atlas);
@@ -80,9 +79,6 @@ public class CreatureRenderer {
         float namePosY = LifeBarUtils.getLifeBarPosY(creature, creatureSprite.getWidth()) + 1f;
 
         // world text viewport is not scaled down! so we scale the values every time
-        Assets.renderMediumFont(renderingLayer,
-                                name,
-                                Vector2.of(namePosX * Constants.PPM, namePosY * Constants.PPM),
-                                Color.RED);
+        Assets.renderMediumFont(renderingLayer, name, Vector2.of(namePosX * Constants.PPM, namePosY * Constants.PPM), Color.RED);
     }
 }

@@ -16,15 +16,15 @@ public class SwordSlash extends Ability {
     public static SwordSlash of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         SwordSlash ability = SwordSlash.of();
         ability.params = abilityParams.setWidth(2f)
-                                      .setHeight(2f)
-                                      .setChannelTime(0.15f)
-                                      .setActiveTime(0.3f)
-                                      .setRange(1.8f)
-                                      .setTextureName("slash")
-                                      .setBaseDamage(22f)
-                                      .setIsChannelAnimationLooping(false)
-                                      .setIsActiveAnimationLooping(false)
-                                      .setRotationShift(0f);
+                .setHeight(2f)
+                .setChannelTime(0.15f)
+                .setActiveTime(0.3f)
+                .setRange(1.8f)
+                .setTextureName("slash")
+                .setBaseDamage(22f)
+                .setIsChannelAnimationLooping(false)
+                .setIsActiveAnimationLooping(false)
+                .setRotationShift(0f);
         return ability;
     }
 

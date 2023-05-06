@@ -126,10 +126,8 @@ public class CreatureParams {
     Map<CreatureEffect, CreatureEffectState> effects = new ConcurrentSkipListMap<>();
 
     public static CreatureParams of(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn) {
-        return getCreatureParams(creatureId,
-                                 areaId,
-                                 enemySpawn.getPos(),
-                                 enemySpawn.getEnemyTemplate().getEnemyType().textureName);
+        return getCreatureParams(creatureId, areaId, enemySpawn.getPos(), enemySpawn.getEnemyTemplate()
+                .getEnemyType().textureName);
     }
 
 
@@ -137,9 +135,7 @@ public class CreatureParams {
         return getCreatureParams(creatureId, areaId, pos, textureName);
     }
 
-    private static CreatureParams getCreatureParams(CreatureId creatureId,
-                                                    AreaId areaId,
-                                                    Vector2 enemySpawn,
+    private static CreatureParams getCreatureParams(CreatureId creatureId, AreaId areaId, Vector2 enemySpawn,
                                                     String textureName) {
         CreatureParams params = CreatureParams.of();
         params.id = creatureId;
@@ -152,13 +148,12 @@ public class CreatureParams {
 
         params.skills = // TODO: should we restrict which creature can perform which skill?
                 new ConcurrentSkipListMap<>(Arrays.stream(SkillType.values())
-                                                  .collect(Collectors.toMap(Function.identity(),
-                                                                            skillType -> Skill.of(skillType,
-                                                                                                  creatureId))));
+                                                    .collect(Collectors.toMap(Function.identity(),
+                                                                              skillType -> Skill.of(skillType, creatureId))));
 
         params.effects = new ConcurrentSkipListMap<>(Arrays.stream(CreatureEffect.values())
-                                                           .collect(Collectors.toMap(effect -> effect,
-                                                                                     effect -> CreatureEffectState.of())));
+                                                             .collect(Collectors.toMap(effect -> effect,
+                                                                                       effect -> CreatureEffectState.of())));
 
         params.aiStateSeed = (float) Math.random();
         params.aiStateTime = 0f;

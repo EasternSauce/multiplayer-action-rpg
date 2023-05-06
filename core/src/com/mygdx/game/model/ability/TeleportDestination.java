@@ -18,24 +18,23 @@ public class TeleportDestination extends Ability {
     public static TeleportDestination of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(abilityParams.getCreatureId());
 
-        Vector2 teleportPos =
-                TeleportDestination.calculatePos(creature.getParams().getPos().add(abilityParams.getDirVector()),
-                                                 creature.getParams().getPos(),
-                                                 creature.getParams().getAreaId(),
-                                                 game);
+        Vector2 teleportPos = TeleportDestination.calculatePos(creature.getParams()
+                                                                       .getPos()
+                                                                       .add(abilityParams.getDirVector()), creature.getParams()
+                                                                       .getPos(), creature.getParams().getAreaId(), game);
 
         TeleportDestination ability = TeleportDestination.of();
         ability.params = abilityParams.setWidth(4.5f)
-                                      .setHeight(4.5f)
-                                      .setChannelTime(0f)
-                                      .setActiveTime(0.5f)
-                                      .setTextureName("blast")
-                                      .setBaseDamage(0f)
-                                      .setIsChannelAnimationLooping(false)
-                                      .setIsActiveAnimationLooping(false)
-                                      .setRotationShift(0f)
-                                      .setPos(teleportPos)
-                                      .setChainToPos(teleportPos);
+                .setHeight(4.5f)
+                .setChannelTime(0f)
+                .setActiveTime(0.5f)
+                .setTextureName("blast")
+                .setBaseDamage(0f)
+                .setIsChannelAnimationLooping(false)
+                .setIsActiveAnimationLooping(false)
+                .setRotationShift(0f)
+                .setPos(teleportPos)
+                .setChainToPos(teleportPos);
 
 
         return ability;
@@ -72,9 +71,7 @@ public class TeleportDestination extends Ability {
 
     @Override
     void onAbilityStarted(CoreGame game) {
-        game.addTeleportEvent(TeleportEvent.of(getParams().getCreatureId(),
-                                               getParams().getPos(),
-                                               getParams().getAreaId(),
+        game.addTeleportEvent(TeleportEvent.of(getParams().getCreatureId(), getParams().getPos(), getParams().getAreaId(),
                                                getParams().getAreaId()));
     }
 

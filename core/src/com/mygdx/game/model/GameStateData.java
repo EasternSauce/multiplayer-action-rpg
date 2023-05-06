@@ -52,10 +52,8 @@ public class GameStateData {
         return newGameStateData;
     }
 
-    public static GameStateData of(GameStateData gameStateData,
-                                   Map<CreatureId, Creature> creatures,
-                                   Map<AbilityId, Ability> abilities,
-                                   Map<LootPileId, LootPile> lootPiles) {
+    public static GameStateData of(GameStateData gameStateData, Map<CreatureId, Creature> creatures,
+                                   Map<AbilityId, Ability> abilities, Map<LootPileId, LootPile> lootPiles) {
         GameStateData newGameStateData = GameStateData.of();
         newGameStateData.setCreatures(creatures);
         newGameStateData.setRemovedCreatures(new ConcurrentSkipListMap<>(gameStateData.getRemovedCreatures()));

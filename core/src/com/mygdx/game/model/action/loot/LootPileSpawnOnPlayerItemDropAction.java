@@ -57,13 +57,12 @@ public class LootPileSpawnOnPlayerItemDropAction extends GameStateAction {
 
         Set<Item> lootPileItems = new ConcurrentSkipListSet<>();
         lootPileItems.add(Item.of()
-                              .setTemplate(item.getTemplate())
-                              .setQuantity(item.getQuantity())
-                              .setQualityModifier(item.getQualityModifier())
-                              .setLootPileId(lootPileId));
+                                  .setTemplate(item.getTemplate())
+                                  .setQuantity(item.getQuantity())
+                                  .setQualityModifier(item.getQualityModifier())
+                                  .setLootPileId(lootPileId));
 
-        LootPile lootPile =
-                LootPile.of(lootPileId, player.getParams().getAreaId(), player.getParams().getPos(), lootPileItems);
+        LootPile lootPile = LootPile.of(lootPileId, player.getParams().getAreaId(), player.getParams().getPos(), lootPileItems);
 
         game.getGameState().getLootPiles().put(lootPile.getId(), lootPile);
 

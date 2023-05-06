@@ -51,9 +51,7 @@ public class ConnectScreen implements Screen {
             if (isHoldingBackspace) {
                 if (!messageHolder.getCurrentMessage().isEmpty() && timer.getTime() > holdBackspaceTime + 0.3f) {
                     messageHolder.setCurrentMessage(messageHolder.getCurrentMessage()
-                                                                 .substring(0,
-                                                                            messageHolder.getCurrentMessage().length() -
-                                                                            1));
+                                                            .substring(0, messageHolder.getCurrentMessage().length() - 1));
                 }
             }
             else {
@@ -61,9 +59,7 @@ public class ConnectScreen implements Screen {
                 holdBackspaceTime = timer.getTime();
                 if (!messageHolder.getCurrentMessage().isEmpty()) {
                     messageHolder.setCurrentMessage(messageHolder.getCurrentMessage()
-                                                                 .substring(0,
-                                                                            messageHolder.getCurrentMessage().length() -
-                                                                            1));
+                                                            .substring(0, messageHolder.getCurrentMessage().length() - 1));
                 }
             }
         }
@@ -76,8 +72,7 @@ public class ConnectScreen implements Screen {
 
         SpriteBatch spriteBatch = game.getEntityManager().getGameRenderer().getHudRenderingLayer().getSpriteBatch();
 
-        TextureAtlas.AtlasRegion background2 =
-                game.getEntityManager().getGameRenderer().getAtlas().findRegion("background2");
+        TextureAtlas.AtlasRegion background2 = game.getEntityManager().getGameRenderer().getAtlas().findRegion("background2");
         float centerX = Gdx.graphics.getWidth() / 2f;
         float centerY = Gdx.graphics.getHeight() / 2f;
 
@@ -87,15 +82,15 @@ public class ConnectScreen implements Screen {
                          (Gdx.graphics.getWidth() - background2.originalWidth) / 2f,
                          (Gdx.graphics.getHeight() - background2.originalHeight) / 2f);
 
-        Assets.renderMediumFont(game.getEntityManager().getGameRenderer().getHudRenderingLayer(),
-                                "Your character name:",
-                                Vector2.of(centerX - 120f, centerY + 100f),
-                                Color.BLACK);
+        Assets.renderMediumFont(game.getEntityManager()
+                                        .getGameRenderer()
+                                        .getHudRenderingLayer(), "Your character name:", Vector2.of(
+                centerX - 120f, centerY + 100f), Color.BLACK);
 
-        Assets.renderMediumFont(game.getEntityManager().getGameRenderer().getHudRenderingLayer(),
-                                messageHolder.getCurrentMessage(),
-                                Vector2.of(centerX - 120f, centerY + 70f),
-                                Color.BLACK);
+        Assets.renderMediumFont(game.getEntityManager()
+                                        .getGameRenderer()
+                                        .getHudRenderingLayer(), messageHolder.getCurrentMessage(), Vector2.of(
+                centerX - 120f, centerY + 70f), Color.BLACK);
 
         spriteBatch.end();
     }

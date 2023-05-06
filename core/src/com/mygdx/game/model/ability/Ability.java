@@ -35,8 +35,7 @@ public abstract class Ability {
         else if (state == AbilityState.ACTIVE) {
             onActiveUpdate(game);
 
-            if (!getParams().getDelayedActionCompleted() &&
-                getParams().getDelayedActionTime() != null &&
+            if (!getParams().getDelayedActionCompleted() && getParams().getDelayedActionTime() != null &&
                 getParams().getStateTimer().getTime() > getParams().getDelayedActionTime()) {
                 getParams().setDelayedActionCompleted(true);
                 onDelayedAction(game);

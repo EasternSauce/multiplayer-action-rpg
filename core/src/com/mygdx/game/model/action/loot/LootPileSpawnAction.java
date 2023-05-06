@@ -34,13 +34,13 @@ public class LootPileSpawnAction extends GameStateAction {
         LootPileId lootPileId = LootPileId.of("LootPile_" + (int) (Math.random() * 10000000)); // TODO: use seeded rng
 
         Set<Item> lootPileItems = this.getItems()
-                                      .stream()
-                                      .map(item -> Item.of()
-                                                       .setTemplate(item.getTemplate())
-                                                       .setQuantity(item.getQuantity())
-                                                       .setQualityModifier(item.getQualityModifier())
-                                                       .setLootPileId(lootPileId))
-                                      .collect(Collectors.toCollection(ConcurrentSkipListSet::new));
+                .stream()
+                .map(item -> Item.of()
+                        .setTemplate(item.getTemplate())
+                        .setQuantity(item.getQuantity())
+                        .setQualityModifier(item.getQualityModifier())
+                        .setLootPileId(lootPileId))
+                .collect(Collectors.toCollection(ConcurrentSkipListSet::new));
 
         LootPile lootPile = LootPile.of(lootPileId, areaId, pos, lootPileItems);
 

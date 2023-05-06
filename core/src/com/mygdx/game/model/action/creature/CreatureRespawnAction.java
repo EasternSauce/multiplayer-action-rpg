@@ -34,10 +34,8 @@ public class CreatureRespawnAction extends GameStateAction {
             creature.getParams().setMana(creature.getParams().getMaxMana());
 
             creature.getParams().setPos(pos);
-            game.addTeleportEvent(TeleportEvent.of(creatureId,
-                                                   pos,
-                                                   creature.getParams().getAreaId(),
-                                                   creature.getParams().getAreaId()));
+            game.addTeleportEvent(TeleportEvent.of(creatureId, pos, creature.getParams().getAreaId(), creature.getParams()
+                    .getAreaId()));
         }
 
     }

@@ -15,15 +15,15 @@ public class FireballExplosion extends Ability {
     public static FireballExplosion of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         FireballExplosion ability = FireballExplosion.of();
         ability.params = abilityParams.setWidth(9f)
-                                      .setHeight(9f)
-                                      .setChannelTime(0f)
-                                      .setActiveTime(0.35f)
-                                      .setTextureName("explosion")
-                                      .setBaseDamage(30f)
-                                      .setIsChannelAnimationLooping(false)
-                                      .setIsActiveAnimationLooping(false)
-                                      .setAttackWithoutMoving(true)
-                                      .setRotationShift(0f);
+                .setHeight(9f)
+                .setChannelTime(0f)
+                .setActiveTime(0.35f)
+                .setTextureName("explosion")
+                .setBaseDamage(30f)
+                .setIsChannelAnimationLooping(false)
+                .setIsActiveAnimationLooping(false)
+                .setAttackWithoutMoving(true)
+                .setRotationShift(0f);
 
         return ability;
     }

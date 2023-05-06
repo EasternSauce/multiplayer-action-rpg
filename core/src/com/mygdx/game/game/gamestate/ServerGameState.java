@@ -40,8 +40,7 @@ public class ServerGameState extends GameState {
         Set<CreatureId> creaturesToUpdate = new HashSet<>();
 
         for (CreatureId clientCreatureId : getClientPlayers().values()) {
-            Set<CreatureId> creaturesToAdd =
-                    accessCreatures().getCreaturesToUpdateForPlayerCreatureId(clientCreatureId);
+            Set<CreatureId> creaturesToAdd = accessCreatures().getCreaturesToUpdateForPlayerCreatureId(clientCreatureId);
 
             creaturesToUpdate.addAll(creaturesToAdd);
         }
@@ -54,56 +53,56 @@ public class ServerGameState extends GameState {
 
         ConcurrentSkipListMap<CreatureId, Creature> personalizedCreatures =
                 new ConcurrentSkipListMap<>(accessCreatures().getCreatures()
-                                                             .entrySet()
-                                                             .stream()
-                                                             .filter(entry -> entry.getValue()
-                                                                                   .getParams()
-                                                                                   .getAreaId()
-                                                                                   .equals(player.getParams()
-                                                                                                 .getAreaId()) &&
-                                                                              entry.getValue()
-                                                                                   .getParams()
-                                                                                   .getPos()
-                                                                                   .distance(player.getParams()
-                                                                                                   .getPos()) <
-                                                                              Constants.ClientGameUpdateRange)
-                                                             .collect(Collectors.toMap(Map.Entry::getKey,
-                                                                                       Map.Entry::getValue)));
+                                                                                                                .entrySet()
+                                                                                                                .stream()
+                                                                                                                .filter(entry ->
+                                                                                                                                entry.getValue()
+                                                                                                                                        .getParams()
+                                                                                                                                        .getAreaId()
+                                                                                                                                        .equals(player.getParams()
+                                                                                                                                                        .getAreaId()) &&
+                                                                                                                                entry.getValue()
+                                                                                                                                        .getParams()
+                                                                                                                                        .getPos()
+                                                                                                                                        .distance(player.getParams()
+                                                                                                                                                          .getPos()) <
+                                                                                                                                Constants.ClientGameUpdateRange)
+                                                                                                                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
         ConcurrentSkipListMap<AbilityId, Ability> personalizedAbilities =
                 new ConcurrentSkipListMap<>(accessAbilities().getAbilities()
-                                                             .entrySet()
-                                                             .stream()
-                                                             .filter(entry -> entry.getValue()
-                                                                                   .getParams()
-                                                                                   .getAreaId()
-                                                                                   .equals(player.getParams()
-                                                                                                 .getAreaId()) &&
-                                                                              entry.getValue()
-                                                                                   .getParams()
-                                                                                   .getPos()
-                                                                                   .distance(player.getParams()
-                                                                                                   .getPos()) <
-                                                                              Constants.ClientGameUpdateRange)
-                                                             .collect(Collectors.toMap(Map.Entry::getKey,
-                                                                                       Map.Entry::getValue)));
+                                                                                                              .entrySet()
+                                                                                                              .stream()
+                                                                                                              .filter(entry ->
+                                                                                                                              entry.getValue()
+                                                                                                                                      .getParams()
+                                                                                                                                      .getAreaId()
+                                                                                                                                      .equals(player.getParams()
+                                                                                                                                                      .getAreaId()) &&
+                                                                                                                              entry.getValue()
+                                                                                                                                      .getParams()
+                                                                                                                                      .getPos()
+                                                                                                                                      .distance(player.getParams()
+                                                                                                                                                        .getPos()) <
+                                                                                                                              Constants.ClientGameUpdateRange)
+                                                                                                              .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
 
-        ConcurrentSkipListMap<LootPileId, LootPile> personalizedLootPiles =
-                new ConcurrentSkipListMap<>(getLootPiles().entrySet()
-                                                          .stream()
-                                                          .filter(entry -> entry.getValue()
-                                                                                .getAreaId()
-                                                                                .equals(player.getParams()
-                                                                                              .getAreaId()) &&
-                                                                           entry.getValue()
+        ConcurrentSkipListMap<LootPileId, LootPile> personalizedLootPiles = new ConcurrentSkipListMap<>(getLootPiles().entrySet()
+                                                                                                                .stream()
+                                                                                                                .filter(entry ->
+                                                                                                                                entry.getValue()
+                                                                                                                                        .getAreaId()
+                                                                                                                                        .equals(player.getParams()
+                                                                                                                                                        .getAreaId()) &&
+                                                                                                                                entry.getValue()
 
-                                                                                .getPos()
-                                                                                .distance(player.getParams().getPos()) <
-                                                                           Constants.ClientGameUpdateRange)
-                                                          .collect(Collectors.toMap(Map.Entry::getKey,
-                                                                                    Map.Entry::getValue)));
+                                                                                                                                        .getPos()
+                                                                                                                                        .distance(player.getParams()
+                                                                                                                                                          .getPos()) <
+                                                                                                                                Constants.ClientGameUpdateRange)
+                                                                                                                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
 
-        GameStateData personalizedGameStateData =
-                GameStateData.of(data, personalizedCreatures, personalizedAbilities, personalizedLootPiles);
+        GameStateData personalizedGameStateData = GameStateData.of(data, personalizedCreatures, personalizedAbilities,
+                                                                   personalizedLootPiles);
 
         connection.sendTCP(GameStateBroadcast.of(personalizedGameStateData));
     }
@@ -120,8 +119,8 @@ public class ServerGameState extends GameState {
                 // handle respawns server side
                 creature.getParams().getRespawnTimer().getTime() > creature.getParams().getRespawnTime()) {
                 if (creature instanceof Player) {
-                    Vector2 pos = Vector2.of((float) ((Math.random() * (28 - 18)) + 18),
-                                             (float) ((Math.random() * (12 - 6)) + 6));
+                    Vector2 pos = Vector2.of((float) ((Math.random() * (28 - 18)) + 18), (float) ((Math.random() * (12 - 6)) +
+                                                                                                  6));
                     CreatureRespawnAction action = CreatureRespawnAction.of(creatureId, pos);
 
                     scheduleServerSideAction(action);
@@ -140,17 +139,17 @@ public class ServerGameState extends GameState {
 
     public void handleExpiredLootPiles() {
         getLootPiles().entrySet()
-                      .stream()
-                      .filter(entry -> entry.getValue().getIsFullyLooted())
-                      .forEach(entry -> scheduleServerSideAction(LootPileDespawnAction.of(entry.getKey())));
+                .stream()
+                .filter(entry -> entry.getValue().getIsFullyLooted())
+                .forEach(entry -> scheduleServerSideAction(LootPileDespawnAction.of(entry.getKey())));
     }
 
     public void handleExpiredAbilities() {
         accessAbilities().getAbilities()
-                         .entrySet()
-                         .stream()
-                         .filter(entry -> entry.getValue().getParams().getState() == AbilityState.INACTIVE)
-                         .forEach(entry -> scheduleServerSideAction(AbilityRemoveAction.of(entry.getKey())));
+                .entrySet()
+                .stream()
+                .filter(entry -> entry.getValue().getParams().getState() == AbilityState.INACTIVE)
+                .forEach(entry -> scheduleServerSideAction(AbilityRemoveAction.of(entry.getKey())));
     }
 
     @Override

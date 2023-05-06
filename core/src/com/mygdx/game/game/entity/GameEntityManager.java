@@ -72,8 +72,8 @@ public class GameEntityManager {
 
         if (ability != null && gamePhysics.getAbilityBodies().containsKey(ability.getParams().getId())) {
             gamePhysics.getAbilityBodies()
-                       .get(ability.getParams().getId())
-                       .init(ability.getParams().getIsSkipCreatingBody(), game);
+                    .get(ability.getParams().getId())
+                    .init(ability.getParams().getIsSkipCreatingBody(), game);
         }
     }
 
@@ -138,16 +138,16 @@ public class GameEntityManager {
 
     public void spawnEnemy(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn, CoreGame game) {
         game.getGameState()
-            .accessCreatures()
-            .getCreatures()
-            .put(creatureId,
-                 Enemy.of(CreatureParams.of(creatureId, areaId, enemySpawn)
-                                        .setBaseSpeed(7f)
-                                        .setAttackDistance(enemySpawn.getEnemyTemplate().getAttackDistance())
-                                        .setMainAttackSkill(enemySpawn.getEnemyTemplate().getMainAttackSkill())
-                                        .setDropTable(enemySpawn.getEnemyTemplate().getDropTable())
-                                        .setRespawnTime(120f)// TODO: move it to enemy class?
-                         ));
+                .accessCreatures()
+                .getCreatures()
+                .put(creatureId, Enemy.of(CreatureParams.of(creatureId, areaId, enemySpawn)
+                                                  .setBaseSpeed(7f)
+                                                  .setAttackDistance(enemySpawn.getEnemyTemplate().getAttackDistance())
+                                                  .setMainAttackSkill(enemySpawn.getEnemyTemplate().getMainAttackSkill())
+                                                  .setDropTable(enemySpawn.getEnemyTemplate().getDropTable())
+                                                  .setRespawnTime(120f)
+                                          // TODO: move it to enemy class?
+                                         ));
 
         game.getEventProcessor().getCreatureModelsToBeCreated().add(creatureId);
     }
@@ -167,20 +167,20 @@ public class GameEntityManager {
                 getGamePhysics().getCreatureBodies().containsKey(creatureId)) {
 
                 game.getGameState()
-                    .accessCreatures()
-                    .getCreatures()
-                    .get(creatureId)
-                    .getParams()
-                    .setPos(getGamePhysics().getCreatureBodies().get(creatureId).getBodyPos());
+                        .accessCreatures()
+                        .getCreatures()
+                        .get(creatureId)
+                        .getParams()
+                        .setPos(getGamePhysics().getCreatureBodies().get(creatureId).getBodyPos());
 
             }
         });
 
         // if creature is to be updated, then body should be active, otherwise it should be inactive
         getGamePhysics().getCreatureBodies()
-                        .forEach((key, value) -> getGamePhysics().getCreatureBodies()
-                                                                 .get(key)
-                                                                 .setActive(creaturesToUpdate.contains(key)));
+                .forEach((key, value) -> getGamePhysics().getCreatureBodies()
+                        .get(key)
+                        .setActive(creaturesToUpdate.contains(key)));
 
         creaturesToUpdate.forEach(creatureId -> {
             if (game.getGameState().accessCreatures().getCreatures().containsKey(creatureId) &&
@@ -201,10 +201,10 @@ public class GameEntityManager {
         Set<AbilityId> abilitiesToUpdate = game.getAbilitiesToUpdate();
 
         abilitiesToUpdate.forEach(abilityId -> game.getGameState()
-                                                   .accessAbilities()
-                                                   .getAbilities()
-                                                   .get(abilityId)
-                                                   .update(delta, game));
+                .accessAbilities()
+                .getAbilities()
+                .get(abilityId)
+                .update(delta, game));
 
 
         abilitiesToUpdate.forEach(abilityId -> {
@@ -216,8 +216,7 @@ public class GameEntityManager {
         abilitiesToUpdate.forEach(abilityId -> {
             if (getGamePhysics().getAbilityBodies().containsKey(abilityId)) {
                 Ability ability = game.getGameState().accessAbilities().getAbilities().get(abilityId);
-                if (!ability.isPositionChangedOnUpdate() &&
-                    ability.bodyShouldExist() &&
+                if (!ability.isPositionChangedOnUpdate() && ability.bodyShouldExist() &&
                     getGamePhysics().getAbilityBodies().get(abilityId).getIsBodyInitialized()) {
                     ability.getParams().setPos(getGamePhysics().getAbilityBodies().get(abilityId).getBodyPos());
                 }
@@ -234,14 +233,12 @@ public class GameEntityManager {
 
     public void teleportCreature(TeleportEvent teleportEvent, CoreGame game) {
         if (teleportEvent.getToAreaId()
-                         .equals(game.getGameState()
-                                     .accessCreatures()
-                                     .getCreature(teleportEvent.getCreatureId())
-                                     .getParams()
-                                     .getAreaId())) {
-            getGamePhysics().getCreatureBodies()
-                            .get(teleportEvent.getCreatureId())
-                            .forceSetTransform(teleportEvent.getPos());
+                .equals(game.getGameState()
+                                .accessCreatures()
+                                .getCreature(teleportEvent.getCreatureId())
+                                .getParams()
+                                .getAreaId())) {
+            getGamePhysics().getCreatureBodies().get(teleportEvent.getCreatureId()).forceSetTransform(teleportEvent.getPos());
         }
         else {
             if (teleportEvent.getCreatureId() != null) {

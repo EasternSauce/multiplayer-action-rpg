@@ -29,9 +29,9 @@ public class AbilityAddAction extends GameStateAction {
         }
 
         game.getGameState()
-            .accessAbilities()
-            .getAbilities()
-            .put(ability.getParams().getId(), ability); // TODO: SHOULDNT THIS HAPPEN IN createAbility() METHOD???!?
+                .accessAbilities()
+                .getAbilities()
+                .put(ability.getParams().getId(), ability); // TODO: SHOULDNT THIS HAPPEN IN createAbility() METHOD???!?
 
         if (ability.getParams().getActiveTime() > 0) {
             game.getEventProcessor().getAbilityModelsToBeCreated().add(ability.getParams().getId());

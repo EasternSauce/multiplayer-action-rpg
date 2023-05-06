@@ -44,7 +44,8 @@ public class AbilityBody {
 
         float[] vertices = sprite.getVertices();
 
-        return new float[]{vertices[0], vertices[1], vertices[5], vertices[6], vertices[10], vertices[11], vertices[15], vertices[16]};
+        return new float[]{vertices[0], vertices[1], vertices[5], vertices[6], vertices[10], vertices[11], vertices[15],
+                vertices[16]};
     }
 
     public void setVelocity(Vector2 velocity) {
@@ -81,9 +82,8 @@ public class AbilityBody {
         Ability ability = game.getGameState().accessAbilities().getAbilities().get(abilityId);
 
         if (getIsBodyInitialized() && ability != null && ability.bodyShouldExist()) {
-            if (ability.isPositionChangedOnUpdate() &&
-                (ability.getParams().getState() == AbilityState.CHANNEL ||
-                 ability.getParams().getState() == AbilityState.ACTIVE)) {
+            if (ability.isPositionChangedOnUpdate() && (ability.getParams().getState() == AbilityState.CHANNEL ||
+                                                        ability.getParams().getState() == AbilityState.ACTIVE)) {
                 b2body.setTransform(ability.getParams().getPos().getX(), ability.getParams().getPos().getY(), 0f);
             }
 

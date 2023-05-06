@@ -2,6 +2,7 @@ package com.mygdx.game.model.action.creature;
 
 import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.action.GameStateAction;
+import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.creature.CreatureParams;
@@ -45,14 +46,14 @@ public class PlayerInitAction extends GameStateAction {
         Creature player;
         String[] textures = new String[]{"male1", "male2", "female1"};
 
-        Vector2 pos = Vector2.of(((game.getGameState().nextRandomValue() * (28 - 18)) + 18),
-                                 ((game.getGameState().nextRandomValue() * (12 - 6)) + 6));
+        Vector2 pos = Vector2.of(((game.getGameState().nextRandomValue() * (28 - 18)) + 18), (
+                (game.getGameState().nextRandomValue() * (12 - 6)) + 6));
 
         //        Vector2 pos = Vector2.of(194.16289f, 13.253256f);
 
         String textureName = textures[((int) (Math.random() * 100) % 3)];
 
-        player = Player.of(CreatureParams.of(playerId, game.getGameState().getDefaultAreaId(), pos, textureName));
+        player = Player.of(CreatureParams.of(playerId, AreaId.of("area3"), pos, textureName));
         player.getParams().setLife(350f);
         player.getParams().setMaxLife(350f);
         player.getParams().setMana(350f);

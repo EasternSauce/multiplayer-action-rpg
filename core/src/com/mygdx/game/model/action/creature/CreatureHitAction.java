@@ -78,11 +78,9 @@ public class CreatureHitAction extends GameStateAction {
                 if (creature.nextDropRngValue() < entry.getGrantedSkillChance()) {
                     AtomicReference<Float> totalWeight = new AtomicReference<>((float) 0);
 
-                    entry.getGrantedSkillWeights()
-                         .forEach((skillType, weight) -> totalWeight.set(totalWeight.get() + weight));
+                    entry.getGrantedSkillWeights().forEach((skillType, weight) -> totalWeight.set(totalWeight.get() + weight));
 
-                    AtomicReference<Float> randValue =
-                            new AtomicReference<>(creature.nextDropRngValue() * totalWeight.get());
+                    AtomicReference<Float> randValue = new AtomicReference<>(creature.nextDropRngValue() * totalWeight.get());
 
                     entry.getGrantedSkillWeights().forEach((skillType, weight) -> {
                         if (weightedSkillType.get() == null && randValue.get() < weight) {
@@ -113,9 +111,9 @@ public class CreatureHitAction extends GameStateAction {
                 }
 
                 Item item = Item.of()
-                                .setTemplate(entry.getTemplate())
-                                .setQualityModifier(quality)
-                                .setGrantedSkills(grantedSkills);
+                        .setTemplate(entry.getTemplate())
+                        .setQualityModifier(quality)
+                        .setGrantedSkills(grantedSkills);
 
 
                 items.add(item);
@@ -129,16 +127,16 @@ public class CreatureHitAction extends GameStateAction {
         LootPileId lootPileId = LootPileId.of("LootPile_" + (int) (Math.random() * 10000000)); // TODO: use seeded rng
 
         Set<Item> lootPileItems = items.stream()
-                                       .map(item -> Item.of()
-                                                        .setTemplate(item.getTemplate())
-                                                        .setQuantity(item.getQuantity())
-                                                        .setQualityModifier(item.getQualityModifier())
-                                                        .setGrantedSkills(item.getGrantedSkills())
-                                                        .setLootPileId(lootPileId))
-                                       .collect(Collectors.toCollection(ConcurrentSkipListSet::new));
+                .map(item -> Item.of()
+                        .setTemplate(item.getTemplate())
+                        .setQuantity(item.getQuantity())
+                        .setQualityModifier(item.getQualityModifier())
+                        .setGrantedSkills(item.getGrantedSkills())
+                        .setLootPileId(lootPileId))
+                .collect(Collectors.toCollection(ConcurrentSkipListSet::new));
 
-        LootPile lootPile =
-                LootPile.of(lootPileId, creature.getParams().getAreaId(), creature.getParams().getPos(), lootPileItems);
+        LootPile lootPile = LootPile.of(lootPileId, creature.getParams().getAreaId(), creature.getParams()
+                .getPos(), lootPileItems);
 
         game.getGameState().getLootPiles().put(lootPile.getId(), lootPile);
 

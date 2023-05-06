@@ -22,52 +22,51 @@ public class ItemTemplate {
 
     static {
 
-        List<ItemTemplate> list =
-                new ArrayList<>(Arrays.asList(ItemTemplate.of("leatherArmor", "Leather Armor", "-", Vector2Int.of(8, 7))
-                                                          .setWorth(150)
-                                                          .setEquipable(true)
-                                                          .setEquipmentSlotType(EquipmentSlotType.BODY)
-                                                          .setArmor(13),
-                                              ItemTemplate.of("ringmailGreaves",
-                                                              "Ringmail Greaves",
-                                                              "-",
-                                                              Vector2Int.of(3, 8))
-                                                          .setWorth(50)
-                                                          .setEquipable(true)
-                                                          .setEquipmentSlotType(EquipmentSlotType.BOOTS)
-                                                          .setArmor(7),
-                                              ItemTemplate.of("hideGloves", "Hide Gloves", "-", Vector2Int.of(0, 8))
-                                                          .setWorth(70)
-                                                          .setEquipable(true)
-                                                          .setEquipmentSlotType(EquipmentSlotType.GLOVES)
-                                                          .setArmor(5),
-                                              ItemTemplate.of("boomerang", "Boomerang", "-", Vector2Int.of(6, 6))
-                                                          .setWorth(350)
-                                                          .setEquipable(true)
-                                                          .setEquipmentSlotType(EquipmentSlotType.PRIMARY_WEAPON)
-                                                          .setAttackSkill(SkillType.BOOMERANG)
-                                                          .setDamage(18f),
-                                              ItemTemplate.of("woodenSword", "Wooden Sword", "-", Vector2Int.of(0, 5))
-                                                          .setWorth(75)
-                                                          .setEquipable(true)
-                                                          .setEquipmentSlotType(EquipmentSlotType.PRIMARY_WEAPON)
-                                                          .setAttackSkill(SkillType.SWORD_SLASH)
-                                                          .setDamage(25f),
-                                              ItemTemplate.of("ironSword", "Iron Sword", "-", Vector2Int.of(1, 5))
-                                                          .setWorth(150)
-                                                          .setEquipable(true)
-                                                          .setEquipmentSlotType(EquipmentSlotType.PRIMARY_WEAPON)
-                                                          .setAttackSkill(SkillType.SWORD_SLASH)
-                                                          .setDamage(30f),
-                                              ItemTemplate.of("woodenShield", "Wooden Shield", "-", Vector2Int.of(0, 6))
-                                                          .setWorth(300)
-                                                          .setEquipable(true)
-                                                          .setEquipmentSlotType(EquipmentSlotType.SECONDARY_WEAPON))
+        List<ItemTemplate> list = new ArrayList<>(Arrays.asList(ItemTemplate.of("leatherArmor", "Leather Armor", "-",
+                                                                                Vector2Int.of(8, 7))
+                                                                        .setWorth(150)
+                                                                        .setEquipable(true)
+                                                                        .setEquipmentSlotType(EquipmentSlotType.BODY)
+                                                                        .setArmor(13), ItemTemplate.of("ringmailGreaves",
+                                                                                                       "Ringmail Greaves", "-",
+                                                                                                       Vector2Int.of(3, 8))
+                                                                        .setWorth(50)
+                                                                        .setEquipable(true)
+                                                                        .setEquipmentSlotType(EquipmentSlotType.BOOTS)
+                                                                        .setArmor(7), ItemTemplate.of("hideGloves", "Hide " +
+                                                                                                                    "Gloves",
+                                                                                                      "-", Vector2Int.of(0, 8))
+                                                                        .setWorth(70)
+                                                                        .setEquipable(true)
+                                                                        .setEquipmentSlotType(EquipmentSlotType.GLOVES)
+                                                                        .setArmor(5), ItemTemplate.of("boomerang", "Boomerang",
+                                                                                                      "-", Vector2Int.of(6, 6))
+                                                                        .setWorth(350)
+                                                                        .setEquipable(true)
+                                                                        .setEquipmentSlotType(EquipmentSlotType.PRIMARY_WEAPON)
+                                                                        .setAttackSkill(SkillType.BOOMERANG)
+                                                                        .setDamage(18f), ItemTemplate.of("woodenSword", "Wooden" +
+                                                                                                                        " Sword"
+                        , "-", Vector2Int.of(0, 5))
+                                                                        .setWorth(75)
+                                                                        .setEquipable(true)
+                                                                        .setEquipmentSlotType(EquipmentSlotType.PRIMARY_WEAPON)
+                                                                        .setAttackSkill(SkillType.SWORD_SLASH)
+                                                                        .setDamage(25f), ItemTemplate.of("ironSword", "Iron " +
+                                                                                                                      "Sword",
+                                                                                                         "-", Vector2Int.of(1, 5))
+                                                                        .setWorth(150)
+                                                                        .setEquipable(true)
+                                                                        .setEquipmentSlotType(EquipmentSlotType.PRIMARY_WEAPON)
+                                                                        .setAttackSkill(SkillType.SWORD_SLASH)
+                                                                        .setDamage(30f), ItemTemplate.of("woodenShield", "Wooden Shield", "-", Vector2Int.of(0, 6))
+                                                                        .setWorth(300)
+                                                                        .setEquipable(true)
+                                                                        .setEquipmentSlotType(EquipmentSlotType.SECONDARY_WEAPON))
 
-                );
+        );
         templates = new ConcurrentSkipListMap<>(list.stream()
-                                                    .collect(Collectors.toMap(ItemTemplate::getId,
-                                                                              itemTemplate -> itemTemplate)));
+                                                        .collect(Collectors.toMap(ItemTemplate::getId, itemTemplate -> itemTemplate)));
     }
 
     String id;
