@@ -35,12 +35,12 @@ public class TerrainTileBody {
         b2Body = B2BodyFactory.createTerrainTileB2body(world, this);
 
         polygon = new com.badlogic.gdx.math.Polygon(new float[]{pos.getX() * tileWidth, pos.getY() *
-                tileWidth, pos.getX() *
-                tileWidth +
-                tileWidth, pos.getY() *
-                tileHeight,
+                                                                                        tileWidth, pos.getX() *
+                                                                                                   tileWidth +
+                                                                                                   tileWidth, pos.getY() *
+                                                                                                              tileHeight,
                 pos.getX() * tileWidth +
-                        tileWidth, pos.getY() * tileHeight + tileHeight, pos.getX() * tileWidth, pos.getY() * tileHeight +
-                tileHeight});
+                tileWidth, pos.getY() * tileHeight + tileHeight, pos.getX() * tileWidth, pos.getY() * tileHeight +
+                                                                                         tileHeight});
     }
 }

@@ -15,28 +15,27 @@ import lombok.NoArgsConstructor;
 public class TeleportDestination extends Ability {
     AbilityParams params;
 
-    public static TeleportDestination of(AbilityParams abilityParams,
-                                         @SuppressWarnings("unused") CoreGame game) {
+    public static TeleportDestination of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(abilityParams.getCreatureId());
 
         Vector2 teleportPos =
                 TeleportDestination.calculatePos(creature.getParams().getPos().add(abilityParams.getDirVector()),
-                        creature.getParams().getPos(),
-                        creature.getParams().getAreaId(),
-                        game);
+                                                 creature.getParams().getPos(),
+                                                 creature.getParams().getAreaId(),
+                                                 game);
 
         TeleportDestination ability = TeleportDestination.of();
         ability.params = abilityParams.setWidth(4.5f)
-                .setHeight(4.5f)
-                .setChannelTime(0f)
-                .setActiveTime(0.5f)
-                .setTextureName("blast")
-                .setBaseDamage(0f)
-                .setIsChannelAnimationLooping(false)
-                .setIsActiveAnimationLooping(false)
-                .setRotationShift(0f)
-                .setPos(teleportPos)
-                .setChainToPos(teleportPos);
+                                      .setHeight(4.5f)
+                                      .setChannelTime(0f)
+                                      .setActiveTime(0.5f)
+                                      .setTextureName("blast")
+                                      .setBaseDamage(0f)
+                                      .setIsChannelAnimationLooping(false)
+                                      .setIsActiveAnimationLooping(false)
+                                      .setRotationShift(0f)
+                                      .setPos(teleportPos)
+                                      .setChainToPos(teleportPos);
 
 
         return ability;
@@ -49,7 +48,8 @@ public class TeleportDestination extends Ability {
         Vector2 destinationPos;
         if (vectorTowards.len() > maxRange) {
             destinationPos = creaturePos.add(vectorTowards.normalized().multiplyBy(maxRange));
-        } else {
+        }
+        else {
             destinationPos = pos;
         }
 
@@ -73,9 +73,9 @@ public class TeleportDestination extends Ability {
     @Override
     void onAbilityStarted(CoreGame game) {
         game.addTeleportEvent(TeleportEvent.of(getParams().getCreatureId(),
-                getParams().getPos(),
-                getParams().getAreaId(),
-                getParams().getAreaId()));
+                                               getParams().getPos(),
+                                               getParams().getAreaId(),
+                                               getParams().getAreaId()));
     }
 
     @Override

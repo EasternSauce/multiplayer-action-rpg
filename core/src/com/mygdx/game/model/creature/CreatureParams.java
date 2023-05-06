@@ -127,9 +127,9 @@ public class CreatureParams {
 
     public static CreatureParams of(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn) {
         return getCreatureParams(creatureId,
-                areaId,
-                enemySpawn.getPos(),
-                enemySpawn.getEnemyTemplate().getEnemyType().textureName);
+                                 areaId,
+                                 enemySpawn.getPos(),
+                                 enemySpawn.getEnemyTemplate().getEnemyType().textureName);
     }
 
 
@@ -152,42 +152,42 @@ public class CreatureParams {
 
         params.skills = // TODO: should we restrict which creature can perform which skill?
                 new ConcurrentSkipListMap<>(Arrays.stream(SkillType.values())
-                        .collect(Collectors.toMap(Function.identity(),
-                                skillType -> Skill.of(skillType,
-                                        creatureId))));
+                                                  .collect(Collectors.toMap(Function.identity(),
+                                                                            skillType -> Skill.of(skillType,
+                                                                                                  creatureId))));
 
         params.effects = new ConcurrentSkipListMap<>(Arrays.stream(CreatureEffect.values())
-                .collect(Collectors.toMap(effect -> effect,
-                        effect -> CreatureEffectState.of())));
+                                                           .collect(Collectors.toMap(effect -> effect,
+                                                                                     effect -> CreatureEffectState.of())));
 
         params.aiStateSeed = (float) Math.random();
         params.aiStateTime = 0f;
 
-//        Map<SkillType, Integer> grantedSkills1 = new ConcurrentSkipListMap<>();
-//        grantedSkills1.put(SkillType.BOOMERANG, 1);
-//
-//        Map<SkillType, Integer> grantedSkills2 = new ConcurrentSkipListMap<>();
-//        grantedSkills2.put(SkillType.SUMMON_SHIELD, 1);
+        //        Map<SkillType, Integer> grantedSkills1 = new ConcurrentSkipListMap<>();
+        //        grantedSkills1.put(SkillType.BOOMERANG, 1);
+        //
+        //        Map<SkillType, Integer> grantedSkills2 = new ConcurrentSkipListMap<>();
+        //        grantedSkills2.put(SkillType.SUMMON_SHIELD, 1);
 
-//        params.inventoryItems.put(2,
-//                Item.of()
-//                        .setTemplate(ItemTemplate.templates.get("leatherArmor"))
-//                        .setQualityModifier(0.6f)
-//                        .setGrantedSkills(grantedSkills1));
-//        params.inventoryItems.put(3,
-//                Item.of()
-//                        .setTemplate(ItemTemplate.templates.get("leatherArmor"))
-//                        .setQualityModifier(1f));
-//        params.inventoryItems.put(10,
-//                Item.of()
-//                        .setTemplate(ItemTemplate.templates.get("hideGloves"))
-//                        .setQualityModifier(0.9f));
-//
-//        params.inventoryItems.put(11,
-//                Item.of()
-//                        .setTemplate(ItemTemplate.templates.get("woodenShield"))
-//                        .setQualityModifier(1.0f)
-//                        .setGrantedSkills(grantedSkills2));
+        //        params.inventoryItems.put(2,
+        //                Item.of()
+        //                        .setTemplate(ItemTemplate.templates.get("leatherArmor"))
+        //                        .setQualityModifier(0.6f)
+        //                        .setGrantedSkills(grantedSkills1));
+        //        params.inventoryItems.put(3,
+        //                Item.of()
+        //                        .setTemplate(ItemTemplate.templates.get("leatherArmor"))
+        //                        .setQualityModifier(1f));
+        //        params.inventoryItems.put(10,
+        //                Item.of()
+        //                        .setTemplate(ItemTemplate.templates.get("hideGloves"))
+        //                        .setQualityModifier(0.9f));
+        //
+        //        params.inventoryItems.put(11,
+        //                Item.of()
+        //                        .setTemplate(ItemTemplate.templates.get("woodenShield"))
+        //                        .setQualityModifier(1.0f)
+        //                        .setGrantedSkills(grantedSkills2));
         return params;
     }
 

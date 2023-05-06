@@ -39,12 +39,14 @@ public class InventorySwapSlotsAction extends GameStateAction {
 
         if (itemFrom != null) {
             player.getParams().getInventoryItems().put(toSlotIndex, itemFrom);
-        } else {
+        }
+        else {
             player.getParams().getInventoryItems().remove(toSlotIndex);
         }
         if (temp != null) {
             player.getParams().getInventoryItems().put(fromSlotIndex, temp);
-        } else {
+        }
+        else {
             player.getParams().getInventoryItems().remove(fromSlotIndex);
         }
 

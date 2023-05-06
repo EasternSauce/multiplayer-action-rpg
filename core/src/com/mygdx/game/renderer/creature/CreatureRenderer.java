@@ -30,7 +30,8 @@ public class CreatureRenderer {
         creatureSprite = CreatureSprite.of(creatureId);
         creatureStunnedAnimationRenderer = CreatureStunnedAnimationRenderer.of(creatureId);
 
-        CreatureAnimationConfig config = game.getGameState().accessCreatures().getCreatures().get(creatureId).animationConfig();
+        CreatureAnimationConfig config =
+                game.getGameState().accessCreatures().getCreatures().get(creatureId).animationConfig();
 
         creatureSprite.prepareFacingTextures(config, atlas);
         creatureSprite.prepareRunningAnimations(config, atlas);
@@ -45,7 +46,8 @@ public class CreatureRenderer {
 
         if (creature.isAlive()) {
             creatureSprite.updateForAliveCreature(game, creature);
-        } else {
+        }
+        else {
             creatureSprite.updateForDeadCreature(game);
         }
     }
@@ -79,8 +81,8 @@ public class CreatureRenderer {
 
         // world text viewport is not scaled down! so we scale the values every time
         Assets.renderMediumFont(renderingLayer,
-                name,
-                Vector2.of(namePosX * Constants.PPM, namePosY * Constants.PPM),
-                Color.RED);
+                                name,
+                                Vector2.of(namePosX * Constants.PPM, namePosY * Constants.PPM),
+                                Color.RED);
     }
 }

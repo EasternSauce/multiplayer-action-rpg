@@ -80,20 +80,20 @@ public class CoreGameServer extends CoreGame {
             }
 
             if (getClientPlayers().containsKey(connection.getID()) &&
-                    getGameState()
-                            .accessCreatures().getCreatures()
-                            .containsKey(getClientPlayers().get(connection.getID()))) {
-                Creature creature = getGameState()
-                        .accessCreatures().getCreatures()
-                        .get(getClientPlayers().get(connection.getID()));
+                getGameState().accessCreatures()
+                              .getCreatures()
+                              .containsKey(getClientPlayers().get(connection.getID()))) {
+                Creature creature =
+                        getGameState().accessCreatures().getCreatures().get(getClientPlayers().get(connection.getID()));
 
                 List<GameStateAction> personalizedTickActions = tickActionsCopy.stream()
-                        .filter(action -> action.actionObjectPos(this)
-                                .distance(
-                                        creature.getParams()
-                                                .getPos()) <
-                                Constants.ClientGameUpdateRange)
-                        .collect(Collectors.toList());
+                                                                               .filter(action -> action.actionObjectPos(
+                                                                                                               this)
+                                                                                                       .distance(
+                                                                                                               creature.getParams()
+                                                                                                                       .getPos()) <
+                                                                                                 Constants.ClientGameUpdateRange)
+                                                                               .collect(Collectors.toList());
                 connection.sendTCP(ActionsHolder.of(personalizedTickActions));
             }
 
@@ -122,9 +122,11 @@ public class CoreGameServer extends CoreGame {
                     ActionPerformCommand command = (ActionPerformCommand) object;
 
                     gameState.scheduleServerSideAction(command.getAction());
-                } else if (object instanceof ConnectionInitCommand) {
+                }
+                else if (object instanceof ConnectionInitCommand) {
                     clientIds.add(connection.getID());
-                } else if (object instanceof PlayerInitCommand) {
+                }
+                else if (object instanceof PlayerInitCommand) {
                     PlayerInitCommand command = (PlayerInitCommand) object;
                     PlayerInitAction playerInitAction = PlayerInitAction.of(command.getPlayerId());
 
@@ -134,16 +136,18 @@ public class CoreGameServer extends CoreGame {
                         gameState.scheduleServerSideAction(playerInitAction);
                     }
 
-                } else if (object instanceof ChatMessageSendCommand) {
+                }
+                else if (object instanceof ChatMessageSendCommand) {
                     ChatMessageSendCommand command = (ChatMessageSendCommand) object;
 
                     getEndPoint().sendToAllTCP(command);
-                } else if (object instanceof EnemySpawnCommand) {
+                }
+                else if (object instanceof EnemySpawnCommand) {
                     EnemySpawnCommand command = (EnemySpawnCommand) object;
                     getEntityManager().spawnEnemy(command.getCreatureId(),
-                            command.getAreaId(),
-                            command.getEnemySpawn(),
-                            CoreGameServer.this);
+                                                  command.getAreaId(),
+                                                  command.getEnemySpawn(),
+                                                  CoreGameServer.this);
 
                     getEndPoint().sendToAllTCP(command); // TODO: add to tick actions instead
 
@@ -173,11 +177,12 @@ public class CoreGameServer extends CoreGame {
                     Connection[] connections = getEndPoint().getConnections();
                     for (Connection connection : connections) {
                         if (!getClientPlayers().containsKey(connection.getID()) ||
-                                !getGameState()
-                                        .accessCreatures().getCreatures()
-                                        .containsKey(getClientPlayers().get(connection.getID()))) {
+                            !getGameState().accessCreatures()
+                                           .getCreatures()
+                                           .containsKey(getClientPlayers().get(connection.getID()))) {
                             gameState.sendGameDataWithEntitiesEmpty(connection);
-                        } else {
+                        }
+                        else {
                             gameState.sendGameDataPersonalizedForPlayer(connection);
                         }
                     }
@@ -194,40 +199,39 @@ public class CoreGameServer extends CoreGame {
     public void initState() {
         AreaId areaId = AreaId.of("area1");
 
-//        gameState.scheduleServerSideAction(LootPileSpawnAction.of(areaId,
-//                Vector2.of(12, 12),
-//                new ConcurrentSkipListSet<>(Arrays.asList(Item.of()
-//                                .setTemplate(ItemTemplate.templates.get(
-//                                        "leatherArmor"))
-//                                .setQualityModifier(0.9f),
-//                        Item.of()
-//                                .setTemplate(ItemTemplate.templates.get(
-//                                        "boomerang"))
-//                                .setQualityModifier(0.9f)))));
+        //        gameState.scheduleServerSideAction(LootPileSpawnAction.of(areaId,
+        //                Vector2.of(12, 12),
+        //                new ConcurrentSkipListSet<>(Arrays.asList(Item.of()
+        //                                .setTemplate(ItemTemplate.templates.get(
+        //                                        "leatherArmor"))
+        //                                .setQualityModifier(0.9f),
+        //                        Item.of()
+        //                                .setTemplate(ItemTemplate.templates.get(
+        //                                        "boomerang"))
+        //                                .setQualityModifier(0.9f)))));
 
 
-//        gameState.scheduleServerSideAction(LootPileSpawnAction.of(areaId,
-//                Vector2.of(13.5f, 12),
-//                new ConcurrentSkipListSet<>(Arrays.asList(Item.of()
-//                                .setTemplate(ItemTemplate.templates.get(
-//                                        "ringmailGreaves"))
-//                                .setQualityModifier(0.9f),
-//                        Item.of()
-//                                .setTemplate(ItemTemplate.templates.get(
-//                                        "hideGloves"))
-//                                .setQualityModifier(0.5f)))));
+        //        gameState.scheduleServerSideAction(LootPileSpawnAction.of(areaId,
+        //                Vector2.of(13.5f, 12),
+        //                new ConcurrentSkipListSet<>(Arrays.asList(Item.of()
+        //                                .setTemplate(ItemTemplate.templates.get(
+        //                                        "ringmailGreaves"))
+        //                                .setQualityModifier(0.9f),
+        //                        Item.of()
+        //                                .setTemplate(ItemTemplate.templates.get(
+        //                                        "hideGloves"))
+        //                                .setQualityModifier(0.5f)))));
 
         getGameState().setAreaGates(new ConcurrentSkipListSet<>());
-        getGameState()
-                .getAreaGates()
-                .addAll(Arrays.asList(AreaGate.of(AreaId.of("area1"),
-                                Vector2.of(199.5f, 15f),
-                                AreaId.of("area3"),
-                                Vector2.of(17f, 2.5f)),
-                        AreaGate.of(AreaId.of("area1"),
-                                Vector2.of(2f, 63f),
-                                AreaId.of("area2"),
-                                Vector2.of(58f, 9f))));
+        getGameState().getAreaGates()
+                      .addAll(Arrays.asList(AreaGate.of(AreaId.of("area1"),
+                                                        Vector2.of(199.5f, 15f),
+                                                        AreaId.of("area3"),
+                                                        Vector2.of(17f, 2.5f)),
+                                            AreaGate.of(AreaId.of("area1"),
+                                                        Vector2.of(2f, 63f),
+                                                        AreaId.of("area2"),
+                                                        Vector2.of(58f, 9f))));
 
         List<EnemySpawn> enemySpawns1 = EnemySpawnUtils.area1EnemySpawns();
 

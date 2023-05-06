@@ -52,7 +52,9 @@ public class CreatureBody {
 
         Creature creature = game.getGameState().accessCreatures().getCreatures().get(creatureId);
 
-        if (creature == null) return;
+        if (creature == null) {
+            return;
+        }
 
         setSensor(!creature.isAlive());
 
@@ -66,7 +68,8 @@ public class CreatureBody {
         if (bodyCreated) {
             if (creature.getParams().getIsMoving()) {
                 setVelocity(Vector2.of(vectorX, vectorY));
-            } else {
+            }
+            else {
                 setVelocity(Vector2.of(0, 0));
             }
 

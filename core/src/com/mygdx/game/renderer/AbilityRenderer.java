@@ -57,10 +57,10 @@ public class AbilityRenderer {
         TextureRegion[] channelFrames = new TextureRegion[animationConfig.getChannelFrameCount()];
         for (int i = 0; i < animationConfig.getChannelFrameCount(); i++) {
             channelFrames[i] = new TextureRegion(channelTextureRegion,
-                    i * animationConfig.getTextureWidth(),
-                    0,
-                    animationConfig.getTextureWidth(),
-                    animationConfig.getTextureHeight());
+                                                 i * animationConfig.getTextureWidth(),
+                                                 0,
+                                                 animationConfig.getTextureWidth(),
+                                                 animationConfig.getTextureHeight());
         }
 
         channelAnimation = new Animation<>(animationConfig.getChannelFrameDuration(), channelFrames);
@@ -68,10 +68,10 @@ public class AbilityRenderer {
         TextureRegion[] activeFrames = new TextureRegion[animationConfig.getActiveFrameCount()];
         for (int i = 0; i < animationConfig.getActiveFrameCount(); i++) {
             activeFrames[i] = new TextureRegion(activeTextureRegion,
-                    i * animationConfig.getTextureWidth(),
-                    0,
-                    animationConfig.getTextureWidth(),
-                    animationConfig.getTextureHeight());
+                                                i * animationConfig.getTextureWidth(),
+                                                0,
+                                                animationConfig.getTextureWidth(),
+                                                animationConfig.getTextureHeight());
         }
 
         activeAnimation = new Animation<>(animationConfig.getActiveFrameDuration(), activeFrames);
@@ -98,14 +98,15 @@ public class AbilityRenderer {
         if (ability != null) {
             if (ability.getParams().getChannelTime() > 0f && ability.getParams().getState() == AbilityState.CHANNEL) {
                 TextureRegion texture = getChannelAnimation().getKeyFrame(ability.getParams().getStateTimer().getTime(),
-                        ability.getParams()
-                                .getIsChannelAnimationLooping());
+                                                                          ability.getParams()
+                                                                                 .getIsChannelAnimationLooping());
                 updateSprite(texture, game);
-            } else if (ability.getParams().getActiveTime() > 0f &&
-                    ability.getParams().getState() == AbilityState.ACTIVE) {
+            }
+            else if (ability.getParams().getActiveTime() > 0f &&
+                     ability.getParams().getState() == AbilityState.ACTIVE) {
                 TextureRegion texture = getActiveAnimation().getKeyFrame(ability.getParams().getStateTimer().getTime(),
-                        ability.getParams()
-                                .getIsActiveAnimationLooping());
+                                                                         ability.getParams()
+                                                                                .getIsActiveAnimationLooping());
                 updateSprite(texture, game);
             }
         }
@@ -118,7 +119,7 @@ public class AbilityRenderer {
         if (ability != null) {
             if (sprite.getTexture() != null) {
                 if (ability.getParams().getChannelTime() > 0f &&
-                        ability.getParams().getState() == AbilityState.CHANNEL) {
+                    ability.getParams().getState() == AbilityState.CHANNEL) {
                     sprite.draw(renderingLayer.getSpriteBatch());
                 }
                 if (ability.getParams().getActiveTime() > 0f && ability.getParams().getState() == AbilityState.ACTIVE) {

@@ -82,8 +82,8 @@ public class AbilityBody {
 
         if (getIsBodyInitialized() && ability != null && ability.bodyShouldExist()) {
             if (ability.isPositionChangedOnUpdate() &&
-                    (ability.getParams().getState() == AbilityState.CHANNEL ||
-                            ability.getParams().getState() == AbilityState.ACTIVE)) {
+                (ability.getParams().getState() == AbilityState.CHANNEL ||
+                 ability.getParams().getState() == AbilityState.ACTIVE)) {
                 b2body.setTransform(ability.getParams().getPos().getX(), ability.getParams().getPos().getY(), 0f);
             }
 

@@ -56,7 +56,9 @@ public class GameStateCreatureAccessor {
         return gameState.data.getCreatures().keySet().stream().filter(creatureId -> {
             Creature creature = gameState.data.getCreatures().get(creatureId);
             if (creature != null) {
-                return player.getParams().getAreaId().equals(creature.getParams().getAreaId()) && creature.getParams().getPos().distance(player.getParams().getPos()) < Constants.ClientGameUpdateRange;
+                return player.getParams().getAreaId().equals(creature.getParams().getAreaId()) &&
+                       creature.getParams().getPos().distance(player.getParams().getPos()) <
+                       Constants.ClientGameUpdateRange;
             }
 
             return false;
@@ -75,13 +77,23 @@ public class GameStateCreatureAccessor {
     }
 
     public void forEachDeadCreature(Consumer<Creature> creatureAction) {
-        gameState.accessCreatures().getCreatures().values().stream().filter(creature -> !creature.isAlive()).forEach(creatureAction);
+        gameState.accessCreatures()
+                 .getCreatures()
+                 .values()
+                 .stream()
+                 .filter(creature -> !creature.isAlive())
+                 .forEach(creatureAction);
     }
 
-    public void handleCreatureAttackTarget(CreatureId attackingCreatureId, Vector2 vectorTowardsTarget, SkillType skillType) {
+    public void handleCreatureAttackTarget(CreatureId attackingCreatureId,
+                                           Vector2 vectorTowardsTarget,
+                                           SkillType skillType) {
         Creature attackingCreature = gameState.accessCreatures().getCreatures().get(attackingCreatureId);
 
-        SkillTryPerformAction action = SkillTryPerformAction.of(attackingCreatureId, skillType, attackingCreature.getParams().getPos(), vectorTowardsTarget);
+        SkillTryPerformAction action = SkillTryPerformAction.of(attackingCreatureId,
+                                                                skillType,
+                                                                attackingCreature.getParams().getPos(),
+                                                                vectorTowardsTarget);
 
         gameState.scheduleServerSideAction(action);
     }

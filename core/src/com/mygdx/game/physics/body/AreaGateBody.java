@@ -31,14 +31,14 @@ public class AreaGateBody {
         worldB = game.getPhysicsWorld(areaGate.getAreaB_Id());
 
         areaGateA_b2body = B2BodyFactory.createAreaGateB2body(worldA,
-                this,
-                areaGate.getPosA(),
-                areaGate.getWidth(),
-                areaGate.getHeight());
+                                                              this,
+                                                              areaGate.getPosA(),
+                                                              areaGate.getWidth(),
+                                                              areaGate.getHeight());
         areaGateB_b2body = B2BodyFactory.createAreaGateB2body(worldB,
-                this,
-                areaGate.getPosB(),
-                areaGate.getWidth(),
-                areaGate.getHeight());
+                                                              this,
+                                                              areaGate.getPosB(),
+                                                              areaGate.getWidth(),
+                                                              areaGate.getHeight());
     }
 }

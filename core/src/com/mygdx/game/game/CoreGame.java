@@ -112,11 +112,14 @@ public abstract class CoreGame extends Game {
     public void renderB2BodyDebug() {
         if (isDebugEnabled()) {
             entityManager.getGamePhysics()
-                    .getDebugRenderer()
-                    .render(entityManager.getGamePhysics().getPhysicsWorlds().get(getGameState().getCurrentAreaId()).getB2world(),
-                            entityManager.getGameRenderer()
-                                    .getViewportsHandler()
-                                    .getWorldCameraCombinedProjectionMatrix());
+                         .getDebugRenderer()
+                         .render(entityManager.getGamePhysics()
+                                              .getPhysicsWorlds()
+                                              .get(getGameState().getCurrentAreaId())
+                                              .getB2world(),
+                                 entityManager.getGameRenderer()
+                                              .getViewportsHandler()
+                                              .getWorldCameraCombinedProjectionMatrix());
         }
     }
 
@@ -156,7 +159,7 @@ public abstract class CoreGame extends Game {
 
 
         return Vector2.of(mousePos.getX() * viewportRatioX / Constants.PPM,
-                mousePos.getY() * viewportRatioY / Constants.PPM);
+                          mousePos.getY() * viewportRatioY / Constants.PPM);
     }
 
     public Vector2 hudMousePos() {

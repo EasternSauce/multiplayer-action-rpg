@@ -28,7 +28,12 @@ public class LootPileItemTryPickUpAction extends GameStateAction {
     public void applyToGame(CoreGame game) {
         Integer freeSlot = null;
         for (int i = 0; i < InventoryHelper.INVENTORY_TOTAL_SLOTS; i++) {
-            if (!game.getGameState().accessCreatures().getCreature(playerId).getParams().getInventoryItems().containsKey(i)) {
+            if (!game.getGameState()
+                     .accessCreatures()
+                     .getCreature(playerId)
+                     .getParams()
+                     .getInventoryItems()
+                     .containsKey(i)) {
                 freeSlot = i;
                 break;
             }
@@ -36,16 +41,18 @@ public class LootPileItemTryPickUpAction extends GameStateAction {
 
         LootPile lootPile = game.getGameState().getLootPile(item.getLootPileId());
         if (freeSlot != null && lootPile != null) {
-            game.getGameState().accessCreatures().getCreature(playerId)
-                    .getParams()
-                    .getInventoryItems()
-                    .put(freeSlot,
-                            Item.of()
-                                    .setTemplate(item.getTemplate())
-                                    .setQuantity(item.getQuantity())
-                                    .setQualityModifier(item.getQualityModifier())
-                                    .setGrantedSkills(item.getGrantedSkills())
-                                    .setLootPileId(null));
+            game.getGameState()
+                .accessCreatures()
+                .getCreature(playerId)
+                .getParams()
+                .getInventoryItems()
+                .put(freeSlot,
+                     Item.of()
+                         .setTemplate(item.getTemplate())
+                         .setQuantity(item.getQuantity())
+                         .setQualityModifier(item.getQualityModifier())
+                         .setGrantedSkills(item.getGrantedSkills())
+                         .setLootPileId(null));
 
             lootPile.getItems().remove(item);
             if (lootPile.getItems().isEmpty()) {

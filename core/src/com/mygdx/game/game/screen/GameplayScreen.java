@@ -34,11 +34,11 @@ public class GameplayScreen implements Screen {
         mapsToLoad.put(AreaId.of("area3"), "assets/areas/area3");
 
         maps = mapsToLoad.entrySet()
-                .stream()
-                .collect(Collectors.toMap(Map.Entry::getKey,
-                        entry -> game.getEntityManager()
-                                .getGameRenderer()
-                                .loadMap(entry.getValue() + "/tile_map.tmx")));
+                         .stream()
+                         .collect(Collectors.toMap(Map.Entry::getKey,
+                                                   entry -> game.getEntityManager()
+                                                                .getGameRenderer()
+                                                                .loadMap(entry.getValue() + "/tile_map.tmx")));
 
 
         game.initState();
@@ -48,9 +48,9 @@ public class GameplayScreen implements Screen {
         game.getEntityManager().getGamePhysics().init(maps, game);
 
         game.getEntityManager()
-                .getGameRenderer()
-                .getViewportsHandler()
-                .setHudCameraPosition(Constants.WindowWidth / 2f, Constants.WindowHeight / 2f); // TODO: move it inward?
+            .getGameRenderer()
+            .getViewportsHandler()
+            .setHudCameraPosition(Constants.WindowWidth / 2f, Constants.WindowHeight / 2f); // TODO: move it inward?
 
     }
 
@@ -71,8 +71,8 @@ public class GameplayScreen implements Screen {
         game.getEventProcessor().process(game.getEntityManager(), game);
 
         game.getEventProcessor()
-                .getTeleportEvents()
-                .forEach(teleportInfo -> game.getEntityManager().teleportCreature(teleportInfo, game));
+            .getTeleportEvents()
+            .forEach(teleportInfo -> game.getEntityManager().teleportCreature(teleportInfo, game));
         game.getEventProcessor().getTeleportEvents().clear();
 
         game.getGameState().updateGeneralTimer(delta);
@@ -83,12 +83,13 @@ public class GameplayScreen implements Screen {
         PhysicsHelper.processPhysicsEventQueue(game);
 
         game.getEntityManager()
-                .getGameRenderer()
-                .getAreaRenderers()
-                .get(game.getGameState().getCurrentAreaId())
-                .setView(game.getEntityManager().getGameRenderer().getViewportsHandler().getWorldCamera());
+            .getGameRenderer()
+            .getAreaRenderers()
+            .get(game.getGameState().getCurrentAreaId())
+            .setView(game.getEntityManager().getGameRenderer().getViewportsHandler().getWorldCamera());
 
-        if (game.getGameState().getThisClientPlayerId() != null && game.getGameState().accessCreatures().getCreature(game.getGameState().getThisClientPlayerId()) != null) {
+        if (game.getGameState().getThisClientPlayerId() != null &&
+            game.getGameState().accessCreatures().getCreature(game.getGameState().getThisClientPlayerId()) != null) {
             game.updateCameraPositions();
         }
 
@@ -102,33 +103,34 @@ public class GameplayScreen implements Screen {
             if (game.isRenderingAllowed()) {
                 // TODO: move this to viewports handler
                 game.getEntityManager()
-                        .getGameRenderer()
-                        .getWorldElementsRenderingLayer()
-                        .setProjectionMatrix(game.getEntityManager()
-                                .getGameRenderer()
-                                .getViewportsHandler()
-                                .getWorldCamera().combined);
+                    .getGameRenderer()
+                    .getWorldElementsRenderingLayer()
+                    .setProjectionMatrix(game.getEntityManager()
+                                             .getGameRenderer()
+                                             .getViewportsHandler()
+                                             .getWorldCamera().combined);
                 game.getEntityManager()
-                        .getGameRenderer()
-                        .getHudRenderingLayer()
-                        .setProjectionMatrix(game.getEntityManager()
-                                .getGameRenderer()
-                                .getViewportsHandler()
-                                .getHudCamera().combined);
+                    .getGameRenderer()
+                    .getHudRenderingLayer()
+                    .setProjectionMatrix(game.getEntityManager()
+                                             .getGameRenderer()
+                                             .getViewportsHandler()
+                                             .getHudCamera().combined);
                 game.getEntityManager()
-                        .getGameRenderer()
-                        .getWorldTextRenderingLayer()
-                        .setProjectionMatrix(game.getEntityManager()
-                                .getGameRenderer()
-                                .getViewportsHandler()
-                                .getWorldTextCamera().combined);
+                    .getGameRenderer()
+                    .getWorldTextRenderingLayer()
+                    .setProjectionMatrix(game.getEntityManager()
+                                             .getGameRenderer()
+                                             .getViewportsHandler()
+                                             .getWorldTextCamera().combined);
 
                 Gdx.gl.glClearColor(0, 0, 0, 1);
 
                 int coverageBuffer;
                 if (Gdx.graphics.getBufferFormat().coverageSampling) {
                     coverageBuffer = GL20.GL_COVERAGE_BUFFER_BIT_NV;
-                } else {
+                }
+                else {
                     coverageBuffer = 0;
                 }
 

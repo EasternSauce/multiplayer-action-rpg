@@ -21,9 +21,9 @@ public class GameplayRendererHelper {
         game.renderB2BodyDebug();
     }
 
-    private static void renderWorldElements(
-            GameRenderer renderer,
-            RenderingLayer worldElementsRenderingLayer, CoreGame game) {
+    private static void renderWorldElements(GameRenderer renderer,
+                                            RenderingLayer worldElementsRenderingLayer,
+                                            CoreGame game) {
         worldElementsRenderingLayer.getSpriteBatch().begin();
 
         renderer.renderAreaGates(worldElementsRenderingLayer, game);
@@ -40,9 +40,7 @@ public class GameplayRendererHelper {
         renderer.getAreaRenderers().get(game.getGameState().getCurrentAreaId()).render(layersArray);
     }
 
-    private static void renderWorldText(
-            GameRenderer renderer,
-            RenderingLayer worldTextRenderingLayer, CoreGame game) {
+    private static void renderWorldText(GameRenderer renderer, RenderingLayer worldTextRenderingLayer, CoreGame game) {
         worldTextRenderingLayer.begin();
 
         renderer.renderPlayerNames(worldTextRenderingLayer, game);

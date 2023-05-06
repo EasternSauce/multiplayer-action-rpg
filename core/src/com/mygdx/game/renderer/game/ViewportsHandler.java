@@ -22,8 +22,8 @@ public class ViewportsHandler {
 
     public void initViewports() {
         worldViewport = new FitViewport(Constants.ViewpointWorldWidth / Constants.PPM,
-                Constants.ViewpointWorldHeight / Constants.PPM,
-                worldCamera);
+                                        Constants.ViewpointWorldHeight / Constants.PPM,
+                                        worldCamera);
 
 
         hudViewport = new FitViewport((float) Constants.WindowWidth, (float) Constants.WindowHeight, hudCamera);
@@ -40,7 +40,8 @@ public class ViewportsHandler {
     }
 
     public void updateCameraPositions(CoreGame game) {
-        Creature player = game.getGameState().accessCreatures().getCreature(game.getGameState().getThisClientPlayerId());
+        Creature player =
+                game.getGameState().accessCreatures().getCreature(game.getGameState().getThisClientPlayerId());
 
         float cameraX = player.getParams().getPos().getX();
         float cameraY = player.getParams().getPos().getY();

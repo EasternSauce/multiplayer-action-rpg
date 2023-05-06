@@ -63,22 +63,28 @@ public class GameRenderer {
         areaRenderers.forEach((areaId, areaRenderer) -> areaRenderer.init(maps.get(areaId), mapScale));
 
         areaGateRenderers = new HashSet<>();
-        areaGateRenderers.addAll(game.getGameState().getAreaGates()
-                .stream()
-                .map(areaGate -> AreaGateRenderer.of(areaGate, atlas))
-                .collect(Collectors.toSet()));
+        areaGateRenderers.addAll(game.getGameState()
+                                     .getAreaGates()
+                                     .stream()
+                                     .map(areaGate -> AreaGateRenderer.of(areaGate, atlas))
+                                     .collect(Collectors.toSet()));
     }
 
     public void renderAliveCreatures(RenderingLayer renderingLayer, CoreGame game) {
-        game.getGameState().accessCreatures().forEachAliveCreature(creature -> renderCreatureIfPossible(renderingLayer, creature, game));
-        game.getGameState().accessCreatures().forEachAliveCreature(creature -> renderCreatureLifeBarIfPossible(renderingLayer, creature, game));
-        game.getGameState().accessCreatures().forEachAliveCreature(creature -> renderCreatureStunnedAnimationIfPossible(renderingLayer, creature, game));
+        game.getGameState()
+            .accessCreatures()
+            .forEachAliveCreature(creature -> renderCreatureIfPossible(renderingLayer, creature, game));
+        game.getGameState()
+            .accessCreatures()
+            .forEachAliveCreature(creature -> renderCreatureLifeBarIfPossible(renderingLayer, creature, game));
+        game.getGameState()
+            .accessCreatures()
+            .forEachAliveCreature(creature -> renderCreatureStunnedAnimationIfPossible(renderingLayer, creature, game));
     }
 
     private void renderCreatureStunnedAnimationIfPossible(RenderingLayer renderingLayer,
                                                           Creature creature,
-                                                          CoreGame game
-    ) {
+                                                          CoreGame game) {
         if (canCreatureBeRendered(creature, game)) {
             CreatureRenderer creatureRenderer = creatureRenderers.get(creature.getId());
             float spriteWidth = creatureRenderer.getCreatureSprite().getWidth();
@@ -86,10 +92,7 @@ public class GameRenderer {
         }
     }
 
-    private void renderCreatureLifeBarIfPossible(RenderingLayer renderingLayer,
-                                                 Creature creature,
-                                                 CoreGame game
-    ) {
+    private void renderCreatureLifeBarIfPossible(RenderingLayer renderingLayer, Creature creature, CoreGame game) {
         if (canCreatureBeRendered(creature, game)) {
             creatureRenderers.get(creature.getId()).renderLifeBar(renderingLayer, game);
         }
@@ -102,7 +105,9 @@ public class GameRenderer {
     }
 
     public void renderDeadCreatures(RenderingLayer renderingLayer, CoreGame game) {
-        game.getGameState().accessCreatures().forEachDeadCreature(creature -> renderCreatureIfPossible(renderingLayer, creature, game));
+        game.getGameState()
+            .accessCreatures()
+            .forEachDeadCreature(creature -> renderCreatureIfPossible(renderingLayer, creature, game));
     }
 
     public void renderAbilities(RenderingLayer renderingLayer, CoreGame game) {
@@ -118,19 +123,21 @@ public class GameRenderer {
     }
 
     public void renderPlayerNames(RenderingLayer worldTextRenderingLayer, CoreGame game) {
-        game.getGameState().accessCreatures().getCreatures()
-                .values()
-                .stream()
-                .filter(creature -> creature.isAlive() &&
-                        canCreatureBeRendered(creature, game) &&
-                        creature instanceof Player)
-                .forEach(creature -> creatureRenderers.get(creature.getId())
-                        .renderCreatureId(worldTextRenderingLayer, game));
+        game.getGameState()
+            .accessCreatures()
+            .getCreatures()
+            .values()
+            .stream()
+            .filter(creature -> creature.isAlive() &&
+                                canCreatureBeRendered(creature, game) &&
+                                creature instanceof Player)
+            .forEach(creature -> creatureRenderers.get(creature.getId())
+                                                  .renderCreatureId(worldTextRenderingLayer, game));
     }
 
     private boolean canCreatureBeRendered(Creature creature, CoreGame game) {
         return creatureRenderers.containsKey(creature.getId()) &&
-                GameRendererHelper.isCreatureInCurrentlyVisibleArea(creature, game);
+               GameRendererHelper.isCreatureInCurrentlyVisibleArea(creature, game);
     }
 
     public TiledMap loadMap(String filePath) {

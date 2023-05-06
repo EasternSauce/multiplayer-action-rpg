@@ -31,12 +31,13 @@ public abstract class Ability {
                 onAbilityStarted(game);
                 getParams().getStateTimer().restart();
             }
-        } else if (state == AbilityState.ACTIVE) {
+        }
+        else if (state == AbilityState.ACTIVE) {
             onActiveUpdate(game);
 
             if (!getParams().getDelayedActionCompleted() &&
-                    getParams().getDelayedActionTime() != null &&
-                    getParams().getStateTimer().getTime() > getParams().getDelayedActionTime()) {
+                getParams().getDelayedActionTime() != null &&
+                getParams().getStateTimer().getTime() > getParams().getDelayedActionTime()) {
                 getParams().setDelayedActionCompleted(true);
                 onDelayedAction(game);
             }
@@ -74,7 +75,8 @@ public abstract class Ability {
         if (creature != null) {
             if (getParams().getChainToPos() != null) {
                 getParams().setPos(getParams().getChainToPos());
-            } else {
+            }
+            else {
                 getParams().setPos(creature.getParams().getPos());
             }
         }

@@ -43,11 +43,13 @@ public class LootPileSpawnOnPlayerItemDropAction extends GameStateAction {
             item = inventoryItems.get(playerParams.getInventoryItemBeingMoved());
             inventoryItems.remove(playerParams.getInventoryItemBeingMoved());
             playerParams.setInventoryItemBeingMoved(null);
-        } else if (playerParams.getEquipmentItemBeingMoved() != null) {
+        }
+        else if (playerParams.getEquipmentItemBeingMoved() != null) {
             item = equipmentItems.get(playerParams.getEquipmentItemBeingMoved());
             equipmentItems.remove(playerParams.getEquipmentItemBeingMoved());
             playerParams.setEquipmentItemBeingMoved(null);
-        } else {
+        }
+        else {
             throw new RuntimeException("impossible state");
         }
 
@@ -55,10 +57,10 @@ public class LootPileSpawnOnPlayerItemDropAction extends GameStateAction {
 
         Set<Item> lootPileItems = new ConcurrentSkipListSet<>();
         lootPileItems.add(Item.of()
-                .setTemplate(item.getTemplate())
-                .setQuantity(item.getQuantity())
-                .setQualityModifier(item.getQualityModifier())
-                .setLootPileId(lootPileId));
+                              .setTemplate(item.getTemplate())
+                              .setQuantity(item.getQuantity())
+                              .setQualityModifier(item.getQualityModifier())
+                              .setLootPileId(lootPileId));
 
         LootPile lootPile =
                 LootPile.of(lootPileId, player.getParams().getAreaId(), player.getParams().getPos(), lootPileItems);

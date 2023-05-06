@@ -19,15 +19,15 @@ public class Boomerang extends Projectile {
     public static Boomerang of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         Boomerang ability = Boomerang.of();
         ability.params = abilityParams.setWidth(1.3f)
-                .setHeight(1.3f)
-                .setChannelTime(0f)
-                .setActiveTime(10f)
-                .setTextureName("boomerang")
-                .setBaseDamage(22f)
-                .setIsChannelAnimationLooping(true)
-                .setIsActiveAnimationLooping(true)
-                .setRotationShift(0f)
-                .setSpeed(15f);
+                                      .setHeight(1.3f)
+                                      .setChannelTime(0f)
+                                      .setActiveTime(10f)
+                                      .setTextureName("boomerang")
+                                      .setBaseDamage(22f)
+                                      .setIsChannelAnimationLooping(true)
+                                      .setIsActiveAnimationLooping(true)
+                                      .setRotationShift(0f)
+                                      .setSpeed(15f);
 
         return ability;
     }
@@ -107,13 +107,16 @@ public class Boomerang extends Projectile {
                 if (Math.abs(alpha) < Math.abs(beta)) {
                     if (Math.abs(alpha) < Math.abs(gamma)) {
                         result = alpha;
-                    } else {
+                    }
+                    else {
                         result = gamma;
                     }
-                } else {
+                }
+                else {
                     if (Math.abs(beta) < Math.abs(gamma)) {
                         result = beta;
-                    } else {
+                    }
+                    else {
                         result = gamma;
                     }
                 }
@@ -122,7 +125,8 @@ public class Boomerang extends Projectile {
 
                 if (result > increment || result < -increment) {
                     getParams().setDirVector(getParams().getDirVector().rotateDeg(increment));
-                } else {
+                }
+                else {
                     getParams().setDirVector(getParams().getDirVector().setAngleDeg(targetAngleDeg));
                 }
             }

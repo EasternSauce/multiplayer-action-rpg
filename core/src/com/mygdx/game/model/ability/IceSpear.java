@@ -16,16 +16,16 @@ public class IceSpear extends Projectile {
     public static IceSpear of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         IceSpear ability = IceSpear.of();
         ability.params = abilityParams.setWidth(1.4f)
-                .setHeight(0.5f)
-                .setChannelTime(0f)
-                .setActiveTime(0.6f)
-                .setTextureName("ice_shard")
-                .setBaseDamage(17f)
-                .setIsChannelAnimationLooping(false)
-                .setIsActiveAnimationLooping(true)
-                .setRotationShift(0f)
-                .setDelayedActionTime(0.001f)
-                .setSpeed(15f);
+                                      .setHeight(0.5f)
+                                      .setChannelTime(0f)
+                                      .setActiveTime(0.6f)
+                                      .setTextureName("ice_shard")
+                                      .setBaseDamage(17f)
+                                      .setIsChannelAnimationLooping(false)
+                                      .setIsActiveAnimationLooping(true)
+                                      .setRotationShift(0f)
+                                      .setDelayedActionTime(0.001f)
+                                      .setSpeed(15f);
 
 
         return ability;
