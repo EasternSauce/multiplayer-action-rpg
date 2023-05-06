@@ -70,215 +70,224 @@ public class CoreGameClient extends CoreGame {
     @Override
     public void onUpdate() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
-            if (!getChat().getIsTyping()) {
-                getChat().setIsTyping(true);
-            }
-            else {
-                getChat().setIsTyping(false);
-                if (!getChat().getCurrentMessage().isEmpty()) {
-                    getEndPoint().sendTCP(ChatMessageSendCommand.of(getGameState().getThisClientPlayerId().getValue(),
-                                                                    getChat().getCurrentMessage()));
-
-                    getChat().sendMessage(getGameState().getThisClientPlayerId().getValue(), getChat().getCurrentMessage(), this);
-
-                    getChat().setCurrentMessage("");
-                }
-            }
+            handleChatMessageActionInput();
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)) {
-            if (getChat().getIsTyping()) {
-                if (getChat().getIsHoldingBackspace()) {
-                    if (!getChat().getCurrentMessage().isEmpty() &&
-                        gameState.getTime() > getChat().getHoldBackspaceTime() + 0.3f) {
-                        getChat().setCurrentMessage(getChat()
-                                                        .getCurrentMessage()
-                                                        .substring(0, getChat().getCurrentMessage().length() - 1));
-                    }
-                }
-                else {
-                    getChat().setIsHoldingBackspace(true);
-                    getChat().setHoldBackspaceTime(gameState.getTime());
-                    if (!getChat().getCurrentMessage().isEmpty()) {
-                        getChat().setCurrentMessage(getChat()
-                                                        .getCurrentMessage()
-                                                        .substring(0, getChat().getCurrentMessage().length() - 1));
-                    }
-                }
-
-            }
-
+            handleDeleteChatMessageCharacterInput();
         }
         else {
-            if (getChat().getIsHoldingBackspace() && getChat().getIsTyping()) {
-                getChat().setIsHoldingBackspace(false);
-            }
+            handleDeleteChatMessageCharacterNoInput();
         }
 
         PlayerParams playerParams = gameState.getPlayerParams(getGameState().getThisClientPlayerId());
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            if (getChat().getIsTyping()) {
-                if (!getChat().getCurrentMessage().isEmpty()) {
-                    getChat().setCurrentMessage("");
-                    getChat().setIsTyping(false);
-                }
-            }
-            else if (playerParams.getIsInventoryVisible()) {
-                getEndPoint().sendTCP(ActionPerformCommand.of(InventoryToggleAction.of(getGameState().getThisClientPlayerId())));
 
-            }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            handleExitWindowInput(playerParams);
         }
+
         if (!getChat().getIsTyping()) {
             if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-                if (playerParams.getIsInventoryVisible()) {
-                    InventoryHelper.performMoveItemClick(getEndPoint(), this);
-                }
-                else if (!playerParams.getIsInventoryVisible() && !playerParams.getItemPickupMenuLootPiles().isEmpty()) {
-                    boolean isSuccessful = InventoryHelper.tryPerformItemPickupMenuClick(getEndPoint(), this);
-                    if (isSuccessful) {
-                        menuClickTime = gameState.getTime();
-                    }
-
-                }
-                else if (!playerParams.getIsInventoryVisible() && playerParams.getIsSkillMenuPickerSlotBeingChanged() != null) {
-                    SkillMenuHelper.skillPickerMenuClick(getEndPoint(), this);
-
-                    menuClickTime = gameState.getTime();
-
-
-                }
-                else {
-                    boolean isSuccessful = SkillMenuHelper.performSkillMenuClick(getEndPoint(), this);
-                    if (isSuccessful) {
-                        menuClickTime = gameState.getTime();
-                    }
-
-                }
-
+                handleActionButtonInput(playerParams);
             }
             if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-                if (!playerParams.getIsInventoryVisible()) {
-                    Vector2 mousePos = mousePosRelativeToCenter();
-
-                    Creature player = gameState.accessCreatures().getCreatures().get(getGameState().getThisClientPlayerId());
-
-                    if (player != null && player.getParams().getMovementCommandsPerSecondLimitTimer().getTime() >
-                                          Constants.MovementCommandCooldown && gameState.getTime() > menuClickTime + 0.1f) {
-                        getEndPoint().sendTCP(ActionPerformCommand.of(CreatureMoveTowardsTargetAction.of(getGameState().getThisClientPlayerId(),
-                                                                                                         mousePos)));
-                    }
-                }
+                handleActionButtonHoldInput(playerParams);
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.N)) {
-
-                CreatureId creatureId = gameState
-                    .accessCreatures()
-                    .getCreatures()
-                    .keySet()
-                    .stream()
-                    .filter(cId -> cId.getValue().startsWith("kamil"))
-                    .collect(Collectors.toList())
-                    .get(0);
-                Vector2 pos = gameState.accessCreatures().getCreatures().get(creatureId).getParams().getPos();
-                System.out.println("Vector2.of(" + pos.getX() + "f, " + pos.getY() + "f),");
+                handleDebugInformationQueryInput();
             }
             if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
-                Creature player = gameState.accessCreatures().getCreatures().get(getGameState().getThisClientPlayerId());
-
-                Vector2 dirVector = mousePosRelativeToCenter();
-
-                float weaponDamage;
-                SkillType attackSkill;
-
-                if (player.getParams().getEquipmentItems().containsKey(EquipmentSlotType.PRIMARY_WEAPON.ordinal())) {
-                    Item weaponItem = player.getParams().getEquipmentItems().get(EquipmentSlotType.PRIMARY_WEAPON.ordinal());
-
-                    attackSkill = weaponItem.getTemplate().getAttackSkill();
-                    weaponDamage = weaponItem.getDamage();
-                }
-                else {
-                    attackSkill = SkillType.SWORD_SLASH;
-                    weaponDamage = 20f;
-                }
-                getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(getGameState().getThisClientPlayerId(),
-                                                                                       attackSkill,
-                                                                                       player.getParams().getPos(),
-                                                                                       dirVector,
-                                                                                       weaponDamage)));
-
+                handleAttackInput();
             }
-
             if (Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
-                Creature player = gameState.accessCreatures().getCreatures().get(getGameState().getThisClientPlayerId());
-
-                Vector2 dirVector = mousePosRelativeToCenter();
-
-                if (playerParams.getSkillMenuSlots().containsKey(0)) {
-                    getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(getGameState().getThisClientPlayerId(),
-                                                                                           playerParams
-                                                                                               .getSkillMenuSlots()
-                                                                                               .get(0),
-                                                                                           player.getParams().getPos(),
-                                                                                           dirVector)));
-                }
-
+                handlePerformAbilityInput(playerParams, 0);
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
-                Creature player = gameState.accessCreatures().getCreatures().get(getGameState().getThisClientPlayerId());
-
-                Vector2 dirVector = mousePosRelativeToCenter();
-
-                if (playerParams.getSkillMenuSlots().containsKey(1)) {
-                    getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(getGameState().getThisClientPlayerId(),
-                                                                                           playerParams
-                                                                                               .getSkillMenuSlots()
-                                                                                               .get(1),
-                                                                                           player.getParams().getPos(),
-                                                                                           dirVector)));
-                }
-
-
+                handlePerformAbilityInput(playerParams, 1);
             }
-
             if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
-                Creature player = gameState.accessCreatures().getCreatures().get(getGameState().getThisClientPlayerId());
-
-
-                Vector2 dirVector = mousePosRelativeToCenter();
-
-                if (playerParams.getSkillMenuSlots().containsKey(2)) {
-                    getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(getGameState().getThisClientPlayerId(),
-                                                                                           playerParams
-                                                                                               .getSkillMenuSlots()
-                                                                                               .get(2),
-                                                                                           player.getParams().getPos(),
-                                                                                           dirVector)));
-                }
-
-
+                handlePerformAbilityInput(playerParams, 2);
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
-                getEndPoint().sendTCP(ActionPerformCommand.of(InventoryToggleAction.of(getGameState().getThisClientPlayerId())));
-
+                handleInventoryWindowActionInput();
             }
-
             if (Gdx.input.isKeyJustPressed(Input.Keys.F11)) {
-                List<EnemySpawn> enemySpawns = EnemySpawnUtils.area1EnemySpawns();
-
-                AreaId areaId = getGameState().getCurrentAreaId();
-
-                enemySpawns.forEach(enemySpawn -> {
-                    CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 10000000));
-                    getEndPoint().sendTCP(EnemySpawnCommand.of(enemyId,
-                                                               areaId,
-                                                               enemySpawn.setPos(Vector2.of(
-                                                                   enemySpawn.getPos().getX() + (float) Math.random(),
-                                                                   enemySpawn.getPos().getY() + (float) Math.random()))));
-                });
-
+                handleDebugCommandInput();
             }
         }
 
+    }
+
+    private void handleDebugCommandInput() {
+        List<EnemySpawn> enemySpawns = EnemySpawnUtils.area1EnemySpawns();
+
+        AreaId areaId = getGameState().getCurrentAreaId();
+
+        enemySpawns.forEach(enemySpawn -> {
+            CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 10000000));
+            getEndPoint().sendTCP(EnemySpawnCommand.of(enemyId,
+                                                       areaId,
+                                                       enemySpawn.setPos(Vector2.of(
+                                                           enemySpawn.getPos().getX() + (float) Math.random(),
+                                                           enemySpawn.getPos().getY() + (float) Math.random()))));
+        });
+    }
+
+    private void handleInventoryWindowActionInput() {
+        getEndPoint().sendTCP(ActionPerformCommand.of(InventoryToggleAction.of(getGameState().getThisClientPlayerId())));
+    }
+
+    private void handlePerformAbilityInput(PlayerParams playerParams, int abilitySequenceNumber) {
+        Creature player = gameState.accessCreatures().getCreatures().get(getGameState().getThisClientPlayerId());
+
+        Vector2 dirVector = mousePosRelativeToCenter();
+
+        if (playerParams.getSkillMenuSlots().containsKey(abilitySequenceNumber)) {
+            getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(getGameState().getThisClientPlayerId(),
+                                                                                   playerParams
+                                                                                       .getSkillMenuSlots()
+                                                                                       .get(abilitySequenceNumber),
+                                                                                   player.getParams().getPos(),
+                                                                                   dirVector)));
+        }
+    }
+
+    private void handleAttackInput() {
+        Creature player = gameState.accessCreatures().getCreatures().get(getGameState().getThisClientPlayerId());
+
+        Vector2 dirVector = mousePosRelativeToCenter();
+
+        float weaponDamage;
+        SkillType attackSkill;
+
+        if (player.getParams().getEquipmentItems().containsKey(EquipmentSlotType.PRIMARY_WEAPON.ordinal())) {
+            Item weaponItem = player.getParams().getEquipmentItems().get(EquipmentSlotType.PRIMARY_WEAPON.ordinal());
+
+            attackSkill = weaponItem.getTemplate().getAttackSkill();
+            weaponDamage = weaponItem.getDamage();
+        }
+        else {
+            attackSkill = SkillType.SWORD_SLASH;
+            weaponDamage = 20f;
+        }
+        getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(getGameState().getThisClientPlayerId(),
+                                                                               attackSkill,
+                                                                               player.getParams().getPos(),
+                                                                               dirVector,
+                                                                               weaponDamage)));
+    }
+
+    private void handleDebugInformationQueryInput() {
+        CreatureId creatureId = gameState
+            .accessCreatures()
+            .getCreatures()
+            .keySet()
+            .stream()
+            .filter(cId -> cId.getValue().startsWith("kamil"))
+            .collect(Collectors.toList())
+            .get(0);
+        Vector2 pos = gameState.accessCreatures().getCreatures().get(creatureId).getParams().getPos();
+        System.out.println("Vector2.of(" + pos.getX() + "f, " + pos.getY() + "f),");
+    }
+
+    private void handleActionButtonHoldInput(PlayerParams playerParams) {
+        if (!playerParams.getIsInventoryVisible()) {
+            Vector2 mousePos = mousePosRelativeToCenter();
+
+            Creature player = gameState.accessCreatures().getCreatures().get(getGameState().getThisClientPlayerId());
+
+            if (player != null &&
+                player.getParams().getMovementCommandsPerSecondLimitTimer().getTime() > Constants.MovementCommandCooldown &&
+                gameState.getTime() > menuClickTime + 0.1f) {
+                getEndPoint().sendTCP(ActionPerformCommand.of(CreatureMoveTowardsTargetAction.of(getGameState().getThisClientPlayerId(),
+                                                                                                 mousePos)));
+            }
+        }
+    }
+
+    private void handleActionButtonInput(PlayerParams playerParams) {
+        if (playerParams.getIsInventoryVisible()) {
+            InventoryHelper.performMoveItemClick(getEndPoint(), this);
+        }
+        else if (!playerParams.getIsInventoryVisible() && !playerParams.getItemPickupMenuLootPiles().isEmpty()) {
+            boolean isSuccessful = InventoryHelper.tryPerformItemPickupMenuClick(getEndPoint(), this);
+            if (isSuccessful) {
+                menuClickTime = gameState.getTime();
+            }
+
+        }
+        else if (!playerParams.getIsInventoryVisible() && playerParams.getIsSkillMenuPickerSlotBeingChanged() != null) {
+            SkillMenuHelper.skillPickerMenuClick(getEndPoint(), this);
+
+            menuClickTime = gameState.getTime();
+
+
+        }
+        else {
+            boolean isSuccessful = SkillMenuHelper.performSkillMenuClick(getEndPoint(), this);
+            if (isSuccessful) {
+                menuClickTime = gameState.getTime();
+            }
+
+        }
+    }
+
+    private void handleExitWindowInput(PlayerParams playerParams) {
+        if (getChat().getIsTyping()) {
+            if (!getChat().getCurrentMessage().isEmpty()) {
+                getChat().setCurrentMessage("");
+                getChat().setIsTyping(false);
+            }
+        }
+        else if (playerParams.getIsInventoryVisible()) {
+            handleInventoryWindowActionInput();
+
+        }
+    }
+
+    private void handleDeleteChatMessageCharacterNoInput() {
+        if (getChat().getIsHoldingBackspace() && getChat().getIsTyping()) {
+            getChat().setIsHoldingBackspace(false);
+        }
+    }
+
+    private void handleDeleteChatMessageCharacterInput() {
+        if (getChat().getIsTyping()) {
+            if (getChat().getIsHoldingBackspace()) {
+                if (!getChat().getCurrentMessage().isEmpty() && gameState.getTime() > getChat().getHoldBackspaceTime() + 0.3f) {
+                    getChat().setCurrentMessage(getChat()
+                                                    .getCurrentMessage()
+                                                    .substring(0, getChat().getCurrentMessage().length() - 1));
+                }
+            }
+            else {
+                getChat().setIsHoldingBackspace(true);
+                getChat().setHoldBackspaceTime(gameState.getTime());
+                if (!getChat().getCurrentMessage().isEmpty()) {
+                    getChat().setCurrentMessage(getChat()
+                                                    .getCurrentMessage()
+                                                    .substring(0, getChat().getCurrentMessage().length() - 1));
+                }
+            }
+
+        }
+    }
+
+    private void handleChatMessageActionInput() {
+        if (!getChat().getIsTyping()) {
+            getChat().setIsTyping(true);
+        }
+        else {
+            getChat().setIsTyping(false);
+            if (!getChat().getCurrentMessage().isEmpty()) {
+                getEndPoint().sendTCP(ChatMessageSendCommand.of(getGameState().getThisClientPlayerId().getValue(),
+                                                                getChat().getCurrentMessage()));
+
+                getChat().sendMessage(getGameState().getThisClientPlayerId().getValue(), getChat().getCurrentMessage(), this);
+
+                getChat().setCurrentMessage("");
+            }
+        }
     }
 
 

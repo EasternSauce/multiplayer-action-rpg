@@ -258,10 +258,15 @@ public class PhysicsWorld {
 
     public Boolean isLineOfSight(Vector2 fromPos, Vector2 toPos) {
         float lineWidth = 0.3f;
-        com.badlogic.gdx.math.Polygon lineOfSightRect = new com.badlogic.gdx.math.Polygon(new float[]{fromPos.getX(),
+        com.badlogic.gdx.math.Polygon lineOfSightRect = new com.badlogic.gdx.math.Polygon(new float[]{
+            fromPos.getX(),
             fromPos.getY(),
             fromPos.getX() + lineWidth,
-            fromPos.getY() + lineWidth, toPos.getX() + lineWidth, toPos.getY() + lineWidth, toPos.getX(), toPos.getY()});
+            fromPos.getY() + lineWidth,
+            toPos.getX() + lineWidth,
+            toPos.getY() + lineWidth,
+            toPos.getX(),
+            toPos.getY()});
 
         List<com.badlogic.gdx.math.Polygon> polygons = terrainTiles
             .stream()

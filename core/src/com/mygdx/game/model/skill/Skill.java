@@ -59,23 +59,15 @@ public class Skill {
                             26f);
         }
         if (skillType == SkillType.CROSSBOW_BOLT) {
-            ScheduledAbility[] sequentialCrossbowBolts = {ScheduledAbility.of(AbilityType.CROSSBOW_BOLT,
-                                                                              skillType,
-                                                                              0f), ScheduledAbility.of(AbilityType.CROSSBOW_BOLT,
-                                                                                                       skillType,
-                                                                                                       0.4f), ScheduledAbility.of(
-                AbilityType.CROSSBOW_BOLT,
-                skillType,
-                1f), ScheduledAbility.of(AbilityType.CROSSBOW_BOLT,
-                                         skillType,
-                                         1.2f), ScheduledAbility.of(AbilityType.CROSSBOW_BOLT, skillType, 1.4f)};
-            return Skill.of(skillType,
-                            creatureId,
-                            Stream.of(sequentialCrossbowBolts).collect(Collectors.toCollection(ArrayList::new)),
-                            SimpleTimer.getExpiredTimer(),
-                            2f,
-                            40f,
-                            0f);
+            ArrayList<ScheduledAbility> sequentialCrossbowBolts = Stream
+                .of(new ScheduledAbility[]{
+                    ScheduledAbility.of(AbilityType.CROSSBOW_BOLT, skillType, 0f),
+                    ScheduledAbility.of(AbilityType.CROSSBOW_BOLT, skillType, 0.4f),
+                    ScheduledAbility.of(AbilityType.CROSSBOW_BOLT, skillType, 1f),
+                    ScheduledAbility.of(AbilityType.CROSSBOW_BOLT, skillType, 1.2f),
+                    ScheduledAbility.of(AbilityType.CROSSBOW_BOLT, skillType, 1.4f)})
+                .collect(Collectors.toCollection(ArrayList::new));
+            return Skill.of(skillType, creatureId, sequentialCrossbowBolts, SimpleTimer.getExpiredTimer(), 2f, 40f, 0f);
         }
         if (skillType == SkillType.MAGIC_ORB) {
             return Skill.of(skillType,

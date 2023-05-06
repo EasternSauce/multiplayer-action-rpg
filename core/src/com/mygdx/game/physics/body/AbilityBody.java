@@ -44,7 +44,14 @@ public class AbilityBody {
 
         float[] vertices = sprite.getVertices();
 
-        return new float[]{vertices[0], vertices[1], vertices[5], vertices[6], vertices[10], vertices[11], vertices[15],
+        return new float[]{
+            vertices[0],
+            vertices[1],
+            vertices[5],
+            vertices[6],
+            vertices[10],
+            vertices[11],
+            vertices[15],
             vertices[16]};
     }
 

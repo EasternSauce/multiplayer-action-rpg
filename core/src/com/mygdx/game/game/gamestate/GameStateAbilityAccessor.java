@@ -93,6 +93,7 @@ public class GameStateAbilityAccessor {
             .setChainFromPos(chainFromPos)
             .setChainToPos(chainToPos)
             .setDirVector(dirVector)
+            .setVectorTowardsTarget(dirVector)
             .setSkillType(chainFromAbility.getParams().getSkillType());
 
         spawnAbility(abilityType, abilityParams, game);

@@ -44,7 +44,10 @@ public class PlayerInitAction extends GameStateAction {
 
     private Creature createNewPlayer(CoreGame game) {
         Creature player;
-        String[] textures = new String[]{"male1", "male2", "female1"};
+        String[] textures = new String[]{
+            "male1",
+            "male2",
+            "female1"};
 
         Vector2 pos = Vector2.of(((game.getGameState().nextRandomValue() * (28 - 18)) + 18),
                                  ((game.getGameState().nextRandomValue() * (12 - 6)) + 6));

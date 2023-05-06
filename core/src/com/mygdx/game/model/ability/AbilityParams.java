@@ -24,6 +24,7 @@ public class AbilityParams {
     CreatureId creatureId;
     SimpleTimer stateTimer = SimpleTimer.getExpiredTimer();
     @NonNull Vector2 dirVector = Vector2.of(0f, 0f);
+    @NonNull Vector2 vectorTowardsTarget = Vector2.of(0f, 0f);
     String textureName;
 
     Float rotationAngle = 0f;

@@ -36,6 +36,8 @@ public class TerrainTileBody {
             pos.getX() * tileWidth + tileWidth,
             pos.getY() * tileHeight,
             pos.getX() * tileWidth + tileWidth,
-            pos.getY() * tileHeight + tileHeight, pos.getX() * tileWidth, pos.getY() * tileHeight + tileHeight});
+            pos.getY() * tileHeight + tileHeight,
+            pos.getX() * tileWidth,
+            pos.getY() * tileHeight + tileHeight});
     }
 }

@@ -46,6 +46,7 @@ public class ScheduledAbility {
             .setAreaId(creature.getParams().getAreaId())
             .setCreatureId(creatureId)
             .setDirVector(dirVector)
+            .setVectorTowardsTarget(dirVector)
             .setSkillStartPos(startPos)
             .setSkillType(skillType);
 
