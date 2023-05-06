@@ -9,13 +9,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class RicochetBallista extends Ability {
+public class CrossbowShot extends Ability {
     AbilityParams params;
 
-    public static RicochetBallista of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        RicochetBallista ability = RicochetBallista.of();
-        ability.params = abilityParams.setChannelTime(0f).setActiveTime(0f);
+    int currentBoltToFire = 0;
 
+    public static CrossbowShot of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+        CrossbowShot ability = CrossbowShot.of();
+        ability.params = abilityParams.setChannelTime(0f).setActiveTime(2f);
 
         return ability;
     }
@@ -43,21 +44,6 @@ public class RicochetBallista extends Ability {
     @Override
     void onAbilityCompleted(CoreGame game) {
 
-        Vector2 leftSidePos = getParams().getPos().add(params.getDirVector().normalized().multiplyBy(1.5f).rotateDeg(90));
-        Vector2 rightSidePos = getParams().getPos().add(params.getDirVector().normalized().multiplyBy(1.5f).rotateDeg(-90));
-
-        game
-            .getGameState()
-            .accessAbilities()
-            .chainAnotherAbility(this, AbilityType.RICOCHET_BULLET, getParams().getPos(), params.getDirVector(), game);
-        game
-            .getGameState()
-            .accessAbilities()
-            .chainAnotherAbility(this, AbilityType.RICOCHET_BULLET, leftSidePos, params.getDirVector(), game);
-        game
-            .getGameState()
-            .accessAbilities()
-            .chainAnotherAbility(this, AbilityType.RICOCHET_BULLET, rightSidePos, params.getDirVector(), game);
     }
 
 
@@ -68,7 +54,25 @@ public class RicochetBallista extends Ability {
 
     @Override
     void onActiveUpdate(CoreGame game) {
+        float[] boltFireTimes = {
+            0f,
+            0.4f,
+            1f,
+            1.2f,
+            1.4f};
 
+        if (currentBoltToFire <= 4 && getParams().getStateTimer().getTime() > boltFireTimes[currentBoltToFire]) {
+            game
+                .getGameState()
+                .accessAbilities()
+                .chainAnotherAbility(this, AbilityType.CROSSBOW_BOLT, null, getParams().getDirVector(), game);
+
+            currentBoltToFire += 1;
+        }
+
+        if (currentBoltToFire > 4) {
+            deactivate();
+        }
     }
 
     @Override

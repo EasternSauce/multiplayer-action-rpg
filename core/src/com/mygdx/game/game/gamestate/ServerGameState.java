@@ -71,7 +71,7 @@ public class ServerGameState extends GameState {
                                                                                                                                      player
                                                                                                                                          .getParams()
                                                                                                                                          .getPos()) <
-                                                                                                                             Constants.ClientGameUpdateRange)
+                                                                                                                             Constants.CLIENT_GAME_UPDATE_RANGE)
                                                                                                             .collect(Collectors.toMap(
                                                                                                                 Map.Entry::getKey,
                                                                                                                 Map.Entry::getValue)));
@@ -95,7 +95,7 @@ public class ServerGameState extends GameState {
                                                                                                                                    player
                                                                                                                                        .getParams()
                                                                                                                                        .getPos()) <
-                                                                                                                           Constants.ClientGameUpdateRange)
+                                                                                                                           Constants.CLIENT_GAME_UPDATE_RANGE)
                                                                                                           .collect(Collectors.toMap(
                                                                                                               Map.Entry::getKey,
                                                                                                               Map.Entry::getValue)));
@@ -118,7 +118,7 @@ public class ServerGameState extends GameState {
                                                                                                                                      player
                                                                                                                                          .getParams()
                                                                                                                                          .getPos()) <
-                                                                                                                             Constants.ClientGameUpdateRange)
+                                                                                                                             Constants.CLIENT_GAME_UPDATE_RANGE)
                                                                                                             .collect(Collectors.toMap(
                                                                                                                 Map.Entry::getKey,
                                                                                                                 Map.Entry::getValue)));

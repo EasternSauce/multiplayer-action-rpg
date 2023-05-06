@@ -55,7 +55,7 @@ public class GameStateAbilityAccessor {
         return getAbilities().keySet().stream().filter(abilityId -> {
             Ability ability = getAbilities().get(abilityId);
             if (ability != null) {
-                return ability.getParams().getPos().distance(player.getParams().getPos()) < Constants.ClientGameUpdateRange;
+                return ability.getParams().getPos().distance(player.getParams().getPos()) < Constants.CLIENT_GAME_UPDATE_RANGE;
             }
             return false;
         }).collect(Collectors.toSet());

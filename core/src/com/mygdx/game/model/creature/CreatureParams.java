@@ -22,108 +22,110 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(staticName = "of")
 @Data
 public class CreatureParams {
-    CreatureId id;
+    private CreatureId id;
 
-    AreaId areaId;
+    private AreaId areaId;
 
-    Vector2 pos;
-    Vector2 initialPos;
-    Vector2 previousPos;
+    private Vector2 pos;
+    private Vector2 initialPos;
+    private Vector2 previousPos;
 
-    SimpleTimer animationTimer = SimpleTimer.getStartedTimer();
+    private SimpleTimer animationTimer = SimpleTimer.getStartedTimer();
 
-    Vector2 movingVector = Vector2.of(0, 0);
+    private Vector2 movingVector = Vector2.of(0, 0);
 
-    Vector2 movementCommandTargetPos = Vector2.of(0, 0);
+    private Vector2 movementCommandTargetPos = Vector2.of(0, 0);
 
-    Boolean reachedTargetPos = true;
+    private Boolean reachedTargetPos = true;
 
-    Boolean isMoving = false;
+    private Boolean isMoving = false;
 
-    Float speed = 10f;
-    Float baseSpeed = 10f;
+    private Float speed = 10f;
+    private Float baseSpeed = 10f;
 
-    CreatureId targetCreatureId = null;
+    private CreatureId targetCreatureId = null;
 
-    Boolean forcePathCalculation = false;
-    SimpleTimer pathCalculationCooldownTimer = SimpleTimer.getExpiredTimer();
-    Float pathCalculationCooldown;
+    private Boolean forcePathCalculation = false;
+    private SimpleTimer pathCalculationCooldownTimer = SimpleTimer.getExpiredTimer();
+    private Float pathCalculationCooldown;
 
-    List<Vector2> pathTowardsTarget = null;
+    private List<Vector2> pathTowardsTarget = null;
 
-    Float life = 100f;
-    Float maxLife = 100f;
-    Float stamina = 100f;
-    Float maxStamina = 100f;
-    Float mana = 100f;
-    Float maxMana = 100f;
-    Float armor = 0f;
+    private Float life = 100f;
+    private Float maxLife = 100f;
+    private Float stamina = 100f;
+    private Float maxStamina = 100f;
+    private Float mana = 100f;
+    private Float maxMana = 100f;
+    private Float armor = 0f;
 
-    Float previousTickLife = life;
+    private Float previousTickLife = life;
 
-    String textureName;
+    private String textureName;
 
-    SimpleTimer movementCommandsPerSecondLimitTimer = SimpleTimer.getExpiredTimer();
-    Float attackCommandsPerSecondLimit = 0.2f;
+    private SimpleTimer movementActionsPerSecondLimiterTimer = SimpleTimer.getExpiredTimer();
+    private SimpleTimer changeAimDirectionActionsPerSecondLimiterTimer = SimpleTimer.getExpiredTimer(); // 10/10 field name
 
-    SimpleTimer isStillMovingCheckTimer = SimpleTimer.getExpiredTimer();
+    private SimpleTimer isStillMovingCheckTimer = SimpleTimer.getExpiredTimer();
 
-    SimpleTimer respawnTimer = SimpleTimer.getExpiredTimer();
-    Float respawnTime = 5f;
+    private SimpleTimer respawnTimer = SimpleTimer.getExpiredTimer();
+    private Float respawnTime = 5f;
 
-    Float actionCooldown = 0.7f;
+    private Float actionCooldown = 0.7f;
 
-    Boolean isDead = false;
-    Boolean isAwaitingRespawn = false;
+    private Boolean isDead = false;
+    private Boolean isAwaitingRespawn = false;
 
-    SimpleTimer staminaRegenerationTimer = SimpleTimer.getStartedTimer();
-    Float staminaRegenerationTickTime = 0.02f;
-    Float staminaRegeneration = 0.35f;
+    private SimpleTimer staminaRegenerationTimer = SimpleTimer.getStartedTimer();
+    private Float staminaRegenerationTickTime = 0.02f;
+    private Float staminaRegeneration = 0.35f;
 
-    SimpleTimer aggroTimer = SimpleTimer.getExpiredTimer();
-    Float loseAggroTime = 3f;
-    CreatureId aggroedCreatureId = null;
+    private SimpleTimer aggroTimer = SimpleTimer.getExpiredTimer();
+    private Float loseAggroTime = 3f;
+    private CreatureId aggroedCreatureId = null;
 
-    CreatureId attackedByCreatureId = null;
+    private CreatureId attackedByCreatureId = null;
 
-    CreatureId lastFoundTargetId = null;
-    SimpleTimer findTargetTimer = SimpleTimer.getExpiredTimer();
-    Float findTargetCooldown;
+    private CreatureId lastFoundTargetId = null;
+    private SimpleTimer findTargetTimer = SimpleTimer.getExpiredTimer();
+    private Float findTargetCooldown;
 
-    Map<SkillType, Skill> skills = new ConcurrentSkipListMap<>();
+    private Map<SkillType, Skill> skills = new ConcurrentSkipListMap<>();
 
-    Boolean isPathMirrored = false;
+    private Boolean isPathMirrored = false;
 
-    EnemyAiState aiState = EnemyAiState.RESTING;
+    private EnemyAiState aiState = EnemyAiState.RESTING;
 
-    SimpleTimer aiStateTimer = SimpleTimer.getExpiredTimer();
+    private SimpleTimer aiStateTimer = SimpleTimer.getExpiredTimer();
 
-    Float aiStateTime;
-    Float aiStateSeed;
+    private Float aiStateTime;
+    private Float aiStateSeed;
 
-    Vector2 defensivePosition;
+    private Vector2 defensivePosition;
 
-    SimpleTimer justAttackedFromRangeTimer = SimpleTimer.getExpiredTimer();
+    private SimpleTimer justAttackedFromRangeTimer = SimpleTimer.getExpiredTimer();
 
-    Float attackDistance = 3f;
+    private Float attackDistance = 3f;
 
-    SkillType mainAttackSkill;
+    private SkillType mainAttackSkill;
 
-    Set<DropTableEntry> dropTable;
+    private Set<DropTableEntry> dropTable;
 
-    Boolean justTeleportedToGate = false;
-    AreaId areaWhenEnteredGate;
+    private Boolean justTeleportedToGate = false;
+    private AreaId areaWhenEnteredGate;
 
-    Map<Integer, Item> equipmentItems = new ConcurrentSkipListMap<>();
-    Map<Integer, Item> inventoryItems = new ConcurrentSkipListMap<>();
+    private Map<Integer, Item> equipmentItems = new ConcurrentSkipListMap<>();
+    private Map<Integer, Item> inventoryItems = new ConcurrentSkipListMap<>();
 
-    Float dropRngSeed = (float) Math.random();
+    private Float dropRngSeed = (float) Math.random();
 
-    Float appliedSlowEffectiveness = 0f;
+    private Float appliedSlowEffectiveness = 0f;
 
-    Float appliedPoisonDamage = 0f;
+    private Float appliedPoisonDamage = 0f;
 
-    Map<CreatureEffect, CreatureEffectState> effects = new ConcurrentSkipListMap<>();
+    private Vector2 aimDirection = Vector2.of(0f, 0f);
+
+    private Map<CreatureEffect, CreatureEffectState> effects = new ConcurrentSkipListMap<>();
 
     public static CreatureParams of(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn) {
         return getCreatureParams(creatureId,

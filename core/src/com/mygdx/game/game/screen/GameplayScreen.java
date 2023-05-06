@@ -53,7 +53,7 @@ public class GameplayScreen implements Screen {
             .getEntityManager()
             .getGameRenderer()
             .getViewportsHandler()
-            .setHudCameraPosition(Constants.WindowWidth / 2f, Constants.WindowHeight / 2f); // TODO: move it inward?
+            .setHudCameraPosition(Constants.WINDOW_WIDTH / 2f, Constants.WINDOW_HEIGHT / 2f); // TODO: move it inward?
 
     }
 

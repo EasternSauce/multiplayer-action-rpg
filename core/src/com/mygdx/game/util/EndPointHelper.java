@@ -88,6 +88,7 @@ public class EndPointHelper {
         endPoint.getKryo().register(SwordSpin.class);
         endPoint.getKryo().register(TeleportSource.class);
         endPoint.getKryo().register(TeleportDestination.class);
+        endPoint.getKryo().register(CrossbowShot.class);
 
 
         endPoint.getKryo().register(Enemy.class);
@@ -125,6 +126,7 @@ public class EndPointHelper {
         endPoint.getKryo().register(SkillPickerMenuSlotChangeAction.class);
         endPoint.getKryo().register(SkillPickerMenuDeactivateAction.class);
         endPoint.getKryo().register(CreatureHitAction.class);
+        endPoint.getKryo().register(CreatureChangeAimDirectionAction.class);
 
         endPoint.getKryo().register(EquipmentSlotType.class);
         endPoint.getKryo().register(ItemTemplate.class);

@@ -115,8 +115,8 @@ public class Enemy extends Creature {
             handleAiStateTargetDistanceLogic(potentialTarget);
             handleNewTarget(potentialTarget.getParams().getId()); // logic for when target changed
             handleMovement(potentialTarget); // set movement command, causing creature to walk towards target
+            handleAimDirectionAdjustment(vectorTowardsTarget);
             handleAttackTarget(potentialTarget, vectorTowardsTarget, game); // attack target if within range
-
         }
         else { // if aggro timed out and out of range
             if (potentialTarget != null) {
@@ -127,6 +127,10 @@ public class Enemy extends Creature {
 
         processPathfinding(game); // set path towards creature target
 
+    }
+
+    private void handleAimDirectionAdjustment(Vector2 vectorTowardsTarget) {
+        getParams().setAimDirection(vectorTowardsTarget.normalized());
     }
 
     private void processAiStateChangeLogic(CoreGame game) {
@@ -179,7 +183,7 @@ public class Enemy extends Creature {
                 getParams().setAiState(EnemyAiState.ALERTED);
 
             }
-            else if (getParams().getAiState() == EnemyAiState.ALERTED && distance < Constants.TURN_AGGRESIVE_DISTANCE) {
+            else if (getParams().getAiState() == EnemyAiState.ALERTED && distance < Constants.TURN_AGGRESSIVE_DISTANCE) {
                 getParams().setAiState(EnemyAiState.AGGRESSIVE);
 
             }

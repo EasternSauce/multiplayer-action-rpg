@@ -21,15 +21,15 @@ public class ViewportsHandler {
     private final OrthographicCamera worldTextCamera = new OrthographicCamera();
 
     public void initViewports() {
-        worldViewport = new FitViewport(Constants.ViewpointWorldWidth / Constants.PPM,
-                                        Constants.ViewpointWorldHeight / Constants.PPM,
+        worldViewport = new FitViewport(Constants.VIEWPOINT_WORLD_WIDTH / Constants.PPM,
+                                        Constants.VIEWPOINT_WORLD_HEIGHT / Constants.PPM,
                                         worldCamera);
 
 
-        hudViewport = new FitViewport((float) Constants.WindowWidth, (float) Constants.WindowHeight, hudCamera);
+        hudViewport = new FitViewport((float) Constants.WINDOW_WIDTH, (float) Constants.WINDOW_HEIGHT, hudCamera);
 
 
-        worldTextViewport = new FitViewport(Constants.ViewpointWorldWidth, Constants.ViewpointWorldHeight, worldTextCamera);
+        worldTextViewport = new FitViewport(Constants.VIEWPOINT_WORLD_WIDTH, Constants.VIEWPOINT_WORLD_HEIGHT, worldTextCamera);
     }
 
     public void updateViewportsOnResize(int width, int height) {

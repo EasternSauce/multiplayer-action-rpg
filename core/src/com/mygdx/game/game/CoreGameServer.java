@@ -89,7 +89,7 @@ public class CoreGameServer extends CoreGame {
                 List<GameStateAction> personalizedTickActions = tickActionsCopy
                     .stream()
                     .filter(action -> action.actionObjectPos(this).distance(creature.getParams().getPos()) <
-                                      Constants.ClientGameUpdateRange)
+                                      Constants.CLIENT_GAME_UPDATE_RANGE)
                     .collect(Collectors.toList());
                 connection.sendTCP(ActionsHolder.of(personalizedTickActions));
             }

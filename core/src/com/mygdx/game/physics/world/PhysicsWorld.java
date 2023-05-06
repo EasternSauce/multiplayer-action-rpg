@@ -76,8 +76,8 @@ public class PhysicsWorld {
 
         b2world = new World(new com.badlogic.gdx.math.Vector2(0, 0), true);
 
-        tileWidth = layer.getTileWidth() * Constants.MapScale / Constants.PPM;
-        tileHeight = layer.getTileHeight() * Constants.MapScale / Constants.PPM;
+        tileWidth = layer.getTileWidth() * Constants.MAP_SCALE / Constants.PPM;
+        tileHeight = layer.getTileHeight() * Constants.MAP_SCALE / Constants.PPM;
 
         for (int i = 0; i < heightInTiles(); i++) {
             for (int j = 0; j < widthInTiles(); j++) {

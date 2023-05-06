@@ -46,7 +46,7 @@ public class HudRendererHelper {
 
     private static void renderFpsCounter(RenderingLayer renderingLayer) {
         float fps = Gdx.graphics.getFramesPerSecond();
-        Assets.renderSmallFont(renderingLayer, fps + " fps", Vector2.of(3, Constants.WindowHeight - 3), Color.WHITE);
+        Assets.renderSmallFont(renderingLayer, fps + " fps", Vector2.of(3, Constants.WINDOW_HEIGHT - 3), Color.WHITE);
     }
 
     private static void renderRespawnMessage(Creature creature, RenderingLayer renderingLayer) {
@@ -58,8 +58,8 @@ public class HudRendererHelper {
 
                 Assets.renderLargeFont(renderingLayer,
                                        "You are dead!\nRespawning...\n" + timeRemainingBeforeRespawnText,
-                                       Vector2.of(Constants.WindowWidth / 2f - Constants.WindowWidth / 8f,
-                                                  Constants.WindowHeight / 2f + Constants.WindowHeight / 5f),
+                                       Vector2.of(Constants.WINDOW_WIDTH / 2f - Constants.WINDOW_WIDTH / 8f,
+                                                  Constants.WINDOW_HEIGHT / 2f + Constants.WINDOW_HEIGHT / 5f),
                                        Color.RED);
             }
         }

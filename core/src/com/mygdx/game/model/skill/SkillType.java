@@ -7,7 +7,7 @@ public enum SkillType {
     SWORD_SLASH("Sword Slash"),
     FIREBALL("Fireball"),
     LIGHTNING("Lightning"),
-    CROSSBOW_BOLT("Crossbow Bolt"),
+    CROSSBOW_SHOT("Crossbow Shot"),
 
     MAGIC_ORB("Magic Orb"),
 

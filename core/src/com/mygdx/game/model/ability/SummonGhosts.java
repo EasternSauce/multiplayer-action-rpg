@@ -94,4 +94,10 @@ public class SummonGhosts extends Ability {
     public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
 
     }
+
+
+    @Override
+    public boolean usesModel() {
+        return false;
+    }
 }

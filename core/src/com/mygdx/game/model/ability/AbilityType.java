@@ -12,6 +12,7 @@ public enum AbilityType {
     LIGHTNING_CHAIN,
 
     CROSSBOW_BOLT,
+    CROSSBOW_SHOT,
 
     MAGIC_ORB,
 

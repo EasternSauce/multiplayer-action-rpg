@@ -57,7 +57,7 @@ public class GameStateCreatureAccessor {
             Creature creature = gameState.data.getCreatures().get(creatureId);
             if (creature != null) {
                 return player.getParams().getAreaId().equals(creature.getParams().getAreaId()) &&
-                       creature.getParams().getPos().distance(player.getParams().getPos()) < Constants.ClientGameUpdateRange;
+                       creature.getParams().getPos().distance(player.getParams().getPos()) < Constants.CLIENT_GAME_UPDATE_RANGE;
             }
 
             return false;

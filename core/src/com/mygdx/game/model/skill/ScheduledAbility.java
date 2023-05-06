@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @Data
-public class ScheduledAbility {
+public class ScheduledAbility { // TODO: deprecated, no longer need to schedule
     AbilityType abilityType;
     Float scheduledTime;
     Vector2 startPos;

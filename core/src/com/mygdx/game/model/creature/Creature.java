@@ -87,7 +87,8 @@ public abstract class Creature {
     public void updateTimers(float delta) {
         getParams().getAnimationTimer().update(delta);
         getParams().getPathCalculationCooldownTimer().update(delta);
-        getParams().getMovementCommandsPerSecondLimitTimer().update(delta);
+        getParams().getMovementActionsPerSecondLimiterTimer().update(delta);
+        getParams().getChangeAimDirectionActionsPerSecondLimiterTimer().update(delta);
         getParams().getIsStillMovingCheckTimer().update(delta);
         getParams().getRespawnTimer().update(delta);
         getParams().getStaminaRegenerationTimer().update(delta);

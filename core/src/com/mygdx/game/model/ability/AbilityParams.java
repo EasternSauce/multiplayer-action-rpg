@@ -76,5 +76,4 @@ public class AbilityParams {
 
     SkillType skillType;
 
-
 }

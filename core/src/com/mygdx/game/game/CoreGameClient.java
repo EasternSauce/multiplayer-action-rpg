@@ -15,6 +15,7 @@ import com.mygdx.game.model.ability.AbilityId;
 import com.mygdx.game.model.action.ActionsHolder;
 import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.action.ability.SkillTryPerformAction;
+import com.mygdx.game.model.action.creature.CreatureChangeAimDirectionAction;
 import com.mygdx.game.model.action.creature.CreatureMoveTowardsTargetAction;
 import com.mygdx.game.model.action.inventory.InventoryToggleAction;
 import com.mygdx.game.model.area.AreaId;
@@ -69,6 +70,12 @@ public class CoreGameClient extends CoreGame {
 
     @Override
     public void onUpdate() {
+        processClientInputs();
+
+
+    }
+
+    private void processClientInputs() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
             handleChatMessageActionInput();
         }
@@ -115,7 +122,6 @@ public class CoreGameClient extends CoreGame {
                 handleDebugCommandInput();
             }
         }
-
     }
 
     private void handleDebugCommandInput() {
@@ -196,11 +202,18 @@ public class CoreGameClient extends CoreGame {
 
             Creature player = gameState.accessCreatures().getCreatures().get(getGameState().getThisClientPlayerId());
 
-            if (player != null &&
-                player.getParams().getMovementCommandsPerSecondLimitTimer().getTime() > Constants.MovementCommandCooldown &&
-                gameState.getTime() > menuClickTime + 0.1f) {
-                getEndPoint().sendTCP(ActionPerformCommand.of(CreatureMoveTowardsTargetAction.of(getGameState().getThisClientPlayerId(),
-                                                                                                 mousePos)));
+            if (player != null) {
+                if (player.getParams().getMovementActionsPerSecondLimiterTimer().getTime() >
+                    Constants.MOVEMENT_COMMAND_COOLDOWN && gameState.getTime() > menuClickTime + 0.1f) {
+                    getEndPoint().sendTCP(ActionPerformCommand.of(CreatureMoveTowardsTargetAction.of(getGameState().getThisClientPlayerId(),
+                                                                                                     mousePos)));
+                }
+
+                if (player.getParams().getChangeAimDirectionActionsPerSecondLimiterTimer().getTime() >
+                    Constants.CHANGE_AIM_DIRECTION_COMMAND_COOLDOWN) {
+                    getEndPoint().sendTCP(ActionPerformCommand.of(CreatureChangeAimDirectionAction.of(getGameState().getThisClientPlayerId(),
+                                                                                                      mousePos)));
+                }
             }
         }
     }
