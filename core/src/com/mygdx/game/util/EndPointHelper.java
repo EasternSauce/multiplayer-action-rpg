@@ -6,8 +6,8 @@ import com.mygdx.game.model.GameStateData;
 import com.mygdx.game.model.ability.*;
 import com.mygdx.game.model.action.ActionsHolder;
 import com.mygdx.game.model.action.ability.AbilityActivateAction;
-import com.mygdx.game.model.action.ability.AbilityAddAction;
 import com.mygdx.game.model.action.ability.AbilityRemoveAction;
+import com.mygdx.game.model.action.ability.AbilityTryAddAction;
 import com.mygdx.game.model.action.ability.SkillTryPerformAction;
 import com.mygdx.game.model.action.creature.*;
 import com.mygdx.game.model.action.inventory.*;
@@ -103,7 +103,7 @@ public class EndPointHelper {
         endPoint.getKryo().register(DropTableEntry.class);
 
 
-        endPoint.getKryo().register(AbilityAddAction.class);
+        endPoint.getKryo().register(AbilityTryAddAction.class);
         endPoint.getKryo().register(PlayerInitAction.class);
         endPoint.getKryo().register(CreatureMoveTowardsTargetAction.class);
         endPoint.getKryo().register(AbilityRemoveAction.class);

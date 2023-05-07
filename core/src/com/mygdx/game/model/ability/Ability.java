@@ -2,6 +2,7 @@ package com.mygdx.game.model.ability;
 
 import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.creature.Creature;
+import com.mygdx.game.model.creature.Player;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.renderer.config.AbilityAnimationConfig;
 import lombok.Data;
@@ -78,6 +79,13 @@ public abstract class Ability {
             else {
                 getParams().setPos(creature.getParams().getPos());
             }
+
+            if (creature.getCurrentWeapon() != null) {
+                getParams().setWeaponDamage((float) creature.getCurrentWeapon().getDamage());
+            }
+            if (creature instanceof Player) {
+                getParams().setIsPlayerAbility(true);
+            }
         }
     }
 
@@ -107,8 +115,17 @@ public abstract class Ability {
     }
 
     public Float getDamage(CoreGame game) {
-        return getParams().getBaseDamage() * getParams().getDamageMultiplier() * getLevelScaling(game);
+        if (getParams().getIsPlayerAbility() && isWeaponAttack()) {
+            System.out.println("attack damage");
+            return getParams().getWeaponDamage() * getParams().getDamageMultiplier();
+        }
+        else {
+            System.out.println("ability base damage");
+            return getParams().getBaseDamage() * getParams().getDamageMultiplier() * getLevelScaling(game);
+        }
     }
+
+    protected abstract boolean isWeaponAttack();
 
     public Integer getSkillLevel(CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());

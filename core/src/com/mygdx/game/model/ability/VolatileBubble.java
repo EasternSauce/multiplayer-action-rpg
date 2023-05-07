@@ -66,7 +66,7 @@ public class VolatileBubble extends Projectile {
             .chainAnotherAbility(this,
                                  AbilityType.ICE_SPEAR,
                                  getParams().getPos(),
-                                 params.getDirVector().setAngleDeg(baseAngle + 45f),
+                                 params.getDirVector().withSetDegAngle(baseAngle + 45f),
                                  game);
         game
             .getGameState()
@@ -74,7 +74,7 @@ public class VolatileBubble extends Projectile {
             .chainAnotherAbility(this,
                                  AbilityType.ICE_SPEAR,
                                  getParams().getPos(),
-                                 params.getDirVector().setAngleDeg(baseAngle + 90f),
+                                 params.getDirVector().withSetDegAngle(baseAngle + 90f),
                                  game);
         game
             .getGameState()
@@ -82,7 +82,7 @@ public class VolatileBubble extends Projectile {
             .chainAnotherAbility(this,
                                  AbilityType.ICE_SPEAR,
                                  getParams().getPos(),
-                                 params.getDirVector().setAngleDeg(baseAngle + 135f),
+                                 params.getDirVector().withSetDegAngle(baseAngle + 135f),
                                  game);
         game
             .getGameState()
@@ -90,7 +90,7 @@ public class VolatileBubble extends Projectile {
             .chainAnotherAbility(this,
                                  AbilityType.ICE_SPEAR,
                                  getParams().getPos(),
-                                 params.getDirVector().setAngleDeg(baseAngle + 180f),
+                                 params.getDirVector().withSetDegAngle(baseAngle + 180f),
                                  game);
         game
             .getGameState()
@@ -98,7 +98,7 @@ public class VolatileBubble extends Projectile {
             .chainAnotherAbility(this,
                                  AbilityType.ICE_SPEAR,
                                  getParams().getPos(),
-                                 params.getDirVector().setAngleDeg(baseAngle + 225f),
+                                 params.getDirVector().withSetDegAngle(baseAngle + 225f),
                                  game);
         game
             .getGameState()
@@ -106,7 +106,7 @@ public class VolatileBubble extends Projectile {
             .chainAnotherAbility(this,
                                  AbilityType.ICE_SPEAR,
                                  getParams().getPos(),
-                                 params.getDirVector().setAngleDeg(baseAngle + 270f),
+                                 params.getDirVector().withSetDegAngle(baseAngle + 270f),
                                  game);
         game
             .getGameState()
@@ -114,7 +114,7 @@ public class VolatileBubble extends Projectile {
             .chainAnotherAbility(this,
                                  AbilityType.ICE_SPEAR,
                                  getParams().getPos(),
-                                 params.getDirVector().setAngleDeg(baseAngle + 315f),
+                                 params.getDirVector().withSetDegAngle(baseAngle + 315f),
                                  game);
     }
 
@@ -137,5 +137,10 @@ public class VolatileBubble extends Projectile {
     @Override
     public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
 
+    }
+
+    @Override
+    protected boolean isWeaponAttack() {
+        return false;
     }
 }

@@ -52,7 +52,7 @@ public class SummonGhosts extends Ability {
             .chainAnotherAbility(this,
                                  AbilityType.PLAYFUL_GHOST,
                                  getParams().getPos(),
-                                 params.getDirVector().setAngleDeg(baseAngle - 30f),
+                                 params.getDirVector().withSetDegAngle(baseAngle - 30f),
                                  game);
         game
             .getGameState()
@@ -60,7 +60,7 @@ public class SummonGhosts extends Ability {
             .chainAnotherAbility(this,
                                  AbilityType.PLAYFUL_GHOST,
                                  getParams().getPos(),
-                                 params.getDirVector().setAngleDeg(baseAngle + 30f),
+                                 params.getDirVector().withSetDegAngle(baseAngle + 30f),
                                  game);
     }
 
@@ -98,6 +98,11 @@ public class SummonGhosts extends Ability {
 
     @Override
     public boolean usesEntityModel() {
+        return false;
+    }
+
+    @Override
+    protected boolean isWeaponAttack() {
         return false;
     }
 }

@@ -4,7 +4,7 @@ import com.mygdx.game.Constants;
 import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.ability.*;
 import com.mygdx.game.model.action.ability.AbilityActivateAction;
-import com.mygdx.game.model.action.ability.AbilityAddAction;
+import com.mygdx.game.model.action.ability.AbilityTryAddAction;
 import com.mygdx.game.model.action.creature.CreatureHitAction;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
@@ -68,7 +68,7 @@ public class GameStateAbilityAccessor {
         if (creature != null) {
             Ability ability = AbilityFactory.produceAbility(abilityType, abilityParams, game);
 
-            AbilityAddAction action = AbilityAddAction.of(ability);
+            AbilityTryAddAction action = AbilityTryAddAction.of(ability);
 
             gameState.scheduleServerSideAction(action);
         }

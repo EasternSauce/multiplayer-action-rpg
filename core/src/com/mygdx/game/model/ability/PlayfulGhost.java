@@ -4,6 +4,7 @@ import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.Enemy;
 import com.mygdx.game.model.creature.Player;
+import com.mygdx.game.model.util.MathHelper;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.util.RandomHelper;
 import lombok.Data;
@@ -116,45 +117,25 @@ public class PlayfulGhost extends Projectile {
             float targetAngleDeg = vectorTowards.angleDeg();
             float currentAngleDeg = getParams().getDirVector().angleDeg();
 
-            float alpha = targetAngleDeg - currentAngleDeg;
-            float beta = targetAngleDeg - currentAngleDeg + 360;
-            float gamma = targetAngleDeg - currentAngleDeg - 360;
-
-            float result;
-            if (Math.abs(alpha) < Math.abs(beta)) {
-                if (Math.abs(alpha) < Math.abs(gamma)) {
-                    result = alpha;
-                }
-                else {
-                    result = gamma;
-                }
-            }
-            else {
-                if (Math.abs(beta) < Math.abs(gamma)) {
-                    result = beta;
-                }
-                else {
-                    result = gamma;
-                }
-            }
+            float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(currentAngleDeg, targetAngleDeg);
 
             float increment = 1.5f;
 
-            if (result > increment) {
-                getParams().setDirVector(getParams().getDirVector().rotateDeg(increment));
+            if (shortestAngleRotation > increment) {
+                getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(increment));
             }
-            else if (result < -increment) {
-                getParams().setDirVector(getParams().getDirVector().rotateDeg(-increment));
+            else if (shortestAngleRotation < -increment) {
+                getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(-increment));
             }
             else {
-                getParams().setDirVector(getParams().getDirVector().setAngleDeg(targetAngleDeg));
+                getParams().setDirVector(getParams().getDirVector().withSetDegAngle(targetAngleDeg));
             }
 
         }
         else {
             if (getParams().getChangeDirectionTimer().getTime() > 1f) {
                 getParams().getChangeDirectionTimer().restart();
-                getParams().setDirVector(getParams().getDirVector().rotateDeg(nextFloat() * 20f));
+                getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(nextFloat() * 20f));
             }
         }
     }
@@ -189,5 +170,10 @@ public class PlayfulGhost extends Projectile {
     public Float nextFloat() {
         getParams().setAbilityRngSeed(RandomHelper.seededRandomFloat(getParams().getAbilityRngSeed()));
         return (getParams().getAbilityRngSeed() - 0.5f) * 2;
+    }
+
+    @Override
+    protected boolean isWeaponAttack() {
+        return false;
     }
 }

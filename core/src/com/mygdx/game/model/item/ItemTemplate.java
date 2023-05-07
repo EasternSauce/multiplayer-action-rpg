@@ -51,7 +51,7 @@ public class ItemTemplate {
                                                                     .setWorth(350)
                                                                     .setEquipable(true)
                                                                     .setEquipmentSlotType(EquipmentSlotType.PRIMARY_WEAPON)
-                                                                    .setAttackSkill(SkillType.CROSSBOW_SHOT)
+                                                                    .setAttackSkill(SkillType.BOOMERANG)
                                                                     .setDamage(18f),
                                                                 ItemTemplate
                                                                     .of("woodenSword",
@@ -74,7 +74,14 @@ public class ItemTemplate {
                                                                     .of("woodenShield", "Wooden Shield", "-", Vector2Int.of(0, 6))
                                                                     .setWorth(300)
                                                                     .setEquipable(true)
-                                                                    .setEquipmentSlotType(EquipmentSlotType.SECONDARY_WEAPON))
+                                                                    .setEquipmentSlotType(EquipmentSlotType.SECONDARY_WEAPON),
+                                                                ItemTemplate
+                                                                    .of("crossbow", "Crossbow", "-", Vector2Int.of(4, 6))
+                                                                    .setWorth(500)
+                                                                    .setEquipable(true)
+                                                                    .setEquipmentSlotType(EquipmentSlotType.PRIMARY_WEAPON)
+                                                                    .setAttackSkill(SkillType.CROSSBOW_SHOT)
+                                                                    .setDamage(6f))
 
         );
         templates = new ConcurrentSkipListMap<>(list

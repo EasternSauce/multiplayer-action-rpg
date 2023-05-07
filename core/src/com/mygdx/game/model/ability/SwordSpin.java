@@ -30,7 +30,7 @@ public class SwordSpin extends Ability {
             .setIsChannelAnimationLooping(false)
             .setIsActiveAnimationLooping(false)
             .setRotationShift(0f)
-            .setDirVector(abilityParams.getDirVector().rotateDeg(90));
+            .setDirVector(abilityParams.getDirVector().withRotatedDegAngle(90));
         return ability;
     }
 
@@ -108,7 +108,7 @@ public class SwordSpin extends Ability {
     void onActiveUpdate(CoreGame game) {
         updatePosition(game);
 
-        getParams().setDirVector(getParams().getDirVector().rotateDeg(-10));
+        getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(-10));
 
         Set<CreatureId> creaturesHitRemove = new HashSet<>();
 
@@ -139,5 +139,10 @@ public class SwordSpin extends Ability {
     @Override
     public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
 
+    }
+
+    @Override
+    protected boolean isWeaponAttack() {
+        return false;
     }
 }

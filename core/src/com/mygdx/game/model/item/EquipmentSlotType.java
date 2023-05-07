@@ -4,18 +4,33 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 public enum EquipmentSlotType {
-    PRIMARY_WEAPON,
+    PRIMARY_WEAPON(0, "Primary Weapon"),
+    SECONDARY_WEAPON(1, "Secondary Weapon"),
+    HELMET(2, "Helmet"),
+    BODY(3, "Body"),
+    GLOVES(4, "Gloves"),
+    RING(5, "Ring"),
+    BOOTS(6, "Boots"),
+    CONSUMABLE(7, "Consumable");
 
-    SECONDARY_WEAPON,
-    HELMET,
-    BODY,
-    GLOVES,
-    RING,
-    BOOTS,
-    CONSUMABLE;
+    private final int sequenceNumber;
+    private final String name;
+
+    EquipmentSlotType(int sequenceNumber, String name) {
+        this.sequenceNumber = sequenceNumber;
+        this.name = name;
+    }
+
+    public int getSequenceNumber() {
+        return sequenceNumber;
+    }
+
+    public String getName() {
+        return name;
+    }
 
     public static final Map<Integer, String> equipmentSlotNames = new ConcurrentSkipListMap<>();
-    public static final Map<Integer, EquipmentSlotType> equipmentSlots = new ConcurrentSkipListMap<>();
+    public static final Map<Integer, EquipmentSlotType> equipmentSlotSequenceNumbers = new ConcurrentSkipListMap<>();
 
     static {
         equipmentSlotNames.put(0, "Primary Weapon");
@@ -29,13 +44,13 @@ public enum EquipmentSlotType {
     }
 
     static {
-        equipmentSlots.put(0, PRIMARY_WEAPON);
-        equipmentSlots.put(1, SECONDARY_WEAPON);
-        equipmentSlots.put(2, HELMET);
-        equipmentSlots.put(3, BODY);
-        equipmentSlots.put(4, GLOVES);
-        equipmentSlots.put(5, RING);
-        equipmentSlots.put(6, BOOTS);
-        equipmentSlots.put(7, CONSUMABLE);
+        equipmentSlotSequenceNumbers.put(0, PRIMARY_WEAPON);
+        equipmentSlotSequenceNumbers.put(1, SECONDARY_WEAPON);
+        equipmentSlotSequenceNumbers.put(2, HELMET);
+        equipmentSlotSequenceNumbers.put(3, BODY);
+        equipmentSlotSequenceNumbers.put(4, GLOVES);
+        equipmentSlotSequenceNumbers.put(5, RING);
+        equipmentSlotSequenceNumbers.put(6, BOOTS);
+        equipmentSlotSequenceNumbers.put(7, CONSUMABLE);
     }
 }

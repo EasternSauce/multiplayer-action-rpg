@@ -5,6 +5,8 @@ import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityState;
 import com.mygdx.game.model.creature.effect.CreatureEffect;
 import com.mygdx.game.model.creature.effect.CreatureEffectState;
+import com.mygdx.game.model.item.EquipmentSlotType;
+import com.mygdx.game.model.item.Item;
 import com.mygdx.game.model.skill.Skill;
 import com.mygdx.game.model.skill.SkillType;
 import com.mygdx.game.model.util.Vector2;
@@ -313,5 +315,9 @@ public abstract class Creature {
         else {
             getParams().setLife(lifeAfterOnKillRecovery);
         }
+    }
+
+    public Item getCurrentWeapon() {
+        return getParams().getEquipmentItems().get(EquipmentSlotType.PRIMARY_WEAPON.getSequenceNumber());
     }
 }

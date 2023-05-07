@@ -81,4 +81,9 @@ public class CrossbowBolt extends Projectile {
     public Float getStunDuration() {
         return 0.25f;
     }
+
+    @Override
+    protected boolean isWeaponAttack() {
+        return true;
+    }
 }

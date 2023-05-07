@@ -21,12 +21,12 @@ public class Vector2 {
         return angle;
     }
 
-    public Vector2 setAngleDeg(float degrees) {
+    public Vector2 withSetDegAngle(float degrees) {
         return setAngleRad(degrees * (float) PI / 180);
     }
 
-    public Vector2 rotateDeg(float degrees) {
-        return setAngleDeg(angleDeg() + degrees);
+    public Vector2 withRotatedDegAngle(float degrees) {
+        return withSetDegAngle(angleDeg() + degrees);
     }
 
     public Vector2 setAngleRad(float radians) {

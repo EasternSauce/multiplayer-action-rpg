@@ -58,7 +58,7 @@ public class GameEntityManager {
             if (!gameEntityPhysics.getAbilityBodies().containsKey(abilityId)) {
                 AbilityBody abilityBody = AbilityBody.of(abilityId);
                 if (ability.getParams().getState() == AbilityState.ACTIVE) {
-                    abilityBody.init(ability.getParams().getIsSkipCreatingBody(), game);
+                    abilityBody.activate(ability.getParams().getIsSkipCreatingBody(), game);
                 }
                 gameEntityPhysics.getAbilityBodies().put(abilityId, abilityBody);
             }
@@ -73,7 +73,7 @@ public class GameEntityManager {
             gameEntityPhysics
                 .getAbilityBodies()
                 .get(ability.getParams().getId())
-                .init(ability.getParams().getIsSkipCreatingBody(), game);
+                .activate(ability.getParams().getIsSkipCreatingBody(), game);
         }
     }
 
@@ -108,9 +108,7 @@ public class GameEntityManager {
     }
 
     public void removeAbilityEntity(AbilityId abilityId, CoreGame game) {
-
         if (abilityId != null) {
-
             game.getGameState().accessAbilities().getAbilities().remove(abilityId);
 
             getGameEntityRenderer().getAbilityRenderers().remove(abilityId);

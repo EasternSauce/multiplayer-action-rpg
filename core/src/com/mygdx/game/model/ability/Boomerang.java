@@ -4,6 +4,7 @@ package com.mygdx.game.model.ability;
 import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.skill.Skill;
+import com.mygdx.game.model.util.MathHelper;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,7 +14,6 @@ import lombok.NoArgsConstructor;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class Boomerang extends Projectile {
-
     AbilityParams params;
 
     public static Boomerang of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
@@ -93,42 +93,21 @@ public class Boomerang extends Projectile {
                 getParams().setSpeed(20f);
             }
 
-            // TODO: duplicate code
 
             if (getParams().getIsComingBack()) {
                 Vector2 vectorTowards = getParams().getPos().vectorTowards(creature.getParams().getPos());
                 float targetAngleDeg = vectorTowards.angleDeg();
                 float currentAngleDeg = getParams().getDirVector().angleDeg();
 
-                float alpha = targetAngleDeg - currentAngleDeg;
-                float beta = targetAngleDeg - currentAngleDeg + 360;
-                float gamma = targetAngleDeg - currentAngleDeg - 360;
-
-                float result;
-                if (Math.abs(alpha) < Math.abs(beta)) {
-                    if (Math.abs(alpha) < Math.abs(gamma)) {
-                        result = alpha;
-                    }
-                    else {
-                        result = gamma;
-                    }
-                }
-                else {
-                    if (Math.abs(beta) < Math.abs(gamma)) {
-                        result = beta;
-                    }
-                    else {
-                        result = gamma;
-                    }
-                }
+                float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(currentAngleDeg, targetAngleDeg);
 
                 float increment = 10f;
 
-                if (result > increment || result < -increment) {
-                    getParams().setDirVector(getParams().getDirVector().rotateDeg(increment));
+                if (shortestAngleRotation > increment || shortestAngleRotation < -increment) {
+                    getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(increment));
                 }
                 else {
-                    getParams().setDirVector(getParams().getDirVector().setAngleDeg(targetAngleDeg));
+                    getParams().setDirVector(getParams().getDirVector().withSetDegAngle(targetAngleDeg));
                 }
             }
 
@@ -145,5 +124,10 @@ public class Boomerang extends Projectile {
     @Override
     public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
 
+    }
+
+    @Override
+    protected boolean isWeaponAttack() {
+        return true;
     }
 }

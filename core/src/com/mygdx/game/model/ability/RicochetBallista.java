@@ -43,8 +43,12 @@ public class RicochetBallista extends Ability {
     @Override
     void onAbilityCompleted(CoreGame game) {
 
-        Vector2 leftSidePos = getParams().getPos().add(params.getDirVector().normalized().multiplyBy(1.5f).rotateDeg(90));
-        Vector2 rightSidePos = getParams().getPos().add(params.getDirVector().normalized().multiplyBy(1.5f).rotateDeg(-90));
+        Vector2 leftSidePos = getParams()
+            .getPos()
+            .add(params.getDirVector().normalized().multiplyBy(1.5f).withRotatedDegAngle(90));
+        Vector2 rightSidePos = getParams()
+            .getPos()
+            .add(params.getDirVector().normalized().multiplyBy(1.5f).withRotatedDegAngle(-90));
 
         game
             .getGameState()
@@ -93,6 +97,11 @@ public class RicochetBallista extends Ability {
 
     @Override
     public boolean usesEntityModel() {
+        return false;
+    }
+
+    @Override
+    protected boolean isWeaponAttack() {
         return false;
     }
 }

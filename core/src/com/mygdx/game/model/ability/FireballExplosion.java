@@ -85,4 +85,8 @@ public class FireballExplosion extends Ability {
 
     }
 
+    @Override
+    protected boolean isWeaponAttack() {
+        return false;
+    }
 }

@@ -110,4 +110,9 @@ public class Fireball extends Projectile {
         scalings.put(3, 1.2f);
         return scalings;
     }
+
+    @Override
+    protected boolean isWeaponAttack() {
+        return false;
+    }
 }

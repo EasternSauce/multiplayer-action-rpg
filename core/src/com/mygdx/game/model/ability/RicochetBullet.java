@@ -126,7 +126,7 @@ public class RicochetBullet extends Projectile {
             }
         }
 
-        params.setDirVector(params.getDirVector().setAngleDeg(reflectAngle));
+        params.setDirVector(params.getDirVector().withSetDegAngle(reflectAngle));
 
     }
 
@@ -135,5 +135,8 @@ public class RicochetBullet extends Projectile {
 
     }
 
-
+    @Override
+    protected boolean isWeaponAttack() {
+        return false;
+    }
 }

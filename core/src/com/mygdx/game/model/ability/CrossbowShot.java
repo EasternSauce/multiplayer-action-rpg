@@ -2,6 +2,7 @@ package com.mygdx.game.model.ability;
 
 import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.creature.Creature;
+import com.mygdx.game.model.util.MathHelper;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -63,12 +64,12 @@ public class CrossbowShot extends Ability {
             1.2f,
             1.4f};
 
-        Vector2 dirVector;
+        Vector2 currentDirVector;
         if (previousDirVector != null) {
-            dirVector = previousDirVector;
+            currentDirVector = previousDirVector;
         }
         else {
-            dirVector = getParams().getDirVector();
+            currentDirVector = getParams().getDirVector();
         }
 
         Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
@@ -77,19 +78,26 @@ public class CrossbowShot extends Ability {
             getParams().getStateTimer().getTime() > boltFireTimes[currentBoltToFire]) {
             Vector2 aimDirection = creature.getParams().getAimDirection();
 
-            Vector2 chainedDirVector;
 
-            float followAngle = 20f;
+            float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(currentDirVector.angleDeg(),
+                                                                                  aimDirection.angleDeg());
 
-            if (aimDirection.angleDeg() < dirVector.angleDeg() - followAngle) {
-                chainedDirVector = dirVector.rotateDeg(-followAngle);
+            float turningSpeed = 1.5f;
+            float increment;
+            if (currentBoltToFire < 2) {
+                increment = 20f * turningSpeed;
             }
-            else if (aimDirection.angleDeg() > dirVector.angleDeg() + followAngle) {
-                chainedDirVector = dirVector.rotateDeg(followAngle);
+            else if (currentBoltToFire == 2) {
+                increment = 30f * turningSpeed;
             }
             else {
-                chainedDirVector = aimDirection.copy();
+                increment = 10f * turningSpeed;
             }
+
+            Vector2 chainedDirVector = calculateShootingVectorForNextBolt(currentDirVector,
+                                                                          aimDirection,
+                                                                          shortestAngleRotation,
+                                                                          increment);
 
             game
                 .getGameState()
@@ -97,11 +105,27 @@ public class CrossbowShot extends Ability {
                 .chainAnotherAbility(this, AbilityType.CROSSBOW_BOLT, null, chainedDirVector, game);
 
             currentBoltToFire += 1;
-            previousDirVector = dirVector.copy();
+            previousDirVector = chainedDirVector.copy();
         }
 
         if (currentBoltToFire >= boltFireTimes.length) {
             deactivate();
+        }
+    }
+
+    private static Vector2 calculateShootingVectorForNextBolt(Vector2 currentDirVector, Vector2 aimDirection,
+                                                              float shortestAngleRotation, float increment) {
+        if (shortestAngleRotation < -60f || shortestAngleRotation > 60f) {
+            return currentDirVector.copy();
+        }
+        else if (shortestAngleRotation > increment) {
+            return currentDirVector.withRotatedDegAngle(increment);
+        }
+        else if (shortestAngleRotation < -increment) {
+            return currentDirVector.withRotatedDegAngle(-increment);
+        }
+        else {
+            return currentDirVector.withSetDegAngle(aimDirection.angleDeg());
         }
     }
 
@@ -128,5 +152,10 @@ public class CrossbowShot extends Ability {
     @Override
     public boolean usesEntityModel() {
         return false;
+    }
+
+    @Override
+    protected boolean isWeaponAttack() {
+        return true;
     }
 }

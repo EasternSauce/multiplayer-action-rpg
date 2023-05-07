@@ -133,4 +133,9 @@ public class SummonShield extends Ability {
             }
         }
     }
+
+    @Override
+    protected boolean isWeaponAttack() {
+        return false;
+    }
 }

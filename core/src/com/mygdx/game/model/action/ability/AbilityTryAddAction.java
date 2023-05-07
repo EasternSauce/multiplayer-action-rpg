@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class AbilityAddAction extends GameStateAction {
+public class AbilityTryAddAction extends GameStateAction {
     private Ability ability;
 
     @Override
@@ -43,8 +43,8 @@ public class AbilityAddAction extends GameStateAction {
         creature.onAbilityPerformed(ability);
     }
 
-    public static AbilityAddAction of(Ability ability) {
-        AbilityAddAction action = AbilityAddAction.of();
+    public static AbilityTryAddAction of(Ability ability) {
+        AbilityTryAddAction action = AbilityTryAddAction.of();
         action.ability = ability;
         return action;
     }

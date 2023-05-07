@@ -37,8 +37,8 @@ public class InventoryAndEquipmentSwapSlotsAction extends GameStateAction {
         Item inventoryItem = player.getParams().getInventoryItems().get(inventoryIndex);
         Item equipmentItem = player.getParams().getEquipmentItems().get(equipmentIndex);
 
-        if (inventoryItem == null ||
-            inventoryItem.getTemplate().getEquipmentSlotType() == EquipmentSlotType.equipmentSlots.get(equipmentIndex)) {
+        if (inventoryItem == null || inventoryItem.getTemplate().getEquipmentSlotType() ==
+                                     EquipmentSlotType.equipmentSlotSequenceNumbers.get(equipmentIndex)) {
             if (equipmentItem != null) {
                 player.getParams().getInventoryItems().put(inventoryIndex, equipmentItem);
             }

@@ -113,4 +113,9 @@ public class LightningChain extends Ability {
     public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
 
     }
+
+    @Override
+    protected boolean isWeaponAttack() {
+        return false;
+    }
 }

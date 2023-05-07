@@ -79,5 +79,10 @@ public class IceSpear extends Projectile {
     public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
 
     }
+
+    @Override
+    protected boolean isWeaponAttack() {
+        return false;
+    }
 }
 

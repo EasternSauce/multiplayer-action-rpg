@@ -42,8 +42,10 @@ public class ConnectScreen implements Screen {
         timer.update(delta);
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
-            game.initializePlayer(messageHolder.getCurrentMessage());
-            game.goToGamePlayScreen();
+            if (isNameValid(messageHolder.getCurrentMessage())) {
+                game.initializePlayer(messageHolder.getCurrentMessage());
+                game.goToGamePlayScreen();
+            }
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)) {
@@ -99,6 +101,10 @@ public class ConnectScreen implements Screen {
                                 Color.BLACK);
 
         spriteBatch.end();
+    }
+
+    private boolean isNameValid(String currentMessage) {
+        return !currentMessage.isEmpty();
     }
 
     @Override

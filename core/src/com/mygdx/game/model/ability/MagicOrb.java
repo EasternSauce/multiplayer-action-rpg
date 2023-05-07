@@ -4,6 +4,7 @@ import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.Enemy;
 import com.mygdx.game.model.creature.Player;
+import com.mygdx.game.model.util.MathHelper;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -128,27 +129,7 @@ public class MagicOrb extends Projectile {
             float targetAngleDeg = vectorTowards.angleDeg();
             float currentAngleDeg = getParams().getDirVector().angleDeg();
 
-            float alpha = targetAngleDeg - currentAngleDeg;
-            float beta = targetAngleDeg - currentAngleDeg + 360;
-            float gamma = targetAngleDeg - currentAngleDeg - 360;
-
-            float result;
-            if (Math.abs(alpha) < Math.abs(beta)) {
-                if (Math.abs(alpha) < Math.abs(gamma)) {
-                    result = alpha;
-                }
-                else {
-                    result = gamma;
-                }
-            }
-            else {
-                if (Math.abs(beta) < Math.abs(gamma)) {
-                    result = beta;
-                }
-                else {
-                    result = gamma;
-                }
-            }
+            float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(currentAngleDeg, targetAngleDeg);
 
             float increment = 1.5f;
 
@@ -159,14 +140,14 @@ public class MagicOrb extends Projectile {
                 increment = 0f;
             }
 
-            if (result > increment) {
-                getParams().setDirVector(getParams().getDirVector().rotateDeg(increment));
+            if (shortestAngleRotation > increment) {
+                getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(increment));
             }
-            else if (result < -increment) {
-                getParams().setDirVector(getParams().getDirVector().rotateDeg(-increment));
+            else if (shortestAngleRotation < -increment) {
+                getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(-increment));
             }
             else {
-                getParams().setDirVector(getParams().getDirVector().setAngleDeg(targetAngleDeg));
+                getParams().setDirVector(getParams().getDirVector().withSetDegAngle(targetAngleDeg));
             }
 
         }
@@ -176,5 +157,10 @@ public class MagicOrb extends Projectile {
     @Override
     public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
 
+    }
+
+    @Override
+    protected boolean isWeaponAttack() {
+        return false;
     }
 }

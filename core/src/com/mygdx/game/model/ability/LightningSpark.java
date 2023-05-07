@@ -158,4 +158,9 @@ public class LightningSpark extends Ability {
         scalings.put(3, 1.2f);
         return scalings;
     }
+
+    @Override
+    protected boolean isWeaponAttack() {
+        return false;
+    }
 }

@@ -40,7 +40,10 @@ public class AbilityParams {
     Float speed;
 
     Float baseDamage;
+    Float weaponDamage;
     Float damageMultiplier = 1.0f;
+
+    Boolean isPlayerAbility = false;
 
     Float channelTime;
     Float activeTime;
