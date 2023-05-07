@@ -15,6 +15,7 @@ import com.mygdx.game.game.screen.GameplayScreen;
 import com.mygdx.game.game.screen.MenuScreen;
 import com.mygdx.game.model.ability.AbilityId;
 import com.mygdx.game.model.area.AreaId;
+import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.util.TeleportEvent;
 import com.mygdx.game.model.util.Vector2;
@@ -181,4 +182,6 @@ public abstract class CoreGame extends Game {
     public abstract void setChatInputProcessor();
 
     public abstract void renderServerRunningMessage(RenderingLayer renderingLayer);
+
+    public abstract boolean shouldPathfindingBeCalculatedForCreature(Creature creature);
 }

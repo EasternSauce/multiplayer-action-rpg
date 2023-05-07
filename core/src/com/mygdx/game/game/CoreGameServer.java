@@ -287,6 +287,11 @@ public class CoreGameServer extends CoreGame {
     }
 
     @Override
+    public boolean shouldPathfindingBeCalculatedForCreature(Creature creature) {
+        return true; // always calculate this server side regardless of current area
+    }
+
+    @Override
     public void setConnectScreenInputProcessor(ConnectScreenMessageHolder messageHolder) {
 
     }

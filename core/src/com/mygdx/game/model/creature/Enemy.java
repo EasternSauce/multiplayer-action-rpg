@@ -211,10 +211,9 @@ public class Enemy extends Creature {
     }
 
     private void processPathfinding(CoreGame game) {
-        boolean condition =
-            getParams().getAreaId().equals(game.getGameState().getCurrentAreaId()) && getParams().getTargetCreatureId() != null &&
-            (getParams().getForcePathCalculation() ||
-             getParams().getPathCalculationCooldownTimer().getTime() > getParams().getPathCalculationCooldown());
+        boolean condition = game.shouldPathfindingBeCalculatedForCreature(this) && getParams().getTargetCreatureId() != null &&
+                            (getParams().getForcePathCalculation() ||
+                             getParams().getPathCalculationCooldownTimer().getTime() > getParams().getPathCalculationCooldown());
 
         if (condition) {
             Creature target = game.getGameState().accessCreatures().getCreature(getParams().getTargetCreatureId());
@@ -234,6 +233,9 @@ public class Enemy extends Creature {
                                                         getParams().getPos(),
                                                         target.getParams().getPos(),
                                                         this.capability());
+
+                    System.out.println("result is " + result);
+
                     path = result.getPath();
 
                     this.getParams().setIsPathMirrored(false);

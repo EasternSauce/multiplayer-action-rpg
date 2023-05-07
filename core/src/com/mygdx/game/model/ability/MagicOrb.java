@@ -143,10 +143,7 @@ public class MagicOrb extends Projectile {
             float increment = baseIncrement * delta;
 
             if (shortestAngleRotation > increment) {
-                getParams().setDirVector(getParams()
-                                             .getDirVector()
-                                             .withRotatedDegAngle(increment)); // TODO: change this to be updated based on
-                // delta time
+                getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(increment));
             }
             else if (shortestAngleRotation < -increment) {
                 getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(-increment));

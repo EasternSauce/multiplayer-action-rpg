@@ -105,10 +105,7 @@ public class Boomerang extends Projectile {
                 float increment = incrementFactor * delta;
 
                 if (shortestAngleRotation > increment || shortestAngleRotation < -increment) {
-                    getParams().setDirVector(getParams()
-                                                 .getDirVector()
-                                                 .withRotatedDegAngle(increment));  // TODO: change this to be updated based on
-                    // delta time
+                    getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(increment));
                 }
                 else {
                     getParams().setDirVector(getParams().getDirVector().withSetDegAngle(targetAngleDeg));

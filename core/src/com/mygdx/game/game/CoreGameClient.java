@@ -423,6 +423,11 @@ public class CoreGameClient extends CoreGame {
     }
 
     @Override
+    public boolean shouldPathfindingBeCalculatedForCreature(Creature creature) {
+        return creature.getParams().getAreaId().equals(getGameState().getCurrentAreaId());
+    }
+
+    @Override
     public void setConnectScreenInputProcessor(ConnectScreenMessageHolder messageHolder) {
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
