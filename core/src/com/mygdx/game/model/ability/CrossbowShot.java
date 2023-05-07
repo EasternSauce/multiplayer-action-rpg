@@ -56,7 +56,7 @@ public class CrossbowShot extends Ability {
     }
 
     @Override
-    void onActiveUpdate(CoreGame game) {
+    void onActiveUpdate(float delta, CoreGame game) {
         float[] boltFireTimes = {
             0f,
             0.4f,
@@ -83,16 +83,18 @@ public class CrossbowShot extends Ability {
                                                                                   aimDirection.angleDeg());
 
             float turningSpeed = 1.5f;
-            float increment;
+            float incrementFactor = 330f;
+            float baseIncrement;
             if (currentBoltToFire < 2) {
-                increment = 20f * turningSpeed;
+                baseIncrement = incrementFactor * 2f * turningSpeed;
             }
             else if (currentBoltToFire == 2) {
-                increment = 30f * turningSpeed;
+                baseIncrement = incrementFactor * 3f * turningSpeed;
             }
             else {
-                increment = 10f * turningSpeed;
+                baseIncrement = incrementFactor * turningSpeed;
             }
+            float increment = baseIncrement * delta;
 
             Vector2 chainedDirVector = calculateShootingVectorForNextBolt(currentDirVector,
                                                                           aimDirection,
@@ -115,7 +117,8 @@ public class CrossbowShot extends Ability {
 
     private static Vector2 calculateShootingVectorForNextBolt(Vector2 currentDirVector, Vector2 aimDirection,
                                                               float shortestAngleRotation, float increment) {
-        if (shortestAngleRotation < -60f || shortestAngleRotation > 60f) {
+        float aimDirectionMaximumAngle = 60;
+        if (shortestAngleRotation < -aimDirectionMaximumAngle || shortestAngleRotation > aimDirectionMaximumAngle) {
             return currentDirVector.copy();
         }
         else if (shortestAngleRotation > increment) {

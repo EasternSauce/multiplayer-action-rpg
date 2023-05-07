@@ -90,7 +90,7 @@ public class LightningChain extends Ability {
     }
 
     @Override
-    void onActiveUpdate(CoreGame game) {
+    void onActiveUpdate(float delta, CoreGame game) {
 
     }
 

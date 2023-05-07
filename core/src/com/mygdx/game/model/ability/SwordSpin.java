@@ -105,7 +105,7 @@ public class SwordSpin extends Ability {
     }
 
     @Override
-    void onActiveUpdate(CoreGame game) {
+    void onActiveUpdate(float delta, CoreGame game) {
         updatePosition(game);
 
         getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(-10));

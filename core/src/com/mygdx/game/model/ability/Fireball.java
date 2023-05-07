@@ -53,7 +53,7 @@ public class Fireball extends Projectile {
     }
 
     @Override
-    protected void onActiveUpdate(CoreGame game) {
+    protected void onActiveUpdate(float delta, CoreGame game) {
         //projectile speeds up over time
         if (getParams().getSpeed() != null) {
             getParams().setVelocity(getParams().getDirVector().normalized().multiplyBy(getParams().getSpeed()));

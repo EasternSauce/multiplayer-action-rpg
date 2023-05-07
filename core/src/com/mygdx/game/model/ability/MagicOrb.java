@@ -94,14 +94,14 @@ public class MagicOrb extends Projectile {
     }
 
     @Override
-    void onActiveUpdate(CoreGame game) {
+    void onActiveUpdate(float delta, CoreGame game) {
         if (getParams().getSpeed() != null) {
             getParams().setVelocity(getParams().getDirVector().normalized().multiplyBy(getParams().getSpeed()));
         }
         getParams().setRotationAngle(getParams().getDirVector().angleDeg());
 
-        Creature minCreature = null;
-        float minDistance = Float.MAX_VALUE;
+        Creature minumumDistanceCreature = null;
+        float minimumDistance = Float.MAX_VALUE;
 
         Creature thisCreature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
 
@@ -117,31 +117,36 @@ public class MagicOrb extends Projectile {
                         isTargetingAllowed(thisCreature, targetCreature) &&
                         targetCreature.getParams().getPos().distance(getParams().getPos()) < 20f)
             .collect(Collectors.toSet())) {
-            if (creature.getParams().getPos().distance(getParams().getPos()) < minDistance) {
-                minCreature = creature;
-                minDistance = creature.getParams().getPos().distance(getParams().getPos());
+            if (creature.getParams().getPos().distance(getParams().getPos()) < minimumDistance) {
+                minumumDistanceCreature = creature;
+                minimumDistance = creature.getParams().getPos().distance(getParams().getPos());
             }
         }
 
-
-        if (minCreature != null) {
-            Vector2 vectorTowards = getParams().getPos().vectorTowards(minCreature.getParams().getPos());
+        if (minumumDistanceCreature != null) {
+            Vector2 vectorTowards = getParams().getPos().vectorTowards(minumumDistanceCreature.getParams().getPos());
             float targetAngleDeg = vectorTowards.angleDeg();
             float currentAngleDeg = getParams().getDirVector().angleDeg();
 
             float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(currentAngleDeg, targetAngleDeg);
 
-            float increment = 1.5f;
+            float incrementFactor = 50f;
+            float baseIncrement = incrementFactor;
 
             if (getParams().getStateTimer().getTime() > 0.5f && getParams().getStateTimer().getTime() < 2f) {
-                increment = 1.5f - (getParams().getStateTimer().getTime() - 0.5f) / 1.5f * 1.5f;
+                baseIncrement = incrementFactor - (getParams().getStateTimer().getTime() - 0.5f) / 1.5f * incrementFactor;
             }
             else if (getParams().getStateTimer().getTime() >= 2f) {
-                increment = 0f;
+                baseIncrement = 0f;
             }
 
+            float increment = baseIncrement * delta;
+
             if (shortestAngleRotation > increment) {
-                getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(increment));
+                getParams().setDirVector(getParams()
+                                             .getDirVector()
+                                             .withRotatedDegAngle(increment)); // TODO: change this to be updated based on
+                // delta time
             }
             else if (shortestAngleRotation < -increment) {
                 getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(-increment));

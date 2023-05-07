@@ -18,7 +18,7 @@ public abstract class Projectile extends Ability {
     }
 
     @Override
-    void onActiveUpdate(CoreGame game) {
+    void onActiveUpdate(float delta, CoreGame game) {
         if (getParams().getSpeed() != null) {
             getParams().setVelocity(getParams().getDirVector().normalized().multiplyBy(getParams().getSpeed()));
         }

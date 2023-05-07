@@ -78,7 +78,7 @@ public class PlayfulGhost extends Projectile {
     }
 
     @Override
-    void onActiveUpdate(CoreGame game) {
+    void onActiveUpdate(float delta, CoreGame game) {
         if (getParams().getSpeed() != null) {
             getParams().setVelocity(getParams().getDirVector().normalized().multiplyBy(getParams().getSpeed()));
         }
@@ -119,10 +119,14 @@ public class PlayfulGhost extends Projectile {
 
             float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(currentAngleDeg, targetAngleDeg);
 
-            float increment = 1.5f;
+            float incrementFactor = 50f;
+            float increment = incrementFactor * delta;
 
             if (shortestAngleRotation > increment) {
-                getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(increment));
+                getParams().setDirVector(getParams()
+                                             .getDirVector()
+                                             .withRotatedDegAngle(increment));  // TODO: change this to be updated based on
+                // delta time
             }
             else if (shortestAngleRotation < -increment) {
                 getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(-increment));

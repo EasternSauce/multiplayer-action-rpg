@@ -34,7 +34,7 @@ public abstract class Ability {
             }
         }
         else if (state == AbilityState.ACTIVE) {
-            onActiveUpdate(game);
+            onActiveUpdate(delta, game);
 
             if (!getParams().getDelayedActionCompleted() && getParams().getDelayedActionTime() != null &&
                 getParams().getStateTimer().getTime() > getParams().getDelayedActionTime()) {
@@ -63,7 +63,7 @@ public abstract class Ability {
 
     abstract void onChannelUpdate(CoreGame game);
 
-    abstract void onActiveUpdate(CoreGame game);
+    abstract void onActiveUpdate(float delta, CoreGame game);
 
     public void init(CoreGame game) {
 
