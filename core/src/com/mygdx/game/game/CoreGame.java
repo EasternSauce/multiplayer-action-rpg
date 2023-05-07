@@ -22,6 +22,7 @@ import com.mygdx.game.physics.body.AbilityBody;
 import com.mygdx.game.physics.body.CreatureBody;
 import com.mygdx.game.physics.event.PhysicsEvent;
 import com.mygdx.game.physics.world.PhysicsWorld;
+import com.mygdx.game.renderer.RenderingLayer;
 import lombok.Getter;
 
 import java.io.IOException;
@@ -63,7 +64,7 @@ public abstract class CoreGame extends Game {
         return true;
     }
 
-    public boolean isRenderingAllowed() {
+    public boolean isGameplayRenderingAllowed() {
         return true;
     }
 
@@ -93,60 +94,64 @@ public abstract class CoreGame extends Game {
     public abstract Set<AbilityId> getAbilitiesToUpdate();
 
     public PhysicsWorld getPhysicsWorld(AreaId areaId) {
-        return entityManager.getGamePhysics().getPhysicsWorlds().get(areaId);
+        return entityManager.getGameEntityPhysics().getPhysicsWorlds().get(areaId);
     }
 
     abstract public void performPhysicsWorldStep();
 
 
     public boolean isLineOfSight(AreaId areaId, Vector2 fromPos, Vector2 toPos) {
-        return entityManager.getGamePhysics().getPhysicsWorlds().get(areaId).isLineOfSight(fromPos, toPos);
+        return entityManager.getGameEntityPhysics().getPhysicsWorlds().get(areaId).isLineOfSight(fromPos, toPos);
     }
 
 
     public void updateCameraPositions() {
-        entityManager.getGameRenderer().getViewportsHandler().updateCameraPositions(this);
+        entityManager.getGameEntityRenderer().getViewportsHandler().updateCameraPositions(this);
     }
 
 
     public void renderB2BodyDebug() {
         if (isDebugEnabled()) {
             entityManager
-                .getGamePhysics()
+                .getGameEntityPhysics()
                 .getDebugRenderer()
-                .render(entityManager.getGamePhysics().getPhysicsWorlds().get(getGameState().getCurrentAreaId()).getB2world(),
-                        entityManager.getGameRenderer().getViewportsHandler().getWorldCameraCombinedProjectionMatrix());
+                .render(entityManager
+                            .getGameEntityPhysics()
+                            .getPhysicsWorlds()
+                            .get(getGameState().getCurrentAreaId())
+                            .getB2world(),
+                        entityManager.getGameEntityRenderer().getViewportsHandler().getWorldCameraCombinedProjectionMatrix());
         }
     }
 
 
     public List<PhysicsEvent> getPhysicsEventQueue() {
-        return entityManager.getGamePhysics().getPhysicsEventQueue();
+        return entityManager.getGameEntityPhysics().getPhysicsEventQueue();
     }
 
 
     public Map<CreatureId, CreatureBody> getCreatureBodies() {
-        return entityManager.getGamePhysics().getCreatureBodies();
+        return entityManager.getGameEntityPhysics().getCreatureBodies();
     }
 
 
     public Map<AbilityId, AbilityBody> getAbilityBodies() {
-        return entityManager.getGamePhysics().getAbilityBodies();
+        return entityManager.getGameEntityPhysics().getAbilityBodies();
     }
 
 
     public boolean isForceUpdateBodyPositions() {
-        return entityManager.getGamePhysics().getIsForceUpdateBodyPositions();
+        return entityManager.getGameEntityPhysics().getIsForceUpdateBodyPositions();
     }
 
 
     public void setForceUpdateBodyPositions(boolean value) {
-        entityManager.getGamePhysics().setIsForceUpdateBodyPositions(value);
+        entityManager.getGameEntityPhysics().setIsForceUpdateBodyPositions(value);
     }
 
     public Vector2 mousePosRelativeToCenter() { // relative to center of screen, in in-game length units
         Vector3 screenCoords = new Vector3((float) Gdx.input.getX(), (float) Gdx.input.getY(), 0f);
-        entityManager.getGameRenderer().getViewportsHandler().unprojectHudCamera(screenCoords);
+        entityManager.getGameEntityRenderer().getViewportsHandler().unprojectHudCamera(screenCoords);
         Vector2 mousePos = Vector2.of(screenCoords.x - Constants.WINDOW_WIDTH / 2f,
                                       screenCoords.y - Constants.WINDOW_HEIGHT / 2f);
 
@@ -159,7 +164,7 @@ public abstract class CoreGame extends Game {
 
     public Vector2 hudMousePos() {
         Vector3 screenCoords = new Vector3((float) Gdx.input.getX(), (float) Gdx.input.getY(), 0f);
-        entityManager.getGameRenderer().getViewportsHandler().unprojectHudCamera(screenCoords);
+        entityManager.getGameEntityRenderer().getViewportsHandler().unprojectHudCamera(screenCoords);
         return Vector2.of(screenCoords.x, screenCoords.y);
     }
 
@@ -174,4 +179,6 @@ public abstract class CoreGame extends Game {
     public abstract void setConnectScreenInputProcessor(ConnectScreenMessageHolder messageHolder);
 
     public abstract void setChatInputProcessor();
+
+    public abstract void renderServerRunningMessage(RenderingLayer renderingLayer);
 }

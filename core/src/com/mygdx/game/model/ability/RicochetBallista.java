@@ -92,7 +92,7 @@ public class RicochetBallista extends Ability {
     }
 
     @Override
-    public boolean usesModel() {
+    public boolean usesEntityModel() {
         return false;
     }
 }

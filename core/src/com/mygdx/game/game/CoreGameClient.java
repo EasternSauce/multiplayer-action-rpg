@@ -28,6 +28,7 @@ import com.mygdx.game.model.skill.SkillType;
 import com.mygdx.game.model.util.GameStateBroadcast;
 import com.mygdx.game.model.util.PlayerParams;
 import com.mygdx.game.model.util.Vector2;
+import com.mygdx.game.renderer.RenderingLayer;
 import com.mygdx.game.renderer.util.SkillMenuHelper;
 import com.mygdx.game.util.EndPointHelper;
 import com.mygdx.game.util.InventoryHelper;
@@ -328,7 +329,7 @@ public class CoreGameClient extends CoreGame {
                     gameState.createEventsFromReceivedGameStateData(action.getGameStateData(), getEventProcessor());
                     gameState.setNewGameState(action.getGameStateData());
 
-                    getEntityManager().getGamePhysics().setIsForceUpdateBodyPositions(true);
+                    getEntityManager().getGameEntityPhysics().setIsForceUpdateBodyPositions(true);
 
                 }
                 else if (object instanceof ChatMessageSendCommand) {
@@ -379,7 +380,7 @@ public class CoreGameClient extends CoreGame {
 
     @Override
     public void performPhysicsWorldStep() {
-        getEntityManager().getGamePhysics().getPhysicsWorlds().get(getGameState().getCurrentAreaId()).step();
+        getEntityManager().getGameEntityPhysics().getPhysicsWorlds().get(getGameState().getCurrentAreaId()).step();
 
     }
 
@@ -408,6 +409,11 @@ public class CoreGameClient extends CoreGame {
                 return character == ' ' || !(Character.isWhitespace(character));
             }
         });
+
+    }
+
+    @Override
+    public void renderServerRunningMessage(RenderingLayer renderingLayer) {
 
     }
 

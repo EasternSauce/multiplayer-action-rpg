@@ -17,7 +17,7 @@ import java.util.Locale;
 
 public class HudRendererHelper {
     public static void renderHud(CoreGame game) {
-        RenderingLayer renderingLayer = game.getEntityManager().getGameRenderer().getHudRenderingLayer();
+        RenderingLayer renderingLayer = game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer();
 
         renderingLayer.begin();
 

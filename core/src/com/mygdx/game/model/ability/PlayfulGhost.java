@@ -182,14 +182,12 @@ public class PlayfulGhost extends Projectile {
     @SuppressWarnings("unused")
     public Float nextPositiveFloat() {
         getParams().setAbilityRngSeed(RandomHelper.seededRandomFloat(getParams().getAbilityRngSeed()));
-        System.out.println("random: " + getParams().getAbilityRngSeed());
         return getParams().getAbilityRngSeed();
     }
 
     @SuppressWarnings("unused")
     public Float nextFloat() {
         getParams().setAbilityRngSeed(RandomHelper.seededRandomFloat(getParams().getAbilityRngSeed()));
-        System.out.println("random: " + ((getParams().getAbilityRngSeed() - 0.5f) * 2));
         return (getParams().getAbilityRngSeed() - 0.5f) * 2;
     }
 }

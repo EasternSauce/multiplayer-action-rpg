@@ -1,9 +1,11 @@
 package com.mygdx.game.game;
 
+import com.badlogic.gdx.graphics.Color;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.mygdx.game.Constants;
+import com.mygdx.game.assets.Assets;
 import com.mygdx.game.command.*;
 import com.mygdx.game.game.gamestate.ServerGameState;
 import com.mygdx.game.game.screen.ConnectScreenMessageHolder;
@@ -12,13 +14,17 @@ import com.mygdx.game.model.action.ActionsHolder;
 import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.action.creature.PlayerInitAction;
 import com.mygdx.game.model.action.creature.PlayerRemoveAction;
+import com.mygdx.game.model.action.loot.LootPileSpawnAction;
 import com.mygdx.game.model.area.AreaGate;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.creature.EnemySpawn;
+import com.mygdx.game.model.item.Item;
+import com.mygdx.game.model.item.ItemTemplate;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.physics.world.PhysicsWorld;
+import com.mygdx.game.renderer.RenderingLayer;
 import com.mygdx.game.util.EndPointHelper;
 import lombok.Getter;
 import lombok.Setter;
@@ -52,7 +58,7 @@ public class CoreGameServer extends CoreGame {
     }
 
     @Override
-    public boolean isRenderingAllowed() {
+    public boolean isGameplayRenderingAllowed() {
         return false;
     }
 
@@ -196,16 +202,13 @@ public class CoreGameServer extends CoreGame {
     public void initState() {
         AreaId areaId = AreaId.of("area1");
 
-        //        gameState.scheduleServerSideAction(LootPileSpawnAction.of(areaId,
-        //                Vector2.of(12, 12),
-        //                new ConcurrentSkipListSet<>(Arrays.asList(Item.of()
-        //                                .setTemplate(ItemTemplate.templates.get(
-        //                                        "leatherArmor"))
-        //                                .setQualityModifier(0.9f),
-        //                        Item.of()
-        //                                .setTemplate(ItemTemplate.templates.get(
-        //                                        "boomerang"))
-        //                                .setQualityModifier(0.9f)))));
+        Item leatherArmor = Item.of().setTemplate(ItemTemplate.templates.get("leatherArmor")).setQualityModifier(0.9f);
+        Item boomerang = Item.of().setTemplate(ItemTemplate.templates.get("boomerang")).setQualityModifier(0.9f);
+
+        gameState.scheduleServerSideAction(LootPileSpawnAction.of(AreaId.of("area3"),
+                                                                  Vector2.of(12, 12),
+                                                                  new ConcurrentSkipListSet<>(Arrays.asList(leatherArmor,
+                                                                                                            boomerang))));
 
 
         //        gameState.scheduleServerSideAction(LootPileSpawnAction.of(areaId,
@@ -262,7 +265,7 @@ public class CoreGameServer extends CoreGame {
 
     @Override
     public void performPhysicsWorldStep() {
-        getEntityManager().getGamePhysics().getPhysicsWorlds().values().forEach(PhysicsWorld::step);
+        getEntityManager().getGameEntityPhysics().getPhysicsWorlds().values().forEach(PhysicsWorld::step);
     }
 
     @Override
@@ -273,6 +276,14 @@ public class CoreGameServer extends CoreGame {
     @Override
     public void setChatInputProcessor() {
 
+    }
+
+    @Override
+    public void renderServerRunningMessage(RenderingLayer renderingLayer) {
+        Assets.renderLargeFont(renderingLayer,
+                               "Server is running...",
+                               Vector2.of(Constants.WINDOW_WIDTH / 2f - 250, Constants.WINDOW_HEIGHT / 2f + 25),
+                               Color.WHITE);
     }
 
     @Override

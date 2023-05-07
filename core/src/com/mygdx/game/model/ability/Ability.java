@@ -134,7 +134,7 @@ public abstract class Ability {
         return 0.5f;
     }
 
-    public boolean usesModel() {
+    public boolean usesEntityModel() {
         return true;
     }
 }

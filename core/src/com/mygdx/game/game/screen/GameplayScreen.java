@@ -26,7 +26,7 @@ public class GameplayScreen implements Screen {
     public void init(CoreGame game) {
         this.game = game;
 
-        game.getEntityManager().getGamePhysics().setDebugRenderer(new Box2DDebugRenderer());
+        game.getEntityManager().getGameEntityPhysics().setDebugRenderer(new Box2DDebugRenderer());
 
         Map<AreaId, String> mapsToLoad = new ConcurrentSkipListMap<>();
         mapsToLoad.put(AreaId.of("area1"), "assets/areas/area1");
@@ -39,19 +39,19 @@ public class GameplayScreen implements Screen {
             .collect(Collectors.toMap(Map.Entry::getKey,
                                       entry -> game
                                           .getEntityManager()
-                                          .getGameRenderer()
+                                          .getGameEntityRenderer()
                                           .loadMap(entry.getValue() + "/tile_map.tmx")));
 
 
         game.initState();
 
-        game.getEntityManager().getGameRenderer().init();
+        game.getEntityManager().getGameEntityRenderer().init();
 
-        game.getEntityManager().getGamePhysics().init(maps, game);
+        game.getEntityManager().getGameEntityPhysics().init(maps, game);
 
         game
             .getEntityManager()
-            .getGameRenderer()
+            .getGameEntityRenderer()
             .getViewportsHandler()
             .setHudCameraPosition(Constants.WINDOW_WIDTH / 2f, Constants.WINDOW_HEIGHT / 2f); // TODO: move it inward?
 
@@ -61,7 +61,7 @@ public class GameplayScreen implements Screen {
     public void show() {
         game.setChatInputProcessor();
 
-        game.getEntityManager().getGameRenderer().setupInitialRendererState(maps, game);
+        game.getEntityManager().getGameEntityRenderer().setupInitialRendererState(maps, game);
     }
 
     public void update(float delta) {
@@ -88,10 +88,10 @@ public class GameplayScreen implements Screen {
 
         game
             .getEntityManager()
-            .getGameRenderer()
+            .getGameEntityRenderer()
             .getAreaRenderers()
             .get(game.getGameState().getCurrentAreaId())
-            .setView(game.getEntityManager().getGameRenderer().getViewportsHandler().getWorldCamera());
+            .setView(game.getEntityManager().getGameEntityRenderer().getViewportsHandler().getWorldCamera());
 
         if (game.getGameState().getThisClientPlayerId() != null &&
             game.getGameState().accessCreatures().getCreature(game.getGameState().getThisClientPlayerId()) != null) {
@@ -105,29 +105,33 @@ public class GameplayScreen implements Screen {
     public void render(float delta) {
         if (game.isInitialized()) {
             update(delta);
-            if (game.isRenderingAllowed()) {
+            if (game.isGameplayRenderingAllowed()) {
                 // TODO: move this to viewports handler
                 game
                     .getEntityManager()
-                    .getGameRenderer()
+                    .getGameEntityRenderer()
                     .getWorldElementsRenderingLayer()
                     .setProjectionMatrix(game
                                              .getEntityManager()
-                                             .getGameRenderer()
+                                             .getGameEntityRenderer()
                                              .getViewportsHandler()
                                              .getWorldCamera().combined);
                 game
                     .getEntityManager()
-                    .getGameRenderer()
+                    .getGameEntityRenderer()
                     .getHudRenderingLayer()
-                    .setProjectionMatrix(game.getEntityManager().getGameRenderer().getViewportsHandler().getHudCamera().combined);
+                    .setProjectionMatrix(game
+                                             .getEntityManager()
+                                             .getGameEntityRenderer()
+                                             .getViewportsHandler()
+                                             .getHudCamera().combined);
                 game
                     .getEntityManager()
-                    .getGameRenderer()
+                    .getGameEntityRenderer()
                     .getWorldTextRenderingLayer()
                     .setProjectionMatrix(game
                                              .getEntityManager()
-                                             .getGameRenderer()
+                                             .getGameEntityRenderer()
                                              .getViewportsHandler()
                                              .getWorldTextCamera().combined);
 
@@ -147,13 +151,18 @@ public class GameplayScreen implements Screen {
 
                 HudRendererHelper.renderHud(game);
             }
+            else {
+                game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer().begin();
+                game.renderServerRunningMessage(game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer());
+                game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer().end();
+            }
         }
     }
 
 
     @Override
     public void resize(int width, int height) {
-        game.getEntityManager().getGameRenderer().getViewportsHandler().updateViewportsOnResize(width, height);
+        game.getEntityManager().getGameEntityRenderer().getViewportsHandler().updateViewportsOnResize(width, height);
     }
 
     @Override

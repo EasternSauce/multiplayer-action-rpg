@@ -1,6 +1,7 @@
 package com.mygdx.game.model.ability;
 
 import com.mygdx.game.game.CoreGame;
+import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,6 +14,7 @@ public class CrossbowShot extends Ability {
     AbilityParams params;
 
     int currentBoltToFire = 0;
+    Vector2 previousDirVector = null;
 
     public static CrossbowShot of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         CrossbowShot ability = CrossbowShot.of();
@@ -61,16 +63,44 @@ public class CrossbowShot extends Ability {
             1.2f,
             1.4f};
 
-        if (currentBoltToFire <= 4 && getParams().getStateTimer().getTime() > boltFireTimes[currentBoltToFire]) {
+        Vector2 dirVector;
+        if (previousDirVector != null) {
+            dirVector = previousDirVector;
+        }
+        else {
+            dirVector = getParams().getDirVector();
+        }
+
+        Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
+
+        if (creature != null && currentBoltToFire < boltFireTimes.length &&
+            getParams().getStateTimer().getTime() > boltFireTimes[currentBoltToFire]) {
+            Vector2 aimDirection = creature.getParams().getAimDirection();
+
+            Vector2 chainedDirVector;
+
+            float followAngle = 20f;
+
+            if (aimDirection.angleDeg() < dirVector.angleDeg() - followAngle) {
+                chainedDirVector = dirVector.rotateDeg(-followAngle);
+            }
+            else if (aimDirection.angleDeg() > dirVector.angleDeg() + followAngle) {
+                chainedDirVector = dirVector.rotateDeg(followAngle);
+            }
+            else {
+                chainedDirVector = aimDirection.copy();
+            }
+
             game
                 .getGameState()
                 .accessAbilities()
-                .chainAnotherAbility(this, AbilityType.CROSSBOW_BOLT, null, getParams().getDirVector(), game);
+                .chainAnotherAbility(this, AbilityType.CROSSBOW_BOLT, null, chainedDirVector, game);
 
             currentBoltToFire += 1;
+            previousDirVector = dirVector.copy();
         }
 
-        if (currentBoltToFire > 4) {
+        if (currentBoltToFire >= boltFireTimes.length) {
             deactivate();
         }
     }
@@ -96,7 +126,7 @@ public class CrossbowShot extends Ability {
     }
 
     @Override
-    public boolean usesModel() {
+    public boolean usesEntityModel() {
         return false;
     }
 }

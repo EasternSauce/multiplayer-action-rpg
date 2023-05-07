@@ -51,7 +51,7 @@ public class ItemTemplate {
                                                                     .setWorth(350)
                                                                     .setEquipable(true)
                                                                     .setEquipmentSlotType(EquipmentSlotType.PRIMARY_WEAPON)
-                                                                    .setAttackSkill(SkillType.BOOMERANG)
+                                                                    .setAttackSkill(SkillType.CROSSBOW_SHOT)
                                                                     .setDamage(18f),
                                                                 ItemTemplate
                                                                     .of("woodenSword",
