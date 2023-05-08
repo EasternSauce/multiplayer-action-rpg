@@ -54,7 +54,6 @@ public abstract class CoreGame extends Game {
         return isDebugEnabled;
     }
 
-
     public void addTeleportEvent(TeleportEvent teleportEvent) {
         eventProcessor.getTeleportEvents().add(teleportEvent);
     }
@@ -91,7 +90,6 @@ public abstract class CoreGame extends Game {
 
     abstract public void initState();
 
-
     public abstract Set<AbilityId> getAbilitiesToUpdate();
 
     public PhysicsWorld getPhysicsWorld(AreaId areaId) {
@@ -100,16 +98,17 @@ public abstract class CoreGame extends Game {
 
     abstract public void performPhysicsWorldStep();
 
-
-    public boolean isLineOfSight(AreaId areaId, Vector2 fromPos, Vector2 toPos) {
-        return entityManager.getGameEntityPhysics().getPhysicsWorlds().get(areaId).isLineOfSight(fromPos, toPos);
+    public boolean isLineBetweenPointsUnobstructedByTerrain(AreaId areaId, Vector2 fromPos, Vector2 toPos) {
+        return entityManager
+            .getGameEntityPhysics()
+            .getPhysicsWorlds()
+            .get(areaId)
+            .isLineBetweenPointsUnobstructedByTerrain(fromPos, toPos);
     }
-
 
     public void updateCameraPositions() {
         entityManager.getGameEntityRenderer().getViewportsHandler().updateCameraPositions(this);
     }
-
 
     public void renderB2BodyDebug() {
         if (isDebugEnabled()) {
@@ -125,26 +124,21 @@ public abstract class CoreGame extends Game {
         }
     }
 
-
     public List<PhysicsEvent> getPhysicsEventQueue() {
         return entityManager.getGameEntityPhysics().getPhysicsEventQueue();
     }
-
 
     public Map<CreatureId, CreatureBody> getCreatureBodies() {
         return entityManager.getGameEntityPhysics().getCreatureBodies();
     }
 
-
     public Map<AbilityId, AbilityBody> getAbilityBodies() {
         return entityManager.getGameEntityPhysics().getAbilityBodies();
     }
 
-
     public boolean isForceUpdateBodyPositions() {
         return entityManager.getGameEntityPhysics().getIsForceUpdateBodyPositions();
     }
-
 
     public void setForceUpdateBodyPositions(boolean value) {
         entityManager.getGameEntityPhysics().setIsForceUpdateBodyPositions(value);
@@ -158,7 +152,6 @@ public abstract class CoreGame extends Game {
 
         float viewportRatioX = Constants.VIEWPOINT_WORLD_WIDTH / Constants.WINDOW_WIDTH;
         float viewportRatioY = Constants.VIEWPOINT_WORLD_HEIGHT / Constants.WINDOW_HEIGHT;
-
 
         return Vector2.of(mousePos.getX() * viewportRatioX / Constants.PPM, mousePos.getY() * viewportRatioY / Constants.PPM);
     }
@@ -183,5 +176,5 @@ public abstract class CoreGame extends Game {
 
     public abstract void renderServerRunningMessage(RenderingLayer renderingLayer);
 
-    public abstract boolean shouldPathfindingBeCalculatedForCreature(Creature creature);
+    public abstract boolean isPathfindingCalculatedForCreature(Creature creature);
 }

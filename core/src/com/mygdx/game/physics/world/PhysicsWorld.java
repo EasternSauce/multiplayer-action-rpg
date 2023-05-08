@@ -149,7 +149,6 @@ public class PhysicsWorld {
                         }
                     }
 
-
                 }
             }
 
@@ -191,7 +190,6 @@ public class PhysicsWorld {
             terrainBorders.add(tile2);
         }
 
-
     }
 
     public void tryAddClearance(Vector2Int pos, Integer level) {
@@ -232,7 +230,6 @@ public class PhysicsWorld {
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
 
-
             lowerLevelClearances.forEach(pos -> {
                 int x = pos.getX();
                 int y = pos.getY();
@@ -256,7 +253,7 @@ public class PhysicsWorld {
         b2world.step(Math.min(Gdx.graphics.getDeltaTime(), 0.15f), 6, 2);
     }
 
-    public Boolean isLineOfSight(Vector2 fromPos, Vector2 toPos) {
+    public Boolean isLineBetweenPointsUnobstructedByTerrain(Vector2 fromPos, Vector2 toPos) {
         float lineWidth = 0.3f;
         com.badlogic.gdx.math.Polygon lineOfSightRect = new com.badlogic.gdx.math.Polygon(new float[]{
             fromPos.getX(),

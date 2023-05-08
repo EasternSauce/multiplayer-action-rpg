@@ -25,9 +25,7 @@ public class ViewportsHandler {
                                         Constants.VIEWPOINT_WORLD_HEIGHT / Constants.PPM,
                                         worldCamera);
 
-
         hudViewport = new FitViewport((float) Constants.WINDOW_WIDTH, (float) Constants.WINDOW_HEIGHT, hudCamera);
-
 
         worldTextViewport = new FitViewport(Constants.VIEWPOINT_WORLD_WIDTH, Constants.VIEWPOINT_WORLD_HEIGHT, worldTextCamera);
     }
@@ -76,7 +74,6 @@ public class ViewportsHandler {
         worldTextCamera.position.x = x;
         worldTextCamera.position.y = y;
     }
-
 
     public OrthographicCamera getWorldCamera() {
         return worldCamera;

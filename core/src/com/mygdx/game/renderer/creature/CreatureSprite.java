@@ -84,7 +84,6 @@ public class CreatureSprite {
             .getKeyFrame(creature.getParams().getAnimationTimer().getTime(), true);
     }
 
-
     private TextureRegion getFacingTexture(Creature creature, WorldDirection direction) {
         return facingTextures.get(creature.animationConfig().getDirMap().get(direction));
     }

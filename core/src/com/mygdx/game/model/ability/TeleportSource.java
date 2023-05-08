@@ -30,7 +30,6 @@ public class TeleportSource extends Ability {
             .setPos(creature.getParams().getPos())
             .setDelayedActionTime(0.1f);
 
-
         return ability;
     }
 

@@ -1,6 +1,5 @@
 package com.mygdx.game.model.item;
 
-
 import com.mygdx.game.model.skill.SkillType;
 import com.mygdx.game.model.util.Vector2Int;
 import lombok.AllArgsConstructor;

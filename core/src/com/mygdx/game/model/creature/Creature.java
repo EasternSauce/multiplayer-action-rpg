@@ -79,7 +79,6 @@ public abstract class Creature {
                 game.getGameState().accessCreatures().setCreatureMovingVector(getParams().getId(), dirVector);
             }
 
-
             getParams().setIsMoving(true);
 
         }
@@ -258,7 +257,6 @@ public abstract class Creature {
         getParams().setDropRngSeed(rngValue);
         return rngValue;
     }
-
 
     //    public void updateEffects() {
     //        getParams().getEffects().forEach((effect, effectState) -> {

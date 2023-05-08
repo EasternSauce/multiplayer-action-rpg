@@ -173,7 +173,6 @@ public class GameRenderer {
         return hudRenderingLayer;
     }
 
-
     public RenderingLayer getWorldTextRenderingLayer() {
         return worldTextRenderingLayer;
     }

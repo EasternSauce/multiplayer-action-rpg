@@ -39,7 +39,9 @@ public class Enemy extends Creature {
                 creature.isAlive() && creature.getParams().getAreaId().getValue().equals(getParams().getAreaId().getValue()) &&
                 creature instanceof Player &&
                 creature.getParams().getPos().distance(getParams().getPos()) < Constants.ENEMY_SEARCH_DISTANCE &&
-                game.isLineOfSight(this.getParams().getAreaId(), this.getParams().getPos(), creature.getParams().getPos());
+                game.isLineBetweenPointsUnobstructedByTerrain(this.getParams().getAreaId(),
+                                                              this.getParams().getPos(),
+                                                              creature.getParams().getPos());
 
             if (condition && getParams().getPos().distance(creature.getParams().getPos()) < minDistance) {
                 minCreatureId = creature.getId();
@@ -102,7 +104,6 @@ public class Enemy extends Creature {
                     getParams().getAggroTimer().restart();
                 }
             }
-
 
         }
 
@@ -211,15 +212,17 @@ public class Enemy extends Creature {
     }
 
     private void processPathfinding(CoreGame game) {
-        boolean condition = game.shouldPathfindingBeCalculatedForCreature(this) && getParams().getTargetCreatureId() != null &&
-                            (getParams().getForcePathCalculation() ||
-                             getParams().getPathCalculationCooldownTimer().getTime() > getParams().getPathCalculationCooldown());
+        boolean isPathfindingAllowed =
+            game.isPathfindingCalculatedForCreature(this) && getParams().getTargetCreatureId() != null &&
+            (getParams().getForcePathCalculation() ||
+             getParams().getPathCalculationCooldownTimer().getTime() > getParams().getPathCalculationCooldown());
 
-        if (condition) {
+        if (isPathfindingAllowed) {
             Creature target = game.getGameState().accessCreatures().getCreature(getParams().getTargetCreatureId());
 
-            if (target != null &&
-                !game.isLineOfSight(getParams().getAreaId(), getParams().getPos(), target.getParams().getPos())) {
+            if (target != null && !game.isLineBetweenPointsUnobstructedByTerrain(getParams().getAreaId(),
+                                                                                 getParams().getPos(),
+                                                                                 target.getParams().getPos())) {
                 List<Vector2> mirroredPath = mirrorPathFromNearbyCreature(getParams().getTargetCreatureId(), game);
 
                 List<Vector2> path;
@@ -233,9 +236,6 @@ public class Enemy extends Creature {
                                                         getParams().getPos(),
                                                         target.getParams().getPos(),
                                                         this.capability());
-
-                    System.out.println("result is " + result);
-
                     path = result.getPath();
 
                     this.getParams().setIsPathMirrored(false);
@@ -285,7 +285,6 @@ public class Enemy extends Creature {
         }
     }
 
-
     public void handleMovement(Creature potentialTarget) {
         Float distance = getParams().getPos().distance(potentialTarget.getParams().getPos());
 
@@ -304,7 +303,6 @@ public class Enemy extends Creature {
         else {
             processStateAiHandleMovementLogic(potentialTarget, distance);
         }
-
 
     }
 
@@ -380,7 +378,6 @@ public class Enemy extends Creature {
         else {
             deg = getParams().getMovingVector().angleDeg();
         }
-
 
         if (deg >= 45 && deg < 135) {
             return WorldDirection.UP;

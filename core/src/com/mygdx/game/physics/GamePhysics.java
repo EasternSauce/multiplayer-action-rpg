@@ -48,7 +48,6 @@ public class GamePhysics {
         areaGateBodies = game.getGameState().getAreaGates().stream().map(AreaGateBody::of).collect(Collectors.toSet());
         areaGateBodies.forEach(areaGateBody -> areaGateBody.init(game));
 
-
     }
 
     public void onContactStart(Object objA, Object objB) {
@@ -59,7 +58,6 @@ public class GamePhysics {
             physicsEventQueue.add(AbilityHitsCreatureEvent.of(abilityBody.getCreatureId(),
                                                               creatureBody.getCreatureId(),
                                                               abilityBody.getAbilityId()));
-
 
         }
         else if (objA instanceof TerrainTileBody && objB instanceof AbilityBody) {
@@ -82,14 +80,12 @@ public class GamePhysics {
 
             physicsEventQueue.add(AbilityHitsAbilityEvent.of(abilityBodyA.getAbilityId(), abilityBodyB.getAbilityId()));
 
-
         }
         else if (objA instanceof CreatureBody && objB instanceof AreaGateBody) {
             CreatureBody creatureBody = (CreatureBody) objA;
             AreaGateBody areaGateBody = (AreaGateBody) objB;
 
             physicsEventQueue.add(CreatureHitsAreaGateEvent.of(creatureBody.getCreatureId(), areaGateBody.getAreaGate()));
-
 
         }
         else if (objA instanceof CreatureBody && objB instanceof LootPileBody) {
@@ -113,7 +109,6 @@ public class GamePhysics {
             physicsEventQueue.add(CreatureLeavesLootPileEvent.of(creatureBody.getCreatureId(), lootPileBody.getLootPileId()));
         }
     }
-
 
     private void createContactListener(PhysicsWorld physicsWorld) {
         World b2World = physicsWorld.getB2world();

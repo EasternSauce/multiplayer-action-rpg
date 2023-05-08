@@ -35,7 +35,6 @@ public class MagicOrb extends Projectile {
             .setDelayedActionTime(0.001f)
             .setSpeed(12f);
 
-
         return ability;
     }
 
@@ -63,7 +62,6 @@ public class MagicOrb extends Projectile {
     void onAbilityCompleted(CoreGame game) {
 
     }
-
 
     @Override
     public void onCreatureHit() {

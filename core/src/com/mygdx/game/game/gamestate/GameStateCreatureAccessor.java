@@ -31,7 +31,6 @@ public class GameStateCreatureAccessor {
         return gameState.data.getCreatures();
     }
 
-
     public Vector2 getCreaturePos(CreatureId creatureId) {
         if (!gameState.data.getCreatures().containsKey(creatureId)) {
             return null;
@@ -95,7 +94,6 @@ public class GameStateCreatureAccessor {
 
         gameState.scheduleServerSideAction(action);
     }
-
 
     public CreatureId getAliveCreatureIdClosestTo(Vector2 pos, float maxRange, Set<CreatureId> excluded) {
         CreatureId minCreatureId = null;

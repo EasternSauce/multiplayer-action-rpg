@@ -9,7 +9,6 @@ public enum EnemyType {
 
     MAGE("black_mage");
 
-
     public String textureName;
 
     EnemyType(String textureName) {

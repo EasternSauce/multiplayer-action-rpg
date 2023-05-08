@@ -211,7 +211,6 @@ public class GameEntityManager {
             .get(abilityId)
             .update(delta, game));
 
-
         abilitiesToUpdate.forEach(abilityId -> {
             if (getGameEntityPhysics().getAbilityBodies().containsKey(abilityId)) {
                 getGameEntityPhysics().getAbilityBodies().get(abilityId).update(game);
@@ -266,7 +265,6 @@ public class GameEntityManager {
                 }
 
                 creature.getParams().setJustTeleportedToGate(true);
-
 
             }
         }

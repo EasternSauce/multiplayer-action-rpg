@@ -12,7 +12,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
-
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
@@ -47,6 +46,5 @@ public class RenderingLayer {
         pixmap.dispose();
         return new TextureRegion(texture, 0, 0, 1, 1);
     }
-
 
 }

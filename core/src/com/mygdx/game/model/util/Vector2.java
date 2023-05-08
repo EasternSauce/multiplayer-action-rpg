@@ -44,7 +44,6 @@ public class Vector2 {
         return Vector2.of(newX, newY);
     }
 
-
     public float len() {
         return (float) Math.sqrt(x * x + y * y);
     }

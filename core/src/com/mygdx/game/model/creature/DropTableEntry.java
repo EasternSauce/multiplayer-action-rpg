@@ -23,7 +23,6 @@ public class DropTableEntry implements Comparable<DropTableEntry> {
         return this.toString().compareTo(o.toString());
     }
 
-
     private static Map<SkillType, Integer> magicGrantedSkillDrops = new ConcurrentSkipListMap<>();
     private static Map<SkillType, Integer> specialMagicGrantedSkillDrops = new ConcurrentSkipListMap<>();
     private static Map<SkillType, Integer> movementGrantedSkillDrops = new ConcurrentSkipListMap<>();

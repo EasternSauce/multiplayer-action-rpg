@@ -49,7 +49,6 @@ public class SwordSpin extends Ability {
         return false;
     }
 
-
     @Override
     public Boolean isPositionChangedOnUpdate() {
         return true;
@@ -100,7 +99,6 @@ public class SwordSpin extends Ability {
     void onChannelUpdate(CoreGame game) {
 
         updatePosition(game);
-
 
     }
 

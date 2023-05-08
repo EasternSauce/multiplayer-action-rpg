@@ -72,7 +72,6 @@ public class CreatureHitAction extends GameStateAction {
             if (creature.nextDropRngValue() < entry.getDropChance()) {
                 Float quality = 0.5f + creature.nextDropRngValue() / 2f;
 
-
                 AtomicReference<SkillType> weightedSkillType = new AtomicReference<>(null);
 
                 if (creature.nextDropRngValue() < entry.getGrantedSkillChance()) {
@@ -115,7 +114,6 @@ public class CreatureHitAction extends GameStateAction {
                     .setTemplate(entry.getTemplate())
                     .setQualityModifier(quality)
                     .setGrantedSkills(grantedSkills);
-
 
                 items.add(item);
             }

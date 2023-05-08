@@ -90,7 +90,6 @@ public class EndPointHelper {
         endPoint.getKryo().register(TeleportDestination.class);
         endPoint.getKryo().register(CrossbowShot.class);
 
-
         endPoint.getKryo().register(Enemy.class);
         endPoint.getKryo().register(Area.class);
         endPoint.getKryo().register(Player.class);
@@ -101,7 +100,6 @@ public class EndPointHelper {
         endPoint.getKryo().register(AbilityParams.class);
         endPoint.getKryo().register(AreaGate.class);
         endPoint.getKryo().register(DropTableEntry.class);
-
 
         endPoint.getKryo().register(AbilityTryAddAction.class);
         endPoint.getKryo().register(PlayerInitAction.class);

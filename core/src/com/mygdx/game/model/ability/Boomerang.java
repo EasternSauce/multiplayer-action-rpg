@@ -1,6 +1,5 @@
 package com.mygdx.game.model.ability;
 
-
 import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.skill.Skill;
@@ -58,7 +57,6 @@ public class Boomerang extends Projectile {
 
     }
 
-
     @Override
     public void onCreatureHit() {
         getParams().setIsComingBack(true);
@@ -92,7 +90,6 @@ public class Boomerang extends Projectile {
                 getParams().setIsComingBack(true);
                 getParams().setSpeed(20f);
             }
-
 
             if (getParams().getIsComingBack()) {
                 Vector2 vectorTowards = getParams().getPos().vectorTowards(creature.getParams().getPos());

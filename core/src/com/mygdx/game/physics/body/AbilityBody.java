@@ -98,7 +98,6 @@ public class AbilityBody {
                 setVelocity(ability.getParams().getVelocity());
             }
 
-
         }
     }
 

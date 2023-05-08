@@ -22,7 +22,6 @@ public class LootPileRenderer {
         return lootPileRenderer;
     }
 
-
     public void init(TextureAtlas atlas, CoreGame game) {
 
         LootPile lootPile = game.getGameState().getLootPiles().get(lootPileId);
@@ -31,7 +30,6 @@ public class LootPileRenderer {
         sprite.setRegion(atlas.findRegion("bag"));
         sprite.setSize(lootPile.getWidth(), lootPile.getHeight());
         sprite.setCenter(lootPile.getPos().getX(), lootPile.getPos().getY());
-
 
     }
 

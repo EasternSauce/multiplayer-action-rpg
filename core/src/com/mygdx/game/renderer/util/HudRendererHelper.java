@@ -23,7 +23,6 @@ public class HudRendererHelper {
 
         renderChat(game.getChat(), renderingLayer);
 
-
         renderFpsCounter(renderingLayer);
 
         if (game.getGameState().getThisClientPlayerId() != null) {

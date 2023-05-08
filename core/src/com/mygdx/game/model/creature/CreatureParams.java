@@ -134,7 +134,6 @@ public class CreatureParams {
                                  enemySpawn.getEnemyTemplate().getEnemyType().textureName);
     }
 
-
     public static CreatureParams of(CreatureId creatureId, AreaId areaId, Vector2 pos, String textureName) {
         return getCreatureParams(creatureId, areaId, pos, textureName);
     }

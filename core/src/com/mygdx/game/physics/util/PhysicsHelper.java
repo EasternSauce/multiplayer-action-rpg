@@ -87,7 +87,6 @@ public class PhysicsHelper {
 
                     game.addTeleportEvent(TeleportEvent.of(event.getCreatureId(), pos, fromAreaId, toAreaId));
 
-
                 }
             }
             else if (physicsEvent instanceof CreatureLeavesAreaGateEvent) {
@@ -98,7 +97,6 @@ public class PhysicsHelper {
 
                 if (creature instanceof Player && creature.getParams().getJustTeleportedToGate() &&
                     creature.getParams().getAreaWhenEnteredGate().equals(creature.getParams().getAreaId())) {
-
 
                     creature.getParams().setJustTeleportedToGate(false);
 
@@ -147,7 +145,6 @@ public class PhysicsHelper {
                     .accessAbilities()
                     .onAbilityHitsCreature(event.getSourceCreatureId(), event.getDestinationCreatureId(), ability);
             }
-
 
         }
     }

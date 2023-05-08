@@ -37,7 +37,6 @@ public class TeleportDestination extends Ability {
             .setPos(teleportPos)
             .setChainToPos(teleportPos);
 
-
         return ability;
     }
 
@@ -53,7 +52,7 @@ public class TeleportDestination extends Ability {
             destinationPos = pos;
         }
 
-        if (!game.isLineOfSight(areaId, creaturePos, destinationPos)) {
+        if (!game.isLineBetweenPointsUnobstructedByTerrain(areaId, creaturePos, destinationPos)) {
             return creaturePos;
         }
 
@@ -87,7 +86,6 @@ public class TeleportDestination extends Ability {
     void onAbilityCompleted(CoreGame game) {
 
     }
-
 
     @Override
     void onChannelUpdate(CoreGame game) {

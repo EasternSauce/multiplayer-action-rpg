@@ -65,7 +65,6 @@ public class PlayfulGhost extends Projectile {
 
     }
 
-
     private boolean isTargetingAllowed(Creature thisCreature, Creature targetCreature) {
         if (thisCreature instanceof Enemy) {
             return targetCreature instanceof Player;
@@ -84,7 +83,6 @@ public class PlayfulGhost extends Projectile {
         }
         getParams().setRotationAngle(getParams().getDirVector().angleDeg());
         getParams().setIsFlip(getParams().getRotationAngle() >= 90 && getParams().getRotationAngle() < 270);
-
 
         Creature minCreature = null;
         float minDistance = Float.MAX_VALUE;
@@ -108,7 +106,6 @@ public class PlayfulGhost extends Projectile {
                 minCreature = creature;
                 minDistance = creature.getParams().getPos().distance(getParams().getPos());
             }
-
 
         }
 

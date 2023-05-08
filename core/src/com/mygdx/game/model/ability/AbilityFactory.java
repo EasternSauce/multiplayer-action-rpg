@@ -1,6 +1,5 @@
 package com.mygdx.game.model.ability;
 
-
 import com.mygdx.game.game.CoreGame;
 
 import java.util.function.BiFunction;

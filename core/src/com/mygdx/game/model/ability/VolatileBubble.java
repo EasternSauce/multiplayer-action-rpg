@@ -28,7 +28,6 @@ public class VolatileBubble extends Projectile {
             .setDelayedActionTime(0.001f)
             .setSpeed(10f);
 
-
         return ability;
     }
 
@@ -117,7 +116,6 @@ public class VolatileBubble extends Projectile {
                                  params.getDirVector().withSetDegAngle(baseAngle + 315f),
                                  game);
     }
-
 
     @Override
     public void onCreatureHit() {

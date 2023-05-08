@@ -44,7 +44,6 @@ public class SwordSlash extends Ability {
         return false;
     }
 
-
     @Override
     public Boolean isPositionChangedOnUpdate() {
         return true;
@@ -96,14 +95,12 @@ public class SwordSlash extends Ability {
     void onChannelUpdate(CoreGame game) {
         updatePosition(game);
 
-
     }
 
     @Override
     void onActiveUpdate(float delta, CoreGame game) {
 
         updatePosition(game);
-
 
     }
 

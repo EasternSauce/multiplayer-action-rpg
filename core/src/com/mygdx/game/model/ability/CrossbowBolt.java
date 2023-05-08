@@ -1,6 +1,5 @@
 package com.mygdx.game.model.ability;
 
-
 import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
@@ -55,7 +54,6 @@ public class CrossbowBolt extends Projectile {
     void onAbilityCompleted(CoreGame game) {
 
     }
-
 
     @Override
     public void onCreatureHit() {

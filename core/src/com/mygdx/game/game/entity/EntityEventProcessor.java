@@ -54,5 +54,4 @@ public class EntityEventProcessor {
         getLootPileModelsToBeRemoved().clear();
     }
 
-
 }

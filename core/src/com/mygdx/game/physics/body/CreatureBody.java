@@ -92,7 +92,6 @@ public class CreatureBody {
 
     }
 
-
     public void forceSetTransform(Vector2 vector) {
         b2Body.setTransform(vector.getX(), vector.getY(), b2Body.getAngle());
     }
@@ -100,7 +99,6 @@ public class CreatureBody {
     public void onRemove() {
         world.getB2world().destroyBody(b2Body);
     }
-
 
     public void setSensor(boolean sensor) {
         b2Body.getFixtureList().get(0).setSensor(sensor);

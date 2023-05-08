@@ -34,9 +34,7 @@ public class AbilityTryAddAction extends GameStateAction {
             .getAbilities()
             .put(ability.getParams().getId(), ability); // TODO: SHOULDNT THIS HAPPEN IN createAbility() METHOD???!?
 
-
         game.getEventProcessor().getAbilityModelsToBeCreated().add(ability.getParams().getId());
-
 
         ability.init(game);
 

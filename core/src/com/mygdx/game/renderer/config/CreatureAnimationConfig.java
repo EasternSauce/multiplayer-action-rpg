@@ -47,6 +47,5 @@ public class CreatureAnimationConfig {
         return textureDirMap;
     }
 
-
 }
 

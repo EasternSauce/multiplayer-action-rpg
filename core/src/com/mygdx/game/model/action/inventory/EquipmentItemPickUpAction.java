@@ -17,7 +17,6 @@ public class EquipmentItemPickUpAction extends GameStateAction {
 
     private Integer slotIndex;
 
-
     @Override
     public Vector2 actionObjectPos(CoreGame game) {
         return getActionCreaturePos(creatureId, game);

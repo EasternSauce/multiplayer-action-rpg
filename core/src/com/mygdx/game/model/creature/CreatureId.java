@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 public class CreatureId implements Comparable<CreatureId> {
     String value;
 
-
     @Override
     public int compareTo(CreatureId o) {
         return getValue().compareTo(o.getValue());

@@ -240,7 +240,6 @@ public class CoreGameClient extends CoreGame {
 
             menuClickTime = gameState.getTime();
 
-
         }
         else {
             boolean isSuccessful = SkillMenuHelper.performSkillMenuClick(getEndPoint(), this);
@@ -308,7 +307,6 @@ public class CoreGameClient extends CoreGame {
             }
         }
     }
-
 
     @Override
     public void establishConnection() throws IOException {
@@ -423,7 +421,7 @@ public class CoreGameClient extends CoreGame {
     }
 
     @Override
-    public boolean shouldPathfindingBeCalculatedForCreature(Creature creature) {
+    public boolean isPathfindingCalculatedForCreature(Creature creature) {
         return creature.getParams().getAreaId().equals(getGameState().getCurrentAreaId());
     }
 

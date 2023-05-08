@@ -69,7 +69,6 @@ public class LootPileSpawnOnPlayerItemDropAction extends GameStateAction {
 
         game.getEventProcessor().getLootPileModelsToBeCreated().add(lootPile.getId());
 
-
     }
 
     public static LootPileSpawnOnPlayerItemDropAction of(CreatureId playerId) {

@@ -38,5 +38,4 @@ public enum AbilityType {
 
     TELEPORT_DESTINATION
 
-
 }

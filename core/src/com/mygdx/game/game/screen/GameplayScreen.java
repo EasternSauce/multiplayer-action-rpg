@@ -42,7 +42,6 @@ public class GameplayScreen implements Screen {
                                           .getGameEntityRenderer()
                                           .loadMap(entry.getValue() + "/tile_map.tmx")));
 
-
         game.initState();
 
         game.getEntityManager().getGameEntityRenderer().init();
@@ -97,7 +96,6 @@ public class GameplayScreen implements Screen {
             game.getGameState().accessCreatures().getCreature(game.getGameState().getThisClientPlayerId()) != null) {
             game.updateCameraPositions();
         }
-
 
     }
 
@@ -159,7 +157,6 @@ public class GameplayScreen implements Screen {
         }
     }
 
-
     @Override
     public void resize(int width, int height) {
         game.getEntityManager().getGameEntityRenderer().getViewportsHandler().updateViewportsOnResize(width, height);
@@ -184,6 +181,5 @@ public class GameplayScreen implements Screen {
     public void dispose() {
 
     }
-
 
 }

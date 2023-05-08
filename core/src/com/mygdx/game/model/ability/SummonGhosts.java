@@ -64,7 +64,6 @@ public class SummonGhosts extends Ability {
                                  game);
     }
 
-
     @Override
     void onChannelUpdate(CoreGame game) {
 
@@ -94,7 +93,6 @@ public class SummonGhosts extends Ability {
     public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
 
     }
-
 
     @Override
     public boolean usesEntityModel() {

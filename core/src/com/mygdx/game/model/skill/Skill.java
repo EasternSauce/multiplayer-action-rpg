@@ -29,7 +29,6 @@ public class Skill {
     Float staminaCost;
     Float manaCost;
 
-
     public static Skill of(SkillType skillType, CreatureId creatureId) {
         if (skillType == SkillType.SWORD_SLASH) {
             return Skill.of(skillType,

@@ -28,7 +28,6 @@ public class IceSpear extends Projectile {
             .setDelayedActionTime(0.001f)
             .setSpeed(15f);
 
-
         return ability;
     }
 
@@ -56,7 +55,6 @@ public class IceSpear extends Projectile {
     void onAbilityCompleted(CoreGame game) {
 
     }
-
 
     @Override
     public void onCreatureHit() {

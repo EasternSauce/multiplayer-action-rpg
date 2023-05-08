@@ -33,7 +33,6 @@ public class PlayerInitAction extends GameStateAction {
             player = createNewPlayer(game);
         }
 
-
         game.getGameState().accessCreatures().getCreatures().put(playerId, player);
 
         game.getEventProcessor().getCreatureModelsToBeCreated().add(playerId);

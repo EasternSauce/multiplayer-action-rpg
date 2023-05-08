@@ -210,7 +210,6 @@ public class CoreGameServer extends CoreGame {
                                                                   new ConcurrentSkipListSet<>(Arrays.asList(leatherArmor,
                                                                                                             boomerang))));
 
-
         //        gameState.scheduleServerSideAction(LootPileSpawnAction.of(areaId,
         //                Vector2.of(13.5f, 12),
         //                new ConcurrentSkipListSet<>(Arrays.asList(Item.of()
@@ -287,7 +286,7 @@ public class CoreGameServer extends CoreGame {
     }
 
     @Override
-    public boolean shouldPathfindingBeCalculatedForCreature(Creature creature) {
+    public boolean isPathfindingCalculatedForCreature(Creature creature) {
         return true; // always calculate this server side regardless of current area
     }
 

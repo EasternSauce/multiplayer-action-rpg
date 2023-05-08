@@ -36,7 +36,6 @@ public class SkillMenuHelper { // TODO: maybe shouldn't be a helper class
 
     static Map<Integer, Rect> skillRectangles = new HashMap<>();
 
-
     static {
         for (int i = 0; i < TOTAL_SKILL_SLOTS; i++) {
             skillRectangles.put(i, Rect.of(skillSlotPositionX(i), SkillSlotPositionY(i), SLOT_SIZE, SLOT_SIZE));

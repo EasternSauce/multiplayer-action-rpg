@@ -67,7 +67,6 @@ public class LightningChain extends Ability {
 
     }
 
-
     @Override
     void onAbilityStarted(CoreGame game) {
 
@@ -82,7 +81,6 @@ public class LightningChain extends Ability {
     void onAbilityCompleted(CoreGame game) {
 
     }
-
 
     @Override
     void onChannelUpdate(CoreGame game) {

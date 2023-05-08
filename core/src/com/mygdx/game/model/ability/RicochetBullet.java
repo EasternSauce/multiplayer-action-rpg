@@ -27,7 +27,6 @@ public class RicochetBullet extends Projectile {
             .setDelayedActionTime(0.001f)
             .setSpeed(25f);
 
-
         return ability;
     }
 
@@ -56,7 +55,6 @@ public class RicochetBullet extends Projectile {
 
     }
 
-
     @Override
     public void onCreatureHit() {
         params.setDamageMultiplier(params.getDamageMultiplier() * 3 / 5f);
@@ -80,7 +78,6 @@ public class RicochetBullet extends Projectile {
             return;
         }
 
-
         getParams().getCreaturesAlreadyHit().clear();
 
         getParams().setWallBounceCount(getParams().getWallBounceCount() + 1);
@@ -90,7 +87,6 @@ public class RicochetBullet extends Projectile {
         float collisionAngle = collisionVector.angleDeg();
 
         float angle = params.getDirVector().multiplyBy(-1).angleDeg();
-
 
         float reflectAngle = 0f;
         if (collisionAngle >= 45f && collisionAngle < 135f) {

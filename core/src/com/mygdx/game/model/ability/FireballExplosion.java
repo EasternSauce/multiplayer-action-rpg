@@ -54,7 +54,6 @@ public class FireballExplosion extends Ability {
 
     }
 
-
     @Override
     void onChannelUpdate(CoreGame game) {
 

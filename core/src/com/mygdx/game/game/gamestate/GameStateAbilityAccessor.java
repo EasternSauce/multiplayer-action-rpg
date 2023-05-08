@@ -45,11 +45,9 @@ public class GameStateAbilityAccessor {
         return first.orElse(null);
     }
 
-
     public Map<AbilityId, Ability> getAbilities() {
         return gameState.data.getAbilities();
     }
-
 
     public Set<AbilityId> getAbilitiesWithinRange(Creature player) {
         return getAbilities().keySet().stream().filter(abilityId -> {
@@ -60,7 +58,6 @@ public class GameStateAbilityAccessor {
             return false;
         }).collect(Collectors.toSet());
     }
-
 
     public void spawnAbility(AbilityType abilityType, AbilityParams abilityParams, CoreGame game) {
         Creature creature = gameState.accessCreatures().getCreature(abilityParams.getCreatureId());
@@ -104,7 +101,6 @@ public class GameStateAbilityAccessor {
 
         gameState.scheduleServerSideAction(action);
     }
-
 
     public void onAbilityHitsCreature(CreatureId attackerId, CreatureId targetId, Ability ability) {
         ability.onCreatureHit();

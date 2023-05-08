@@ -42,7 +42,6 @@ public abstract class Ability {
                 onDelayedAction(game);
             }
 
-
             if (getParams().getStateTimer().getTime() > getParams().getActiveTime()) {
                 getParams().setState(AbilityState.INACTIVE);
                 getParams().getStateTimer().restart();
@@ -116,11 +115,9 @@ public abstract class Ability {
 
     public Float getDamage(CoreGame game) {
         if (getParams().getIsPlayerAbility() && isWeaponAttack()) {
-            System.out.println("attack damage");
             return getParams().getWeaponDamage() * getParams().getDamageMultiplier();
         }
         else {
-            System.out.println("ability base damage");
             return getParams().getBaseDamage() * getParams().getDamageMultiplier() * getLevelScaling(game);
         }
     }

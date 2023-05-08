@@ -31,7 +31,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-
 public class InventoryHelper {
     static Image backgroundImage;
     static TextureRegion[][] icons;
@@ -57,7 +56,6 @@ public class InventoryHelper {
 
     static Float PICKUP_MENU_POS_X = Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 5f - 40f;
     static Float PICKUP_MENU_POS_Y = 13f;
-
 
     public static void init(TextureAtlas atlas) {
 
@@ -329,7 +327,6 @@ public class InventoryHelper {
         float x = game.hudMousePos().getX();
         float y = game.hudMousePos().getY();
 
-
         if (backgroundOuterRect.contains(x, y)) {
             inventoryRectangles
                 .entrySet()
@@ -423,7 +420,6 @@ public class InventoryHelper {
 
             }
         }
-
 
     }
 

@@ -73,7 +73,6 @@ public class ConnectScreen implements Screen {
             }
         }
 
-
         SpriteBatch spriteBatch = game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer().getSpriteBatch();
 
         TextureAtlas.AtlasRegion background2 = game

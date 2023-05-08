@@ -13,7 +13,6 @@ import com.mygdx.game.physics.shape.Polygon;
 import com.mygdx.game.physics.shape.Rectangle;
 import com.mygdx.game.physics.world.PhysicsWorld;
 
-
 public class B2BodyFactory {
     public static Body createB2Body(PhysicsWorld world, Vector2 pos, BodyType bodyType, Object userData, BodyShape shape,
                                     Boolean isSensor, Boolean sleepingAllowed, Float linearDamping, Float mass) {
@@ -47,7 +46,6 @@ public class B2BodyFactory {
 
         return b2body;
     }
-
 
     public static Body createTerrainTileB2body(PhysicsWorld world, TerrainTileBody terrainTileBody) {
         return createB2Body(world,
@@ -90,7 +88,6 @@ public class B2BodyFactory {
                                             float height) {
         return createB2Body(world, pos, BodyType.StaticBody, areaGateBody, Rectangle.of(width, height), true, false, null, null);
     }
-
 
 }
 

@@ -64,7 +64,9 @@ public class LightningNode extends Ability {
             .getCreature(game.getGameState().accessCreatures().getAliveCreatureIdClosestTo(getParams().getPos(), 13f, excluded));
 
         if (targetCreature != null && getParams().getCreaturesAlreadyHit().size() <= 10 &&
-            game.isLineOfSight(getParams().getAreaId(), getParams().getPos(), targetCreature.getParams().getPos())) {
+            game.isLineBetweenPointsUnobstructedByTerrain(getParams().getAreaId(),
+                                                          getParams().getPos(),
+                                                          targetCreature.getParams().getPos())) {
 
             game
                 .getGameState()

@@ -33,7 +33,6 @@ public class Fireball extends Projectile {
             .setDelayedActionTime(0.001f)
             .setPos(creature.getParams().getPos());
 
-
         return ability;
     }
 
@@ -95,7 +94,6 @@ public class Fireball extends Projectile {
             .accessAbilities()
             .chainAnotherAbility(this, AbilityType.FIREBALL_EXPLOSION, getParams().getPos(), params.getDirVector(), game);
     }
-
 
     @Override
     public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {

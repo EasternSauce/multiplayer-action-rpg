@@ -16,7 +16,6 @@ public class RicochetBallista extends Ability {
         RicochetBallista ability = RicochetBallista.of();
         ability.params = abilityParams.setChannelTime(0f).setActiveTime(0f);
 
-
         return ability;
     }
 
@@ -63,7 +62,6 @@ public class RicochetBallista extends Ability {
             .accessAbilities()
             .chainAnotherAbility(this, AbilityType.RICOCHET_BULLET, rightSidePos, params.getDirVector(), game);
     }
-
 
     @Override
     void onChannelUpdate(CoreGame game) {

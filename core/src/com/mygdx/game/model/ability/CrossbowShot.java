@@ -49,7 +49,6 @@ public class CrossbowShot extends Ability {
 
     }
 
-
     @Override
     void onChannelUpdate(CoreGame game) {
 
@@ -77,7 +76,6 @@ public class CrossbowShot extends Ability {
         if (creature != null && currentBoltToFire < boltFireTimes.length &&
             getParams().getStateTimer().getTime() > boltFireTimes[currentBoltToFire]) {
             Vector2 aimDirection = creature.getParams().getAimDirection();
-
 
             float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(currentDirVector.angleDeg(),
                                                                                   aimDirection.angleDeg());

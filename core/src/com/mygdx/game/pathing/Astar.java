@@ -216,7 +216,6 @@ public class Astar {
 
         AstarNode lastNode = result.getAstarGraph().get(result.getFinishPos());
 
-
         List<Vector2Int> path = reconstructPath(lastNode, result);
 
         Collections.reverse(path);

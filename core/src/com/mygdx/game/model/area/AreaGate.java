@@ -1,6 +1,5 @@
 package com.mygdx.game.model.area;
 
-
 import com.mygdx.game.model.util.Vector2;
 import lombok.AllArgsConstructor;
 import lombok.Data;
