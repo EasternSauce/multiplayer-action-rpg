@@ -1,4 +1,4 @@
-package com.mygdx.game.model.action.loot;
+package com.mygdx.game.model.action.inventory;
 
 import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.action.GameStateAction;
@@ -20,7 +20,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class LootPileSpawnOnPlayerItemDropAction extends GameStateAction {
+public class PickedUpItemDropOnGroundAction extends GameStateAction {
     private CreatureId playerId;
 
     @Override
@@ -56,12 +56,7 @@ public class LootPileSpawnOnPlayerItemDropAction extends GameStateAction {
         LootPileId lootPileId = LootPileId.of("LootPile_" + (int) (Math.random() * 10000000)); // TODO: use seeded rng
 
         Set<Item> lootPileItems = new ConcurrentSkipListSet<>();
-        lootPileItems.add(Item
-                              .of()
-                              .setTemplate(item.getTemplate())
-                              .setQuantity(item.getQuantity())
-                              .setQualityModifier(item.getQualityModifier())
-                              .setLootPileId(lootPileId));
+        lootPileItems.add(item.copy().setLootPileId(lootPileId));
 
         LootPile lootPile = LootPile.of(lootPileId, player.getParams().getAreaId(), player.getParams().getPos(), lootPileItems);
 
@@ -71,8 +66,8 @@ public class LootPileSpawnOnPlayerItemDropAction extends GameStateAction {
 
     }
 
-    public static LootPileSpawnOnPlayerItemDropAction of(CreatureId playerId) {
-        LootPileSpawnOnPlayerItemDropAction action = LootPileSpawnOnPlayerItemDropAction.of();
+    public static PickedUpItemDropOnGroundAction of(CreatureId playerId) {
+        PickedUpItemDropOnGroundAction action = PickedUpItemDropOnGroundAction.of();
         action.playerId = playerId;
         return action;
     }

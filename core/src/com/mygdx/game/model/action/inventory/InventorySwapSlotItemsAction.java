@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class InventorySwapSlotsAction extends GameStateAction {
+public class InventorySwapSlotItemsAction extends GameStateAction {
     private CreatureId creatureId;
 
     private Integer fromSlotIndex;
@@ -54,8 +54,8 @@ public class InventorySwapSlotsAction extends GameStateAction {
         playerParams.setEquipmentItemBeingMoved(null);
     }
 
-    public static InventorySwapSlotsAction of(CreatureId creatureId, Integer fromSlotIndex, Integer toSlotIndex) {
-        InventorySwapSlotsAction action = InventorySwapSlotsAction.of();
+    public static InventorySwapSlotItemsAction of(CreatureId creatureId, Integer fromSlotIndex, Integer toSlotIndex) {
+        InventorySwapSlotItemsAction action = InventorySwapSlotItemsAction.of();
         action.creatureId = creatureId;
         action.fromSlotIndex = fromSlotIndex;
         action.toSlotIndex = toSlotIndex;

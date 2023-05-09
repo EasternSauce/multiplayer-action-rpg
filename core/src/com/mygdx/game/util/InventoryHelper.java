@@ -11,8 +11,6 @@ import com.mygdx.game.command.ActionPerformCommand;
 import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.action.inventory.*;
 import com.mygdx.game.model.action.loot.LootPileItemTryPickUpAction;
-import com.mygdx.game.model.action.loot.LootPileSpawnAction;
-import com.mygdx.game.model.action.loot.LootPileSpawnOnPlayerItemDropAction;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.item.EquipmentSlotType;
 import com.mygdx.game.model.item.Item;
@@ -25,8 +23,6 @@ import com.mygdx.game.renderer.util.Rect;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
-import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -347,23 +343,25 @@ public class InventoryHelper {
             Integer equipmentSlotClicked = atomicEquipmentSlotClicked.get();
 
             if (inventoryItemBeingMoved != null && inventorySlotClicked != null) {
-                client.sendTCP(ActionPerformCommand.of(InventorySwapSlotsAction.of(game.getGameState().getThisClientPlayerId(),
-                                                                                   inventoryItemBeingMoved,
-                                                                                   inventorySlotClicked)));
+                client.sendTCP(ActionPerformCommand.of(InventorySwapSlotItemsAction.of(game
+                                                                                           .getGameState()
+                                                                                           .getThisClientPlayerId(),
+                                                                                       inventoryItemBeingMoved,
+                                                                                       inventorySlotClicked)));
             }
             else if (inventoryItemBeingMoved != null && equipmentSlotClicked != null) {
-                client.sendTCP(ActionPerformCommand.of(InventoryAndEquipmentSwapSlotsAction.of(game
-                                                                                                   .getGameState()
-                                                                                                   .getThisClientPlayerId(),
-                                                                                               inventoryItemBeingMoved,
-                                                                                               equipmentSlotClicked)));
+                client.sendTCP(ActionPerformCommand.of(InventoryAndEquipmentSwapSlotItemsAction.of(game
+                                                                                                       .getGameState()
+                                                                                                       .getThisClientPlayerId(),
+                                                                                                   inventoryItemBeingMoved,
+                                                                                                   equipmentSlotClicked)));
             }
             else if (equipmentItemBeingMoved != null && inventorySlotClicked != null) {
-                client.sendTCP(ActionPerformCommand.of(InventoryAndEquipmentSwapSlotsAction.of(game
-                                                                                                   .getGameState()
-                                                                                                   .getThisClientPlayerId(),
-                                                                                               inventorySlotClicked,
-                                                                                               equipmentItemBeingMoved)));
+                client.sendTCP(ActionPerformCommand.of(InventoryAndEquipmentSwapSlotItemsAction.of(game
+                                                                                                       .getGameState()
+                                                                                                       .getThisClientPlayerId(),
+                                                                                                   inventorySlotClicked,
+                                                                                                   equipmentItemBeingMoved)));
             }
             //            else if (equipmentItemBeingMoved != null && equipmentSlotClicked != null) {
             //TODO: INSIDE EQUIPMENT SWAP?
@@ -398,29 +396,10 @@ public class InventoryHelper {
 
         }
         else {
-            if (playerParams.getInventoryItemBeingMoved() != null) {
-                client.sendTCP(ActionPerformCommand.of(LootPileSpawnOnPlayerItemDropAction.of(game
-                                                                                                  .getGameState()
-                                                                                                  .getThisClientPlayerId())));
-            }
-
-            if (playerParams.getEquipmentItemBeingMoved() != null) {
-                Item item = player.getParams().getEquipmentItems().get(playerParams.getEquipmentItemBeingMoved());
-                playerParams.setEquipmentItemBeingMoved(null);
-
-                Set<Item> items = new ConcurrentSkipListSet<>();
-                items.add(item);
-
-                client.sendTCP(ActionPerformCommand.of(LootPileSpawnAction.of(player.getParams().getAreaId(),
-                                                                              player.getParams().getPos(),
-                                                                              items)));
-                client.sendTCP(ActionPerformCommand.of(InventoryMoveCancelAction.of(game
-                                                                                        .getGameState()
-                                                                                        .getThisClientPlayerId())));
-
-            }
+            client.sendTCP(ActionPerformCommand.of(PickedUpItemDropOnGroundAction.of(game
+                                                                                         .getGameState()
+                                                                                         .getThisClientPlayerId())));
         }
-
     }
 
     public static boolean tryPerformItemPickupMenuClick(Client client, CoreGame game) {

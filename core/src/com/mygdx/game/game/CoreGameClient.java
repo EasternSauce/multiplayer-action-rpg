@@ -17,7 +17,7 @@ import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.action.ability.SkillTryPerformAction;
 import com.mygdx.game.model.action.creature.CreatureChangeAimDirectionAction;
 import com.mygdx.game.model.action.creature.CreatureMoveTowardsTargetAction;
-import com.mygdx.game.model.action.inventory.InventoryToggleAction;
+import com.mygdx.game.model.action.inventory.InventoryWindowToggleAction;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
@@ -152,7 +152,7 @@ public class CoreGameClient extends CoreGame {
     }
 
     private void handleInventoryWindowActionInput() {
-        getEndPoint().sendTCP(ActionPerformCommand.of(InventoryToggleAction.of(getGameState().getThisClientPlayerId())));
+        getEndPoint().sendTCP(ActionPerformCommand.of(InventoryWindowToggleAction.of(getGameState().getThisClientPlayerId())));
     }
 
     private void handlePerformAbilityInput(PlayerParams playerParams, int abilitySequenceNumber) {

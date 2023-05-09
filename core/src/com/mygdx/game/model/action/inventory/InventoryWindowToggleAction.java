@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class InventoryToggleAction extends GameStateAction {
+public class InventoryWindowToggleAction extends GameStateAction {
     private CreatureId creatureId;
 
     @Override
@@ -29,8 +29,8 @@ public class InventoryToggleAction extends GameStateAction {
 
     }
 
-    public static InventoryToggleAction of(CreatureId creatureId) {
-        InventoryToggleAction action = InventoryToggleAction.of();
+    public static InventoryWindowToggleAction of(CreatureId creatureId) {
+        InventoryWindowToggleAction action = InventoryWindowToggleAction.of();
         action.creatureId = creatureId;
         return action;
     }

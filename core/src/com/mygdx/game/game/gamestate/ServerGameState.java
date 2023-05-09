@@ -124,7 +124,7 @@ public class ServerGameState extends GameState {
                                                                                                                 Map.Entry::getKey,
                                                                                                                 Map.Entry::getValue)));
 
-        GameStateData personalizedGameStateData = GameStateData.of(data,
+        GameStateData personalizedGameStateData = GameStateData.of(dataHolder.getData(),
                                                                    personalizedCreatures,
                                                                    personalizedAbilities,
                                                                    personalizedLootPiles);
@@ -133,7 +133,7 @@ public class ServerGameState extends GameState {
     }
 
     public void sendGameDataWithEntitiesEmpty(Connection connection) {
-        GameStateData gameStateDataWithoutEntities = GameStateData.copyWithoutEntities(data);
+        GameStateData gameStateDataWithoutEntities = GameStateData.copyWithoutEntities(dataHolder.getData());
 
         connection.sendTCP(GameStateBroadcast.of(gameStateDataWithoutEntities));
     }

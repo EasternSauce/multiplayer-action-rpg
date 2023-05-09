@@ -54,4 +54,13 @@ public class Item implements Comparable<Item> {
     public Integer getWorth() {
         return (int) (template.getWorth() * qualityModifier);
     }
+
+    public Item copy() {
+        return Item
+            .of()
+            .setTemplate(template)
+            .setQuantity(quantity)
+            .setQualityModifier(qualityModifier)
+            .setGrantedSkills(new ConcurrentSkipListMap<>(grantedSkills));
+    }
 }

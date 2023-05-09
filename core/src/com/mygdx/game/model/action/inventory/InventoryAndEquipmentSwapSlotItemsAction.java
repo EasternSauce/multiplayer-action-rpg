@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class InventoryAndEquipmentSwapSlotsAction extends GameStateAction {
+public class InventoryAndEquipmentSwapSlotItemsAction extends GameStateAction {
     private CreatureId creatureId;
 
     private Integer inventoryIndex;
@@ -68,8 +68,9 @@ public class InventoryAndEquipmentSwapSlotsAction extends GameStateAction {
         slotsToRemove.forEach(slotIndex -> playerParams.getSkillMenuSlots().remove(slotIndex));
     }
 
-    public static InventoryAndEquipmentSwapSlotsAction of(CreatureId creatureId, Integer inventoryIndex, Integer equipmentIndex) {
-        InventoryAndEquipmentSwapSlotsAction action = InventoryAndEquipmentSwapSlotsAction.of();
+    public static InventoryAndEquipmentSwapSlotItemsAction of(CreatureId creatureId, Integer inventoryIndex,
+                                                              Integer equipmentIndex) {
+        InventoryAndEquipmentSwapSlotItemsAction action = InventoryAndEquipmentSwapSlotItemsAction.of();
         action.creatureId = creatureId;
         action.inventoryIndex = inventoryIndex;
         action.equipmentIndex = equipmentIndex;

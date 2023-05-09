@@ -26,7 +26,7 @@ public class ClientGameState extends GameState {
     }
 
     public void createEventsFromReceivedGameStateData(GameStateData newGameStateData, EntityEventProcessor eventProcessor) {
-        GameStateData oldGameStateData = data;
+        GameStateData oldGameStateData = dataHolder.getData();
 
         Set<CreatureId> oldCreatureIds = oldGameStateData.getCreatures().keySet();
         Set<CreatureId> newCreatureIds = newGameStateData.getCreatures().keySet();
@@ -62,7 +62,7 @@ public class ClientGameState extends GameState {
     }
 
     public void setNewGameState(GameStateData receivedGameStateData) {
-        data = receivedGameStateData;
+        dataHolder.setData(receivedGameStateData);
     }
 
     @Override

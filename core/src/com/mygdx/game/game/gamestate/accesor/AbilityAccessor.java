@@ -1,7 +1,10 @@
-package com.mygdx.game.game.gamestate;
+package com.mygdx.game.game.gamestate.accesor;
 
 import com.mygdx.game.Constants;
 import com.mygdx.game.game.CoreGame;
+import com.mygdx.game.game.gamestate.GameState;
+import com.mygdx.game.game.gamestate.GameStateDataHolder;
+import com.mygdx.game.model.GameStateData;
 import com.mygdx.game.model.ability.*;
 import com.mygdx.game.model.action.ability.AbilityActivateAction;
 import com.mygdx.game.model.action.ability.AbilityTryAddAction;
@@ -23,18 +26,23 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-public class GameStateAbilityAccessor {
+public class AbilityAccessor {
     private GameState gameState;
+    private GameStateDataHolder dataHolder;
+
+    private GameStateData getData() {
+        return dataHolder.getData();
+    }
 
     public Ability getAbility(AbilityId abilityId) {
-        if (abilityId == null || !gameState.data.getAbilities().containsKey(abilityId)) {
+        if (abilityId == null || !getData().getAbilities().containsKey(abilityId)) {
             return null;
         }
-        return gameState.data.getAbilities().get(abilityId);
+        return getData().getAbilities().get(abilityId);
     }
 
     public Ability getAbilityBySkillType(CreatureId creatureId, SkillType skillType) {
-        Optional<Ability> first = gameState.data
+        Optional<Ability> first = getData()
             .getAbilities()
             .values()
             .stream()
@@ -46,7 +54,7 @@ public class GameStateAbilityAccessor {
     }
 
     public Map<AbilityId, Ability> getAbilities() {
-        return gameState.data.getAbilities();
+        return getData().getAbilities();
     }
 
     public Set<AbilityId> getAbilitiesWithinRange(Creature player) {

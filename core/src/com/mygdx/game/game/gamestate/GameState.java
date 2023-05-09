@@ -1,5 +1,7 @@
 package com.mygdx.game.game.gamestate;
 
+import com.mygdx.game.game.gamestate.accesor.AbilityAccessor;
+import com.mygdx.game.game.gamestate.accesor.CreatureAccessor;
 import com.mygdx.game.model.GameStateData;
 import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.area.AreaGate;
@@ -14,64 +16,68 @@ import java.util.Map;
 import java.util.Set;
 
 public abstract class GameState {
-    protected GameStateData data = GameStateData.of();
+    protected final GameStateDataHolder dataHolder = GameStateDataHolder.of(GameStateData.of());
 
-    protected GameStateAbilityAccessor abilityAccessor = GameStateAbilityAccessor.of(this);
-    protected GameStateCreatureAccessor creatureAccessor = GameStateCreatureAccessor.of(this);
+    protected AbilityAccessor abilityAccessor = AbilityAccessor.of(this, dataHolder);
+    protected CreatureAccessor creatureAccessor = CreatureAccessor.of(this, dataHolder);
 
-    public GameStateAbilityAccessor accessAbilities() {
+    private GameStateData getData() {
+        return dataHolder.getData();
+    }
+
+    public AbilityAccessor accessAbilities() {
         return abilityAccessor;
     }
 
-    public GameStateCreatureAccessor accessCreatures() {
+    public CreatureAccessor accessCreatures() {
         return creatureAccessor;
     }
 
     public void initPlayerParams(CreatureId playerId) {
-        data.getPlayerParams().put(playerId, PlayerParams.of());
+        getData().getPlayerParams().put(playerId, PlayerParams.of());
     }
 
     public PlayerParams getPlayerParams(CreatureId creatureId) {
         if (creatureId != null) {
-            return data.getPlayerParams().get(creatureId);
+            return getData().getPlayerParams().get(creatureId);
         }
         return null;
     }
 
     public Set<AreaGate> getAreaGates() {
-        return data.getAreaGates();
+        return getData().getAreaGates();
     }
 
     public LootPile getLootPile(LootPileId lootPileId) {
-        return data.getLootPiles().get(lootPileId);
+        return getData().getLootPiles().get(lootPileId);
     }
 
     public Map<LootPileId, LootPile> getLootPiles() {
-        return data.getLootPiles();
+        return getData().getLootPiles();
     }
 
     public Float nextRandomValue() {
-        float result = RandomHelper.seededRandomFloat(data.getLastRandomValue());
+        float result = RandomHelper.seededRandomFloat(getData().getLastRandomValue());
 
-        data.setLastRandomValue(result);
+        getData().setLastRandomValue(result);
 
         return result;
     }
 
     public Float getTime() {
-        return data.getGeneralTimer().getTime();
+        return getData().getGeneralTimer().getTime();
     }
 
     public void updateGeneralTimer(float delta) {
-        data.getGeneralTimer().update(delta);
+        getData().getGeneralTimer().update(delta);
     }
 
     public void setAreaGates(Set<AreaGate> areaGates) {
-        data.setAreaGates(areaGates);
+        getData().setAreaGates(areaGates);
     }
 
     public AreaId getDefaultAreaId() {
-        return data.getDefaultAreaId();
+        return getData().getDefaultAreaId();
     }
 
     public abstract Set<CreatureId> getCreaturesToUpdate();

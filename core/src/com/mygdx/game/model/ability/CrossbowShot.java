@@ -97,7 +97,8 @@ public class CrossbowShot extends Ability {
             Vector2 chainedDirVector = calculateShootingVectorForNextBolt(currentDirVector,
                                                                           aimDirection,
                                                                           shortestAngleRotation,
-                                                                          increment);
+                                                                          increment,
+                                                                          game);
 
             game
                 .getGameState()
@@ -113,10 +114,11 @@ public class CrossbowShot extends Ability {
         }
     }
 
-    private static Vector2 calculateShootingVectorForNextBolt(Vector2 currentDirVector, Vector2 aimDirection,
-                                                              float shortestAngleRotation, float increment) {
-        float aimDirectionMaximumAngle = 60;
-        if (shortestAngleRotation < -aimDirectionMaximumAngle || shortestAngleRotation > aimDirectionMaximumAngle) {
+    private Vector2 calculateShootingVectorForNextBolt(Vector2 currentDirVector, Vector2 aimDirection,
+                                                       float shortestAngleRotation, float increment, CoreGame game) {
+        //        float aimDirectionMaximumAngle = 60;
+        Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
+        if (creature != null && creature.getParams().getIsMoving()) {
             return currentDirVector.copy();
         }
         else if (shortestAngleRotation > increment) {

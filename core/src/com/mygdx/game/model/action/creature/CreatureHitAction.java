@@ -40,7 +40,7 @@ public class CreatureHitAction extends GameStateAction {
         Creature targetCreature = game.getGameState().accessCreatures().getCreature(targetId);
         Creature attackerCreature = game.getGameState().accessCreatures().getCreature(attackerId);
 
-        if (targetCreature == null) {
+        if (targetCreature == null || attackerCreature == null) {
             return;
         }
 

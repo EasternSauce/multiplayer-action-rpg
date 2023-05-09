@@ -1,6 +1,9 @@
-package com.mygdx.game.game.gamestate;
+package com.mygdx.game.game.gamestate.accesor;
 
 import com.mygdx.game.Constants;
+import com.mygdx.game.game.gamestate.GameState;
+import com.mygdx.game.game.gamestate.GameStateDataHolder;
+import com.mygdx.game.model.GameStateData;
 import com.mygdx.game.model.action.ability.SkillTryPerformAction;
 import com.mygdx.game.model.action.creature.CreatureMovingVectorSetAction;
 import com.mygdx.game.model.creature.Creature;
@@ -20,40 +23,45 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-public class GameStateCreatureAccessor {
+public class CreatureAccessor {
     private GameState gameState;
+    private GameStateDataHolder dataHolder;
+
+    private GameStateData getData() {
+        return dataHolder.getData();
+    }
 
     public Map<CreatureId, Creature> getRemovedCreatures() {
-        return gameState.data.getRemovedCreatures();
+        return getData().getRemovedCreatures();
     }
 
     public Map<CreatureId, Creature> getCreatures() {
-        return gameState.data.getCreatures();
+        return getData().getCreatures();
     }
 
     public Vector2 getCreaturePos(CreatureId creatureId) {
-        if (!gameState.data.getCreatures().containsKey(creatureId)) {
+        if (!getData().getCreatures().containsKey(creatureId)) {
             return null;
         }
-        return gameState.data.getCreatures().get(creatureId).getParams().getPos();
+        return getData().getCreatures().get(creatureId).getParams().getPos();
     }
 
     public Creature getCreature(CreatureId creatureId) {
-        if (creatureId == null || !gameState.data.getCreatures().containsKey(creatureId)) {
+        if (creatureId == null || !getData().getCreatures().containsKey(creatureId)) {
             return null;
         }
-        return gameState.data.getCreatures().get(creatureId);
+        return getData().getCreatures().get(creatureId);
     }
 
     public Set<CreatureId> getCreaturesToUpdateForPlayerCreatureId(CreatureId playerCreatureId) {
-        Creature player = gameState.data.getCreatures().get(playerCreatureId);
+        Creature player = getData().getCreatures().get(playerCreatureId);
 
         if (player == null) {
             return new HashSet<>();
         }
 
-        return gameState.data.getCreatures().keySet().stream().filter(creatureId -> {
-            Creature creature = gameState.data.getCreatures().get(creatureId);
+        return getData().getCreatures().keySet().stream().filter(creatureId -> {
+            Creature creature = getData().getCreatures().get(creatureId);
             if (creature != null) {
                 return player.getParams().getAreaId().equals(creature.getParams().getAreaId()) &&
                        creature.getParams().getPos().distance(player.getParams().getPos()) < Constants.CLIENT_GAME_UPDATE_RANGE;
