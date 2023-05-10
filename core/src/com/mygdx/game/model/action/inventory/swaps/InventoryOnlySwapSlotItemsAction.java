@@ -1,4 +1,4 @@
-package com.mygdx.game.model.action.inventory;
+package com.mygdx.game.model.action.inventory.swaps;
 
 import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.action.GameStateAction;
@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class InventorySwapSlotItemsAction extends GameStateAction {
+public class InventoryOnlySwapSlotItemsAction extends GameStateAction {
     private CreatureId creatureId;
 
     private Integer fromSlotIndex;
@@ -54,8 +54,8 @@ public class InventorySwapSlotItemsAction extends GameStateAction {
         playerParams.setEquipmentItemBeingMoved(null);
     }
 
-    public static InventorySwapSlotItemsAction of(CreatureId creatureId, Integer fromSlotIndex, Integer toSlotIndex) {
-        InventorySwapSlotItemsAction action = InventorySwapSlotItemsAction.of();
+    public static InventoryOnlySwapSlotItemsAction of(CreatureId creatureId, Integer fromSlotIndex, Integer toSlotIndex) {
+        InventoryOnlySwapSlotItemsAction action = InventoryOnlySwapSlotItemsAction.of();
         action.creatureId = creatureId;
         action.fromSlotIndex = fromSlotIndex;
         action.toSlotIndex = toSlotIndex;

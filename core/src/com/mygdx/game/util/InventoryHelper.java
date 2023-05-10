@@ -9,7 +9,12 @@ import com.esotericsoftware.kryonet.Client;
 import com.mygdx.game.assets.Assets;
 import com.mygdx.game.command.ActionPerformCommand;
 import com.mygdx.game.game.CoreGame;
-import com.mygdx.game.model.action.inventory.*;
+import com.mygdx.game.model.action.inventory.EquipmentItemPickUpAction;
+import com.mygdx.game.model.action.inventory.InventoryItemPickUpAction;
+import com.mygdx.game.model.action.inventory.InventoryPickUpCancelAction;
+import com.mygdx.game.model.action.inventory.PickedUpItemDropOnGroundAction;
+import com.mygdx.game.model.action.inventory.swaps.InventoryAndEquipmentSwapSlotItemsAction;
+import com.mygdx.game.model.action.inventory.swaps.InventoryOnlySwapSlotItemsAction;
 import com.mygdx.game.model.action.loot.LootPileItemTryPickUpAction;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.item.EquipmentSlotType;
@@ -343,11 +348,11 @@ public class InventoryHelper {
             Integer equipmentSlotClicked = atomicEquipmentSlotClicked.get();
 
             if (inventoryItemBeingMoved != null && inventorySlotClicked != null) {
-                client.sendTCP(ActionPerformCommand.of(InventorySwapSlotItemsAction.of(game
-                                                                                           .getGameState()
-                                                                                           .getThisClientPlayerId(),
-                                                                                       inventoryItemBeingMoved,
-                                                                                       inventorySlotClicked)));
+                client.sendTCP(ActionPerformCommand.of(InventoryOnlySwapSlotItemsAction.of(game
+                                                                                               .getGameState()
+                                                                                               .getThisClientPlayerId(),
+                                                                                           inventoryItemBeingMoved,
+                                                                                           inventorySlotClicked)));
             }
             else if (inventoryItemBeingMoved != null && equipmentSlotClicked != null) {
                 client.sendTCP(ActionPerformCommand.of(InventoryAndEquipmentSwapSlotItemsAction.of(game
@@ -363,13 +368,11 @@ public class InventoryHelper {
                                                                                                    inventorySlotClicked,
                                                                                                    equipmentItemBeingMoved)));
             }
-            //            else if (equipmentItemBeingMoved != null && equipmentSlotClicked != null) {
-            //TODO: INSIDE EQUIPMENT SWAP?
-            //                client.sendTCP(PerformActionCommand.of(InventorySwapSlotsAction.of(gameState
-            //                .getThisClientPlayerId(),
-            //                                                                                   equipmentItemBeingMoved,
-            //                                                                                   equipmentSlotClicked)));
-            //            }
+            else if (equipmentItemBeingMoved != null && equipmentSlotClicked != null) {
+                client.sendTCP(ActionPerformCommand.of(InventoryPickUpCancelAction.of(game
+                                                                                          .getGameState()
+                                                                                          .getThisClientPlayerId())));
+            }
             else if (inventorySlotClicked != null) {
                 if (player.getParams().getInventoryItems().containsKey(inventorySlotClicked)) {
                     client.sendTCP(ActionPerformCommand.of(InventoryItemPickUpAction.of(game
@@ -389,9 +392,9 @@ public class InventoryHelper {
                 }
             }
             else {
-                client.sendTCP(ActionPerformCommand.of(InventoryMoveCancelAction.of(game
-                                                                                        .getGameState()
-                                                                                        .getThisClientPlayerId())));
+                client.sendTCP(ActionPerformCommand.of(InventoryPickUpCancelAction.of(game
+                                                                                          .getGameState()
+                                                                                          .getThisClientPlayerId())));
             }
 
         }

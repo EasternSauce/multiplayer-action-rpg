@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class InventoryMoveCancelAction extends GameStateAction {
+public class InventoryPickUpCancelAction extends GameStateAction {
     private CreatureId creatureId;
 
     @Override
@@ -30,8 +30,8 @@ public class InventoryMoveCancelAction extends GameStateAction {
         }
     }
 
-    public static InventoryMoveCancelAction of(CreatureId creatureId) {
-        InventoryMoveCancelAction action = InventoryMoveCancelAction.of();
+    public static InventoryPickUpCancelAction of(CreatureId creatureId) {
+        InventoryPickUpCancelAction action = InventoryPickUpCancelAction.of();
         action.creatureId = creatureId;
         return action;
     }
