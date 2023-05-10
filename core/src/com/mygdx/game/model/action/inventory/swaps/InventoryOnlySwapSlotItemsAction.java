@@ -5,7 +5,7 @@ import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.item.Item;
-import com.mygdx.game.model.util.PlayerParams;
+import com.mygdx.game.model.util.PlayerConfig;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -28,7 +28,7 @@ public class InventoryOnlySwapSlotItemsAction extends GameStateAction {
     @Override
     public void applyToGame(CoreGame game) {
         Creature player = game.getGameState().accessCreatures().getCreature(creatureId);
-        PlayerParams playerParams = game.getGameState().getPlayerParams(creatureId);
+        PlayerConfig playerConfig = game.getGameState().getPlayerConfig(creatureId);
 
         Item itemFrom = player.getParams().getInventoryItems().get(fromSlotIndex);
         //noinspection UnnecessaryLocalVariable
@@ -50,8 +50,8 @@ public class InventoryOnlySwapSlotItemsAction extends GameStateAction {
             player.getParams().getInventoryItems().remove(fromSlotIndex);
         }
 
-        playerParams.setInventoryItemBeingMoved(null);
-        playerParams.setEquipmentItemBeingMoved(null);
+        playerConfig.setInventoryItemBeingMoved(null);
+        playerConfig.setEquipmentItemBeingMoved(null);
     }
 
     public static InventoryOnlySwapSlotItemsAction of(CreatureId creatureId, Integer fromSlotIndex, Integer toSlotIndex) {

@@ -6,7 +6,7 @@ import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.item.EquipmentSlotType;
 import com.mygdx.game.model.item.Item;
-import com.mygdx.game.model.util.PlayerParams;
+import com.mygdx.game.model.util.PlayerConfig;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -32,7 +32,7 @@ public class InventoryAndEquipmentSwapSlotItemsAction extends GameStateAction {
     @Override
     public void applyToGame(CoreGame game) {
         Creature player = game.getGameState().accessCreatures().getCreature(creatureId);
-        PlayerParams playerParams = game.getGameState().getPlayerParams(creatureId);
+        PlayerConfig playerConfig = game.getGameState().getPlayerConfig(creatureId);
 
         Item inventoryItem = player.getParams().getInventoryItems().get(inventoryIndex);
         Item equipmentItem = player.getParams().getEquipmentItems().get(equipmentIndex);
@@ -42,16 +42,16 @@ public class InventoryAndEquipmentSwapSlotItemsAction extends GameStateAction {
             handleSwapInInventory(player, inventoryItem);
         }
 
-        finalizeItemSwap(player, playerParams);
+        finalizeItemSwap(player, playerConfig);
     }
 
-    private static void finalizeItemSwap(Creature player, PlayerParams playerParams) {
-        playerParams.setInventoryItemBeingMoved(null);
-        playerParams.setEquipmentItemBeingMoved(null);
+    private static void finalizeItemSwap(Creature player, PlayerConfig playerConfig) {
+        playerConfig.setInventoryItemBeingMoved(null);
+        playerConfig.setEquipmentItemBeingMoved(null);
 
-        playerParams.setIsSkillMenuPickerSlotBeingChanged(null);
+        playerConfig.setIsSkillMenuPickerSlotBeingChanged(null);
 
-        removeSkillFromSkillMenuOnItemUnequip(player, playerParams);
+        removeSkillFromSkillMenuOnItemUnequip(player, playerConfig);
     }
 
     private void handleSwapInInventory(Creature player, Item inventoryItem) {
@@ -72,14 +72,14 @@ public class InventoryAndEquipmentSwapSlotItemsAction extends GameStateAction {
         }
     }
 
-    private static void removeSkillFromSkillMenuOnItemUnequip(Creature player, PlayerParams playerParams) {
+    private static void removeSkillFromSkillMenuOnItemUnequip(Creature player, PlayerConfig playerConfig) {
         Set<Integer> slotsToRemove = new ConcurrentSkipListSet<>();
-        playerParams.getSkillMenuSlots().forEach((slotIndex, skillType) -> {
+        playerConfig.getSkillMenuSlots().forEach((slotIndex, skillType) -> {
             if (!player.availableSkills().containsKey(skillType)) {
                 slotsToRemove.add(slotIndex);
             }
         });
-        slotsToRemove.forEach(slotIndex -> playerParams.getSkillMenuSlots().remove(slotIndex));
+        slotsToRemove.forEach(slotIndex -> playerConfig.getSkillMenuSlots().remove(slotIndex));
     }
 
     private boolean checkInventoryItemSlotTypeMatchesEquipmentSlot(Item inventoryItem) {

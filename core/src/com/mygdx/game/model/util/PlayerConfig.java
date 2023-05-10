@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-public class PlayerParams {
+public class PlayerConfig {
     Boolean isInventoryVisible = false;
     Integer inventoryItemBeingMoved;
     Integer equipmentItemBeingMoved;

@@ -3,7 +3,7 @@ package com.mygdx.game.model.action.skillmenu;
 import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.creature.CreatureId;
-import com.mygdx.game.model.util.PlayerParams;
+import com.mygdx.game.model.util.PlayerConfig;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,9 +22,9 @@ public class SkillPickerMenuDeactivateAction extends GameStateAction {
 
     @Override
     public void applyToGame(CoreGame game) {
-        PlayerParams playerParams = game.getGameState().getPlayerParams(playerId);
+        PlayerConfig playerConfig = game.getGameState().getPlayerConfig(playerId);
 
-        playerParams.setIsSkillMenuPickerSlotBeingChanged(null);
+        playerConfig.setIsSkillMenuPickerSlotBeingChanged(null);
     }
 
     public static SkillPickerMenuDeactivateAction of(CreatureId playerId) {

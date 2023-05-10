@@ -8,7 +8,7 @@ import com.mygdx.game.model.area.AreaGate;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.Player;
-import com.mygdx.game.model.util.PlayerParams;
+import com.mygdx.game.model.util.PlayerConfig;
 import com.mygdx.game.model.util.TeleportEvent;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.physics.event.*;
@@ -109,20 +109,20 @@ public class PhysicsHelper {
 
                 //                if (lootPile != null) lootPile.isLooted(true);
 
-                PlayerParams playerParams = game.getGameState().getPlayerParams(event.getCreatureId());
+                PlayerConfig playerConfig = game.getGameState().getPlayerConfig(event.getCreatureId());
 
-                if (playerParams != null) {
-                    playerParams.getItemPickupMenuLootPiles().add(event.getLootPileId());
+                if (playerConfig != null) {
+                    playerConfig.getItemPickupMenuLootPiles().add(event.getLootPileId());
                 }
 
             }
             else if (physicsEvent instanceof CreatureLeavesLootPileEvent) {
                 CreatureLeavesLootPileEvent event = (CreatureLeavesLootPileEvent) physicsEvent;
 
-                PlayerParams playerParams = game.getGameState().getPlayerParams(event.getCreatureId());
+                PlayerConfig playerConfig = game.getGameState().getPlayerConfig(event.getCreatureId());
 
-                if (playerParams != null) {
-                    playerParams.getItemPickupMenuLootPiles().remove(event.getLootPileId());
+                if (playerConfig != null) {
+                    playerConfig.getItemPickupMenuLootPiles().remove(event.getLootPileId());
                 }
 
             }

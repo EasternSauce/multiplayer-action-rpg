@@ -120,7 +120,7 @@ public class EndPointHelper {
         endPoint.getKryo().register(LootPileDespawnAction.class);
         endPoint.getKryo().register(LootPileItemTryPickUpAction.class);
         endPoint.getKryo().register(LootPileSpawnAction.class);
-        endPoint.getKryo().register(PickedUpItemDropOnGroundAction.class);
+        endPoint.getKryo().register(ItemDropOnGroundAction.class);
         endPoint.getKryo().register(SkillPickerMenuActivateAction.class);
         endPoint.getKryo().register(SkillPickerMenuSlotChangeAction.class);
         endPoint.getKryo().register(SkillPickerMenuDeactivateAction.class);
@@ -131,7 +131,7 @@ public class EndPointHelper {
         endPoint.getKryo().register(ItemTemplate.class);
         endPoint.getKryo().register(Item.class);
 
-        endPoint.getKryo().register(PlayerParams.class);
+        endPoint.getKryo().register(PlayerConfig.class);
         endPoint.getKryo().register(ActionsHolder.class);
         endPoint.getKryo().register(GameStateData.class);
         endPoint.getKryo().register(GameStateBroadcast.class);

@@ -26,7 +26,7 @@ import com.mygdx.game.model.item.EquipmentSlotType;
 import com.mygdx.game.model.item.Item;
 import com.mygdx.game.model.skill.SkillType;
 import com.mygdx.game.model.util.GameStateBroadcast;
-import com.mygdx.game.model.util.PlayerParams;
+import com.mygdx.game.model.util.PlayerConfig;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.renderer.RenderingLayer;
 import com.mygdx.game.renderer.util.SkillMenuHelper;
@@ -99,18 +99,18 @@ public class CoreGameClient extends CoreGame {
             handleDeleteChatMessageCharacterNoInput();
         }
 
-        PlayerParams playerParams = gameState.getPlayerParams(getGameState().getThisClientPlayerId());
+        PlayerConfig playerConfig = gameState.getPlayerConfig(getGameState().getThisClientPlayerId());
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            handleExitWindowInput(playerParams);
+            handleExitWindowInput(playerConfig);
         }
 
         if (!getChat().getIsTyping()) {
             if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-                handleActionButtonInput(playerParams);
+                handleActionButtonInput(playerConfig);
             }
             if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-                handleActionButtonHoldInput(playerParams);
+                handleActionButtonHoldInput(playerConfig);
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.N)) {
                 handleDebugInformationQueryInput();
@@ -119,13 +119,13 @@ public class CoreGameClient extends CoreGame {
                 handleAttackInput();
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
-                handlePerformAbilityInput(playerParams, 0);
+                handlePerformAbilityInput(playerConfig, 0);
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
-                handlePerformAbilityInput(playerParams, 1);
+                handlePerformAbilityInput(playerConfig, 1);
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
-                handlePerformAbilityInput(playerParams, 2);
+                handlePerformAbilityInput(playerConfig, 2);
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
                 handleInventoryWindowActionInput();
@@ -155,14 +155,14 @@ public class CoreGameClient extends CoreGame {
         getEndPoint().sendTCP(ActionPerformCommand.of(InventoryWindowToggleAction.of(getGameState().getThisClientPlayerId())));
     }
 
-    private void handlePerformAbilityInput(PlayerParams playerParams, int abilitySequenceNumber) {
+    private void handlePerformAbilityInput(PlayerConfig playerConfig, int abilitySequenceNumber) {
         Creature player = gameState.accessCreatures().getCreatures().get(getGameState().getThisClientPlayerId());
 
         Vector2 dirVector = mousePosRelativeToCenter();
 
-        if (playerParams.getSkillMenuSlots().containsKey(abilitySequenceNumber)) {
+        if (playerConfig.getSkillMenuSlots().containsKey(abilitySequenceNumber)) {
             getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(getGameState().getThisClientPlayerId(),
-                                                                                   playerParams
+                                                                                   playerConfig
                                                                                        .getSkillMenuSlots()
                                                                                        .get(abilitySequenceNumber),
                                                                                    player.getParams().getPos(),
@@ -208,8 +208,8 @@ public class CoreGameClient extends CoreGame {
         System.out.println("Vector2.of(" + pos.getX() + "f, " + pos.getY() + "f),");
     }
 
-    private void handleActionButtonHoldInput(PlayerParams playerParams) {
-        if (!playerParams.getIsInventoryVisible()) {
+    private void handleActionButtonHoldInput(PlayerConfig playerConfig) {
+        if (!playerConfig.getIsInventoryVisible()) {
             Vector2 mousePos = mousePosRelativeToCenter();
 
             Creature player = gameState.accessCreatures().getCreatures().get(getGameState().getThisClientPlayerId());
@@ -224,18 +224,18 @@ public class CoreGameClient extends CoreGame {
         }
     }
 
-    private void handleActionButtonInput(PlayerParams playerParams) {
-        if (playerParams.getIsInventoryVisible()) {
+    private void handleActionButtonInput(PlayerConfig playerConfig) {
+        if (playerConfig.getIsInventoryVisible()) {
             InventoryHelper.performMoveItemClick(getEndPoint(), this);
         }
-        else if (!playerParams.getIsInventoryVisible() && !playerParams.getItemPickupMenuLootPiles().isEmpty()) {
+        else if (!playerConfig.getIsInventoryVisible() && !playerConfig.getItemPickupMenuLootPiles().isEmpty()) {
             boolean isSuccessful = InventoryHelper.tryPerformItemPickupMenuClick(getEndPoint(), this);
             if (isSuccessful) {
                 menuClickTime = gameState.getTime();
             }
 
         }
-        else if (!playerParams.getIsInventoryVisible() && playerParams.getIsSkillMenuPickerSlotBeingChanged() != null) {
+        else if (!playerConfig.getIsInventoryVisible() && playerConfig.getIsSkillMenuPickerSlotBeingChanged() != null) {
             SkillMenuHelper.skillPickerMenuClick(getEndPoint(), this);
 
             menuClickTime = gameState.getTime();
@@ -250,14 +250,14 @@ public class CoreGameClient extends CoreGame {
         }
     }
 
-    private void handleExitWindowInput(PlayerParams playerParams) {
+    private void handleExitWindowInput(PlayerConfig playerConfig) {
         if (getChat().getIsTyping()) {
             if (!getChat().getCurrentMessage().isEmpty()) {
                 getChat().setCurrentMessage("");
                 getChat().setIsTyping(false);
             }
         }
-        else if (playerParams.getIsInventoryVisible()) {
+        else if (playerConfig.getIsInventoryVisible()) {
             handleInventoryWindowActionInput();
 
         }

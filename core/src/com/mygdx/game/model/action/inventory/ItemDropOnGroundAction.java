@@ -7,7 +7,7 @@ import com.mygdx.game.model.area.LootPileId;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.item.Item;
-import com.mygdx.game.model.util.PlayerParams;
+import com.mygdx.game.model.util.PlayerConfig;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,7 +20,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class PickedUpItemDropOnGroundAction extends GameStateAction {
+public class ItemDropOnGroundAction extends GameStateAction {
     private CreatureId playerId;
 
     @Override
@@ -31,7 +31,7 @@ public class PickedUpItemDropOnGroundAction extends GameStateAction {
     @Override
     public void applyToGame(CoreGame game) {
 
-        PlayerParams playerParams = game.getGameState().getPlayerParams(playerId);
+        PlayerConfig playerConfig = game.getGameState().getPlayerConfig(playerId);
 
         Creature player = game.getGameState().accessCreatures().getCreature(playerId);
 
@@ -39,15 +39,15 @@ public class PickedUpItemDropOnGroundAction extends GameStateAction {
         Map<Integer, Item> equipmentItems = player.getParams().getEquipmentItems();
 
         Item item;
-        if (playerParams.getInventoryItemBeingMoved() != null) {
-            item = inventoryItems.get(playerParams.getInventoryItemBeingMoved());
-            inventoryItems.remove(playerParams.getInventoryItemBeingMoved());
-            playerParams.setInventoryItemBeingMoved(null);
+        if (playerConfig.getInventoryItemBeingMoved() != null) {
+            item = inventoryItems.get(playerConfig.getInventoryItemBeingMoved());
+            inventoryItems.remove(playerConfig.getInventoryItemBeingMoved());
+            playerConfig.setInventoryItemBeingMoved(null);
         }
-        else if (playerParams.getEquipmentItemBeingMoved() != null) {
-            item = equipmentItems.get(playerParams.getEquipmentItemBeingMoved());
-            equipmentItems.remove(playerParams.getEquipmentItemBeingMoved());
-            playerParams.setEquipmentItemBeingMoved(null);
+        else if (playerConfig.getEquipmentItemBeingMoved() != null) {
+            item = equipmentItems.get(playerConfig.getEquipmentItemBeingMoved());
+            equipmentItems.remove(playerConfig.getEquipmentItemBeingMoved());
+            playerConfig.setEquipmentItemBeingMoved(null);
         }
         else {
             throw new RuntimeException("impossible state");
@@ -66,8 +66,8 @@ public class PickedUpItemDropOnGroundAction extends GameStateAction {
 
     }
 
-    public static PickedUpItemDropOnGroundAction of(CreatureId playerId) {
-        PickedUpItemDropOnGroundAction action = PickedUpItemDropOnGroundAction.of();
+    public static ItemDropOnGroundAction of(CreatureId playerId) {
+        ItemDropOnGroundAction action = ItemDropOnGroundAction.of();
         action.playerId = playerId;
         return action;
     }

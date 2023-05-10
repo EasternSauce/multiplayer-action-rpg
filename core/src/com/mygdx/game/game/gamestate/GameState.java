@@ -9,7 +9,7 @@ import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.model.area.LootPile;
 import com.mygdx.game.model.area.LootPileId;
 import com.mygdx.game.model.creature.CreatureId;
-import com.mygdx.game.model.util.PlayerParams;
+import com.mygdx.game.model.util.PlayerConfig;
 import com.mygdx.game.util.RandomHelper;
 
 import java.util.Map;
@@ -34,12 +34,12 @@ public abstract class GameState {
     }
 
     public void initPlayerParams(CreatureId playerId) {
-        getData().getPlayerParams().put(playerId, PlayerParams.of());
+        getData().getPlayerConfig().put(playerId, PlayerConfig.of());
     }
 
-    public PlayerParams getPlayerParams(CreatureId creatureId) {
+    public PlayerConfig getPlayerConfig(CreatureId creatureId) {
         if (creatureId != null) {
-            return getData().getPlayerParams().get(creatureId);
+            return getData().getPlayerConfig().get(creatureId);
         }
         return null;
     }

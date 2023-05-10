@@ -11,7 +11,7 @@ import com.mygdx.game.model.action.skillmenu.SkillPickerMenuDeactivateAction;
 import com.mygdx.game.model.action.skillmenu.SkillPickerMenuSlotChangeAction;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.skill.SkillType;
-import com.mygdx.game.model.util.PlayerParams;
+import com.mygdx.game.model.util.PlayerConfig;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.renderer.RenderingLayer;
 
@@ -43,9 +43,9 @@ public class SkillMenuHelper { // TODO: maybe shouldn't be a helper class
     }
 
     public static void renderSkillMenu(RenderingLayer renderingLayer, CoreGame game) {
-        PlayerParams playerParams = game.getGameState().getPlayerParams(game.getGameState().getThisClientPlayerId());
+        PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
 
-        if (playerParams == null) {
+        if (playerConfig == null) {
             return;
         }
 
@@ -63,7 +63,7 @@ public class SkillMenuHelper { // TODO: maybe shouldn't be a helper class
                 .getShapeDrawer()
                 .filledRectangle(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(), Color.BLACK);
 
-            SkillType skillType = playerParams.getSkillMenuSlots().get(i.get());
+            SkillType skillType = playerConfig.getSkillMenuSlots().get(i.get());
 
             if (skillType != null) {
                 Assets.renderMediumFont(renderingLayer,
@@ -81,10 +81,10 @@ public class SkillMenuHelper { // TODO: maybe shouldn't be a helper class
     }
 
     public static void renderSkillPickerMenu(Creature player, RenderingLayer renderingLayer, CoreGame game) {
-        PlayerParams playerParams = game.getGameState().getPlayerParams(game.getGameState().getThisClientPlayerId());
+        PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
 
-        if (playerParams == null || playerParams.getIsInventoryVisible() ||
-            playerParams.getIsSkillMenuPickerSlotBeingChanged() == null) {
+        if (playerConfig == null || playerConfig.getIsInventoryVisible() ||
+            playerConfig.getIsSkillMenuPickerSlotBeingChanged() == null) {
             return;
         }
 

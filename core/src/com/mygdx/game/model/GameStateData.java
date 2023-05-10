@@ -5,7 +5,7 @@ import com.mygdx.game.model.ability.AbilityId;
 import com.mygdx.game.model.area.*;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.creature.CreatureId;
-import com.mygdx.game.model.util.PlayerParams;
+import com.mygdx.game.model.util.PlayerConfig;
 import com.mygdx.game.model.util.SimpleTimer;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,7 +28,7 @@ public class GameStateData {
     AreaId defaultAreaId = AreaId.of("area1");
     SimpleTimer generalTimer = SimpleTimer.getStartedTimer();
 
-    Map<CreatureId, PlayerParams> playerParams = new ConcurrentSkipListMap<>();
+    Map<CreatureId, PlayerConfig> playerConfig = new ConcurrentSkipListMap<>();
 
     Set<AreaGate> areaGates = new ConcurrentSkipListSet<>();
 
@@ -45,7 +45,7 @@ public class GameStateData {
         newGameStateData.setAreas(new ConcurrentSkipListMap<>(gameStateData.getAreas()));
         newGameStateData.setDefaultAreaId(gameStateData.getDefaultAreaId());
         newGameStateData.setGeneralTimer(gameStateData.getGeneralTimer());
-        newGameStateData.setPlayerParams(new ConcurrentSkipListMap<>(gameStateData.getPlayerParams()));
+        newGameStateData.setPlayerConfig(new ConcurrentSkipListMap<>(gameStateData.getPlayerConfig()));
         newGameStateData.setAreaGates(new ConcurrentSkipListSet<>(gameStateData.getAreaGates()));
         newGameStateData.setLastRandomValue(gameStateData.getLastRandomValue());
 
@@ -62,7 +62,7 @@ public class GameStateData {
         newGameStateData.setAreas(new ConcurrentSkipListMap<>(gameStateData.getAreas()));
         newGameStateData.setDefaultAreaId(gameStateData.getDefaultAreaId());
         newGameStateData.setGeneralTimer(gameStateData.getGeneralTimer());
-        newGameStateData.setPlayerParams(new ConcurrentSkipListMap<>(gameStateData.getPlayerParams()));
+        newGameStateData.setPlayerConfig(new ConcurrentSkipListMap<>(gameStateData.getPlayerConfig()));
         newGameStateData.setAreaGates(new ConcurrentSkipListSet<>(gameStateData.getAreaGates()));
         newGameStateData.setLastRandomValue(gameStateData.getLastRandomValue());
 
@@ -78,7 +78,7 @@ public class GameStateData {
         newGameStateData.setAreas(new ConcurrentSkipListMap<>(gameStateData.getAreas()));
         newGameStateData.setDefaultAreaId(gameStateData.getDefaultAreaId());
         newGameStateData.setGeneralTimer(gameStateData.getGeneralTimer());
-        newGameStateData.setPlayerParams(new ConcurrentSkipListMap<>(gameStateData.getPlayerParams()));
+        newGameStateData.setPlayerConfig(new ConcurrentSkipListMap<>(gameStateData.getPlayerConfig()));
         newGameStateData.setAreaGates(new ConcurrentSkipListSet<>(gameStateData.getAreaGates()));
         newGameStateData.setLastRandomValue(gameStateData.getLastRandomValue());
 

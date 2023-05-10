@@ -4,7 +4,7 @@ import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.skill.SkillType;
-import com.mygdx.game.model.util.PlayerParams;
+import com.mygdx.game.model.util.PlayerConfig;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -25,10 +25,10 @@ public class SkillPickerMenuSlotChangeAction extends GameStateAction {
 
     @Override
     public void applyToGame(CoreGame game) {
-        PlayerParams playerParams = game.getGameState().getPlayerParams(playerId);
+        PlayerConfig playerConfig = game.getGameState().getPlayerConfig(playerId);
 
-        playerParams.getSkillMenuSlots().put(playerParams.getIsSkillMenuPickerSlotBeingChanged(), skillType);
-        playerParams.setIsSkillMenuPickerSlotBeingChanged(null);
+        playerConfig.getSkillMenuSlots().put(playerConfig.getIsSkillMenuPickerSlotBeingChanged(), skillType);
+        playerConfig.setIsSkillMenuPickerSlotBeingChanged(null);
     }
 
     public static SkillPickerMenuSlotChangeAction of(CreatureId playerId, SkillType skillType) {

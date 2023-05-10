@@ -9,17 +9,18 @@ import com.esotericsoftware.kryonet.Client;
 import com.mygdx.game.assets.Assets;
 import com.mygdx.game.command.ActionPerformCommand;
 import com.mygdx.game.game.CoreGame;
+import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.action.inventory.EquipmentItemPickUpAction;
 import com.mygdx.game.model.action.inventory.InventoryItemPickUpAction;
 import com.mygdx.game.model.action.inventory.InventoryPickUpCancelAction;
-import com.mygdx.game.model.action.inventory.PickedUpItemDropOnGroundAction;
+import com.mygdx.game.model.action.inventory.ItemDropOnGroundAction;
 import com.mygdx.game.model.action.inventory.swaps.InventoryAndEquipmentSwapSlotItemsAction;
 import com.mygdx.game.model.action.inventory.swaps.InventoryOnlySwapSlotItemsAction;
 import com.mygdx.game.model.action.loot.LootPileItemTryPickUpAction;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.model.item.EquipmentSlotType;
 import com.mygdx.game.model.item.Item;
-import com.mygdx.game.model.util.PlayerParams;
+import com.mygdx.game.model.util.PlayerConfig;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.model.util.Vector2Int;
 import com.mygdx.game.renderer.RenderingLayer;
@@ -110,13 +111,13 @@ public class InventoryHelper {
     }
 
     public static void render(RenderingLayer renderingLayer, CoreGame game) {
-        PlayerParams playerParams = game.getGameState().getPlayerParams(game.getGameState().getThisClientPlayerId());
+        PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
 
-        if (playerParams == null) {
+        if (playerConfig == null) {
             return;
         }
 
-        if (playerParams.getIsInventoryVisible()) {
+        if (playerConfig.getIsInventoryVisible()) {
             backgroundImage.draw(renderingLayer.getSpriteBatch(), 1.0f);
 
             inventoryRectangles.values().forEach(rect -> {
@@ -151,15 +152,15 @@ public class InventoryHelper {
 
     public static void renderPlayerItems(RenderingLayer renderingLayer, CoreGame game) {
         Creature player = game.getGameState().accessCreatures().getCreature(game.getGameState().getThisClientPlayerId());
-        PlayerParams playerParams = game.getGameState().getPlayerParams(game.getGameState().getThisClientPlayerId());
+        PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
 
         Map<Integer, Item> inventoryItems = player.getParams().getInventoryItems();
         Map<Integer, Item> equipmentItems = player.getParams().getEquipmentItems();
 
         inventoryItems.entrySet().stream().filter(entry -> {
             boolean isInventoryItemBeingMoved = false;
-            if (playerParams.getInventoryItemBeingMoved() != null) {
-                isInventoryItemBeingMoved = Objects.equals(playerParams.getInventoryItemBeingMoved(), entry.getKey());
+            if (playerConfig.getInventoryItemBeingMoved() != null) {
+                isInventoryItemBeingMoved = Objects.equals(playerConfig.getInventoryItemBeingMoved(), entry.getKey());
             }
             return !isInventoryItemBeingMoved;
         }).forEach(entry -> {
@@ -179,8 +180,8 @@ public class InventoryHelper {
 
         equipmentItems.entrySet().stream().filter((entry -> {
             boolean isEquipmentItemBeingMoved = false;
-            if (playerParams.getEquipmentItemBeingMoved() != null) {
-                isEquipmentItemBeingMoved = Objects.equals(playerParams.getEquipmentItemBeingMoved(), entry.getKey());
+            if (playerConfig.getEquipmentItemBeingMoved() != null) {
+                isEquipmentItemBeingMoved = Objects.equals(playerConfig.getEquipmentItemBeingMoved(), entry.getKey());
             }
             return !isEquipmentItemBeingMoved;
         })).forEach(entry -> {
@@ -201,18 +202,18 @@ public class InventoryHelper {
         float x = game.hudMousePos().getX();
         float y = game.hudMousePos().getY();
 
-        if (playerParams.getInventoryItemBeingMoved() != null &&
-            inventoryItems.containsKey(playerParams.getInventoryItemBeingMoved())) {
+        if (playerConfig.getInventoryItemBeingMoved() != null &&
+            inventoryItems.containsKey(playerConfig.getInventoryItemBeingMoved())) {
 
-            Vector2Int iconPos = inventoryItems.get(playerParams.getInventoryItemBeingMoved()).getTemplate().getIconPos();
+            Vector2Int iconPos = inventoryItems.get(playerConfig.getInventoryItemBeingMoved()).getTemplate().getIconPos();
 
             renderingLayer
                 .getSpriteBatch()
                 .draw(icons[iconPos.getY()][iconPos.getX()], x - SLOT_SIZE / 2f, y - SLOT_SIZE / 2f, SLOT_SIZE, SLOT_SIZE);
         }
-        if (playerParams.getEquipmentItemBeingMoved() != null &&
-            equipmentItems.containsKey(playerParams.getEquipmentItemBeingMoved())) {
-            Vector2Int iconPos = equipmentItems.get(playerParams.getEquipmentItemBeingMoved()).getTemplate().getIconPos();
+        if (playerConfig.getEquipmentItemBeingMoved() != null &&
+            equipmentItems.containsKey(playerConfig.getEquipmentItemBeingMoved())) {
+            Vector2Int iconPos = equipmentItems.get(playerConfig.getEquipmentItemBeingMoved()).getTemplate().getIconPos();
 
             renderingLayer
                 .getSpriteBatch()
@@ -223,7 +224,7 @@ public class InventoryHelper {
 
     public static void renderDescription(RenderingLayer renderingLayer, CoreGame game) {
         Creature player = game.getGameState().accessCreatures().getCreature(game.getGameState().getThisClientPlayerId());
-        PlayerParams playerParams = game.getGameState().getPlayerParams(game.getGameState().getThisClientPlayerId());
+        PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
 
         float x = game.hudMousePos().getX();
         float y = game.hudMousePos().getY();
@@ -245,14 +246,14 @@ public class InventoryHelper {
 
         Item mouseOverItem = null;
 
-        if (inventorySlotMousedOver.get() != null && (playerParams.getInventoryItemBeingMoved() == null || !Objects.equals(
+        if (inventorySlotMousedOver.get() != null && (playerConfig.getInventoryItemBeingMoved() == null || !Objects.equals(
             inventorySlotMousedOver.get(),
-            playerParams.getInventoryItemBeingMoved()))) {
+            playerConfig.getInventoryItemBeingMoved()))) {
             mouseOverItem = player.getParams().getInventoryItems().get(inventorySlotMousedOver.get());
         }
-        else if (equipmentSlotMousedOver.get() != null && (playerParams.getEquipmentItemBeingMoved() == null || !Objects.equals(
+        else if (equipmentSlotMousedOver.get() != null && (playerConfig.getEquipmentItemBeingMoved() == null || !Objects.equals(
             equipmentSlotMousedOver.get(),
-            playerParams.getEquipmentItemBeingMoved()))) {
+            playerConfig.getEquipmentItemBeingMoved()))) {
             mouseOverItem = player.getParams().getEquipmentItems().get(equipmentSlotMousedOver.get());
 
         }
@@ -273,9 +274,9 @@ public class InventoryHelper {
     }
 
     public static void renderItemPickUpMenu(RenderingLayer renderingLayer, CoreGame game) {
-        PlayerParams playerParams = game.getGameState().getPlayerParams(game.getGameState().getThisClientPlayerId());
+        PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
 
-        if (playerParams.getIsInventoryVisible()) {
+        if (playerConfig.getIsInventoryVisible()) {
             return;
         }
 
@@ -283,7 +284,7 @@ public class InventoryHelper {
         float y = game.hudMousePos().getY();
 
         AtomicInteger i = new AtomicInteger();
-        playerParams
+        playerConfig
             .getItemPickupMenuLootPiles()
             .stream()
             .filter(lootPileId -> game.getGameState().getLootPiles().containsKey(lootPileId))
@@ -320,93 +321,97 @@ public class InventoryHelper {
 
     public static void performMoveItemClick(Client client, CoreGame game) {
         Creature player = game.getGameState().accessCreatures().getCreature(game.getGameState().getThisClientPlayerId());
-        PlayerParams playerParams = game.getGameState().getPlayerParams(game.getGameState().getThisClientPlayerId());
-
-        AtomicReference<Integer> atomicInventorySlotClicked = new AtomicReference<>(null);
-        AtomicReference<Integer> atomicEquipmentSlotClicked = new AtomicReference<>(null);
+        PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
 
         float x = game.hudMousePos().getX();
         float y = game.hudMousePos().getY();
 
+        GameStateAction action;
+
         if (backgroundOuterRect.contains(x, y)) {
-            inventoryRectangles
-                .entrySet()
-                .stream()
-                .filter(entry -> entry.getValue().contains(x, y))
-                .forEach(entry -> atomicInventorySlotClicked.set(entry.getKey()));
+            InventoryData inventoryData = InventoryData.of(getInventorySlotClicked(x, y),
+                                                           getEquipmentSlotClicked(x, y),
+                                                           playerConfig.getInventoryItemBeingMoved(),
+                                                           playerConfig.getEquipmentItemBeingMoved());
 
-            equipmentRectangles
-                .entrySet()
-                .stream()
-                .filter(entry -> entry.getValue().contains(x, y))
-                .forEach(entry -> atomicEquipmentSlotClicked.set(entry.getKey()));
-
-            Integer inventoryItemBeingMoved = playerParams.getInventoryItemBeingMoved();
-            Integer equipmentItemBeingMoved = playerParams.getEquipmentItemBeingMoved();
-
-            Integer inventorySlotClicked = atomicInventorySlotClicked.get();
-            Integer equipmentSlotClicked = atomicEquipmentSlotClicked.get();
-
-            if (inventoryItemBeingMoved != null && inventorySlotClicked != null) {
-                client.sendTCP(ActionPerformCommand.of(InventoryOnlySwapSlotItemsAction.of(game
-                                                                                               .getGameState()
-                                                                                               .getThisClientPlayerId(),
-                                                                                           inventoryItemBeingMoved,
-                                                                                           inventorySlotClicked)));
-            }
-            else if (inventoryItemBeingMoved != null && equipmentSlotClicked != null) {
-                client.sendTCP(ActionPerformCommand.of(InventoryAndEquipmentSwapSlotItemsAction.of(game
-                                                                                                       .getGameState()
-                                                                                                       .getThisClientPlayerId(),
-                                                                                                   inventoryItemBeingMoved,
-                                                                                                   equipmentSlotClicked)));
-            }
-            else if (equipmentItemBeingMoved != null && inventorySlotClicked != null) {
-                client.sendTCP(ActionPerformCommand.of(InventoryAndEquipmentSwapSlotItemsAction.of(game
-                                                                                                       .getGameState()
-                                                                                                       .getThisClientPlayerId(),
-                                                                                                   inventorySlotClicked,
-                                                                                                   equipmentItemBeingMoved)));
-            }
-            else if (equipmentItemBeingMoved != null && equipmentSlotClicked != null) {
-                client.sendTCP(ActionPerformCommand.of(InventoryPickUpCancelAction.of(game
-                                                                                          .getGameState()
-                                                                                          .getThisClientPlayerId())));
-            }
-            else if (inventorySlotClicked != null) {
-                if (player.getParams().getInventoryItems().containsKey(inventorySlotClicked)) {
-                    client.sendTCP(ActionPerformCommand.of(InventoryItemPickUpAction.of(game
-                                                                                            .getGameState()
-                                                                                            .getThisClientPlayerId(),
-                                                                                        inventorySlotClicked)));
-                }
-            }
-            else if (equipmentSlotClicked != null) {
-                if (player.getParams().getEquipmentItems().containsKey(equipmentSlotClicked)) {
-                    playerParams.setEquipmentItemBeingMoved(equipmentSlotClicked);
-
-                    client.sendTCP(ActionPerformCommand.of(EquipmentItemPickUpAction.of(game
-                                                                                            .getGameState()
-                                                                                            .getThisClientPlayerId(),
-                                                                                        equipmentSlotClicked)));
-                }
-            }
-            else {
-                client.sendTCP(ActionPerformCommand.of(InventoryPickUpCancelAction.of(game
-                                                                                          .getGameState()
-                                                                                          .getThisClientPlayerId())));
-            }
-
+            action = determineInventoryAction(game, player, playerConfig, inventoryData);
         }
         else {
-            client.sendTCP(ActionPerformCommand.of(PickedUpItemDropOnGroundAction.of(game
-                                                                                         .getGameState()
-                                                                                         .getThisClientPlayerId())));
+            action = ItemDropOnGroundAction.of(game.getGameState().getThisClientPlayerId());
         }
+
+        if (action != null) {
+            client.sendTCP(ActionPerformCommand.of(action));
+        }
+
+    }
+
+    private static GameStateAction determineInventoryAction(CoreGame game, Creature player, PlayerConfig playerConfig,
+                                                            InventoryData inventoryData) {
+        GameStateAction action = null;
+        if (inventoryData.getInventoryItemBeingMoved() != null && inventoryData.getInventorySlotClicked() != null) {
+            action = InventoryOnlySwapSlotItemsAction.of(game.getGameState().getThisClientPlayerId(),
+                                                         inventoryData.getInventoryItemBeingMoved(),
+                                                         inventoryData.getInventorySlotClicked());
+        }
+        else if (inventoryData.getInventoryItemBeingMoved() != null && inventoryData.getEquipmentSlotClicked() != null) {
+            action = InventoryAndEquipmentSwapSlotItemsAction.of(game.getGameState().getThisClientPlayerId(),
+                                                                 inventoryData.getInventoryItemBeingMoved(),
+                                                                 inventoryData.getEquipmentSlotClicked());
+        }
+        else if (inventoryData.getEquipmentItemBeingMoved() != null && inventoryData.getInventorySlotClicked() != null) {
+            action = InventoryAndEquipmentSwapSlotItemsAction.of(game.getGameState().getThisClientPlayerId(),
+                                                                 inventoryData.getInventorySlotClicked(),
+                                                                 inventoryData.getEquipmentItemBeingMoved());
+        }
+        else if (inventoryData.getEquipmentItemBeingMoved() != null && inventoryData.getEquipmentSlotClicked() != null) {
+            action = InventoryPickUpCancelAction.of(game.getGameState().getThisClientPlayerId());
+        }
+        else if (inventoryData.getInventorySlotClicked() != null) {
+            if (player.getParams().getInventoryItems().containsKey(inventoryData.getInventorySlotClicked())) {
+                action = InventoryItemPickUpAction.of(game.getGameState().getThisClientPlayerId(),
+                                                      inventoryData.getInventorySlotClicked());
+            }
+        }
+        else if (inventoryData.getEquipmentSlotClicked() != null) {
+            if (player.getParams().getEquipmentItems().containsKey(inventoryData.getEquipmentSlotClicked())) {
+                playerConfig.setEquipmentItemBeingMoved(inventoryData.getEquipmentSlotClicked());
+
+                action = EquipmentItemPickUpAction.of(game.getGameState().getThisClientPlayerId(),
+                                                      inventoryData.getEquipmentSlotClicked());
+            }
+        }
+        else {
+            action = InventoryPickUpCancelAction.of(game.getGameState().getThisClientPlayerId());
+        }
+        return action;
+    }
+
+    private static Integer getEquipmentSlotClicked(float x, float y) {
+        AtomicReference<Integer> atomicEquipmentSlotClicked = new AtomicReference<>(null);
+
+        equipmentRectangles
+            .entrySet()
+            .stream()
+            .filter(entry -> entry.getValue().contains(x, y))
+            .forEach(entry -> atomicEquipmentSlotClicked.set(entry.getKey()));
+
+        return atomicEquipmentSlotClicked.get();
+    }
+
+    private static Integer getInventorySlotClicked(float x, float y) {
+        AtomicReference<Integer> atomicInventorySlotClicked = new AtomicReference<>(null);
+
+        inventoryRectangles
+            .entrySet()
+            .stream()
+            .filter(entry -> entry.getValue().contains(x, y))
+            .forEach(entry -> atomicInventorySlotClicked.set(entry.getKey()));
+        return atomicInventorySlotClicked.get();
     }
 
     public static boolean tryPerformItemPickupMenuClick(Client client, CoreGame game) {
-        PlayerParams playerParams = game.getGameState().getPlayerParams(game.getGameState().getThisClientPlayerId());
+        PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
 
         float x = game.hudMousePos().getX();
         float y = game.hudMousePos().getY();
@@ -414,7 +419,7 @@ public class InventoryHelper {
         AtomicBoolean isSuccessful = new AtomicBoolean(false);
 
         AtomicInteger i = new AtomicInteger();
-        playerParams
+        playerConfig
             .getItemPickupMenuLootPiles()
             .stream()
             .filter(lootPileId -> game.getGameState().getLootPiles().containsKey(lootPileId))

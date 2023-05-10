@@ -3,7 +3,7 @@ package com.mygdx.game.model.action.inventory;
 import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.action.GameStateAction;
 import com.mygdx.game.model.creature.CreatureId;
-import com.mygdx.game.model.util.PlayerParams;
+import com.mygdx.game.model.util.PlayerConfig;
 import com.mygdx.game.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,11 +22,11 @@ public class InventoryPickUpCancelAction extends GameStateAction {
 
     @Override
     public void applyToGame(CoreGame game) {
-        PlayerParams playerParams = game.getGameState().getPlayerParams(creatureId);
+        PlayerConfig playerConfig = game.getGameState().getPlayerConfig(creatureId);
 
-        if (playerParams != null) {
-            playerParams.setInventoryItemBeingMoved(null);
-            playerParams.setEquipmentItemBeingMoved(null);
+        if (playerConfig != null) {
+            playerConfig.setInventoryItemBeingMoved(null);
+            playerConfig.setEquipmentItemBeingMoved(null);
         }
     }
 
