@@ -34,7 +34,7 @@ public class SkillMenuRenderer {
         keys.put(2, "E");
 
         AtomicInteger i = new AtomicInteger();
-        SkillMenuModel.skillRectangles.values().forEach(rect -> {
+        SkillMenuPositioning.skillRectangles.values().forEach(rect -> {
             renderingLayer
                 .getShapeDrawer()
                 .filledRectangle(rect.getX() - 3, rect.getY() - 3, rect.getWidth() + 6, rect.getHeight() + 6, Color.WHITE);
@@ -47,12 +47,12 @@ public class SkillMenuRenderer {
             if (skillType != null) {
                 Assets.renderMediumFont(renderingLayer,
                                         skillType.getPrettyName().substring(0, 2),
-                                        Vector2.of(rect.getX() + 5f, rect.getY() + SkillMenuModel.SLOT_SIZE - 7f),
+                                        Vector2.of(rect.getX() + 5f, rect.getY() + SkillMenuPositioning.SLOT_SIZE - 7f),
                                         Color.GOLD);
             }
             Assets.renderVerySmallFont(renderingLayer,
                                        keys.get(i.get()),
-                                       Vector2.of(rect.getX() + 2f, rect.getY() + SkillMenuModel.SLOT_SIZE - 27f),
+                                       Vector2.of(rect.getX() + 2f, rect.getY() + SkillMenuPositioning.SLOT_SIZE - 27f),
                                        Color.WHITE);
 
             i.getAndIncrement();
@@ -78,8 +78,8 @@ public class SkillMenuRenderer {
     }
 
     public void renderPickerOption(RenderingLayer renderingLayer, float x, float y, AtomicInteger i, String skillName) {
-        Rect rect = Rect.of(SkillMenuModel.SKILL_PICKER_MENU_POS_X,
-                            SkillMenuModel.SKILL_PICKER_MENU_POS_Y + 25f * i.get(),
+        Rect rect = Rect.of(SkillMenuPositioning.SKILL_PICKER_MENU_POS_X,
+                            SkillMenuPositioning.SKILL_PICKER_MENU_POS_Y + 25f * i.get(),
                             Gdx.graphics.getWidth() / 6f,
                             20f);
         renderingLayer

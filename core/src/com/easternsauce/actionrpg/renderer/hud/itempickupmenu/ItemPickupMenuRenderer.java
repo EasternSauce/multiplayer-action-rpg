@@ -20,8 +20,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ItemPickupMenuRenderer {
     private void renderMenuOption(RenderingLayer renderingLayer, IconRetriever iconRetriever, float x, float y, AtomicInteger i
         , Item item) {
-        Rect rect = Rect.of(ItemPickupMenuModel.POS_X,
-                            ItemPickupMenuModel.POS_Y + 25f * i.get(),
+        Rect rect = Rect.of(ItemPickupMenuPositioning.POS_X,
+                            ItemPickupMenuPositioning.POS_Y + 25f * i.get(),
                             Gdx.graphics.getWidth() / 6f,
                             20f);
         renderingLayer

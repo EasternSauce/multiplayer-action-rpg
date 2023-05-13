@@ -265,19 +265,29 @@ public class PhysicsWorld {
             toPos.getX(),
             toPos.getY()});
 
-        List<com.badlogic.gdx.math.Polygon> polygons = terrainTiles
+        List<com.badlogic.gdx.math.Polygon> terrainPolygons = terrainTiles
             .stream()
             .map(TerrainTileBody::getPolygon)
             .collect(Collectors.toList());
 
-        boolean overlaps = false;
+        List<com.badlogic.gdx.math.Polygon> borderPolygons = terrainBorders
+            .stream()
+            .map(TerrainTileBody::getPolygon)
+            .collect(Collectors.toList());
 
-        for (com.badlogic.gdx.math.Polygon polygon : polygons) {
+        // TODO: maybe check nearby tiles only?
+        for (com.badlogic.gdx.math.Polygon polygon : terrainPolygons) {
             if (Intersector.overlapConvexPolygons(polygon, lineOfSightRect)) {
-                overlaps = true;
+                return false;
             }
         }
 
-        return !overlaps;
+        for (com.badlogic.gdx.math.Polygon polygon : borderPolygons) {
+            if (Intersector.overlapConvexPolygons(polygon, lineOfSightRect)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

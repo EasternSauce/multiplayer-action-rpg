@@ -28,9 +28,9 @@ public class InventoryController {
 
         GameStateAction action;
 
-        if (InventoryModel.backgroundOuterRect.contains(x, y)) {
-            InventoryData inventoryData = InventoryData.of(InventoryModel.getInventorySlotClicked(x, y),
-                                                           InventoryModel.getEquipmentSlotClicked(x, y),
+        if (InventoryPositioning.backgroundOuterRect.contains(x, y)) {
+            InventoryData inventoryData = InventoryData.of(InventoryPositioning.getInventorySlotClicked(x, y),
+                                                           InventoryPositioning.getEquipmentSlotClicked(x, y),
                                                            playerConfig.getInventoryItemBeingMoved(),
                                                            playerConfig.getEquipmentItemBeingMoved());
 

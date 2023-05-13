@@ -7,8 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class InventoryModel {
-    public static Rect backgroundRect;
+public class InventoryPositioning {
+    public static Rect backgroundInnerRect;
     public static Rect backgroundOuterRect;
 
     public static Integer TOTAL_ROWS = 5;
@@ -28,15 +28,15 @@ public class InventoryModel {
     public static Map<Integer, Rect> equipmentRectangles = new HashMap<>();
 
     static {
-        backgroundRect = Rect.of(Gdx.graphics.getWidth() * 0.2f,
-                                 Gdx.graphics.getHeight() * 0.3f,
-                                 Gdx.graphics.getWidth() * 0.6f,
-                                 Gdx.graphics.getHeight() * 0.6f);
+        backgroundInnerRect = Rect.of(Gdx.graphics.getWidth() * 0.2f,
+                                      Gdx.graphics.getHeight() * 0.3f,
+                                      Gdx.graphics.getWidth() * 0.6f,
+                                      Gdx.graphics.getHeight() * 0.6f);
 
-        backgroundOuterRect = Rect.of(backgroundRect.getX() - Gdx.graphics.getWidth() * 0.1f,
-                                      backgroundRect.getY() - Gdx.graphics.getHeight() * 0.1f,
-                                      backgroundRect.getWidth() + Gdx.graphics.getWidth() * 0.2f,
-                                      backgroundRect.getHeight() + Gdx.graphics.getHeight() * 0.2f);
+        backgroundOuterRect = Rect.of(backgroundInnerRect.getX() - Gdx.graphics.getWidth() * 0.1f,
+                                      backgroundInnerRect.getY() - Gdx.graphics.getHeight() * 0.1f,
+                                      backgroundInnerRect.getWidth() + Gdx.graphics.getWidth() * 0.2f,
+                                      backgroundInnerRect.getHeight() + Gdx.graphics.getHeight() * 0.2f);
 
         for (int i = 0; i < INVENTORY_TOTAL_SLOTS; i++) {
             inventoryRectangles.put(i, Rect.of(inventorySlotPositionX(i), inventorySlotPositionY(i), SLOT_SIZE, SLOT_SIZE));
@@ -49,28 +49,28 @@ public class InventoryModel {
 
     public static float inventorySlotPositionX(Integer index) {
         int currentColumn = index % TOTAL_COLUMNS;
-        return backgroundRect.getX() + MARGIN + (SLOT_SIZE + SPACE_BETWEEN_SLOTS) * currentColumn;
+        return backgroundInnerRect.getX() + MARGIN + (SLOT_SIZE + SPACE_BETWEEN_SLOTS) * currentColumn;
     }
 
     public static float inventorySlotPositionY(Integer index) {
         int currentRow = index / TOTAL_COLUMNS;
-        return backgroundRect.getY() + backgroundRect.getHeight() -
+        return backgroundInnerRect.getY() + backgroundInnerRect.getHeight() -
                (SLOT_SIZE + MARGIN + (SLOT_SIZE + SPACE_BETWEEN_SLOTS) * currentRow);
     }
 
     public static float equipmentSlotPositionX(@SuppressWarnings("unused") Integer index) {
-        return backgroundRect.getX() + INVENTORY_WIDTH + MARGIN + SPACE_BEFORE_EQUIPMENT;
+        return backgroundInnerRect.getX() + INVENTORY_WIDTH + MARGIN + SPACE_BEFORE_EQUIPMENT;
     }
 
     public static float equipmentSlotPositionY(Integer index) {
-        return backgroundRect.getY() + backgroundRect.getHeight() -
+        return backgroundInnerRect.getY() + backgroundInnerRect.getHeight() -
                (SLOT_SIZE + MARGIN + (SLOT_SIZE + SPACE_BETWEEN_SLOTS) * index);
     }
 
     public static Integer getEquipmentSlotClicked(float x, float y) {
         AtomicReference<Integer> atomicEquipmentSlotClicked = new AtomicReference<>(null);
 
-        InventoryModel.equipmentRectangles
+        InventoryPositioning.equipmentRectangles
             .entrySet()
             .stream()
             .filter(entry -> entry.getValue().contains(x, y))
@@ -82,7 +82,7 @@ public class InventoryModel {
     public static Integer getInventorySlotClicked(float x, float y) {
         AtomicReference<Integer> atomicInventorySlotClicked = new AtomicReference<>(null);
 
-        InventoryModel.inventoryRectangles
+        InventoryPositioning.inventoryRectangles
             .entrySet()
             .stream()
             .filter(entry -> entry.getValue().contains(x, y))

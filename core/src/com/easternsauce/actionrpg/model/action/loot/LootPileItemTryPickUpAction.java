@@ -6,7 +6,7 @@ import com.easternsauce.actionrpg.model.area.LootPile;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.util.Vector2;
-import com.easternsauce.actionrpg.renderer.hud.inventory.InventoryModel;
+import com.easternsauce.actionrpg.renderer.hud.inventory.InventoryPositioning;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -27,7 +27,7 @@ public class LootPileItemTryPickUpAction extends GameStateAction {
     @Override
     public void applyToGame(CoreGame game) {
         Integer freeSlot = null;
-        for (int i = 0; i < InventoryModel.INVENTORY_TOTAL_SLOTS; i++) {
+        for (int i = 0; i < InventoryPositioning.INVENTORY_TOTAL_SLOTS; i++) {
             if (!game.getGameState().accessCreatures().getCreature(playerId).getParams().getInventoryItems().containsKey(i)) {
                 freeSlot = i;
                 break;

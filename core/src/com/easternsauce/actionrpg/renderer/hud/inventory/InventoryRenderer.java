@@ -29,10 +29,10 @@ public class InventoryRenderer {
     public void init(TextureAtlas atlas) {
         backgroundImage = new Image(atlas.findRegion("background2"));
 
-        backgroundImage.setBounds(InventoryModel.backgroundOuterRect.getX(),
-                                  InventoryModel.backgroundOuterRect.getY(),
-                                  InventoryModel.backgroundOuterRect.getWidth(),
-                                  InventoryModel.backgroundOuterRect.getHeight());
+        backgroundImage.setBounds(InventoryPositioning.backgroundOuterRect.getX(),
+                                  InventoryPositioning.backgroundOuterRect.getY(),
+                                  InventoryPositioning.backgroundOuterRect.getWidth(),
+                                  InventoryPositioning.backgroundOuterRect.getHeight());
 
     }
 
@@ -46,7 +46,7 @@ public class InventoryRenderer {
         if (playerConfig.getIsInventoryVisible()) {
             backgroundImage.draw(renderingLayer.getSpriteBatch(), 1.0f);
 
-            InventoryModel.inventoryRectangles.values().forEach(rect -> {
+            InventoryPositioning.inventoryRectangles.values().forEach(rect -> {
                 renderingLayer
                     .getShapeDrawer()
                     .filledRectangle(rect.getX() - 3, rect.getY() - 3, rect.getWidth() + 6, rect.getHeight() + 6, Color.BROWN);
@@ -55,7 +55,7 @@ public class InventoryRenderer {
                     .filledRectangle(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(), Color.BLACK);
             });
 
-            InventoryModel.equipmentRectangles.forEach((index, rect) -> {
+            InventoryPositioning.equipmentRectangles.forEach((index, rect) -> {
                 renderingLayer
                     .getShapeDrawer()
                     .filledRectangle(rect.getX() - 3, rect.getY() - 3, rect.getWidth() + 6, rect.getHeight() + 6, Color.BROWN);
@@ -64,8 +64,8 @@ public class InventoryRenderer {
                     .filledRectangle(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(), Color.BROWN);
                 Assets.renderSmallFont(renderingLayer,
                                        EquipmentSlotType.equipmentSlotNames.get(index) + ":",
-                                       Vector2.of(rect.getX() - InventoryModel.SLOT_SIZE / 2f - 170f,
-                                                  rect.getY() + InventoryModel.SLOT_SIZE / 2f + 7f),
+                                       Vector2.of(rect.getX() - InventoryPositioning.SLOT_SIZE / 2f - 170f,
+                                                  rect.getY() + InventoryPositioning.SLOT_SIZE / 2f + 7f),
                                        Color.DARK_GRAY);
             });
 
@@ -93,9 +93,11 @@ public class InventoryRenderer {
         }).forEach(entry -> {
             Vector2Int iconPos = entry.getValue().getTemplate().getIconPos();
             TextureRegion textureRegion = iconRetriever.getIcon(iconPos.getX(), iconPos.getY());
-            float x = InventoryModel.inventorySlotPositionX(entry.getKey());
-            float y = InventoryModel.inventorySlotPositionY(entry.getKey());
-            renderingLayer.getSpriteBatch().draw(textureRegion, x, y, InventoryModel.SLOT_SIZE, InventoryModel.SLOT_SIZE);
+            float x = InventoryPositioning.inventorySlotPositionX(entry.getKey());
+            float y = InventoryPositioning.inventorySlotPositionY(entry.getKey());
+            renderingLayer
+                .getSpriteBatch()
+                .draw(textureRegion, x, y, InventoryPositioning.SLOT_SIZE, InventoryPositioning.SLOT_SIZE);
 
             if (entry.getValue().getQuantity() > 1) {
                 Assets.renderSmallFont(renderingLayer,
@@ -114,9 +116,11 @@ public class InventoryRenderer {
         })).forEach(entry -> {
             Vector2Int iconPos = entry.getValue().getTemplate().getIconPos();
             TextureRegion textureRegion = iconRetriever.getIcon(iconPos.getX(), iconPos.getY());
-            float x = InventoryModel.equipmentSlotPositionX(entry.getKey());
-            float y = InventoryModel.equipmentSlotPositionY(entry.getKey());
-            renderingLayer.getSpriteBatch().draw(textureRegion, x, y, InventoryModel.SLOT_SIZE, InventoryModel.SLOT_SIZE);
+            float x = InventoryPositioning.equipmentSlotPositionX(entry.getKey());
+            float y = InventoryPositioning.equipmentSlotPositionY(entry.getKey());
+            renderingLayer
+                .getSpriteBatch()
+                .draw(textureRegion, x, y, InventoryPositioning.SLOT_SIZE, InventoryPositioning.SLOT_SIZE);
 
             if (entry.getValue().getQuantity() > 1) {
                 Assets.renderSmallFont(renderingLayer,
@@ -137,10 +141,10 @@ public class InventoryRenderer {
             renderingLayer
                 .getSpriteBatch()
                 .draw(iconRetriever.getIcon(iconPos.getX(), iconPos.getY()),
-                      x - InventoryModel.SLOT_SIZE / 2f,
-                      y - InventoryModel.SLOT_SIZE / 2f,
-                      InventoryModel.SLOT_SIZE,
-                      InventoryModel.SLOT_SIZE);
+                      x - InventoryPositioning.SLOT_SIZE / 2f,
+                      y - InventoryPositioning.SLOT_SIZE / 2f,
+                      InventoryPositioning.SLOT_SIZE,
+                      InventoryPositioning.SLOT_SIZE);
         }
         if (playerConfig.getEquipmentItemBeingMoved() != null &&
             equipmentItems.containsKey(playerConfig.getEquipmentItemBeingMoved())) {
@@ -149,10 +153,10 @@ public class InventoryRenderer {
             renderingLayer
                 .getSpriteBatch()
                 .draw(iconRetriever.getIcon(iconPos.getX(), iconPos.getY()),
-                      x - InventoryModel.SLOT_SIZE / 2f,
-                      y - InventoryModel.SLOT_SIZE / 2f,
-                      InventoryModel.SLOT_SIZE,
-                      InventoryModel.SLOT_SIZE);
+                      x - InventoryPositioning.SLOT_SIZE / 2f,
+                      y - InventoryPositioning.SLOT_SIZE / 2f,
+                      InventoryPositioning.SLOT_SIZE,
+                      InventoryPositioning.SLOT_SIZE);
         }
 
     }
@@ -167,13 +171,13 @@ public class InventoryRenderer {
         AtomicReference<Integer> inventorySlotMousedOver = new AtomicReference<>(null);
         AtomicReference<Integer> equipmentSlotMousedOver = new AtomicReference<>(null);
 
-        InventoryModel.inventoryRectangles
+        InventoryPositioning.inventoryRectangles
             .entrySet()
             .stream()
             .filter(entry -> entry.getValue().contains(x, y))
             .forEach(entry -> inventorySlotMousedOver.set(entry.getKey()));
 
-        InventoryModel.equipmentRectangles
+        InventoryPositioning.equipmentRectangles
             .entrySet()
             .stream()
             .filter(entry -> entry.getValue().contains(x, y))
@@ -196,16 +200,18 @@ public class InventoryRenderer {
         if (mouseOverItem != null) {
             Assets.renderSmallFont(renderingLayer,
                                    mouseOverItem.getTemplate().getName(),
-                                   Vector2.of(InventoryModel.backgroundRect.getX() + InventoryModel.MARGIN,
-                                              InventoryModel.backgroundRect.getY() + InventoryModel.backgroundRect.getHeight() -
-                                              (InventoryModel.INVENTORY_HEIGHT + 5)),
+                                   Vector2.of(InventoryPositioning.backgroundInnerRect.getX() + InventoryPositioning.MARGIN,
+                                              InventoryPositioning.backgroundInnerRect.getY() +
+                                              InventoryPositioning.backgroundInnerRect.getHeight() -
+                                              (InventoryPositioning.INVENTORY_HEIGHT + 5)),
                                    Color.DARK_GRAY);
 
             Assets.renderSmallFont(renderingLayer,
                                    mouseOverItem.getItemInformation(),
-                                   Vector2.of(InventoryModel.backgroundRect.getX() + InventoryModel.MARGIN,
-                                              InventoryModel.backgroundRect.getY() + InventoryModel.backgroundRect.getHeight() -
-                                              (InventoryModel.INVENTORY_HEIGHT + 35)),
+                                   Vector2.of(InventoryPositioning.backgroundInnerRect.getX() + InventoryPositioning.MARGIN,
+                                              InventoryPositioning.backgroundInnerRect.getY() +
+                                              InventoryPositioning.backgroundInnerRect.getHeight() -
+                                              (InventoryPositioning.INVENTORY_HEIGHT + 35)),
                                    Color.DARK_GRAY);
         }
     }
