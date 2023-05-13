@@ -3,13 +3,13 @@ package com.mygdx.game.game.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.mygdx.game.Constants;
 import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.physics.util.PhysicsHelper;
-import com.mygdx.game.renderer.hud.HudRenderer;
 import com.mygdx.game.renderer.util.GameplayRendererHelper;
 import lombok.NoArgsConstructor;
 
@@ -23,10 +23,11 @@ public class GameplayScreen implements Screen {
     @SuppressWarnings("FieldCanBeLocal")
     private Map<AreaId, TiledMap> maps;
 
-    private final HudRenderer hudRenderer = HudRenderer.of();
+    private TextureAtlas atlas;
 
-    public void init(CoreGame game) {
+    public void init(TextureAtlas atlas, CoreGame game) {
         this.game = game;
+        this.atlas = atlas;
 
         game.getEntityManager().getGameEntityPhysics().setDebugRenderer(new Box2DDebugRenderer());
 
@@ -46,7 +47,8 @@ public class GameplayScreen implements Screen {
 
         game.initState();
 
-        game.getEntityManager().getGameEntityRenderer().init();
+        game.getEntityManager().getGameEntityRenderer().init(atlas);
+        game.getHudRenderer().init(atlas);
 
         game.getEntityManager().getGameEntityPhysics().init(maps, game);
 
@@ -62,7 +64,7 @@ public class GameplayScreen implements Screen {
     public void show() {
         game.setChatInputProcessor();
 
-        game.getEntityManager().getGameEntityRenderer().setupInitialRendererState(maps, game);
+        game.getEntityManager().getGameEntityRenderer().resetRendererState(maps, atlas, game);
     }
 
     public void update(float delta) {
@@ -72,7 +74,7 @@ public class GameplayScreen implements Screen {
 
         game.onUpdate();
 
-        game.getEventProcessor().process(game.getEntityManager(), game);
+        game.getEventProcessor().process(game.getEntityManager(), atlas, game);
 
         game
             .getEventProcessor()
@@ -122,7 +124,7 @@ public class GameplayScreen implements Screen {
 
                 GameplayRendererHelper.renderGameplay(game);
 
-                hudRenderer.render(game);
+                game.getHudRenderer().render(game);
             }
             else {
                 game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer().begin();

@@ -29,9 +29,10 @@ import com.mygdx.game.model.util.GameStateBroadcast;
 import com.mygdx.game.model.util.PlayerConfig;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.renderer.RenderingLayer;
+import com.mygdx.game.renderer.hud.inventory.InventoryController;
+import com.mygdx.game.renderer.hud.itempickupmenu.ItemPickupMenuController;
 import com.mygdx.game.renderer.hud.skillmenu.SkillMenuController;
 import com.mygdx.game.util.EndPointHelper;
-import com.mygdx.game.util.InventoryHelper;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -49,6 +50,8 @@ public class CoreGameClient extends CoreGame {
     private final ClientGameState gameState = ClientGameState.of();
 
     private final SkillMenuController skillMenuController = SkillMenuController.of();
+    private final InventoryController inventoryController = InventoryController.of();
+    private final ItemPickupMenuController pickupMenuController = ItemPickupMenuController.of();
 
     @Getter
     @Setter
@@ -228,10 +231,10 @@ public class CoreGameClient extends CoreGame {
 
     private void handleActionButtonInput(PlayerConfig playerConfig) {
         if (playerConfig.getIsInventoryVisible()) {
-            InventoryHelper.performMoveItemClick(getEndPoint(), this);
+            inventoryController.performMoveItemClick(getEndPoint(), this);
         }
         else if (!playerConfig.getIsInventoryVisible() && !playerConfig.getItemPickupMenuLootPiles().isEmpty()) {
-            boolean isSuccessful = InventoryHelper.tryPerformItemPickupMenuClick(getEndPoint(), this);
+            boolean isSuccessful = pickupMenuController.performItemPickupMenuClick(getEndPoint(), this);
             if (isSuccessful) {
                 menuClickTime = gameState.getTime();
             }

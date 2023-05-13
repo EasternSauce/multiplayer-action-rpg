@@ -1,10 +1,12 @@
 package com.mygdx.game.renderer.hud;
 
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.creature.Creature;
 import com.mygdx.game.renderer.RenderingLayer;
+import com.mygdx.game.renderer.hud.inventory.InventoryRenderer;
+import com.mygdx.game.renderer.hud.itempickupmenu.ItemPickupMenuRenderer;
 import com.mygdx.game.renderer.hud.skillmenu.SkillMenuRenderer;
-import com.mygdx.game.util.InventoryHelper;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,6 +18,11 @@ public class HudRenderer {
     PlayerStatBarsRenderer playerStatBarsRenderer = PlayerStatBarsRenderer.of();
     RespawnMessageRenderer respawnMessageRenderer = RespawnMessageRenderer.of();
     SkillMenuRenderer skillMenuRenderer = SkillMenuRenderer.of();
+    ItemPickupMenuRenderer pickUpMenuRenderer = ItemPickupMenuRenderer.of();
+
+    public void init(TextureAtlas atlas) {
+        inventoryRenderer.init(atlas);
+    }
 
     public void render(CoreGame game) {
         RenderingLayer renderingLayer = game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer();
@@ -39,8 +46,10 @@ public class HudRenderer {
 
         }
 
-        InventoryHelper.render(renderingLayer, game);
+        inventoryRenderer.render(renderingLayer, game);
+        pickUpMenuRenderer.render(renderingLayer, game);
 
         renderingLayer.end();
     }
+
 }

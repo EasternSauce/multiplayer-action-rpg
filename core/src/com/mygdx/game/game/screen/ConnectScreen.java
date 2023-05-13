@@ -26,8 +26,12 @@ public class ConnectScreen implements Screen {
 
     private SimpleTimer timer = SimpleTimer.of();
 
-    public void init(CoreGame game) {
+    private TextureAtlas.AtlasRegion background;
+
+    public void init(TextureAtlas atlas, CoreGame game) {
         this.game = game;
+
+        background = atlas.findRegion("background2");
     }
 
     @Override
@@ -75,19 +79,14 @@ public class ConnectScreen implements Screen {
 
         SpriteBatch spriteBatch = game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer().getSpriteBatch();
 
-        TextureAtlas.AtlasRegion background2 = game
-            .getEntityManager()
-            .getGameEntityRenderer()
-            .getAtlas()
-            .findRegion("background2");
         float centerX = Gdx.graphics.getWidth() / 2f;
         float centerY = Gdx.graphics.getHeight() / 2f;
 
         spriteBatch.begin();
 
-        spriteBatch.draw(background2,
-                         (Gdx.graphics.getWidth() - background2.originalWidth) / 2f,
-                         (Gdx.graphics.getHeight() - background2.originalHeight) / 2f);
+        spriteBatch.draw(background,
+                         (Gdx.graphics.getWidth() - background.originalWidth) / 2f,
+                         (Gdx.graphics.getHeight() - background.originalHeight) / 2f);
 
         Assets.renderMediumFont(game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer(),
                                 "Your character name:",

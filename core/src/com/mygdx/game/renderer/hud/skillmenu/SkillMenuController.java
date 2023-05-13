@@ -30,8 +30,8 @@ public class SkillMenuController {
         Creature player = game.getGameState().accessCreatures().getCreature(game.getGameState().getThisClientPlayerId());
 
         player.availableSkills().forEach((skillType, level) -> {
-            Rect rect = Rect.of(SkillMenuUtils.SKILL_PICKER_MENU_POS_X,
-                                SkillMenuUtils.SKILL_PICKER_MENU_POS_Y + 25f * i.get(),
+            Rect rect = Rect.of(SkillMenuModel.SKILL_PICKER_MENU_POS_X,
+                                SkillMenuModel.SKILL_PICKER_MENU_POS_Y + 25f * i.get(),
                                 Gdx.graphics.getWidth() / 6f,
                                 20f);
 
@@ -61,7 +61,7 @@ public class SkillMenuController {
 
         AtomicBoolean isSuccessful = new AtomicBoolean(false);
 
-        SkillMenuUtils.skillRectangles.forEach((slotNum, rect) -> {
+        SkillMenuModel.skillRectangles.forEach((slotNum, rect) -> {
             if (rect.contains(x, y)) {
                 client.sendTCP(ActionPerformCommand.of(SkillPickerMenuActivateAction.of(game
                                                                                             .getGameState()

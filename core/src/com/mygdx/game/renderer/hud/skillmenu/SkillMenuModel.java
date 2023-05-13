@@ -5,7 +5,7 @@ import com.mygdx.game.renderer.util.Rect;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SkillMenuUtils {
+public class SkillMenuModel {
     public static final float SLOT_SIZE = 40f;
     public static final int MARGIN = 20;
     public static final int SPACE_BETWEEN_SLOTS = 12;
@@ -21,22 +21,22 @@ public class SkillMenuUtils {
     public static final Map<Integer, Rect> skillRectangles = new HashMap<>();
 
     static {
-        for (int i = 0; i < SkillMenuUtils.TOTAL_SKILL_SLOTS; i++) {
+        for (int i = 0; i < SkillMenuModel.TOTAL_SKILL_SLOTS; i++) {
             skillRectangles.put(i,
                                 Rect.of(skillSlotPositionX(i),
                                         SkillSlotPositionY(i),
-                                        SkillMenuUtils.SLOT_SIZE,
-                                        SkillMenuUtils.SLOT_SIZE));
+                                        SkillMenuModel.SLOT_SIZE,
+                                        SkillMenuModel.SLOT_SIZE));
         }
     }
 
     public static float skillSlotPositionX(Integer index) {
         int currentColumn = index;
-        return SkillMenuUtils.SKILL_MENU_POS_X + SkillMenuUtils.MARGIN +
-               (SkillMenuUtils.SLOT_SIZE + SkillMenuUtils.SPACE_BETWEEN_SLOTS) * currentColumn;
+        return SkillMenuModel.SKILL_MENU_POS_X + SkillMenuModel.MARGIN +
+               (SkillMenuModel.SLOT_SIZE + SkillMenuModel.SPACE_BETWEEN_SLOTS) * currentColumn;
     }
 
     public static float SkillSlotPositionY(@SuppressWarnings("unused") Integer index) {
-        return SkillMenuUtils.SKILL_MENU_POS_Y - (SkillMenuUtils.SLOT_SIZE + SkillMenuUtils.MARGIN);
+        return SkillMenuModel.SKILL_MENU_POS_Y - (SkillMenuModel.SLOT_SIZE + SkillMenuModel.MARGIN);
     }
 }

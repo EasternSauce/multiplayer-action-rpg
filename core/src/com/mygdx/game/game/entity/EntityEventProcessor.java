@@ -1,5 +1,6 @@
 package com.mygdx.game.game.entity;
 
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.ability.AbilityId;
 import com.mygdx.game.model.area.LootPileId;
@@ -31,12 +32,15 @@ public class EntityEventProcessor {
     @Getter
     private final List<TeleportEvent> teleportEvents = Collections.synchronizedList(new ArrayList<>());
 
-    public void process(GameEntityManager gameEntityManager, CoreGame game) {
-        getCreatureModelsToBeCreated().forEach(creatureId -> gameEntityManager.createCreatureEntity(creatureId, game));
+    public void process(GameEntityManager gameEntityManager, TextureAtlas atlas, CoreGame game) {
+        getCreatureModelsToBeCreated().forEach(creatureId -> gameEntityManager.createCreatureEntity(creatureId, atlas, game));
         getCreatureModelsToBeCreated().clear();
 
-        getAbilityModelsToBeCreated().forEach(abilityId -> gameEntityManager.createAbilityEntity(abilityId, game));
+        getAbilityModelsToBeCreated().forEach(abilityId -> gameEntityManager.createAbilityEntity(abilityId, atlas, game));
         getAbilityModelsToBeCreated().clear();
+
+        getLootPileModelsToBeCreated().forEach(lootPileId -> gameEntityManager.createLootPileEntity(lootPileId, atlas, game));
+        getLootPileModelsToBeCreated().clear();
 
         getAbilityModelsToBeActivated().forEach(abilityId -> gameEntityManager.activateAbility(abilityId, game));
         getAbilityModelsToBeActivated().clear();
@@ -46,9 +50,6 @@ public class EntityEventProcessor {
 
         getAbilityModelsToBeRemoved().forEach(abilityId -> gameEntityManager.removeAbilityEntity(abilityId, game));
         getAbilityModelsToBeRemoved().clear();
-
-        getLootPileModelsToBeCreated().forEach(lootPileId -> gameEntityManager.createLootPileEntity(lootPileId, game));
-        getLootPileModelsToBeCreated().clear();
 
         getLootPileModelsToBeRemoved().forEach(lootPileId -> gameEntityManager.removeLootPileEntity(lootPileId, game));
         getLootPileModelsToBeRemoved().clear();

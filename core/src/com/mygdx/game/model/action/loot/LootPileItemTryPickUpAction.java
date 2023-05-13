@@ -6,7 +6,7 @@ import com.mygdx.game.model.area.LootPile;
 import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.item.Item;
 import com.mygdx.game.model.util.Vector2;
-import com.mygdx.game.util.InventoryHelper;
+import com.mygdx.game.renderer.hud.inventory.InventoryModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -27,7 +27,7 @@ public class LootPileItemTryPickUpAction extends GameStateAction {
     @Override
     public void applyToGame(CoreGame game) {
         Integer freeSlot = null;
-        for (int i = 0; i < InventoryHelper.INVENTORY_TOTAL_SLOTS; i++) {
+        for (int i = 0; i < InventoryModel.INVENTORY_TOTAL_SLOTS; i++) {
             if (!game.getGameState().accessCreatures().getCreature(playerId).getParams().getInventoryItems().containsKey(i)) {
                 freeSlot = i;
                 break;

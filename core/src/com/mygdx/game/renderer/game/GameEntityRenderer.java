@@ -12,7 +12,8 @@ import com.mygdx.game.model.creature.CreatureId;
 import com.mygdx.game.model.creature.Player;
 import com.mygdx.game.renderer.*;
 import com.mygdx.game.renderer.creature.CreatureRenderer;
-import com.mygdx.game.util.InventoryHelper;
+import com.mygdx.game.renderer.icons.IconRetriever;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.HashMap;
@@ -33,31 +34,30 @@ public class GameEntityRenderer {
 
     private final TmxMapLoader mapLoader = new TmxMapLoader();
 
-    private TextureAtlas atlas;
-
     private final Map<CreatureId, CreatureRenderer> creatureRenderers = new HashMap<>();
     private final Map<AbilityId, AbilityRenderer> abilityRenderers = new HashMap<>();
     private Map<AreaId, AreaRenderer> areaRenderers = new HashMap<>();
     private Set<AreaGateRenderer> areaGateRenderers = new HashSet<>();
     private final Map<LootPileId, LootPileRenderer> lootPileRenderers = new HashMap<>();
 
-    public void init() {
+    @Getter
+    private final IconRetriever iconRetriever = IconRetriever.of();
+
+    public void init(TextureAtlas atlas) {
         mapScale = 4.0f;
 
         worldElementsRenderingLayer = RenderingLayer.of();
         hudRenderingLayer = RenderingLayer.of();
         worldTextRenderingLayer = RenderingLayer.of();
 
-        atlas = new TextureAtlas("assets/atlas/packed_atlas.atlas");
-
-        InventoryHelper.init(atlas);
+        iconRetriever.init(atlas);
 
         viewportsHandler = ViewportsHandler.of();
 
         viewportsHandler.initViewports();
     }
 
-    public void setupInitialRendererState(Map<AreaId, TiledMap> maps, CoreGame game) {
+    public void resetRendererState(Map<AreaId, TiledMap> maps, TextureAtlas atlas, CoreGame game) {
         areaRenderers = new HashMap<>();
         areaRenderers.putAll(maps.keySet().stream().collect(Collectors.toMap(areaId -> areaId, AreaRenderer::of)));
         areaRenderers.forEach((areaId, areaRenderer) -> areaRenderer.init(maps.get(areaId), mapScale));
@@ -167,10 +167,6 @@ public class GameEntityRenderer {
 
     public Map<LootPileId, LootPileRenderer> getLootPileRenderers() {
         return lootPileRenderers;
-    }
-
-    public TextureAtlas getAtlas() {
-        return atlas;
     }
 
     public RenderingLayer getWorldElementsRenderingLayer() {

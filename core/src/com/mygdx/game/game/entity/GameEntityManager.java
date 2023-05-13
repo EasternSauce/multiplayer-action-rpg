@@ -1,5 +1,6 @@
 package com.mygdx.game.game.entity;
 
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.ability.Ability;
 import com.mygdx.game.model.ability.AbilityId;
@@ -29,13 +30,13 @@ public class GameEntityManager {
     @Getter
     private final GameEntityPhysics gameEntityPhysics = GameEntityPhysics.of();
 
-    public void createCreatureEntity(CreatureId creatureId, CoreGame game) {
+    public void createCreatureEntity(CreatureId creatureId, TextureAtlas atlas, CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreatures().get(creatureId);
 
         if (creature != null) {
             if (!gameEntityRenderer.getCreatureRenderers().containsKey(creatureId)) {
                 CreatureRenderer creatureRenderer = CreatureRenderer.of(creatureId);
-                creatureRenderer.init(gameEntityRenderer.getAtlas(), game);
+                creatureRenderer.init(atlas, game);
                 gameEntityRenderer.getCreatureRenderers().put(creatureId, creatureRenderer);
             }
             if (!gameEntityPhysics.getCreatureBodies().containsKey(creatureId)) {
@@ -46,13 +47,13 @@ public class GameEntityManager {
         }
     }
 
-    public void createAbilityEntity(AbilityId abilityId, CoreGame game) {
+    public void createAbilityEntity(AbilityId abilityId, TextureAtlas atlas, CoreGame game) {
         Ability ability = game.getGameState().accessAbilities().getAbilities().get(abilityId);
 
         if (ability != null && ability.usesEntityModel()) {
             if (!gameEntityRenderer.getAbilityRenderers().containsKey(abilityId)) {
                 AbilityRenderer abilityRenderer = AbilityRenderer.of(abilityId);
-                abilityRenderer.init(gameEntityRenderer.getAtlas(), game);
+                abilityRenderer.init(atlas, game);
                 gameEntityRenderer.getAbilityRenderers().put(abilityId, abilityRenderer);
             }
             if (!gameEntityPhysics.getAbilityBodies().containsKey(abilityId)) {
@@ -77,13 +78,13 @@ public class GameEntityManager {
         }
     }
 
-    public void createLootPileEntity(LootPileId lootPileId, CoreGame game) {
+    public void createLootPileEntity(LootPileId lootPileId, TextureAtlas atlas, CoreGame game) {
         LootPile lootPile = game.getGameState().getLootPile(lootPileId);
 
         if (lootPile != null) {
             if (!gameEntityRenderer.getLootPileRenderers().containsKey(lootPileId)) {
                 LootPileRenderer lootPileRenderer = LootPileRenderer.of(lootPileId);
-                lootPileRenderer.init(gameEntityRenderer.getAtlas(), game);
+                lootPileRenderer.init(atlas, game);
                 gameEntityRenderer.getLootPileRenderers().put(lootPileId, lootPileRenderer);
             }
             if (!gameEntityPhysics.getLootPileBodies().containsKey(lootPileId)) {

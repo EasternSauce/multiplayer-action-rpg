@@ -2,6 +2,7 @@ package com.mygdx.game.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector3;
 import com.esotericsoftware.kryonet.EndPoint;
 import com.mygdx.game.Constants;
@@ -24,6 +25,7 @@ import com.mygdx.game.physics.body.CreatureBody;
 import com.mygdx.game.physics.event.PhysicsEvent;
 import com.mygdx.game.physics.world.PhysicsWorld;
 import com.mygdx.game.renderer.RenderingLayer;
+import com.mygdx.game.renderer.hud.HudRenderer;
 import lombok.Getter;
 
 import java.io.IOException;
@@ -32,6 +34,7 @@ import java.util.Map;
 import java.util.Set;
 
 public abstract class CoreGame extends Game {
+
     @Getter
     final private GameEntityManager entityManager = GameEntityManager.of();
 
@@ -49,6 +52,9 @@ public abstract class CoreGame extends Game {
 
     @Getter
     private final Chat chat = Chat.of();
+
+    @Getter
+    private final HudRenderer hudRenderer = HudRenderer.of();
 
     public Boolean isDebugEnabled() {
         return isDebugEnabled;
@@ -76,8 +82,10 @@ public abstract class CoreGame extends Game {
             throw new RuntimeException(e);
         }
 
-        gameplayScreen.init(this);
-        connectScreen.init(this);
+        TextureAtlas atlas = new TextureAtlas("assets/atlas/packed_atlas.atlas");
+
+        gameplayScreen.init(atlas, this);
+        connectScreen.init(atlas, this);
 
         setStartingScreen();
     }
