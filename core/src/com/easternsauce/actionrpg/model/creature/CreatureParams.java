@@ -28,6 +28,7 @@ public class CreatureParams {
 
     private Vector2 pos;
     private Vector2 initialPos;
+    private AreaId initialAreaId;
     private Vector2 previousPos;
 
     private SimpleTimer animationTimer = SimpleTimer.getStartedTimer();
@@ -145,6 +146,7 @@ public class CreatureParams {
         params.areaId = areaId;
         params.pos = enemySpawn;
         params.initialPos = enemySpawn;
+        params.initialAreaId = areaId;
         params.textureName = textureName;
         params.findTargetCooldown = 0.5f + (float) Math.random();
         params.pathCalculationCooldown = 4f + 2f * (float) Math.random();

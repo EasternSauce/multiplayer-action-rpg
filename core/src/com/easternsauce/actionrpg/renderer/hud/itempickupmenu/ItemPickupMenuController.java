@@ -1,6 +1,5 @@
 package com.easternsauce.actionrpg.renderer.hud.itempickupmenu;
 
-import com.badlogic.gdx.Gdx;
 import com.easternsauce.actionrpg.command.ActionPerformCommand;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.action.loot.LootPileItemTryPickUpAction;
@@ -31,10 +30,7 @@ public class ItemPickupMenuController {
             .filter(lootPileId -> game.getGameState().getLootPiles().containsKey(lootPileId))
             .flatMap(lootPileId -> game.getGameState().getLootPile(lootPileId).getItems().stream())
             .forEach(item -> {
-                Rect rect = Rect.of(Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 5f - 40f,
-                                    30f + 25f * i.get() - 17f,
-                                    Gdx.graphics.getWidth() / 6f,
-                                    20f);
+                Rect rect = ItemPickupMenuPositioning.getMenuOptionRect(i.get());
 
                 if (rect.contains(x, y)) {
                     client.sendTCP(ActionPerformCommand.of(LootPileItemTryPickUpAction.of(game

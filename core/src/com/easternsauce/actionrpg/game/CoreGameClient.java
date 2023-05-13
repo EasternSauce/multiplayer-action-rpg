@@ -144,7 +144,7 @@ public class CoreGameClient extends CoreGame {
     private void handleDebugCommandInput() {
         List<EnemySpawn> enemySpawns = EnemySpawnUtils.area1EnemySpawns();
 
-        AreaId areaId = getGameState().getCurrentAreaId();
+        AreaId areaId = gameState.getCurrentAreaId();
 
         enemySpawns.forEach(enemySpawn -> {
             CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 10000000));
@@ -389,8 +389,26 @@ public class CoreGameClient extends CoreGame {
 
     @Override
     public void performPhysicsWorldStep() {
-        getEntityManager().getGameEntityPhysics().getPhysicsWorlds().get(getGameState().getCurrentAreaId()).step();
+        getEntityManager().getGameEntityPhysics().getPhysicsWorlds().get(gameState.getCurrentAreaId()).step();
 
+    }
+
+    @Override
+    public void renderB2BodyDebug() {
+        if (isDebugEnabled()) {
+            getEntityManager()
+                .getGameEntityPhysics()
+                .getDebugRenderer()
+                .render(getEntityManager()
+                            .getGameEntityPhysics()
+                            .getPhysicsWorlds()
+                            .get(gameState.getCurrentAreaId())
+                            .getB2world(),
+                        getEntityManager()
+                            .getGameEntityRenderer()
+                            .getViewportsHandler()
+                            .getWorldCameraCombinedProjectionMatrix());
+        }
     }
 
     @Override

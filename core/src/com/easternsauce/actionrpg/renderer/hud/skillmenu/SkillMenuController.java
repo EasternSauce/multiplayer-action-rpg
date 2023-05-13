@@ -1,6 +1,5 @@
 package com.easternsauce.actionrpg.renderer.hud.skillmenu;
 
-import com.badlogic.gdx.Gdx;
 import com.easternsauce.actionrpg.command.ActionPerformCommand;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.action.skillmenu.SkillPickerMenuActivateAction;
@@ -30,10 +29,7 @@ public class SkillMenuController {
         Creature player = game.getGameState().accessCreatures().getCreature(game.getGameState().getThisClientPlayerId());
 
         player.availableSkills().forEach((skillType, level) -> {
-            Rect rect = Rect.of(SkillMenuPositioning.SKILL_PICKER_MENU_POS_X,
-                                SkillMenuPositioning.SKILL_PICKER_MENU_POS_Y + 25f * i.get(),
-                                Gdx.graphics.getWidth() / 6f,
-                                20f);
+            Rect rect = SkillMenuPositioning.getSkillPickerRect(i.get());
 
             if (rect.contains(x, y)) {
                 client.sendTCP(ActionPerformCommand.of(SkillPickerMenuSlotChangeAction.of(game

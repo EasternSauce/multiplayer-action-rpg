@@ -1,6 +1,5 @@
 package com.easternsauce.actionrpg.renderer.hud.itempickupmenu;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.easternsauce.actionrpg.assets.Assets;
 import com.easternsauce.actionrpg.game.CoreGame;
@@ -20,10 +19,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ItemPickupMenuRenderer {
     private void renderMenuOption(RenderingLayer renderingLayer, IconRetriever iconRetriever, float x, float y, AtomicInteger i
         , Item item) {
-        Rect rect = Rect.of(ItemPickupMenuPositioning.POS_X,
-                            ItemPickupMenuPositioning.POS_Y + 25f * i.get(),
-                            Gdx.graphics.getWidth() / 6f,
-                            20f);
+        Rect rect = ItemPickupMenuPositioning.getMenuOptionRect(i.get());
         renderingLayer
             .getShapeDrawer()
             .filledRectangle(rect.getX(),

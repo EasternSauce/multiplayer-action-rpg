@@ -79,23 +79,18 @@ public class ConnectScreen implements Screen {
 
         SpriteBatch spriteBatch = game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer().getSpriteBatch();
 
-        float centerX = Gdx.graphics.getWidth() / 2f;
-        float centerY = Gdx.graphics.getHeight() / 2f;
-
         spriteBatch.begin();
 
-        spriteBatch.draw(background,
-                         (Gdx.graphics.getWidth() - background.originalWidth) / 2f,
-                         (Gdx.graphics.getHeight() - background.originalHeight) / 2f);
+        spriteBatch.draw(background, ConnectScreenPositioning.BACKGROUND_POS_X, ConnectScreenPositioning.BACKGROUND_POS_Y);
 
         Assets.renderMediumFont(game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer(),
                                 "Your character name:",
-                                Vector2.of(centerX - 120f, centerY + 100f),
+                                Vector2.of(ConnectScreenPositioning.PROMPT_POS_X, ConnectScreenPositioning.PROMPT_POS_Y),
                                 Color.BLACK);
 
         Assets.renderMediumFont(game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer(),
                                 messageHolder.getCurrentMessage(),
-                                Vector2.of(centerX - 120f, centerY + 70f),
+                                Vector2.of(ConnectScreenPositioning.INPUT_POS_X, ConnectScreenPositioning.INPUT_POS_Y),
                                 Color.BLACK);
 
         spriteBatch.end();

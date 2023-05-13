@@ -1,6 +1,5 @@
 package com.easternsauce.actionrpg.renderer.hud.skillmenu;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.easternsauce.actionrpg.assets.Assets;
 import com.easternsauce.actionrpg.game.CoreGame;
@@ -78,10 +77,7 @@ public class SkillMenuRenderer {
     }
 
     public void renderPickerOption(RenderingLayer renderingLayer, float x, float y, AtomicInteger i, String skillName) {
-        Rect rect = Rect.of(SkillMenuPositioning.SKILL_PICKER_MENU_POS_X,
-                            SkillMenuPositioning.SKILL_PICKER_MENU_POS_Y + 25f * i.get(),
-                            Gdx.graphics.getWidth() / 6f,
-                            20f);
+        Rect rect = SkillMenuPositioning.getSkillPickerRect(i.get());
         renderingLayer
             .getShapeDrawer()
             .filledRectangle(rect.getX(),

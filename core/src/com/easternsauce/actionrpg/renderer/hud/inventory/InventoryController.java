@@ -26,7 +26,7 @@ public class InventoryController {
         float x = game.hudMousePos().getX();
         float y = game.hudMousePos().getY();
 
-        GameStateAction action;
+        GameStateAction action = null;
 
         if (InventoryPositioning.backgroundOuterRect.contains(x, y)) {
             InventoryData inventoryData = InventoryData.of(InventoryPositioning.getInventorySlotClicked(x, y),
@@ -36,7 +36,7 @@ public class InventoryController {
 
             action = determineInventoryAction(game, player, playerConfig, inventoryData);
         }
-        else {
+        else if (playerConfig.getInventoryItemBeingMoved() != null || playerConfig.getEquipmentItemBeingMoved() != null) {
             action = ItemDropOnGroundAction.of(game.getGameState().getThisClientPlayerId());
         }
 

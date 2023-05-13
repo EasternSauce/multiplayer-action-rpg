@@ -146,13 +146,14 @@ public class ServerGameState extends GameState {
                 if (creature instanceof Player) {
                     Vector2 pos = Vector2.of((float) ((Math.random() * (28 - 18)) + 18),
                                              (float) ((Math.random() * (12 - 6)) + 6));
-                    CreatureRespawnAction action = CreatureRespawnAction.of(creatureId, pos);
+                    CreatureRespawnAction action = CreatureRespawnAction.of(creatureId, pos, AreaId.of("area1"));
 
                     scheduleServerSideAction(action);
                 }
                 else if (creature instanceof Enemy) {
                     Vector2 pos = creature.getParams().getInitialPos();
-                    CreatureRespawnAction action = CreatureRespawnAction.of(creatureId, pos);
+                    AreaId initialAreaId = creature.getParams().getInitialAreaId();
+                    CreatureRespawnAction action = CreatureRespawnAction.of(creatureId, pos, initialAreaId);
 
                     scheduleServerSideAction(action);
                 }
@@ -190,7 +191,7 @@ public class ServerGameState extends GameState {
     }
 
     @Override
-    public AreaId getCurrentAreaId() { // TODO: does it make sense for server?
+    public AreaId getCurrentAreaId() {
         return getDefaultAreaId();
     }
 }
