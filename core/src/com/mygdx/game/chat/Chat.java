@@ -1,6 +1,10 @@
 package com.mygdx.game.chat;
 
+import com.badlogic.gdx.graphics.Color;
+import com.mygdx.game.assets.Assets;
 import com.mygdx.game.game.CoreGame;
+import com.mygdx.game.model.util.Vector2;
+import com.mygdx.game.renderer.RenderingLayer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,5 +37,19 @@ public class Chat {
             setMessages(newMessages);
             getMessages().add(ChatMessage.of(game.getGameState().getTime(), posterId, message));
         }
+    }
+
+    public void render(RenderingLayer renderingLayer) {
+        for (int i = 0; i < Math.min(getMessages().size(), 6); i++) {
+            Assets.renderSmallFont(renderingLayer,
+                                   getMessages().get(i).getPoster() + ": " + getMessages().get(i).getText(),
+                                   Vector2.of(30, 220 - 20 * i),
+                                   Color.PURPLE);
+        }
+
+        Assets.renderSmallFont(renderingLayer,
+                               (getIsTyping() ? "> " : "") + getCurrentMessage(),
+                               Vector2.of(30, 70),
+                               Color.PURPLE);
     }
 }

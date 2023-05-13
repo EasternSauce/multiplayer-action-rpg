@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-public class GamePhysics {
+public class GameEntityPhysics {
 
     final List<PhysicsEvent> physicsEventQueue = Collections.synchronizedList(new ArrayList<>());
     Map<AreaId, PhysicsWorld> physicsWorlds;

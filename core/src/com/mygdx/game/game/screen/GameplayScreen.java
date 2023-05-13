@@ -9,8 +9,8 @@ import com.mygdx.game.Constants;
 import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.model.area.AreaId;
 import com.mygdx.game.physics.util.PhysicsHelper;
+import com.mygdx.game.renderer.hud.HudRenderer;
 import com.mygdx.game.renderer.util.GameplayRendererHelper;
-import com.mygdx.game.renderer.util.HudRendererHelper;
 import lombok.NoArgsConstructor;
 
 import java.util.Map;
@@ -22,6 +22,8 @@ public class GameplayScreen implements Screen {
     private CoreGame game;
     @SuppressWarnings("FieldCanBeLocal")
     private Map<AreaId, TiledMap> maps;
+
+    private final HudRenderer hudRenderer = HudRenderer.of();
 
     public void init(CoreGame game) {
         this.game = game;
@@ -104,34 +106,7 @@ public class GameplayScreen implements Screen {
         if (game.isInitialized()) {
             update(delta);
             if (game.isGameplayRenderingAllowed()) {
-                // TODO: move this to viewports handler
-                game
-                    .getEntityManager()
-                    .getGameEntityRenderer()
-                    .getWorldElementsRenderingLayer()
-                    .setProjectionMatrix(game
-                                             .getEntityManager()
-                                             .getGameEntityRenderer()
-                                             .getViewportsHandler()
-                                             .getWorldCamera().combined);
-                game
-                    .getEntityManager()
-                    .getGameEntityRenderer()
-                    .getHudRenderingLayer()
-                    .setProjectionMatrix(game
-                                             .getEntityManager()
-                                             .getGameEntityRenderer()
-                                             .getViewportsHandler()
-                                             .getHudCamera().combined);
-                game
-                    .getEntityManager()
-                    .getGameEntityRenderer()
-                    .getWorldTextRenderingLayer()
-                    .setProjectionMatrix(game
-                                             .getEntityManager()
-                                             .getGameEntityRenderer()
-                                             .getViewportsHandler()
-                                             .getWorldTextCamera().combined);
+                game.getEntityManager().getGameEntityRenderer().setProjectionMatrices();
 
                 Gdx.gl.glClearColor(0, 0, 0, 1);
 
@@ -147,7 +122,7 @@ public class GameplayScreen implements Screen {
 
                 GameplayRendererHelper.renderGameplay(game);
 
-                HudRendererHelper.renderHud(game);
+                hudRenderer.render(game);
             }
             else {
                 game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer().begin();

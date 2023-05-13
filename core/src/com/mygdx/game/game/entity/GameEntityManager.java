@@ -9,14 +9,14 @@ import com.mygdx.game.model.area.LootPile;
 import com.mygdx.game.model.area.LootPileId;
 import com.mygdx.game.model.creature.*;
 import com.mygdx.game.model.util.TeleportEvent;
-import com.mygdx.game.physics.GamePhysics;
+import com.mygdx.game.physics.GameEntityPhysics;
 import com.mygdx.game.physics.body.AbilityBody;
 import com.mygdx.game.physics.body.CreatureBody;
 import com.mygdx.game.physics.body.LootPileBody;
 import com.mygdx.game.renderer.AbilityRenderer;
 import com.mygdx.game.renderer.LootPileRenderer;
 import com.mygdx.game.renderer.creature.CreatureRenderer;
-import com.mygdx.game.renderer.game.GameRenderer;
+import com.mygdx.game.renderer.game.GameEntityRenderer;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -25,9 +25,9 @@ import java.util.Set;
 @NoArgsConstructor(staticName = "of")
 public class GameEntityManager {
     @Getter
-    private final GameRenderer gameEntityRenderer = GameRenderer.of();
+    private final GameEntityRenderer gameEntityRenderer = GameEntityRenderer.of();
     @Getter
-    private final GamePhysics gameEntityPhysics = GamePhysics.of();
+    private final GameEntityPhysics gameEntityPhysics = GameEntityPhysics.of();
 
     public void createCreatureEntity(CreatureId creatureId, CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreatures().get(creatureId);

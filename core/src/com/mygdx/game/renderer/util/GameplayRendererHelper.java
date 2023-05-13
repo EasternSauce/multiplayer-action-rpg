@@ -2,14 +2,14 @@ package com.mygdx.game.renderer.util;
 
 import com.mygdx.game.game.CoreGame;
 import com.mygdx.game.renderer.RenderingLayer;
-import com.mygdx.game.renderer.game.GameRenderer;
+import com.mygdx.game.renderer.game.GameEntityRenderer;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class GameplayRendererHelper {
     public static void renderGameplay(CoreGame game) {
-        GameRenderer renderer = game.getEntityManager().getGameEntityRenderer();
+        GameEntityRenderer renderer = game.getEntityManager().getGameEntityRenderer();
         RenderingLayer worldElementsRenderingLayer = renderer.getWorldElementsRenderingLayer();
         RenderingLayer worldTextRenderingLayer = renderer.getWorldTextRenderingLayer();
 
@@ -21,7 +21,8 @@ public class GameplayRendererHelper {
         game.renderB2BodyDebug();
     }
 
-    private static void renderWorldElements(GameRenderer renderer, RenderingLayer worldElementsRenderingLayer, CoreGame game) {
+    private static void renderWorldElements(GameEntityRenderer renderer, RenderingLayer worldElementsRenderingLayer,
+                                            CoreGame game) {
         worldElementsRenderingLayer.getSpriteBatch().begin();
 
         renderer.renderAreaGates(worldElementsRenderingLayer, game);
@@ -33,12 +34,12 @@ public class GameplayRendererHelper {
         worldElementsRenderingLayer.end();
     }
 
-    private static void renderAreaLayers(GameRenderer renderer, List<Integer> layers, CoreGame game) {
+    private static void renderAreaLayers(GameEntityRenderer renderer, List<Integer> layers, CoreGame game) {
         int[] layersArray = layers.stream().mapToInt(Integer::intValue).toArray();
         renderer.getAreaRenderers().get(game.getGameState().getCurrentAreaId()).render(layersArray);
     }
 
-    private static void renderWorldText(GameRenderer renderer, RenderingLayer worldTextRenderingLayer, CoreGame game) {
+    private static void renderWorldText(GameEntityRenderer renderer, RenderingLayer worldTextRenderingLayer, CoreGame game) {
         worldTextRenderingLayer.begin();
 
         renderer.renderPlayerNames(worldTextRenderingLayer, game);

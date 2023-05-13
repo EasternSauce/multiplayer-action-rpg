@@ -22,7 +22,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
-public class GameRenderer {
+public class GameEntityRenderer {
     private ViewportsHandler viewportsHandler;
 
     private RenderingLayer worldElementsRenderingLayer;
@@ -143,6 +143,14 @@ public class GameRenderer {
 
     public TiledMap loadMap(String filePath) {
         return mapLoader.load(filePath);
+    }
+
+    public void setProjectionMatrices() {
+        getWorldElementsRenderingLayer().setProjectionMatrix(getViewportsHandler().getWorldCamera().combined);
+
+        getHudRenderingLayer().setProjectionMatrix(getViewportsHandler().getHudCamera().combined);
+
+        getWorldTextRenderingLayer().setProjectionMatrix(getViewportsHandler().getWorldTextCamera().combined);
     }
 
     public Map<CreatureId, CreatureRenderer> getCreatureRenderers() {

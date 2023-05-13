@@ -1,0 +1,32 @@
+package com.mygdx.game.renderer.hud;
+
+import com.badlogic.gdx.graphics.Color;
+import com.mygdx.game.Constants;
+import com.mygdx.game.assets.Assets;
+import com.mygdx.game.model.creature.Creature;
+import com.mygdx.game.model.util.Vector2;
+import com.mygdx.game.renderer.RenderingLayer;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.Locale;
+
+@NoArgsConstructor(staticName = "of")
+@Data
+public class RespawnMessageRenderer {
+    public void render(Creature creature, RenderingLayer renderingLayer) {
+        if (creature != null && !creature.isAlive()) {
+            if (creature.getParams().getRespawnTimer().getTime() < creature.getParams().getRespawnTime()) {
+                float timeRemainingBeforeRespawn =
+                    creature.getParams().getRespawnTime() - creature.getParams().getRespawnTimer().getTime();
+                String timeRemainingBeforeRespawnText = String.format(Locale.US, "%.2f", timeRemainingBeforeRespawn);
+
+                Assets.renderLargeFont(renderingLayer,
+                                       "You are dead!\nRespawning...\n" + timeRemainingBeforeRespawnText,
+                                       Vector2.of(Constants.WINDOW_WIDTH / 2f - Constants.WINDOW_WIDTH / 8f,
+                                                  Constants.WINDOW_HEIGHT / 2f + Constants.WINDOW_HEIGHT / 5f),
+                                       Color.RED);
+            }
+        }
+    }
+}
