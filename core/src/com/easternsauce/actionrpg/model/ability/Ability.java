@@ -54,15 +54,15 @@ public abstract class Ability {
 
     abstract public void updatePosition(CoreGame game);
 
-    abstract void onAbilityStarted(CoreGame game);
+    abstract public void onAbilityStarted(CoreGame game);
 
-    abstract void onDelayedAction(CoreGame game);
+    abstract public void onDelayedAction(CoreGame game);
 
-    abstract void onAbilityCompleted(CoreGame game);
+    abstract protected void onAbilityCompleted(CoreGame game);
 
-    abstract void onChannelUpdate(CoreGame game);
+    abstract public void onChannelUpdate(CoreGame game);
 
-    abstract void onActiveUpdate(float delta, CoreGame game);
+    abstract protected void onActiveUpdate(float delta, CoreGame game);
 
     public void init(CoreGame game) {
 

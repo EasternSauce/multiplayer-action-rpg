@@ -29,8 +29,8 @@ public class EnemyTemplate {
                                                                                                  DropTableEntry.boomerangDrop,
                                                                                                  DropTableEntry.shieldDrop));
 
-    public static EnemyTemplate archer = EnemyTemplate.of(EnemyType.ARCHER, 15f, SkillType.CROSSBOW_SHOT, randomDropSet);
+    public static EnemyTemplate archer = EnemyTemplate.of(EnemyType.ARCHER, 15f, SkillType.MOB_CROSSBOW_SHOT, randomDropSet);
 
     public static EnemyTemplate skeleton = EnemyTemplate.of(EnemyType.SKELETON, 3f, SkillType.SWORD_SLASH, randomDropSet);
-    public static EnemyTemplate mage = EnemyTemplate.of(EnemyType.MAGE, 15f, SkillType.SLOW_MAGIC_ORB, randomDropSet);
+    public static EnemyTemplate mage = EnemyTemplate.of(EnemyType.MAGE, 15f, SkillType.MOB_MAGIC_ORB, randomDropSet);
 }

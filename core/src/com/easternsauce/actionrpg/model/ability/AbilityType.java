@@ -13,6 +13,7 @@ public enum AbilityType {
 
     CROSSBOW_BOLT,
     CROSSBOW_SHOT,
+    MOB_CROSSBOW_SHOT,
 
     MAGIC_ORB,
 

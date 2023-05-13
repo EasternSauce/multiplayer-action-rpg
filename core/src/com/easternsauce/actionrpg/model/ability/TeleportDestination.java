@@ -70,7 +70,7 @@ public class TeleportDestination extends Ability {
     }
 
     @Override
-    void onAbilityStarted(CoreGame game) {
+    public void onAbilityStarted(CoreGame game) {
         game.addTeleportEvent(TeleportEvent.of(getParams().getCreatureId(),
                                                getParams().getPos(),
                                                getParams().getAreaId(),
@@ -78,22 +78,22 @@ public class TeleportDestination extends Ability {
     }
 
     @Override
-    void onDelayedAction(CoreGame game) {
+    public void onDelayedAction(CoreGame game) {
 
     }
 
     @Override
-    void onAbilityCompleted(CoreGame game) {
+    protected void onAbilityCompleted(CoreGame game) {
 
     }
 
     @Override
-    void onChannelUpdate(CoreGame game) {
+    public void onChannelUpdate(CoreGame game) {
 
     }
 
     @Override
-    void onActiveUpdate(float delta, CoreGame game) {
+    protected void onActiveUpdate(float delta, CoreGame game) {
 
     }
 

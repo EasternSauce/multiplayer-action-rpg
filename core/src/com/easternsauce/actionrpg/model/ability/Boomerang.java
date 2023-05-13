@@ -43,17 +43,17 @@ public class Boomerang extends Projectile {
     }
 
     @Override
-    void onAbilityStarted(CoreGame game) {
+    public void onAbilityStarted(CoreGame game) {
 
     }
 
     @Override
-    void onDelayedAction(CoreGame game) {
+    public void onDelayedAction(CoreGame game) {
 
     }
 
     @Override
-    void onAbilityCompleted(CoreGame game) {
+    protected void onAbilityCompleted(CoreGame game) {
 
     }
 
@@ -77,7 +77,7 @@ public class Boomerang extends Projectile {
     }
 
     @Override
-    void onActiveUpdate(float delta, CoreGame game) {
+    protected void onActiveUpdate(float delta, CoreGame game) {
         if (getParams().getSpeed() != null) {
             getParams().setVelocity(getParams().getDirVector().normalized().multiplyBy(getParams().getSpeed()));
         }

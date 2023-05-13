@@ -50,17 +50,17 @@ public class SwordSlash extends Ability {
     }
 
     @Override
-    void onAbilityStarted(CoreGame game) {
+    public void onAbilityStarted(CoreGame game) {
 
     }
 
     @Override
-    void onDelayedAction(CoreGame game) {
+    public void onDelayedAction(CoreGame game) {
 
     }
 
     @Override
-    void onAbilityCompleted(CoreGame game) {
+    protected void onAbilityCompleted(CoreGame game) {
 
     }
 
@@ -92,13 +92,13 @@ public class SwordSlash extends Ability {
     }
 
     @Override
-    void onChannelUpdate(CoreGame game) {
+    public void onChannelUpdate(CoreGame game) {
         updatePosition(game);
 
     }
 
     @Override
-    void onActiveUpdate(float delta, CoreGame game) {
+    protected void onActiveUpdate(float delta, CoreGame game) {
 
         updatePosition(game);
 

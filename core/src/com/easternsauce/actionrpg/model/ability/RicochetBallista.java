@@ -30,17 +30,17 @@ public class RicochetBallista extends Ability {
     }
 
     @Override
-    void onAbilityStarted(CoreGame game) {
+    public void onAbilityStarted(CoreGame game) {
 
     }
 
     @Override
-    void onDelayedAction(CoreGame game) {
+    public void onDelayedAction(CoreGame game) {
 
     }
 
     @Override
-    void onAbilityCompleted(CoreGame game) {
+    protected void onAbilityCompleted(CoreGame game) {
 
         Vector2 leftSidePos = getParams()
             .getPos()
@@ -64,12 +64,12 @@ public class RicochetBallista extends Ability {
     }
 
     @Override
-    void onChannelUpdate(CoreGame game) {
+    public void onChannelUpdate(CoreGame game) {
 
     }
 
     @Override
-    void onActiveUpdate(float delta, CoreGame game) {
+    protected void onActiveUpdate(float delta, CoreGame game) {
 
     }
 

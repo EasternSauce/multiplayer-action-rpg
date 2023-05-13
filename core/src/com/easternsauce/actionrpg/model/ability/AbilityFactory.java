@@ -24,6 +24,8 @@ public class AbilityFactory {
                 return CrossbowBolt::of;
             case CROSSBOW_SHOT:
                 return CrossbowShot::of;
+            case MOB_CROSSBOW_SHOT:
+                return MobCrossbowShot::of;
             case MAGIC_ORB:
                 return MagicOrb::of;
             case VOLATILE_BUBBLE:

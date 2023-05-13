@@ -41,17 +41,17 @@ public class RicochetBullet extends Projectile {
     }
 
     @Override
-    void onAbilityStarted(CoreGame game) {
+    public void onAbilityStarted(CoreGame game) {
 
     }
 
     @Override
-    void onDelayedAction(CoreGame game) {
+    public void onDelayedAction(CoreGame game) {
 
     }
 
     @Override
-    void onAbilityCompleted(CoreGame game) {
+    protected void onAbilityCompleted(CoreGame game) {
 
     }
 

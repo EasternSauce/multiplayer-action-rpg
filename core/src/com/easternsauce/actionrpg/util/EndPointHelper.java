@@ -90,6 +90,7 @@ public class EndPointHelper {
         endPoint.getKryo().register(TeleportSource.class);
         endPoint.getKryo().register(TeleportDestination.class);
         endPoint.getKryo().register(CrossbowShot.class);
+        endPoint.getKryo().register(MobCrossbowShot.class);
 
         endPoint.getKryo().register(Enemy.class);
         endPoint.getKryo().register(Area.class);

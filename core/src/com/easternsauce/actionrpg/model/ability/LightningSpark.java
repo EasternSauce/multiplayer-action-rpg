@@ -72,12 +72,12 @@ public class LightningSpark extends Ability {
     }
 
     @Override
-    void onAbilityStarted(CoreGame game) {
+    public void onAbilityStarted(CoreGame game) {
 
     }
 
     @Override
-    void onDelayedAction(CoreGame game) {
+    public void onDelayedAction(CoreGame game) {
         // find the closest enemy, and if they are within distance, and haven't been hit yet, then put node over them
         Set<CreatureId> excluded = new HashSet<>(getParams().getCreaturesAlreadyHit().keySet());
         excluded.add(getParams().getCreatureId());
@@ -117,17 +117,17 @@ public class LightningSpark extends Ability {
     }
 
     @Override
-    void onAbilityCompleted(CoreGame game) {
+    protected void onAbilityCompleted(CoreGame game) {
 
     }
 
     @Override
-    void onChannelUpdate(CoreGame game) {
+    public void onChannelUpdate(CoreGame game) {
 
     }
 
     @Override
-    void onActiveUpdate(float delta, CoreGame game) {
+    protected void onActiveUpdate(float delta, CoreGame game) {
 
     }
 

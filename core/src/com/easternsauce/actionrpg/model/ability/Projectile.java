@@ -10,7 +10,7 @@ public abstract class Projectile extends Ability {
     AbilityParams params;
 
     @Override
-    void onChannelUpdate(CoreGame game) {
+    public void onChannelUpdate(CoreGame game) {
         if (getParams().getSpeed() != null) {
             getParams().setVelocity(getParams().getDirVector().normalized().multiplyBy(getParams().getSpeed()));
         }
@@ -18,7 +18,7 @@ public abstract class Projectile extends Ability {
     }
 
     @Override
-    void onActiveUpdate(float delta, CoreGame game) {
+    protected void onActiveUpdate(float delta, CoreGame game) {
         if (getParams().getSpeed() != null) {
             getParams().setVelocity(getParams().getDirVector().normalized().multiplyBy(getParams().getSpeed()));
         }

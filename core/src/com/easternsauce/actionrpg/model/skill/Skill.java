@@ -66,6 +66,15 @@ public class Skill {
                             40f,
                             0f);
         }
+        if (skillType == SkillType.MOB_CROSSBOW_SHOT) {
+            return Skill.of(skillType,
+                            creatureId,
+                            singleScheduledAbility(AbilityType.MOB_CROSSBOW_SHOT, skillType),
+                            SimpleTimer.getExpiredTimer(),
+                            2f,
+                            40f,
+                            0f);
+        }
         if (skillType == SkillType.MAGIC_ORB) {
             return Skill.of(skillType,
                             creatureId,
@@ -75,7 +84,7 @@ public class Skill {
                             15f,
                             10f);
         }
-        if (skillType == SkillType.SLOW_MAGIC_ORB) {
+        if (skillType == SkillType.MOB_MAGIC_ORB) {
             return Skill.of(skillType,
                             creatureId,
                             singleScheduledAbility(AbilityType.MAGIC_ORB, skillType),

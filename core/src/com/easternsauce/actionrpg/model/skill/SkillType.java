@@ -8,10 +8,11 @@ public enum SkillType {
     FIREBALL("Fireball"),
     LIGHTNING("Lightning"),
     CROSSBOW_SHOT("Crossbow Shot"),
+    MOB_CROSSBOW_SHOT("Crossbow Shot (mob only)"),
 
     MAGIC_ORB("Magic Orb"),
 
-    SLOW_MAGIC_ORB("Magic Orb"),
+    MOB_MAGIC_ORB("Magic Orb (mob only)"),
 
     VOLATILE_BUBBLE("Volatile Bubble"),
 
