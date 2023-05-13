@@ -29,7 +29,7 @@ import com.mygdx.game.model.util.GameStateBroadcast;
 import com.mygdx.game.model.util.PlayerConfig;
 import com.mygdx.game.model.util.Vector2;
 import com.mygdx.game.renderer.RenderingLayer;
-import com.mygdx.game.renderer.util.SkillMenuHelper;
+import com.mygdx.game.renderer.hud.skillmenu.SkillMenuController;
 import com.mygdx.game.util.EndPointHelper;
 import com.mygdx.game.util.InventoryHelper;
 import lombok.Getter;
@@ -47,6 +47,8 @@ public class CoreGameClient extends CoreGame {
     private static CoreGameClient instance;
 
     private final ClientGameState gameState = ClientGameState.of();
+
+    private final SkillMenuController skillMenuController = SkillMenuController.of();
 
     @Getter
     @Setter
@@ -236,13 +238,14 @@ public class CoreGameClient extends CoreGame {
 
         }
         else if (!playerConfig.getIsInventoryVisible() && playerConfig.getIsSkillMenuPickerSlotBeingChanged() != null) {
-            SkillMenuHelper.skillPickerMenuClick(getEndPoint(), this);
-
-            menuClickTime = gameState.getTime();
+            boolean isSuccessful = skillMenuController.performSkillMenuPickerClick(getEndPoint(), this);
+            if (isSuccessful) {
+                menuClickTime = gameState.getTime();
+            }
 
         }
         else {
-            boolean isSuccessful = SkillMenuHelper.performSkillMenuClick(getEndPoint(), this);
+            boolean isSuccessful = skillMenuController.performSkillMenuClick(getEndPoint(), this);
             if (isSuccessful) {
                 menuClickTime = gameState.getTime();
             }
