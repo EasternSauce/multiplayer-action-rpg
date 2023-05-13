@@ -6,11 +6,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.easternsauce.actionrpg.Constants;
+import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.physics.util.PhysicsHelper;
 import com.easternsauce.actionrpg.renderer.util.GameplayRendererHelper;
-import com.easternsauce.actionrpg.Constants;
-import com.easternsauce.actionrpg.game.CoreGame;
 import lombok.NoArgsConstructor;
 
 import java.util.Map;

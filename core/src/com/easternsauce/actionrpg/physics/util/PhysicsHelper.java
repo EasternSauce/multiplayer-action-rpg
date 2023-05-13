@@ -1,10 +1,9 @@
 package com.easternsauce.actionrpg.physics.util;
 
-import com.easternsauce.actionrpg.model.ability.Ability;
-import com.easternsauce.actionrpg.model.ability.AbilityState;
-import com.easternsauce.actionrpg.physics.event.*;
 import com.easternsauce.actionrpg.Constants;
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.ability.Ability;
+import com.easternsauce.actionrpg.model.ability.AbilityState;
 import com.easternsauce.actionrpg.model.area.AreaGate;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.creature.Creature;
@@ -12,7 +11,7 @@ import com.easternsauce.actionrpg.model.creature.Player;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;
 import com.easternsauce.actionrpg.model.util.TeleportEvent;
 import com.easternsauce.actionrpg.model.util.Vector2;
-import com.mygdx.game.physics.event.*;
+import com.easternsauce.actionrpg.physics.event.*;
 
 public class PhysicsHelper {
 

@@ -2,13 +2,13 @@ package com.easternsauce.actionrpg.renderer.hud.itempickupmenu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.easternsauce.actionrpg.renderer.icons.IconRetriever;
 import com.easternsauce.actionrpg.assets.Assets;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
+import com.easternsauce.actionrpg.renderer.icons.IconRetriever;
 import com.easternsauce.actionrpg.renderer.util.Rect;
 import lombok.Data;
 import lombok.NoArgsConstructor;

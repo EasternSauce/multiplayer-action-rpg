@@ -1,8 +1,8 @@
 package com.easternsauce.actionrpg.physics.body;
 
 import com.badlogic.gdx.physics.box2d.Body;
-import com.easternsauce.actionrpg.model.area.AreaGate;
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.area.AreaGate;
 import com.easternsauce.actionrpg.physics.world.PhysicsWorld;
 import lombok.Data;
 import lombok.NoArgsConstructor;

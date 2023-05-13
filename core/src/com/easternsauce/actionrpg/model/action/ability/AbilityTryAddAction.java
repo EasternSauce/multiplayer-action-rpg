@@ -1,7 +1,7 @@
 package com.easternsauce.actionrpg.model.action.ability;
 
-import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.util.Vector2;

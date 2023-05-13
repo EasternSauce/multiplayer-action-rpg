@@ -1,12 +1,12 @@
 package com.easternsauce.actionrpg.renderer.hud.itempickupmenu;
 
 import com.badlogic.gdx.Gdx;
-import com.esotericsoftware.kryonet.Client;
 import com.easternsauce.actionrpg.command.ActionPerformCommand;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.action.loot.LootPileItemTryPickUpAction;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;
 import com.easternsauce.actionrpg.renderer.util.Rect;
+import com.esotericsoftware.kryonet.Client;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

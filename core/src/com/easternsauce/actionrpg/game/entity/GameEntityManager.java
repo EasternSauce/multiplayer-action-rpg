@@ -18,7 +18,6 @@ import com.easternsauce.actionrpg.renderer.AbilityRenderer;
 import com.easternsauce.actionrpg.renderer.LootPileRenderer;
 import com.easternsauce.actionrpg.renderer.creature.CreatureRenderer;
 import com.easternsauce.actionrpg.renderer.game.GameEntityRenderer;
-import com.mygdx.game.model.creature.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

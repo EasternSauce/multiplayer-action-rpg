@@ -7,7 +7,6 @@ import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;
 import com.easternsauce.actionrpg.model.util.SimpleTimer;
-import com.mygdx.game.model.area.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

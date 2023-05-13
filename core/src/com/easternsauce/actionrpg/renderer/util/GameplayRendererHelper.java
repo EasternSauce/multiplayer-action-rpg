@@ -1,8 +1,8 @@
 package com.easternsauce.actionrpg.renderer.util;
 
-import com.easternsauce.actionrpg.renderer.game.GameEntityRenderer;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
+import com.easternsauce.actionrpg.renderer.game.GameEntityRenderer;
 
 import java.util.Arrays;
 import java.util.List;

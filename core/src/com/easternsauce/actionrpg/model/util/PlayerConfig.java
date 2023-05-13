@@ -1,7 +1,7 @@
 package com.easternsauce.actionrpg.model.util;
 
-import com.easternsauce.actionrpg.model.skill.SkillType;
 import com.easternsauce.actionrpg.model.area.LootPileId;
+import com.easternsauce.actionrpg.model.skill.SkillType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

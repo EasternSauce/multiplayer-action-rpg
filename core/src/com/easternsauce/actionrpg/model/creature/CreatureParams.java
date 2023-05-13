@@ -1,13 +1,13 @@
 package com.easternsauce.actionrpg.model.creature;
 
 import com.easternsauce.actionrpg.model.area.AreaId;
+import com.easternsauce.actionrpg.model.creature.effect.CreatureEffect;
+import com.easternsauce.actionrpg.model.creature.effect.CreatureEffectState;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.skill.Skill;
 import com.easternsauce.actionrpg.model.skill.SkillType;
-import com.easternsauce.actionrpg.model.util.Vector2;
-import com.easternsauce.actionrpg.model.creature.effect.CreatureEffect;
-import com.easternsauce.actionrpg.model.creature.effect.CreatureEffectState;
 import com.easternsauce.actionrpg.model.util.SimpleTimer;
+import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
