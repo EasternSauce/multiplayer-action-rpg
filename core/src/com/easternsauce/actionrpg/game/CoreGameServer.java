@@ -12,7 +12,7 @@ import com.easternsauce.actionrpg.model.action.GameStateAction;
 import com.easternsauce.actionrpg.model.action.loot.LootPileSpawnAction;
 import com.easternsauce.actionrpg.model.action.player.PlayerInitAction;
 import com.easternsauce.actionrpg.model.action.player.PlayerRemoveAction;
-import com.easternsauce.actionrpg.model.area.AreaGate;
+import com.easternsauce.actionrpg.model.area.AreaGateConnection;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
@@ -224,12 +224,15 @@ public class CoreGameServer extends CoreGame {
 
         getGameState().setAreaGates(new ConcurrentSkipListSet<>());
         getGameState()
-            .getAreaGates()
-            .addAll(Arrays.asList(AreaGate.of(AreaId.of("area1"),
-                                              Vector2.of(199.5f, 15f),
-                                              AreaId.of("area3"),
-                                              Vector2.of(17f, 2.5f)),
-                                  AreaGate.of(AreaId.of("area1"), Vector2.of(2f, 63f), AreaId.of("area2"), Vector2.of(58f, 9f))));
+            .getAreaGateConnections()
+            .addAll(Arrays.asList(AreaGateConnection.of(AreaId.of("area1"),
+                                                        Vector2.of(199.5f, 15f),
+                                                        AreaId.of("area3"),
+                                                        Vector2.of(17f, 2.5f)),
+                                  AreaGateConnection.of(AreaId.of("area1"),
+                                                        Vector2.of(2f, 63f),
+                                                        AreaId.of("area2"),
+                                                        Vector2.of(58f, 9f))));
 
         List<EnemySpawn> enemySpawns1 = EnemySpawnUtils.area1EnemySpawns();
 

@@ -4,7 +4,7 @@ import com.easternsauce.actionrpg.game.gamestate.accesor.AbilityAccessor;
 import com.easternsauce.actionrpg.game.gamestate.accesor.CreatureAccessor;
 import com.easternsauce.actionrpg.model.GameStateData;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
-import com.easternsauce.actionrpg.model.area.AreaGate;
+import com.easternsauce.actionrpg.model.area.AreaGateConnection;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.area.LootPile;
 import com.easternsauce.actionrpg.model.area.LootPileId;
@@ -44,8 +44,8 @@ public abstract class GameState {
         return null;
     }
 
-    public Set<AreaGate> getAreaGates() {
-        return getData().getAreaGates();
+    public Set<AreaGateConnection> getAreaGateConnections() {
+        return getData().getAreaGateConnections();
     }
 
     public LootPile getLootPile(LootPileId lootPileId) {
@@ -72,8 +72,8 @@ public abstract class GameState {
         getData().getGeneralTimer().update(delta);
     }
 
-    public void setAreaGates(Set<AreaGate> areaGates) {
-        getData().setAreaGates(areaGates);
+    public void setAreaGates(Set<AreaGateConnection> areaGateConnections) {
+        getData().setAreaGateConnections(areaGateConnections);
     }
 
     public AreaId getDefaultAreaId() {

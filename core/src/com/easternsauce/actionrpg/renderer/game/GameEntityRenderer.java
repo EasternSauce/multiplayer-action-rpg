@@ -65,7 +65,7 @@ public class GameEntityRenderer {
         areaGateRenderers = new HashSet<>();
         areaGateRenderers.addAll(game
                                      .getGameState()
-                                     .getAreaGates()
+                                     .getAreaGateConnections()
                                      .stream()
                                      .map(areaGate -> AreaGateRenderer.of(areaGate, atlas))
                                      .collect(Collectors.toSet()));

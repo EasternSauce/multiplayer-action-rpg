@@ -4,7 +4,6 @@ import com.easternsauce.actionrpg.Constants;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.ability.AbilityState;
-import com.easternsauce.actionrpg.model.area.AreaGate;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.Player;
@@ -60,30 +59,13 @@ public class PhysicsHelper {
                 CreatureHitsAreaGateEvent event = (CreatureHitsAreaGateEvent) physicsEvent;
 
                 Creature creature = game.getGameState().accessCreatures().getCreature(event.getCreatureId());
-                AreaGate areaGate = event.getAreaGate();
 
                 creature.getParams().setAreaWhenEnteredGate(creature.getParams().getAreaId());
 
                 if (creature instanceof Player && !creature.getParams().getIsStillInsideGateAfterTeleport()) {
-                    AreaId fromAreaId;
-                    AreaId toAreaId;
-                    Vector2 pos;
-
-                    AreaId creatureAreaId = creature.getParams().getAreaId();
-
-                    if (creatureAreaId.equals(areaGate.getAreaA_Id())) {
-                        fromAreaId = areaGate.getAreaA_Id();
-                        toAreaId = areaGate.getAreaB_Id();
-                        pos = areaGate.getPosB();
-                    }
-                    else if (creatureAreaId.equals(areaGate.getAreaB_Id())) {
-                        fromAreaId = areaGate.getAreaB_Id();
-                        toAreaId = areaGate.getAreaA_Id();
-                        pos = areaGate.getPosA();
-                    }
-                    else {
-                        throw new RuntimeException("unreachable");
-                    }
+                    AreaId fromAreaId = event.getAreaId();
+                    AreaId toAreaId = event.getConnectedAreaId();
+                    Vector2 pos = event.getConnectedPos();
 
                     game.addTeleportEvent(TeleportEvent.of(event.getCreatureId(), pos, fromAreaId, toAreaId, true));
 

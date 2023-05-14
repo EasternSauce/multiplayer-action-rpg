@@ -2,7 +2,8 @@ package com.easternsauce.actionrpg.physics.body;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.area.AreaGate;
+import com.easternsauce.actionrpg.model.area.AreaId;
+import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.physics.world.PhysicsWorld;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,35 +11,39 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @Data
 public class AreaGateBody {
-
-    AreaGate areaGate;
     @SuppressWarnings("FieldCanBeLocal")
-    Body areaGateA_b2body;
-    @SuppressWarnings("FieldCanBeLocal")
-    Body areaGateB_b2body;
+    Body b2body;
 
-    PhysicsWorld worldA;
-    PhysicsWorld worldB;
+    PhysicsWorld world;
 
-    public static AreaGateBody of(AreaGate areaGate) {
+    Vector2 pos;
+    Float width;
+    Float height;
+    AreaId areaId;
+
+    Vector2 connectedPos;
+    Float connectedWidth;
+    Float connectedHeight;
+    AreaId connectedAreaId;
+
+    public static AreaGateBody of(Vector2 pos, Float width, Float height, AreaId areaId, Vector2 connectedPos,
+                                  Float connectedWidth, Float connectedHeight, AreaId connectedAreaId) {
         AreaGateBody areaGateBody = AreaGateBody.of();
-        areaGateBody.areaGate = areaGate;
+        areaGateBody.pos = pos;
+        areaGateBody.width = width;
+        areaGateBody.height = height;
+        areaGateBody.areaId = areaId;
+        areaGateBody.connectedPos = connectedPos;
+        areaGateBody.connectedWidth = connectedWidth;
+        areaGateBody.connectedHeight = connectedHeight;
+        areaGateBody.connectedAreaId = connectedAreaId;
+
         return areaGateBody;
     }
 
     public void init(CoreGame game) {
-        worldA = game.getPhysicsWorld(areaGate.getAreaA_Id());
-        worldB = game.getPhysicsWorld(areaGate.getAreaB_Id());
+        world = game.getPhysicsWorld(areaId);
 
-        areaGateA_b2body = B2BodyFactory.createAreaGateB2body(worldA,
-                                                              this,
-                                                              areaGate.getPosA(),
-                                                              areaGate.getWidth(),
-                                                              areaGate.getHeight());
-        areaGateB_b2body = B2BodyFactory.createAreaGateB2body(worldB,
-                                                              this,
-                                                              areaGate.getPosB(),
-                                                              areaGate.getWidth(),
-                                                              areaGate.getHeight());
+        b2body = B2BodyFactory.createAreaGateB2body(world, this, pos, width, height);
     }
 }

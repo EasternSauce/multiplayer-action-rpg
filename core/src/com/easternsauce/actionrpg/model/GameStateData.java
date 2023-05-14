@@ -30,7 +30,7 @@ public class GameStateData {
 
     Map<CreatureId, PlayerConfig> playerConfig = new ConcurrentSkipListMap<>();
 
-    Set<AreaGate> areaGates = new ConcurrentSkipListSet<>();
+    Set<AreaGateConnection> areaGateConnections = new ConcurrentSkipListSet<>();
 
     Map<LootPileId, LootPile> lootPiles = new ConcurrentSkipListMap<>();
 
@@ -46,7 +46,7 @@ public class GameStateData {
         newGameStateData.setDefaultAreaId(gameStateData.getDefaultAreaId());
         newGameStateData.setGeneralTimer(gameStateData.getGeneralTimer());
         newGameStateData.setPlayerConfig(new ConcurrentSkipListMap<>(gameStateData.getPlayerConfig()));
-        newGameStateData.setAreaGates(new ConcurrentSkipListSet<>(gameStateData.getAreaGates()));
+        newGameStateData.setAreaGateConnections(new ConcurrentSkipListSet<>(gameStateData.getAreaGateConnections()));
         newGameStateData.setLastRandomValue(gameStateData.getLastRandomValue());
 
         return newGameStateData;
@@ -63,7 +63,7 @@ public class GameStateData {
         newGameStateData.setDefaultAreaId(gameStateData.getDefaultAreaId());
         newGameStateData.setGeneralTimer(gameStateData.getGeneralTimer());
         newGameStateData.setPlayerConfig(new ConcurrentSkipListMap<>(gameStateData.getPlayerConfig()));
-        newGameStateData.setAreaGates(new ConcurrentSkipListSet<>(gameStateData.getAreaGates()));
+        newGameStateData.setAreaGateConnections(new ConcurrentSkipListSet<>(gameStateData.getAreaGateConnections()));
         newGameStateData.setLastRandomValue(gameStateData.getLastRandomValue());
 
         return newGameStateData;
@@ -79,7 +79,7 @@ public class GameStateData {
         newGameStateData.setDefaultAreaId(gameStateData.getDefaultAreaId());
         newGameStateData.setGeneralTimer(gameStateData.getGeneralTimer());
         newGameStateData.setPlayerConfig(new ConcurrentSkipListMap<>(gameStateData.getPlayerConfig()));
-        newGameStateData.setAreaGates(new ConcurrentSkipListSet<>(gameStateData.getAreaGates()));
+        newGameStateData.setAreaGateConnections(new ConcurrentSkipListSet<>(gameStateData.getAreaGateConnections()));
         newGameStateData.setLastRandomValue(gameStateData.getLastRandomValue());
 
         return newGameStateData;

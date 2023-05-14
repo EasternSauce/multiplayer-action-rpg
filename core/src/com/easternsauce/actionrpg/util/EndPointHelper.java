@@ -102,7 +102,7 @@ public class EndPointHelper {
         endPoint.getKryo().register(CreatureParams.class);
         endPoint.getKryo().register(AbilityParams.class);
         endPoint.getKryo().register(LootPileParams.class);
-        endPoint.getKryo().register(AreaGate.class);
+        endPoint.getKryo().register(AreaGateConnection.class);
         endPoint.getKryo().register(DropTableEntry.class);
 
         endPoint.getKryo().register(AbilityTryAddAction.class);
