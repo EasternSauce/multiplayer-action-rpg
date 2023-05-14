@@ -51,9 +51,6 @@ public class ServerGameState extends GameState {
     public void sendGameDataPersonalizedForPlayer(Connection connection) {
         Creature player = accessCreatures().getCreatures().get(getClientPlayers().get(connection.getID()));
 
-        System.out.println("personalized for " + player.getParams().getId() + " at " + player.getParams().getPos() + " area " +
-                           player.getParams().getAreaId());
-
         // TODO: also add ALL data about creatures that own abilities within range!
         ConcurrentSkipListMap<CreatureId, Creature> personalizedCreatures = new ConcurrentSkipListMap<>(accessCreatures()
                                                                                                             .getCreatures()

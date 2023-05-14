@@ -113,7 +113,7 @@ public class CreatureParams implements EntityParams {
 
     private Set<DropTableEntry> dropTable;
 
-    private Boolean justTeleportedToGate = false;
+    private Boolean isStillInsideGateAfterTeleport = false;
     private AreaId areaWhenEnteredGate;
 
     private Map<Integer, Item> equipmentItems = new ConcurrentSkipListMap<>();
@@ -128,6 +128,8 @@ public class CreatureParams implements EntityParams {
     private Vector2 aimDirection = Vector2.of(0f, 0f);
 
     private Map<CreatureEffect, CreatureEffectState> effects = new ConcurrentSkipListMap<>();
+
+    private SimpleTimer gateTeleportCooldownTimer = SimpleTimer.getExpiredTimer();
 
     public static CreatureParams of(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn) {
         return getCreatureParams(creatureId,

@@ -237,9 +237,16 @@ public class GameEntityManager {
     }
 
     public void teleportCreature(TeleportEvent teleportEvent, CoreGame game) {
-        if (teleportEvent
+        if (!teleportEvent.isUsedGate() && teleportEvent
             .getToAreaId()
-            .equals(game.getGameState().accessCreatures().getCreature(teleportEvent.getCreatureId()).getParams().getAreaId())) {
+            .getValue()
+            .equals(game
+                        .getGameState()
+                        .accessCreatures()
+                        .getCreature(teleportEvent.getCreatureId())
+                        .getParams()
+                        .getAreaId()
+                        .getValue())) {
             getGameEntityPhysics()
                 .getCreatureBodies()
                 .get(teleportEvent.getCreatureId())
@@ -259,17 +266,15 @@ public class GameEntityManager {
                     getGameEntityPhysics().getCreatureBodies().remove(teleportEvent.getCreatureId());
                 }
 
-                if (!getGameEntityPhysics().getCreatureBodies().containsKey(teleportEvent.getCreatureId())) {
-                    CreatureBody creatureBody = CreatureBody.of(teleportEvent.getCreatureId());
-                    creatureBody.init(teleportEvent.getToAreaId(), game);
-                    getGameEntityPhysics().getCreatureBodies().put(teleportEvent.getCreatureId(), creatureBody);
+                CreatureBody creatureBody = CreatureBody.of(teleportEvent.getCreatureId());
+                creatureBody.init(teleportEvent.getToAreaId(), game);
+                getGameEntityPhysics().getCreatureBodies().put(teleportEvent.getCreatureId(), creatureBody);
+
+                if (teleportEvent.isUsedGate()) {
+                    creature.getParams().setIsStillInsideGateAfterTeleport(true);
+                    creature.getParams().getGateTeleportCooldownTimer().restart();
                 }
-
-                creature.getParams().setJustTeleportedToGate(true);
-
             }
         }
-
     }
-
 }

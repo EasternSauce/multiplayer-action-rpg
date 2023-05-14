@@ -9,7 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @Data
 public class ActionPerformCommand implements GameCommand {
-
     GameStateAction action;
-
 }

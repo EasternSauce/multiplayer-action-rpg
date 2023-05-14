@@ -74,7 +74,8 @@ public class TeleportDestination extends Ability {
         game.addTeleportEvent(TeleportEvent.of(getParams().getCreatureId(),
                                                getParams().getPos(),
                                                getParams().getAreaId(),
-                                               getParams().getAreaId()));
+                                               getParams().getAreaId(),
+                                               false));
     }
 
     @Override

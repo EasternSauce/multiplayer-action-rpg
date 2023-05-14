@@ -64,7 +64,7 @@ public class PhysicsHelper {
 
                 creature.getParams().setAreaWhenEnteredGate(creature.getParams().getAreaId());
 
-                if (creature instanceof Player && !creature.getParams().getJustTeleportedToGate()) {
+                if (creature instanceof Player && !creature.getParams().getIsStillInsideGateAfterTeleport()) {
                     AreaId fromAreaId;
                     AreaId toAreaId;
                     Vector2 pos;
@@ -85,7 +85,7 @@ public class PhysicsHelper {
                         throw new RuntimeException("unreachable");
                     }
 
-                    game.addTeleportEvent(TeleportEvent.of(event.getCreatureId(), pos, fromAreaId, toAreaId));
+                    game.addTeleportEvent(TeleportEvent.of(event.getCreatureId(), pos, fromAreaId, toAreaId, true));
 
                 }
             }
@@ -95,10 +95,10 @@ public class PhysicsHelper {
 
                 Creature creature = game.getGameState().accessCreatures().getCreature(event.getCreatureId());
 
-                if (creature instanceof Player && creature.getParams().getJustTeleportedToGate() &&
+                if (creature instanceof Player && creature.getParams().getIsStillInsideGateAfterTeleport() &&
                     creature.getParams().getAreaWhenEnteredGate().equals(creature.getParams().getAreaId())) {
 
-                    creature.getParams().setJustTeleportedToGate(false);
+                    creature.getParams().setIsStillInsideGateAfterTeleport(false);
 
                 }
             }

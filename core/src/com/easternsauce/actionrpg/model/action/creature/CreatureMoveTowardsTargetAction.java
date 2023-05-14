@@ -26,7 +26,6 @@ public class CreatureMoveTowardsTargetAction extends GameStateAction {
 
     @Override
     public void applyToGame(CoreGame game) {
-
         Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
         if (creature != null && creature.isAlive() && !creature.isEffectActive(CreatureEffect.STUN, game)) {
@@ -37,7 +36,6 @@ public class CreatureMoveTowardsTargetAction extends GameStateAction {
             creature.getParams().setPreviousPos(creature.getParams().getPos());
             creature.getParams().getIsStillMovingCheckTimer().restart();
         }
-
     }
 
     public static CreatureMoveTowardsTargetAction of(CreatureId creatureId, Vector2 mousePos) {
