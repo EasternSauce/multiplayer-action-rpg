@@ -61,7 +61,7 @@ public class ItemPickupMenuRenderer {
             .getItemPickupMenuLootPiles()
             .stream()
             .filter(lootPileId -> game.getGameState().getLootPiles().containsKey(lootPileId))
-            .flatMap(lootPileId -> game.getGameState().getLootPile(lootPileId).getItems().stream())
+            .flatMap(lootPileId -> game.getGameState().getLootPile(lootPileId).getParams().getItems().stream())
             .forEach(item -> renderMenuOption(renderingLayer, iconRetriever, x, y, i, item));
     }
 

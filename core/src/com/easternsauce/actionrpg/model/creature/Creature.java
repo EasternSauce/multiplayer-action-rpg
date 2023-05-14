@@ -1,6 +1,7 @@
 package com.easternsauce.actionrpg.model.creature;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.ability.AbilityState;
 import com.easternsauce.actionrpg.model.creature.effect.CreatureEffect;
@@ -17,7 +18,7 @@ import com.easternsauce.actionrpg.util.RandomHelper;
 import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
 
-public abstract class Creature {
+public abstract class Creature implements Entity {
 
     public abstract CreatureParams getParams();
 

@@ -1,6 +1,7 @@
 package com.easternsauce.actionrpg.model.action.creature;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.creature.Creature;
@@ -20,8 +21,8 @@ public class CreatureRespawnAction extends GameStateAction {
     private AreaId areaId;
 
     @Override
-    public Vector2 actionObjectPos(CoreGame game) {
-        return pos;
+    public Entity getEntity(CoreGame game) {
+        return game.getGameState().accessCreatures().getCreature(creatureId);
     }
 
     public void applyToGame(CoreGame game) {

@@ -142,10 +142,6 @@ public class EnemySpawnUtils {
                              EnemySpawn.of(Vector2.of(132.95432f, 31.945175f), EnemyTemplate.mage),
                              EnemySpawn.of(Vector2.of(142.37437f, 24.157932f), EnemyTemplate.archer),
                              EnemySpawn.of(Vector2.of(158.12152f, 19.60879f), EnemyTemplate.archer),
-                             EnemySpawn.of(Vector2.of(170.25414f, 19.178442f), EnemyTemplate.archer),
-                             EnemySpawn.of(Vector2.of(178.93243f, 15.223803f), EnemyTemplate.mage),
-                             EnemySpawn.of(Vector2.of(183.58578f, 17.736193f), EnemyTemplate.mage),
-                             EnemySpawn.of(Vector2.of(191.25093f, 11.825948f), EnemyTemplate.archer),
                              EnemySpawn.of(Vector2.of(101.61807f, 155.82611f), EnemyTemplate.mage));
     }
 

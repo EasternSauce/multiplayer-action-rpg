@@ -1,5 +1,6 @@
 package com.easternsauce.actionrpg.model.ability;
 
+import com.easternsauce.actionrpg.game.entity.EntityParams;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.skill.SkillType;
@@ -14,7 +15,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 
 @NoArgsConstructor(staticName = "of")
 @Data
-public class AbilityParams {
+public class AbilityParams implements EntityParams {
     AbilityId id;
     AreaId areaId;
     AbilityState state = AbilityState.INACTIVE;

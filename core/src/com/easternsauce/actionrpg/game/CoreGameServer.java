@@ -9,9 +9,9 @@ import com.easternsauce.actionrpg.game.screen.ConnectScreenMessageHolder;
 import com.easternsauce.actionrpg.model.ability.AbilityId;
 import com.easternsauce.actionrpg.model.action.ActionsHolder;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
-import com.easternsauce.actionrpg.model.action.creature.PlayerInitAction;
-import com.easternsauce.actionrpg.model.action.creature.PlayerRemoveAction;
 import com.easternsauce.actionrpg.model.action.loot.LootPileSpawnAction;
+import com.easternsauce.actionrpg.model.action.player.PlayerInitAction;
+import com.easternsauce.actionrpg.model.action.player.PlayerRemoveAction;
 import com.easternsauce.actionrpg.model.area.AreaGate;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.creature.Creature;
@@ -75,9 +75,9 @@ public class CoreGameServer extends CoreGame {
 
         gameState.handleExpiredLootPiles();
 
-        ArrayList<GameStateAction> tickActionsCopy = new ArrayList<>(gameState.getOnTickActions());
+        ArrayList<GameStateAction> onTickActions = new ArrayList<>(gameState.getOnTickActions());
 
-        tickActionsCopy.forEach(gameStateAction -> gameStateAction.applyToGame(this));
+        onTickActions.forEach(gameStateAction -> gameStateAction.applyToGame(this));
 
         Connection[] connections = getEndPoint().getConnections();
         for (Connection connection : connections) {
@@ -87,14 +87,15 @@ public class CoreGameServer extends CoreGame {
 
             if (getClientPlayers().containsKey(connection.getID()) &&
                 getGameState().accessCreatures().getCreatures().containsKey(getClientPlayers().get(connection.getID()))) {
-                Creature creature = getGameState()
-                    .accessCreatures()
-                    .getCreatures()
-                    .get(getClientPlayers().get(connection.getID()));
+                Creature player = getGameState().accessCreatures().getCreatures().get(getClientPlayers().get(connection.getID()));
 
-                List<GameStateAction> personalizedTickActions = tickActionsCopy
+                List<GameStateAction> personalizedTickActions = onTickActions
                     .stream()
-                    .filter(action -> action.actionObjectPos(this).distance(creature.getParams().getPos()) <
+                    .filter(action -> action.isActionObjectValid(this) && action
+                        .getActionObjectAreaId(this)
+                        .getValue()
+                        .equals(player.getParams().getAreaId().getValue()) &&
+                                      action.getActionObjectPos(this).distance(player.getParams().getPos()) <
                                       Constants.CLIENT_GAME_UPDATE_RANGE)
                     .collect(Collectors.toList());
                 connection.sendTCP(ActionsHolder.of(personalizedTickActions));

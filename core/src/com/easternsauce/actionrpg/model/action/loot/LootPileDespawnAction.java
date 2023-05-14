@@ -1,9 +1,9 @@
 package com.easternsauce.actionrpg.model.action.loot;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
 import com.easternsauce.actionrpg.model.area.LootPileId;
-import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -15,11 +15,8 @@ public class LootPileDespawnAction extends GameStateAction {
     private LootPileId lootPileId;
 
     @Override
-    public Vector2 actionObjectPos(CoreGame game) {
-        if (!game.getGameState().getLootPiles().containsKey(lootPileId)) {
-            return Vector2.of(0f, 0f);
-        }
-        return game.getGameState().getLootPiles().get(lootPileId).getPos();
+    public Entity getEntity(CoreGame game) {
+        return game.getGameState().getLootPiles().get(lootPileId);
     }
 
     @Override

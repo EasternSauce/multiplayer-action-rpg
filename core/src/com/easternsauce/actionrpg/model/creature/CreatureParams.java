@@ -1,5 +1,6 @@
 package com.easternsauce.actionrpg.model.creature;
 
+import com.easternsauce.actionrpg.game.entity.EntityParams;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.creature.effect.CreatureEffect;
 import com.easternsauce.actionrpg.model.creature.effect.CreatureEffectState;
@@ -21,7 +22,7 @@ import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
 @Data
-public class CreatureParams {
+public class CreatureParams implements EntityParams {
     private CreatureId id;
 
     private AreaId areaId;

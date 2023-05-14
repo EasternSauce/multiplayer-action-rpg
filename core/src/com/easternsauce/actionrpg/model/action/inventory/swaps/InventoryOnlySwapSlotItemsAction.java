@@ -1,12 +1,12 @@
 package com.easternsauce.actionrpg.model.action.inventory.swaps;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;
-import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -15,20 +15,20 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class InventoryOnlySwapSlotItemsAction extends GameStateAction {
-    private CreatureId creatureId;
+    private CreatureId playerId;
 
     private Integer fromSlotIndex;
     private Integer toSlotIndex;
 
     @Override
-    public Vector2 actionObjectPos(CoreGame game) {
-        return getActionCreaturePos(creatureId, game);
+    public Entity getEntity(CoreGame game) {
+        return game.getGameState().accessCreatures().getCreature(playerId);
     }
 
     @Override
     public void applyToGame(CoreGame game) {
-        Creature player = game.getGameState().accessCreatures().getCreature(creatureId);
-        PlayerConfig playerConfig = game.getGameState().getPlayerConfig(creatureId);
+        Creature player = game.getGameState().accessCreatures().getCreature(playerId);
+        PlayerConfig playerConfig = game.getGameState().getPlayerConfig(playerId);
 
         Item itemFrom = player.getParams().getInventoryItems().get(fromSlotIndex);
         //noinspection UnnecessaryLocalVariable
@@ -56,7 +56,7 @@ public class InventoryOnlySwapSlotItemsAction extends GameStateAction {
 
     public static InventoryOnlySwapSlotItemsAction of(CreatureId creatureId, Integer fromSlotIndex, Integer toSlotIndex) {
         InventoryOnlySwapSlotItemsAction action = InventoryOnlySwapSlotItemsAction.of();
-        action.creatureId = creatureId;
+        action.playerId = creatureId;
         action.fromSlotIndex = fromSlotIndex;
         action.toSlotIndex = toSlotIndex;
         return action;

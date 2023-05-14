@@ -7,7 +7,6 @@ import com.easternsauce.actionrpg.model.action.ActionsHolder;
 import com.easternsauce.actionrpg.model.action.ability.AbilityActivateAction;
 import com.easternsauce.actionrpg.model.action.ability.AbilityRemoveAction;
 import com.easternsauce.actionrpg.model.action.ability.AbilityTryAddAction;
-import com.easternsauce.actionrpg.model.action.ability.SkillTryPerformAction;
 import com.easternsauce.actionrpg.model.action.creature.*;
 import com.easternsauce.actionrpg.model.action.inventory.*;
 import com.easternsauce.actionrpg.model.action.inventory.swaps.InventoryAndEquipmentSwapSlotItemsAction;
@@ -15,6 +14,8 @@ import com.easternsauce.actionrpg.model.action.inventory.swaps.InventoryOnlySwap
 import com.easternsauce.actionrpg.model.action.loot.LootPileDespawnAction;
 import com.easternsauce.actionrpg.model.action.loot.LootPileItemTryPickUpAction;
 import com.easternsauce.actionrpg.model.action.loot.LootPileSpawnAction;
+import com.easternsauce.actionrpg.model.action.player.PlayerInitAction;
+import com.easternsauce.actionrpg.model.action.player.PlayerRemoveAction;
 import com.easternsauce.actionrpg.model.action.skillmenu.SkillPickerMenuActivateAction;
 import com.easternsauce.actionrpg.model.action.skillmenu.SkillPickerMenuDeactivateAction;
 import com.easternsauce.actionrpg.model.action.skillmenu.SkillPickerMenuSlotChangeAction;
@@ -100,6 +101,7 @@ public class EndPointHelper {
         endPoint.getKryo().register(WorldDirection.class);
         endPoint.getKryo().register(CreatureParams.class);
         endPoint.getKryo().register(AbilityParams.class);
+        endPoint.getKryo().register(LootPileParams.class);
         endPoint.getKryo().register(AreaGate.class);
         endPoint.getKryo().register(DropTableEntry.class);
 
@@ -125,7 +127,7 @@ public class EndPointHelper {
         endPoint.getKryo().register(SkillPickerMenuActivateAction.class);
         endPoint.getKryo().register(SkillPickerMenuSlotChangeAction.class);
         endPoint.getKryo().register(SkillPickerMenuDeactivateAction.class);
-        endPoint.getKryo().register(CreatureHitAction.class);
+        endPoint.getKryo().register(CreatureHitByAbilityAction.class);
         endPoint.getKryo().register(CreatureChangeAimDirectionAction.class);
 
         endPoint.getKryo().register(EquipmentSlotType.class);

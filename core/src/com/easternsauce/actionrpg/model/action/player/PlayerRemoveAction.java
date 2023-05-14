@@ -1,10 +1,10 @@
-package com.easternsauce.actionrpg.model.action.creature;
+package com.easternsauce.actionrpg.model.action.player;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
-import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -16,8 +16,8 @@ public class PlayerRemoveAction extends GameStateAction {
     private CreatureId playerId;
 
     @Override
-    public Vector2 actionObjectPos(CoreGame game) {
-        return getActionCreaturePos(playerId, game);
+    public Entity getEntity(CoreGame game) {
+        return game.getGameState().accessCreatures().getCreature(playerId);
     }
 
     @Override

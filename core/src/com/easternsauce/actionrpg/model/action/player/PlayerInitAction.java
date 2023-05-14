@@ -1,6 +1,7 @@
-package com.easternsauce.actionrpg.model.action.creature;
+package com.easternsauce.actionrpg.model.action.player;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.creature.Creature;
@@ -19,8 +20,8 @@ public class PlayerInitAction extends GameStateAction {
     private CreatureId playerId;
 
     @Override
-    public Vector2 actionObjectPos(CoreGame game) {
-        return getActionCreaturePos(playerId, game);
+    public Entity getEntity(CoreGame game) {
+        return game.getGameState().accessCreatures().getCreature(playerId);
     }
 
     public void applyToGame(CoreGame game) {

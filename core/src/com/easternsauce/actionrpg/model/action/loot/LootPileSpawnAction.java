@@ -1,6 +1,7 @@
 package com.easternsauce.actionrpg.model.action.loot;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.area.LootPile;
@@ -25,8 +26,18 @@ public class LootPileSpawnAction extends GameStateAction {
     private Set<Item> items;
 
     @Override
-    public Vector2 actionObjectPos(CoreGame game) {
+    public Entity getEntity(CoreGame game) {
+        return null;
+    }
+
+    @Override
+    protected Vector2 getOverridePos() {
         return pos;
+    }
+
+    @Override
+    protected AreaId getOverrideAreaId() {
+        return areaId;
     }
 
     @Override
@@ -46,9 +57,9 @@ public class LootPileSpawnAction extends GameStateAction {
 
         LootPile lootPile = LootPile.of(lootPileId, areaId, pos, lootPileItems);
 
-        game.getGameState().getLootPiles().put(lootPile.getId(), lootPile);
+        game.getGameState().getLootPiles().put(lootPile.getParams().getId(), lootPile);
 
-        game.getEventProcessor().getLootPileModelsToBeCreated().add(lootPile.getId());
+        game.getEventProcessor().getLootPileModelsToBeCreated().add(lootPile.getParams().getId());
     }
 
     public static LootPileSpawnAction of(AreaId areaId, Vector2 pos, Set<Item> items) {

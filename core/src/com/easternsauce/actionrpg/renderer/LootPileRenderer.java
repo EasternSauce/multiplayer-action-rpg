@@ -29,7 +29,7 @@ public class LootPileRenderer {
         sprite = new Sprite();
         sprite.setRegion(atlas.findRegion("bag"));
         sprite.setSize(lootPile.getWidth(), lootPile.getHeight());
-        sprite.setCenter(lootPile.getPos().getX(), lootPile.getPos().getY());
+        sprite.setCenter(lootPile.getParams().getPos().getX(), lootPile.getParams().getPos().getY());
 
     }
 
@@ -37,7 +37,7 @@ public class LootPileRenderer {
         AreaId currentAreaId = game.getGameState().getCurrentAreaId();
         LootPile lootPile = game.getGameState().getLootPile(lootPileId);
 
-        if (lootPile != null && currentAreaId.equals(lootPile.getAreaId())) {
+        if (lootPile != null && currentAreaId.equals(lootPile.getParams().getAreaId())) {
             sprite.draw(renderingLayer.getSpriteBatch());
         }
 

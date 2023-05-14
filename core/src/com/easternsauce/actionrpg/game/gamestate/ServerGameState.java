@@ -51,6 +51,9 @@ public class ServerGameState extends GameState {
     public void sendGameDataPersonalizedForPlayer(Connection connection) {
         Creature player = accessCreatures().getCreatures().get(getClientPlayers().get(connection.getID()));
 
+        System.out.println("personalized for " + player.getParams().getId() + " at " + player.getParams().getPos() + " area " +
+                           player.getParams().getAreaId());
+
         // TODO: also add ALL data about creatures that own abilities within range!
         ConcurrentSkipListMap<CreatureId, Creature> personalizedCreatures = new ConcurrentSkipListMap<>(accessCreatures()
                                                                                                             .getCreatures()
@@ -106,6 +109,7 @@ public class ServerGameState extends GameState {
                                                                                                             .stream()
                                                                                                             .filter(entry -> entry
                                                                                                                                  .getValue()
+                                                                                                                                 .getParams()
                                                                                                                                  .getAreaId()
                                                                                                                                  .equals(
                                                                                                                                      player
@@ -114,6 +118,7 @@ public class ServerGameState extends GameState {
                                                                                                                              entry
                                                                                                                                  .getValue()
 
+                                                                                                                                 .getParams()
                                                                                                                                  .getPos()
                                                                                                                                  .distance(
                                                                                                                                      player
@@ -167,7 +172,7 @@ public class ServerGameState extends GameState {
         getLootPiles()
             .entrySet()
             .stream()
-            .filter(entry -> entry.getValue().getIsFullyLooted())
+            .filter(entry -> entry.getValue().getParams().getIsFullyLooted())
             .forEach(entry -> scheduleServerSideAction(LootPileDespawnAction.of(entry.getKey())));
     }
 

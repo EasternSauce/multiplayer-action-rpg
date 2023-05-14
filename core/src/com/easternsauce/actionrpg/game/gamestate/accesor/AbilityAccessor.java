@@ -8,7 +8,7 @@ import com.easternsauce.actionrpg.model.GameStateData;
 import com.easternsauce.actionrpg.model.ability.*;
 import com.easternsauce.actionrpg.model.action.ability.AbilityActivateAction;
 import com.easternsauce.actionrpg.model.action.ability.AbilityTryAddAction;
-import com.easternsauce.actionrpg.model.action.creature.CreatureHitAction;
+import com.easternsauce.actionrpg.model.action.creature.CreatureHitByAbilityAction;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.skill.SkillType;
@@ -115,7 +115,7 @@ public class AbilityAccessor {
 
         ability.getParams().getCreaturesAlreadyHit().put(targetId, ability.getParams().getStateTimer().getTime());
 
-        CreatureHitAction action = CreatureHitAction.of(attackerId, targetId, ability);
+        CreatureHitByAbilityAction action = CreatureHitByAbilityAction.of(attackerId, targetId, ability);
         gameState.scheduleServerSideAction(action);
     }
 

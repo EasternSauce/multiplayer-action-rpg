@@ -1,6 +1,7 @@
 package com.easternsauce.actionrpg.model.action.inventory;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
 import com.easternsauce.actionrpg.model.area.LootPile;
 import com.easternsauce.actionrpg.model.area.LootPileId;
@@ -8,7 +9,6 @@ import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;
-import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -24,8 +24,8 @@ public class ItemDropOnGroundAction extends GameStateAction {
     private CreatureId playerId;
 
     @Override
-    public Vector2 actionObjectPos(CoreGame game) {
-        return getActionCreaturePos(playerId, game);
+    public Entity getEntity(CoreGame game) {
+        return game.getGameState().accessCreatures().getCreature(playerId);
     }
 
     @Override
@@ -60,9 +60,9 @@ public class ItemDropOnGroundAction extends GameStateAction {
 
         LootPile lootPile = LootPile.of(lootPileId, player.getParams().getAreaId(), player.getParams().getPos(), lootPileItems);
 
-        game.getGameState().getLootPiles().put(lootPile.getId(), lootPile);
+        game.getGameState().getLootPiles().put(lootPile.getParams().getId(), lootPile);
 
-        game.getEventProcessor().getLootPileModelsToBeCreated().add(lootPile.getId());
+        game.getEventProcessor().getLootPileModelsToBeCreated().add(lootPile.getParams().getId());
 
     }
 

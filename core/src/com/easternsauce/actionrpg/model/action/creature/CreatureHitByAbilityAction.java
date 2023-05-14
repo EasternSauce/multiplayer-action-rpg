@@ -1,6 +1,7 @@
 package com.easternsauce.actionrpg.model.action.creature;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
 import com.easternsauce.actionrpg.model.area.LootPile;
@@ -10,7 +11,6 @@ import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.creature.DropTableEntry;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.skill.SkillType;
-import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -25,14 +25,19 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class CreatureHitAction extends GameStateAction {
+public class CreatureHitByAbilityAction extends GameStateAction {
     private CreatureId attackerId;
     private CreatureId targetId;
     private Ability ability;
 
     @Override
-    public Vector2 actionObjectPos(CoreGame game) {
-        return getActionCreaturePos(targetId, game);
+    public Entity getEntity(CoreGame game) {
+        return game.getGameState().accessCreatures().getCreature(targetId);
+    }
+
+    @Override
+    public boolean isActionObjectValid(CoreGame game) {
+        return true;
     }
 
     @Override
@@ -141,13 +146,13 @@ public class CreatureHitAction extends GameStateAction {
                                         creature.getParams().getPos(),
                                         lootPileItems);
 
-        game.getGameState().getLootPiles().put(lootPile.getId(), lootPile);
+        game.getGameState().getLootPiles().put(lootPile.getParams().getId(), lootPile);
 
-        game.getEventProcessor().getLootPileModelsToBeCreated().add(lootPile.getId());
+        game.getEventProcessor().getLootPileModelsToBeCreated().add(lootPile.getParams().getId());
     }
 
-    public static CreatureHitAction of(CreatureId attackerId, CreatureId targetId, Ability ability) {
-        CreatureHitAction action = CreatureHitAction.of();
+    public static CreatureHitByAbilityAction of(CreatureId attackerId, CreatureId targetId, Ability ability) {
+        CreatureHitByAbilityAction action = CreatureHitByAbilityAction.of();
         action.attackerId = attackerId;
         action.targetId = targetId;
         action.ability = ability;

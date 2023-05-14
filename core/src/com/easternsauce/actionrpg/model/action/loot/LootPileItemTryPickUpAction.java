@@ -1,11 +1,11 @@
 package com.easternsauce.actionrpg.model.action.loot;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
 import com.easternsauce.actionrpg.model.area.LootPile;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.item.Item;
-import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.renderer.hud.inventory.InventoryPositioning;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,8 +20,8 @@ public class LootPileItemTryPickUpAction extends GameStateAction {
     private Item item;
 
     @Override
-    public Vector2 actionObjectPos(CoreGame game) {
-        return getActionCreaturePos(playerId, game);
+    public Entity getEntity(CoreGame game) {
+        return game.getGameState().getLootPiles().get(item.getLootPileId());
     }
 
     @Override
@@ -51,9 +51,9 @@ public class LootPileItemTryPickUpAction extends GameStateAction {
                          .setGrantedSkills(item.getGrantedSkills())
                          .setLootPileId(null));
 
-            lootPile.getItems().remove(item);
-            if (lootPile.getItems().isEmpty()) {
-                lootPile.setIsFullyLooted(true);
+            lootPile.getParams().getItems().remove(item);
+            if (lootPile.getParams().getItems().isEmpty()) {
+                lootPile.getParams().setIsFullyLooted(true);
             }
         }
 

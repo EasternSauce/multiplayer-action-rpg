@@ -28,7 +28,7 @@ public class ItemPickupMenuController {
             .getItemPickupMenuLootPiles()
             .stream()
             .filter(lootPileId -> game.getGameState().getLootPiles().containsKey(lootPileId))
-            .flatMap(lootPileId -> game.getGameState().getLootPile(lootPileId).getItems().stream())
+            .flatMap(lootPileId -> game.getGameState().getLootPile(lootPileId).getParams().getItems().stream())
             .forEach(item -> {
                 Rect rect = ItemPickupMenuPositioning.getMenuOptionRect(i.get());
 

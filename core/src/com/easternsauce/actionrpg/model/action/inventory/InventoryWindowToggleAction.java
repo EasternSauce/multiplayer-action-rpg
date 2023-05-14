@@ -1,9 +1,9 @@
 package com.easternsauce.actionrpg.model.action.inventory;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
-import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -12,26 +12,26 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class InventoryWindowToggleAction extends GameStateAction {
-    private CreatureId creatureId;
+    private CreatureId playerId;
 
     @Override
-    public Vector2 actionObjectPos(CoreGame game) {
-        return getActionCreaturePos(creatureId, game);
+    public Entity getEntity(CoreGame game) {
+        return game.getGameState().accessCreatures().getCreature(playerId);
     }
 
     @Override
     public void applyToGame(CoreGame game) {
-        if (game.getGameState().getPlayerConfig(creatureId) == null) {
+        if (game.getGameState().getPlayerConfig(playerId) == null) {
             return;
         }
-        boolean isInventoryVisible = game.getGameState().getPlayerConfig(creatureId).getIsInventoryVisible();
-        game.getGameState().getPlayerConfig(creatureId).setIsInventoryVisible(!isInventoryVisible);
+        boolean isInventoryVisible = game.getGameState().getPlayerConfig(playerId).getIsInventoryVisible();
+        game.getGameState().getPlayerConfig(playerId).setIsInventoryVisible(!isInventoryVisible);
 
     }
 
     public static InventoryWindowToggleAction of(CreatureId creatureId) {
         InventoryWindowToggleAction action = InventoryWindowToggleAction.of();
-        action.creatureId = creatureId;
+        action.playerId = creatureId;
         return action;
     }
 }

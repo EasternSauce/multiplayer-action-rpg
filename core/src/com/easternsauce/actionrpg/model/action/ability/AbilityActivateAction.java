@@ -1,9 +1,9 @@
 package com.easternsauce.actionrpg.model.action.ability;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
-import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -15,8 +15,13 @@ public class AbilityActivateAction extends GameStateAction {
     private Ability ability;
 
     @Override
-    public Vector2 actionObjectPos(CoreGame game) {
-        return ability.getParams().getPos();
+    public boolean isActionObjectValid(CoreGame game) {
+        return true;
+    }
+
+    @Override
+    public Entity getEntity(CoreGame game) {
+        return ability;
     }
 
     @Override

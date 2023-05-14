@@ -1,6 +1,7 @@
 package com.easternsauce.actionrpg.model.action.creature;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
@@ -19,8 +20,8 @@ public class CreatureMoveTowardsTargetAction extends GameStateAction {
     private Vector2 mousePos;
 
     @Override
-    public Vector2 actionObjectPos(CoreGame game) {
-        return getActionCreaturePos(creatureId, game);
+    public Entity getEntity(CoreGame game) {
+        return game.getGameState().accessCreatures().getCreature(creatureId);
     }
 
     @Override
