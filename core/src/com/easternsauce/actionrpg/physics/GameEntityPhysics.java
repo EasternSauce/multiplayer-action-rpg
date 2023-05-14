@@ -95,8 +95,8 @@ public class GameEntityPhysics {
             TerrainTileBody terrainTileBody = (TerrainTileBody) objA;
             if (!terrainTileBody.getIsFlyover()) {
                 AbilityBody abilityBody = (AbilityBody) objB;
-                Vector2 tilePos = Vector2.of(terrainTileBody.getB2Body().getWorldCenter().x,
-                                             terrainTileBody.getB2Body().getWorldCenter().y);
+                Vector2 tilePos = Vector2.of(terrainTileBody.getB2body().getWorldCenter().x,
+                                             terrainTileBody.getB2body().getWorldCenter().y);
 
                 Vector2 abilityPos = Vector2.of(abilityBody.getB2body().getWorldCenter().x,
                                                 abilityBody.getB2body().getWorldCenter().y);

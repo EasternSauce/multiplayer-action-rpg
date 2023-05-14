@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class LootPileBody {
     LootPileId lootPileId;
     @SuppressWarnings("FieldCanBeLocal")
-    Body b2Body;
+    Body b2body;
 
     PhysicsWorld world;
 
@@ -28,7 +28,7 @@ public class LootPileBody {
 
         world = game.getPhysicsWorld(lootPile.getParams().getAreaId());
 
-        b2Body = B2BodyFactory.createLootPileB2body(world,
+        b2body = B2BodyFactory.createLootPileB2body(world,
                                                     this,
                                                     lootPile.getParams().getPos(),
                                                     lootPile.getWidth(),
@@ -36,6 +36,6 @@ public class LootPileBody {
     }
 
     public void onRemove() {
-        world.getB2world().destroyBody(b2Body);
+        world.getB2world().destroyBody(b2body);
     }
 }

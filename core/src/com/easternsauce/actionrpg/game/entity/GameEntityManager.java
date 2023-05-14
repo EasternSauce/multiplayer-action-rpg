@@ -246,7 +246,10 @@ public class GameEntityManager {
                         .getCreature(teleportEvent.getCreatureId())
                         .getParams()
                         .getAreaId()
-                        .getValue())) {
+                        .getValue()) && teleportEvent
+                .getToAreaId()
+                .getValue()
+                .equals(game.getCreatureBodies().get(teleportEvent.getCreatureId()).getAreaId().getValue())) {
             getGameEntityPhysics()
                 .getCreatureBodies()
                 .get(teleportEvent.getCreatureId())
@@ -262,13 +265,16 @@ public class GameEntityManager {
                 creature.getParams().setMovementCommandTargetPos(teleportEvent.getPos());
 
                 if (getGameEntityPhysics().getCreatureBodies().containsKey(teleportEvent.getCreatureId())) {
-                    getGameEntityPhysics().getCreatureBodies().get(teleportEvent.getCreatureId()).onRemove();
-                    getGameEntityPhysics().getCreatureBodies().remove(teleportEvent.getCreatureId());
+                    getGameEntityPhysics()
+                        .getCreatureBodies()
+                        .get(teleportEvent.getCreatureId())
+                        .moveBodyToNewArea(teleportEvent.getToAreaId(), game);
                 }
-
-                CreatureBody creatureBody = CreatureBody.of(teleportEvent.getCreatureId());
-                creatureBody.init(teleportEvent.getToAreaId(), game);
-                getGameEntityPhysics().getCreatureBodies().put(teleportEvent.getCreatureId(), creatureBody);
+                else {
+                    CreatureBody creatureBody = CreatureBody.of(teleportEvent.getCreatureId());
+                    creatureBody.init(teleportEvent.getToAreaId(), game);
+                    getGameEntityPhysics().getCreatureBodies().put(teleportEvent.getCreatureId(), creatureBody);
+                }
 
                 if (teleportEvent.isUsedGate()) {
                     creature.getParams().setIsStillInsideGateAfterTeleport(true);

@@ -7,17 +7,21 @@ import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.physics.world.PhysicsWorld;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 public class CreatureBody {
     private CreatureId creatureId;
 
-    private Body b2Body;
+    private Body b2body;
 
     private Boolean bodyCreated;
 
     private PhysicsWorld world;
+
+    @Getter
+    private AreaId areaId;
 
     private Boolean isActive = true;
 
@@ -34,15 +38,17 @@ public class CreatureBody {
     public void init(AreaId areaId, CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
-        world = game.getPhysicsWorld(areaId);
+        this.world = game.getPhysicsWorld(areaId);
 
-        b2Body = B2BodyFactory.createCreatureB2Body(world, this, creature);
+        this.areaId = areaId;
+
+        this.b2body = B2BodyFactory.createCreatureB2Body(world, this, creature);
 
         if (!creature.isAlive()) {
-            b2Body.getFixtureList().get(0).setSensor(true);
+            this.b2body.getFixtureList().get(0).setSensor(true);
         }
 
-        bodyCreated = true;
+        this.bodyCreated = true;
     }
 
     public void update(CoreGame game) {
@@ -78,11 +84,11 @@ public class CreatureBody {
     }
 
     public void setVelocity(Vector2 velocity) {
-        b2Body.setLinearVelocity(new com.badlogic.gdx.math.Vector2(velocity.getX(), velocity.getY()));
+        b2body.setLinearVelocity(new com.badlogic.gdx.math.Vector2(velocity.getX(), velocity.getY()));
     }
 
     public Vector2 getBodyPos() {
-        return Vector2.of(b2Body.getWorldCenter().x, b2Body.getWorldCenter().y);
+        return Vector2.of(b2body.getWorldCenter().x, b2body.getWorldCenter().y);
     }
 
     public void trySetTransform(Vector2 vector) {
@@ -93,25 +99,30 @@ public class CreatureBody {
     }
 
     public void forceSetTransform(Vector2 vector) {
-        b2Body.setTransform(vector.getX(), vector.getY(), b2Body.getAngle());
+        b2body.setTransform(vector.getX(), vector.getY(), b2body.getAngle());
     }
 
     public void onRemove() {
-        world.getB2world().destroyBody(b2Body);
+        world.getB2world().destroyBody(b2body);
     }
 
     public void setSensor(boolean sensor) {
-        b2Body.getFixtureList().get(0).setSensor(sensor);
+        b2body.getFixtureList().get(0).setSensor(sensor);
     }
 
     public void setActive(boolean isActive) {
         if (this.isActive != isActive) {
             this.isActive = isActive;
-            b2Body.setActive(isActive);
+            b2body.setActive(isActive);
         }
     }
 
     public CreatureId getCreatureId() {
         return creatureId;
+    }
+
+    public void moveBodyToNewArea(AreaId areaId, CoreGame game) {
+        onRemove();
+        init(areaId, game);
     }
 }

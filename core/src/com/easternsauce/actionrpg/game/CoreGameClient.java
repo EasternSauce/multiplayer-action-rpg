@@ -24,6 +24,7 @@ import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.skill.SkillType;
 import com.easternsauce.actionrpg.model.util.GameStateBroadcast;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;
+import com.easternsauce.actionrpg.model.util.TeleportEvent;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
 import com.easternsauce.actionrpg.renderer.hud.inventory.InventoryController;
@@ -78,6 +79,20 @@ public class CoreGameClient extends CoreGame {
     public void onUpdate() {
         processClientInputs();
         updateClientCreatureAimDirection();
+        correctPlayerBodyArea();
+    }
+
+    private void correctPlayerBodyArea() {
+        Creature player = gameState.accessCreatures().getCreature(gameState.getThisClientPlayerId());
+        if (getCreatureBodies().containsKey(gameState.getThisClientPlayerId()) &&
+            !Objects.equals(getCreatureBodies().get(gameState.getThisClientPlayerId()).getAreaId().getValue(),
+                            player.getParams().getAreaId().getValue())) {
+            addTeleportEvent(TeleportEvent.of(gameState.getThisClientPlayerId(),
+                                              player.getParams().getPos(),
+                                              getCreatureBodies().get(gameState.getThisClientPlayerId()).getAreaId(),
+                                              player.getParams().getAreaId(),
+                                              false));
+        }
     }
 
     private void updateClientCreatureAimDirection() {
