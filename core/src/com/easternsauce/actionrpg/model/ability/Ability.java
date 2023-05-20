@@ -29,8 +29,11 @@ public abstract class Ability implements Entity {
 
             if (getParams().getStateTimer().getTime() > getParams().getChannelTime()) {
                 getParams().setState(AbilityState.ACTIVE);
-                game.getGameState().accessAbilities().activateAbility(this);
+
+                activateAbility(game);
+
                 onAbilityStarted(game);
+
                 getParams().getStateTimer().restart();
             }
         }
@@ -51,6 +54,12 @@ public abstract class Ability implements Entity {
         }
 
         updateTimers(delta);
+    }
+
+    private void activateAbility(CoreGame game) {
+        //        game.getGameState().accessAbilities().sendActivateAbilityAction(this); // send action to update the server
+
+        game.getEventProcessor().getAbilityModelsToBeActivated().add(getParams().getId());
     }
 
     abstract public void updatePosition(CoreGame game);

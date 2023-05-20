@@ -6,8 +6,6 @@ import com.easternsauce.actionrpg.game.gamestate.GameState;
 import com.easternsauce.actionrpg.game.gamestate.GameStateDataHolder;
 import com.easternsauce.actionrpg.model.GameStateData;
 import com.easternsauce.actionrpg.model.ability.*;
-import com.easternsauce.actionrpg.model.action.ability.AbilityActivateAction;
-import com.easternsauce.actionrpg.model.action.ability.AbilityTryAddAction;
 import com.easternsauce.actionrpg.model.action.creature.CreatureHitByAbilityAction;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
@@ -73,10 +71,18 @@ public class AbilityAccessor {
         if (creature != null) {
             Ability ability = AbilityFactory.produceAbility(abilityType, abilityParams, game);
 
-            AbilityTryAddAction action = AbilityTryAddAction.of(ability);
-
-            gameState.scheduleServerSideAction(action);
+            initializeAbility(creature, ability, game);
         }
+    }
+
+    private void initializeAbility(Creature creature, Ability ability, CoreGame game) {
+        game.getGameState().accessAbilities().getAbilities().put(ability.getParams().getId(), ability);
+
+        game.getEventProcessor().getAbilityModelsToBeCreated().add(ability.getParams().getId());
+
+        ability.init(game);
+
+        creature.onAbilityPerformed(ability);
     }
 
     public void chainAnotherAbility(Ability chainFromAbility, AbilityType abilityType, Vector2 chainToPos, Vector2 dirVector,
@@ -104,11 +110,11 @@ public class AbilityAccessor {
         spawnAbility(abilityType, abilityParams, game);
     }
 
-    public void activateAbility(Ability ability) {
-        AbilityActivateAction action = AbilityActivateAction.of(ability);
-
-        gameState.scheduleServerSideAction(action);
-    }
+    //    public void sendActivateAbilityAction(Ability ability) {
+    //        AbilityActivateAction action = AbilityActivateAction.of(ability);
+    //
+    //        gameState.scheduleServerSideAction(action);
+    //    }
 
     public void onAbilityHitsCreature(CreatureId attackerId, CreatureId targetId, Ability ability) {
         ability.onCreatureHit();

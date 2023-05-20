@@ -4,9 +4,7 @@ import com.easternsauce.actionrpg.Constants;
 import com.easternsauce.actionrpg.model.GameStateData;
 import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.ability.AbilityId;
-import com.easternsauce.actionrpg.model.ability.AbilityState;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
-import com.easternsauce.actionrpg.model.action.ability.AbilityRemoveAction;
 import com.easternsauce.actionrpg.model.action.creature.CreatureRespawnAction;
 import com.easternsauce.actionrpg.model.action.loot.LootPileDespawnAction;
 import com.easternsauce.actionrpg.model.area.AreaId;
@@ -171,15 +169,6 @@ public class ServerGameState extends GameState {
             .stream()
             .filter(entry -> entry.getValue().getParams().getIsFullyLooted())
             .forEach(entry -> scheduleServerSideAction(LootPileDespawnAction.of(entry.getKey())));
-    }
-
-    public void handleExpiredAbilities() {
-        accessAbilities()
-            .getAbilities()
-            .entrySet()
-            .stream()
-            .filter(entry -> entry.getValue().getParams().getState() == AbilityState.INACTIVE)
-            .forEach(entry -> scheduleServerSideAction(AbilityRemoveAction.of(entry.getKey())));
     }
 
     @Override

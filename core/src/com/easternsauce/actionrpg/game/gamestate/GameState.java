@@ -1,8 +1,10 @@
 package com.easternsauce.actionrpg.game.gamestate;
 
+import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.gamestate.accesor.AbilityAccessor;
 import com.easternsauce.actionrpg.game.gamestate.accesor.CreatureAccessor;
 import com.easternsauce.actionrpg.model.GameStateData;
+import com.easternsauce.actionrpg.model.ability.AbilityState;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
 import com.easternsauce.actionrpg.model.area.AreaGateConnection;
 import com.easternsauce.actionrpg.model.area.AreaId;
@@ -62,6 +64,15 @@ public abstract class GameState {
         getData().setLastRandomValue(result);
 
         return result;
+    }
+
+    public void handleExpiredAbilities(CoreGame game) {
+        accessAbilities()
+            .getAbilities()
+            .entrySet()
+            .stream()
+            .filter(entry -> entry.getValue().getParams().getState() == AbilityState.INACTIVE)
+            .forEach(entry -> game.getEventProcessor().getAbilityModelsToBeRemoved().add(entry.getKey()));
     }
 
     public Float getTime() {

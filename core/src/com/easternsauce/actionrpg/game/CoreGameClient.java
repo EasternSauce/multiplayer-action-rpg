@@ -181,6 +181,7 @@ public class CoreGameClient extends CoreGame {
         Vector2 dirVector = mousePosRelativeToCenter();
 
         if (playerConfig.getSkillMenuSlots().containsKey(abilitySequenceNumber)) {
+
             getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(getGameState().getThisClientPlayerId(),
                                                                                    playerConfig
                                                                                        .getSkillMenuSlots()

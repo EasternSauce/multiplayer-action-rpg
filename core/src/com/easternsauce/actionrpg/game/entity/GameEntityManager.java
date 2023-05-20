@@ -70,7 +70,8 @@ public class GameEntityManager {
     public void activateAbility(AbilityId abilityId, CoreGame game) {
         Ability ability = game.getGameState().accessAbilities().getAbilities().get(abilityId);
 
-        if (ability != null && gameEntityPhysics.getAbilityBodies().containsKey(ability.getParams().getId())) {
+        if (ability != null && gameEntityPhysics.getAbilityBodies().containsKey(ability.getParams().getId()) &&
+            !gameEntityPhysics.getAbilityBodies().get(ability.getParams().getId()).getIsBodyInitialized()) {
             gameEntityPhysics
                 .getAbilityBodies()
                 .get(ability.getParams().getId())

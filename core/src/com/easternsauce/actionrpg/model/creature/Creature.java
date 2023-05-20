@@ -40,10 +40,6 @@ public abstract class Creature implements Entity {
             getParams().getIsStillMovingCheckTimer().restart();
         }
 
-        if (isAlive()) {
-            getParams().getSkills().forEach((skillType, skill) -> skill.update(game));
-        }
-
         updateAutomaticControls(game);
         updateTimers(delta);
 

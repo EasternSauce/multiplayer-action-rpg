@@ -71,8 +71,6 @@ public class CoreGameServer extends CoreGame {
     public void onUpdate() {
         gameState.handleCreatureDeaths();
 
-        gameState.handleExpiredAbilities();
-
         gameState.handleExpiredLootPiles();
 
         ArrayList<GameStateAction> onTickActions = new ArrayList<>(gameState.getOnTickActions());
@@ -176,7 +174,7 @@ public class CoreGameServer extends CoreGame {
             try {
                 while (true) {
                     //noinspection BusyWait
-                    Thread.sleep(400);
+                    Thread.sleep(3000);
 
                     Connection[] connections = getEndPoint().getConnections();
                     for (Connection connection : connections) {

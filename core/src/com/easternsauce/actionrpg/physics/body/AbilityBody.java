@@ -73,7 +73,7 @@ public class AbilityBody {
     public void activate(boolean skipCreatingBody, CoreGame game) {
         Ability ability = game.getGameState().accessAbilities().getAbility(abilityId);
 
-        if (!isBodyInitialized && !skipCreatingBody && ability != null) {
+        if (!skipCreatingBody && ability != null) {
             world = game.getPhysicsWorld(ability.getParams().getAreaId());
 
             creatureId = ability.getParams().getCreatureId();
