@@ -183,9 +183,9 @@ public abstract class CoreGame extends Game {
     public abstract boolean isPathfindingCalculatedForCreature(Creature creature);
 
     @SuppressWarnings("UnusedReturnValue")
-    public abstract CoreGame setIsRendererReady(Boolean isRendererToBeReset);
+    public abstract CoreGame setIsAreaRenderersLoaded(Boolean isRendererToBeReset);
 
-    public abstract Boolean getIsRendererReady();
+    public abstract Boolean getIsAreaRenderersLoaded();
 
     @SuppressWarnings("UnusedReturnValue")
     public abstract CoreGame setIsFirstBroadcastReceived(Boolean isFirstBroadcastReceived);

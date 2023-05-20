@@ -60,7 +60,7 @@ public class CoreGameClient extends CoreGame {
 
     @Getter
     @Setter
-    private Boolean isRendererReady = false;
+    private Boolean isAreaRenderersLoaded = false;
 
     @Getter
     @Setter

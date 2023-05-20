@@ -65,20 +65,12 @@ public class GameEntityRenderer {
         viewportsHandler.initViewports();
     }
 
-    public void resetRendererState(Map<AreaId, TiledMap> maps, TextureAtlas atlas, CoreGame game) {
+    public void loadAreaRenderers(Map<AreaId, TiledMap> maps, CoreGame game) {
         areaRenderers = new HashMap<>();
         areaRenderers.putAll(maps.keySet().stream().collect(Collectors.toMap(areaId -> areaId, AreaRenderer::of)));
         areaRenderers.forEach((areaId, areaRenderer) -> areaRenderer.init(maps.get(areaId), mapScale));
 
-        //        areaGateRenderers = new HashMap<>();
-        //        areaGateRenderers.putAll(game
-        //                                     .getGameState()
-        //                                     .getAreaGates()
-        //                                     .keySet()
-        //                                     .stream()
-        //                                     .collect(Collectors.toMap(areaGateId -> areaGateId, AreaGateRenderer::of)));
-
-        game.setIsRendererReady(true);
+        game.setIsAreaRenderersLoaded(true);
     }
 
     public void renderAliveCreatures(RenderingLayer renderingLayer, CoreGame game) {

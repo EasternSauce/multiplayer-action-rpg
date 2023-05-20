@@ -302,12 +302,12 @@ public class CoreGameServer extends CoreGame {
     }
 
     @Override
-    public CoreGameServer setIsRendererReady(Boolean isRendererToBeReset) {
+    public CoreGameServer setIsAreaRenderersLoaded(Boolean isRendererToBeReset) {
         return this;
     }
 
     @Override
-    public Boolean getIsRendererReady() {
+    public Boolean getIsAreaRenderersLoaded() {
         return null;
     }
 
