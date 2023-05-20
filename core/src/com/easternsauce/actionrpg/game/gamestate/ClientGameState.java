@@ -4,6 +4,7 @@ import com.easternsauce.actionrpg.game.entity.EntityEventProcessor;
 import com.easternsauce.actionrpg.model.GameStateData;
 import com.easternsauce.actionrpg.model.ability.AbilityId;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
+import com.easternsauce.actionrpg.model.area.AreaGateId;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.area.LootPileId;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
@@ -34,6 +35,8 @@ public class ClientGameState extends GameState {
         Set<AbilityId> newAbilityIds = newGameStateData.getAbilities().keySet();
         Set<LootPileId> oldLootPileIds = oldGameStateData.getLootPiles().keySet();
         Set<LootPileId> newLootPileIds = newGameStateData.getLootPiles().keySet();
+        Set<AreaGateId> oldAreaGateIds = oldGameStateData.getAreaGates().keySet();
+        Set<AreaGateId> newAreaGateIds = newGameStateData.getAreaGates().keySet();
 
         Set<CreatureId> creaturesAddedSinceLastUpdate = new HashSet<>(newCreatureIds);
         creaturesAddedSinceLastUpdate.removeAll(oldCreatureIds);
@@ -53,12 +56,20 @@ public class ClientGameState extends GameState {
         Set<LootPileId> lootPilesRemovedSinceLastUpdate = new HashSet<>(oldLootPileIds);
         lootPilesRemovedSinceLastUpdate.removeAll(newLootPileIds);
 
+        Set<AreaGateId> areaGatesAddedSinceLastUpdate = new HashSet<>(newAreaGateIds);
+        areaGatesAddedSinceLastUpdate.removeAll(oldAreaGateIds);
+
+        Set<AreaGateId> areaGatesRemovedSinceLastUpdate = new HashSet<>(oldAreaGateIds);
+        areaGatesRemovedSinceLastUpdate.removeAll(newAreaGateIds);
+
         eventProcessor.getCreatureModelsToBeCreated().addAll(creaturesAddedSinceLastUpdate);
         eventProcessor.getCreatureModelsToBeRemoved().addAll(creaturesRemovedSinceLastUpdate);
         eventProcessor.getAbilityModelsToBeCreated().addAll(abilitiesAddedSinceLastUpdate);
         eventProcessor.getAbilityModelsToBeRemoved().addAll(abilitiesRemovedSinceLastUpdate);
         eventProcessor.getLootPileModelsToBeCreated().addAll(lootPilesAddedSinceLastUpdate);
         eventProcessor.getLootPileModelsToBeRemoved().addAll(lootPilesRemovedSinceLastUpdate);
+        eventProcessor.getAreaGateModelsToBeCreated().addAll(areaGatesAddedSinceLastUpdate);
+        eventProcessor.getAreaGateModelsToBeRemoved().addAll(areaGatesRemovedSinceLastUpdate);
     }
 
     public void setNewGameState(GameStateData receivedGameStateData) {

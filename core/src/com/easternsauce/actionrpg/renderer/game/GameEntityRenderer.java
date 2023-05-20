@@ -5,6 +5,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.AbilityId;
+import com.easternsauce.actionrpg.model.area.AreaGateId;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.area.LootPileId;
 import com.easternsauce.actionrpg.model.creature.Creature;
@@ -17,27 +18,34 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
 public class GameEntityRenderer {
+    @Getter
     private ViewportsHandler viewportsHandler;
 
+    @Getter
     private RenderingLayer worldElementsRenderingLayer;
+    @Getter
     private RenderingLayer hudRenderingLayer;
+    @Getter
     private RenderingLayer worldTextRenderingLayer;
 
     private float mapScale;
 
     private final TmxMapLoader mapLoader = new TmxMapLoader();
 
+    @Getter
     private final Map<CreatureId, CreatureRenderer> creatureRenderers = new HashMap<>();
+    @Getter
     private final Map<AbilityId, AbilityRenderer> abilityRenderers = new HashMap<>();
+    @Getter
     private Map<AreaId, AreaRenderer> areaRenderers = new HashMap<>();
-    private Set<AreaGateRenderer> areaGateRenderers = new HashSet<>();
+    @Getter
+    private final Map<AreaGateId, AreaGateRenderer> areaGateRenderers = new HashMap<>();
+    @Getter
     private final Map<LootPileId, LootPileRenderer> lootPileRenderers = new HashMap<>();
 
     @Getter
@@ -62,13 +70,15 @@ public class GameEntityRenderer {
         areaRenderers.putAll(maps.keySet().stream().collect(Collectors.toMap(areaId -> areaId, AreaRenderer::of)));
         areaRenderers.forEach((areaId, areaRenderer) -> areaRenderer.init(maps.get(areaId), mapScale));
 
-        areaGateRenderers = new HashSet<>();
-        areaGateRenderers.addAll(game
-                                     .getGameState()
-                                     .getAreaGateConnections()
-                                     .stream()
-                                     .map(areaGate -> AreaGateRenderer.of(areaGate, atlas))
-                                     .collect(Collectors.toSet()));
+//        areaGateRenderers = new HashMap<>();
+//        areaGateRenderers.putAll(game
+//                                     .getGameState()
+//                                     .getAreaGates()
+//                                     .keySet()
+//                                     .stream()
+//                                     .collect(Collectors.toMap(areaGateId -> areaGateId, AreaGateRenderer::of)));
+
+        game.setIsRendererReady(true);
     }
 
     public void renderAliveCreatures(RenderingLayer renderingLayer, CoreGame game) {
@@ -118,7 +128,7 @@ public class GameEntityRenderer {
     }
 
     public void renderAreaGates(RenderingLayer renderingLayer, CoreGame game) {
-        areaGateRenderers.forEach(areaGateRenderer -> areaGateRenderer.render(renderingLayer, game));
+        areaGateRenderers.values().forEach(areaGateRenderer -> areaGateRenderer.render(renderingLayer, game));
     }
 
     public void renderLootPiles(RenderingLayer renderingLayer, CoreGame game) {
@@ -151,37 +161,5 @@ public class GameEntityRenderer {
         getHudRenderingLayer().setProjectionMatrix(getViewportsHandler().getHudCamera().combined);
 
         getWorldTextRenderingLayer().setProjectionMatrix(getViewportsHandler().getWorldTextCamera().combined);
-    }
-
-    public Map<CreatureId, CreatureRenderer> getCreatureRenderers() {
-        return creatureRenderers;
-    }
-
-    public Map<AbilityId, AbilityRenderer> getAbilityRenderers() {
-        return abilityRenderers;
-    }
-
-    public Map<AreaId, AreaRenderer> getAreaRenderers() {
-        return areaRenderers;
-    }
-
-    public Map<LootPileId, LootPileRenderer> getLootPileRenderers() {
-        return lootPileRenderers;
-    }
-
-    public RenderingLayer getWorldElementsRenderingLayer() {
-        return worldElementsRenderingLayer;
-    }
-
-    public RenderingLayer getHudRenderingLayer() {
-        return hudRenderingLayer;
-    }
-
-    public RenderingLayer getWorldTextRenderingLayer() {
-        return worldTextRenderingLayer;
-    }
-
-    public ViewportsHandler getViewportsHandler() {
-        return viewportsHandler;
     }
 }

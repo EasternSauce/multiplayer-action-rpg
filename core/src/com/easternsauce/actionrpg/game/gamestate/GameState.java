@@ -6,10 +6,7 @@ import com.easternsauce.actionrpg.game.gamestate.accesor.CreatureAccessor;
 import com.easternsauce.actionrpg.model.GameStateData;
 import com.easternsauce.actionrpg.model.ability.AbilityState;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
-import com.easternsauce.actionrpg.model.area.AreaGateConnection;
-import com.easternsauce.actionrpg.model.area.AreaId;
-import com.easternsauce.actionrpg.model.area.LootPile;
-import com.easternsauce.actionrpg.model.area.LootPileId;
+import com.easternsauce.actionrpg.model.area.*;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;
 import com.easternsauce.actionrpg.util.RandomHelper;
@@ -46,16 +43,20 @@ public abstract class GameState {
         return null;
     }
 
-    public Set<AreaGateConnection> getAreaGateConnections() {
-        return getData().getAreaGateConnections();
-    }
-
     public LootPile getLootPile(LootPileId lootPileId) {
         return getData().getLootPiles().get(lootPileId);
     }
 
     public Map<LootPileId, LootPile> getLootPiles() {
         return getData().getLootPiles();
+    }
+
+    public AreaGate getAreaGate(AreaGateId areaGateId) {
+        return getData().getAreaGates().get(areaGateId);
+    }
+
+    public Map<AreaGateId, AreaGate> getAreaGates() {
+        return getData().getAreaGates();
     }
 
     public Float nextRandomValue() {
@@ -81,10 +82,6 @@ public abstract class GameState {
 
     public void updateGeneralTimer(float delta) {
         getData().getGeneralTimer().update(delta);
-    }
-
-    public void setAreaGates(Set<AreaGateConnection> areaGateConnections) {
-        getData().setAreaGateConnections(areaGateConnections);
     }
 
     public AreaId getDefaultAreaId() {

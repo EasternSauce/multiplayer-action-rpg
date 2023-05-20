@@ -30,9 +30,9 @@ public class GameStateData {
 
     Map<CreatureId, PlayerConfig> playerConfig = new ConcurrentSkipListMap<>();
 
-    Set<AreaGateConnection> areaGateConnections = new ConcurrentSkipListSet<>();
-
     Map<LootPileId, LootPile> lootPiles = new ConcurrentSkipListMap<>();
+
+    Map<AreaGateId, AreaGate> areaGates = new ConcurrentSkipListMap<>();
 
     Float lastRandomValue = (float) Math.random();
 
@@ -42,28 +42,28 @@ public class GameStateData {
         newGameStateData.setRemovedCreatures(new ConcurrentSkipListMap<>(gameStateData.getRemovedCreatures()));
         newGameStateData.setAbilities(new ConcurrentSkipListMap<>(gameStateData.getAbilities()));
         newGameStateData.setLootPiles(new ConcurrentSkipListMap<>(gameStateData.getLootPiles()));
+        newGameStateData.setAreaGates(new ConcurrentSkipListMap<>(gameStateData.getAreaGates()));
         newGameStateData.setAreas(new ConcurrentSkipListMap<>(gameStateData.getAreas()));
         newGameStateData.setDefaultAreaId(gameStateData.getDefaultAreaId());
         newGameStateData.setGeneralTimer(gameStateData.getGeneralTimer());
         newGameStateData.setPlayerConfig(new ConcurrentSkipListMap<>(gameStateData.getPlayerConfig()));
-        newGameStateData.setAreaGateConnections(new ConcurrentSkipListSet<>(gameStateData.getAreaGateConnections()));
         newGameStateData.setLastRandomValue(gameStateData.getLastRandomValue());
 
         return newGameStateData;
     }
 
     public static GameStateData of(GameStateData gameStateData, Map<CreatureId, Creature> creatures,
-                                   Map<AbilityId, Ability> abilities, Map<LootPileId, LootPile> lootPiles) {
+                                   Map<AbilityId, Ability> abilities, Map<LootPileId, LootPile> lootPiles, Map<AreaGateId, AreaGate> areaGates) {
         GameStateData newGameStateData = GameStateData.of();
         newGameStateData.setCreatures(creatures);
         newGameStateData.setRemovedCreatures(new ConcurrentSkipListMap<>(gameStateData.getRemovedCreatures()));
         newGameStateData.setAbilities(abilities);
         newGameStateData.setLootPiles(lootPiles);
+        newGameStateData.setAreaGates(areaGates);
         newGameStateData.setAreas(new ConcurrentSkipListMap<>(gameStateData.getAreas()));
         newGameStateData.setDefaultAreaId(gameStateData.getDefaultAreaId());
         newGameStateData.setGeneralTimer(gameStateData.getGeneralTimer());
         newGameStateData.setPlayerConfig(new ConcurrentSkipListMap<>(gameStateData.getPlayerConfig()));
-        newGameStateData.setAreaGateConnections(new ConcurrentSkipListSet<>(gameStateData.getAreaGateConnections()));
         newGameStateData.setLastRandomValue(gameStateData.getLastRandomValue());
 
         return newGameStateData;
@@ -75,11 +75,11 @@ public class GameStateData {
         newGameStateData.setRemovedCreatures(new ConcurrentSkipListMap<>(gameStateData.getRemovedCreatures()));
         newGameStateData.setAbilities(new ConcurrentSkipListMap<>());
         newGameStateData.setLootPiles(new ConcurrentSkipListMap<>());
+        newGameStateData.setAreaGates(new ConcurrentSkipListMap<>());
         newGameStateData.setAreas(new ConcurrentSkipListMap<>(gameStateData.getAreas()));
         newGameStateData.setDefaultAreaId(gameStateData.getDefaultAreaId());
         newGameStateData.setGeneralTimer(gameStateData.getGeneralTimer());
         newGameStateData.setPlayerConfig(new ConcurrentSkipListMap<>(gameStateData.getPlayerConfig()));
-        newGameStateData.setAreaGateConnections(new ConcurrentSkipListSet<>(gameStateData.getAreaGateConnections()));
         newGameStateData.setLastRandomValue(gameStateData.getLastRandomValue());
 
         return newGameStateData;

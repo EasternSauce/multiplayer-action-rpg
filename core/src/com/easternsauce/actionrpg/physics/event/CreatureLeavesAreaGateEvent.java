@@ -1,5 +1,6 @@
 package com.easternsauce.actionrpg.physics.event;
 
+import com.easternsauce.actionrpg.model.area.AreaGateId;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.util.Vector2;
@@ -12,7 +13,5 @@ import lombok.NoArgsConstructor;
 @Data
 public class CreatureLeavesAreaGateEvent implements PhysicsEvent {
     CreatureId creatureId;
-    AreaId areaId;
-    Vector2 connectedPos;
-    AreaId connectedAreaId;
+    AreaGateId areaGateId;
 }

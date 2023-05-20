@@ -66,10 +66,6 @@ public abstract class CoreGame extends Game {
 
     public abstract EndPoint getEndPoint();
 
-    public boolean isInitialized() { // this is pointless right now TODO
-        return true;
-    }
-
     public boolean isGameplayRenderingAllowed() {
         return true;
     }
@@ -185,4 +181,14 @@ public abstract class CoreGame extends Game {
     public abstract void renderServerRunningMessage(RenderingLayer renderingLayer);
 
     public abstract boolean isPathfindingCalculatedForCreature(Creature creature);
+
+    @SuppressWarnings("UnusedReturnValue")
+    public abstract CoreGame setIsRendererReady(Boolean isRendererToBeReset);
+
+    public abstract Boolean getIsRendererReady();
+
+    @SuppressWarnings("UnusedReturnValue")
+    public abstract CoreGame setIsFirstBroadcastReceived(Boolean isFirstBroadcastReceived);
+
+    public abstract Boolean getIsFirstBroadcastReceived();
 }

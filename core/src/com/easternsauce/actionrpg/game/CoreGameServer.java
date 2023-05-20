@@ -12,7 +12,9 @@ import com.easternsauce.actionrpg.model.action.GameStateAction;
 import com.easternsauce.actionrpg.model.action.loot.LootPileSpawnAction;
 import com.easternsauce.actionrpg.model.action.player.PlayerInitAction;
 import com.easternsauce.actionrpg.model.action.player.PlayerRemoveAction;
+import com.easternsauce.actionrpg.model.area.AreaGate;
 import com.easternsauce.actionrpg.model.area.AreaGateConnection;
+import com.easternsauce.actionrpg.model.area.AreaGateId;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
@@ -220,17 +222,25 @@ public class CoreGameServer extends CoreGame {
         //                                        "hideGloves"))
         //                                .setQualityModifier(0.5f)))));
 
-        getGameState().setAreaGates(new ConcurrentSkipListSet<>());
+        AreaGateId area1ToArea3 = AreaGateId.of("area1ToArea3_" + (int) (Math.random() * 10000000));
+        AreaGateId area3ToArea1 = AreaGateId.of("area3ToArea1_" + (int) (Math.random() * 10000000));
+        AreaGateId area1ToArea2 = AreaGateId.of("area1ToArea2_" + (int) (Math.random() * 10000000));
+        AreaGateId area2ToArea1 = AreaGateId.of("area2ToArea1_" + (int) (Math.random() * 10000000));
+
+        getGameState().getAreaGates().clear();
+
         getGameState()
-            .getAreaGateConnections()
-            .addAll(Arrays.asList(AreaGateConnection.of(AreaId.of("area1"),
-                                                        Vector2.of(199.5f, 15f),
-                                                        AreaId.of("area3"),
-                                                        Vector2.of(17f, 2.5f)),
-                                  AreaGateConnection.of(AreaId.of("area1"),
-                                                        Vector2.of(2f, 63f),
-                                                        AreaId.of("area2"),
-                                                        Vector2.of(58f, 9f))));
+            .getAreaGates()
+            .put(area1ToArea3, AreaGate.of(area1ToArea3, 1.5f, 1.5f, Vector2.of(199.5f, 15f), AreaId.of("area1"), area3ToArea1));
+        getGameState()
+            .getAreaGates()
+            .put(area3ToArea1, AreaGate.of(area3ToArea1, 1.5f, 1.5f, Vector2.of(17f, 2.5f), AreaId.of("area3"), area1ToArea3));
+        getGameState()
+            .getAreaGates()
+            .put(area1ToArea2, AreaGate.of(area1ToArea2, 1.5f, 1.5f, Vector2.of(2f, 63f), AreaId.of("area1"), area2ToArea1));
+        getGameState()
+            .getAreaGates()
+            .put(area2ToArea1, AreaGate.of(area2ToArea1, 1.5f, 1.5f, Vector2.of(58f, 9f), AreaId.of("area2"), area1ToArea2));
 
         List<EnemySpawn> enemySpawns1 = EnemySpawnUtils.area1EnemySpawns();
 
@@ -290,6 +300,26 @@ public class CoreGameServer extends CoreGame {
     @Override
     public boolean isPathfindingCalculatedForCreature(Creature creature) {
         return true; // always calculate this server side regardless of current area
+    }
+
+    @Override
+    public CoreGameServer setIsRendererReady(Boolean isRendererToBeReset) {
+        return this;
+    }
+
+    @Override
+    public Boolean getIsRendererReady() {
+        return null;
+    }
+
+    @Override
+    public CoreGame setIsFirstBroadcastReceived(Boolean isFirstBroadcastReceived) {
+        return this;
+    }
+
+    @Override
+    public Boolean getIsFirstBroadcastReceived() {
+        return false;
     }
 
     @Override

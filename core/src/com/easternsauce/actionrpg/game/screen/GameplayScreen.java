@@ -50,7 +50,7 @@ public class GameplayScreen implements Screen {
         game.getEntityManager().getGameEntityRenderer().init(atlas);
         game.getHudRenderer().init(atlas);
 
-        game.getEntityManager().getGameEntityPhysics().init(maps, game);
+        game.getEntityManager().getGameEntityPhysics().init(maps, game); // TODO: doesn't run if we receive state too late....
 
         game
             .getEntityManager()
@@ -63,8 +63,6 @@ public class GameplayScreen implements Screen {
     @Override
     public void show() {
         game.setChatInputProcessor();
-
-        game.getEntityManager().getGameEntityRenderer().resetRendererState(maps, atlas, game);
     }
 
     public void update(float delta) {
@@ -90,49 +88,54 @@ public class GameplayScreen implements Screen {
 
         PhysicsHelper.processPhysicsEventQueue(game);
 
-        game
-            .getEntityManager()
-            .getGameEntityRenderer()
-            .getAreaRenderers()
-            .get(game.getGameState().getCurrentAreaId())
-            .setView(game.getEntityManager().getGameEntityRenderer().getViewportsHandler().getWorldCamera());
-
         if (game.getGameState().getThisClientPlayerId() != null &&
             game.getGameState().accessCreatures().getCreature(game.getGameState().getThisClientPlayerId()) != null) {
             game.updateCameraPositions();
         }
 
+        if (game.getIsFirstBroadcastReceived()) {
+            game.getEntityManager().getGameEntityRenderer().resetRendererState(maps, atlas, game);
+            game.setIsRendererReady(true);
+        }
     }
 
     @Override
     public void render(float delta) {
-        if (game.isInitialized()) {
-            update(delta);
+        update(delta);
             if (game.isGameplayRenderingAllowed()) {
-                game.getEntityManager().getGameEntityRenderer().setProjectionMatrices();
+                if (game.getIsRendererReady()) {
+                    game
+                        .getEntityManager()
+                        .getGameEntityRenderer()
+                        .getAreaRenderers()
+                        .get(game.getGameState().getCurrentAreaId())
+                        .setView(game.getEntityManager().getGameEntityRenderer().getViewportsHandler().getWorldCamera());
 
-                Gdx.gl.glClearColor(0, 0, 0, 1);
+                    game.getEntityManager().getGameEntityRenderer().setProjectionMatrices();
 
-                int coverageBuffer;
-                if (Gdx.graphics.getBufferFormat().coverageSampling) {
-                    coverageBuffer = GL20.GL_COVERAGE_BUFFER_BIT_NV;
+                    Gdx.gl.glClearColor(0, 0, 0, 1);
+
+                    int coverageBuffer;
+                    if (Gdx.graphics.getBufferFormat().coverageSampling) {
+                        coverageBuffer = GL20.GL_COVERAGE_BUFFER_BIT_NV;
+                    }
+                    else {
+                        coverageBuffer = 0;
+                    }
+
+                    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | coverageBuffer);
+
+                    GameplayRendererHelper.renderGameplay(game);
+
+                    game.getHudRenderer().render(game);
                 }
-                else {
-                    coverageBuffer = 0;
-                }
-
-                Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | coverageBuffer);
-
-                GameplayRendererHelper.renderGameplay(game);
-
-                game.getHudRenderer().render(game);
             }
             else {
                 game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer().begin();
                 game.renderServerRunningMessage(game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer());
                 game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer().end();
             }
-        }
+
     }
 
     @Override

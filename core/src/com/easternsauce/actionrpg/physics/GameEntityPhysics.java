@@ -4,6 +4,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.physics.box2d.*;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.AbilityId;
+import com.easternsauce.actionrpg.model.area.AreaGateId;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.area.LootPileId;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
@@ -27,7 +28,7 @@ public class GameEntityPhysics {
     Map<AreaId, PhysicsWorld> physicsWorlds;
     Map<CreatureId, CreatureBody> creatureBodies = new HashMap<>();
     Map<AbilityId, AbilityBody> abilityBodies = new HashMap<>();
-    Set<AreaGateBody> areaGateBodies = new HashSet<>();
+    Map<AreaGateId, AreaGateBody> areaGateBodies = new HashMap<>();
 
     Map<LootPileId, LootPileBody> lootPileBodies = new HashMap<>();
 
@@ -40,44 +41,19 @@ public class GameEntityPhysics {
             .stream()
             .collect(Collectors.toMap(Map.Entry::getKey, entry -> PhysicsWorld.of(entry.getValue())));
 
-        physicsWorlds.forEach((areaId, physicsWorld) -> {
+        physicsWorlds.forEach((areaId, physicsWorld) -> { // TODO: do this dynamically
             physicsWorld.init();
             createContactListener(physicsWorld);
         });
 
-        Set<AreaGateBody> areaAGateBodies = game
+        this.areaGateBodies = game // TODO: do this dynamically
             .getGameState()
-            .getAreaGateConnections()
+            .getAreaGates()
+            .keySet()
             .stream()
-            .map(connection -> AreaGateBody.of(connection.getPosA(),
-                                               connection.getWidth(),
-                                               connection.getHeight(),
-                                               connection.getAreaA_Id(),
-                                               connection.getPosB(),
-                                               connection.getWidth(),
-                                               connection.getHeight(),
-                                               connection.getAreaB_Id()))
-            .collect(Collectors.toSet());
-        Set<AreaGateBody> areaBGateBodies = game
-            .getGameState()
-            .getAreaGateConnections()
-            .stream()
-            .map(connection -> AreaGateBody.of(connection.getPosB(),
-                                               connection.getWidth(),
-                                               connection.getHeight(),
-                                               connection.getAreaB_Id(),
-                                               connection.getPosA(),
-                                               connection.getWidth(),
-                                               connection.getHeight(),
-                                               connection.getAreaA_Id()))
-            .collect(Collectors.toSet());
+            .collect(Collectors.toMap(areaGateId -> areaGateId, AreaGateBody::of));
 
-        Set<AreaGateBody> areaGateBodies = new HashSet<>();
-        areaGateBodies.addAll(areaAGateBodies);
-        areaGateBodies.addAll(areaBGateBodies);
-
-        this.areaGateBodies = areaGateBodies;
-        this.areaGateBodies.forEach(areaGateBody -> areaGateBody.init(game));
+        this.areaGateBodies.values().forEach(areaGateBody -> areaGateBody.init(game));
 
     }
 
@@ -116,10 +92,7 @@ public class GameEntityPhysics {
             CreatureBody creatureBody = (CreatureBody) objA;
             AreaGateBody areaGateBody = (AreaGateBody) objB;
 
-            physicsEventQueue.add(CreatureHitsAreaGateEvent.of(creatureBody.getCreatureId(),
-                                                               areaGateBody.getAreaId(),
-                                                               areaGateBody.getConnectedPos(),
-                                                               areaGateBody.getConnectedAreaId()));
+            physicsEventQueue.add(CreatureHitsAreaGateEvent.of(creatureBody.getCreatureId(), areaGateBody.getAreaGateId()));
 
         }
         else if (objA instanceof CreatureBody && objB instanceof LootPileBody) {
@@ -135,10 +108,7 @@ public class GameEntityPhysics {
         if (objA instanceof CreatureBody && objB instanceof AreaGateBody) {
             CreatureBody creatureBody = (CreatureBody) objA;
             AreaGateBody areaGateBody = (AreaGateBody) objB;
-            physicsEventQueue.add(CreatureLeavesAreaGateEvent.of(creatureBody.getCreatureId(),
-                                                                 areaGateBody.getAreaId(),
-                                                                 areaGateBody.getConnectedPos(),
-                                                                 areaGateBody.getConnectedAreaId()));
+            physicsEventQueue.add(CreatureLeavesAreaGateEvent.of(creatureBody.getCreatureId(), areaGateBody.getAreaGateId()));
         }
         else if (objA instanceof CreatureBody && objB instanceof LootPileBody) {
             CreatureBody creatureBody = (CreatureBody) objA;

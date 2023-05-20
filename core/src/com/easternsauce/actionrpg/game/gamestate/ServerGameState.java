@@ -7,9 +7,7 @@ import com.easternsauce.actionrpg.model.ability.AbilityId;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
 import com.easternsauce.actionrpg.model.action.creature.CreatureRespawnAction;
 import com.easternsauce.actionrpg.model.action.loot.LootPileDespawnAction;
-import com.easternsauce.actionrpg.model.area.AreaId;
-import com.easternsauce.actionrpg.model.area.LootPile;
-import com.easternsauce.actionrpg.model.area.LootPileId;
+import com.easternsauce.actionrpg.model.area.*;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.creature.Enemy;
@@ -127,7 +125,8 @@ public class ServerGameState extends GameState {
         GameStateData personalizedGameStateData = GameStateData.of(dataHolder.getData(),
                                                                    personalizedCreatures,
                                                                    personalizedAbilities,
-                                                                   personalizedLootPiles);
+                                                                   personalizedLootPiles,
+                                                                   getAreaGates());
 
         connection.sendTCP(GameStateBroadcast.of(personalizedGameStateData));
     }

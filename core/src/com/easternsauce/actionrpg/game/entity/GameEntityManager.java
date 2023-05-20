@@ -5,16 +5,16 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.ability.AbilityId;
 import com.easternsauce.actionrpg.model.ability.AbilityState;
-import com.easternsauce.actionrpg.model.area.AreaId;
-import com.easternsauce.actionrpg.model.area.LootPile;
-import com.easternsauce.actionrpg.model.area.LootPileId;
+import com.easternsauce.actionrpg.model.area.*;
 import com.easternsauce.actionrpg.model.creature.*;
 import com.easternsauce.actionrpg.model.util.TeleportEvent;
 import com.easternsauce.actionrpg.physics.GameEntityPhysics;
 import com.easternsauce.actionrpg.physics.body.AbilityBody;
+import com.easternsauce.actionrpg.physics.body.AreaGateBody;
 import com.easternsauce.actionrpg.physics.body.CreatureBody;
 import com.easternsauce.actionrpg.physics.body.LootPileBody;
 import com.easternsauce.actionrpg.renderer.AbilityRenderer;
+import com.easternsauce.actionrpg.renderer.AreaGateRenderer;
 import com.easternsauce.actionrpg.renderer.LootPileRenderer;
 import com.easternsauce.actionrpg.renderer.creature.CreatureRenderer;
 import com.easternsauce.actionrpg.renderer.game.GameEntityRenderer;
@@ -281,6 +281,37 @@ public class GameEntityManager {
                     creature.getParams().setIsStillInsideGateAfterTeleport(true);
                     creature.getParams().getGateTeleportCooldownTimer().restart();
                 }
+            }
+        }
+    }
+
+    public void createAreaGateEntity(AreaGateId areaGateId, TextureAtlas atlas, CoreGame game) {
+        AreaGate areaGate = game.getGameState().getAreaGate(areaGateId);
+
+        if (areaGate != null) {
+            if (!gameEntityRenderer.getAreaGateRenderers().containsKey(areaGateId)) {
+                AreaGateRenderer areaGateRenderer = AreaGateRenderer.of(areaGateId);
+                areaGateRenderer.init(atlas, game);
+                gameEntityRenderer.getAreaGateRenderers().put(areaGateId, areaGateRenderer);
+            }
+            if (!gameEntityPhysics.getAreaGateBodies().containsKey(areaGateId)) {
+                AreaGateBody areaGateBody = AreaGateBody.of(areaGateId);
+                areaGateBody.init(game);
+                gameEntityPhysics.getAreaGateBodies().put(areaGateId, areaGateBody);
+            }
+        }
+    }
+
+    public void removeAreaGateEntity(AreaGateId areaGateId, CoreGame game) {
+        if (areaGateId != null) {
+
+            game.getGameState().getAreaGates().remove(areaGateId);
+
+            getGameEntityRenderer().getAreaGateRenderers().remove(areaGateId);
+
+            if (gameEntityPhysics.getAreaGateBodies().containsKey(areaGateId)) {
+                gameEntityPhysics.getAreaGateBodies().get(areaGateId).onRemove();
+                gameEntityPhysics.getAreaGateBodies().remove(areaGateId);
             }
         }
     }

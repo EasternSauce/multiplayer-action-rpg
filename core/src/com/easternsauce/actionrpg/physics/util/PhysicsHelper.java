@@ -4,6 +4,7 @@ import com.easternsauce.actionrpg.Constants;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.ability.AbilityState;
+import com.easternsauce.actionrpg.model.area.AreaGate;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.Player;
@@ -63,9 +64,12 @@ public class PhysicsHelper {
                 creature.getParams().setAreaWhenEnteredGate(creature.getParams().getAreaId());
 
                 if (creature instanceof Player && !creature.getParams().getIsStillInsideGateAfterTeleport()) {
-                    AreaId fromAreaId = event.getAreaId();
-                    AreaId toAreaId = event.getConnectedAreaId();
-                    Vector2 pos = event.getConnectedPos();
+                    AreaGate areaGate = game.getGameState().getAreaGate(event.getAreaGateId());
+                    AreaGate leadingToAreaGate = game.getGameState().getAreaGate(areaGate.getLeadingToAreaGateId());
+
+                    AreaId fromAreaId = areaGate.getAreaId();
+                    AreaId toAreaId = leadingToAreaGate.getAreaId();
+                    Vector2 pos = leadingToAreaGate.getPos();
 
                     game.addTeleportEvent(TeleportEvent.of(event.getCreatureId(), pos, fromAreaId, toAreaId, true));
 

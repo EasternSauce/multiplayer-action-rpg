@@ -58,6 +58,14 @@ public class CoreGameClient extends CoreGame {
     @Setter
     private Client endPoint;
 
+    @Getter
+    @Setter
+    private Boolean isRendererReady = false;
+
+    @Getter
+    @Setter
+    private Boolean isFirstBroadcastReceived = false;
+
     private Float menuClickTime = 0f; // TODO: should do it differently
 
     private CoreGameClient() {
@@ -356,6 +364,7 @@ public class CoreGameClient extends CoreGame {
 
                     getEntityManager().getGameEntityPhysics().setIsForceUpdateBodyPositions(true);
 
+                    setIsFirstBroadcastReceived(true);
                 }
                 else if (object instanceof ChatMessageSendCommand) {
                     ChatMessageSendCommand action = (ChatMessageSendCommand) object;

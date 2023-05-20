@@ -46,6 +46,7 @@ public class EndPointHelper {
         endPoint.getKryo().register(AreaId.class);
         endPoint.getKryo().register(AbilityId.class);
         endPoint.getKryo().register(LootPileId.class);
+        endPoint.getKryo().register(AreaGateId.class);
 
         endPoint.getKryo().register(Vector2.class);
         endPoint.getKryo().register(Vector2Int.class);
@@ -57,6 +58,7 @@ public class EndPointHelper {
         endPoint.getKryo().register(EnemySpawn.class);
         endPoint.getKryo().register(EnemyAiState.class);
         endPoint.getKryo().register(LootPile.class);
+        endPoint.getKryo().register(AreaGate.class);
         endPoint.getKryo().register(CreatureEffect.class);
         endPoint.getKryo().register(CreatureEffectState.class);
 
