@@ -47,11 +47,11 @@ public class GameEntityPhysics {
         });
 
         this.areaGateBodies = game // TODO: do this dynamically
-            .getGameState()
-            .getAreaGates()
-            .keySet()
-            .stream()
-            .collect(Collectors.toMap(areaGateId -> areaGateId, AreaGateBody::of));
+                                   .getGameState()
+                                   .getAreaGates()
+                                   .keySet()
+                                   .stream()
+                                   .collect(Collectors.toMap(areaGateId -> areaGateId, AreaGateBody::of));
 
         this.areaGateBodies.values().forEach(areaGateBody -> areaGateBody.init(game));
 

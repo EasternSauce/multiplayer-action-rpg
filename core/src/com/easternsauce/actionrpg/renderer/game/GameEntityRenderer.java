@@ -70,13 +70,13 @@ public class GameEntityRenderer {
         areaRenderers.putAll(maps.keySet().stream().collect(Collectors.toMap(areaId -> areaId, AreaRenderer::of)));
         areaRenderers.forEach((areaId, areaRenderer) -> areaRenderer.init(maps.get(areaId), mapScale));
 
-//        areaGateRenderers = new HashMap<>();
-//        areaGateRenderers.putAll(game
-//                                     .getGameState()
-//                                     .getAreaGates()
-//                                     .keySet()
-//                                     .stream()
-//                                     .collect(Collectors.toMap(areaGateId -> areaGateId, AreaGateRenderer::of)));
+        //        areaGateRenderers = new HashMap<>();
+        //        areaGateRenderers.putAll(game
+        //                                     .getGameState()
+        //                                     .getAreaGates()
+        //                                     .keySet()
+        //                                     .stream()
+        //                                     .collect(Collectors.toMap(areaGateId -> areaGateId, AreaGateRenderer::of)));
 
         game.setIsRendererReady(true);
     }

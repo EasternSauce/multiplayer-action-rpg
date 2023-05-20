@@ -72,7 +72,6 @@ public class EntityEventProcessor {
         getAreaGateModelsToBeRemoved().forEach(areaGateId -> gameEntityManager.removeAreaGateEntity(areaGateId, game));
         getAreaGateModelsToBeRemoved().clear();
 
-
     }
 
 }

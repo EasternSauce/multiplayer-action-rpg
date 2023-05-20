@@ -1,9 +1,7 @@
 package com.easternsauce.actionrpg.physics.event;
 
 import com.easternsauce.actionrpg.model.area.AreaGateId;
-import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
-import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

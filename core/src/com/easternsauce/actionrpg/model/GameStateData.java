@@ -11,9 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListMap;
-import java.util.concurrent.ConcurrentSkipListSet;
 
 @NoArgsConstructor(staticName = "of")
 @Data
@@ -53,7 +51,8 @@ public class GameStateData {
     }
 
     public static GameStateData of(GameStateData gameStateData, Map<CreatureId, Creature> creatures,
-                                   Map<AbilityId, Ability> abilities, Map<LootPileId, LootPile> lootPiles, Map<AreaGateId, AreaGate> areaGates) {
+                                   Map<AbilityId, Ability> abilities, Map<LootPileId, LootPile> lootPiles, Map<AreaGateId,
+        AreaGate> areaGates) {
         GameStateData newGameStateData = GameStateData.of();
         newGameStateData.setCreatures(creatures);
         newGameStateData.setRemovedCreatures(new ConcurrentSkipListMap<>(gameStateData.getRemovedCreatures()));

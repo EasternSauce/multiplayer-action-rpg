@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
-public class AreaGateId  implements Comparable<AreaGateId> {
+public class AreaGateId implements Comparable<AreaGateId> {
     String value;
 
     @Override

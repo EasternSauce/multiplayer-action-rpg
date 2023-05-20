@@ -102,39 +102,39 @@ public class GameplayScreen implements Screen {
     @Override
     public void render(float delta) {
         update(delta);
-            if (game.isGameplayRenderingAllowed()) {
-                if (game.getIsRendererReady()) {
-                    game
-                        .getEntityManager()
-                        .getGameEntityRenderer()
-                        .getAreaRenderers()
-                        .get(game.getGameState().getCurrentAreaId())
-                        .setView(game.getEntityManager().getGameEntityRenderer().getViewportsHandler().getWorldCamera());
+        if (game.isGameplayRenderingAllowed()) {
+            if (game.getIsRendererReady()) {
+                game
+                    .getEntityManager()
+                    .getGameEntityRenderer()
+                    .getAreaRenderers()
+                    .get(game.getGameState().getCurrentAreaId())
+                    .setView(game.getEntityManager().getGameEntityRenderer().getViewportsHandler().getWorldCamera());
 
-                    game.getEntityManager().getGameEntityRenderer().setProjectionMatrices();
+                game.getEntityManager().getGameEntityRenderer().setProjectionMatrices();
 
-                    Gdx.gl.glClearColor(0, 0, 0, 1);
+                Gdx.gl.glClearColor(0, 0, 0, 1);
 
-                    int coverageBuffer;
-                    if (Gdx.graphics.getBufferFormat().coverageSampling) {
-                        coverageBuffer = GL20.GL_COVERAGE_BUFFER_BIT_NV;
-                    }
-                    else {
-                        coverageBuffer = 0;
-                    }
-
-                    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | coverageBuffer);
-
-                    GameplayRendererHelper.renderGameplay(game);
-
-                    game.getHudRenderer().render(game);
+                int coverageBuffer;
+                if (Gdx.graphics.getBufferFormat().coverageSampling) {
+                    coverageBuffer = GL20.GL_COVERAGE_BUFFER_BIT_NV;
                 }
+                else {
+                    coverageBuffer = 0;
+                }
+
+                Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | coverageBuffer);
+
+                GameplayRendererHelper.renderGameplay(game);
+
+                game.getHudRenderer().render(game);
             }
-            else {
-                game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer().begin();
-                game.renderServerRunningMessage(game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer());
-                game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer().end();
-            }
+        }
+        else {
+            game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer().begin();
+            game.renderServerRunningMessage(game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer());
+            game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer().end();
+        }
 
     }
 

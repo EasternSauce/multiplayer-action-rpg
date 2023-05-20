@@ -13,7 +13,6 @@ import com.easternsauce.actionrpg.model.action.loot.LootPileSpawnAction;
 import com.easternsauce.actionrpg.model.action.player.PlayerInitAction;
 import com.easternsauce.actionrpg.model.action.player.PlayerRemoveAction;
 import com.easternsauce.actionrpg.model.area.AreaGate;
-import com.easternsauce.actionrpg.model.area.AreaGateConnection;
 import com.easternsauce.actionrpg.model.area.AreaGateId;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.creature.Creature;

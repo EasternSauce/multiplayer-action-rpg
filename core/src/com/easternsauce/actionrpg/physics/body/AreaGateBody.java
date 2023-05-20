@@ -4,8 +4,6 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.area.AreaGate;
 import com.easternsauce.actionrpg.model.area.AreaGateId;
-import com.easternsauce.actionrpg.model.area.AreaId;
-import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.physics.world.PhysicsWorld;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,7 +17,6 @@ public class AreaGateBody {
     PhysicsWorld world;
 
     AreaGateId areaGateId;
-
 
     public static AreaGateBody of(AreaGateId areaGateId) {
         AreaGateBody areaGateBody = AreaGateBody.of();
