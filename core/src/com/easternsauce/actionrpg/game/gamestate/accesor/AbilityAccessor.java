@@ -87,27 +87,31 @@ public class AbilityAccessor {
 
     public void chainAnotherAbility(Ability chainFromAbility, AbilityType abilityType, Vector2 chainToPos, Vector2 dirVector,
                                     CoreGame game) {
-        AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
+        Creature creature = game.getGameState().accessCreatures().getCreature(chainFromAbility.getParams().getCreatureId());
 
-        Map<CreatureId, Float> creaturesAlreadyHit = new ConcurrentSkipListMap<>(chainFromAbility
-                                                                                     .getParams()
-                                                                                     .getCreaturesAlreadyHit());
+        if (creature.isAlive()) {
+            AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
 
-        Vector2 chainFromPos = chainFromAbility.getParams().getPos();
+            Map<CreatureId, Float> creaturesAlreadyHit = new ConcurrentSkipListMap<>(chainFromAbility
+                                                                                         .getParams()
+                                                                                         .getCreaturesAlreadyHit());
 
-        AbilityParams abilityParams = AbilityParams
-            .of()
-            .setId(abilityId)
-            .setAreaId(chainFromAbility.getParams().getAreaId())
-            .setCreatureId(chainFromAbility.getParams().getCreatureId())
-            .setCreaturesAlreadyHit(creaturesAlreadyHit)
-            .setChainFromPos(chainFromPos)
-            .setChainToPos(chainToPos)
-            .setDirVector(dirVector)
-            .setVectorTowardsTarget(dirVector)
-            .setSkillType(chainFromAbility.getParams().getSkillType());
+            Vector2 chainFromPos = chainFromAbility.getParams().getPos();
 
-        spawnAbility(abilityType, abilityParams, game);
+            AbilityParams abilityParams = AbilityParams
+                .of()
+                .setId(abilityId)
+                .setAreaId(chainFromAbility.getParams().getAreaId())
+                .setCreatureId(chainFromAbility.getParams().getCreatureId())
+                .setCreaturesAlreadyHit(creaturesAlreadyHit)
+                .setChainFromPos(chainFromPos)
+                .setChainToPos(chainToPos)
+                .setDirVector(dirVector)
+                .setVectorTowardsTarget(dirVector)
+                .setSkillType(chainFromAbility.getParams().getSkillType());
+
+            spawnAbility(abilityType, abilityParams, game);
+        }
     }
 
     //    public void sendActivateAbilityAction(Ability ability) {

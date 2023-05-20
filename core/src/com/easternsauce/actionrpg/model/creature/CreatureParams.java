@@ -131,6 +131,8 @@ public class CreatureParams implements EntityParams {
 
     private SimpleTimer gateTeleportCooldownTimer = SimpleTimer.getExpiredTimer();
 
+    private SimpleTimer generalSkillPerformCooldownTimer = SimpleTimer.getExpiredTimer();
+
     public static CreatureParams of(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn) {
         return getCreatureParams(creatureId,
                                  areaId,

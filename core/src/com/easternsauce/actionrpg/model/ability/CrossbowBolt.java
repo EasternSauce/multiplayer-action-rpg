@@ -77,7 +77,7 @@ public class CrossbowBolt extends Projectile {
 
     @Override
     public Float getStunDuration() {
-        return 0.25f;
+        return 0.15f;
     }
 
     @Override

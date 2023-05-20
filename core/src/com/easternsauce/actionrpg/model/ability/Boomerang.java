@@ -128,4 +128,9 @@ public class Boomerang extends Projectile {
     protected boolean isWeaponAttack() {
         return true;
     }
+
+    @Override
+    public Float getStunDuration() {
+        return 0.65f;
+    }
 }

@@ -16,7 +16,9 @@ import com.easternsauce.actionrpg.renderer.config.CreatureAnimationConfig;
 import com.easternsauce.actionrpg.util.RandomHelper;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.stream.Collectors;
 
 public abstract class Creature implements Entity {
 
@@ -93,6 +95,8 @@ public abstract class Creature implements Entity {
         getParams().getAggroTimer().update(delta);
         getParams().getFindTargetTimer().update(delta);
         getParams().getAiStateTimer().update(delta);
+        getParams().getGateTeleportCooldownTimer().update(delta);
+        getParams().getGeneralSkillPerformCooldownTimer().update(delta);
 
         getParams().getSkills().forEach((skillType, skill) -> skill.getPerformTimer().update(delta));
         // add other timers here...
@@ -201,7 +205,9 @@ public abstract class Creature implements Entity {
         if (!isShielded) {
             takeLifeDamage(ability.getDamage(game));
 
-            applyEffect(CreatureEffect.STUN, ability.getStunDuration(), game);
+            if (ability.isCanStun()) {
+                applyEffect(CreatureEffect.STUN, ability.getStunDuration(), game);
+            }
         }
 
     }
@@ -240,13 +246,33 @@ public abstract class Creature implements Entity {
         return CreatureAnimationConfig.configs.get(getParams().getTextureName());
     }
 
-    public boolean canPerformSkill(Skill skill) {
+    public boolean canPerformSkill(Skill skill, CoreGame game) {
+        if (skill.getSkillType().getIsDamaging()) {
+            Set<Ability> damagingSKillNotAllowedAbilities = game
+                .getGameState()
+                .accessAbilities()
+                .getAbilities()
+                .values()
+                .stream()
+                .filter(ability -> !ability.isDamagingSkillAllowedDuring() &&
+                                   ability.getParams().getCreatureId().equals(this.getParams().getId()) &&
+
+                                   ability.getParams().getState() == AbilityState.ACTIVE)
+                .collect(Collectors.toSet());
+
+            if (!damagingSKillNotAllowedAbilities.isEmpty()) {
+                return false;
+            }
+        }
+
         return isAlive() && getParams().getStamina() >= skill.getStaminaCost() && getParams().getMana() >= skill.getManaCost();
     }
 
     public void onPerformSkill(Skill skill) {
         takeStaminaDamage(skill.getStaminaCost());
         takeManaDamage(skill.getManaCost());
+
+        getParams().getGeneralSkillPerformCooldownTimer().restart();
     }
 
     public Float nextDropRngValue() {

@@ -147,7 +147,9 @@ public class ServerGameState extends GameState {
                 if (creature instanceof Player) {
                     Vector2 pos = Vector2.of((float) ((Math.random() * (28 - 18)) + 18),
                                              (float) ((Math.random() * (12 - 6)) + 6));
-                    CreatureRespawnAction action = CreatureRespawnAction.of(creatureId, pos, AreaId.of("area1"));
+                    CreatureRespawnAction action = CreatureRespawnAction.of(creatureId,
+                                                                            pos,
+                                                                            AreaId.of("area1")); // TODO: respawns
 
                     scheduleServerSideAction(action);
                 }

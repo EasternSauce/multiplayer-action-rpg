@@ -200,7 +200,9 @@ public class Enemy extends Creature {
         if (!isShielded) {
             takeLifeDamage(ability.getDamage(game));
 
-            applyEffect(CreatureEffect.STUN, ability.getStunDuration(), game);
+            if (ability.isCanStun()) {
+                applyEffect(CreatureEffect.STUN, ability.getStunDuration(), game);
+            }
 
             getParams().setAttackedByCreatureId(ability.getParams().getCreatureId());
 
@@ -395,7 +397,7 @@ public class Enemy extends Creature {
     }
 
     @Override
-    public boolean canPerformSkill(Skill skill) {
+    public boolean canPerformSkill(Skill skill, CoreGame game) {
         return isAlive() && getParams().getStamina() >= skill.getStaminaCost();
     }
 

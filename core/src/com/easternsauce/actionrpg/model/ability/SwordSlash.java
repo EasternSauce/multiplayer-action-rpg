@@ -126,11 +126,16 @@ public class SwordSlash extends Ability {
 
     @Override
     public Float getStunDuration() {
-        return 0.35f;
+        return 0.2f;
     }
 
     @Override
     protected boolean isWeaponAttack() {
+        return true;
+    }
+
+    @Override
+    public boolean isCanBeDeactivated() {
         return true;
     }
 }

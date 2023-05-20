@@ -51,7 +51,7 @@ public class ItemTemplate {
                                                                     .setEquipable(true)
                                                                     .setEquipmentSlotType(EquipmentSlotType.PRIMARY_WEAPON)
                                                                     .setAttackSkill(SkillType.BOOMERANG)
-                                                                    .setDamage(18f),
+                                                                    .setDamage(21f),
                                                                 ItemTemplate
                                                                     .of("woodenSword",
                                                                         "Wooden" + " Sword",
@@ -80,7 +80,7 @@ public class ItemTemplate {
                                                                     .setEquipable(true)
                                                                     .setEquipmentSlotType(EquipmentSlotType.PRIMARY_WEAPON)
                                                                     .setAttackSkill(SkillType.CROSSBOW_SHOT)
-                                                                    .setDamage(6f))
+                                                                    .setDamage(10f))
 
         );
         templates = new ConcurrentSkipListMap<>(list

@@ -78,7 +78,8 @@ public class Skill {
     public void tryPerform(Vector2 startingPos, Vector2 dirVector, CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
-        if (creature != null && creature.canPerformSkill(this) && performTimer.getTime() > cooldown &&
+        if (creature != null && creature.canPerformSkill(this, game) && performTimer.getTime() > cooldown &&
+            creature.getParams().getGeneralSkillPerformCooldownTimer().getTime() > 0.25f &&
             !creature.isEffectActive(CreatureEffect.STUN, game)) {
 
             AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));

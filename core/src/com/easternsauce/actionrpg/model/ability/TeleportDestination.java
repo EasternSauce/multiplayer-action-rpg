@@ -122,4 +122,14 @@ public class TeleportDestination extends Ability {
     protected boolean isWeaponAttack() {
         return false;
     }
+
+    @Override
+    public boolean isCanBeDeactivated() {
+        return true;
+    }
+
+    @Override
+    public boolean isCanStun() {
+        return false;
+    }
 }

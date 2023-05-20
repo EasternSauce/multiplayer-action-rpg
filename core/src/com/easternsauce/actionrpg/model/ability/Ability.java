@@ -108,6 +108,7 @@ public abstract class Ability implements Entity {
     }
 
     public void deactivate() {
+        getParams().setState(AbilityState.ACTIVE);
         getParams().getStateTimer().setTime(getParams().getActiveTime());
     }
 
@@ -159,6 +160,18 @@ public abstract class Ability implements Entity {
     }
 
     public boolean usesEntityModel() {
+        return true;
+    }
+
+    public boolean isCanBeDeactivated() {
+        return false;
+    }
+
+    public boolean isDamagingSkillAllowedDuring() {
+        return true;
+    }
+
+    public boolean isCanStun() {
         return true;
     }
 }

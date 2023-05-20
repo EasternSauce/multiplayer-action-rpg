@@ -20,13 +20,13 @@ public class SwordSpin extends Ability {
     public static SwordSpin of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         SwordSpin ability = SwordSpin.of();
         ability.params = abilityParams
-            .setWidth(2.4f)
-            .setHeight(2.4f)
+            .setWidth(2.8f)
+            .setHeight(2.8f)
             .setChannelTime(0f)
             .setActiveTime(3f)
-            .setRange(2.4f)
+            .setRange(2f)
             .setTextureName("sword")
-            .setBaseDamage(13f)
+            .setBaseDamage(17f)
             .setIsChannelAnimationLooping(false)
             .setIsActiveAnimationLooping(false)
             .setRotationShift(0f)
@@ -97,9 +97,7 @@ public class SwordSpin extends Ability {
 
     @Override
     public void onChannelUpdate(CoreGame game) {
-
         updatePosition(game);
-
     }
 
     @Override
@@ -117,6 +115,11 @@ public class SwordSpin extends Ability {
         });
 
         creaturesHitRemove.forEach(creatureId -> getParams().getCreaturesAlreadyHit().remove(creatureId));
+    }
+
+    @Override
+    public Float getStunDuration() {
+        return 0.35f;
     }
 
     @Override
@@ -141,6 +144,16 @@ public class SwordSpin extends Ability {
 
     @Override
     protected boolean isWeaponAttack() {
+        return false;
+    }
+
+    @Override
+    public boolean isCanBeDeactivated() {
+        return true;
+    }
+
+    @Override
+    public boolean isDamagingSkillAllowedDuring() {
         return false;
     }
 }

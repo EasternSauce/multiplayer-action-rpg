@@ -3,6 +3,7 @@ package com.easternsauce.actionrpg.model.action.creature;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.ability.Ability;
+import com.easternsauce.actionrpg.model.ability.AbilityState;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
 import com.easternsauce.actionrpg.model.area.LootPile;
 import com.easternsauce.actionrpg.model.area.LootPileId;
@@ -52,14 +53,36 @@ public class CreatureHitByAbilityAction extends GameStateAction {
         targetCreature.onBeingHit(ability, game);
 
         if (targetCreature.getParams().getPreviousTickLife() > 0f && targetCreature.getParams().getLife() <= 0f) {
-            targetCreature.getParams().setLife(0f); // just to make sure its dead on client side
-            targetCreature.getParams().setIsDead(true);
-            targetCreature.getParams().getRespawnTimer().restart();
-            targetCreature.getParams().setIsAwaitingRespawn(true);
-            attackerCreature.onKillEffect();
-
-            spawnDrops(game);
+            onCreatureDeath(targetCreature, attackerCreature, game);
         }
+    }
+
+    private void onCreatureDeath(Creature targetCreature, Creature attackerCreature, CoreGame game) {
+        targetCreature.getParams().setLife(0f); // just to make sure its dead on client side
+        targetCreature.getParams().setIsDead(true);
+        targetCreature.getParams().getRespawnTimer().restart();
+        targetCreature.getParams().setIsAwaitingRespawn(true);
+        attackerCreature.onKillEffect();
+
+        spawnDrops(game);
+
+        deactivateCreatureAbilities(targetCreature, game);
+    }
+
+    private void deactivateCreatureAbilities(Creature targetCreature, CoreGame game) {
+        Set<Ability> creatureActiveAbilities = game
+            .getGameState()
+            .accessAbilities()
+            .getAbilities()
+            .values()
+            .stream()
+            .filter(ability -> ability.isCanBeDeactivated() &&
+                               ability.getParams().getCreatureId().equals(targetCreature.getParams().getId()) &&
+                               (ability.getParams().getState() == AbilityState.CHANNEL ||
+                                ability.getParams().getState() == AbilityState.ACTIVE))
+            .collect(Collectors.toSet());
+
+        creatureActiveAbilities.forEach(Ability::deactivate);
     }
 
     public void spawnDrops(CoreGame game) {

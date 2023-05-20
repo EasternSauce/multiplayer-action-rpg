@@ -175,7 +175,7 @@ public class CoreGameServer extends CoreGame {
             try {
                 while (true) {
                     //noinspection BusyWait
-                    Thread.sleep(3000);
+                    Thread.sleep(250);
 
                     Connection[] connections = getEndPoint().getConnections();
                     for (Connection connection : connections) {
@@ -203,7 +203,7 @@ public class CoreGameServer extends CoreGame {
         AreaId areaId = AreaId.of("area1");
 
         Item leatherArmor = Item.of().setTemplate(ItemTemplate.templates.get("leatherArmor")).setQualityModifier(0.9f);
-        Item boomerang = Item.of().setTemplate(ItemTemplate.templates.get("crossbow")).setQualityModifier(0.9f);
+        Item boomerang = Item.of().setTemplate(ItemTemplate.templates.get("crossbow")).setQualityModifier(0.8f);
 
         gameState.scheduleServerSideAction(LootPileSpawnAction.of(AreaId.of("area3"),
                                                                   Vector2.of(12, 12),
