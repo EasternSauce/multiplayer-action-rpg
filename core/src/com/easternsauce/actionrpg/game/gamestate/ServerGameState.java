@@ -154,11 +154,27 @@ public class ServerGameState extends GameState {
                     scheduleServerSideAction(action);
                 }
                 else if (creature instanceof Enemy) {
-                    Vector2 pos = creature.getParams().getInitialPos();
-                    AreaId initialAreaId = creature.getParams().getInitialAreaId();
-                    CreatureRespawnAction action = CreatureRespawnAction.of(creatureId, pos, initialAreaId);
+                    System.out.println("trying to respawn");
+                    Vector2 respawnPos = creature.getParams().getInitialPos();
 
-                    scheduleServerSideAction(action);
+                    Set<Creature> playersNearby = accessCreatures()
+                        .getCreatures()
+                        .values()
+                        .stream()
+                        .filter(otherCreature -> otherCreature instanceof Player && otherCreature
+                            .getParams()
+                            .getAreaId()
+                            .getValue()
+                            .equals(creature.getParams().getAreaId().getValue()) &&
+                                                 otherCreature.getParams().getPos().distance(respawnPos) < Constants.PREVENT_ENEMY_RESPAWN_DISTANCE)
+                        .collect(Collectors.toSet());
+
+                    if (playersNearby.isEmpty()) {
+                        AreaId initialAreaId = creature.getParams().getInitialAreaId();
+                        CreatureRespawnAction action = CreatureRespawnAction.of(creatureId, respawnPos, initialAreaId);
+
+                        scheduleServerSideAction(action);
+                    }
                 }
 
             }
