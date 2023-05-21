@@ -8,6 +8,7 @@ import com.easternsauce.actionrpg.model.action.creature.CreatureMovingVectorSetA
 import com.easternsauce.actionrpg.model.action.creature.SkillTryPerformAction;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
+import com.easternsauce.actionrpg.model.creature.EnemySkillUseEntry;
 import com.easternsauce.actionrpg.model.skill.SkillType;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,7 @@ import lombok.NoArgsConstructor;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -92,15 +94,41 @@ public class CreatureAccessor {
             .forEach(creatureAction);
     }
 
-    public void handleCreatureAttackTarget(CreatureId attackingCreatureId, Vector2 vectorTowardsTarget, SkillType skillType) {
-        Creature attackingCreature = gameState.accessCreatures().getCreatures().get(attackingCreatureId);
+    public void handleCreatureAttackTarget(CreatureId creatureId, Vector2 vectorTowardsTarget,
+                                           Set<EnemySkillUseEntry> skillUseEntries) {
+        Creature creature = gameState.accessCreatures().getCreatures().get(creatureId);
 
-        SkillTryPerformAction action = SkillTryPerformAction.of(attackingCreatureId,
-                                                                skillType,
-                                                                attackingCreature.getParams().getPos(),
+        if (creature.getParams().getEnemySkillUseReadyToPick()) {
+            pickSkillUseSkillType(skillUseEntries, creature);
+        }
+
+        SkillTryPerformAction action = SkillTryPerformAction.of(creatureId,
+                                                                creature.getParams().getEnemySkillUsePickedSkillType(),
+                                                                creature.getParams().getPos(),
                                                                 vectorTowardsTarget);
 
         gameState.scheduleServerSideAction(action);
+    }
+
+    private static void pickSkillUseSkillType(Set<EnemySkillUseEntry> skillUseEntries, Creature creature) {
+        AtomicReference<Float> totalWeight = new AtomicReference<>((float) 0);
+
+        // TODO: pick subset of skill use entries based on distance to enemy
+        skillUseEntries.forEach(skillUseEntry -> totalWeight.set(totalWeight.get() + skillUseEntry.getWeight()));
+
+        AtomicReference<Float> randValue = new AtomicReference<>(creature.nextSkillUseRngValue() * totalWeight.get());
+
+        AtomicReference<SkillType> pickedSkillType = new AtomicReference<>(null);
+
+        skillUseEntries.forEach(skillUseEntry -> {
+            if (pickedSkillType.get() == null && randValue.get() < skillUseEntry.getWeight()) {
+                pickedSkillType.set(skillUseEntry.getSkillType());
+            }
+            randValue.set(randValue.get() - skillUseEntry.getWeight());
+        });
+
+        creature.getParams().setEnemySkillUsePickedSkillType(pickedSkillType.get());
+        creature.getParams().setEnemySkillUseReadyToPick(false);
     }
 
     public CreatureId getAliveCreatureIdClosestTo(Vector2 pos, float maxRange, Set<CreatureId> excluded) {

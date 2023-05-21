@@ -14,9 +14,10 @@ import java.util.concurrent.ConcurrentSkipListSet;
 @Data
 public class EnemyTemplate {
     private EnemyType enemyType;
+    private Float maxLife;
     private Float attackDistance;
-    private SkillType mainAttackSkill;
     private Set<DropTableEntry> dropTable;
+    private Set<EnemySkillUseEntry> enemySkillUseEntries;
 
     private static Set<DropTableEntry> randomDropSet = new ConcurrentSkipListSet<>(Arrays.asList(DropTableEntry.leatherArmorDrop,
                                                                                                  DropTableEntry.specialLeatherArmorDrop,
@@ -29,8 +30,41 @@ public class EnemyTemplate {
                                                                                                  DropTableEntry.boomerangDrop,
                                                                                                  DropTableEntry.shieldDrop));
 
-    public static EnemyTemplate archer = EnemyTemplate.of(EnemyType.ARCHER, 15f, SkillType.MOB_CROSSBOW_SHOT, randomDropSet);
+    public static EnemyTemplate archer = EnemyTemplate.of(EnemyType.ARCHER,
+                                                          100f,
+                                                          15f,
+                                                          randomDropSet,
+                                                          new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(
+                                                              SkillType.MOB_CROSSBOW_SHOT,
+                                                              100f), EnemySkillUseEntry.of(SkillType.RICOCHET_BALLISTA, 40f))));
 
-    public static EnemyTemplate skeleton = EnemyTemplate.of(EnemyType.SKELETON, 3f, SkillType.SWORD_SLASH, randomDropSet);
-    public static EnemyTemplate mage = EnemyTemplate.of(EnemyType.MAGE, 15f, SkillType.MOB_MAGIC_ORB, randomDropSet);
+    public static EnemyTemplate skeleton = EnemyTemplate.of(EnemyType.SKELETON,
+                                                            100f,
+                                                            3f,
+                                                            randomDropSet,
+                                                            new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(
+                                                                SkillType.SWORD_SLASH,
+                                                                100f), EnemySkillUseEntry.of(SkillType.SUMMON_SHIELD, 50f))));
+    public static EnemyTemplate mage = EnemyTemplate.of(EnemyType.MAGE,
+                                                        100f,
+                                                        15f,
+                                                        randomDropSet,
+                                                        new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.MOB_MAGIC_ORB,
+                                                                                                                        100f),
+                                                                                                  EnemySkillUseEntry.of(SkillType.VOLATILE_BUBBLE,
+                                                                                                                        60f),
+                                                                                                  EnemySkillUseEntry.of(SkillType.FIREBALL,
+                                                                                                                        60f))));
+    public static EnemyTemplate minos = EnemyTemplate.of(EnemyType.MINOS,
+                                                         1000f,
+                                                         7f,
+                                                         randomDropSet,
+                                                         new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.RICOCHET_BALLISTA,
+                                                                                                                         100f),
+                                                                                                   EnemySkillUseEntry.of(SkillType.BOSS_SWORD_SPIN,
+                                                                                                                         100f),
+                                                                                                   EnemySkillUseEntry.of(SkillType.VOLATILE_BUBBLE,
+                                                                                                                         60f),
+                                                                                                   EnemySkillUseEntry.of(SkillType.FIREBALL,
+                                                                                                                         60f))));
 }

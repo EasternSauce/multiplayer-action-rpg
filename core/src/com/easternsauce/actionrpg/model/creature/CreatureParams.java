@@ -101,7 +101,7 @@ public class CreatureParams implements EntityParams {
     private SimpleTimer aiStateTimer = SimpleTimer.getExpiredTimer();
 
     private Float aiStateTime;
-    private Float aiStateSeed;
+    private Float aiStateRngSeed;
 
     private Vector2 defensivePosition;
 
@@ -109,7 +109,7 @@ public class CreatureParams implements EntityParams {
 
     private Float attackDistance = 3f;
 
-    private SkillType mainAttackSkill;
+    private Set<EnemySkillUseEntry> enemySkillUseEntries;
 
     private Set<DropTableEntry> dropTable;
 
@@ -120,6 +120,7 @@ public class CreatureParams implements EntityParams {
     private Map<Integer, Item> inventoryItems = new ConcurrentSkipListMap<>();
 
     private Float dropRngSeed = (float) Math.random();
+    private Float skillUseRngSeed = (float) Math.random();
 
     private Float appliedSlowEffectiveness = 0f;
 
@@ -132,6 +133,12 @@ public class CreatureParams implements EntityParams {
     private SimpleTimer gateTeleportCooldownTimer = SimpleTimer.getExpiredTimer();
 
     private SimpleTimer generalSkillPerformCooldownTimer = SimpleTimer.getExpiredTimer();
+
+    private Boolean enemySkillUseReadyToPick = true;
+
+    private SkillType enemySkillUsePickedSkillType = null;
+
+    private SimpleTimer enemyAttackCooldownTimer = SimpleTimer.getExpiredTimer();
 
     public static CreatureParams of(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn) {
         return getCreatureParams(creatureId,
@@ -167,7 +174,7 @@ public class CreatureParams implements EntityParams {
                                                          .collect(Collectors.toMap(effect -> effect,
                                                                                    effect -> CreatureEffectState.of())));
 
-        params.aiStateSeed = (float) Math.random();
+        params.aiStateRngSeed = (float) Math.random();
         params.aiStateTime = 0f;
 
         //        Map<SkillType, Integer> grantedSkills1 = new ConcurrentSkipListMap<>();

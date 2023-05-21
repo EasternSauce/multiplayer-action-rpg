@@ -35,6 +35,8 @@ public enum AbilityType {
 
     SWORD_SPIN,
 
+    BOSS_SWORD_SPIN,
+
     TELEPORT,
 
     TELEPORT_DESTINATION

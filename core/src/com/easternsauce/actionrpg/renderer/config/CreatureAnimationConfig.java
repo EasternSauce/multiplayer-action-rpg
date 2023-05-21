@@ -24,6 +24,7 @@ public class CreatureAnimationConfig {
                     CreatureAnimationConfig.of("undead_adventurer", 0, 1.2f, 1.8f, 32, 48, 4, 0.1f, textureDirMap(3, 0, 1, 2)));
         configs.put("black_mage",
                     CreatureAnimationConfig.of("black_mage", 0, 1.5f, 1.5f, 32, 32, 3, 0.1f, textureDirMap(3, 0, 1, 2)));
+        configs.put("minos", CreatureAnimationConfig.of("minos", 0, 2.56f, 4.8f, 64, 120, 4, 0.1f, textureDirMap(3, 0, 1, 2)));
 
     }
 

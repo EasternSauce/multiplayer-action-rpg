@@ -214,6 +214,9 @@ public class EnemySpawnUtils {
                              EnemySpawn.of(Vector2.of(151.96893f, 182.01967f), EnemyTemplate.skeleton),
                              EnemySpawn.of(Vector2.of(154.62996f, 186.93576f), EnemyTemplate.mage),
                              EnemySpawn.of(Vector2.of(159.80215f, 187.7893f), EnemyTemplate.archer),
-                             EnemySpawn.of(Vector2.of(53.97292f, 96.57185f), EnemyTemplate.skeleton));
+                             EnemySpawn.of(Vector2.of(53.97292f, 96.57185f), EnemyTemplate.skeleton),
+                             EnemySpawn.of(Vector2.of(11.297986f, 53.920593f), EnemyTemplate.minos)
+
+                            );
     }
 }

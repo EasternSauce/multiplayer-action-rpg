@@ -60,7 +60,7 @@ public class Enemy extends Creature {
 
             processAiStateChangeLogic(game);
 
-            getParams().setAiStateTime(1f + 1f * nextPositiveFloat());
+            getParams().setAiStateTime(1f + 1f * nextAiStateRngValue());
         }
 
         if (getParams().getJustAttackedFromRangeTimer().getTime() < Constants.JUST_ATTACKED_FROM_RANGE_TIME) {
@@ -141,18 +141,21 @@ public class Enemy extends Creature {
         if (getParams().getAiState() == EnemyAiState.ALERTED) {
             Vector2 targetPos = game.getGameState().accessCreatures().getCreaturePos(getParams().getTargetCreatureId());
 
-            Vector2 vectorTowards = targetPos.vectorTowards(this.getParams().getPos());
+            if (targetPos != null) {
+                Vector2 vectorTowards = targetPos.vectorTowards(this.getParams().getPos());
 
-            Vector2 defensivePos = targetPos.add(vectorTowards.normalized().multiplyBy(Constants.DEFENSIVE_POS_DISTANCE));
+                Vector2 defensivePos = targetPos.add(vectorTowards.normalized().multiplyBy(Constants.DEFENSIVE_POS_DISTANCE));
 
-            getParams().setDefensivePosition(Vector2.of(defensivePos.getX() + nextFloat(), defensivePos.getY() + nextFloat()));
+                getParams().setDefensivePosition(Vector2.of(defensivePos.getX() + nextAiStateRngNegativeOrPositiveValue(),
+                                                            defensivePos.getY() + nextAiStateRngNegativeOrPositiveValue()));
+            }
 
-            if (nextPositiveFloat() < 0.1f) {
+            if (nextAiStateRngValue() < 0.1f) {
                 getParams().setAiState(EnemyAiState.AGGRESSIVE);
             }
         }
         else if (getParams().getAiState() == EnemyAiState.AGGRESSIVE) {
-            if (nextPositiveFloat() < 0.5f) {
+            if (nextAiStateRngValue() < 0.5f) {
                 getParams().setAiState(EnemyAiState.KEEPING_DISTANCE);
 
             }
@@ -165,9 +168,10 @@ public class Enemy extends Creature {
 
                 Vector2 backUpPos = targetPos.add(vectorTowards.normalized().multiplyBy(Constants.BACK_UP_DISTANCE));
 
-                getParams().setDefensivePosition(Vector2.of(backUpPos.getX() + nextFloat(), backUpPos.getY() + nextFloat()));
+                getParams().setDefensivePosition(Vector2.of(backUpPos.getX() + nextAiStateRngNegativeOrPositiveValue(),
+                                                            backUpPos.getY() + nextAiStateRngNegativeOrPositiveValue()));
 
-                if (nextPositiveFloat() < 0.5f) {
+                if (nextAiStateRngValue() < 0.5f) {
                     getParams().setAiState(EnemyAiState.AGGRESSIVE);
                 }
             }
@@ -197,7 +201,7 @@ public class Enemy extends Creature {
     public void onBeingHit(Ability ability, CoreGame game) {
         boolean isShielded = isAttackShielded(ability.isRanged(), ability.getParams().getDirVector(), game);
 
-        if (!isShielded) {
+        if (!isShielded && !ability.getParams().getIsHitShielded()) {
             takeLifeDamage(ability.getDamage(game));
 
             if (ability.isCanStun()) {
@@ -336,11 +340,13 @@ public class Enemy extends Creature {
     }
 
     public void handleAttackTarget(Creature potentialTarget, Vector2 vectorTowardsTarget, CoreGame game) {
-        if (potentialTarget.getParams().getPos().distance(getParams().getPos()) < getParams().getAttackDistance()) {
+        if (getParams().getEnemyAttackCooldownTimer().getTime() > Constants.ENEMY_ATTACK_COOLDOWN_TIMER &&
+            potentialTarget.getParams().getPos().distance(getParams().getPos()) < getParams().getAttackDistance()) {
             game
                 .getGameState()
                 .accessCreatures()
-                .handleCreatureAttackTarget(getParams().getId(), vectorTowardsTarget, getParams().getMainAttackSkill());
+                .handleCreatureAttackTarget(getParams().getId(), vectorTowardsTarget, getParams().getEnemySkillUseEntries());
+            getParams().getEnemyAttackCooldownTimer().restart();
         }
     }
 
@@ -353,14 +359,14 @@ public class Enemy extends Creature {
         stopMoving();
     }
 
-    public Float nextPositiveFloat() {
-        getParams().setAiStateSeed(RandomHelper.seededRandomFloat(getParams().getAiStateSeed()));
-        return getParams().getAiStateSeed();
+    public Float nextAiStateRngValue() {
+        getParams().setAiStateRngSeed(RandomHelper.seededRandomFloat(getParams().getAiStateRngSeed()));
+        return getParams().getAiStateRngSeed();
     }
 
-    public Float nextFloat() {
-        getParams().setAiStateSeed(RandomHelper.seededRandomFloat(getParams().getAiStateSeed()));
-        return (getParams().getAiStateSeed() - 0.5f) * 2;
+    public Float nextAiStateRngNegativeOrPositiveValue() {
+        getParams().setAiStateRngSeed(RandomHelper.seededRandomFloat(getParams().getAiStateRngSeed()));
+        return (getParams().getAiStateRngSeed() - 0.5f) * 2;
     }
 
     @Override

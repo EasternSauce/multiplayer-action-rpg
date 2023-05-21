@@ -24,4 +24,5 @@ public class Constants {
 
     public static final float ENEMY_SEARCH_DISTANCE = 18f;
     public static final float PREVENT_ENEMY_RESPAWN_DISTANCE = 32f;
+    public static final float ENEMY_ATTACK_COOLDOWN_TIMER = 2.5f;
 }

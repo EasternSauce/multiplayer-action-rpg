@@ -46,6 +46,8 @@ public class AbilityFactory {
                 return SummonShield::of;
             case SWORD_SPIN:
                 return SwordSpin::of;
+            case BOSS_SWORD_SPIN:
+                return BossSwordSpin::of;
             case TELEPORT:
                 return TeleportSource::of;
             case TELEPORT_DESTINATION:

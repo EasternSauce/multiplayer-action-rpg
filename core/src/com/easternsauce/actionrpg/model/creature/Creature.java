@@ -97,6 +97,7 @@ public abstract class Creature implements Entity {
         getParams().getAiStateTimer().update(delta);
         getParams().getGateTeleportCooldownTimer().update(delta);
         getParams().getGeneralSkillPerformCooldownTimer().update(delta);
+        getParams().getEnemyAttackCooldownTimer().update(delta);
 
         getParams().getSkills().forEach((skillType, skill) -> skill.getPerformTimer().update(delta));
         // add other timers here...
@@ -202,7 +203,7 @@ public abstract class Creature implements Entity {
     public void onBeingHit(Ability ability, CoreGame game) {
         boolean isShielded = isAttackShielded(ability.isRanged(), ability.getParams().getDirVector(), game);
 
-        if (!isShielded) {
+        if (!isShielded && !ability.getParams().getIsHitShielded()) {
             takeLifeDamage(ability.getDamage(game));
 
             if (ability.isCanStun()) {
@@ -272,7 +273,9 @@ public abstract class Creature implements Entity {
         takeStaminaDamage(skill.getStaminaCost());
         takeManaDamage(skill.getManaCost());
 
-        getParams().getGeneralSkillPerformCooldownTimer().restart();
+        if (skill.getSkillType().getIsDamaging()) {
+            getParams().getGeneralSkillPerformCooldownTimer().restart();
+        }
     }
 
     public Float nextDropRngValue() {
@@ -281,18 +284,12 @@ public abstract class Creature implements Entity {
         return rngValue;
     }
 
-    //    public void updateEffects() {
-    //        getParams().getEffects().forEach((effect, effectState) -> {
-    //            if (effect == CreatureEffect.SLOW) {
-    //
-    //            } else if (effect == CreatureEffect.STUN) {
-    //
-    //            } else if (effect == CreatureEffect.POISON) {
-    //
-    //            }
-    //        });
-    //    }
-    //
+    public Float nextSkillUseRngValue() {
+        Float rngValue = RandomHelper.seededRandomFloat(getParams().getSkillUseRngSeed());
+        getParams().setSkillUseRngSeed(rngValue);
+        return rngValue;
+    }
+
     public boolean isEffectActive(CreatureEffect effect, CoreGame game) {
         CreatureEffectState effectState = getParams().getEffects().get(effect);
         return game.getGameState().getTime() >= effectState.getStartTime() &&

@@ -64,10 +64,13 @@ public class Skill {
         }
 
         if (skillType == SkillType.SUMMON_SHIELD) {
-            return Skill.of(skillType, creatureId, AbilityType.SUMMON_SHIELD, SimpleTimer.getExpiredTimer(), 2f, 25f, 0f);
+            return Skill.of(skillType, creatureId, AbilityType.SUMMON_SHIELD, SimpleTimer.getExpiredTimer(), 6f, 25f, 0f);
         }
         if (skillType == SkillType.SWORD_SPIN) {
             return Skill.of(skillType, creatureId, AbilityType.SWORD_SPIN, SimpleTimer.getExpiredTimer(), 4f, 30f, 0f);
+        }
+        if (skillType == SkillType.BOSS_SWORD_SPIN) {
+            return Skill.of(skillType, creatureId, AbilityType.BOSS_SWORD_SPIN, SimpleTimer.getExpiredTimer(), 4f, 30f, 0f);
         }
         if (skillType == SkillType.TELEPORT) {
             return Skill.of(skillType, creatureId, AbilityType.TELEPORT, SimpleTimer.getExpiredTimer(), 2f, 10f, 35f);
@@ -79,8 +82,9 @@ public class Skill {
         Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
         if (creature != null && creature.canPerformSkill(this, game) && performTimer.getTime() > cooldown &&
-            creature.getParams().getGeneralSkillPerformCooldownTimer().getTime() > 0.25f &&
+            (!skillType.getIsDamaging() || creature.getParams().getGeneralSkillPerformCooldownTimer().getTime() > 0.8f) &&
             !creature.isEffectActive(CreatureEffect.STUN, game)) {
+            creature.getParams().setEnemySkillUseReadyToPick(true);
 
             AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
             AbilityParams abilityParams = AbilityParams

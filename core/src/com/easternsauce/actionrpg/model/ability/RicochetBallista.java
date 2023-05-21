@@ -102,4 +102,9 @@ public class RicochetBallista extends Ability {
     protected boolean isWeaponAttack() {
         return false;
     }
+
+    @Override
+    public Float getStunDuration() {
+        return 0.2f;
+    }
 }

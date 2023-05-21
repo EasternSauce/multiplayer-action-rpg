@@ -80,4 +80,6 @@ public class AbilityParams implements EntityParams {
 
     SkillType skillType;
 
+    Boolean isHitShielded = false;
+
 }

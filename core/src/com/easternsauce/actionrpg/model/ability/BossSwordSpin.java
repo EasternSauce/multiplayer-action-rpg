@@ -1,42 +1,37 @@
 package com.easternsauce.actionrpg.model.ability;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.creature.Enemy;
-import com.easternsauce.actionrpg.model.creature.Player;
+import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @NoArgsConstructor(staticName = "of")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class SummonShield extends Ability {
+public class BossSwordSpin extends Ability {
 
     AbilityParams params;
 
-    public static SummonShield of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        float flipValue = abilityParams.getDirVector().angleDeg();
-
-        SummonShield ability = SummonShield.of();
+    public static BossSwordSpin of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+        BossSwordSpin ability = BossSwordSpin.of();
         ability.params = abilityParams
-            .setWidth(2f)
-            .setHeight(2f)
+            .setWidth(3.5f)
+            .setHeight(3.5f)
             .setChannelTime(0f)
             .setActiveTime(3f)
-            .setRange(1.2f)
-            .setTextureName("shield")
-            .setBaseDamage(0f)
+            .setRange(4f)
+            .setTextureName("sword")
+            .setBaseDamage(32f)
             .setIsChannelAnimationLooping(false)
             .setIsActiveAnimationLooping(false)
             .setRotationShift(0f)
-            .setIsFlip(SummonShield.calculateFlip(flipValue));
+            .setDirVector(abilityParams.getDirVector().withRotatedDegAngle(90));
         return ability;
-    }
-
-    private static Boolean calculateFlip(Float rotationAngle) {
-        return rotationAngle >= 90 && rotationAngle < 270;
     }
 
     @Override
@@ -103,13 +98,28 @@ public class SummonShield extends Ability {
     @Override
     public void onChannelUpdate(CoreGame game) {
         updatePosition(game);
-
     }
 
     @Override
     protected void onActiveUpdate(float delta, CoreGame game) {
         updatePosition(game);
 
+        getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(-10));
+
+        Set<CreatureId> creaturesHitRemove = new HashSet<>();
+
+        getParams().getCreaturesAlreadyHit().forEach((creatureId, time) -> {
+            if (time < getParams().getStateTimer().getTime() - 0.4f) {
+                creaturesHitRemove.add(creatureId);
+            }
+        });
+
+        creaturesHitRemove.forEach(creatureId -> getParams().getCreaturesAlreadyHit().remove(creatureId));
+    }
+
+    @Override
+    public Float getStunDuration() {
+        return 0.35f;
     }
 
     @Override
@@ -129,18 +139,7 @@ public class SummonShield extends Ability {
 
     @Override
     public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
-        Ability otherAbility = game.getGameState().accessAbilities().getAbility(otherAbilityId);
 
-        if (otherAbility != null) {
-            Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
-            Creature abilityOwner = game.getGameState().accessCreatures().getCreature(otherAbility.getParams().getCreatureId());
-
-            if ((creature instanceof Player && abilityOwner instanceof Enemy ||
-                 creature instanceof Enemy && abilityOwner instanceof Player) && otherAbility.isRanged()) {
-                otherAbility.getParams().setIsHitShielded(true);
-                otherAbility.deactivate();
-            }
-        }
     }
 
     @Override
@@ -154,7 +153,7 @@ public class SummonShield extends Ability {
     }
 
     @Override
-    public boolean isCanStun() {
+    public boolean isDamagingSkillAllowedDuring() {
         return false;
     }
 }

@@ -27,6 +27,8 @@ public enum SkillType {
 
     SWORD_SPIN("Sword Spin", true),
 
+    BOSS_SWORD_SPIN("Sword Spin (boss only)", true),
+
     TELEPORT("Teleport", false);
 
     @Getter

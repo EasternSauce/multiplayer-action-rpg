@@ -146,8 +146,10 @@ public class GameEntityManager {
                               .of(creatureId, areaId, enemySpawn)
                               .setBaseSpeed(7f)
                               .setAttackDistance(enemySpawn.getEnemyTemplate().getAttackDistance())
-                              .setMainAttackSkill(enemySpawn.getEnemyTemplate().getMainAttackSkill())
+                              .setMaxLife(enemySpawn.getEnemyTemplate().getMaxLife())
+                              .setLife(enemySpawn.getEnemyTemplate().getMaxLife())
                               .setDropTable(enemySpawn.getEnemyTemplate().getDropTable())
+                              .setEnemySkillUseEntries(enemySpawn.getEnemyTemplate().getEnemySkillUseEntries())
                               .setRespawnTime(120f)
                           // TODO: move it to enemy class?
                          ));
@@ -222,7 +224,7 @@ public class GameEntityManager {
         abilitiesToUpdate.forEach(abilityId -> {
             if (getGameEntityPhysics().getAbilityBodies().containsKey(abilityId)) {
                 Ability ability = game.getGameState().accessAbilities().getAbilities().get(abilityId);
-                if (!ability.isPositionChangedOnUpdate() && ability.bodyShouldExist() &&
+                if (ability != null && !ability.isPositionChangedOnUpdate() && ability.bodyShouldExist() &&
                     getGameEntityPhysics().getAbilityBodies().get(abilityId).getIsBodyInitialized()) {
                     ability.getParams().setPos(getGameEntityPhysics().getAbilityBodies().get(abilityId).getBodyPos());
                 }

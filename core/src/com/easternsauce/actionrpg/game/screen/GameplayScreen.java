@@ -94,7 +94,6 @@ public class GameplayScreen implements Screen {
         }
 
         if (game.getIsFirstBroadcastReceived() && !game.getIsAreaRenderersLoaded()) {
-            System.out.println("loading...");
             game.getEntityManager().getGameEntityRenderer().loadAreaRenderers(maps, game);
         }
     }
