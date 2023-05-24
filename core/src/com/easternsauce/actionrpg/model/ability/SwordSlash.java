@@ -1,6 +1,7 @@
 package com.easternsauce.actionrpg.model.ability;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -105,7 +106,7 @@ public class SwordSlash extends Ability {
     }
 
     @Override
-    public void onCreatureHit() {
+    public void onCreatureHit(CreatureId creatureId, CoreGame game) {
 
     }
 

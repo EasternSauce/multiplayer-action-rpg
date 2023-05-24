@@ -1,6 +1,9 @@
 package com.easternsauce.actionrpg.model.ability;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.creature.Creature;
+import com.easternsauce.actionrpg.model.creature.CreatureId;
+import com.easternsauce.actionrpg.model.creature.effect.CreatureEffect;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -56,7 +59,11 @@ public class CrossbowBolt extends Projectile {
     }
 
     @Override
-    public void onCreatureHit() {
+    public void onCreatureHit(CreatureId creatureId, CoreGame game) {
+        Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
+
+        creature.applyEffect(CreatureEffect.SLOW, 3f, game);
+
         deactivate();
     }
 

@@ -1,6 +1,7 @@
 package com.easternsauce.actionrpg.model.ability;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -45,7 +46,7 @@ public class SummonGhosts extends Ability {
         game
             .getGameState()
             .accessAbilities()
-            .chainAnotherAbility(this, AbilityType.PLAYFUL_GHOST, getParams().getPos(), params.getDirVector(), game);
+            .chainAnotherAbility(this, AbilityType.PLAYFUL_GHOST, getParams().getPos(), params.getDirVector(), null, null, game);
         game
             .getGameState()
             .accessAbilities()
@@ -53,6 +54,8 @@ public class SummonGhosts extends Ability {
                                  AbilityType.PLAYFUL_GHOST,
                                  getParams().getPos(),
                                  params.getDirVector().withSetDegAngle(baseAngle - 30f),
+                                 null,
+                                 null,
                                  game);
         game
             .getGameState()
@@ -61,6 +64,8 @@ public class SummonGhosts extends Ability {
                                  AbilityType.PLAYFUL_GHOST,
                                  getParams().getPos(),
                                  params.getDirVector().withSetDegAngle(baseAngle + 30f),
+                                 null,
+                                 null,
                                  game);
     }
 
@@ -75,7 +80,7 @@ public class SummonGhosts extends Ability {
     }
 
     @Override
-    public void onCreatureHit() {
+    public void onCreatureHit(CreatureId creatureId, CoreGame game) {
 
     }
 

@@ -2,6 +2,7 @@ package com.easternsauce.actionrpg.model.ability;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.creature.Creature;
+import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.skill.Skill;
 import com.easternsauce.actionrpg.model.util.MathHelper;
 import com.easternsauce.actionrpg.model.util.Vector2;
@@ -58,7 +59,7 @@ public class Boomerang extends Projectile {
     }
 
     @Override
-    public void onCreatureHit() {
+    public void onCreatureHit(CreatureId creatureId, CoreGame game) {
         getParams().setIsComingBack(true);
         getParams().setSpeed(20f);
     }

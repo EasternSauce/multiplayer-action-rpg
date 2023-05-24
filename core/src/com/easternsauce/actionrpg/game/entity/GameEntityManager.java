@@ -208,12 +208,11 @@ public class GameEntityManager {
     public void updateAbilities(float delta, CoreGame game) {
         Set<AbilityId> abilitiesToUpdate = game.getAbilitiesToUpdate();
 
-        abilitiesToUpdate.forEach(abilityId -> game
-            .getGameState()
-            .accessAbilities()
-            .getAbilities()
-            .get(abilityId)
-            .update(delta, game));
+        abilitiesToUpdate.forEach(abilityId -> {
+            if (game.getGameState().accessAbilities().getAbilities().containsKey(abilityId)) {
+                game.getGameState().accessAbilities().getAbilities().get(abilityId).update(delta, game);
+            }
+        });
 
         abilitiesToUpdate.forEach(abilityId -> {
             if (getGameEntityPhysics().getAbilityBodies().containsKey(abilityId)) {

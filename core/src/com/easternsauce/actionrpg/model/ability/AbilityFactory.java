@@ -52,6 +52,12 @@ public class AbilityFactory {
                 return TeleportSource::of;
             case TELEPORT_DESTINATION:
                 return TeleportDestination::of;
+            case POISONOUS_MIXTURE:
+                return PoisonousMixture::of;
+            case POISONOUS_CLOUD:
+                return PoisonousCloud::of;
+            case SPREADING_POISONOUS_CLOUD:
+                return SpreadingPoisonousCloud::of;
             default:
                 throw new RuntimeException("ability type not found: " + abilityType);
         }

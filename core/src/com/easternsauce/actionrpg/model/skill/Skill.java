@@ -75,6 +75,9 @@ public class Skill {
         if (skillType == SkillType.TELEPORT) {
             return Skill.of(skillType, creatureId, AbilityType.TELEPORT, SimpleTimer.getExpiredTimer(), 2f, 10f, 35f);
         }
+        if (skillType == SkillType.POISONOUS_MIXTURE) {
+            return Skill.of(skillType, creatureId, AbilityType.POISONOUS_MIXTURE, SimpleTimer.getExpiredTimer(), 2f, 10f, 35f);
+        }
         throw new RuntimeException("skill not handled");
     }
 

@@ -14,13 +14,13 @@ import java.util.concurrent.ConcurrentSkipListMap;
 @NoArgsConstructor(staticName = "of")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Fireball extends Projectile {
+public class PoisonousMixture extends Projectile {
     AbilityParams params;
 
-    public static Fireball of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+    public static PoisonousMixture of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(abilityParams.getCreatureId());
 
-        Fireball ability = Fireball.of();
+        PoisonousMixture ability = PoisonousMixture.of();
         ability.params = abilityParams
             .setWidth(1.5f)
             .setHeight(1.5f)
@@ -94,7 +94,7 @@ public class Fireball extends Projectile {
             .getGameState()
             .accessAbilities()
             .chainAnotherAbility(this,
-                                 AbilityType.FIREBALL_EXPLOSION,
+                                 AbilityType.SPREADING_POISONOUS_CLOUD,
                                  getParams().getPos(),
                                  params.getDirVector(),
                                  null,
@@ -107,6 +107,7 @@ public class Fireball extends Projectile {
 
     }
 
+    @SuppressWarnings("SpellCheckingInspection")
     @Override
     public Map<Integer, Float> levelScalings() {
         ConcurrentSkipListMap<Integer, Float> scalings = new ConcurrentSkipListMap<>();

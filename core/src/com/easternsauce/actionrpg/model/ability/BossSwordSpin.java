@@ -123,7 +123,7 @@ public class BossSwordSpin extends Ability {
     }
 
     @Override
-    public void onCreatureHit() {
+    public void onCreatureHit(CreatureId creatureId, CoreGame game) {
 
     }
 

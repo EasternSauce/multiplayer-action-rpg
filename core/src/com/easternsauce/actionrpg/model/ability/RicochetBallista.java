@@ -1,6 +1,7 @@
 package com.easternsauce.actionrpg.model.ability;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -52,15 +53,21 @@ public class RicochetBallista extends Ability {
         game
             .getGameState()
             .accessAbilities()
-            .chainAnotherAbility(this, AbilityType.RICOCHET_BULLET, getParams().getPos(), params.getDirVector(), game);
+            .chainAnotherAbility(this,
+                                 AbilityType.RICOCHET_BULLET,
+                                 getParams().getPos(),
+                                 params.getDirVector(),
+                                 null,
+                                 null,
+                                 game);
         game
             .getGameState()
             .accessAbilities()
-            .chainAnotherAbility(this, AbilityType.RICOCHET_BULLET, leftSidePos, params.getDirVector(), game);
+            .chainAnotherAbility(this, AbilityType.RICOCHET_BULLET, leftSidePos, params.getDirVector(), null, null, game);
         game
             .getGameState()
             .accessAbilities()
-            .chainAnotherAbility(this, AbilityType.RICOCHET_BULLET, rightSidePos, params.getDirVector(), game);
+            .chainAnotherAbility(this, AbilityType.RICOCHET_BULLET, rightSidePos, params.getDirVector(), null, null, game);
     }
 
     @Override
@@ -74,7 +81,7 @@ public class RicochetBallista extends Ability {
     }
 
     @Override
-    public void onCreatureHit() {
+    public void onCreatureHit(CreatureId creatureId, CoreGame game) {
 
     }
 

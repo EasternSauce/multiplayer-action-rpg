@@ -129,7 +129,10 @@ public class PhysicsHelper {
                 game
                     .getGameState()
                     .accessAbilities()
-                    .onAbilityHitsCreature(event.getSourceCreatureId(), event.getDestinationCreatureId(), ability);
+                    .onAbilityHitsCreature(event.getSourceCreatureId(),
+                                           event.getDestinationCreatureId(),
+                                           ability.getParams().getId(),
+                                           game);
             }
 
         }

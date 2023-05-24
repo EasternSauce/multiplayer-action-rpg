@@ -29,7 +29,9 @@ public enum SkillType {
 
     BOSS_SWORD_SPIN("Sword Spin (boss only)", true),
 
-    TELEPORT("Teleport", false);
+    TELEPORT("Teleport", false),
+
+    POISONOUS_MIXTURE("Poisonous Mixture", false);
 
     @Getter
     private String prettyName;

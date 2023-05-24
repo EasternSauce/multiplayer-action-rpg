@@ -85,7 +85,12 @@ public class AbilityRenderer {
         Ability ability = game.getGameState().accessAbilities().getAbilities().get(abilityId);
 
         sprite.setRegion(texture);
-        sprite.setSize(ability.getParams().getWidth(), ability.getParams().getHeight());
+        if (ability.getParams().getOverrideSize() != null) {
+            sprite.setSize(ability.getParams().getOverrideSize(), ability.getParams().getOverrideSize());
+        }
+        else {
+            sprite.setSize(ability.getParams().getWidth(), ability.getParams().getHeight());
+        }
         sprite.setCenter(ability.getParams().getPos().getX(), ability.getParams().getPos().getY());
         sprite.setOriginCenter();
         sprite.setRotation(ability.getParams().getRotationAngle() + ability.getParams().getRotationShift());

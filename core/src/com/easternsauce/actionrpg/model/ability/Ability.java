@@ -3,6 +3,7 @@ package com.easternsauce.actionrpg.model.ability;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.creature.Creature;
+import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.creature.Player;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.renderer.config.AbilityAnimationConfig;
@@ -46,7 +47,15 @@ public abstract class Ability implements Entity {
                 onDelayedAction(game);
             }
 
-            if (getParams().getStateTimer().getTime() > getParams().getActiveTime()) {
+            float activeDuration;
+            if (getParams().getOverrideDuration() != null) {
+                activeDuration = getParams().getOverrideDuration();
+            }
+            else {
+                activeDuration = getParams().getActiveTime();
+            }
+
+            if (getParams().getStateTimer().getTime() > activeDuration) {
                 getParams().setState(AbilityState.INACTIVE);
                 getParams().getStateTimer().restart();
                 onAbilityCompleted(game);
@@ -109,10 +118,19 @@ public abstract class Ability implements Entity {
 
     public void deactivate() {
         getParams().setState(AbilityState.ACTIVE);
-        getParams().getStateTimer().setTime(getParams().getActiveTime());
+
+        float activeDuration;
+        if (getParams().getOverrideDuration() != null) {
+            activeDuration = getParams().getOverrideDuration();
+        }
+        else {
+            activeDuration = getParams().getActiveTime();
+        }
+
+        getParams().getStateTimer().setTime(activeDuration + 1f);
     }
 
-    public abstract void onCreatureHit();
+    public abstract void onCreatureHit(CreatureId creatureId, CoreGame game);
 
     public abstract void onThisCreatureHit(CoreGame game);
 

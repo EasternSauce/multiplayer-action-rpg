@@ -13,6 +13,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@SuppressWarnings("SpellCheckingInspection")
 @NoArgsConstructor(staticName = "of")
 @Data
 public class AbilityBody {
@@ -37,7 +38,12 @@ public class AbilityBody {
     private float[] hitboxVertices(CoreGame game) {
         Ability ability = game.getGameState().accessAbilities().getAbility(abilityId);
 
-        sprite.setSize(ability.getParams().getWidth(), ability.getParams().getHeight());
+        if (ability.getParams().getOverrideSize() != null) {
+            sprite.setSize(ability.getParams().getOverrideSize(), ability.getParams().getOverrideSize());
+        }
+        else {
+            sprite.setSize(ability.getParams().getWidth(), ability.getParams().getHeight());
+        }
         sprite.setCenter(0, 0);
         sprite.setOriginCenter();
         sprite.setRotation(ability.getParams().getRotationAngle());

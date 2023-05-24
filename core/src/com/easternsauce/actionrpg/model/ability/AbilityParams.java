@@ -82,4 +82,7 @@ public class AbilityParams implements EntityParams {
 
     Boolean isHitShielded = false;
 
+    Float overrideSize = null;
+    Float overrideDuration = null;
+
 }

@@ -86,7 +86,7 @@ public class AbilityAccessor {
     }
 
     public void chainAnotherAbility(Ability chainFromAbility, AbilityType abilityType, Vector2 chainToPos, Vector2 dirVector,
-                                    CoreGame game) {
+                                    Float overrideSize, Float overrideDuration, CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(chainFromAbility.getParams().getCreatureId());
 
         if (creature.isAlive()) {
@@ -108,6 +108,8 @@ public class AbilityAccessor {
                 .setChainToPos(chainToPos)
                 .setDirVector(dirVector)
                 .setVectorTowardsTarget(dirVector)
+                .setOverrideSize(overrideSize)
+                .setOverrideDuration(overrideDuration)
                 .setSkillType(chainFromAbility.getParams().getSkillType());
 
             spawnAbility(abilityType, abilityParams, game);
@@ -120,8 +122,10 @@ public class AbilityAccessor {
     //        gameState.scheduleServerSideAction(action);
     //    }
 
-    public void onAbilityHitsCreature(CreatureId attackerId, CreatureId targetId, Ability ability) {
-        ability.onCreatureHit();
+    public void onAbilityHitsCreature(CreatureId attackerId, CreatureId targetId, AbilityId abilityId, CoreGame game) {
+        Ability ability = game.getGameState().accessAbilities().getAbility(abilityId);
+
+        ability.onCreatureHit(targetId, game);
 
         ability.getParams().getCreaturesAlreadyHit().put(targetId, ability.getParams().getStateTimer().getTime());
 

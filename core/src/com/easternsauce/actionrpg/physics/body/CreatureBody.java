@@ -5,6 +5,7 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
+import com.easternsauce.actionrpg.model.creature.effect.CreatureEffect;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.physics.world.PhysicsWorld;
 import lombok.Getter;
@@ -66,7 +67,14 @@ public class CreatureBody {
 
         float v = creature.getParams().getSpeed();
 
-        Vector2 normalMovingVector = creature.getParams().getMovingVector();
+        Vector2 normalMovingVector;
+
+        if (creature.isEffectActive(CreatureEffect.SLOW, game)) {
+            normalMovingVector = creature.getParams().getMovingVector().multiplyBy(0.5f);
+        }
+        else {
+            normalMovingVector = creature.getParams().getMovingVector();
+        }
 
         float vectorX = normalMovingVector.getX() * v;
         float vectorY = normalMovingVector.getY() * v;

@@ -1,6 +1,7 @@
 package com.easternsauce.actionrpg.model.ability;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -58,7 +59,7 @@ public class VolatileBubble extends Projectile {
         game
             .getGameState()
             .accessAbilities()
-            .chainAnotherAbility(this, AbilityType.ICE_SPEAR, getParams().getPos(), params.getDirVector(), game);
+            .chainAnotherAbility(this, AbilityType.ICE_SPEAR, getParams().getPos(), params.getDirVector(), null, null, game);
         game
             .getGameState()
             .accessAbilities()
@@ -66,6 +67,8 @@ public class VolatileBubble extends Projectile {
                                  AbilityType.ICE_SPEAR,
                                  getParams().getPos(),
                                  params.getDirVector().withSetDegAngle(baseAngle + 45f),
+                                 null,
+                                 null,
                                  game);
         game
             .getGameState()
@@ -74,6 +77,8 @@ public class VolatileBubble extends Projectile {
                                  AbilityType.ICE_SPEAR,
                                  getParams().getPos(),
                                  params.getDirVector().withSetDegAngle(baseAngle + 90f),
+                                 null,
+                                 null,
                                  game);
         game
             .getGameState()
@@ -82,6 +87,8 @@ public class VolatileBubble extends Projectile {
                                  AbilityType.ICE_SPEAR,
                                  getParams().getPos(),
                                  params.getDirVector().withSetDegAngle(baseAngle + 135f),
+                                 null,
+                                 null,
                                  game);
         game
             .getGameState()
@@ -90,6 +97,8 @@ public class VolatileBubble extends Projectile {
                                  AbilityType.ICE_SPEAR,
                                  getParams().getPos(),
                                  params.getDirVector().withSetDegAngle(baseAngle + 180f),
+                                 null,
+                                 null,
                                  game);
         game
             .getGameState()
@@ -98,6 +107,8 @@ public class VolatileBubble extends Projectile {
                                  AbilityType.ICE_SPEAR,
                                  getParams().getPos(),
                                  params.getDirVector().withSetDegAngle(baseAngle + 225f),
+                                 null,
+                                 null,
                                  game);
         game
             .getGameState()
@@ -106,6 +117,8 @@ public class VolatileBubble extends Projectile {
                                  AbilityType.ICE_SPEAR,
                                  getParams().getPos(),
                                  params.getDirVector().withSetDegAngle(baseAngle + 270f),
+                                 null,
+                                 null,
                                  game);
         game
             .getGameState()
@@ -114,11 +127,13 @@ public class VolatileBubble extends Projectile {
                                  AbilityType.ICE_SPEAR,
                                  getParams().getPos(),
                                  params.getDirVector().withSetDegAngle(baseAngle + 315f),
+                                 null,
+                                 null,
                                  game);
     }
 
     @Override
-    public void onCreatureHit() {
+    public void onCreatureHit(CreatureId creatureId, CoreGame game) {
         deactivate();
     }
 

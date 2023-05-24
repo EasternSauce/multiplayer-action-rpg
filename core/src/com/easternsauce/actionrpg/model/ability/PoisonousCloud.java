@@ -1,7 +1,6 @@
 package com.easternsauce.actionrpg.model.ability;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Data;
@@ -11,14 +10,22 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class CrossbowShot extends Ability {
+public class PoisonousCloud extends Ability {
     AbilityParams params;
 
-    int currentBoltToFire = 0;
-
-    public static CrossbowShot of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        CrossbowShot ability = CrossbowShot.of();
-        ability.params = abilityParams.setChannelTime(0f).setActiveTime(2f);
+    public static PoisonousCloud of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+        PoisonousCloud ability = PoisonousCloud.of();
+        ability.params = abilityParams
+            .setWidth(9f)
+            .setHeight(9f)
+            .setChannelTime(0f)
+            .setActiveTime(5f)
+            .setTextureName("explosion")
+            .setBaseDamage(30f)
+            .setIsChannelAnimationLooping(false)
+            .setIsActiveAnimationLooping(true)
+            .setAttackWithoutMoving(true)
+            .setRotationShift(0f);
 
         return ability;
     }
@@ -55,29 +62,7 @@ public class CrossbowShot extends Ability {
 
     @Override
     protected void onActiveUpdate(float delta, CoreGame game) {
-        float[] boltFireTimes = {
-            0f,
-            0.4f,
-            1f,
-            1.2f,
-            1.4f};
 
-        Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
-
-        if (creature != null && currentBoltToFire < boltFireTimes.length &&
-            getParams().getStateTimer().getTime() > boltFireTimes[currentBoltToFire]) {
-
-            game
-                .getGameState()
-                .accessAbilities()
-                .chainAnotherAbility(this, AbilityType.CROSSBOW_BOLT, null, getParams().getDirVector(), null, null, game);
-
-            currentBoltToFire += 1;
-        }
-
-        if (currentBoltToFire >= boltFireTimes.length) {
-            deactivate();
-        }
     }
 
     @Override
@@ -101,12 +86,7 @@ public class CrossbowShot extends Ability {
     }
 
     @Override
-    public boolean usesEntityModel() {
-        return false;
-    }
-
-    @Override
     protected boolean isWeaponAttack() {
-        return true;
+        return false;
     }
 }

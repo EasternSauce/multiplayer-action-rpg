@@ -11,14 +11,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class CrossbowShot extends Ability {
+public class SpreadingPoisonousCloud extends Ability {
     AbilityParams params;
 
-    int currentBoltToFire = 0;
+    int currentCloud = 0;
 
-    public static CrossbowShot of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        CrossbowShot ability = CrossbowShot.of();
-        ability.params = abilityParams.setChannelTime(0f).setActiveTime(2f);
+    public static SpreadingPoisonousCloud of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+        SpreadingPoisonousCloud ability = SpreadingPoisonousCloud.of();
+        ability.params = abilityParams.setChannelTime(0f).setActiveTime(10f);
 
         return ability;
     }
@@ -55,27 +55,62 @@ public class CrossbowShot extends Ability {
 
     @Override
     protected void onActiveUpdate(float delta, CoreGame game) {
-        float[] boltFireTimes = {
+        float[] cloudSpreadTimes = {
             0f,
+            0.2f,
             0.4f,
-            1f,
+            0.6f,
+            0.8f,
             1.2f,
-            1.4f};
+            1.6f,
+            2.0f,
+            2.4f,
+            2.8f};
+
+        float[] cloudRadiuses = {
+            1f,
+            2f,
+            3f,
+            4f,
+            5f,
+            6f,
+            7f,
+            8f,
+            9f,
+            10f};
+
+        float[] cloudDurations = {
+            0.2f,
+            0.2f,
+            0.2f,
+            0.2f,
+            0.4f,
+            0.4f,
+            0.4f,
+            0.4f,
+            0.4f,
+            3f};
 
         Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
 
-        if (creature != null && currentBoltToFire < boltFireTimes.length &&
-            getParams().getStateTimer().getTime() > boltFireTimes[currentBoltToFire]) {
+        if (creature != null && currentCloud < cloudSpreadTimes.length &&
+            getParams().getStateTimer().getTime() > cloudSpreadTimes[currentCloud]) {
 
             game
                 .getGameState()
                 .accessAbilities()
-                .chainAnotherAbility(this, AbilityType.CROSSBOW_BOLT, null, getParams().getDirVector(), null, null, game);
+                .chainAnotherAbility(this,
+                                     AbilityType.POISONOUS_CLOUD,
+                                     getParams().getPos(),
+                                     getParams().getDirVector(),
+                                     cloudRadiuses[currentCloud],
+                                     cloudDurations[currentCloud],
+                                     game);
 
-            currentBoltToFire += 1;
+            currentCloud += 1;
         }
 
-        if (currentBoltToFire >= boltFireTimes.length) {
+        if (currentCloud >= cloudSpreadTimes.length) {
             deactivate();
         }
     }

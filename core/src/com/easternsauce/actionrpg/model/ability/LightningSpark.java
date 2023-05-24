@@ -94,7 +94,7 @@ public class LightningSpark extends Ability {
             game
                 .getGameState()
                 .accessAbilities()
-                .onAbilityHitsCreature(getParams().getCreatureId(), targetCreature.getId(), this);
+                .onAbilityHitsCreature(getParams().getCreatureId(), targetCreature.getId(), getParams().getId(), game);
 
             getParams().getCreaturesAlreadyHit().put(targetCreature.getId(), getParams().getStateTimer().getTime());
 
@@ -103,7 +103,7 @@ public class LightningSpark extends Ability {
                 .accessAbilities()
                 .chainAnotherAbility(this, AbilityType.LIGHTNING_CHAIN, targetCreature.getParams().getPos(),
                                      // this pos is later changed, TODO: move it to other param?
-                                     params.getDirVector(), game);
+                                     params.getDirVector(), null, null, game);
 
             game
                 .getGameState()
@@ -112,6 +112,8 @@ public class LightningSpark extends Ability {
                                      AbilityType.LIGHTNING_NODE,
                                      targetCreature.getParams().getPos(),
                                      params.getDirVector(),
+                                     null,
+                                     null,
                                      game);
         }
     }
@@ -132,7 +134,7 @@ public class LightningSpark extends Ability {
     }
 
     @Override
-    public void onCreatureHit() {
+    public void onCreatureHit(CreatureId creatureId, CoreGame game) {
 
     }
 
