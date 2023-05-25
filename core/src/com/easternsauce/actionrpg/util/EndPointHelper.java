@@ -71,6 +71,7 @@ public class EndPointHelper {
         endPoint.getKryo().register(Ability.class);
         endPoint.getKryo().register(SummonGhosts.class);
         endPoint.getKryo().register(SwordSlash.class);
+        endPoint.getKryo().register(MobSwordSlash.class);
         endPoint.getKryo().register(CrossbowBolt.class);
         endPoint.getKryo().register(Fireball.class);
         endPoint.getKryo().register(FireballExplosion.class);
@@ -84,7 +85,7 @@ public class EndPointHelper {
         endPoint.getKryo().register(RicochetBullet.class);
         endPoint.getKryo().register(RicochetBallista.class);
         endPoint.getKryo().register(Boomerang.class);
-        endPoint.getKryo().register(SummonShield.class);
+        endPoint.getKryo().register(ShieldGuard.class);
         endPoint.getKryo().register(SwordSpin.class);
         endPoint.getKryo().register(BossSwordSpin.class);
         endPoint.getKryo().register(TeleportSource.class);

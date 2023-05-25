@@ -52,6 +52,7 @@ public class LootPileSpawnAction extends GameStateAction {
                 .setTemplate(item.getTemplate())
                 .setQuantity(item.getQuantity())
                 .setQualityModifier(item.getQualityModifier())
+                .setGrantedSkills(item.getGrantedSkills())
                 .setLootPileId(lootPileId))
             .collect(Collectors.toCollection(ConcurrentSkipListSet::new));
 

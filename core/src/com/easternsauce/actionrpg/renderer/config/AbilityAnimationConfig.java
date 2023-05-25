@@ -48,6 +48,8 @@ public class AbilityAnimationConfig {
         configs.put("green_potion_throw",
                     AbilityAnimationConfig.of(16, 16, "green_potion_throw", "green_potion_throw", 0, 12, 0f, 0.05f, 1f));
 
+        configs.put("warp", AbilityAnimationConfig.of(76, 53, "warp", "warp", 0, 16, 0f, 0.04f, 1f));
+
     }
 
     Integer textureWidth;

@@ -3,6 +3,7 @@ package com.easternsauce.actionrpg.model.ability;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
+import com.easternsauce.actionrpg.model.creature.effect.CreatureEffect;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,14 +23,14 @@ public class TeleportSource extends Ability {
             .setWidth(4.5f)
             .setHeight(4.5f)
             .setChannelTime(0f)
-            .setActiveTime(0.5f)
-            .setTextureName("blast")
+            .setActiveTime(3f)
+            .setTextureName("warp")
             .setBaseDamage(0f)
             .setIsChannelAnimationLooping(false)
             .setIsActiveAnimationLooping(false)
             .setRotationShift(0f)
             .setPos(creature.getParams().getPos())
-            .setDelayedActionTime(0.1f);
+            .setDelayedActionTime(0.3f);
 
         return ability;
     }
@@ -46,7 +47,9 @@ public class TeleportSource extends Ability {
 
     @Override
     public void onAbilityStarted(CoreGame game) {
-
+        Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
+        creature.applyEffect(CreatureEffect.SELF_STUN, 0.5f, game);
+        creature.stopMoving();
     }
 
     @Override

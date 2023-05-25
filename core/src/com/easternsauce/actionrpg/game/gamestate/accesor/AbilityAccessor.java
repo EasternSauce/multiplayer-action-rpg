@@ -58,7 +58,7 @@ public class AbilityAccessor {
     public Set<AbilityId> getAbilitiesWithinRange(Creature player) {
         return getAbilities().keySet().stream().filter(abilityId -> {
             Ability ability = getAbilities().get(abilityId);
-            if (ability != null) {
+            if (ability != null && ability.getParams().getPos() != null) {
                 return ability.getParams().getPos().distance(player.getParams().getPos()) < Constants.CLIENT_GAME_UPDATE_RANGE;
             }
             return false;
@@ -89,7 +89,7 @@ public class AbilityAccessor {
                                     Float overrideSize, Float overrideDuration, CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(chainFromAbility.getParams().getCreatureId());
 
-        if (creature.isAlive()) {
+        if (creature != null && creature.isAlive()) {
             AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
 
             Map<CreatureId, Float> creaturesAlreadyHit = new ConcurrentSkipListMap<>(chainFromAbility

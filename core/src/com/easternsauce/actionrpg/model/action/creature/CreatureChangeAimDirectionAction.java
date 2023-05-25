@@ -5,7 +5,6 @@ import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
-import com.easternsauce.actionrpg.model.creature.effect.CreatureEffect;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -28,7 +27,7 @@ public class CreatureChangeAimDirectionAction extends GameStateAction {
     public void applyToGame(CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
-        if (creature != null && creature.isAlive() && !creature.isEffectActive(CreatureEffect.STUN, game)) {
+        if (creature != null && creature.isAlive() && !creature.isStunned(game)) {
             creature.getParams().setAimDirection(mousePos.normalized());
 
             creature.getParams().getChangeAimDirectionActionsPerSecondLimiterTimer().restart();

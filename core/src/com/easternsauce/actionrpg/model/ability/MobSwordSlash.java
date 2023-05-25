@@ -1,38 +1,32 @@
 package com.easternsauce.actionrpg.model.ability;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
-import com.easternsauce.actionrpg.model.creature.effect.CreatureEffect;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @NoArgsConstructor(staticName = "of")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class SwordSpin extends Ability {
+public class MobSwordSlash extends Ability {
 
     AbilityParams params;
 
-    public static SwordSpin of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        SwordSpin ability = SwordSpin.of();
+    public static MobSwordSlash of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+        MobSwordSlash ability = MobSwordSlash.of();
         ability.params = abilityParams
-            .setWidth(2.8f)
-            .setHeight(2.8f)
-            .setChannelTime(0f)
-            .setActiveTime(3f)
-            .setRange(2f)
-            .setTextureName("sword")
-            .setBaseDamage(10f)
+            .setWidth(2f)
+            .setHeight(2f)
+            .setChannelTime(0.15f)
+            .setActiveTime(0.3f)
+            .setRange(1.8f)
+            .setTextureName("slash")
+            .setBaseDamage(65f)
             .setIsChannelAnimationLooping(false)
             .setIsActiveAnimationLooping(false)
-            .setRotationShift(0f)
-            .setDirVector(abilityParams.getDirVector().withRotatedDegAngle(90));
+            .setRotationShift(0f);
         return ability;
     }
 
@@ -95,36 +89,20 @@ public class SwordSpin extends Ability {
             getParams().setPos(Vector2.of(attackRectX, attackRectY));
             getParams().setRotationAngle(theta);
         }
+
     }
 
     @Override
     public void onChannelUpdate(CoreGame game) {
         updatePosition(game);
+
     }
 
     @Override
     protected void onActiveUpdate(float delta, CoreGame game) {
+
         updatePosition(game);
 
-        getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(-10));
-
-        Set<CreatureId> creaturesHitRemove = new HashSet<>();
-
-        getParams().getCreaturesAlreadyHit().forEach((creatureId, time) -> {
-            if (time < getParams().getStateTimer().getTime() - 0.4f) {
-                creaturesHitRemove.add(creatureId);
-            }
-        });
-
-        creaturesHitRemove.forEach(creatureId -> getParams().getCreaturesAlreadyHit().remove(creatureId));
-
-        Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
-        creature.applyEffect(CreatureEffect.SELF_SLOW, 0.1f, game);
-    }
-
-    @Override
-    public Float getStunDuration() {
-        return 0.05f;
     }
 
     @Override
@@ -148,17 +126,17 @@ public class SwordSpin extends Ability {
     }
 
     @Override
+    public Float getStunDuration() {
+        return 1f;
+    }
+
+    @Override
     protected boolean isWeaponAttack() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCanBeDeactivated() {
         return true;
-    }
-
-    @Override
-    public boolean isDamagingSkillAllowedDuring() {
-        return false;
     }
 }

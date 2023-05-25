@@ -57,7 +57,7 @@ public class DropTableEntry implements Comparable<DropTableEntry> {
                                                                       1f,
                                                                       magicGrantedSkillDrops);
 
-    public static DropTableEntry specialLeatherArmorDrop = DropTableEntry.of(0.04f,
+    public static DropTableEntry specialLeatherArmorDrop = DropTableEntry.of(1f,
                                                                              ItemTemplate.templates.get("leatherArmor"),
                                                                              1f,
                                                                              specialMagicGrantedSkillDrops);
@@ -66,7 +66,7 @@ public class DropTableEntry implements Comparable<DropTableEntry> {
                                                                     0f,
                                                                     new ConcurrentSkipListMap<>());
 
-    public static DropTableEntry specialHideGlovesDrop = DropTableEntry.of(0.04f,
+    public static DropTableEntry specialHideGlovesDrop = DropTableEntry.of(1f,
                                                                            ItemTemplate.templates.get("hideGloves"),
                                                                            1f,
                                                                            rangedGrantedSkillDrops);
@@ -76,7 +76,7 @@ public class DropTableEntry implements Comparable<DropTableEntry> {
                                                                          0f,
                                                                          new ConcurrentSkipListMap<>());
 
-    public static DropTableEntry specialRingmailGreavesDrop = DropTableEntry.of(0.03f,
+    public static DropTableEntry specialRingmailGreavesDrop = DropTableEntry.of(1f,
                                                                                 ItemTemplate.templates.get("ringmailGreaves"),
                                                                                 1f,
                                                                                 movementGrantedSkillDrops);
@@ -86,17 +86,17 @@ public class DropTableEntry implements Comparable<DropTableEntry> {
                                                                    0f,
                                                                    new ConcurrentSkipListMap<>());
 
-    public static DropTableEntry specialIronSwordDrop = DropTableEntry.of(0.04f,
+    public static DropTableEntry specialIronSwordDrop = DropTableEntry.of(1f,
                                                                           ItemTemplate.templates.get("ironSword"),
                                                                           1f,
                                                                           ironSwordGrantedSkillDrops);
 
-    public static DropTableEntry boomerangDrop = DropTableEntry.of(0.04f,
+    public static DropTableEntry boomerangDrop = DropTableEntry.of(1f,
                                                                    ItemTemplate.templates.get("boomerang"),
                                                                    0f,
                                                                    new ConcurrentSkipListMap<>());
 
-    public static DropTableEntry shieldDrop = DropTableEntry.of(0.04f,
+    public static DropTableEntry shieldDrop = DropTableEntry.of(1f,
                                                                 ItemTemplate.templates.get("woodenShield"),
                                                                 1f,
                                                                 shieldGrantedSkillDrops);

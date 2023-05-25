@@ -8,8 +8,10 @@ public class AbilityFactory {
 
     public static BiFunction<AbilityParams, CoreGame, Ability> getAbilityByType(AbilityType abilityType) {
         switch (abilityType) {
-            case SLASH:
+            case SWORD_SLASH:
                 return SwordSlash::of;
+            case MOB_SWORD_SLASH:
+                return MobSwordSlash::of;
             case FIREBALL:
                 return Fireball::of;
             case FIREBALL_EXPLOSION:
@@ -42,8 +44,8 @@ public class AbilityFactory {
                 return RicochetBullet::of;
             case BOOMERANG:
                 return Boomerang::of;
-            case SUMMON_SHIELD:
-                return SummonShield::of;
+            case SHIELD_GUARD:
+                return ShieldGuard::of;
             case SWORD_SPIN:
                 return SwordSpin::of;
             case BOSS_SWORD_SPIN:

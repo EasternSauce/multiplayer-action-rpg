@@ -35,9 +35,7 @@ public class AbilityBody {
         return abilityBody;
     }
 
-    private float[] hitboxVertices(CoreGame game) {
-        Ability ability = game.getGameState().accessAbilities().getAbility(abilityId);
-
+    private float[] hitboxVertices(Ability ability) {
         if (ability.getParams().getOverrideSize() != null) {
             sprite.setSize(ability.getParams().getOverrideSize(), ability.getParams().getOverrideSize());
         }
@@ -84,7 +82,7 @@ public class AbilityBody {
 
             creatureId = ability.getParams().getCreatureId();
 
-            b2body = B2BodyFactory.createAbilityB2Body(world, this, ability.getParams().getPos(), hitboxVertices(game));
+            b2body = B2BodyFactory.createAbilityB2Body(world, this, ability.getParams().getPos(), hitboxVertices(ability));
 
             isBodyInitialized = true;
         }

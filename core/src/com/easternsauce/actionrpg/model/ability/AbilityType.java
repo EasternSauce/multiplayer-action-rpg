@@ -4,7 +4,8 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 public enum AbilityType {
-    SLASH,
+    SWORD_SLASH,
+    MOB_SWORD_SLASH,
     FIREBALL,
     FIREBALL_EXPLOSION,
     LIGHTNING_SPARK,
@@ -31,7 +32,7 @@ public enum AbilityType {
 
     BOOMERANG,
 
-    SUMMON_SHIELD,
+    SHIELD_GUARD,
 
     SWORD_SPIN,
 

@@ -20,6 +20,7 @@ import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.creature.EnemySpawn;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.item.ItemTemplate;
+import com.easternsauce.actionrpg.model.skill.SkillType;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.physics.world.PhysicsWorld;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
@@ -32,6 +33,7 @@ import lombok.Setter;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.stream.Collectors;
 
@@ -202,13 +204,19 @@ public class CoreGameServer extends CoreGame {
     public void initState() {
         AreaId areaId = AreaId.of("area1");
 
-        Item leatherArmor = Item.of().setTemplate(ItemTemplate.templates.get("leatherArmor")).setQualityModifier(0.9f);
-        Item boomerang = Item.of().setTemplate(ItemTemplate.templates.get("crossbow")).setQualityModifier(0.8f);
+        Map<SkillType, Integer> grantedSkills = new ConcurrentSkipListMap<>();
+        grantedSkills.put(SkillType.TELEPORT, 1);
+        Item leatherArmor = Item
+            .of()
+            .setTemplate(ItemTemplate.templates.get("leatherArmor"))
+            .setQualityModifier(0.9f)
+            .setGrantedSkills(grantedSkills);
+        Item crossbow = Item.of().setTemplate(ItemTemplate.templates.get("crossbow")).setQualityModifier(0.8f);
 
         gameState.scheduleServerSideAction(LootPileSpawnAction.of(AreaId.of("area3"),
                                                                   Vector2.of(12, 12),
                                                                   new ConcurrentSkipListSet<>(Arrays.asList(leatherArmor,
-                                                                                                            boomerang))));
+                                                                                                            crossbow))));
 
         //        gameState.scheduleServerSideAction(LootPileSpawnAction.of(areaId,
         //                Vector2.of(13.5f, 12),

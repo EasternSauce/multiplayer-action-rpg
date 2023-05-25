@@ -354,4 +354,8 @@ public abstract class Creature implements Entity {
     public Item getCurrentWeapon() {
         return getParams().getEquipmentItems().get(EquipmentSlotType.PRIMARY_WEAPON.getSequenceNumber());
     }
+
+    public boolean isStunned(CoreGame game) {
+        return isEffectActive(CreatureEffect.STUN, game) || isEffectActive(CreatureEffect.SELF_STUN, game);
+    }
 }

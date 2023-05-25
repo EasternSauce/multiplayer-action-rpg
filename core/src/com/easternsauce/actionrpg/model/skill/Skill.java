@@ -6,7 +6,6 @@ import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import com.easternsauce.actionrpg.model.ability.AbilityType;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
-import com.easternsauce.actionrpg.model.creature.effect.CreatureEffect;
 import com.easternsauce.actionrpg.model.util.SimpleTimer;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.AllArgsConstructor;
@@ -28,7 +27,10 @@ public class Skill {
 
     public static Skill of(SkillType skillType, CreatureId creatureId) {
         if (skillType == SkillType.SWORD_SLASH) {
-            return Skill.of(skillType, creatureId, AbilityType.SLASH, SimpleTimer.getExpiredTimer(), 0.6f, 20f, 0f);
+            return Skill.of(skillType, creatureId, AbilityType.SWORD_SLASH, SimpleTimer.getExpiredTimer(), 0.6f, 20f, 0f);
+        }
+        if (skillType == SkillType.MOB_SWORD_SLASH) {
+            return Skill.of(skillType, creatureId, AbilityType.MOB_SWORD_SLASH, SimpleTimer.getExpiredTimer(), 0.6f, 20f, 0f);
         }
         if (skillType == SkillType.FIREBALL) {
             return Skill.of(skillType, creatureId, AbilityType.FIREBALL, SimpleTimer.getExpiredTimer(), 1f, 30f, 20f);
@@ -64,7 +66,7 @@ public class Skill {
         }
 
         if (skillType == SkillType.SUMMON_SHIELD) {
-            return Skill.of(skillType, creatureId, AbilityType.SUMMON_SHIELD, SimpleTimer.getExpiredTimer(), 6f, 25f, 0f);
+            return Skill.of(skillType, creatureId, AbilityType.SHIELD_GUARD, SimpleTimer.getExpiredTimer(), 6f, 25f, 0f);
         }
         if (skillType == SkillType.SWORD_SPIN) {
             return Skill.of(skillType, creatureId, AbilityType.SWORD_SPIN, SimpleTimer.getExpiredTimer(), 4f, 30f, 0f);
@@ -86,7 +88,7 @@ public class Skill {
 
         if (creature != null && creature.canPerformSkill(this, game) && performTimer.getTime() > cooldown &&
             (!skillType.getIsDamaging() || creature.getParams().getGeneralSkillPerformCooldownTimer().getTime() > 0.8f) &&
-            !creature.isEffectActive(CreatureEffect.STUN, game)) {
+            !creature.isStunned(game)) {
             creature.getParams().setEnemySkillUseReadyToPick(true);
 
             AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));

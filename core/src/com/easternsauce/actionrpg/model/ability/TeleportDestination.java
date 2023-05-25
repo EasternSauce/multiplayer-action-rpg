@@ -4,6 +4,7 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
+import com.easternsauce.actionrpg.model.creature.effect.CreatureEffect;
 import com.easternsauce.actionrpg.model.util.TeleportEvent;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Data;
@@ -29,8 +30,8 @@ public class TeleportDestination extends Ability {
             .setWidth(4.5f)
             .setHeight(4.5f)
             .setChannelTime(0f)
-            .setActiveTime(0.5f)
-            .setTextureName("blast")
+            .setActiveTime(3f)
+            .setTextureName("warp")
             .setBaseDamage(0f)
             .setIsChannelAnimationLooping(false)
             .setIsActiveAnimationLooping(false)
@@ -44,7 +45,7 @@ public class TeleportDestination extends Ability {
     private static Vector2 calculatePos(Vector2 pos, Vector2 creaturePos, AreaId areaId, CoreGame game) {
         Vector2 vectorTowards = creaturePos.vectorTowards(pos);
 
-        float maxRange = 14f;
+        float maxRange = 17f;
         Vector2 destinationPos;
         if (vectorTowards.len() > maxRange) {
             destinationPos = creaturePos.add(vectorTowards.normalized().multiplyBy(maxRange));
@@ -72,6 +73,8 @@ public class TeleportDestination extends Ability {
 
     @Override
     public void onAbilityStarted(CoreGame game) {
+        Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
+        creature.applyEffect(CreatureEffect.SELF_STUN, 0.3f, game);
         game.addTeleportEvent(TeleportEvent.of(getParams().getCreatureId(),
                                                getParams().getPos(),
                                                getParams().getAreaId(),

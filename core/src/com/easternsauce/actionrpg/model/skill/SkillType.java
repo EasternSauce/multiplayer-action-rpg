@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public enum SkillType {
     SWORD_SLASH("Sword Slash", true),
+    MOB_SWORD_SLASH("Sword Slash (mob only)", true),
     FIREBALL("Fireball", true),
     LIGHTNING("Lightning", true),
     CROSSBOW_SHOT("Crossbow Shot", true),
@@ -23,7 +24,7 @@ public enum SkillType {
 
     BOOMERANG("Boomerang", true),
 
-    SUMMON_SHIELD("Summon Shield", false),
+    SUMMON_SHIELD("Shield Guard", false),
 
     SWORD_SPIN("Sword Spin", true),
 

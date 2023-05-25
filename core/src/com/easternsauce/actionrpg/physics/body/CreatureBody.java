@@ -69,7 +69,7 @@ public class CreatureBody {
 
         Vector2 normalMovingVector;
 
-        if (creature.isEffectActive(CreatureEffect.SLOW, game)) {
+        if (creature.isEffectActive(CreatureEffect.SLOW, game) || creature.isEffectActive(CreatureEffect.SELF_SLOW, game)) {
             normalMovingVector = creature.getParams().getMovingVector().multiplyBy(0.5f);
         }
         else {

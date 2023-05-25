@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
-import com.easternsauce.actionrpg.model.creature.effect.CreatureEffect;
 import com.easternsauce.actionrpg.model.util.WorldDirection;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
 import com.easternsauce.actionrpg.renderer.config.CreatureAnimationConfig;
@@ -50,7 +49,7 @@ public class CreatureSprite {
 
     public void updateForAliveCreature(CoreGame game, Creature creature) {
         TextureRegion texture;
-        if (!creature.getParams().getIsMoving() || creature.isEffectActive(CreatureEffect.STUN, game)) {
+        if (!creature.getParams().getIsMoving() || creature.isStunned(game)) {
             texture = getFacingTexture(creature, creature.facingDirection(game));
         }
         else {

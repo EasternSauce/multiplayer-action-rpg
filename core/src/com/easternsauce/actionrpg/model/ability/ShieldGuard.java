@@ -13,14 +13,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class SummonShield extends Ability {
+public class ShieldGuard extends Ability {
 
     AbilityParams params;
 
-    public static SummonShield of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+    public static ShieldGuard of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         float flipValue = abilityParams.getDirVector().angleDeg();
 
-        SummonShield ability = SummonShield.of();
+        ShieldGuard ability = ShieldGuard.of();
         ability.params = abilityParams
             .setWidth(2f)
             .setHeight(2f)
@@ -32,7 +32,7 @@ public class SummonShield extends Ability {
             .setIsChannelAnimationLooping(false)
             .setIsActiveAnimationLooping(false)
             .setRotationShift(0f)
-            .setIsFlip(SummonShield.calculateFlip(flipValue));
+            .setIsFlip(ShieldGuard.calculateFlip(flipValue));
         return ability;
     }
 
@@ -139,7 +139,18 @@ public class SummonShield extends Ability {
             if ((creature instanceof Player && abilityOwner instanceof Enemy ||
                  creature instanceof Enemy && abilityOwner instanceof Player) && otherAbility.isRanged()) {
                 otherAbility.getParams().setIsHitShielded(true);
-                otherAbility.deactivate();
+
+                if (otherAbility instanceof RicochetBullet) {
+                    otherAbility.onTerrainHit(otherAbility.getParams().getPos(), getParams().getPos());
+
+                }
+                else if (otherAbility instanceof Boomerang) {
+                    otherAbility.onCreatureHit(getParams().getCreatureId(), game);
+                }
+                else {
+                    otherAbility.deactivate();
+                }
+
             }
         }
     }
