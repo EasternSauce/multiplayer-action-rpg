@@ -149,7 +149,7 @@ public class GameEntityManager {
                               .setMaxLife(enemySpawn.getEnemyTemplate().getMaxLife())
                               .setLife(enemySpawn.getEnemyTemplate().getMaxLife())
                               .setDropTable(enemySpawn.getEnemyTemplate().getDropTable())
-                              .setEnemySkillUseEntries(enemySpawn.getEnemyTemplate().getEnemySkillUseEntries())
+                              .setEnemySkillUses(enemySpawn.getEnemyTemplate().getEnemySkillUseEntries())
                               .setRespawnTime(120f)
                           // TODO: move it to enemy class?
                          ));

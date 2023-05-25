@@ -26,8 +26,8 @@ public class PoisonousMixture extends Projectile {
             .setHeight(1.5f)
             .setChannelTime(0f)
             .setActiveTime(30f)
-            .setTextureName("fireball")
-            .setBaseDamage(20f)
+            .setTextureName("green_potion_throw")
+            .setBaseDamage(0f)
             .setIsChannelAnimationLooping(false)
             .setIsActiveAnimationLooping(true)
             .setRotationShift(0f)
@@ -60,11 +60,15 @@ public class PoisonousMixture extends Projectile {
         }
         getParams().setRotationAngle(getParams().getDirVector().angleDeg());
 
-        if (getParams().getStateTimer().getTime() < 2f) {
-            getParams().setSpeed(5f + (getParams().getStateTimer().getTime() / 2f) * 40f);
+        if (getParams().getStateTimer().getTime() < 1.5f) {
+            getParams().setSpeed(2f + (getParams().getStateTimer().getTime() / 2f) * 28f);
         }
         else {
-            getParams().setSpeed(45f);
+            getParams().setSpeed(30f);
+        }
+
+        if (getParams().getPos().distance(getParams().getSkillStartPos()) > 13f) {
+            deactivate();
         }
     }
 
@@ -120,5 +124,10 @@ public class PoisonousMixture extends Projectile {
     @Override
     protected boolean isWeaponAttack() {
         return false;
+    }
+
+    @Override
+    public Float getStunDuration() {
+        return 0f;
     }
 }

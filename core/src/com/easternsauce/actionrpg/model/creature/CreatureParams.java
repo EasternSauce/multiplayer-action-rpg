@@ -109,7 +109,7 @@ public class CreatureParams implements EntityParams {
 
     private Float attackDistance = 3f;
 
-    private Set<EnemySkillUseEntry> enemySkillUseEntries;
+    private Set<EnemySkillUseEntry> enemySkillUses;
 
     private Set<DropTableEntry> dropTable;
 
@@ -139,6 +139,12 @@ public class CreatureParams implements EntityParams {
     private SkillType enemySkillUsePickedSkillType = null;
 
     private SimpleTimer enemyAttackCooldownTimer = SimpleTimer.getExpiredTimer();
+
+    private SimpleTimer damageOverTimeTimer = SimpleTimer.getExpiredTimer();
+
+    private Float currentDamageOverTime = 0f;
+
+    private CreatureId currentDamageOverTimeDealerCreatureId = null;
 
     public static CreatureParams of(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn) {
         return getCreatureParams(creatureId,

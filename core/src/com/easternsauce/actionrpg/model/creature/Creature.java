@@ -28,6 +28,7 @@ public abstract class Creature implements Entity {
 
     public void update(float delta, CoreGame game) {
         regenerateStamina();
+        processDamageOverTime(game);
 
         if (!getParams().getReachedTargetPos()) {
             updateMovement(game);
@@ -45,6 +46,20 @@ public abstract class Creature implements Entity {
         updateAutomaticControls(game);
         updateTimers(delta);
 
+    }
+
+    private void processDamageOverTime(CoreGame game) {
+        if (isEffectActive(CreatureEffect.POISON, game)) {
+            if (getParams().getDamageOverTimeTimer().getTime() > 0.33f) {
+                game
+                    .getGameState()
+                    .accessCreatures()
+                    .creatureTakeDamageOverTime(getParams().getCurrentDamageOverTimeDealerCreatureId(),
+                                                getId(),
+                                                getParams().getCurrentDamageOverTime());
+                getParams().getDamageOverTimeTimer().restart();
+            }
+        }
     }
 
     private void regenerateStamina() {
@@ -98,6 +113,7 @@ public abstract class Creature implements Entity {
         getParams().getGateTeleportCooldownTimer().update(delta);
         getParams().getGeneralSkillPerformCooldownTimer().update(delta);
         getParams().getEnemyAttackCooldownTimer().update(delta);
+        getParams().getDamageOverTimeTimer().update(delta);
 
         getParams().getSkills().forEach((skillType, skill) -> skill.getPerformTimer().update(delta));
         // add other timers here...
@@ -152,7 +168,7 @@ public abstract class Creature implements Entity {
         getParams().setReachedTargetPos(false);
     }
 
-    protected void takeLifeDamage(float damage) {
+    public void takeLifeDamage(float damage) {
         getParams().setPreviousTickLife(getParams().getLife());
 
         float actualDamage = damage * 100f / (100f + totalArmor());
@@ -200,7 +216,7 @@ public abstract class Creature implements Entity {
         return false;
     }
 
-    public void onBeingHit(Ability ability, CoreGame game) {
+    public void onBeingHitByRegularAbility(Ability ability, CoreGame game) {
         boolean isShielded = isAttackShielded(ability.isRanged(), ability.getParams().getDirVector(), game);
 
         if (!isShielded && !ability.getParams().getIsHitShielded()) {

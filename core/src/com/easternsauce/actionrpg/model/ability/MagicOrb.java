@@ -112,7 +112,7 @@ public class MagicOrb extends Projectile {
             .stream()
             .filter(targetCreature ->
                         Objects.equals(targetCreature.getParams().getAreaId().getValue(), getParams().getAreaId().getValue()) &&
-                        !targetCreature.getParams().getId().equals(getParams().getCreatureId()) && targetCreature.isAlive() &&
+                        !targetCreature.getId().equals(getParams().getCreatureId()) && targetCreature.isAlive() &&
                         isTargetingAllowed(thisCreature, targetCreature) &&
                         targetCreature.getParams().getPos().distance(getParams().getPos()) < 20f)
             .collect(Collectors.toSet())) {

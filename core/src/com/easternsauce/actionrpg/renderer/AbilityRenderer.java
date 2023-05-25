@@ -83,6 +83,9 @@ public class AbilityRenderer {
     private void updateSprite(TextureRegion texture, CoreGame game) {
 
         Ability ability = game.getGameState().accessAbilities().getAbilities().get(abilityId);
+        if (ability == null) {
+            return;
+        }
 
         sprite.setRegion(texture);
         if (ability.getParams().getOverrideSize() != null) {

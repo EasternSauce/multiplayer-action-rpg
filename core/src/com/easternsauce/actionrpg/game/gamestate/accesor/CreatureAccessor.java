@@ -4,6 +4,7 @@ import com.easternsauce.actionrpg.Constants;
 import com.easternsauce.actionrpg.game.gamestate.GameState;
 import com.easternsauce.actionrpg.game.gamestate.GameStateDataHolder;
 import com.easternsauce.actionrpg.model.GameStateData;
+import com.easternsauce.actionrpg.model.action.creature.CreatureHitByDamageOverTimeAction;
 import com.easternsauce.actionrpg.model.action.creature.CreatureMovingVectorSetAction;
 import com.easternsauce.actionrpg.model.action.creature.SkillTryPerformAction;
 import com.easternsauce.actionrpg.model.creature.Creature;
@@ -94,16 +95,36 @@ public class CreatureAccessor {
             .forEach(creatureAction);
     }
 
-    public void handleCreatureAttackTarget(CreatureId creatureId, Vector2 vectorTowardsTarget,
-                                           Set<EnemySkillUseEntry> skillUseEntries) {
+    public void handleCreatureUseRandomSkillAtTarget(CreatureId creatureId, Vector2 vectorTowardsTarget) {
         Creature creature = gameState.accessCreatures().getCreatures().get(creatureId);
 
         if (creature.getParams().getEnemySkillUseReadyToPick()) {
-            pickSkillUseSkillType(skillUseEntries, creature);
+            pickSkillUseSkillType(creature.getParams().getEnemySkillUses(), creature);
         }
 
         SkillTryPerformAction action = SkillTryPerformAction.of(creatureId,
                                                                 creature.getParams().getEnemySkillUsePickedSkillType(),
+                                                                creature.getParams().getPos(),
+                                                                vectorTowardsTarget);
+
+        gameState.scheduleServerSideAction(action);
+    }
+
+    public void handleCreatureUseSkillAtTarget(CreatureId creatureId, Vector2 vectorTowardsTarget, SkillType skillType) {
+        Creature creature = gameState.accessCreatures().getCreatures().get(creatureId);
+
+        if (!creature
+            .getParams()
+            .getEnemySkillUses()
+            .stream()
+            .map(EnemySkillUseEntry::getSkillType)
+            .collect(Collectors.toSet())
+            .contains(skillType)) {
+            throw new RuntimeException("trying to use a skill that is not in enemy's skill uses!");
+        }
+
+        SkillTryPerformAction action = SkillTryPerformAction.of(creatureId,
+                                                                skillType,
                                                                 creature.getParams().getPos(),
                                                                 vectorTowardsTarget);
 
@@ -143,5 +164,10 @@ public class CreatureAccessor {
             }
         }
         return minCreatureId;
+    }
+
+    public void creatureTakeDamageOverTime(CreatureId attackerId, CreatureId targetId, Float damage) {
+        CreatureHitByDamageOverTimeAction action = CreatureHitByDamageOverTimeAction.of(attackerId, targetId, damage);
+        gameState.scheduleServerSideAction(action);
     }
 }

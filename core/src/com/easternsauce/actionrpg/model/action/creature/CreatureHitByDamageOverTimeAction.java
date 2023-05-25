@@ -26,10 +26,10 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class CreatureHitByAbilityAction extends GameStateAction {
+public class CreatureHitByDamageOverTimeAction extends GameStateAction {
     private CreatureId attackerId;
     private CreatureId targetId;
-    private Ability ability;
+    private Float damage;
 
     @Override
     public Entity getEntity(CoreGame game) {
@@ -50,7 +50,7 @@ public class CreatureHitByAbilityAction extends GameStateAction {
             return;
         }
 
-        targetCreature.onBeingHitByRegularAbility(ability, game);
+        targetCreature.takeLifeDamage(damage);
 
         if (targetCreature.getParams().getPreviousTickLife() > 0f && targetCreature.getParams().getLife() <= 0f) {
             onCreatureDeath(targetCreature, attackerCreature, game);
@@ -174,11 +174,11 @@ public class CreatureHitByAbilityAction extends GameStateAction {
         game.getEventProcessor().getLootPileModelsToBeCreated().add(lootPile.getParams().getId());
     }
 
-    public static CreatureHitByAbilityAction of(CreatureId attackerId, CreatureId targetId, Ability ability) {
-        CreatureHitByAbilityAction action = CreatureHitByAbilityAction.of();
+    public static CreatureHitByDamageOverTimeAction of(CreatureId attackerId, CreatureId targetId, Float damage) {
+        CreatureHitByDamageOverTimeAction action = CreatureHitByDamageOverTimeAction.of();
         action.attackerId = attackerId;
         action.targetId = targetId;
-        action.ability = ability;
+        action.damage = damage;
         return action;
     }
 }

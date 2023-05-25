@@ -127,6 +127,7 @@ public class EndPointHelper {
         endPoint.getKryo().register(SkillPickerMenuSlotChangeAction.class);
         endPoint.getKryo().register(SkillPickerMenuDeactivateAction.class);
         endPoint.getKryo().register(CreatureHitByAbilityAction.class);
+        endPoint.getKryo().register(CreatureHitByDamageOverTimeAction.class);
         endPoint.getKryo().register(CreatureChangeAimDirectionAction.class);
 
         endPoint.getKryo().register(EquipmentSlotType.class);

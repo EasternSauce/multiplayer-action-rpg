@@ -1,6 +1,7 @@
 package com.easternsauce.actionrpg.renderer.game;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.easternsauce.actionrpg.game.CoreGame;
@@ -11,8 +12,10 @@ import com.easternsauce.actionrpg.model.area.LootPileId;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.creature.Player;
+import com.easternsauce.actionrpg.model.creature.effect.CreatureEffect;
 import com.easternsauce.actionrpg.renderer.*;
 import com.easternsauce.actionrpg.renderer.creature.CreatureRenderer;
+import com.easternsauce.actionrpg.renderer.creature.LifeBarUtils;
 import com.easternsauce.actionrpg.renderer.icons.IconRetriever;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -51,6 +54,8 @@ public class GameEntityRenderer {
     @Getter
     private final IconRetriever iconRetriever = IconRetriever.of();
 
+    private TextureRegion poisonedIcon = null;
+
     public void init(TextureAtlas atlas) {
         mapScale = 4.0f;
 
@@ -63,6 +68,8 @@ public class GameEntityRenderer {
         viewportsHandler = ViewportsHandler.of();
 
         viewportsHandler.initViewports();
+
+        poisonedIcon = atlas.findRegion("poisoned");
     }
 
     public void loadAreaRenderers(Map<AreaId, TiledMap> maps, CoreGame game) {
@@ -82,18 +89,30 @@ public class GameEntityRenderer {
             .getGameState()
             .accessCreatures()
             .forEachAliveCreature(creature -> renderCreatureLifeBarIfPossible(renderingLayer, creature, game));
-        game
-            .getGameState()
-            .accessCreatures()
-            .forEachAliveCreature(creature -> renderCreatureStunnedAnimationIfPossible(renderingLayer, creature, game));
+        game.getGameState().accessCreatures().forEachAliveCreature(creature -> {
+            if (canCreatureBeRendered(creature, game)) {
+                renderCreatureStunnedAnimation(renderingLayer, creature, game);
+                renderCreaturePoisonedIcon(renderingLayer, creature, game);
+            }
+        });
     }
 
-    private void renderCreatureStunnedAnimationIfPossible(RenderingLayer renderingLayer, Creature creature, CoreGame game) {
-        if (canCreatureBeRendered(creature, game)) {
+    private void renderCreaturePoisonedIcon(RenderingLayer renderingLayer, Creature creature, CoreGame game) {
+        if (creature != null && creature.isEffectActive(CreatureEffect.POISON, game)) {
             CreatureRenderer creatureRenderer = creatureRenderers.get(creature.getId());
             float spriteWidth = creatureRenderer.getCreatureSprite().getWidth();
-            creatureRenderer.getCreatureStunnedAnimationRenderer().render(renderingLayer, spriteWidth, game);
+
+            float posX = creature.getParams().getPos().getX() - 0.5f;
+            float posY = LifeBarUtils.getLifeBarPosY(creature, spriteWidth) + 0.5f;
+            renderingLayer.getSpriteBatch().draw(poisonedIcon, posX, posY, 1f, 1f);
         }
+    }
+
+    private void renderCreatureStunnedAnimation(RenderingLayer renderingLayer, Creature creature, CoreGame game) {
+        CreatureRenderer creatureRenderer = creatureRenderers.get(creature.getId());
+        float spriteWidth = creatureRenderer.getCreatureSprite().getWidth();
+        creatureRenderer.getCreatureStunnedAnimationRenderer().render(renderingLayer, spriteWidth, game);
+
     }
 
     private void renderCreatureLifeBarIfPossible(RenderingLayer renderingLayer, Creature creature, CoreGame game) {

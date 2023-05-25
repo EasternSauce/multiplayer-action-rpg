@@ -43,6 +43,11 @@ public class AbilityAnimationConfig {
 
         configs.put("blast", AbilityAnimationConfig.of(64, 64, "blast", "blast", 0, 10, 0f, 0.05f, 1.7f));
 
+        configs.put("poison_cloud", AbilityAnimationConfig.of(200, 200, "poison_cloud", "poison_cloud", 0, 3, 0f, 0.135f, 1f));
+
+        configs.put("green_potion_throw",
+                    AbilityAnimationConfig.of(16, 16, "green_potion_throw", "green_potion_throw", 0, 12, 0f, 0.05f, 1f));
+
     }
 
     Integer textureWidth;

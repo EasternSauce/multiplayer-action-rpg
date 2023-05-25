@@ -79,7 +79,7 @@ public class ItemTemplate {
                                                                     .setWorth(500)
                                                                     .setEquipable(true)
                                                                     .setEquipmentSlotType(EquipmentSlotType.PRIMARY_WEAPON)
-                                                                    .setAttackSkill(SkillType.POISONOUS_MIXTURE)
+                                                                    .setAttackSkill(SkillType.CROSSBOW_SHOT)
                                                                     .setDamage(10f))
 
         );

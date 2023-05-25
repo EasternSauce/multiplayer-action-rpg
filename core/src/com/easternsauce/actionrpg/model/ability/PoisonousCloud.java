@@ -1,11 +1,15 @@
 package com.easternsauce.actionrpg.model.ability;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
+import com.easternsauce.actionrpg.model.creature.effect.CreatureEffect;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
+import java.util.concurrent.ConcurrentSkipListMap;
 
 @NoArgsConstructor(staticName = "of")
 @Data
@@ -20,12 +24,13 @@ public class PoisonousCloud extends Ability {
             .setHeight(9f)
             .setChannelTime(0f)
             .setActiveTime(5f)
-            .setTextureName("explosion")
-            .setBaseDamage(30f)
+            .setTextureName("poison_cloud")
+            .setBaseDamage(0f)
             .setIsChannelAnimationLooping(false)
             .setIsActiveAnimationLooping(true)
             .setAttackWithoutMoving(true)
-            .setRotationShift(0f);
+            .setRotationShift(0f)
+            .setCreaturesAlreadyHit(new ConcurrentSkipListMap<>());
 
         return ability;
     }
@@ -67,7 +72,12 @@ public class PoisonousCloud extends Ability {
 
     @Override
     public void onCreatureHit(CreatureId creatureId, CoreGame game) {
+        Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
+        creature.applyEffect(CreatureEffect.SLOW, 1f, game);
+        creature.applyEffect(CreatureEffect.POISON, 4f, game);
+        creature.getParams().setCurrentDamageOverTime(2f);
+        creature.getParams().setCurrentDamageOverTimeDealerCreatureId(getParams().getCreatureId());
     }
 
     @Override
@@ -88,5 +98,10 @@ public class PoisonousCloud extends Ability {
     @Override
     protected boolean isWeaponAttack() {
         return false;
+    }
+
+    @Override
+    public Float getStunDuration() {
+        return 0f;
     }
 }

@@ -36,7 +36,7 @@ public class EnemyTemplate {
                                                           randomDropSet,
                                                           new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(
                                                               SkillType.MOB_CROSSBOW_SHOT,
-                                                              100f), EnemySkillUseEntry.of(SkillType.RICOCHET_BALLISTA, 40f))));
+                                                              100f), EnemySkillUseEntry.of(SkillType.POISONOUS_MIXTURE, 40f))));
 
     public static EnemyTemplate skeleton = EnemyTemplate.of(EnemyType.SKELETON,
                                                             100f,

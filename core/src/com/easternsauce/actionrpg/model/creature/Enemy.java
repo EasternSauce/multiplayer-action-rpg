@@ -5,6 +5,7 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.creature.effect.CreatureEffect;
 import com.easternsauce.actionrpg.model.skill.Skill;
+import com.easternsauce.actionrpg.model.skill.SkillType;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.model.util.WorldDirection;
 import com.easternsauce.actionrpg.pathing.Astar;
@@ -18,6 +19,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
 @Data
@@ -117,7 +119,7 @@ public class Enemy extends Creature {
             handleNewTarget(potentialTarget.getParams().getId()); // logic for when target changed
             handleMovement(potentialTarget); // set movement command, causing creature to walk towards target
             handleAimDirectionAdjustment(vectorTowardsTarget);
-            handleAttackTarget(potentialTarget, vectorTowardsTarget, game); // attack target if within range
+            handleUseAbilityAtTarget(potentialTarget, vectorTowardsTarget, game); // attack target if within range
         }
         else { // if aggro timed out and out of range
             if (potentialTarget != null) {
@@ -198,7 +200,7 @@ public class Enemy extends Creature {
     }
 
     @Override
-    public void onBeingHit(Ability ability, CoreGame game) {
+    public void onBeingHitByRegularAbility(Ability ability, CoreGame game) {
         boolean isShielded = isAttackShielded(ability.isRanged(), ability.getParams().getDirVector(), game);
 
         if (!isShielded && !ability.getParams().getIsHitShielded()) {
@@ -339,14 +341,28 @@ public class Enemy extends Creature {
         }
     }
 
-    public void handleAttackTarget(Creature potentialTarget, Vector2 vectorTowardsTarget, CoreGame game) {
-        if (getParams().getEnemyAttackCooldownTimer().getTime() > Constants.ENEMY_ATTACK_COOLDOWN_TIMER &&
-            potentialTarget.getParams().getPos().distance(getParams().getPos()) < getParams().getAttackDistance()) {
-            game
-                .getGameState()
-                .accessCreatures()
-                .handleCreatureAttackTarget(getParams().getId(), vectorTowardsTarget, getParams().getEnemySkillUseEntries());
-            getParams().getEnemyAttackCooldownTimer().restart();
+    public void handleUseAbilityAtTarget(Creature potentialTarget, Vector2 vectorTowardsTarget, CoreGame game) {
+        if (getParams().getEnemyAttackCooldownTimer().getTime() > Constants.ENEMY_ATTACK_COOLDOWN_TIMER) {
+            if (potentialTarget.getParams().getPos().distance(getParams().getPos()) < getParams().getAttackDistance()) {
+                game
+                    .getGameState()
+                    .accessCreatures()
+                    .handleCreatureUseRandomSkillAtTarget(getParams().getId(), vectorTowardsTarget);
+                getParams().getEnemyAttackCooldownTimer().restart();
+            }
+            else if (getParams()
+                         .getEnemySkillUses()
+                         .stream()
+                         .map(EnemySkillUseEntry::getSkillType)
+                         .collect(Collectors.toSet())
+                         .contains(SkillType.SUMMON_SHIELD) &&
+                     potentialTarget.getParams().getPos().distance(getParams().getPos()) > 10f) {
+                game
+                    .getGameState()
+                    .accessCreatures()
+                    .handleCreatureUseSkillAtTarget(getParams().getId(), vectorTowardsTarget, SkillType.SUMMON_SHIELD);
+                getParams().getEnemyAttackCooldownTimer().restart();
+            }
         }
     }
 

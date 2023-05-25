@@ -74,9 +74,9 @@ public class SpreadingPoisonousCloud extends Ability {
             4f,
             5f,
             6f,
-            7f,
             8f,
-            9f,
+            10f,
+            10f,
             10f};
 
         float[] cloudDurations = {
@@ -89,7 +89,7 @@ public class SpreadingPoisonousCloud extends Ability {
             0.4f,
             0.4f,
             0.4f,
-            3f};
+            0.4f};
 
         Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
 
