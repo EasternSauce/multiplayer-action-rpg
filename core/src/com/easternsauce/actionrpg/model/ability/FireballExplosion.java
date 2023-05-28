@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.concurrent.ConcurrentSkipListMap;
+
 @NoArgsConstructor(staticName = "of")
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -21,11 +23,12 @@ public class FireballExplosion extends Ability {
             .setChannelTime(0f)
             .setActiveTime(0.35f)
             .setTextureName("explosion")
-            .setBaseDamage(30f)
+            .setBaseDamage(25f)
             .setIsChannelAnimationLooping(false)
             .setIsActiveAnimationLooping(false)
             .setAttackWithoutMoving(true)
-            .setRotationShift(0f);
+            .setRotationShift(0f)
+            .setCreaturesAlreadyHit(new ConcurrentSkipListMap<>());
 
         return ability;
     }
@@ -83,6 +86,11 @@ public class FireballExplosion extends Ability {
     @Override
     public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
 
+    }
+
+    @Override
+    public Float getStunDuration() {
+        return 0.8f;
     }
 
     @Override

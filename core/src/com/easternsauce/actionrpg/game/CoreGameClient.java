@@ -7,7 +7,6 @@ import com.easternsauce.actionrpg.Constants;
 import com.easternsauce.actionrpg.command.*;
 import com.easternsauce.actionrpg.game.gamestate.ClientGameState;
 import com.easternsauce.actionrpg.game.gamestate.GameState;
-import com.easternsauce.actionrpg.game.screen.ConnectScreenMessageHolder;
 import com.easternsauce.actionrpg.model.ability.AbilityId;
 import com.easternsauce.actionrpg.model.action.ActionsHolder;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
@@ -472,21 +471,6 @@ public class CoreGameClient extends CoreGame {
     @Override
     public boolean isPathfindingCalculatedForCreature(Creature creature) {
         return creature.getParams().getAreaId().equals(getGameState().getCurrentAreaId());
-    }
-
-    @Override
-    public void setConnectScreenInputProcessor(ConnectScreenMessageHolder messageHolder) {
-        Gdx.input.setInputProcessor(new InputAdapter() {
-            @Override
-            public boolean keyTyped(char character) {
-                if (character != '\b' && !(Character.isWhitespace(character)) &&
-                    messageHolder.getCurrentMessage().length() <= 20f) {
-                    messageHolder.setCurrentMessage(messageHolder.getCurrentMessage().concat("" + character));
-                }
-
-                return true;
-            }
-        });
     }
 
     @Override

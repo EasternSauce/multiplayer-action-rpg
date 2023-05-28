@@ -34,10 +34,10 @@ public class Skill {
             return Skill.of(skillType, creatureId, AbilityType.MOB_SWORD_SLASH, SimpleTimer.getExpiredTimer(), 0.6f, 20f, 0f);
         }
         if (skillType == SkillType.FIREBALL) {
-            return Skill.of(skillType, creatureId, AbilityType.FIREBALL, SimpleTimer.getExpiredTimer(), 1f, 30f, 20f);
+            return Skill.of(skillType, creatureId, AbilityType.FIREBALL, SimpleTimer.getExpiredTimer(), 1.5f, 30f, 20f);
         }
         if (skillType == SkillType.LIGHTNING) {
-            return Skill.of(skillType, creatureId, AbilityType.LIGHTNING_SPARK, SimpleTimer.getExpiredTimer(), 1f, 20f, 26f);
+            return Skill.of(skillType, creatureId, AbilityType.LIGHTNING_SPARK, SimpleTimer.getExpiredTimer(), 2f, 20f, 30f);
         }
         if (skillType == SkillType.CROSSBOW_SHOT) {
             return Skill.of(skillType, creatureId, AbilityType.CROSSBOW_SHOT, SimpleTimer.getExpiredTimer(), 2f, 40f, 0f);

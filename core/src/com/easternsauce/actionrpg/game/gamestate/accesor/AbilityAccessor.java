@@ -89,7 +89,7 @@ public class AbilityAccessor {
                                     Float overrideSize, Float overrideDuration, CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(chainFromAbility.getParams().getCreatureId());
 
-        if (creature != null && creature.isAlive()) {
+        if (creature != null && (creature.isAlive() || chainFromAbility.isAbleToChainAfterCreatureDeath())) {
             AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
 
             Map<CreatureId, Float> creaturesAlreadyHit = new ConcurrentSkipListMap<>(chainFromAbility
@@ -115,12 +115,6 @@ public class AbilityAccessor {
             spawnAbility(abilityType, abilityParams, game);
         }
     }
-
-    //    public void sendActivateAbilityAction(Ability ability) {
-    //        AbilityActivateAction action = AbilityActivateAction.of(ability);
-    //
-    //        gameState.scheduleServerSideAction(action);
-    //    }
 
     public void onAbilityHitsCreature(CreatureId attackerId, CreatureId targetId, AbilityId abilityId, CoreGame game) {
         Ability ability = game.getGameState().accessAbilities().getAbility(abilityId);

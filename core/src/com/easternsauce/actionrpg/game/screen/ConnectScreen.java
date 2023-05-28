@@ -2,6 +2,7 @@ package com.easternsauce.actionrpg.game.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -38,7 +39,21 @@ public class ConnectScreen implements Screen {
     public void show() {
         timer.start();
 
-        game.setConnectScreenInputProcessor(messageHolder);
+        setInputProcessor();
+    }
+
+    private void setInputProcessor() {
+        Gdx.input.setInputProcessor(new InputAdapter() {
+            @Override
+            public boolean keyTyped(char character) {
+                if ((Character.isAlphabetic(character) || Character.isDigit(character)) &&
+                    messageHolder.getCurrentMessage().length() <= 20f) {
+                    messageHolder.setCurrentMessage(messageHolder.getCurrentMessage().concat("" + character));
+                }
+
+                return true;
+            }
+        });
     }
 
     @Override

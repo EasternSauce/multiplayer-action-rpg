@@ -75,7 +75,7 @@ public class PoisonousCloud extends Ability {
         Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
         creature.applyEffect(CreatureEffect.SLOW, 1f, game);
-        creature.applyEffect(CreatureEffect.SELF_SLOW, 1f, game);
+        creature.getParams().setCurrentSlowMagnitude(0.65f);
         creature.applyEffect(CreatureEffect.POISON, 4f, game);
         creature.getParams().setCurrentDamageOverTime(2f);
         creature.getParams().setCurrentDamageOverTimeDealerCreatureId(getParams().getCreatureId());

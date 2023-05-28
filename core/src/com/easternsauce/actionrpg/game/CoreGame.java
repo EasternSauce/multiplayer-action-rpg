@@ -10,7 +10,6 @@ import com.easternsauce.actionrpg.game.entity.EntityEventProcessor;
 import com.easternsauce.actionrpg.game.entity.GameEntityManager;
 import com.easternsauce.actionrpg.game.gamestate.GameState;
 import com.easternsauce.actionrpg.game.screen.ConnectScreen;
-import com.easternsauce.actionrpg.game.screen.ConnectScreenMessageHolder;
 import com.easternsauce.actionrpg.game.screen.GameplayScreen;
 import com.easternsauce.actionrpg.game.screen.MenuScreen;
 import com.easternsauce.actionrpg.model.ability.AbilityId;
@@ -173,8 +172,6 @@ public abstract class CoreGame extends Game {
     public abstract void initializePlayer(String playerName);
 
     public abstract GameState getGameState();
-
-    public abstract void setConnectScreenInputProcessor(ConnectScreenMessageHolder messageHolder);
 
     public abstract void setChatInputProcessor();
 

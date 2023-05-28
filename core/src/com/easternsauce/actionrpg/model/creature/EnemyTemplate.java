@@ -31,7 +31,7 @@ public class EnemyTemplate {
                                                                                                  DropTableEntry.shieldDrop));
 
     public static EnemyTemplate archer = EnemyTemplate.of(EnemyType.ARCHER,
-                                                          100f,
+                                                          150f,
                                                           15f,
                                                           randomDropSet,
                                                           new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(
@@ -39,14 +39,14 @@ public class EnemyTemplate {
                                                               100f), EnemySkillUseEntry.of(SkillType.POISONOUS_MIXTURE, 40f))));
 
     public static EnemyTemplate skeleton = EnemyTemplate.of(EnemyType.SKELETON,
-                                                            100f,
+                                                            150f,
                                                             3f,
                                                             randomDropSet,
                                                             new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(
                                                                 SkillType.MOB_SWORD_SLASH,
                                                                 100f), EnemySkillUseEntry.of(SkillType.SUMMON_SHIELD, 20f))));
     public static EnemyTemplate mage = EnemyTemplate.of(EnemyType.MAGE,
-                                                        100f,
+                                                        150f,
                                                         15f,
                                                         randomDropSet,
                                                         new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.MOB_MAGIC_ORB,

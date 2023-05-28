@@ -146,6 +146,8 @@ public class CreatureParams implements EntityParams {
 
     private CreatureId currentDamageOverTimeDealerCreatureId = null;
 
+    private Float currentSlowMagnitude = 0f;
+
     public static CreatureParams of(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn) {
         return getCreatureParams(creatureId,
                                  areaId,

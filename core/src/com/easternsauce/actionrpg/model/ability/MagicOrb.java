@@ -161,6 +161,11 @@ public class MagicOrb extends Projectile {
     }
 
     @Override
+    public Float getStunDuration() {
+        return 0.75f;
+    }
+
+    @Override
     protected boolean isWeaponAttack() {
         return false;
     }

@@ -23,7 +23,7 @@ public class MobSwordSlash extends Ability {
             .setActiveTime(0.3f)
             .setRange(1.8f)
             .setTextureName("slash")
-            .setBaseDamage(65f)
+            .setBaseDamage(50f)
             .setIsChannelAnimationLooping(false)
             .setIsActiveAnimationLooping(false)
             .setRotationShift(0f);

@@ -5,7 +5,6 @@ import com.easternsauce.actionrpg.Constants;
 import com.easternsauce.actionrpg.assets.Assets;
 import com.easternsauce.actionrpg.command.*;
 import com.easternsauce.actionrpg.game.gamestate.ServerGameState;
-import com.easternsauce.actionrpg.game.screen.ConnectScreenMessageHolder;
 import com.easternsauce.actionrpg.model.ability.AbilityId;
 import com.easternsauce.actionrpg.model.action.ActionsHolder;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
@@ -205,7 +204,7 @@ public class CoreGameServer extends CoreGame {
         AreaId areaId = AreaId.of("area1");
 
         Map<SkillType, Integer> grantedSkills = new ConcurrentSkipListMap<>();
-        grantedSkills.put(SkillType.TELEPORT, 1);
+        grantedSkills.put(SkillType.VOLATILE_BUBBLE, 1);
         Item leatherArmor = Item
             .of()
             .setTemplate(ItemTemplate.templates.get("leatherArmor"))
@@ -327,11 +326,6 @@ public class CoreGameServer extends CoreGame {
     @Override
     public Boolean getIsFirstBroadcastReceived() {
         return false;
-    }
-
-    @Override
-    public void setConnectScreenInputProcessor(ConnectScreenMessageHolder messageHolder) {
-
     }
 
     @Override

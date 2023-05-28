@@ -192,4 +192,8 @@ public abstract class Ability implements Entity {
     public boolean isCanStun() {
         return true;
     }
+
+    public boolean isAbleToChainAfterCreatureDeath() {
+        return true;
+    }
 }

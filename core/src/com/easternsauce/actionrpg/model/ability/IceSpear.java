@@ -1,11 +1,15 @@
 package com.easternsauce.actionrpg.model.ability;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
+import com.easternsauce.actionrpg.model.creature.effect.CreatureEffect;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
+import java.util.concurrent.ConcurrentSkipListMap;
 
 @NoArgsConstructor(staticName = "of")
 @Data
@@ -22,12 +26,14 @@ public class IceSpear extends Projectile {
             .setChannelTime(0f)
             .setActiveTime(0.6f)
             .setTextureName("ice_shard")
-            .setBaseDamage(17f)
+            .setBaseDamage(4f)
             .setIsChannelAnimationLooping(false)
             .setIsActiveAnimationLooping(true)
             .setRotationShift(0f)
             .setDelayedActionTime(0.001f)
-            .setSpeed(15f);
+            .setSpeed(15f)
+            .setCreaturesAlreadyHit(new ConcurrentSkipListMap<>()); // reset creatures already hit TODO: make this chainability
+        // setting
 
         return ability;
     }
@@ -59,7 +65,10 @@ public class IceSpear extends Projectile {
 
     @Override
     public void onCreatureHit(CreatureId creatureId, CoreGame game) {
-        //deactivate();
+        Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
+
+        creature.applyEffect(CreatureEffect.SLOW, 2.5f, game);
+        creature.getParams().setCurrentSlowMagnitude(0.5f);
     }
 
     @Override

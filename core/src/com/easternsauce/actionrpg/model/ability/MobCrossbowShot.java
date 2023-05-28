@@ -162,4 +162,9 @@ public class MobCrossbowShot extends Ability {
     protected boolean isWeaponAttack() {
         return true;
     }
+
+    @Override
+    public boolean isAbleToChainAfterCreatureDeath() {
+        return false;
+    }
 }
