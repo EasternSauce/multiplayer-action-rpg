@@ -84,6 +84,7 @@ public class CreatureParams implements EntityParams {
 
     private SimpleTimer aggroTimer = SimpleTimer.getExpiredTimer();
     private Float loseAggroTime = 3f;
+    @SuppressWarnings("SpellCheckingInspection")
     private CreatureId aggroedCreatureId = null;
 
     private CreatureId attackedByCreatureId = null;
@@ -147,6 +148,8 @@ public class CreatureParams implements EntityParams {
     private CreatureId currentDamageOverTimeDealerCreatureId = null;
 
     private Float currentSlowMagnitude = 0f;
+
+    private Vector2 facingVector = Vector2.of(0f, 0f);
 
     public static CreatureParams of(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn) {
         return getCreatureParams(creatureId,

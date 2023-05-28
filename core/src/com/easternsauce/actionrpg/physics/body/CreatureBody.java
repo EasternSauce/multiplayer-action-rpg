@@ -82,6 +82,10 @@ public class CreatureBody {
         float vectorX = normalMovingVector.getX() * v;
         float vectorY = normalMovingVector.getY() * v;
 
+        if (!creature.isStunned(game) && normalMovingVector.len() > 0f) {
+            creature.getParams().setFacingVector(normalMovingVector.copy());
+        }
+
         if (bodyCreated) {
             if (creature.getParams().getIsMoving()) {
                 setVelocity(Vector2.of(vectorX, vectorY));

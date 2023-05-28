@@ -9,8 +9,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.concurrent.ConcurrentSkipListMap;
-
 @NoArgsConstructor(staticName = "of")
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -26,13 +24,12 @@ public class IceSpear extends Projectile {
             .setChannelTime(0f)
             .setActiveTime(0.6f)
             .setTextureName("ice_shard")
-            .setBaseDamage(4f)
+            .setBaseDamage(35f)
             .setIsChannelAnimationLooping(false)
             .setIsActiveAnimationLooping(true)
             .setRotationShift(0f)
             .setDelayedActionTime(0.001f)
-            .setSpeed(15f)
-            .setCreaturesAlreadyHit(new ConcurrentSkipListMap<>()); // reset creatures already hit TODO: make this chainability
+            .setSpeed(18f);
         // setting
 
         return ability;

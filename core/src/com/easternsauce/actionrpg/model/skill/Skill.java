@@ -37,7 +37,7 @@ public class Skill {
             return Skill.of(skillType, creatureId, AbilityType.FIREBALL, SimpleTimer.getExpiredTimer(), 1.5f, 30f, 20f);
         }
         if (skillType == SkillType.LIGHTNING) {
-            return Skill.of(skillType, creatureId, AbilityType.LIGHTNING_SPARK, SimpleTimer.getExpiredTimer(), 2f, 20f, 30f);
+            return Skill.of(skillType, creatureId, AbilityType.LIGHTNING_SPARK, SimpleTimer.getExpiredTimer(), 2f, 20f, 26f);
         }
         if (skillType == SkillType.CROSSBOW_SHOT) {
             return Skill.of(skillType, creatureId, AbilityType.CROSSBOW_SHOT, SimpleTimer.getExpiredTimer(), 2f, 40f, 0f);
@@ -52,7 +52,7 @@ public class Skill {
             return Skill.of(skillType, creatureId, AbilityType.MAGIC_ORB, SimpleTimer.getExpiredTimer(), 1.3f, 15f, 10f);
         }
         if (skillType == SkillType.VOLATILE_BUBBLE) {
-            return Skill.of(skillType, creatureId, AbilityType.VOLATILE_BUBBLE, SimpleTimer.getExpiredTimer(), 1.3f, 15f, 20f);
+            return Skill.of(skillType, creatureId, AbilityType.VOLATILE_BUBBLE, SimpleTimer.getExpiredTimer(), 1.3f, 15f, 22f);
         }
         if (skillType == SkillType.SUMMON_GHOSTS) {
             return Skill.of(skillType, creatureId, AbilityType.SUMMON_GHOSTS, SimpleTimer.getExpiredTimer(), 1.3f, 15f, 20f);

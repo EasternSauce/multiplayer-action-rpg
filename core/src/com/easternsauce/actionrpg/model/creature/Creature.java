@@ -124,7 +124,7 @@ public abstract class Creature implements Entity {
     }
 
     public WorldDirection facingDirection(CoreGame game) {
-        float deg = getParams().getMovingVector().angleDeg();
+        float deg = getParams().getFacingVector().angleDeg();
 
         if (deg >= 45 && deg < 135) {
             return WorldDirection.UP;
