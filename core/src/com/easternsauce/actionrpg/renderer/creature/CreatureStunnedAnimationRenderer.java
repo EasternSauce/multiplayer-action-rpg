@@ -29,7 +29,7 @@ public class CreatureStunnedAnimationRenderer {
             frames[i] = (new TextureRegion(stunnedAnimationTextureRegion, i * 60, 0, 60, 30));
         }
 
-        this.stunnedAnimation = new Animation<>(0.035f, frames);
+        this.stunnedAnimation = new Animation<>(0.045f, frames);
     }
 
     private TextureRegion getStunnedAnimationFrame(CoreGame game) {

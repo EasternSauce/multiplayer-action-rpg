@@ -27,14 +27,14 @@ background2
   index: -1
 bag
   rotate: false
-  xy: 1542, 218
+  xy: 3016, 286
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 black_mage
   rotate: false
-  xy: 3010, 76
+  xy: 3502, 461
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
@@ -62,28 +62,28 @@ boomerang
   index: -1
 bubble
   rotate: false
-  xy: 1220, 118
+  xy: 3772, 736
   size: 128, 64
   orig: 128, 64
   offset: 0, 0
   index: -1
 cursor
   rotate: false
-  xy: 3870, 702
+  xy: 1640, 218
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 downarrow
   rotate: false
-  xy: 3108, 172
+  xy: 1350, 184
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 evil_ninja
   rotate: false
-  xy: 2912, 102
+  xy: 3698, 604
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
@@ -104,7 +104,7 @@ explosion_windup
   index: -1
 female1
   rotate: false
-  xy: 2912, 232
+  xy: 3600, 604
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
@@ -118,7 +118,7 @@ fireball2
   index: -1
 fist_slam
   rotate: false
-  xy: 1350, 136
+  xy: 2814, 238
   size: 200, 80
   orig: 200, 80
   offset: 0, 0
@@ -132,28 +132,28 @@ fist_slam_windup
   index: -1
 ghost
   rotate: false
-  xy: 3010, 206
+  xy: 3796, 606
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: -1
 goblet
   rotate: false
-  xy: 3870, 736
+  xy: 3698, 538
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 goblet_lit
   rotate: false
-  xy: 1542, 252
+  xy: 1640, 252
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 goblin
   rotate: false
-  xy: 3108, 206
+  xy: 3600, 474
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
@@ -174,7 +174,7 @@ ice_shard
   index: -1
 jawa
   rotate: false
-  xy: 2814, 232
+  xy: 1542, 188
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
@@ -202,14 +202,14 @@ magic_orb
   index: -1
 male1
   rotate: false
-  xy: 2814, 102
+  xy: 3502, 591
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: -1
 male2
   rotate: false
-  xy: 3772, 672
+  xy: 2814, 108
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
@@ -223,7 +223,7 @@ minos
   index: -1
 necromancer
   rotate: false
-  xy: 2554, 76
+  xy: 2424, 76
   size: 128, 192
   orig: 128, 192
   offset: 0, 0
@@ -237,7 +237,7 @@ nice_icons
   index: -1
 pillar
   rotate: false
-  xy: 3426, 711
+  xy: 644, 37
   size: 25, 50
   orig: 25, 50
   offset: 0, 0
@@ -256,6 +256,13 @@ poisoned
   orig: 46, 46
   offset: 0, 0
   index: -1
+punch
+  rotate: false
+  xy: 3184, 721
+  size: 360, 40
+  orig: 360, 40
+  offset: 0, 0
+  index: -1
 rat
   rotate: false
   xy: 2810, 466
@@ -272,7 +279,7 @@ serpent
   index: -1
 shield
   rotate: false
-  xy: 644, 53
+  xy: 3052, 430
   size: 32, 34
   orig: 32, 34
   offset: 0, 0
@@ -293,28 +300,28 @@ slam
   index: -1
 slam_windup
   rotate: false
-  xy: 3184, 701
+  xy: 3242, 465
   size: 240, 60
   orig: 240, 60
   offset: 0, 0
   index: -1
 slash
   rotate: false
-  xy: 2578, 34
+  xy: 2814, 320
   size: 240, 40
   orig: 240, 40
   offset: 0, 0
   index: -1
 slash2
   rotate: false
-  xy: 3242, 465
+  xy: 708, 49
   size: 240, 40
   orig: 240, 40
   offset: 0, 0
   index: -1
 slash2mirrored
   rotate: false
-  xy: 708, 49
+  xy: 950, 49
   size: 240, 40
   orig: 240, 40
   offset: 0, 0
@@ -328,7 +335,7 @@ slash_windup
   index: -1
 slash_windup2
   rotate: false
-  xy: 950, 49
+  xy: 2578, 34
   size: 240, 40
   orig: 240, 40
   offset: 0, 0
@@ -370,7 +377,7 @@ taurus
   index: -1
 treasure
   rotate: false
-  xy: 1608, 284
+  xy: 3902, 768
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -405,28 +412,28 @@ undead_knight
   index: -1
 undead_lancer
   rotate: false
-  xy: 3372, 507
+  xy: 2554, 76
   size: 128, 192
   orig: 128, 192
   offset: 0, 0
   index: -1
 undead_ninja
   rotate: false
-  xy: 3052, 336
+  xy: 2912, 108
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: -1
 undead_sorcerer
   rotate: false
-  xy: 3242, 507
+  xy: 3242, 527
   size: 128, 192
   orig: 128, 192
   offset: 0, 0
   index: -1
 undead_witch
   rotate: false
-  xy: 2424, 76
+  xy: 3372, 527
   size: 128, 192
   orig: 128, 192
   offset: 0, 0

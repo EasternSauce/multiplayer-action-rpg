@@ -60,6 +60,8 @@ public class AbilityFactory {
                 return PoisonousCloud::of;
             case SPREADING_POISONOUS_CLOUD:
                 return SpreadingPoisonousCloud::of;
+            case PUNCH:
+                return Punch::of;
             default:
                 throw new RuntimeException("ability type not found: " + abilityType);
         }

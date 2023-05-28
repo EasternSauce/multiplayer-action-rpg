@@ -95,6 +95,7 @@ public class EndPointHelper {
         endPoint.getKryo().register(PoisonousCloud.class);
         endPoint.getKryo().register(PoisonousMixture.class);
         endPoint.getKryo().register(SpreadingPoisonousCloud.class);
+        endPoint.getKryo().register(Punch.class);
 
         endPoint.getKryo().register(Enemy.class);
         endPoint.getKryo().register(Area.class);

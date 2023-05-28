@@ -214,8 +214,8 @@ public class CoreGameClient extends CoreGame {
             weaponDamage = weaponItem.getDamage();
         }
         else {
-            attackSkill = SkillType.SWORD_SLASH;
-            weaponDamage = 20f;
+            attackSkill = SkillType.PUNCH;
+            weaponDamage = 0f; // weapon damage doesn't apply
         }
         getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(getGameState().getThisClientPlayerId(),
                                                                                attackSkill,

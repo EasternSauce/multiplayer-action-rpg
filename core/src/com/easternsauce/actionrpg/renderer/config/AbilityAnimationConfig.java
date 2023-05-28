@@ -50,6 +50,8 @@ public class AbilityAnimationConfig {
 
         configs.put("warp", AbilityAnimationConfig.of(76, 53, "warp", "warp", 0, 16, 0f, 0.04f, 1f));
 
+        configs.put("punch", AbilityAnimationConfig.of(40, 40, "punch", "punch", 0, 9, 0f, 0.02f, 1f));
+
     }
 
     Integer textureWidth;

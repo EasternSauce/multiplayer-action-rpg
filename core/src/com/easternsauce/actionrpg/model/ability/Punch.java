@@ -10,20 +10,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class SwordSlash extends Ability {
+public class Punch extends Ability {
 
     AbilityParams params;
 
-    public static SwordSlash of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        SwordSlash ability = SwordSlash.of();
+    public static Punch of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+        Punch ability = Punch.of();
         ability.params = abilityParams
-            .setWidth(2.5f)
-            .setHeight(2.5f)
-            .setChannelTime(0.15f)
-            .setActiveTime(0.3f)
-            .setRange(1.8f)
-            .setTextureName("slash")
-            .setBaseDamage(22f)
+            .setWidth(1.5f)
+            .setHeight(1.5f)
+            .setChannelTime(0f)
+            .setActiveTime(0.18f)
+            .setRange(1.2f)
+            .setTextureName("punch")
+            .setBaseDamage(7f)
             .setIsChannelAnimationLooping(false)
             .setIsActiveAnimationLooping(false)
             .setRotationShift(0f);
@@ -127,7 +127,7 @@ public class SwordSlash extends Ability {
 
     @Override
     public Float getStunDuration() {
-        return 0.2f;
+        return 0.22f;
     }
 
     @Override

@@ -24,6 +24,8 @@ public class GameplayRendererHelper {
             renderAreaLayers(renderer, Arrays.asList(2, 3), game);
         }
 
+        renderAbilities(renderer, worldElementsRenderingLayer, game);
+
         game.renderB2BodyDebug();
     }
 
@@ -35,7 +37,7 @@ public class GameplayRendererHelper {
         renderer.renderDeadCreatures(worldElementsRenderingLayer, game);
         renderer.renderLootPiles(worldElementsRenderingLayer, game);
         renderer.renderAliveCreatures(worldElementsRenderingLayer, game);
-        renderer.renderAbilities(worldElementsRenderingLayer, game);
+        //renderer.renderAbilities(worldElementsRenderingLayer, game);
 
         worldElementsRenderingLayer.end();
     }
@@ -51,5 +53,13 @@ public class GameplayRendererHelper {
         renderer.renderPlayerNames(worldTextRenderingLayer, game);
 
         worldTextRenderingLayer.end();
+    }
+
+    private static void renderAbilities(GameEntityRenderer renderer, RenderingLayer worldElementsRenderingLayer, CoreGame game) {
+        worldElementsRenderingLayer.begin();
+
+        renderer.renderAbilities(worldElementsRenderingLayer, game);
+
+        worldElementsRenderingLayer.end();
     }
 }

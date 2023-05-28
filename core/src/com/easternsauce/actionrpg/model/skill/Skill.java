@@ -1,5 +1,6 @@
 package com.easternsauce.actionrpg.model.skill;
 
+import com.easternsauce.actionrpg.Constants;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.AbilityId;
 import com.easternsauce.actionrpg.model.ability.AbilityParams;
@@ -80,6 +81,9 @@ public class Skill {
         if (skillType == SkillType.POISONOUS_MIXTURE) {
             return Skill.of(skillType, creatureId, AbilityType.POISONOUS_MIXTURE, SimpleTimer.getExpiredTimer(), 2f, 10f, 35f);
         }
+        if (skillType == SkillType.PUNCH) {
+            return Skill.of(skillType, creatureId, AbilityType.PUNCH, SimpleTimer.getExpiredTimer(), 0.4f, 14f, 0f);
+        }
         throw new RuntimeException("skill not handled");
     }
 
@@ -87,8 +91,8 @@ public class Skill {
         Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
         if (creature != null && creature.canPerformSkill(this, game) && performTimer.getTime() > cooldown &&
-            (!skillType.getIsDamaging() || creature.getParams().getGeneralSkillPerformCooldownTimer().getTime() > 0.8f) &&
-            !creature.isStunned(game)) {
+            (!skillType.getIsDamaging() || creature.getParams().getGeneralSkillPerformCooldownTimer().getTime() >
+                                           Constants.GENERAL_PLAYER_SKILL_PERFORM_COOLDOWN) && !creature.isStunned(game)) {
             creature.getParams().setEnemySkillUseReadyToPick(true);
 
             AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));

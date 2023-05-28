@@ -32,7 +32,9 @@ public enum SkillType {
 
     TELEPORT("Teleport", false),
 
-    POISONOUS_MIXTURE("Poisonous Mixture", false);
+    POISONOUS_MIXTURE("Poisonous Mixture", false),
+
+    PUNCH("Punch", true);
 
     @Getter
     private String prettyName;
