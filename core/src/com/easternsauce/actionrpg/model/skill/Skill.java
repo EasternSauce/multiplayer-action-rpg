@@ -49,7 +49,7 @@ public class Skill {
             return Skill.of(skillType, creatureId, AbilityType.MAGIC_ORB, SimpleTimer.getExpiredTimer(), 0.8f, 15f, 10f);
         }
         if (skillType == SkillType.MOB_MAGIC_ORB) {
-            return Skill.of(skillType, creatureId, AbilityType.MAGIC_ORB, SimpleTimer.getExpiredTimer(), 1.3f, 15f, 10f);
+            return Skill.of(skillType, creatureId, AbilityType.MOB_MAGIC_ORB, SimpleTimer.getExpiredTimer(), 1.3f, 15f, 10f);
         }
         if (skillType == SkillType.VOLATILE_BUBBLE) {
             return Skill.of(skillType, creatureId, AbilityType.VOLATILE_BUBBLE, SimpleTimer.getExpiredTimer(), 1.3f, 15f, 22f);

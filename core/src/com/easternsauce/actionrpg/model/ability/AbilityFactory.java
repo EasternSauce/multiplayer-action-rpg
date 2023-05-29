@@ -30,6 +30,8 @@ public class AbilityFactory {
                 return MobCrossbowShot::of;
             case MAGIC_ORB:
                 return MagicOrb::of;
+            case MOB_MAGIC_ORB:
+                return MobMagicOrb::of;
             case VOLATILE_BUBBLE:
                 return VolatileBubble::of;
             case ICE_SPEAR:

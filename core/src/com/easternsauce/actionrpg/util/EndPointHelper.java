@@ -79,6 +79,7 @@ public class EndPointHelper {
         endPoint.getKryo().register(LightningNode.class);
         endPoint.getKryo().register(LightningSpark.class);
         endPoint.getKryo().register(MagicOrb.class);
+        endPoint.getKryo().register(MobMagicOrb.class);
         endPoint.getKryo().register(VolatileBubble.class);
         endPoint.getKryo().register(IceSpear.class);
         endPoint.getKryo().register(PlayfulGhost.class);

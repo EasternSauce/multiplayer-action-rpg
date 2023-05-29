@@ -17,6 +17,7 @@ public enum AbilityType {
     MOB_CROSSBOW_SHOT,
 
     MAGIC_ORB,
+    MOB_MAGIC_ORB,
 
     VOLATILE_BUBBLE,
 

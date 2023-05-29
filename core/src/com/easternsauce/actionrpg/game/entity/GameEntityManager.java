@@ -144,7 +144,7 @@ public class GameEntityManager {
             .put(creatureId,
                  Enemy.of(CreatureParams
                               .of(creatureId, areaId, enemySpawn)
-                              .setBaseSpeed(7f)
+                              .setBaseSpeed(8.5f)
                               .setAttackDistance(enemySpawn.getEnemyTemplate().getAttackDistance())
                               .setMaxLife(enemySpawn.getEnemyTemplate().getMaxLife())
                               .setLife(enemySpawn.getEnemyTemplate().getMaxLife())

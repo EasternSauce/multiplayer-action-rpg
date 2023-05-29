@@ -17,12 +17,12 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(staticName = "of")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class MagicOrb extends Projectile {
+public class MobMagicOrb extends Projectile {
 
     AbilityParams params;
 
-    public static MagicOrb of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        MagicOrb ability = MagicOrb.of();
+    public static MobMagicOrb of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+        MobMagicOrb ability = MobMagicOrb.of();
         ability.params = abilityParams
             .setWidth(1.5f)
             .setHeight(1.5f)
@@ -34,7 +34,7 @@ public class MagicOrb extends Projectile {
             .setIsActiveAnimationLooping(true)
             .setRotationShift(0f)
             .setDelayedActionTime(0.001f)
-            .setSpeed(14f);
+            .setSpeed(13f);
 
         return ability;
     }
@@ -129,7 +129,7 @@ public class MagicOrb extends Projectile {
 
             float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(currentAngleDeg, targetAngleDeg);
 
-            float incrementFactor = 60f;
+            float incrementFactor = 65f;
             float baseIncrement = incrementFactor;
 
             if (getParams().getStateTimer().getTime() > 0.5f && getParams().getStateTimer().getTime() < 2f) {
