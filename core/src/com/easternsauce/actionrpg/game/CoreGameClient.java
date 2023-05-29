@@ -208,7 +208,7 @@ public class CoreGameClient extends CoreGame {
     }
 
     private void handleAttackButtonHoldInput(PlayerConfig playerConfig) {
-        if (playerConfig.getIsInventoryVisible()) {
+        if (!playerConfig.getIsInventoryVisible()) {
 
             Creature player = gameState.accessCreatures().getCreatures().get(getGameState().getThisClientPlayerId());
 

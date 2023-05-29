@@ -27,7 +27,6 @@ public class InventoryItemUseAction extends GameStateAction {
 
     @Override
     public void applyToGame(CoreGame game) {
-        System.out.println("here");
         PlayerConfig playerConfig = game.getGameState().getPlayerConfig(playerId);
 
         if (playerConfig != null) {
@@ -48,9 +47,7 @@ public class InventoryItemUseAction extends GameStateAction {
     }
 
     private void processUseItem(Creature creature, Item item, CoreGame game) {
-        System.out.println("entering, templ;ate is " + item.getTemplate().getId());
         if (item.getTemplate().getId().equals("lifePotion")) {
-            System.out.println("regening life start");
             creature.applyEffect(CreatureEffect.LIFE_REGENERATION, 3f, game);
         }
         else if (item.getTemplate().getId().equals("manaPotion")) {

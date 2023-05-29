@@ -95,14 +95,11 @@ public class SwordSlash extends Ability {
     @Override
     public void onChannelUpdate(CoreGame game) {
         updatePosition(game);
-
     }
 
     @Override
     protected void onActiveUpdate(float delta, CoreGame game) {
-
         updatePosition(game);
-
     }
 
     @Override

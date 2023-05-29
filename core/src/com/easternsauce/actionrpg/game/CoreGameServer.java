@@ -204,7 +204,7 @@ public class CoreGameServer extends CoreGame {
         AreaId areaId = AreaId.of("area1");
 
         Map<SkillType, Integer> grantedSkills = new ConcurrentSkipListMap<>();
-        grantedSkills.put(SkillType.VOLATILE_BUBBLE, 1);
+        grantedSkills.put(SkillType.RING_OF_FIRE, 1);
         Item leatherArmor = Item
             .of()
             .setTemplate(ItemTemplate.templates.get("leatherArmor"))

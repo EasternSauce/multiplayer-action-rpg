@@ -17,12 +17,12 @@ public class VolatileBubble extends Projectile {
     public static VolatileBubble of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         VolatileBubble ability = VolatileBubble.of();
         ability.params = abilityParams
-            .setWidth(4f)
-            .setHeight(4f)
+            .setWidth(3.2f)
+            .setHeight(3.2f)
             .setChannelTime(0f)
             .setActiveTime(30f)
             .setTextureName("bubble")
-            .setBaseDamage(15f)
+            .setBaseDamage(0f)
             .setIsChannelAnimationLooping(false)
             .setIsActiveAnimationLooping(true)
             .setRotationShift(0f)

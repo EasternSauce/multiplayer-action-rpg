@@ -47,4 +47,6 @@ public enum AbilityType {
     SPREADING_POISONOUS_CLOUD,
 
     PUNCH,
+
+    RING_OF_FIRE,
 }

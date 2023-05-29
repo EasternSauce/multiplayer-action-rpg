@@ -138,7 +138,9 @@ public class ShieldGuard extends Ability {
 
             if ((creature instanceof Player && abilityOwner instanceof Enemy ||
                  creature instanceof Enemy && abilityOwner instanceof Player) && otherAbility.isRanged()) {
-                otherAbility.getParams().setIsHitShielded(true);
+                if (otherAbility.isBlockable()) {
+                    otherAbility.getParams().setIsHitShielded(true);
+                }
 
                 if (otherAbility instanceof RicochetBullet) {
                     otherAbility.onTerrainHit(otherAbility.getParams().getPos(), getParams().getPos());

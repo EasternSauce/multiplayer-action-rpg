@@ -62,6 +62,8 @@ public class AbilityFactory {
                 return SpreadingPoisonousCloud::of;
             case PUNCH:
                 return Punch::of;
+            case RING_OF_FIRE:
+                return RingOfFire::of;
             default:
                 throw new RuntimeException("ability type not found: " + abilityType);
         }

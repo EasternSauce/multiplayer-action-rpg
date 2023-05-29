@@ -53,7 +53,6 @@ public abstract class Creature implements Entity {
 
     private void processRegenerationOverTime(CoreGame game) {
         if (isEffectActive(CreatureEffect.LIFE_REGENERATION, game)) {
-            System.out.println("regening... life is " + getParams().getLife());
             float lifeRegen = 14f;
             if (getParams().getLifeRegenerationOverTimeTimer().getTime() > 0.333f) {
                 if (getParams().getLife() + lifeRegen < getParams().getMaxLife()) {
@@ -67,7 +66,6 @@ public abstract class Creature implements Entity {
             }
         }
         if (isEffectActive(CreatureEffect.MANA_REGENERATION, game)) {
-            System.out.println("regening mana...");
             float manaRegen = 14f;
             if (getParams().getManaRegenerationOverTimeTimer().getTime() > 0.333f) {
                 if (getParams().getMana() + manaRegen < getParams().getMaxMana()) {
@@ -233,17 +231,16 @@ public abstract class Creature implements Entity {
         return skills;
     }
 
-    public boolean isAttackShielded(boolean isRanged, Vector2 dirVector, CoreGame game) {
-        if (!isRanged) { // check if target is pointing shield at the attack
+    public boolean isAbilityShielded(Ability ability, CoreGame game) {
+        if (!ability.isRanged() && ability.isBlockable()) { // check if target is pointing shield at the attack
             // TODO: if don't have shield ability return false
             Ability shieldAbility = game
                 .getGameState()
                 .accessAbilities()
                 .getAbilityBySkillType(getParams().getId(), SkillType.SUMMON_SHIELD);
             if (shieldAbility != null && shieldAbility.getParams().getState() == AbilityState.ACTIVE) {
-                float angleDiff =
-                    (dirVector.angleDeg() - shieldAbility.getParams().getDirVector().multiplyBy(-1).angleDeg() + 180 + 360) %
-                    360 - 180;
+                float angleDiff = (ability.getParams().getDirVector().angleDeg() -
+                                   shieldAbility.getParams().getDirVector().multiplyBy(-1).angleDeg() + 180 + 360) % 360 - 180;
                 //noinspection RedundantIfStatement
                 if (angleDiff <= 60 && angleDiff >= -60) {
                     return true;
@@ -254,7 +251,7 @@ public abstract class Creature implements Entity {
     }
 
     public void onBeingHitByRegularAbility(Ability ability, CoreGame game) {
-        boolean isShielded = isAttackShielded(ability.isRanged(), ability.getParams().getDirVector(), game);
+        boolean isShielded = isAbilityShielded(ability, game);
 
         if (!isShielded && !ability.getParams().getIsHitShielded()) {
             takeLifeDamage(ability.getDamage(game));

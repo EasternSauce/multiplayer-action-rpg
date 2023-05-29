@@ -34,7 +34,9 @@ public enum SkillType {
 
     POISONOUS_MIXTURE("Poisonous Mixture", false),
 
-    PUNCH("Punch", true);
+    PUNCH("Punch", true),
+
+    RING_OF_FIRE("Ring of Fire", true);
 
     @Getter
     private String prettyName;

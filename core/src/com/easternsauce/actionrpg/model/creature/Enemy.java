@@ -201,7 +201,7 @@ public class Enemy extends Creature {
 
     @Override
     public void onBeingHitByRegularAbility(Ability ability, CoreGame game) {
-        boolean isShielded = isAttackShielded(ability.isRanged(), ability.getParams().getDirVector(), game);
+        boolean isShielded = isAbilityShielded(ability, game);
 
         if (!isShielded && !ability.getParams().getIsHitShielded()) {
             takeLifeDamage(ability.getDamage(game));

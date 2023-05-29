@@ -52,6 +52,9 @@ public class AbilityAnimationConfig {
 
         configs.put("punch", AbilityAnimationConfig.of(40, 40, "punch", "punch", 0, 9, 0f, 0.02f, 1f));
 
+        configs.put("ring_of_fire",
+                    AbilityAnimationConfig.of(96, 96, "ring_of_fire_channel", "ring_of_fire_active", 20, 8, 0.02f, 0.02f, 1f));
+
     }
 
     Integer textureWidth;

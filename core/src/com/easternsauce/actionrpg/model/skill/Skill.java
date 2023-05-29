@@ -84,6 +84,9 @@ public class Skill {
         if (skillType == SkillType.PUNCH) {
             return Skill.of(skillType, creatureId, AbilityType.PUNCH, SimpleTimer.getExpiredTimer(), 0.4f, 14f, 0f);
         }
+        if (skillType == SkillType.RING_OF_FIRE) {
+            return Skill.of(skillType, creatureId, AbilityType.RING_OF_FIRE, SimpleTimer.getExpiredTimer(), 1f, 10f, 13f);
+        }
         throw new RuntimeException("skill not handled");
     }
 
