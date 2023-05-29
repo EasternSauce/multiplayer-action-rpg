@@ -142,8 +142,11 @@ public class CoreGameClient extends CoreGame {
             if (Gdx.input.isKeyJustPressed(Input.Keys.N)) {
                 handleDebugInformationQueryInput();
             }
+            if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
+                handleAttackButtonInput(playerConfig);
+            }
             if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
-                handleAttackInput();
+                handleAttackButtonHoldInput(playerConfig);
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
                 handlePerformAbilityInput(playerConfig, 0);
@@ -198,29 +201,38 @@ public class CoreGameClient extends CoreGame {
         }
     }
 
-    private void handleAttackInput() {
-        Creature player = gameState.accessCreatures().getCreatures().get(getGameState().getThisClientPlayerId());
-
-        Vector2 dirVector = mousePosRelativeToCenter();
-
-        float weaponDamage;
-        SkillType attackSkill;
-
-        if (player.getParams().getEquipmentItems().containsKey(EquipmentSlotType.PRIMARY_WEAPON.ordinal())) {
-            Item weaponItem = player.getParams().getEquipmentItems().get(EquipmentSlotType.PRIMARY_WEAPON.ordinal());
-
-            attackSkill = weaponItem.getTemplate().getAttackSkill();
-            weaponDamage = weaponItem.getDamage();
+    private void handleAttackButtonInput(PlayerConfig playerConfig) {
+        if (playerConfig.getIsInventoryVisible()) {
+            inventoryController.performUseItemClick(getEndPoint(), this);
         }
-        else {
-            attackSkill = SkillType.PUNCH;
-            weaponDamage = 0f; // weapon damage doesn't apply
+    }
+
+    private void handleAttackButtonHoldInput(PlayerConfig playerConfig) {
+        if (playerConfig.getIsInventoryVisible()) {
+
+            Creature player = gameState.accessCreatures().getCreatures().get(getGameState().getThisClientPlayerId());
+
+            Vector2 dirVector = mousePosRelativeToCenter();
+
+            float weaponDamage;
+            SkillType attackSkill;
+
+            if (player.getParams().getEquipmentItems().containsKey(EquipmentSlotType.PRIMARY_WEAPON.ordinal())) {
+                Item weaponItem = player.getParams().getEquipmentItems().get(EquipmentSlotType.PRIMARY_WEAPON.ordinal());
+
+                attackSkill = weaponItem.getTemplate().getAttackSkill();
+                weaponDamage = weaponItem.getDamage();
+            }
+            else {
+                attackSkill = SkillType.PUNCH;
+                weaponDamage = 0f; // weapon damage doesn't apply
+            }
+            getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(getGameState().getThisClientPlayerId(),
+                                                                                   attackSkill,
+                                                                                   player.getParams().getPos(),
+                                                                                   dirVector,
+                                                                                   weaponDamage)));
         }
-        getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(getGameState().getThisClientPlayerId(),
-                                                                               attackSkill,
-                                                                               player.getParams().getPos(),
-                                                                               dirVector,
-                                                                               weaponDamage)));
     }
 
     private void handleDebugInformationQueryInput() {

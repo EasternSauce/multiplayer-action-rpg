@@ -131,6 +131,7 @@ public class EndPointHelper {
         endPoint.getKryo().register(CreatureHitByAbilityAction.class);
         endPoint.getKryo().register(CreatureHitByDamageOverTimeAction.class);
         endPoint.getKryo().register(CreatureChangeAimDirectionAction.class);
+        endPoint.getKryo().register(InventoryItemUseAction.class);
 
         endPoint.getKryo().register(EquipmentSlotType.class);
         endPoint.getKryo().register(ItemTemplate.class);

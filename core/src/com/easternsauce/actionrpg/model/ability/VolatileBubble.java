@@ -17,17 +17,17 @@ public class VolatileBubble extends Projectile {
     public static VolatileBubble of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         VolatileBubble ability = VolatileBubble.of();
         ability.params = abilityParams
-            .setWidth(1.5f)
-            .setHeight(1.5f)
+            .setWidth(4f)
+            .setHeight(4f)
             .setChannelTime(0f)
             .setActiveTime(30f)
             .setTextureName("bubble")
-            .setBaseDamage(45f)
+            .setBaseDamage(15f)
             .setIsChannelAnimationLooping(false)
             .setIsActiveAnimationLooping(true)
             .setRotationShift(0f)
             .setDelayedActionTime(0.001f)
-            .setSpeed(10f);
+            .setSpeed(7f);
 
         return ability;
     }
@@ -54,7 +54,7 @@ public class VolatileBubble extends Projectile {
         }
         getParams().setRotationAngle(getParams().getDirVector().angleDeg());
 
-        if (getParams().getPos().distance(getParams().getSkillStartPos()) > 13f) {
+        if (getParams().getPos().distance(getParams().getSkillStartPos()) > 10f) {
             deactivate();
         }
     }

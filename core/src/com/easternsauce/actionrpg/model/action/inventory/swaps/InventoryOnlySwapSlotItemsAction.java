@@ -37,17 +37,27 @@ public class InventoryOnlySwapSlotItemsAction extends GameStateAction {
         //noinspection UnnecessaryLocalVariable
         Item temp = itemTo;
 
-        if (itemFrom != null) {
-            player.getParams().getInventoryItems().put(toSlotIndex, itemFrom);
-        }
-        else {
-            player.getParams().getInventoryItems().remove(toSlotIndex);
-        }
-        if (temp != null) {
-            player.getParams().getInventoryItems().put(fromSlotIndex, temp);
-        }
-        else {
+        boolean isCanStackItems =
+            itemFrom != null && temp != null && itemFrom.getTemplate().getIsStackable() && temp.getTemplate().getIsStackable() &&
+            itemFrom.getTemplate().getId().equals(temp.getTemplate().getId());
+
+        if (isCanStackItems) {
             player.getParams().getInventoryItems().remove(fromSlotIndex);
+            temp.setQuantity(temp.getQuantity() + itemFrom.getQuantity());
+        }
+        else {
+            if (itemFrom != null) {
+                player.getParams().getInventoryItems().put(toSlotIndex, itemFrom);
+            }
+            else {
+                player.getParams().getInventoryItems().remove(toSlotIndex);
+            }
+            if (temp != null) {
+                player.getParams().getInventoryItems().put(fromSlotIndex, temp);
+            }
+            else {
+                player.getParams().getInventoryItems().remove(fromSlotIndex);
+            }
         }
 
         playerConfig.setInventoryItemBeingMoved(null);

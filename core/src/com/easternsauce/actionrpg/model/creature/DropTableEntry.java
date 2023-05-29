@@ -101,4 +101,13 @@ public class DropTableEntry implements Comparable<DropTableEntry> {
                                                                 1f,
                                                                 shieldGrantedSkillDrops);
 
+    public static DropTableEntry lifePotionDrop = DropTableEntry.of(1f,
+                                                                    ItemTemplate.templates.get("lifePotion"),
+                                                                    0f,
+                                                                    new ConcurrentSkipListMap<>());
+    public static DropTableEntry manaPotionDrop = DropTableEntry.of(1f,
+                                                                    ItemTemplate.templates.get("manaPotion"),
+                                                                    0f,
+                                                                    new ConcurrentSkipListMap<>());
+
 }

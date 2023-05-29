@@ -9,6 +9,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.concurrent.ConcurrentSkipListMap;
+
 @NoArgsConstructor(staticName = "of")
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -19,17 +21,18 @@ public class IceSpear extends Projectile {
     public static IceSpear of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         IceSpear ability = IceSpear.of();
         ability.params = abilityParams
-            .setWidth(1.4f)
-            .setHeight(0.5f)
+            .setWidth(2.1f)
+            .setHeight(0.75f)
             .setChannelTime(0f)
-            .setActiveTime(0.6f)
+            .setActiveTime(3f)
             .setTextureName("ice_shard")
-            .setBaseDamage(35f)
+            .setBaseDamage(12f)
             .setIsChannelAnimationLooping(false)
             .setIsActiveAnimationLooping(true)
             .setRotationShift(0f)
             .setDelayedActionTime(0.001f)
-            .setSpeed(18f);
+            .setSpeed(18f)
+            .setCreaturesAlreadyHit(new ConcurrentSkipListMap<>());
         // setting
 
         return ability;
@@ -43,6 +46,18 @@ public class IceSpear extends Projectile {
     @Override
     public void updatePosition(CoreGame game) {
 
+    }
+
+    @Override
+    protected void onActiveUpdate(float delta, CoreGame game) {
+        if (getParams().getSpeed() != null) {
+            getParams().setVelocity(getParams().getDirVector().normalized().multiplyBy(getParams().getSpeed()));
+        }
+        getParams().setRotationAngle(getParams().getDirVector().angleDeg());
+
+        if (getParams().getPos().distance(getParams().getSkillStartPos()) > 6.5f) {
+            deactivate();
+        }
     }
 
     @Override

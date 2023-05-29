@@ -8,5 +8,7 @@ public enum CreatureEffect {
     SELF_SLOW,
     STUN,
     SELF_STUN,
-    POISON
+    POISON,
+    LIFE_REGENERATION,
+    MANA_REGENERATION
 }

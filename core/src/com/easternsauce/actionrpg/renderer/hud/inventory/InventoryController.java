@@ -3,10 +3,7 @@ package com.easternsauce.actionrpg.renderer.hud.inventory;
 import com.easternsauce.actionrpg.command.ActionPerformCommand;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
-import com.easternsauce.actionrpg.model.action.inventory.EquipmentItemPickUpAction;
-import com.easternsauce.actionrpg.model.action.inventory.InventoryItemPickUpAction;
-import com.easternsauce.actionrpg.model.action.inventory.InventoryPickUpCancelAction;
-import com.easternsauce.actionrpg.model.action.inventory.ItemDropOnGroundAction;
+import com.easternsauce.actionrpg.model.action.inventory.*;
 import com.easternsauce.actionrpg.model.action.inventory.swaps.InventoryAndEquipmentSwapSlotItemsAction;
 import com.easternsauce.actionrpg.model.action.inventory.swaps.InventoryOnlySwapSlotItemsAction;
 import com.easternsauce.actionrpg.model.creature.Creature;
@@ -43,7 +40,29 @@ public class InventoryController {
         if (action != null) {
             client.sendTCP(ActionPerformCommand.of(action));
         }
+    }
 
+    public void performUseItemClick(Client client, CoreGame game) {
+        PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
+
+        float x = game.hudMousePos().getX();
+        float y = game.hudMousePos().getY();
+
+        GameStateAction action = null;
+
+        if (InventoryPositioning.backgroundOuterRect.contains(x, y)) {
+            InventoryData inventoryData = InventoryData.of(InventoryPositioning.getInventorySlotClicked(x, y),
+                                                           InventoryPositioning.getEquipmentSlotClicked(x, y),
+                                                           playerConfig.getInventoryItemBeingMoved(),
+                                                           playerConfig.getEquipmentItemBeingMoved());
+
+            action = InventoryItemUseAction.of(game.getGameState().getThisClientPlayerId(),
+                                               inventoryData.getInventorySlotClicked());
+        }
+
+        if (action != null) {
+            client.sendTCP(ActionPerformCommand.of(action));
+        }
     }
 
     private GameStateAction determineInventoryAction(CoreGame game, Creature player, PlayerConfig playerConfig,

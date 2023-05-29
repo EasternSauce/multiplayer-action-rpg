@@ -98,8 +98,6 @@ public class CreatureHitByAbilityAction extends GameStateAction {
 
         dropTable.forEach(entry -> {
             if (creature.nextDropRngValue() < entry.getDropChance()) {
-                Float quality = 0.5f + creature.nextDropRngValue() / 2f;
-
                 AtomicReference<SkillType> weightedSkillType = new AtomicReference<>(null);
 
                 if (creature.nextDropRngValue() < entry.getGrantedSkillChance()) {
@@ -135,6 +133,14 @@ public class CreatureHitByAbilityAction extends GameStateAction {
                     }
 
                     grantedSkills.put(weightedSkillType.get(), level);
+                }
+
+                float quality;
+                if (entry.getTemplate().getIsQualityNonApplicable()) {
+                    quality = 1f;
+                }
+                else {
+                    quality = 0.5f + creature.nextDropRngValue() / 2f;
                 }
 
                 Item item = Item

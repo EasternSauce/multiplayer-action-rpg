@@ -28,7 +28,9 @@ public class EnemyTemplate {
                                                                                                  DropTableEntry.ironSwordDrop,
                                                                                                  DropTableEntry.specialIronSwordDrop,
                                                                                                  DropTableEntry.boomerangDrop,
-                                                                                                 DropTableEntry.shieldDrop));
+                                                                                                 DropTableEntry.shieldDrop,
+                                                                                                 DropTableEntry.lifePotionDrop,
+                                                                                                 DropTableEntry.manaPotionDrop));
 
     public static EnemyTemplate archer = EnemyTemplate.of(EnemyType.ARCHER,
                                                           150f,

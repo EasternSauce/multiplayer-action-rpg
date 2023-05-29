@@ -10,8 +10,8 @@ public enum EquipmentSlotType {
     BODY(3, "Body"),
     GLOVES(4, "Gloves"),
     RING(5, "Ring"),
-    BOOTS(6, "Boots"),
-    CONSUMABLE(7, "Consumable");
+    BOOTS(6, "Boots");
+    //    CONSUMABLE(7, "Consumable");
 
     private final int sequenceNumber;
     private final String name;
@@ -40,7 +40,7 @@ public enum EquipmentSlotType {
         equipmentSlotNames.put(4, "Gloves");
         equipmentSlotNames.put(5, "Ring");
         equipmentSlotNames.put(6, "Boots");
-        equipmentSlotNames.put(7, "Consumable");
+        //        equipmentSlotNames.put(7, "Consumable");
     }
 
     static {
@@ -51,6 +51,6 @@ public enum EquipmentSlotType {
         equipmentSlotSequenceNumbers.put(4, GLOVES);
         equipmentSlotSequenceNumbers.put(5, RING);
         equipmentSlotSequenceNumbers.put(6, BOOTS);
-        equipmentSlotSequenceNumbers.put(7, CONSUMABLE);
+        //        equipmentSlotSequenceNumbers.put(7, CONSUMABLE);
     }
 }

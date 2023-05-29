@@ -142,8 +142,10 @@ public class CreatureParams implements EntityParams {
     private SimpleTimer enemyAttackCooldownTimer = SimpleTimer.getExpiredTimer();
 
     private SimpleTimer damageOverTimeTimer = SimpleTimer.getExpiredTimer();
+    private SimpleTimer lifeRegenerationOverTimeTimer = SimpleTimer.getExpiredTimer();
+    private SimpleTimer manaRegenerationOverTimeTimer = SimpleTimer.getExpiredTimer();
 
-    private Float currentDamageOverTime = 0f;
+    private Float currentDamageOverTimeTaken = 0f;
 
     private CreatureId currentDamageOverTimeDealerCreatureId = null;
 

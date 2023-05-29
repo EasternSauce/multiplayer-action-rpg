@@ -11,6 +11,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.Map;
+
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -26,34 +28,66 @@ public class LootPileItemTryPickUpAction extends GameStateAction {
 
     @Override
     public void applyToGame(CoreGame game) {
-        Integer freeSlot = null;
-        for (int i = 0; i < InventoryPositioning.INVENTORY_TOTAL_SLOTS; i++) {
-            if (!game.getGameState().accessCreatures().getCreature(playerId).getParams().getInventoryItems().containsKey(i)) {
-                freeSlot = i;
-                break;
+
+        Map<Integer, Item> inventoryItems = game
+            .getGameState()
+            .accessCreatures()
+            .getCreature(playerId)
+            .getParams()
+            .getInventoryItems();
+
+        Integer existingStackableSlot = null;
+
+        if (item.getTemplate().getIsStackable()) {
+
+            for (int i = 0; i < InventoryPositioning.INVENTORY_TOTAL_SLOTS; i++) {
+                if (inventoryItems.containsKey(i) &&
+                    inventoryItems.get(i).getTemplate().getId().equals(item.getTemplate().getId())) {
+                    existingStackableSlot = i;
+                    break;
+                }
             }
         }
 
-        LootPile lootPile = game.getGameState().getLootPile(item.getLootPileId());
-        if (freeSlot != null && lootPile != null) {
-            game
-                .getGameState()
-                .accessCreatures()
-                .getCreature(playerId)
-                .getParams()
-                .getInventoryItems()
-                .put(freeSlot,
-                     Item
-                         .of()
-                         .setTemplate(item.getTemplate())
-                         .setQuantity(item.getQuantity())
-                         .setQualityModifier(item.getQualityModifier())
-                         .setGrantedSkills(item.getGrantedSkills())
-                         .setLootPileId(null));
+        if (existingStackableSlot != null) {
+            LootPile lootPile = game.getGameState().getLootPile(item.getLootPileId());
 
-            lootPile.getParams().getItems().remove(item);
-            if (lootPile.getParams().getItems().isEmpty()) {
-                lootPile.getParams().setIsFullyLooted(true);
+            if (lootPile != null) {
+                inventoryItems
+                    .get(existingStackableSlot)
+                    .setQuantity(inventoryItems.get(existingStackableSlot).getQuantity() + item.getQuantity());
+
+                lootPile.getParams().getItems().remove(item);
+                if (lootPile.getParams().getItems().isEmpty()) {
+                    lootPile.getParams().setIsFullyLooted(true);
+                }
+            }
+        }
+        else {
+            Integer freeSlot = null;
+            for (int i = 0; i < InventoryPositioning.INVENTORY_TOTAL_SLOTS; i++) {
+                if (!inventoryItems.containsKey(i)) {
+                    freeSlot = i;
+                    break;
+                }
+            }
+
+            LootPile lootPile = game.getGameState().getLootPile(item.getLootPileId());
+
+            if (freeSlot != null && lootPile != null) {
+                inventoryItems.put(freeSlot,
+                                   Item
+                                       .of()
+                                       .setTemplate(item.getTemplate())
+                                       .setQuantity(item.getQuantity())
+                                       .setQualityModifier(item.getQualityModifier())
+                                       .setGrantedSkills(item.getGrantedSkills())
+                                       .setLootPileId(null));
+
+                lootPile.getParams().getItems().remove(item);
+                if (lootPile.getParams().getItems().isEmpty()) {
+                    lootPile.getParams().setIsFullyLooted(true);
+                }
             }
         }
 

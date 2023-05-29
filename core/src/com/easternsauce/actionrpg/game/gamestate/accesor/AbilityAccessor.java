@@ -110,7 +110,8 @@ public class AbilityAccessor {
                 .setVectorTowardsTarget(dirVector)
                 .setOverrideSize(overrideSize)
                 .setOverrideDuration(overrideDuration)
-                .setSkillType(chainFromAbility.getParams().getSkillType());
+                .setSkillType(chainFromAbility.getParams().getSkillType())
+                .setSkillStartPos(chainFromPos);
 
             spawnAbility(abilityType, abilityParams, game);
         }

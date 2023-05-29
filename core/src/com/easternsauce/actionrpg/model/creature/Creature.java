@@ -27,8 +27,11 @@ public abstract class Creature implements Entity {
     public abstract Creature setParams(CreatureParams params);
 
     public void update(float delta, CoreGame game) {
-        regenerateStamina();
-        processDamageOverTime(game);
+        if (isAlive()) {
+            regenerateStamina();
+            processRegenerationOverTime(game);
+            processDamageOverTime(game);
+        }
 
         if (!getParams().getReachedTargetPos()) {
             updateMovement(game);
@@ -48,15 +51,47 @@ public abstract class Creature implements Entity {
 
     }
 
+    private void processRegenerationOverTime(CoreGame game) {
+        if (isEffectActive(CreatureEffect.LIFE_REGENERATION, game)) {
+            System.out.println("regening... life is " + getParams().getLife());
+            float lifeRegen = 14f;
+            if (getParams().getLifeRegenerationOverTimeTimer().getTime() > 0.333f) {
+                if (getParams().getLife() + lifeRegen < getParams().getMaxLife()) {
+                    getParams().setLife(getParams().getLife() + lifeRegen);
+                }
+                else {
+                    getParams().setLife(getParams().getMaxLife());
+                }
+
+                getParams().getLifeRegenerationOverTimeTimer().restart();
+            }
+        }
+        if (isEffectActive(CreatureEffect.MANA_REGENERATION, game)) {
+            System.out.println("regening mana...");
+            float manaRegen = 14f;
+            if (getParams().getManaRegenerationOverTimeTimer().getTime() > 0.333f) {
+                if (getParams().getMana() + manaRegen < getParams().getMaxMana()) {
+                    getParams().setMana(getParams().getMana() + manaRegen);
+                }
+                else {
+                    getParams().setMana(getParams().getMaxMana());
+                }
+
+                getParams().getManaRegenerationOverTimeTimer().restart();
+            }
+
+        }
+    }
+
     private void processDamageOverTime(CoreGame game) {
         if (isEffectActive(CreatureEffect.POISON, game)) {
-            if (getParams().getDamageOverTimeTimer().getTime() > 0.33f) {
+            if (getParams().getDamageOverTimeTimer().getTime() > 0.333f) {
                 game
                     .getGameState()
                     .accessCreatures()
                     .creatureTakeDamageOverTime(getParams().getCurrentDamageOverTimeDealerCreatureId(),
                                                 getId(),
-                                                getParams().getCurrentDamageOverTime());
+                                                getParams().getCurrentDamageOverTimeTaken());
                 getParams().getDamageOverTimeTimer().restart();
             }
         }
@@ -114,6 +149,8 @@ public abstract class Creature implements Entity {
         getParams().getGeneralSkillPerformCooldownTimer().update(delta);
         getParams().getEnemyAttackCooldownTimer().update(delta);
         getParams().getDamageOverTimeTimer().update(delta);
+        getParams().getLifeRegenerationOverTimeTimer().update(delta);
+        getParams().getManaRegenerationOverTimeTimer().update(delta);
 
         getParams().getSkills().forEach((skillType, skill) -> skill.getPerformTimer().update(delta));
         // add other timers here...

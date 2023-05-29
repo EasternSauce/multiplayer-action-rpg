@@ -22,8 +22,8 @@ public class Fireball extends Projectile {
 
         Fireball ability = Fireball.of();
         ability.params = abilityParams
-            .setWidth(1.5f)
-            .setHeight(1.5f)
+            .setWidth(2.5f)
+            .setHeight(2.5f)
             .setChannelTime(0f)
             .setActiveTime(30f)
             .setTextureName("fireball")
@@ -60,11 +60,11 @@ public class Fireball extends Projectile {
         }
         getParams().setRotationAngle(getParams().getDirVector().angleDeg());
 
-        if (getParams().getStateTimer().getTime() < 2f) {
-            getParams().setSpeed(5f + (getParams().getStateTimer().getTime() / 2f) * 40f);
+        if (getParams().getStateTimer().getTime() < 1.5f) {
+            getParams().setSpeed(10f + (getParams().getStateTimer().getTime() / 1.5f) * 70f);
         }
         else {
-            getParams().setSpeed(45f);
+            getParams().setSpeed(80f);
         }
     }
 
