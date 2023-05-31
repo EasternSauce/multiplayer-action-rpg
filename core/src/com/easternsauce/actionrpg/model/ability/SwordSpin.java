@@ -2,7 +2,6 @@ package com.easternsauce.actionrpg.model.ability;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.util.Ability;
-import com.easternsauce.actionrpg.model.ability.util.AbilityId;
 import com.easternsauce.actionrpg.model.ability.util.AbilityParams;
 import com.easternsauce.actionrpg.model.ability.util.AbilityState;
 import com.easternsauce.actionrpg.model.creature.Creature;
@@ -20,7 +19,6 @@ import java.util.Set;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class SwordSpin extends Ability {
-
     AbilityParams params;
 
     public static SwordSpin of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
@@ -41,63 +39,13 @@ public class SwordSpin extends Ability {
     }
 
     @Override
-    public void init(CoreGame game) {
-
-        getParams().setState(AbilityState.CHANNEL);
-        getParams().getStateTimer().restart();
-
-        updatePosition(game);
-
-    }
-
-    @Override
-    public Boolean isRanged() {
-        return false;
-    }
-
-    @Override
     public Boolean isPositionChangedOnUpdate() {
         return true;
     }
 
     @Override
-    public void onAbilityStarted(CoreGame game) {
-
-    }
-
-    @Override
-    public void onDelayedAction(CoreGame game) {
-
-    }
-
-    @Override
-    protected void onAbilityCompleted(CoreGame game) {
-
-    }
-
-    public void updatePosition(CoreGame game) {
-        Vector2 dirVector;
-        if (getParams().getDirVector().len() <= 0) {
-            dirVector = Vector2.of(1, 0);
-        }
-        else {
-            dirVector = getParams().getDirVector();
-        }
-
-        Float theta = dirVector.angleDeg();
-
-        float attackShiftX = dirVector.normalized().getX() * getParams().getRange();
-        float attackShiftY = dirVector.normalized().getY() * getParams().getRange();
-
-        Vector2 pos = game.getGameState().accessCreatures().getCreaturePos(getParams().getCreatureId());
-
-        if (pos != null) {
-            float attackRectX = attackShiftX + pos.getX();
-            float attackRectY = attackShiftY + pos.getY();
-
-            getParams().setPos(Vector2.of(attackRectX, attackRectY));
-            getParams().setRotationAngle(theta);
-        }
+    public Boolean isRanged() {
+        return false;
     }
 
     @Override
@@ -127,33 +75,47 @@ public class SwordSpin extends Ability {
     }
 
     @Override
-    public Float getStunDuration() {
-        return 0.05f;
-    }
+    public void init(CoreGame game) {
+        getParams().setState(AbilityState.CHANNEL);
+        getParams().getStateTimer().restart();
 
-    @Override
-    public void onCreatureHit(CreatureId creatureId, CoreGame game) {
-
-    }
-
-    @Override
-    public void onThisCreatureHit(CoreGame game) {
+        updatePosition(game);
 
     }
 
-    @Override
-    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
+    public void updatePosition(CoreGame game) {
+        Vector2 dirVector;
+        if (getParams().getDirVector().len() <= 0) {
+            dirVector = Vector2.of(1, 0);
+        }
+        else {
+            dirVector = getParams().getDirVector();
+        }
 
-    }
+        Float theta = dirVector.angleDeg();
 
-    @Override
-    public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
+        float attackShiftX = dirVector.normalized().getX() * getParams().getRange();
+        float attackShiftY = dirVector.normalized().getY() * getParams().getRange();
 
+        Vector2 pos = game.getGameState().accessCreatures().getCreaturePos(getParams().getCreatureId());
+
+        if (pos != null) {
+            float attackRectX = attackShiftX + pos.getX();
+            float attackRectY = attackShiftY + pos.getY();
+
+            getParams().setPos(Vector2.of(attackRectX, attackRectY));
+            getParams().setRotationAngle(theta);
+        }
     }
 
     @Override
     protected boolean isWeaponAttack() {
         return false;
+    }
+
+    @Override
+    public Float getStunDuration() {
+        return 0.05f;
     }
 
     @Override

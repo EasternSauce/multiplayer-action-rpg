@@ -1,7 +1,6 @@
 package com.easternsauce.actionrpg.model.ability;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.ability.util.AbilityId;
 import com.easternsauce.actionrpg.model.ability.util.AbilityParams;
 import com.easternsauce.actionrpg.model.ability.util.AbilityType;
 import com.easternsauce.actionrpg.model.ability.util.Projectile;
@@ -42,29 +41,7 @@ public class VolatileBubble extends Projectile {
     }
 
     @Override
-    public void onAbilityStarted(CoreGame game) {
-
-    }
-
-    @Override
-    protected void onActiveUpdate(float delta, CoreGame game) {
-        if (getParams().getSpeed() != null) {
-            getParams().setVelocity(getParams().getDirVector().normalized().multiplyBy(getParams().getSpeed()));
-        }
-        getParams().setRotationAngle(getParams().getDirVector().angleDeg());
-
-        if (getParams().getPos().distance(getParams().getSkillStartPos()) > 10f) {
-            deactivate();
-        }
-    }
-
-    @Override
-    public void onDelayedAction(CoreGame game) {
-
-    }
-
-    @Override
-    protected void onAbilityCompleted(CoreGame game) {
+    protected void onCompleted(CoreGame game) {
         float baseAngle = getParams().getDirVector().angleDeg();
 
         float[] angles = {
@@ -106,22 +83,24 @@ public class VolatileBubble extends Projectile {
     }
 
     @Override
-    public void onThisCreatureHit(CoreGame game) {
-
-    }
-
-    @Override
     public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
         deactivate();
     }
 
     @Override
-    public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
-
+    protected boolean isWeaponAttack() {
+        return false;
     }
 
     @Override
-    protected boolean isWeaponAttack() {
-        return false;
+    protected void onActiveUpdate(float delta, CoreGame game) {
+        if (getParams().getSpeed() != null) {
+            getParams().setVelocity(getParams().getDirVector().normalized().multiplyBy(getParams().getSpeed()));
+        }
+        getParams().setRotationAngle(getParams().getDirVector().angleDeg());
+
+        if (getParams().getPos().distance(getParams().getSkillStartPos()) > 10f) {
+            deactivate();
+        }
     }
 }

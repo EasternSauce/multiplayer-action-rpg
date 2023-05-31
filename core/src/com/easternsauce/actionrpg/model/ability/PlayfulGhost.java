@@ -1,11 +1,9 @@
 package com.easternsauce.actionrpg.model.ability;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.ability.util.AbilityId;
 import com.easternsauce.actionrpg.model.ability.util.AbilityParams;
 import com.easternsauce.actionrpg.model.ability.util.Projectile;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.creature.Enemy;
 import com.easternsauce.actionrpg.model.creature.Player;
 import com.easternsauce.actionrpg.model.util.MathHelper;
@@ -50,28 +48,12 @@ public class PlayfulGhost extends Projectile {
     }
 
     @Override
-    public void onAbilityStarted(CoreGame game) {
-
+    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
+        deactivate();
     }
 
     @Override
-    public void onDelayedAction(CoreGame game) {
-
-    }
-
-    @Override
-    protected void onAbilityCompleted(CoreGame game) {
-
-    }
-
-    private boolean isTargetingAllowed(Creature thisCreature, Creature targetCreature) {
-        if (thisCreature instanceof Enemy) {
-            return targetCreature instanceof Player;
-        }
-        //noinspection RedundantIfStatement
-        if (thisCreature instanceof Player) {
-            return true;
-        }
+    protected boolean isWeaponAttack() {
         return false;
     }
 
@@ -137,30 +119,15 @@ public class PlayfulGhost extends Projectile {
         }
     }
 
-    @Override
-    public void onCreatureHit(CreatureId creatureId, CoreGame game) {
-        //deactivate();
-    }
-
-    @Override
-    public void onThisCreatureHit(CoreGame game) {
-
-    }
-
-    @Override
-    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
-        deactivate();
-    }
-
-    @Override
-    public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
-
-    }
-
-    @SuppressWarnings("unused")
-    public Float nextPositiveFloat() {
-        getParams().setAbilityRngSeed(RandomHelper.seededRandomFloat(getParams().getAbilityRngSeed()));
-        return getParams().getAbilityRngSeed();
+    private boolean isTargetingAllowed(Creature thisCreature, Creature targetCreature) {
+        if (thisCreature instanceof Enemy) {
+            return targetCreature instanceof Player;
+        }
+        //noinspection RedundantIfStatement
+        if (thisCreature instanceof Player) {
+            return true;
+        }
+        return false;
     }
 
     @SuppressWarnings("unused")
@@ -169,8 +136,9 @@ public class PlayfulGhost extends Projectile {
         return (getParams().getAbilityRngSeed() - 0.5f) * 2;
     }
 
-    @Override
-    protected boolean isWeaponAttack() {
-        return false;
+    @SuppressWarnings("unused")
+    public Float nextPositiveFloat() {
+        getParams().setAbilityRngSeed(RandomHelper.seededRandomFloat(getParams().getAbilityRngSeed()));
+        return getParams().getAbilityRngSeed();
     }
 }

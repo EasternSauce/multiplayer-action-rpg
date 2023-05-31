@@ -1,7 +1,6 @@
 package com.easternsauce.actionrpg.model.ability;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.ability.util.AbilityId;
 import com.easternsauce.actionrpg.model.ability.util.AbilityParams;
 import com.easternsauce.actionrpg.model.ability.util.Projectile;
 import com.easternsauce.actionrpg.model.creature.Creature;
@@ -47,43 +46,11 @@ public class IceSpear extends Projectile {
     }
 
     @Override
-    protected void onActiveUpdate(float delta, CoreGame game) {
-        if (getParams().getSpeed() != null) {
-            getParams().setVelocity(getParams().getDirVector().normalized().multiplyBy(getParams().getSpeed()));
-        }
-        getParams().setRotationAngle(getParams().getDirVector().angleDeg());
-
-        if (getParams().getPos().distance(getParams().getSkillStartPos()) > 6.5f) {
-            deactivate();
-        }
-    }
-
-    @Override
-    public void onAbilityStarted(CoreGame game) {
-
-    }
-
-    @Override
-    public void onDelayedAction(CoreGame game) {
-
-    }
-
-    @Override
-    protected void onAbilityCompleted(CoreGame game) {
-
-    }
-
-    @Override
     public void onCreatureHit(CreatureId creatureId, CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
         creature.applyEffect(CreatureEffect.SLOW, 2.5f, game);
         creature.getParams().setCurrentSlowMagnitude(0.5f);
-    }
-
-    @Override
-    public void onThisCreatureHit(CoreGame game) {
-
     }
 
     @Override
@@ -94,13 +61,20 @@ public class IceSpear extends Projectile {
     }
 
     @Override
-    public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
-
+    protected boolean isWeaponAttack() {
+        return false;
     }
 
     @Override
-    protected boolean isWeaponAttack() {
-        return false;
+    protected void onActiveUpdate(float delta, CoreGame game) {
+        if (getParams().getSpeed() != null) {
+            getParams().setVelocity(getParams().getDirVector().normalized().multiplyBy(getParams().getSpeed()));
+        }
+        getParams().setRotationAngle(getParams().getDirVector().angleDeg());
+
+        if (getParams().getPos().distance(getParams().getSkillStartPos()) > 6.5f) {
+            deactivate();
+        }
     }
 }
 

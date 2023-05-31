@@ -2,10 +2,8 @@ package com.easternsauce.actionrpg.model.ability;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.util.Ability;
-import com.easternsauce.actionrpg.model.ability.util.AbilityId;
 import com.easternsauce.actionrpg.model.ability.util.AbilityParams;
 import com.easternsauce.actionrpg.model.ability.util.AbilityState;
-import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,7 +13,6 @@ import lombok.NoArgsConstructor;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class SwordSlash extends Ability {
-
     AbilityParams params;
 
     public static SwordSlash of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
@@ -35,13 +32,8 @@ public class SwordSlash extends Ability {
     }
 
     @Override
-    public void init(CoreGame game) {
-
-        getParams().setState(AbilityState.CHANNEL);
-        getParams().getStateTimer().restart();
-
-        updatePosition(game);
-
+    public Boolean isPositionChangedOnUpdate() {
+        return true;
     }
 
     @Override
@@ -50,23 +42,21 @@ public class SwordSlash extends Ability {
     }
 
     @Override
-    public Boolean isPositionChangedOnUpdate() {
-        return true;
+    public void onChannelUpdate(CoreGame game) {
+        updatePosition(game);
     }
 
     @Override
-    public void onAbilityStarted(CoreGame game) {
-
+    protected void onActiveUpdate(float delta, CoreGame game) {
+        updatePosition(game);
     }
 
     @Override
-    public void onDelayedAction(CoreGame game) {
+    public void init(CoreGame game) {
+        getParams().setState(AbilityState.CHANNEL);
+        getParams().getStateTimer().restart();
 
-    }
-
-    @Override
-    protected void onAbilityCompleted(CoreGame game) {
-
+        updatePosition(game);
     }
 
     public void updatePosition(CoreGame game) {
@@ -96,43 +86,13 @@ public class SwordSlash extends Ability {
     }
 
     @Override
-    public void onChannelUpdate(CoreGame game) {
-        updatePosition(game);
-    }
-
-    @Override
-    protected void onActiveUpdate(float delta, CoreGame game) {
-        updatePosition(game);
-    }
-
-    @Override
-    public void onCreatureHit(CreatureId creatureId, CoreGame game) {
-
-    }
-
-    @Override
-    public void onThisCreatureHit(CoreGame game) {
-
-    }
-
-    @Override
-    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
-
-    }
-
-    @Override
-    public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
-
+    protected boolean isWeaponAttack() {
+        return true;
     }
 
     @Override
     public Float getStunDuration() {
         return 0.2f;
-    }
-
-    @Override
-    protected boolean isWeaponAttack() {
-        return true;
     }
 
     @Override

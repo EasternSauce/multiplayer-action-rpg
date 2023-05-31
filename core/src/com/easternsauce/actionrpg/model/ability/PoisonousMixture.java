@@ -1,7 +1,6 @@
 package com.easternsauce.actionrpg.model.ability;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.ability.util.AbilityId;
 import com.easternsauce.actionrpg.model.ability.util.AbilityParams;
 import com.easternsauce.actionrpg.model.ability.util.AbilityType;
 import com.easternsauce.actionrpg.model.ability.util.Projectile;
@@ -42,21 +41,6 @@ public class PoisonousMixture extends Projectile {
     }
 
     @Override
-    public void onCreatureHit(CreatureId creatureId, CoreGame game) {
-        deactivate();
-    }
-
-    @Override
-    public void onThisCreatureHit(CoreGame game) {
-
-    }
-
-    @Override
-    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
-        deactivate();
-    }
-
-    @Override
     protected void onActiveUpdate(float delta, CoreGame game) {
         //projectile speeds up over time
         if (getParams().getSpeed() != null) {
@@ -82,17 +66,7 @@ public class PoisonousMixture extends Projectile {
     }
 
     @Override
-    public void onAbilityStarted(CoreGame game) {
-
-    }
-
-    @Override
-    public void onDelayedAction(CoreGame game) {
-
-    }
-
-    @Override
-    protected void onAbilityCompleted(CoreGame game) {
+    protected void onCompleted(CoreGame game) {
         game
             .getGameState()
             .accessAbilities()
@@ -106,8 +80,18 @@ public class PoisonousMixture extends Projectile {
     }
 
     @Override
-    public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
+    public void onCreatureHit(CreatureId creatureId, CoreGame game) {
+        deactivate();
+    }
 
+    @Override
+    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
+        deactivate();
+    }
+
+    @Override
+    protected boolean isWeaponAttack() {
+        return false;
     }
 
     @SuppressWarnings("SpellCheckingInspection")
@@ -118,11 +102,6 @@ public class PoisonousMixture extends Projectile {
         scalings.put(2, 1.1f);
         scalings.put(3, 1.2f);
         return scalings;
-    }
-
-    @Override
-    protected boolean isWeaponAttack() {
-        return false;
     }
 
     @Override

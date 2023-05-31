@@ -260,7 +260,6 @@ public abstract class Creature implements Entity {
                 applyEffect(CreatureEffect.STUN, ability.getStunDuration(), game);
             }
         }
-
     }
 
     private void takeManaDamage(Float manaCost) {

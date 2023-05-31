@@ -1,7 +1,6 @@
 package com.easternsauce.actionrpg.model.ability;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.ability.util.AbilityId;
 import com.easternsauce.actionrpg.model.ability.util.AbilityParams;
 import com.easternsauce.actionrpg.model.ability.util.Projectile;
 import com.easternsauce.actionrpg.model.creature.Creature;
@@ -42,30 +41,14 @@ public class Boomerang extends Projectile {
     }
 
     @Override
-    public void onAbilityStarted(CoreGame game) {
-
-    }
-
-    @Override
-    public void onDelayedAction(CoreGame game) {
-
-    }
-
-    @Override
-    protected void onAbilityCompleted(CoreGame game) {
-
-    }
-
-    @Override
     public void onCreatureHit(CreatureId creatureId, CoreGame game) {
         getParams().setIsComingBack(true);
         getParams().setSpeed(20f);
     }
 
     @Override
-    public void onThisCreatureHit(CoreGame game) {
+    public void onSelfCreatureHit(CoreGame game) {
         if (getParams().getIsComingBack()) {
-
             Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
             Skill skill = creature.getParams().getSkills().get(getParams().getSkillType());
 
@@ -73,6 +56,22 @@ public class Boomerang extends Projectile {
 
             deactivate();
         }
+    }
+
+    @Override
+    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
+        getParams().setIsComingBack(true);
+        getParams().setSpeed(20f);
+    }
+
+    @Override
+    protected boolean isWeaponAttack() {
+        return true;
+    }
+
+    @Override
+    public Float getStunDuration() {
+        return 0.65f;
     }
 
     @Override
@@ -110,26 +109,5 @@ public class Boomerang extends Projectile {
 
         }
 
-    }
-
-    @Override
-    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
-        getParams().setIsComingBack(true);
-        getParams().setSpeed(20f);
-    }
-
-    @Override
-    public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
-
-    }
-
-    @Override
-    protected boolean isWeaponAttack() {
-        return true;
-    }
-
-    @Override
-    public Float getStunDuration() {
-        return 0.65f;
     }
 }

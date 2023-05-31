@@ -25,7 +25,7 @@ public class PhysicsHelper {
 
                     if (event.getSourceCreatureId().equals(event.getDestinationCreatureId())) {
                         Ability ability = game.getGameState().accessAbilities().getAbility(event.getAbilityId());
-                        ability.onThisCreatureHit(game);
+                        ability.onSelfCreatureHit(game);
                     }
                     else {
                         handleCreatureAttacked(event, game);

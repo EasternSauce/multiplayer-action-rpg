@@ -2,7 +2,6 @@ package com.easternsauce.actionrpg.model.ability.bossonly;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.util.Ability;
-import com.easternsauce.actionrpg.model.ability.util.AbilityId;
 import com.easternsauce.actionrpg.model.ability.util.AbilityParams;
 import com.easternsauce.actionrpg.model.ability.util.AbilityState;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
@@ -39,13 +38,8 @@ public class BossSwordSpin extends Ability {
     }
 
     @Override
-    public void init(CoreGame game) {
-
-        getParams().setState(AbilityState.CHANNEL);
-        getParams().getStateTimer().restart();
-
-        updatePosition(game);
-
+    public Boolean isPositionChangedOnUpdate() {
+        return true;
     }
 
     @Override
@@ -54,23 +48,33 @@ public class BossSwordSpin extends Ability {
     }
 
     @Override
-    public Boolean isPositionChangedOnUpdate() {
-        return true;
+    public void onChannelUpdate(CoreGame game) {
+        updatePosition(game);
     }
 
     @Override
-    public void onAbilityStarted(CoreGame game) {
+    protected void onActiveUpdate(float delta, CoreGame game) {
+        updatePosition(game);
 
+        getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(-10));
+
+        Set<CreatureId> creaturesHitRemove = new HashSet<>();
+
+        getParams().getCreaturesAlreadyHit().forEach((creatureId, time) -> {
+            if (time < getParams().getStateTimer().getTime() - 0.4f) {
+                creaturesHitRemove.add(creatureId);
+            }
+        });
+
+        creaturesHitRemove.forEach(creatureId -> getParams().getCreaturesAlreadyHit().remove(creatureId));
     }
 
     @Override
-    public void onDelayedAction(CoreGame game) {
+    public void init(CoreGame game) {
+        getParams().setState(AbilityState.CHANNEL);
+        getParams().getStateTimer().restart();
 
-    }
-
-    @Override
-    protected void onAbilityCompleted(CoreGame game) {
-
+        updatePosition(game);
     }
 
     public void updatePosition(CoreGame game) {
@@ -99,55 +103,13 @@ public class BossSwordSpin extends Ability {
     }
 
     @Override
-    public void onChannelUpdate(CoreGame game) {
-        updatePosition(game);
-    }
-
-    @Override
-    protected void onActiveUpdate(float delta, CoreGame game) {
-        updatePosition(game);
-
-        getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(-10));
-
-        Set<CreatureId> creaturesHitRemove = new HashSet<>();
-
-        getParams().getCreaturesAlreadyHit().forEach((creatureId, time) -> {
-            if (time < getParams().getStateTimer().getTime() - 0.4f) {
-                creaturesHitRemove.add(creatureId);
-            }
-        });
-
-        creaturesHitRemove.forEach(creatureId -> getParams().getCreaturesAlreadyHit().remove(creatureId));
+    protected boolean isWeaponAttack() {
+        return false;
     }
 
     @Override
     public Float getStunDuration() {
         return 0.35f;
-    }
-
-    @Override
-    public void onCreatureHit(CreatureId creatureId, CoreGame game) {
-
-    }
-
-    @Override
-    public void onThisCreatureHit(CoreGame game) {
-
-    }
-
-    @Override
-    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
-
-    }
-
-    @Override
-    public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
-
-    }
-
-    @Override
-    protected boolean isWeaponAttack() {
-        return false;
     }
 
     @Override

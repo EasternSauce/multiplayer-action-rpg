@@ -12,6 +12,7 @@ import lombok.Data;
 import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
 
+@SuppressWarnings("SpellCheckingInspection")
 @Data
 public abstract class Ability implements Entity {
     AbilityParams params;
@@ -31,9 +32,9 @@ public abstract class Ability implements Entity {
             if (getParams().getStateTimer().getTime() > getParams().getChannelTime()) {
                 getParams().setState(AbilityState.ACTIVE);
 
-                activateAbility(game);
+                activate(game);
 
-                onAbilityStarted(game);
+                onStarted(game);
 
                 getParams().getStateTimer().restart();
             }
@@ -58,28 +59,37 @@ public abstract class Ability implements Entity {
             if (getParams().getStateTimer().getTime() > activeDuration) {
                 getParams().setState(AbilityState.INACTIVE);
                 getParams().getStateTimer().restart();
-                onAbilityCompleted(game);
+                onCompleted(game);
             }
         }
 
         updateTimers(delta);
     }
 
-    private void activateAbility(CoreGame game) {
+    abstract public void onChannelUpdate(CoreGame game);
+
+    private void activate(CoreGame game) {
         //        game.getGameState().accessAbilities().sendActivateAbilityAction(this); // send action to update the server
 
         game.getEventProcessor().getAbilityModelsToBeActivated().add(getParams().getId());
     }
 
-    abstract public void onAbilityStarted(CoreGame game);
-
-    abstract public void onDelayedAction(CoreGame game);
-
-    abstract protected void onAbilityCompleted(CoreGame game);
-
-    abstract public void onChannelUpdate(CoreGame game);
+    public void onStarted(CoreGame game) {
+    }
 
     abstract protected void onActiveUpdate(float delta, CoreGame game);
+
+    public void onDelayedAction(CoreGame game) {
+
+    }
+
+    protected void onCompleted(CoreGame game) {
+    }
+
+    public void updateTimers(float delta) {
+        getParams().getStateTimer().update(delta);
+        getParams().getChangeDirectionTimer().update(delta);
+    }
 
     public void init(CoreGame game) {
 
@@ -105,11 +115,6 @@ public abstract class Ability implements Entity {
         }
     }
 
-    public void updateTimers(float delta) {
-        getParams().getStateTimer().update(delta);
-        getParams().getChangeDirectionTimer().update(delta);
-    }
-
     public AbilityAnimationConfig animationConfig() {
         return AbilityAnimationConfig.configs.get(getParams().getTextureName());
     }
@@ -128,13 +133,18 @@ public abstract class Ability implements Entity {
         getParams().getStateTimer().setTime(activeDuration + 1f);
     }
 
-    public abstract void onCreatureHit(CreatureId creatureId, CoreGame game);
+    public void onCreatureHit(CreatureId creatureId, CoreGame game) {
+    }
 
-    public abstract void onThisCreatureHit(CoreGame game);
+    public void onSelfCreatureHit(CoreGame game) {
+    }
 
-    public abstract void onTerrainHit(Vector2 abilityPos, Vector2 tilePos);
+    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
+    }
 
-    public abstract void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game);
+    public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
+
+    }
 
     public boolean bodyShouldExist() {
         return !(getParams().getIsSkipCreatingBody() || getParams().getState() != AbilityState.ACTIVE);
@@ -151,6 +161,17 @@ public abstract class Ability implements Entity {
 
     protected abstract boolean isWeaponAttack();
 
+    public Float getLevelScaling(CoreGame game) {
+        if (!levelScalings().containsKey(getSkillLevel(game))) {
+            return 1.0f;
+        }
+        return levelScalings().get(getSkillLevel(game));
+    }
+
+    public Map<Integer, Float> levelScalings() {
+        return new ConcurrentSkipListMap<>();
+    }
+
     public Integer getSkillLevel(CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
 
@@ -158,17 +179,6 @@ public abstract class Ability implements Entity {
             return 1;
         }
         return creature.availableSkills().get(getParams().getSkillType());
-    }
-
-    public Map<Integer, Float> levelScalings() {
-        return new ConcurrentSkipListMap<>();
-    }
-
-    public Float getLevelScaling(CoreGame game) {
-        if (!levelScalings().containsKey(getSkillLevel(game))) {
-            return 1.0f;
-        }
-        return levelScalings().get(getSkillLevel(game));
     }
 
     public Float getStunDuration() {

@@ -6,7 +6,6 @@ import com.easternsauce.actionrpg.model.ability.util.AbilityId;
 import com.easternsauce.actionrpg.model.ability.util.AbilityParams;
 import com.easternsauce.actionrpg.model.ability.util.AbilityState;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.creature.Enemy;
 import com.easternsauce.actionrpg.model.creature.Player;
 import com.easternsauce.actionrpg.model.util.Vector2;
@@ -45,13 +44,8 @@ public class ShieldGuard extends Ability {
     }
 
     @Override
-    public void init(CoreGame game) {
-
-        getParams().setState(AbilityState.CHANNEL);
-        getParams().getStateTimer().restart();
-
-        updatePosition(game);
-
+    public Boolean isPositionChangedOnUpdate() {
+        return true;
     }
 
     @Override
@@ -60,22 +54,24 @@ public class ShieldGuard extends Ability {
     }
 
     @Override
-    public Boolean isPositionChangedOnUpdate() {
-        return true;
-    }
-
-    @Override
-    public void onAbilityStarted(CoreGame game) {
+    public void onChannelUpdate(CoreGame game) {
+        updatePosition(game);
 
     }
 
     @Override
-    public void onDelayedAction(CoreGame game) {
+    protected void onActiveUpdate(float delta, CoreGame game) {
+        updatePosition(game);
 
     }
 
     @Override
-    protected void onAbilityCompleted(CoreGame game) {
+    public void init(CoreGame game) {
+
+        getParams().setState(AbilityState.CHANNEL);
+        getParams().getStateTimer().restart();
+
+        updatePosition(game);
 
     }
 
@@ -102,33 +98,6 @@ public class ShieldGuard extends Ability {
             getParams().setPos(Vector2.of(attackRectX, attackRectY));
             getParams().setRotationAngle(theta);
         }
-    }
-
-    @Override
-    public void onChannelUpdate(CoreGame game) {
-        updatePosition(game);
-
-    }
-
-    @Override
-    protected void onActiveUpdate(float delta, CoreGame game) {
-        updatePosition(game);
-
-    }
-
-    @Override
-    public void onCreatureHit(CreatureId creatureId, CoreGame game) {
-
-    }
-
-    @Override
-    public void onThisCreatureHit(CoreGame game) {
-
-    }
-
-    @Override
-    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
-
     }
 
     @Override

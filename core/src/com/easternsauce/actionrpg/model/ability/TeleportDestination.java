@@ -2,11 +2,9 @@ package com.easternsauce.actionrpg.model.ability;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.util.Ability;
-import com.easternsauce.actionrpg.model.ability.util.AbilityId;
 import com.easternsauce.actionrpg.model.ability.util.AbilityParams;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.creature.effect.CreatureEffect;
 import com.easternsauce.actionrpg.model.util.TeleportEvent;
 import com.easternsauce.actionrpg.model.util.Vector2;
@@ -70,7 +68,12 @@ public class TeleportDestination extends Ability {
     }
 
     @Override
-    public void onAbilityStarted(CoreGame game) {
+    public void onChannelUpdate(CoreGame game) {
+
+    }
+
+    @Override
+    public void onStarted(CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
         creature.applyEffect(CreatureEffect.SELF_STUN, 0.3f, game);
         game.addTeleportEvent(TeleportEvent.of(getParams().getCreatureId(),
@@ -81,42 +84,7 @@ public class TeleportDestination extends Ability {
     }
 
     @Override
-    public void onDelayedAction(CoreGame game) {
-
-    }
-
-    @Override
-    protected void onAbilityCompleted(CoreGame game) {
-
-    }
-
-    @Override
-    public void onChannelUpdate(CoreGame game) {
-
-    }
-
-    @Override
     protected void onActiveUpdate(float delta, CoreGame game) {
-
-    }
-
-    @Override
-    public void onCreatureHit(CreatureId creatureId, CoreGame game) {
-
-    }
-
-    @Override
-    public void onThisCreatureHit(CoreGame game) {
-
-    }
-
-    @Override
-    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
-
-    }
-
-    @Override
-    public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
 
     }
 

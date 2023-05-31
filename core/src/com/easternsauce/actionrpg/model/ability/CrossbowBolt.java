@@ -1,7 +1,6 @@
 package com.easternsauce.actionrpg.model.ability;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.ability.util.AbilityId;
 import com.easternsauce.actionrpg.model.ability.util.AbilityParams;
 import com.easternsauce.actionrpg.model.ability.util.Projectile;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
@@ -14,7 +13,6 @@ import lombok.NoArgsConstructor;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class CrossbowBolt extends Projectile {
-
     AbilityParams params;
 
     public static CrossbowBolt of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
@@ -40,28 +38,8 @@ public class CrossbowBolt extends Projectile {
     }
 
     @Override
-    public void onAbilityStarted(CoreGame game) {
-
-    }
-
-    @Override
-    public void onDelayedAction(CoreGame game) {
-
-    }
-
-    @Override
-    protected void onAbilityCompleted(CoreGame game) {
-
-    }
-
-    @Override
     public void onCreatureHit(CreatureId creatureId, CoreGame game) {
         deactivate();
-    }
-
-    @Override
-    public void onThisCreatureHit(CoreGame game) {
-
     }
 
     @Override
@@ -70,17 +48,12 @@ public class CrossbowBolt extends Projectile {
     }
 
     @Override
-    public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
-
+    protected boolean isWeaponAttack() {
+        return true;
     }
 
     @Override
     public Float getStunDuration() {
         return 0.15f;
-    }
-
-    @Override
-    protected boolean isWeaponAttack() {
-        return true;
     }
 }

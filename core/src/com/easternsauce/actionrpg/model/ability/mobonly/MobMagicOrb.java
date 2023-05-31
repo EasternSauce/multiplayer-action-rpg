@@ -1,7 +1,6 @@
 package com.easternsauce.actionrpg.model.ability.mobonly;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.ability.util.AbilityId;
 import com.easternsauce.actionrpg.model.ability.util.AbilityParams;
 import com.easternsauce.actionrpg.model.ability.util.Projectile;
 import com.easternsauce.actionrpg.model.creature.Creature;
@@ -48,28 +47,8 @@ public class MobMagicOrb extends Projectile {
     }
 
     @Override
-    public void onAbilityStarted(CoreGame game) {
-
-    }
-
-    @Override
-    public void onDelayedAction(CoreGame game) {
-
-    }
-
-    @Override
-    protected void onAbilityCompleted(CoreGame game) {
-
-    }
-
-    @Override
     public void onCreatureHit(CreatureId creatureId, CoreGame game) {
         deactivate();
-    }
-
-    @Override
-    public void onThisCreatureHit(CoreGame game) {
-
     }
 
     @Override
@@ -79,15 +58,14 @@ public class MobMagicOrb extends Projectile {
         }
     }
 
-    private boolean isTargetingAllowed(Creature thisCreature, Creature targetCreature) {
-        if (thisCreature instanceof Enemy) {
-            return targetCreature instanceof Player;
-        }
-        //noinspection RedundantIfStatement
-        if (thisCreature instanceof Player) {
-            return true;
-        }
+    @Override
+    protected boolean isWeaponAttack() {
         return false;
+    }
+
+    @Override
+    public Float getStunDuration() {
+        return 0.75f;
     }
 
     @Override
@@ -97,7 +75,7 @@ public class MobMagicOrb extends Projectile {
         }
         getParams().setRotationAngle(getParams().getDirVector().angleDeg());
 
-        Creature minumumDistanceCreature = null;
+        Creature minimumDistanceCreature = null;
         float minimumDistance = Float.MAX_VALUE;
 
         Creature thisCreature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
@@ -115,13 +93,13 @@ public class MobMagicOrb extends Projectile {
                         targetCreature.getParams().getPos().distance(getParams().getPos()) < 20f)
             .collect(Collectors.toSet())) {
             if (creature.getParams().getPos().distance(getParams().getPos()) < minimumDistance) {
-                minumumDistanceCreature = creature;
+                minimumDistanceCreature = creature;
                 minimumDistance = creature.getParams().getPos().distance(getParams().getPos());
             }
         }
 
-        if (minumumDistanceCreature != null) {
-            Vector2 vectorTowards = getParams().getPos().vectorTowards(minumumDistanceCreature.getParams().getPos());
+        if (minimumDistanceCreature != null) {
+            Vector2 vectorTowards = getParams().getPos().vectorTowards(minimumDistanceCreature.getParams().getPos());
             float targetAngleDeg = vectorTowards.angleDeg();
             float currentAngleDeg = getParams().getDirVector().angleDeg();
 
@@ -153,18 +131,14 @@ public class MobMagicOrb extends Projectile {
 
     }
 
-    @Override
-    public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
-
-    }
-
-    @Override
-    public Float getStunDuration() {
-        return 0.75f;
-    }
-
-    @Override
-    protected boolean isWeaponAttack() {
+    private boolean isTargetingAllowed(Creature thisCreature, Creature targetCreature) {
+        if (thisCreature instanceof Enemy) {
+            return targetCreature instanceof Player;
+        }
+        //noinspection RedundantIfStatement
+        if (thisCreature instanceof Player) {
+            return true;
+        }
         return false;
     }
 }
