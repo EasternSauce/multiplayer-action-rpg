@@ -1,36 +1,36 @@
-package com.easternsauce.actionrpg.model.ability;
+package com.easternsauce.actionrpg.model.ability.mobonly;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.ability.util.Ability;
+import com.easternsauce.actionrpg.model.ability.util.AbilityId;
+import com.easternsauce.actionrpg.model.ability.util.AbilityParams;
+import com.easternsauce.actionrpg.model.ability.util.AbilityState;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @NoArgsConstructor(staticName = "of")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class BossSwordSpin extends Ability {
+public class MobSwordSlash extends Ability {
 
     AbilityParams params;
 
-    public static BossSwordSpin of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        BossSwordSpin ability = BossSwordSpin.of();
+    public static MobSwordSlash of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+        MobSwordSlash ability = MobSwordSlash.of();
         ability.params = abilityParams
-            .setWidth(3.5f)
-            .setHeight(3.5f)
-            .setChannelTime(0f)
-            .setActiveTime(3f)
-            .setRange(4f)
-            .setTextureName("sword")
-            .setBaseDamage(32f)
+            .setWidth(2f)
+            .setHeight(2f)
+            .setChannelTime(0.15f)
+            .setActiveTime(0.3f)
+            .setRange(1.8f)
+            .setTextureName("slash")
+            .setBaseDamage(50f)
             .setIsChannelAnimationLooping(false)
             .setIsActiveAnimationLooping(false)
-            .setRotationShift(0f)
-            .setDirVector(abilityParams.getDirVector().withRotatedDegAngle(90));
+            .setRotationShift(0f);
         return ability;
     }
 
@@ -69,7 +69,6 @@ public class BossSwordSpin extends Ability {
 
     }
 
-    @Override
     public void updatePosition(CoreGame game) {
         Vector2 dirVector;
         if (getParams().getDirVector().len() <= 0) {
@@ -93,33 +92,20 @@ public class BossSwordSpin extends Ability {
             getParams().setPos(Vector2.of(attackRectX, attackRectY));
             getParams().setRotationAngle(theta);
         }
+
     }
 
     @Override
     public void onChannelUpdate(CoreGame game) {
         updatePosition(game);
+
     }
 
     @Override
     protected void onActiveUpdate(float delta, CoreGame game) {
+
         updatePosition(game);
 
-        getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(-10));
-
-        Set<CreatureId> creaturesHitRemove = new HashSet<>();
-
-        getParams().getCreaturesAlreadyHit().forEach((creatureId, time) -> {
-            if (time < getParams().getStateTimer().getTime() - 0.4f) {
-                creaturesHitRemove.add(creatureId);
-            }
-        });
-
-        creaturesHitRemove.forEach(creatureId -> getParams().getCreaturesAlreadyHit().remove(creatureId));
-    }
-
-    @Override
-    public Float getStunDuration() {
-        return 0.35f;
     }
 
     @Override
@@ -143,17 +129,17 @@ public class BossSwordSpin extends Ability {
     }
 
     @Override
+    public Float getStunDuration() {
+        return 1f;
+    }
+
+    @Override
     protected boolean isWeaponAttack() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCanBeDeactivated() {
         return true;
-    }
-
-    @Override
-    public boolean isDamagingSkillAllowedDuring() {
-        return false;
     }
 }

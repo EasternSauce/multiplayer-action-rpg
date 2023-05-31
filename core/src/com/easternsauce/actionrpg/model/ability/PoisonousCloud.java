@@ -1,6 +1,9 @@
 package com.easternsauce.actionrpg.model.ability;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.ability.util.Ability;
+import com.easternsauce.actionrpg.model.ability.util.AbilityId;
+import com.easternsauce.actionrpg.model.ability.util.AbilityParams;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.creature.effect.CreatureEffect;
@@ -38,11 +41,6 @@ public class PoisonousCloud extends Ability {
     @Override
     public Boolean isRanged() {
         return true;
-    }
-
-    @Override
-    public void updatePosition(CoreGame game) {
-
     }
 
     @Override

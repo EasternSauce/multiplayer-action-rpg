@@ -1,4 +1,4 @@
-package com.easternsauce.actionrpg.model.ability;
+package com.easternsauce.actionrpg.model.ability.util;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import lombok.Data;

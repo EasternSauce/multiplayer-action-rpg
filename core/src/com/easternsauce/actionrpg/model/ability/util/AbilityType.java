@@ -1,4 +1,4 @@
-package com.easternsauce.actionrpg.model.ability;
+package com.easternsauce.actionrpg.model.ability.util;
 
 import lombok.NoArgsConstructor;
 

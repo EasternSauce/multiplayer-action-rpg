@@ -1,6 +1,10 @@
 package com.easternsauce.actionrpg.model.ability;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.ability.util.Ability;
+import com.easternsauce.actionrpg.model.ability.util.AbilityId;
+import com.easternsauce.actionrpg.model.ability.util.AbilityParams;
+import com.easternsauce.actionrpg.model.ability.util.AbilityState;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.creature.effect.CreatureEffect;
@@ -71,7 +75,6 @@ public class SwordSpin extends Ability {
 
     }
 
-    @Override
     public void updatePosition(CoreGame game) {
         Vector2 dirVector;
         if (getParams().getDirVector().len() <= 0) {

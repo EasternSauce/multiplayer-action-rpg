@@ -5,7 +5,7 @@ import com.easternsauce.actionrpg.Constants;
 import com.easternsauce.actionrpg.assets.Assets;
 import com.easternsauce.actionrpg.command.*;
 import com.easternsauce.actionrpg.game.gamestate.ServerGameState;
-import com.easternsauce.actionrpg.model.ability.AbilityId;
+import com.easternsauce.actionrpg.model.ability.util.AbilityId;
 import com.easternsauce.actionrpg.model.action.ActionsHolder;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
 import com.easternsauce.actionrpg.model.action.loot.LootPileSpawnAction;

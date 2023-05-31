@@ -1,4 +1,4 @@
-package com.easternsauce.actionrpg.model.ability;
+package com.easternsauce.actionrpg.model.ability.util;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.entity.Entity;
@@ -70,8 +70,6 @@ public abstract class Ability implements Entity {
 
         game.getEventProcessor().getAbilityModelsToBeActivated().add(getParams().getId());
     }
-
-    abstract public void updatePosition(CoreGame game);
 
     abstract public void onAbilityStarted(CoreGame game);
 

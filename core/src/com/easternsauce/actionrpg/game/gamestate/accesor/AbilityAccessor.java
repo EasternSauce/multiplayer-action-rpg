@@ -5,7 +5,7 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.gamestate.GameState;
 import com.easternsauce.actionrpg.game.gamestate.GameStateDataHolder;
 import com.easternsauce.actionrpg.model.GameStateData;
-import com.easternsauce.actionrpg.model.ability.*;
+import com.easternsauce.actionrpg.model.ability.util.*;
 import com.easternsauce.actionrpg.model.action.creature.CreatureHitByAbilityAction;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;

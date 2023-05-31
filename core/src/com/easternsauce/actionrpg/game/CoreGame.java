@@ -12,7 +12,7 @@ import com.easternsauce.actionrpg.game.gamestate.GameState;
 import com.easternsauce.actionrpg.game.screen.ConnectScreen;
 import com.easternsauce.actionrpg.game.screen.GameplayScreen;
 import com.easternsauce.actionrpg.game.screen.MenuScreen;
-import com.easternsauce.actionrpg.model.ability.AbilityId;
+import com.easternsauce.actionrpg.model.ability.util.AbilityId;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;

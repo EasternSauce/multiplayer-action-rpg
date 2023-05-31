@@ -2,7 +2,7 @@ package com.easternsauce.actionrpg.game.gamestate;
 
 import com.easternsauce.actionrpg.game.entity.EntityEventProcessor;
 import com.easternsauce.actionrpg.model.GameStateData;
-import com.easternsauce.actionrpg.model.ability.AbilityId;
+import com.easternsauce.actionrpg.model.ability.util.AbilityId;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
 import com.easternsauce.actionrpg.model.area.AreaGateId;
 import com.easternsauce.actionrpg.model.area.AreaId;

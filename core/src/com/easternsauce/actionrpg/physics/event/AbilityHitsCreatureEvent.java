@@ -1,6 +1,6 @@
 package com.easternsauce.actionrpg.physics.event;
 
-import com.easternsauce.actionrpg.model.ability.AbilityId;
+import com.easternsauce.actionrpg.model.ability.util.AbilityId;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import lombok.AllArgsConstructor;
 import lombok.Data;

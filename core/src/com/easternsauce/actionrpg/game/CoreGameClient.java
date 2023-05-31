@@ -7,7 +7,7 @@ import com.easternsauce.actionrpg.Constants;
 import com.easternsauce.actionrpg.command.*;
 import com.easternsauce.actionrpg.game.gamestate.ClientGameState;
 import com.easternsauce.actionrpg.game.gamestate.GameState;
-import com.easternsauce.actionrpg.model.ability.AbilityId;
+import com.easternsauce.actionrpg.model.ability.util.AbilityId;
 import com.easternsauce.actionrpg.model.action.ActionsHolder;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
 import com.easternsauce.actionrpg.model.action.creature.CreatureChangeAimDirectionAction;

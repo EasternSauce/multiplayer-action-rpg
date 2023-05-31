@@ -1,6 +1,11 @@
-package com.easternsauce.actionrpg.model.ability;
+package com.easternsauce.actionrpg.model.ability.util;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.ability.*;
+import com.easternsauce.actionrpg.model.ability.bossonly.BossSwordSpin;
+import com.easternsauce.actionrpg.model.ability.mobonly.MobCrossbowShot;
+import com.easternsauce.actionrpg.model.ability.mobonly.MobMagicOrb;
+import com.easternsauce.actionrpg.model.ability.mobonly.MobSwordSlash;
 
 import java.util.function.BiFunction;
 
