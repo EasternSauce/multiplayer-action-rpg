@@ -2,7 +2,7 @@ package com.easternsauce.actionrpg.game.gamestate;
 
 import com.easternsauce.actionrpg.Constants;
 import com.easternsauce.actionrpg.model.GameStateData;
-import com.easternsauce.actionrpg.model.ability.util.Ability;
+import com.easternsauce.actionrpg.model.ability.abstracts.Ability;
 import com.easternsauce.actionrpg.model.ability.util.AbilityId;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
 import com.easternsauce.actionrpg.model.action.creature.CreatureRespawnAction;

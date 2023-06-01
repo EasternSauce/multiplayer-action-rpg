@@ -1,8 +1,8 @@
 package com.easternsauce.actionrpg.model.ability.mobonly;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.ability.abstracts.Projectile;
 import com.easternsauce.actionrpg.model.ability.util.AbilityParams;
-import com.easternsauce.actionrpg.model.ability.util.Projectile;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.creature.Enemy;

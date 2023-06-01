@@ -1,6 +1,7 @@
-package com.easternsauce.actionrpg.model.ability.util;
+package com.easternsauce.actionrpg.model.ability.abstracts;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.ability.util.AbilityParams;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

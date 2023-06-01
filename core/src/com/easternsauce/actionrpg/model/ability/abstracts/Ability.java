@@ -1,7 +1,10 @@
-package com.easternsauce.actionrpg.model.ability.util;
+package com.easternsauce.actionrpg.model.ability.abstracts;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.entity.Entity;
+import com.easternsauce.actionrpg.model.ability.util.AbilityId;
+import com.easternsauce.actionrpg.model.ability.util.AbilityParams;
+import com.easternsauce.actionrpg.model.ability.util.AbilityState;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.creature.Player;

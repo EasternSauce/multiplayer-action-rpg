@@ -2,7 +2,7 @@ package com.easternsauce.actionrpg.physics.util;
 
 import com.easternsauce.actionrpg.Constants;
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.ability.util.Ability;
+import com.easternsauce.actionrpg.model.ability.abstracts.Ability;
 import com.easternsauce.actionrpg.model.ability.util.AbilityState;
 import com.easternsauce.actionrpg.model.area.AreaGate;
 import com.easternsauce.actionrpg.model.area.AreaId;

@@ -36,7 +36,9 @@ public enum SkillType {
 
     PUNCH("Punch", true),
 
-    RING_OF_FIRE("Ring of Fire", true);
+    RING_OF_FIRE("Ring of Fire", true),
+
+    DASH("Dash", false);
 
     @Getter
     private String prettyName;

@@ -50,4 +50,5 @@ public enum AbilityType {
     PUNCH,
 
     RING_OF_FIRE,
+    DASH,
 }

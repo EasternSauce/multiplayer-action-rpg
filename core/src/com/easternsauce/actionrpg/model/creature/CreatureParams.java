@@ -35,12 +35,14 @@ public class CreatureParams implements EntityParams {
     private SimpleTimer animationTimer = SimpleTimer.getStartedTimer();
 
     private Vector2 movingVector = Vector2.of(0, 0);
+    private Vector2 dashingVector = Vector2.of(0, 0);
 
     private Vector2 movementCommandTargetPos = Vector2.of(0, 0);
 
     private Boolean reachedTargetPos = true;
 
     private Boolean isMoving = false;
+    private Boolean isDashing = false;
 
     private Float speed = 10f;
     private Float baseSpeed = 10f;
@@ -152,6 +154,8 @@ public class CreatureParams implements EntityParams {
     private Float currentSlowMagnitude = 0f;
 
     private Vector2 facingVector = Vector2.of(0f, 0f);
+
+    private Float dashingVelocity = 0f;
 
     public static CreatureParams of(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn) {
         return getCreatureParams(creatureId,

@@ -3,11 +3,15 @@ package com.easternsauce.actionrpg.util;
 import com.easternsauce.actionrpg.command.*;
 import com.easternsauce.actionrpg.model.GameStateData;
 import com.easternsauce.actionrpg.model.ability.*;
+import com.easternsauce.actionrpg.model.ability.abstracts.Ability;
 import com.easternsauce.actionrpg.model.ability.bossonly.BossSwordSpin;
 import com.easternsauce.actionrpg.model.ability.mobonly.MobCrossbowShot;
 import com.easternsauce.actionrpg.model.ability.mobonly.MobMagicOrb;
 import com.easternsauce.actionrpg.model.ability.mobonly.MobSwordSlash;
-import com.easternsauce.actionrpg.model.ability.util.*;
+import com.easternsauce.actionrpg.model.ability.util.AbilityId;
+import com.easternsauce.actionrpg.model.ability.util.AbilityParams;
+import com.easternsauce.actionrpg.model.ability.util.AbilityState;
+import com.easternsauce.actionrpg.model.ability.util.AbilityType;
 import com.easternsauce.actionrpg.model.action.ActionsHolder;
 import com.easternsauce.actionrpg.model.action.creature.*;
 import com.easternsauce.actionrpg.model.action.inventory.*;
@@ -103,6 +107,7 @@ public class EndPointHelper {
         endPoint.getKryo().register(SpreadingPoisonousCloud.class);
         endPoint.getKryo().register(Punch.class);
         endPoint.getKryo().register(RingOfFire.class);
+        endPoint.getKryo().register(Dash.class);
 
         endPoint.getKryo().register(Enemy.class);
         endPoint.getKryo().register(Area.class);

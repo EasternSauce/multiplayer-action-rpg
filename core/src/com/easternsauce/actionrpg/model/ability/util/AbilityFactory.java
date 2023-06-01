@@ -2,6 +2,7 @@ package com.easternsauce.actionrpg.model.ability.util;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.*;
+import com.easternsauce.actionrpg.model.ability.abstracts.Ability;
 import com.easternsauce.actionrpg.model.ability.bossonly.BossSwordSpin;
 import com.easternsauce.actionrpg.model.ability.mobonly.MobCrossbowShot;
 import com.easternsauce.actionrpg.model.ability.mobonly.MobMagicOrb;
@@ -76,6 +77,8 @@ public class AbilityFactory {
                 return Punch::of;
             case RING_OF_FIRE:
                 return RingOfFire::of;
+            case DASH:
+                return Dash::of;
             default:
                 throw new RuntimeException("ability type not found: " + abilityType);
         }
