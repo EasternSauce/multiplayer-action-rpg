@@ -1,0 +1,54 @@
+package com.easternsauce.actionrpg.model.ability;
+
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
+public enum AbilityType {
+    SWORD_SLASH,
+    MOB_SWORD_SLASH,
+    FIREBALL,
+    FIREBALL_EXPLOSION,
+    LIGHTNING_SPARK,
+    LIGHTNING_NODE,
+    LIGHTNING_CHAIN,
+
+    CROSSBOW_BOLT,
+    CROSSBOW_SHOT,
+    MOB_CROSSBOW_SHOT,
+
+    MAGIC_ORB,
+    MOB_MAGIC_ORB,
+
+    VOLATILE_BUBBLE,
+
+    ICE_SPEAR,
+
+    SUMMON_GHOSTS,
+
+    PLAYFUL_GHOST,
+
+    RICOCHET_BALLISTA,
+
+    RICOCHET_BULLET,
+
+    BOOMERANG,
+
+    SHIELD_GUARD,
+
+    SWORD_SPIN,
+
+    BOSS_SWORD_SPIN,
+
+    TELEPORT,
+
+    TELEPORT_DESTINATION,
+
+    POISONOUS_MIXTURE,
+    POISONOUS_CLOUD,
+    SPREADING_POISONOUS_CLOUD,
+
+    PUNCH,
+
+    RING_OF_FIRE,
+    DASH,
+}

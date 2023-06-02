@@ -2,7 +2,7 @@ package com.easternsauce.actionrpg.renderer.creature;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.easternsauce.actionrpg.renderer.config.CreatureAnimationConfig;
+import com.easternsauce.actionrpg.renderer.animationconfig.CreatureAnimationConfig;
 
 import java.util.ArrayList;
 import java.util.List;

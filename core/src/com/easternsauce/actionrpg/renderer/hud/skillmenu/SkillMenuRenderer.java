@@ -1,8 +1,8 @@
 package com.easternsauce.actionrpg.renderer.hud.skillmenu;
 
 import com.badlogic.gdx.graphics.Color;
-import com.easternsauce.actionrpg.assets.Assets;
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.game.assets.Assets;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.skill.SkillType;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;

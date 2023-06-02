@@ -1,8 +1,8 @@
 package com.easternsauce.actionrpg.renderer.hud.itempickupmenu;
 
-import com.easternsauce.actionrpg.command.ActionPerformCommand;
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.action.loot.LootPileItemTryPickUpAction;
+import com.easternsauce.actionrpg.game.command.ActionPerformCommand;
+import com.easternsauce.actionrpg.model.action.LootPileItemTryPickUpAction;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;
 import com.easternsauce.actionrpg.renderer.util.Rect;
 import com.esotericsoftware.kryonet.Client;

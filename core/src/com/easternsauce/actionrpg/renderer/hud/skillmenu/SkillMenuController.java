@@ -1,10 +1,10 @@
 package com.easternsauce.actionrpg.renderer.hud.skillmenu;
 
-import com.easternsauce.actionrpg.command.ActionPerformCommand;
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.action.skillmenu.SkillPickerMenuActivateAction;
-import com.easternsauce.actionrpg.model.action.skillmenu.SkillPickerMenuDeactivateAction;
-import com.easternsauce.actionrpg.model.action.skillmenu.SkillPickerMenuSlotChangeAction;
+import com.easternsauce.actionrpg.game.command.ActionPerformCommand;
+import com.easternsauce.actionrpg.model.action.SkillPickerMenuActivateAction;
+import com.easternsauce.actionrpg.model.action.SkillPickerMenuDeactivateAction;
+import com.easternsauce.actionrpg.model.action.SkillPickerMenuSlotChangeAction;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.renderer.util.Rect;
 import com.esotericsoftware.kryonet.Client;

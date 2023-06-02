@@ -9,7 +9,7 @@ import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.util.WorldDirection;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
-import com.easternsauce.actionrpg.renderer.config.CreatureAnimationConfig;
+import com.easternsauce.actionrpg.renderer.animationconfig.CreatureAnimationConfig;
 import lombok.NoArgsConstructor;
 
 import java.util.List;

@@ -1,8 +1,8 @@
 package com.easternsauce.actionrpg.renderer.hud.itempickupmenu;
 
 import com.badlogic.gdx.graphics.Color;
-import com.easternsauce.actionrpg.assets.Assets;
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.game.assets.Assets;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;
 import com.easternsauce.actionrpg.model.util.Vector2;

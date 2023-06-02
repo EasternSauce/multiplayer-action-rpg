@@ -1,15 +1,14 @@
 package com.easternsauce.actionrpg.model.creature;
 
-import com.easternsauce.actionrpg.Constants;
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.ability.abstracts.Ability;
-import com.easternsauce.actionrpg.model.creature.effect.CreatureEffect;
+import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.skill.Skill;
 import com.easternsauce.actionrpg.model.skill.SkillType;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.model.util.WorldDirection;
-import com.easternsauce.actionrpg.pathing.Astar;
-import com.easternsauce.actionrpg.pathing.AstarResult;
+import com.easternsauce.actionrpg.physics.pathing.Astar;
+import com.easternsauce.actionrpg.physics.pathing.AstarResult;
+import com.easternsauce.actionrpg.util.Constants;
 import com.easternsauce.actionrpg.util.RandomHelper;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

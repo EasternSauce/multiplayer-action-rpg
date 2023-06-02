@@ -3,6 +3,7 @@ package com.easternsauce.actionrpg;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.easternsauce.actionrpg.game.CoreGameClient;
+import com.easternsauce.actionrpg.util.Constants;
 
 public class DesktopClientLauncher {
     public static void main(String[] arg) {

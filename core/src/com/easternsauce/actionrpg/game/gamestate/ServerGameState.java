@@ -1,12 +1,11 @@
 package com.easternsauce.actionrpg.game.gamestate;
 
-import com.easternsauce.actionrpg.Constants;
 import com.easternsauce.actionrpg.model.GameStateData;
-import com.easternsauce.actionrpg.model.ability.abstracts.Ability;
-import com.easternsauce.actionrpg.model.ability.util.AbilityId;
+import com.easternsauce.actionrpg.model.ability.Ability;
+import com.easternsauce.actionrpg.model.ability.AbilityId;
+import com.easternsauce.actionrpg.model.action.CreatureRespawnAction;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
-import com.easternsauce.actionrpg.model.action.creature.CreatureRespawnAction;
-import com.easternsauce.actionrpg.model.action.loot.LootPileDespawnAction;
+import com.easternsauce.actionrpg.model.action.LootPileDespawnAction;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.area.LootPile;
 import com.easternsauce.actionrpg.model.area.LootPileId;
@@ -16,6 +15,7 @@ import com.easternsauce.actionrpg.model.creature.Enemy;
 import com.easternsauce.actionrpg.model.creature.Player;
 import com.easternsauce.actionrpg.model.util.GameStateBroadcast;
 import com.easternsauce.actionrpg.model.util.Vector2;
+import com.easternsauce.actionrpg.util.Constants;
 import com.esotericsoftware.kryonet.Connection;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

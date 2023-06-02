@@ -1,14 +1,10 @@
 package com.easternsauce.actionrpg.renderer.hud.inventory;
 
-import com.easternsauce.actionrpg.command.ActionPerformCommand;
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.action.GameStateAction;
-import com.easternsauce.actionrpg.model.action.inventory.*;
-import com.easternsauce.actionrpg.model.action.inventory.swaps.InventoryAndEquipmentSwapSlotItemsAction;
-import com.easternsauce.actionrpg.model.action.inventory.swaps.InventoryOnlySwapSlotItemsAction;
+import com.easternsauce.actionrpg.game.command.ActionPerformCommand;
+import com.easternsauce.actionrpg.model.action.*;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;
-import com.easternsauce.actionrpg.util.InventoryData;
 import com.esotericsoftware.kryonet.Client;
 import lombok.Data;
 import lombok.NoArgsConstructor;

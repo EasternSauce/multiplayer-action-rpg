@@ -1,10 +1,8 @@
 package com.easternsauce.actionrpg.game.gamestate;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.game.gamestate.accesor.AbilityAccessor;
-import com.easternsauce.actionrpg.game.gamestate.accesor.CreatureAccessor;
 import com.easternsauce.actionrpg.model.GameStateData;
-import com.easternsauce.actionrpg.model.ability.util.AbilityState;
+import com.easternsauce.actionrpg.model.ability.AbilityState;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
 import com.easternsauce.actionrpg.model.area.*;
 import com.easternsauce.actionrpg.model.creature.CreatureId;

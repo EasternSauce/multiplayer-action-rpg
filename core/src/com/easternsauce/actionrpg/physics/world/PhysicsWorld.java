@@ -5,12 +5,12 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.physics.box2d.World;
-import com.easternsauce.actionrpg.Constants;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.model.util.Vector2Int;
-import com.easternsauce.actionrpg.pathing.Astar;
-import com.easternsauce.actionrpg.pathing.PathingNode;
 import com.easternsauce.actionrpg.physics.body.TerrainTileBody;
+import com.easternsauce.actionrpg.physics.pathing.Astar;
+import com.easternsauce.actionrpg.physics.pathing.PathingNode;
+import com.easternsauce.actionrpg.util.Constants;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
