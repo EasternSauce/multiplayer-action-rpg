@@ -1,3 +1,3 @@
 Manifest-Version: 1.0
-Main-Class: com.easternsauce.actionrpg.game.DesktopClientLauncher
+Main-Class: com.easternsauce.actionrpg.launcher.DesktopClientLauncher
 
