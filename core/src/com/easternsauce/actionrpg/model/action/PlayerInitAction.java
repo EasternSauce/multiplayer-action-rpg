@@ -5,7 +5,6 @@ import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
-import com.easternsauce.actionrpg.model.creature.CreatureParams;
 import com.easternsauce.actionrpg.model.creature.Player;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Data;
@@ -42,7 +41,6 @@ public class PlayerInitAction extends GameStateAction {
     }
 
     private Creature createNewPlayer(CoreGame game) {
-        Creature player;
         String[] textures = new String[]{
             "male1",
             "male2",
@@ -51,16 +49,9 @@ public class PlayerInitAction extends GameStateAction {
         Vector2 pos = Vector2.of(((game.getGameState().nextRandomValue() * (28 - 18)) + 18),
                                  ((game.getGameState().nextRandomValue() * (12 - 6)) + 6));
 
-        //        Vector2 pos = Vector2.of(194.16289f, 13.253256f);
-
         String textureName = textures[((int) (Math.random() * 100) % 3)];
 
-        player = Player.of(CreatureParams.playerCreatureParamsOf(playerId, AreaId.of("area3"), pos, textureName));
-        player.getParams().getStats().setLife(350f);
-        player.getParams().getStats().setMaxLife(350f);
-        player.getParams().getStats().setMana(350f);
-        player.getParams().getStats().setMaxMana(350f);
-        return player;
+        return Player.of(playerId, AreaId.of("area3"), pos, textureName);
     }
 
     private Creature loadExistingPlayerData(CoreGame game) {

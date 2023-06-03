@@ -6,7 +6,10 @@ import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.ability.AbilityId;
 import com.easternsauce.actionrpg.model.ability.AbilityState;
 import com.easternsauce.actionrpg.model.area.*;
-import com.easternsauce.actionrpg.model.creature.*;
+import com.easternsauce.actionrpg.model.creature.Creature;
+import com.easternsauce.actionrpg.model.creature.CreatureId;
+import com.easternsauce.actionrpg.model.creature.Enemy;
+import com.easternsauce.actionrpg.model.creature.EnemySpawn;
 import com.easternsauce.actionrpg.model.util.TeleportEvent;
 import com.easternsauce.actionrpg.physics.GameEntityPhysics;
 import com.easternsauce.actionrpg.physics.body.AbilityBody;
@@ -140,7 +143,7 @@ public class GameEntityManager {
     }
 
     public void spawnEnemy(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn, CoreGame game) {
-        Enemy enemy = Enemy.of(CreatureParams.enemyCreatureParamsOf(creatureId, areaId, enemySpawn));
+        Enemy enemy = Enemy.of(creatureId, areaId, enemySpawn);
 
         game.getGameState().accessCreatures().getCreatures().put(creatureId, enemy);
 
@@ -255,7 +258,7 @@ public class GameEntityManager {
                 creature.getParams().setAreaId(teleportEvent.getToAreaId());
 
                 creature.getParams().setPos(teleportEvent.getPos());
-                creature.getParams().setMovementCommandTargetPos(teleportEvent.getPos());
+                creature.getParams().getMovementParams().setMovementCommandTargetPos(teleportEvent.getPos());
 
                 if (getGameEntityPhysics().getCreatureBodies().containsKey(teleportEvent.getCreatureId())) {
                     getGameEntityPhysics()
@@ -270,8 +273,8 @@ public class GameEntityManager {
                 }
 
                 if (teleportEvent.isUsedGate()) {
-                    creature.getParams().setIsStillInsideGateAfterTeleport(true);
-                    creature.getParams().getGateTeleportCooldownTimer().restart();
+                    creature.getParams().getMovementParams().setIsStillInsideGateAfterTeleport(true);
+                    creature.getParams().getMovementParams().getGateTeleportCooldownTimer().restart();
                 }
             }
         }

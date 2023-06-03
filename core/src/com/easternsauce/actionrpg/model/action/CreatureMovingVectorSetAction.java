@@ -26,7 +26,7 @@ public class CreatureMovingVectorSetAction extends GameStateAction {
         Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
         if (creature != null) {
-            creature.getParams().setMovingVector(movingVector);
+            creature.getParams().getMovementParams().setMovingVector(movingVector);
         }
 
     }

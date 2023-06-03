@@ -15,4 +15,5 @@ public class CreatureStats {
     private Float mana = 100f;
     private Float maxMana = 100f;
     private Float armor = 0f;
+    private Float previousTickLife = getLife();
 }

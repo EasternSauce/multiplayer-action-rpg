@@ -68,7 +68,7 @@ public class SwordSpin extends Ability {
 
         Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
         creature.applyEffect(CreatureEffect.SELF_SLOW, 0.1f, game);
-        creature.getParams().setCurrentSlowMagnitude(0.3f);
+        creature.getParams().getEffectParams().setCurrentSlowMagnitude(0.3f);
     }
 
     @Override

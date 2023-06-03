@@ -61,9 +61,9 @@ public class PhysicsHelper {
 
                 Creature creature = game.getGameState().accessCreatures().getCreature(event.getCreatureId());
 
-                creature.getParams().setAreaWhenEnteredGate(creature.getParams().getAreaId());
+                creature.getParams().getMovementParams().setAreaWhenEnteredGate(creature.getParams().getAreaId());
 
-                if (creature instanceof Player && !creature.getParams().getIsStillInsideGateAfterTeleport()) {
+                if (creature instanceof Player && !creature.getParams().getMovementParams().getIsStillInsideGateAfterTeleport()) {
                     AreaGate areaGate = game.getGameState().getAreaGate(event.getAreaGateId());
                     AreaGate leadingToAreaGate = game.getGameState().getAreaGate(areaGate.getLeadingToAreaGateId());
 
@@ -81,10 +81,10 @@ public class PhysicsHelper {
 
                 Creature creature = game.getGameState().accessCreatures().getCreature(event.getCreatureId());
 
-                if (creature instanceof Player && creature.getParams().getIsStillInsideGateAfterTeleport() &&
-                    creature.getParams().getAreaWhenEnteredGate().equals(creature.getParams().getAreaId())) {
+                if (creature instanceof Player && creature.getParams().getMovementParams().getIsStillInsideGateAfterTeleport() &&
+                    creature.getParams().getMovementParams().getAreaWhenEnteredGate().equals(creature.getParams().getAreaId())) {
 
-                    creature.getParams().setIsStillInsideGateAfterTeleport(false);
+                    creature.getParams().getMovementParams().setIsStillInsideGateAfterTeleport(false);
 
                 }
             }

@@ -2,6 +2,7 @@ package com.easternsauce.actionrpg.model.creature;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.Ability;
+import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.skill.Skill;
 import com.easternsauce.actionrpg.model.skill.SkillType;
 import com.easternsauce.actionrpg.model.util.Vector2;
@@ -26,7 +27,25 @@ import java.util.stream.Collectors;
 public class Enemy extends Creature {
     private CreatureParams params;
 
-    public static Enemy of(CreatureParams params) {
+    public static Enemy of(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn) {
+        CreatureParams params = CreatureParams.of(creatureId, areaId, enemySpawn);
+
+        params.setDropTable(enemySpawn.getEnemyTemplate().getDropTable());
+        params.getStats().setBaseSpeed(9.5f);
+        params.getStats().setMaxLife(enemySpawn.getEnemyTemplate().getMaxLife());
+        params.getStats().setLife(enemySpawn.getEnemyTemplate().getMaxLife());
+
+        params.setEnemyParams(EnemyParams.of());
+        params.getEnemyParams().setFindTargetCooldown(0.5f + (float) Math.random());
+        params.getEnemyParams().setPathCalculationCooldown(4f + 2f * (float) Math.random());
+        params.getEnemyParams().setAutoControlStateRngSeed((float) Math.random());
+        params.getEnemyParams().setAutoControlStateTime(0f);
+
+        params.setRespawnTime(120f);
+
+        params.getEnemyParams().setAttackDistance(enemySpawn.getEnemyTemplate().getAttackDistance());
+        params.getEnemyParams().setSkillUses(enemySpawn.getEnemyTemplate().getEnemySkillUseEntries());
+
         Enemy enemy = Enemy.of();
         enemy.params = params;
         return enemy;
@@ -138,7 +157,7 @@ public class Enemy extends Creature {
     }
 
     private void handleAimDirectionAdjustment(Vector2 vectorTowardsTarget) {
-        getParams().setAimDirection(vectorTowardsTarget.normalized());
+        getParams().getMovementParams().setAimDirection(vectorTowardsTarget.normalized());
     }
 
     private void processAutoControlStateChangeLogic(CoreGame game) {
@@ -271,13 +290,13 @@ public class Enemy extends Creature {
                     this.getParams().getEnemyParams().setIsPathMirrored(false);
                 }
 
-                getParams().setPathTowardsTarget(path);
+                getParams().getEnemyParams().setPathTowardsTarget(path);
 
                 getParams().getEnemyParams().getPathCalculationCooldownTimer().restart();
                 getParams().getEnemyParams().setForcePathCalculation(false);
             }
             else {
-                getParams().setPathTowardsTarget(null);
+                getParams().getEnemyParams().setPathTowardsTarget(null);
             }
         }
     }
@@ -287,8 +306,8 @@ public class Enemy extends Creature {
         Predicate<Creature> creaturePredicate = creature -> creature instanceof Enemy &&
                                                             creature.getParams().getPos().distance(this.getParams().getPos()) <
                                                             4f && !creature.getId().equals(this.getParams().getId()) &&
-                                                            creature.getParams().getPathTowardsTarget() != null &&
-                                                            !creature.getParams().getEnemyParams().getIsPathMirrored() &&
+                                                            creature.getParams().getEnemyParams().getPathTowardsTarget() !=
+                                                            null && !creature.getParams().getEnemyParams().getIsPathMirrored() &&
                                                             creature.getParams().getEnemyParams().getTargetCreatureId() != null &&
                                                             creature
                                                                 .getParams()
@@ -309,7 +328,7 @@ public class Enemy extends Creature {
             .filter(creaturePredicate)
             .findFirst();
 
-        return otherCreature.map(creature -> creature.getParams().getPathTowardsTarget()).orElse(null);
+        return otherCreature.map(creature -> creature.getParams().getEnemyParams().getPathTowardsTarget()).orElse(null);
 
     }
 
@@ -318,20 +337,21 @@ public class Enemy extends Creature {
             !getParams().getEnemyParams().getTargetCreatureId().equals(potentialTargetId)) {
             getParams().getEnemyParams().setForcePathCalculation(true);
             getParams().getEnemyParams().setTargetCreatureId(potentialTargetId);
-            getParams().setPathTowardsTarget(null);
+            getParams().getEnemyParams().setPathTowardsTarget(null);
         }
     }
 
     public void handleMovement(Creature potentialTarget) {
         Float distance = getParams().getPos().distance(potentialTarget.getParams().getPos());
 
-        if (getParams().getPathTowardsTarget() != null && !getParams().getPathTowardsTarget().isEmpty()) { // path is available
-            List<Vector2> path = getParams().getPathTowardsTarget();
+        if (getParams().getEnemyParams().getPathTowardsTarget() != null &&
+            !getParams().getEnemyParams().getPathTowardsTarget().isEmpty()) { // path is available
+            List<Vector2> path = getParams().getEnemyParams().getPathTowardsTarget();
             Vector2 nextNodeOnPath = path.get(0);
             if (getParams().getPos().distance(nextNodeOnPath) < 1f) {
                 List<Vector2> changedPath = new LinkedList<>(path);
                 changedPath.remove(0);
-                getParams().setPathTowardsTarget(changedPath);
+                getParams().getEnemyParams().setPathTowardsTarget(changedPath);
             }
             else {
                 moveTowards(nextNodeOnPath);
@@ -442,7 +462,7 @@ public class Enemy extends Creature {
 
         }
         else {
-            deg = getParams().getMovingVector().angleDeg();
+            deg = getParams().getMovementParams().getMovingVector().angleDeg();
         }
 
         if (deg >= 45 && deg < 135) {

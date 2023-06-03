@@ -49,7 +49,7 @@ public class CreatureSprite {
 
     public void updateForAliveCreature(CoreGame game, Creature creature) {
         TextureRegion texture;
-        if (!creature.getParams().getIsMoving() || creature.isStunned(game)) {
+        if (!creature.getParams().getMovementParams().getIsMoving() || creature.isStunned(game)) {
             texture = getFacingTexture(creature, creature.facingDirection(game));
         }
         else {

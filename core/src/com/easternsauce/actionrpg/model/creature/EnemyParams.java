@@ -6,6 +6,7 @@ import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Set;
 
 @NoArgsConstructor(staticName = "of")
@@ -36,4 +37,5 @@ public class EnemyParams {
     private Float skillUseRngSeed = (float) Math.random();
     private Set<EnemySkillUseEntry> skillUses;
     private Boolean isPathMirrored = false;
+    private List<Vector2> pathTowardsTarget = null;
 }

@@ -51,7 +51,8 @@ public class CreatureHitByDamageOverTimeAction extends GameStateAction {
 
         targetCreature.takeLifeDamage(damage);
 
-        if (targetCreature.getParams().getPreviousTickLife() > 0f && targetCreature.getParams().getStats().getLife() <= 0f) {
+        if (targetCreature.getParams().getStats().getPreviousTickLife() > 0f &&
+            targetCreature.getParams().getStats().getLife() <= 0f) {
             onCreatureDeath(targetCreature, attackerCreature, game);
         }
     }

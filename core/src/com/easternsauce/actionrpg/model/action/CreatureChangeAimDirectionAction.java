@@ -27,9 +27,9 @@ public class CreatureChangeAimDirectionAction extends GameStateAction {
         Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
         if (creature != null && creature.isAlive() && !creature.isStunned(game)) {
-            creature.getParams().setAimDirection(mousePos.normalized());
+            creature.getParams().getMovementParams().setAimDirection(mousePos.normalized());
 
-            creature.getParams().getChangeAimDirectionActionsPerSecondLimiterTimer().restart();
+            creature.getParams().getMovementParams().getChangeAimDirectionActionsPerSecondLimiterTimer().restart();
         }
     }
 

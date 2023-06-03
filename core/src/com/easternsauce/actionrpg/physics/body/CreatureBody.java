@@ -64,24 +64,25 @@ public class CreatureBody {
         float v = creature.getParams().getStats().getSpeed();
 
         if (bodyCreated) {
-            if (!creature.getParams().getIsDashing()) {
-                if (creature.getParams().getIsMoving()) {
+            if (!creature.getParams().getMovementParams().getIsDashing()) {
+                if (creature.getParams().getMovementParams().getIsMoving()) {
                     Vector2 normalizedMovingVector;
 
                     if (creature.isEffectActive(CreatureEffect.SLOW, game) ||
                         creature.isEffectActive(CreatureEffect.SELF_SLOW, game)) {
                         normalizedMovingVector = creature
                             .getParams()
+                            .getMovementParams()
                             .getMovingVector()
                             .normalized()
-                            .multiplyBy(1f - creature.getParams().getCurrentSlowMagnitude());
+                            .multiplyBy(1f - creature.getParams().getEffectParams().getCurrentSlowMagnitude());
                     }
                     else {
-                        normalizedMovingVector = creature.getParams().getMovingVector().normalized();
+                        normalizedMovingVector = creature.getParams().getMovementParams().getMovingVector().normalized();
                     }
 
                     if (!creature.isStunned(game) && normalizedMovingVector.len() > 0f) {
-                        creature.getParams().setFacingVector(normalizedMovingVector.copy());
+                        creature.getParams().getMovementParams().setFacingVector(normalizedMovingVector.copy());
                     }
 
                     float vectorX = normalizedMovingVector.getX() * v;
@@ -94,10 +95,10 @@ public class CreatureBody {
                 }
             }
             else {
-                Vector2 normalizedDashingVector = creature.getParams().getDashingVector().normalized();
+                Vector2 normalizedDashingVector = creature.getParams().getMovementParams().getDashingVector().normalized();
 
-                float vectorX = normalizedDashingVector.getX() * creature.getParams().getDashingVelocity();
-                float vectorY = normalizedDashingVector.getY() * creature.getParams().getDashingVelocity();
+                float vectorX = normalizedDashingVector.getX() * creature.getParams().getMovementParams().getDashingVelocity();
+                float vectorY = normalizedDashingVector.getY() * creature.getParams().getMovementParams().getDashingVelocity();
 
                 setVelocity(Vector2.of(vectorX, vectorY));
             }

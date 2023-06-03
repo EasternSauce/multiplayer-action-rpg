@@ -103,8 +103,9 @@ public class CoreGameClient extends CoreGame {
 
         Creature player = gameState.accessCreatures().getCreatures().get(getGameState().getThisClientPlayerId());
 
-        if (player != null && player.getParams().getChangeAimDirectionActionsPerSecondLimiterTimer().getTime() >
-                              Constants.CHANGE_AIM_DIRECTION_COMMAND_COOLDOWN) {
+        if (player != null &&
+            player.getParams().getMovementParams().getChangeAimDirectionActionsPerSecondLimiterTimer().getTime() >
+            Constants.CHANGE_AIM_DIRECTION_COMMAND_COOLDOWN) {
             getEndPoint().sendTCP(ActionPerformCommand.of(CreatureChangeAimDirectionAction.of(getGameState().getThisClientPlayerId(),
                                                                                               mousePos)));
         }
@@ -251,7 +252,7 @@ public class CoreGameClient extends CoreGame {
             Creature player = gameState.accessCreatures().getCreatures().get(getGameState().getThisClientPlayerId());
 
             if (player != null) {
-                if (player.getParams().getMovementActionsPerSecondLimiterTimer().getTime() >
+                if (player.getParams().getMovementParams().getMovementActionsPerSecondLimiterTimer().getTime() >
                     Constants.MOVEMENT_COMMAND_COOLDOWN && gameState.getTime() > menuClickTime + 0.1f) {
                     getEndPoint().sendTCP(ActionPerformCommand.of(CreatureMoveTowardsTargetAction.of(getGameState().getThisClientPlayerId(),
                                                                                                      mousePos)));

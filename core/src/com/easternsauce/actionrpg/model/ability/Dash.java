@@ -42,16 +42,16 @@ public class Dash extends Ability {
     public void onStarted(CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
 
-        creature.getParams().setIsDashing(true);
-        creature.getParams().setDashingVector(getParams().getDirVector());
-        creature.getParams().setDashingVelocity(30f);
+        creature.getParams().getMovementParams().setIsDashing(true);
+        creature.getParams().getMovementParams().setDashingVector(getParams().getDirVector());
+        creature.getParams().getMovementParams().setDashingVelocity(30f);
     }
 
     @Override
     protected void onCompleted(CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
 
-        creature.getParams().setIsDashing(false);
+        creature.getParams().getMovementParams().setIsDashing(false);
     }
 
     public void updatePosition(CoreGame game) {

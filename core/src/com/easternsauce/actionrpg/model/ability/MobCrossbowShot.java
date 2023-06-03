@@ -55,7 +55,7 @@ public class MobCrossbowShot extends Ability {
 
         if (creature != null && currentBoltToFire < boltFireTimes.length &&
             getParams().getStateTimer().getTime() > boltFireTimes[currentBoltToFire]) {
-            Vector2 aimDirection = creature.getParams().getAimDirection();
+            Vector2 aimDirection = creature.getParams().getMovementParams().getAimDirection();
 
             float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(currentDirVector.angleDeg(),
                                                                                   aimDirection.angleDeg());
