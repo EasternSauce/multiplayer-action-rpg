@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 @Data
 public class CreatureParams implements EntityParams {
     private final CreatureStats stats = CreatureStats.of();
+    private EnemyCreatureParams enemyParams = null;
 
     private CreatureId id;
 
@@ -43,12 +44,6 @@ public class CreatureParams implements EntityParams {
 
     private Boolean isMoving = false;
     private Boolean isDashing = false;
-
-    private CreatureId targetCreatureId = null;
-
-    private Boolean forcePathCalculation = false;
-    private SimpleTimer pathCalculationCooldownTimer = SimpleTimer.getExpiredTimer();
-    private Float pathCalculationCooldown;
 
     private List<Vector2> pathTowardsTarget = null;
 
@@ -73,33 +68,9 @@ public class CreatureParams implements EntityParams {
     private Float staminaRegenerationTickTime = 0.02f;
     private Float staminaRegeneration = 0.35f;
 
-    private SimpleTimer aggroTimer = SimpleTimer.getExpiredTimer();
-    private Float loseAggroTime = 3f;
-    @SuppressWarnings("SpellCheckingInspection")
-    private CreatureId aggroedCreatureId = null;
-
-    private CreatureId attackedByCreatureId = null;
-
-    private CreatureId lastFoundTargetId = null;
-    private SimpleTimer findTargetTimer = SimpleTimer.getExpiredTimer();
-    private Float findTargetCooldown;
-
     private Map<SkillType, Skill> skills = new ConcurrentSkipListMap<>();
 
     private Boolean isPathMirrored = false;
-
-    private EnemyAiState aiState = EnemyAiState.RESTING;
-
-    private SimpleTimer aiStateTimer = SimpleTimer.getExpiredTimer();
-
-    private Float aiStateTime;
-    private Float aiStateRngSeed;
-
-    private Vector2 defensivePosition;
-
-    private SimpleTimer justAttackedFromRangeTimer = SimpleTimer.getExpiredTimer();
-
-    private Float attackDistance = 3f;
 
     private Set<EnemySkillUseEntry> enemySkillUses;
 
@@ -125,12 +96,6 @@ public class CreatureParams implements EntityParams {
     private SimpleTimer gateTeleportCooldownTimer = SimpleTimer.getExpiredTimer();
 
     private SimpleTimer generalSkillPerformCooldownTimer = SimpleTimer.getExpiredTimer();
-
-    private Boolean enemySkillUseReadyToPick = true;
-
-    private SkillType enemySkillUsePickedSkillType = null;
-
-    private SimpleTimer enemyAttackCooldownTimer = SimpleTimer.getExpiredTimer();
 
     private SimpleTimer damageOverTimeTimer = SimpleTimer.getExpiredTimer();
     private SimpleTimer lifeRegenerationOverTimeTimer = SimpleTimer.getExpiredTimer();
@@ -166,8 +131,6 @@ public class CreatureParams implements EntityParams {
         params.initialPos = enemySpawn;
         params.initialAreaId = areaId;
         params.textureName = textureName;
-        params.findTargetCooldown = 0.5f + (float) Math.random();
-        params.pathCalculationCooldown = 4f + 2f * (float) Math.random();
 
         params.skills = // TODO: should we restrict which creature can perform which skill?
             new ConcurrentSkipListMap<>(Arrays
@@ -179,9 +142,6 @@ public class CreatureParams implements EntityParams {
                                                          .stream(CreatureEffect.values())
                                                          .collect(Collectors.toMap(effect -> effect,
                                                                                    effect -> CreatureEffectState.of())));
-
-        params.aiStateRngSeed = (float) Math.random();
-        params.aiStateTime = 0f;
 
         //        Map<SkillType, Integer> grantedSkills1 = new ConcurrentSkipListMap<>();
         //        grantedSkills1.put(SkillType.BOOMERANG, 1);
@@ -210,5 +170,4 @@ public class CreatureParams implements EntityParams {
         //                        .setGrantedSkills(grantedSkills2));
         return params;
     }
-
 }

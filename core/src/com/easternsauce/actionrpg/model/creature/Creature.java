@@ -46,6 +46,11 @@ public abstract class Creature implements Entity {
 
         updateAutomaticControls(game);
         updateTimers(delta);
+        updateEnemyTimers(delta);
+
+    }
+
+    protected void updateEnemyTimers(float delta) {
 
     }
 
@@ -132,18 +137,13 @@ public abstract class Creature implements Entity {
 
     public void updateTimers(float delta) {
         getParams().getAnimationTimer().update(delta);
-        getParams().getPathCalculationCooldownTimer().update(delta);
         getParams().getMovementActionsPerSecondLimiterTimer().update(delta);
         getParams().getChangeAimDirectionActionsPerSecondLimiterTimer().update(delta);
         getParams().getIsStillMovingCheckTimer().update(delta);
         getParams().getRespawnTimer().update(delta);
         getParams().getStaminaRegenerationTimer().update(delta);
-        getParams().getAggroTimer().update(delta);
-        getParams().getFindTargetTimer().update(delta);
-        getParams().getAiStateTimer().update(delta);
         getParams().getGateTeleportCooldownTimer().update(delta);
         getParams().getGeneralSkillPerformCooldownTimer().update(delta);
-        getParams().getEnemyAttackCooldownTimer().update(delta);
         getParams().getDamageOverTimeTimer().update(delta);
         getParams().getLifeRegenerationOverTimeTimer().update(delta);
         getParams().getManaRegenerationOverTimeTimer().update(delta);
@@ -260,7 +260,7 @@ public abstract class Creature implements Entity {
         }
     }
 
-    private void takeManaDamage(Float manaCost) {
+    protected void takeManaDamage(Float manaCost) {
         if (getParams().getStats().getMana() - manaCost > 0) {
             getParams().getStats().setMana(getParams().getStats().getMana() - manaCost);
         }
@@ -269,7 +269,7 @@ public abstract class Creature implements Entity {
         }
     }
 
-    private void takeStaminaDamage(Float staminaCost) {
+    protected void takeStaminaDamage(Float staminaCost) {
         if (getParams().getStats().getStamina() - staminaCost > 0) {
             getParams().getStats().setStamina(getParams().getStats().getStamina() - staminaCost);
         }

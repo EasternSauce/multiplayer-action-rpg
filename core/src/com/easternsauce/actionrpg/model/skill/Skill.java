@@ -99,7 +99,6 @@ public class Skill {
         if (creature != null && creature.canPerformSkill(this, game) && performTimer.getTime() > cooldown &&
             (!skillType.getIsDamaging() || creature.getParams().getGeneralSkillPerformCooldownTimer().getTime() >
                                            Constants.GENERAL_PLAYER_SKILL_PERFORM_COOLDOWN) && !creature.isStunned(game)) {
-            creature.getParams().setEnemySkillUseReadyToPick(true);
 
             AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
             AbilityParams abilityParams = AbilityParams

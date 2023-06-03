@@ -97,6 +97,8 @@ public class EndPointHelper {
         endPoint.getKryo().register(AreaGateConnection.class);
         endPoint.getKryo().register(DropTableEntry.class);
         endPoint.getKryo().register(EnemySkillUseEntry.class);
+        endPoint.getKryo().register(EnemyCreatureParams.class);
+        endPoint.getKryo().register(CreatureStats.class);
 
         endPoint.getKryo().register(PlayerInitAction.class);
         endPoint.getKryo().register(CreatureMoveTowardsTargetAction.class);
