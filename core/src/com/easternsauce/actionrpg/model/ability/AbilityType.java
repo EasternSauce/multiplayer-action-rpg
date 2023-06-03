@@ -39,7 +39,7 @@ public enum AbilityType {
 
     BOSS_SWORD_SPIN,
 
-    TELEPORT,
+    TELEPORT_SOURCE,
 
     TELEPORT_DESTINATION,
 

@@ -240,7 +240,7 @@ public abstract class Creature implements Entity {
             Ability shieldAbility = game
                 .getGameState()
                 .accessAbilities()
-                .getAbilityBySkillType(getParams().getId(), SkillType.SUMMON_SHIELD);
+                .getAbilityBySkillType(getParams().getId(), SkillType.SUMMON_GUARD);
             if (shieldAbility != null && shieldAbility.getParams().getState() == AbilityState.ACTIVE) {
                 float angleDiff = (ability.getParams().getDirVector().angleDeg() -
                                    shieldAbility.getParams().getDirVector().multiplyBy(-1).angleDeg() + 180 + 360) % 360 - 180;

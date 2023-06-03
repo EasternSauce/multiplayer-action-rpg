@@ -46,7 +46,7 @@ public class EnemyTemplate {
                                                             randomDropSet,
                                                             new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(
                                                                 SkillType.MOB_SWORD_SLASH,
-                                                                100f), EnemySkillUseEntry.of(SkillType.SUMMON_SHIELD, 20f))));
+                                                                100f), EnemySkillUseEntry.of(SkillType.SUMMON_GUARD, 20f))));
     public static EnemyTemplate mage = EnemyTemplate.of(EnemyType.MAGE,
                                                         150f,
                                                         15f,
