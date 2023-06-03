@@ -259,7 +259,7 @@ public class Enemy extends Creature {
 
                 if (mirroredPath != null) {
                     path = mirroredPath;
-                    this.getParams().setIsPathMirrored(true);
+                    this.getParams().getEnemyParams().setIsPathMirrored(true);
                 }
                 else {
                     AstarResult result = Astar.findPath(game.getPhysicsWorld(getParams().getAreaId()),
@@ -268,7 +268,7 @@ public class Enemy extends Creature {
                                                         this.capability());
                     path = result.getPath();
 
-                    this.getParams().setIsPathMirrored(false);
+                    this.getParams().getEnemyParams().setIsPathMirrored(false);
                 }
 
                 getParams().setPathTowardsTarget(path);
@@ -288,7 +288,7 @@ public class Enemy extends Creature {
                                                             creature.getParams().getPos().distance(this.getParams().getPos()) <
                                                             4f && !creature.getId().equals(this.getParams().getId()) &&
                                                             creature.getParams().getPathTowardsTarget() != null &&
-                                                            !creature.getParams().getIsPathMirrored() &&
+                                                            !creature.getParams().getEnemyParams().getIsPathMirrored() &&
                                                             creature.getParams().getEnemyParams().getTargetCreatureId() != null &&
                                                             creature
                                                                 .getParams()
@@ -463,14 +463,6 @@ public class Enemy extends Creature {
     @Override
     public boolean canPerformSkill(Skill skill, CoreGame game) {
         return isAlive() && getParams().getStats().getStamina() >= skill.getStaminaCost();
-    }
-
-    public void init() {
-        getParams().setEnemyParams(EnemyParams.of());
-        getParams().getEnemyParams().setFindTargetCooldown(0.5f + (float) Math.random());
-        getParams().getEnemyParams().setPathCalculationCooldown(4f + 2f * (float) Math.random());
-        getParams().getEnemyParams().setAutoControlStateRngSeed((float) Math.random());
-        getParams().getEnemyParams().setAutoControlStateTime(0f);
     }
 
     @Override

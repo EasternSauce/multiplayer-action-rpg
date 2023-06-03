@@ -70,8 +70,6 @@ public class CreatureParams implements EntityParams {
 
     private Map<SkillType, Skill> skills = new ConcurrentSkipListMap<>();
 
-    private Boolean isPathMirrored = false;
-
     private Set<DropTableEntry> dropTable;
 
     private Boolean isStillInsideGateAfterTeleport = false;
@@ -108,19 +106,37 @@ public class CreatureParams implements EntityParams {
 
     private Float dashingVelocity = 0f;
 
-    public static CreatureParams of(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn) {
-        return getCreatureParams(creatureId,
-                                 areaId,
-                                 enemySpawn.getPos(),
-                                 enemySpawn.getEnemyTemplate().getEnemyType().textureName);
+    public static CreatureParams enemyCreatureParamsOf(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn) {
+        CreatureParams params = produceCreatureParams(creatureId,
+                                                      areaId,
+                                                      enemySpawn.getPos(),
+                                                      enemySpawn.getEnemyTemplate().getEnemyType().textureName);
+
+        params.setDropTable(enemySpawn.getEnemyTemplate().getDropTable());
+        params.getStats().setBaseSpeed(9.5f);
+        params.getStats().setMaxLife(enemySpawn.getEnemyTemplate().getMaxLife());
+        params.getStats().setLife(enemySpawn.getEnemyTemplate().getMaxLife());
+
+        params.setEnemyParams(EnemyParams.of());
+        params.getEnemyParams().setFindTargetCooldown(0.5f + (float) Math.random());
+        params.getEnemyParams().setPathCalculationCooldown(4f + 2f * (float) Math.random());
+        params.getEnemyParams().setAutoControlStateRngSeed((float) Math.random());
+        params.getEnemyParams().setAutoControlStateTime(0f);
+
+        params.setRespawnTime(120f);
+
+        params.getEnemyParams().setAttackDistance(enemySpawn.getEnemyTemplate().getAttackDistance());
+        params.getEnemyParams().setSkillUses(enemySpawn.getEnemyTemplate().getEnemySkillUseEntries());
+
+        return params;
     }
 
-    public static CreatureParams of(CreatureId creatureId, AreaId areaId, Vector2 pos, String textureName) {
-        return getCreatureParams(creatureId, areaId, pos, textureName);
+    public static CreatureParams playerCreatureParamsOf(CreatureId creatureId, AreaId areaId, Vector2 pos, String textureName) {
+        return produceCreatureParams(creatureId, areaId, pos, textureName);
     }
 
-    private static CreatureParams getCreatureParams(CreatureId creatureId, AreaId areaId, Vector2 enemySpawn,
-                                                    String textureName) {
+    private static CreatureParams produceCreatureParams(CreatureId creatureId, AreaId areaId, Vector2 enemySpawn,
+                                                        String textureName) {
         CreatureParams params = CreatureParams.of();
         params.id = creatureId;
         params.areaId = areaId;

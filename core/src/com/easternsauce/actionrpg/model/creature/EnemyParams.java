@@ -35,4 +35,5 @@ public class EnemyParams {
     private SimpleTimer attackCooldownTimer = SimpleTimer.getExpiredTimer();
     private Float skillUseRngSeed = (float) Math.random();
     private Set<EnemySkillUseEntry> skillUses;
+    private Boolean isPathMirrored = false;
 }

@@ -140,26 +140,7 @@ public class GameEntityManager {
     }
 
     public void spawnEnemy(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn, CoreGame game) {
-        Enemy enemy = Enemy.of(CreatureParams
-                                   .of(creatureId, areaId, enemySpawn)
-                                   .setDropTable(enemySpawn.getEnemyTemplate().getDropTable())
-                                   .setRespawnTime(120f)
-                               // TODO: move it to enemy class?
-                              );
-
-        enemy
-            .getParams()
-            .getStats()
-            .setBaseSpeed(9.5f)
-            .setMaxLife(enemySpawn.getEnemyTemplate().getMaxLife())
-            .setLife(enemySpawn.getEnemyTemplate().getMaxLife());
-
-        enemy.init();
-        enemy
-            .getParams()
-            .getEnemyParams()
-            .setAttackDistance(enemySpawn.getEnemyTemplate().getAttackDistance())
-            .setSkillUses(enemySpawn.getEnemyTemplate().getEnemySkillUseEntries());
+        Enemy enemy = Enemy.of(CreatureParams.enemyCreatureParamsOf(creatureId, areaId, enemySpawn));
 
         game.getGameState().accessCreatures().getCreatures().put(creatureId, enemy);
 

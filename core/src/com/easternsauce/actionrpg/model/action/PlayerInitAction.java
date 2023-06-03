@@ -55,7 +55,7 @@ public class PlayerInitAction extends GameStateAction {
 
         String textureName = textures[((int) (Math.random() * 100) % 3)];
 
-        player = Player.of(CreatureParams.of(playerId, AreaId.of("area3"), pos, textureName));
+        player = Player.of(CreatureParams.playerCreatureParamsOf(playerId, AreaId.of("area3"), pos, textureName));
         player.getParams().getStats().setLife(350f);
         player.getParams().getStats().setMaxLife(350f);
         player.getParams().getStats().setMana(350f);
