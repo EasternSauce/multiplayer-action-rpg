@@ -42,7 +42,7 @@ public class EndPointHelper {
         endPoint.getKryo().register(EnemyType.class);
         endPoint.getKryo().register(SkillType.class);
         endPoint.getKryo().register(EnemySpawn.class);
-        endPoint.getKryo().register(EnemyAiState.class);
+        endPoint.getKryo().register(EnemyAutoControlState.class);
         endPoint.getKryo().register(LootPile.class);
         endPoint.getKryo().register(AreaGate.class);
         endPoint.getKryo().register(CreatureEffect.class);
@@ -94,10 +94,9 @@ public class EndPointHelper {
         endPoint.getKryo().register(CreatureParams.class);
         endPoint.getKryo().register(AbilityParams.class);
         endPoint.getKryo().register(LootPileParams.class);
-        endPoint.getKryo().register(AreaGateConnection.class);
         endPoint.getKryo().register(DropTableEntry.class);
         endPoint.getKryo().register(EnemySkillUseEntry.class);
-        endPoint.getKryo().register(EnemyCreatureParams.class);
+        endPoint.getKryo().register(EnemyParams.class);
         endPoint.getKryo().register(CreatureStats.class);
 
         endPoint.getKryo().register(PlayerInitAction.class);

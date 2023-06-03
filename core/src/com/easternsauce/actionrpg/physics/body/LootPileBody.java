@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @Data
 public class LootPileBody {
     LootPileId lootPileId;
-    @SuppressWarnings("FieldCanBeLocal")
     Body b2body;
 
     PhysicsWorld world;

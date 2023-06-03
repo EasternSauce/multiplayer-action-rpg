@@ -121,6 +121,7 @@ public class PlayfulGhost extends Projectile {
         if (thisCreature instanceof Enemy) {
             return targetCreature instanceof Player;
         }
+
         //noinspection RedundantIfStatement
         if (thisCreature instanceof Player) {
             return true;

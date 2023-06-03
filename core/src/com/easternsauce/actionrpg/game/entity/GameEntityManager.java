@@ -23,6 +23,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
+@SuppressWarnings({
+    "GrazieInspection",
+    "SpellCheckingInspection"})
 @NoArgsConstructor(staticName = "of")
 public class GameEntityManager {
     @Getter
@@ -140,7 +143,6 @@ public class GameEntityManager {
         Enemy enemy = Enemy.of(CreatureParams
                                    .of(creatureId, areaId, enemySpawn)
                                    .setDropTable(enemySpawn.getEnemyTemplate().getDropTable())
-                                   .setEnemySkillUses(enemySpawn.getEnemyTemplate().getEnemySkillUseEntries())
                                    .setRespawnTime(120f)
                                // TODO: move it to enemy class?
                               );
@@ -148,12 +150,16 @@ public class GameEntityManager {
         enemy
             .getParams()
             .getStats()
-            .setBaseSpeed(8.5f)
+            .setBaseSpeed(9.5f)
             .setMaxLife(enemySpawn.getEnemyTemplate().getMaxLife())
             .setLife(enemySpawn.getEnemyTemplate().getMaxLife());
 
         enemy.init();
-        enemy.getParams().getEnemyParams().setAttackDistance(enemySpawn.getEnemyTemplate().getAttackDistance());
+        enemy
+            .getParams()
+            .getEnemyParams()
+            .setAttackDistance(enemySpawn.getEnemyTemplate().getAttackDistance())
+            .setSkillUses(enemySpawn.getEnemyTemplate().getEnemySkillUseEntries());
 
         game.getGameState().accessCreatures().getCreatures().put(creatureId, enemy);
 

@@ -32,10 +32,6 @@ public class CreatureBody {
         return creatureBody;
     }
 
-    public CreatureId creatureId() {
-        return creatureId;
-    }
-
     public void init(AreaId areaId, CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 

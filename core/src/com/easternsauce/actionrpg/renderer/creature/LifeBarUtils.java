@@ -6,8 +6,8 @@ import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
 
 public class LifeBarUtils {
-    public static float LIFE_BAR_WIDTH = 2.0f;
-    public static float LIFE_BAR_HEIGHT = 0.16f;
+    public static final float LIFE_BAR_WIDTH = 2.0f;
+    public static final float LIFE_BAR_HEIGHT = 0.16f;
 
     public static float getLifeBarPosX(Creature creature) {
         return creature.getParams().getPos().getX() - LIFE_BAR_WIDTH / 2;

@@ -4,29 +4,22 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 public enum EquipmentSlotType {
-    PRIMARY_WEAPON(0, "Primary Weapon"),
-    SECONDARY_WEAPON(1, "Secondary Weapon"),
-    HELMET(2, "Helmet"),
-    BODY(3, "Body"),
-    GLOVES(4, "Gloves"),
-    RING(5, "Ring"),
-    BOOTS(6, "Boots");
-    //    CONSUMABLE(7, "Consumable");
+    PRIMARY_WEAPON(0),
+    SECONDARY_WEAPON(1),
+    HELMET(2),
+    BODY(3),
+    GLOVES(4),
+    RING(5),
+    BOOTS(6);
 
     private final int sequenceNumber;
-    private final String name;
 
-    EquipmentSlotType(int sequenceNumber, String name) {
+    EquipmentSlotType(int sequenceNumber) {
         this.sequenceNumber = sequenceNumber;
-        this.name = name;
     }
 
     public int getSequenceNumber() {
         return sequenceNumber;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public static final Map<Integer, String> equipmentSlotNames = new ConcurrentSkipListMap<>();

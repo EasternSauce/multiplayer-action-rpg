@@ -91,10 +91,6 @@ public class PhysicsHelper {
             else if (physicsEvent instanceof CreatureHitsLootPileEvent) {
                 CreatureHitsLootPileEvent event = (CreatureHitsLootPileEvent) physicsEvent;
 
-                //                LootPile lootPile = game.getLootPile(event.getLootPileId());
-
-                //                if (lootPile != null) lootPile.isLooted(true);
-
                 PlayerConfig playerConfig = game.getGameState().getPlayerConfig(event.getCreatureId());
 
                 if (playerConfig != null) {
@@ -153,6 +149,7 @@ public class PhysicsHelper {
             });
 
             game.getGameState().accessAbilities().getAbilities().forEach((abilityId, ability) -> {
+                //noinspection SpellCheckingInspection
                 if (game.getAbilityBodies().containsKey(abilityId) &&
                     game.getAbilityBodies().get(abilityId).getIsBodyInitialized() &&
                     // this is needed to fix body created client/server desync

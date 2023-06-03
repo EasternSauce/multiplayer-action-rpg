@@ -56,16 +56,17 @@ public class Enemy extends Creature {
     @Override
     public void updateAutomaticControls(CoreGame game) {
 
-        if (getParams().getEnemyParams().getAiStateTimer().getTime() > getParams().getEnemyParams().getAiStateTime()) {
-            getParams().getEnemyParams().getAiStateTimer().restart();
+        if (getParams().getEnemyParams().getAutoControlStateTimer().getTime() >
+            getParams().getEnemyParams().getAutoControlStateTime()) {
+            getParams().getEnemyParams().getAutoControlStateTimer().restart();
 
-            processAiStateChangeLogic(game);
+            processAutoControlStateChangeLogic(game);
 
-            getParams().getEnemyParams().setAiStateTime(1f + 1f * nextAiStateRngValue());
+            getParams().getEnemyParams().setAutoControlStateTime(1f + 1f * nextAutoControlStateRngValue());
         }
 
         if (getParams().getEnemyParams().getJustAttackedFromRangeTimer().getTime() < Constants.JUST_ATTACKED_FROM_RANGE_TIME) {
-            getParams().getEnemyParams().setAiState(EnemyAiState.AGGRESSIVE);
+            getParams().getEnemyParams().setAutoControlState(EnemyAutoControlState.AGGRESSIVE);
             getParams().getStats().setSpeed(getParams().getStats().getBaseSpeed());
         }
 
@@ -88,7 +89,7 @@ public class Enemy extends Creature {
             if (foundTargetId != null) {
                 if (getParams().getEnemyParams().getLastFoundTargetId() == null ||
                     !getParams().getEnemyParams().getLastFoundTargetId().equals(foundTargetId)) {
-                    getParams().getEnemyParams().setAiState(EnemyAiState.ALERTED);
+                    getParams().getEnemyParams().setAutoControlState(EnemyAutoControlState.ALERTED);
                     params.getEnemyParams().setAggroedCreatureId(foundTargetId);
                     getParams().getEnemyParams().setLastFoundTargetId(foundTargetId);
                 }
@@ -119,7 +120,7 @@ public class Enemy extends Creature {
 
             Vector2 vectorTowardsTarget = getParams().getPos().vectorTowards(potentialTarget.getParams().getPos());
 
-            handleAiStateTargetDistanceLogic(potentialTarget);
+            handleAutoControlStateTargetDistanceLogic(potentialTarget);
             handleNewTarget(potentialTarget.getParams().getId()); // logic for when target changed
             handleMovement(potentialTarget); // set movement command, causing creature to walk towards target
             handleAimDirectionAdjustment(vectorTowardsTarget);
@@ -140,11 +141,11 @@ public class Enemy extends Creature {
         getParams().setAimDirection(vectorTowardsTarget.normalized());
     }
 
-    private void processAiStateChangeLogic(CoreGame game) {
+    private void processAutoControlStateChangeLogic(CoreGame game) {
         if (getParams().getEnemyParams().getTargetCreatureId() == null) {
             return;
         }
-        if (getParams().getEnemyParams().getAiState() == EnemyAiState.ALERTED) {
+        if (getParams().getEnemyParams().getAutoControlState() == EnemyAutoControlState.ALERTED) {
             Vector2 targetPos = game
                 .getGameState()
                 .accessCreatures()
@@ -157,21 +158,21 @@ public class Enemy extends Creature {
 
                 getParams()
                     .getEnemyParams()
-                    .setDefensivePosition(Vector2.of(defensivePos.getX() + nextAiStateRngNegativeOrPositiveValue(),
-                                                     defensivePos.getY() + nextAiStateRngNegativeOrPositiveValue()));
+                    .setDefensivePosition(Vector2.of(defensivePos.getX() + nextAutoControlStateRngNegativeOrPositiveValue(),
+                                                     defensivePos.getY() + nextAutoControlStateRngNegativeOrPositiveValue()));
             }
 
-            if (nextAiStateRngValue() < 0.1f) {
-                getParams().getEnemyParams().setAiState(EnemyAiState.AGGRESSIVE);
+            if (nextAutoControlStateRngValue() < 0.1f) {
+                getParams().getEnemyParams().setAutoControlState(EnemyAutoControlState.AGGRESSIVE);
             }
         }
-        else if (getParams().getEnemyParams().getAiState() == EnemyAiState.AGGRESSIVE) {
-            if (nextAiStateRngValue() < 0.5f) {
-                getParams().getEnemyParams().setAiState(EnemyAiState.KEEPING_DISTANCE);
+        else if (getParams().getEnemyParams().getAutoControlState() == EnemyAutoControlState.AGGRESSIVE) {
+            if (nextAutoControlStateRngValue() < 0.5f) {
+                getParams().getEnemyParams().setAutoControlState(EnemyAutoControlState.KEEPING_DISTANCE);
 
             }
         }
-        else if (getParams().getEnemyParams().getAiState() == EnemyAiState.KEEPING_DISTANCE) {
+        else if (getParams().getEnemyParams().getAutoControlState() == EnemyAutoControlState.KEEPING_DISTANCE) {
             Vector2 targetPos = game
                 .getGameState()
                 .accessCreatures()
@@ -184,30 +185,30 @@ public class Enemy extends Creature {
 
                 getParams()
                     .getEnemyParams()
-                    .setDefensivePosition(Vector2.of(backUpPos.getX() + nextAiStateRngNegativeOrPositiveValue(),
-                                                     backUpPos.getY() + nextAiStateRngNegativeOrPositiveValue()));
+                    .setDefensivePosition(Vector2.of(backUpPos.getX() + nextAutoControlStateRngNegativeOrPositiveValue(),
+                                                     backUpPos.getY() + nextAutoControlStateRngNegativeOrPositiveValue()));
 
-                if (nextAiStateRngValue() < 0.5f) {
-                    getParams().getEnemyParams().setAiState(EnemyAiState.AGGRESSIVE);
+                if (nextAutoControlStateRngValue() < 0.5f) {
+                    getParams().getEnemyParams().setAutoControlState(EnemyAutoControlState.AGGRESSIVE);
                 }
             }
         }
 
     }
 
-    private void handleAiStateTargetDistanceLogic(Creature potentialTarget) {
+    private void handleAutoControlStateTargetDistanceLogic(Creature potentialTarget) {
         Float distance = getParams().getPos().distance(potentialTarget.getParams().getPos());
 
         if (getParams().getEnemyParams().getJustAttackedFromRangeTimer().getTime() >= Constants.JUST_ATTACKED_FROM_RANGE_TIME) {
-            if ((getParams().getEnemyParams().getAiState() == EnemyAiState.AGGRESSIVE ||
-                 getParams().getEnemyParams().getAiState() == EnemyAiState.KEEPING_DISTANCE) &&
+            if ((getParams().getEnemyParams().getAutoControlState() == EnemyAutoControlState.AGGRESSIVE ||
+                 getParams().getEnemyParams().getAutoControlState() == EnemyAutoControlState.KEEPING_DISTANCE) &&
                 distance > Constants.TURN_ALERTED_DISTANCE) {
-                getParams().getEnemyParams().setAiState(EnemyAiState.ALERTED);
+                getParams().getEnemyParams().setAutoControlState(EnemyAutoControlState.ALERTED);
 
             }
-            else if (getParams().getEnemyParams().getAiState() == EnemyAiState.ALERTED &&
+            else if (getParams().getEnemyParams().getAutoControlState() == EnemyAutoControlState.ALERTED &&
                      distance < Constants.TURN_AGGRESSIVE_DISTANCE) {
-                getParams().getEnemyParams().setAiState(EnemyAiState.AGGRESSIVE);
+                getParams().getEnemyParams().setAutoControlState(EnemyAutoControlState.AGGRESSIVE);
 
             }
 
@@ -343,7 +344,7 @@ public class Enemy extends Creature {
     }
 
     private void processStateAiHandleMovementLogic(Creature potentialTarget, Float distance) {
-        if (getParams().getEnemyParams().getAiState() == EnemyAiState.AGGRESSIVE) {
+        if (getParams().getEnemyParams().getAutoControlState() == EnemyAutoControlState.AGGRESSIVE) {
             if (distance > getParams().getEnemyParams().getAttackDistance() - 1f) {
                 getParams().getStats().setSpeed(getParams().getStats().getBaseSpeed());
                 moveTowards(potentialTarget.getParams().getPos());
@@ -352,13 +353,13 @@ public class Enemy extends Creature {
                 stopMoving();
             }
         }
-        else if (getParams().getEnemyParams().getAiState() == EnemyAiState.ALERTED) {
+        else if (getParams().getEnemyParams().getAutoControlState() == EnemyAutoControlState.ALERTED) {
             getParams().getStats().setSpeed(getParams().getStats().getBaseSpeed() / 3);
             if (getParams().getEnemyParams().getDefensivePosition() != null) {
                 moveTowards(getParams().getEnemyParams().getDefensivePosition());
             }
         }
-        else if (getParams().getEnemyParams().getAiState() == EnemyAiState.KEEPING_DISTANCE) {
+        else if (getParams().getEnemyParams().getAutoControlState() == EnemyAutoControlState.KEEPING_DISTANCE) {
             getParams().getStats().setSpeed(getParams().getStats().getBaseSpeed() / 2);
             if (getParams().getEnemyParams().getDefensivePosition() != null) {
                 moveTowards(getParams().getEnemyParams().getDefensivePosition());
@@ -370,17 +371,18 @@ public class Enemy extends Creature {
     }
 
     public void handleUseAbilityAtTarget(Creature potentialTarget, Vector2 vectorTowardsTarget, CoreGame game) {
-        if (getParams().getEnemyParams().getEnemyAttackCooldownTimer().getTime() > Constants.ENEMY_ATTACK_COOLDOWN_TIMER) {
+        if (getParams().getEnemyParams().getAttackCooldownTimer().getTime() > Constants.ENEMY_ATTACK_COOLDOWN_TIMER) {
             if (potentialTarget.getParams().getPos().distance(getParams().getPos()) <
                 getParams().getEnemyParams().getAttackDistance()) {
                 game
                     .getGameState()
                     .accessCreatures()
                     .handleCreatureUseRandomSkillAtTarget(getParams().getId(), vectorTowardsTarget);
-                getParams().getEnemyParams().getEnemyAttackCooldownTimer().restart();
+                getParams().getEnemyParams().getAttackCooldownTimer().restart();
             }
             else if (getParams()
-                         .getEnemySkillUses()
+                         .getEnemyParams()
+                         .getSkillUses()
                          .stream()
                          .map(EnemySkillUseEntry::getSkillType)
                          .collect(Collectors.toSet())
@@ -390,7 +392,7 @@ public class Enemy extends Creature {
                     .getGameState()
                     .accessCreatures()
                     .handleCreatureUseSkillAtTarget(getParams().getId(), vectorTowardsTarget, SkillType.SUMMON_SHIELD);
-                getParams().getEnemyParams().getEnemyAttackCooldownTimer().restart();
+                getParams().getEnemyParams().getAttackCooldownTimer().restart();
             }
         }
     }
@@ -400,22 +402,26 @@ public class Enemy extends Creature {
         getParams().getEnemyParams().setTargetCreatureId(null);
         getParams().getEnemyParams().setAttackedByCreatureId(null);
         getParams().getEnemyParams().setLastFoundTargetId(null);
-        getParams().getEnemyParams().setAiState(EnemyAiState.RESTING);
+        getParams().getEnemyParams().setAutoControlState(EnemyAutoControlState.RESTING);
         stopMoving();
     }
 
-    public Float nextAiStateRngValue() {
+    public Float nextAutoControlStateRngValue() {
         getParams()
             .getEnemyParams()
-            .setAiStateRngSeed(RandomHelper.seededRandomFloat(getParams().getEnemyParams().getAiStateRngSeed()));
-        return getParams().getEnemyParams().getAiStateRngSeed();
+            .setAutoControlStateRngSeed(RandomHelper.seededRandomFloat(getParams()
+                                                                           .getEnemyParams()
+                                                                           .getAutoControlStateRngSeed()));
+        return getParams().getEnemyParams().getAutoControlStateRngSeed();
     }
 
-    public Float nextAiStateRngNegativeOrPositiveValue() {
+    public Float nextAutoControlStateRngNegativeOrPositiveValue() {
         getParams()
             .getEnemyParams()
-            .setAiStateRngSeed(RandomHelper.seededRandomFloat(getParams().getEnemyParams().getAiStateRngSeed()));
-        return (getParams().getEnemyParams().getAiStateRngSeed() - 0.5f) * 2;
+            .setAutoControlStateRngSeed(RandomHelper.seededRandomFloat(getParams()
+                                                                           .getEnemyParams()
+                                                                           .getAutoControlStateRngSeed()));
+        return (getParams().getEnemyParams().getAutoControlStateRngSeed() - 0.5f) * 2;
     }
 
     @Override
@@ -460,11 +466,11 @@ public class Enemy extends Creature {
     }
 
     public void init() {
-        getParams().setEnemyParams(EnemyCreatureParams.of());
+        getParams().setEnemyParams(EnemyParams.of());
         getParams().getEnemyParams().setFindTargetCooldown(0.5f + (float) Math.random());
         getParams().getEnemyParams().setPathCalculationCooldown(4f + 2f * (float) Math.random());
-        getParams().getEnemyParams().setAiStateRngSeed((float) Math.random());
-        getParams().getEnemyParams().setAiStateTime(0f);
+        getParams().getEnemyParams().setAutoControlStateRngSeed((float) Math.random());
+        getParams().getEnemyParams().setAutoControlStateTime(0f);
     }
 
     @Override
@@ -472,19 +478,12 @@ public class Enemy extends Creature {
         getParams().getEnemyParams().getPathCalculationCooldownTimer().update(delta);
         getParams().getEnemyParams().getAggroTimer().update(delta);
         getParams().getEnemyParams().getFindTargetTimer().update(delta);
-        getParams().getEnemyParams().getAiStateTimer().update(delta);
-        getParams().getEnemyParams().getEnemyAttackCooldownTimer().update(delta);
+        getParams().getEnemyParams().getAutoControlStateTimer().update(delta);
+        getParams().getEnemyParams().getAttackCooldownTimer().update(delta);
     }
 
     @Override
-    public void onPerformSkill(Skill skill) {
-        takeStaminaDamage(skill.getStaminaCost());
-        takeManaDamage(skill.getManaCost());
-
-        if (skill.getSkillType().getIsDamaging()) {
-            getParams().getGeneralSkillPerformCooldownTimer().restart();
-        }
-
-        getParams().getEnemyParams().setEnemySkillUseReadyToPick(true);
+    public void onAfterPerformSkill() {
+        getParams().getEnemyParams().setSkillUseReadyToPick(true);
     }
 }

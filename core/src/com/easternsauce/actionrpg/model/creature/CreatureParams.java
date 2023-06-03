@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Data
 public class CreatureParams implements EntityParams {
     private final CreatureStats stats = CreatureStats.of();
-    private EnemyCreatureParams enemyParams = null;
+    private EnemyParams enemyParams = null;
 
     private CreatureId id;
 
@@ -72,8 +72,6 @@ public class CreatureParams implements EntityParams {
 
     private Boolean isPathMirrored = false;
 
-    private Set<EnemySkillUseEntry> enemySkillUses;
-
     private Set<DropTableEntry> dropTable;
 
     private Boolean isStillInsideGateAfterTeleport = false;
@@ -83,7 +81,6 @@ public class CreatureParams implements EntityParams {
     private Map<Integer, Item> inventoryItems = new ConcurrentSkipListMap<>();
 
     private Float dropRngSeed = (float) Math.random();
-    private Float skillUseRngSeed = (float) Math.random();
 
     private Float appliedSlowEffectiveness = 0f;
 
@@ -143,31 +140,6 @@ public class CreatureParams implements EntityParams {
                                                          .collect(Collectors.toMap(effect -> effect,
                                                                                    effect -> CreatureEffectState.of())));
 
-        //        Map<SkillType, Integer> grantedSkills1 = new ConcurrentSkipListMap<>();
-        //        grantedSkills1.put(SkillType.BOOMERANG, 1);
-        //
-        //        Map<SkillType, Integer> grantedSkills2 = new ConcurrentSkipListMap<>();
-        //        grantedSkills2.put(SkillType.SUMMON_SHIELD, 1);
-
-        //        params.inventoryItems.put(2,
-        //                Item.of()
-        //                        .setTemplate(ItemTemplate.templates.get("leatherArmor"))
-        //                        .setQualityModifier(0.6f)
-        //                        .setGrantedSkills(grantedSkills1));
-        //        params.inventoryItems.put(3,
-        //                Item.of()
-        //                        .setTemplate(ItemTemplate.templates.get("leatherArmor"))
-        //                        .setQualityModifier(1f));
-        //        params.inventoryItems.put(10,
-        //                Item.of()
-        //                        .setTemplate(ItemTemplate.templates.get("hideGloves"))
-        //                        .setQualityModifier(0.9f));
-        //
-        //        params.inventoryItems.put(11,
-        //                Item.of()
-        //                        .setTemplate(ItemTemplate.templates.get("woodenShield"))
-        //                        .setQualityModifier(1.0f)
-        //                        .setGrantedSkills(grantedSkills2));
         return params;
     }
 }

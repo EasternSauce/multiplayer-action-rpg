@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(staticName = "of")
 public class GameplayScreen implements Screen {
     private CoreGame game;
-    @SuppressWarnings("FieldCanBeLocal")
     private Map<AreaId, TiledMap> maps;
 
     private TextureAtlas atlas;
@@ -93,7 +92,7 @@ public class GameplayScreen implements Screen {
             game.updateCameraPositions();
         }
 
-        if (game.getIsFirstBroadcastReceived() && !game.getIsAreaRenderersLoaded()) {
+        if (game.getIsFirstBroadcastReceived()) {
             game.getEntityManager().getGameEntityRenderer().loadAreaRenderers(maps, game);
         }
     }
@@ -103,14 +102,12 @@ public class GameplayScreen implements Screen {
         update(delta);
         if (game.isGameplayRenderingAllowed()) {
 
-            if (game.getIsAreaRenderersLoaded()) {
-                game
-                    .getEntityManager()
-                    .getGameEntityRenderer()
-                    .getAreaRenderers()
-                    .get(game.getGameState().getCurrentAreaId())
-                    .setView(game.getEntityManager().getGameEntityRenderer().getViewportsHandler().getWorldCamera());
-            }
+            game
+                .getEntityManager()
+                .getGameEntityRenderer()
+                .getAreaRenderers()
+                .get(game.getGameState().getCurrentAreaId())
+                .setView(game.getEntityManager().getGameEntityRenderer().getViewportsHandler().getWorldCamera());
 
             game.getEntityManager().getGameEntityRenderer().setProjectionMatrices();
 

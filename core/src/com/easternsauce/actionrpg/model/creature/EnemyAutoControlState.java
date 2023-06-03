@@ -3,7 +3,7 @@ package com.easternsauce.actionrpg.model.creature;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-public enum EnemyAiState {
+public enum EnemyAutoControlState {
 
     RESTING,
     ALERTED,

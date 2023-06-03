@@ -88,13 +88,7 @@ public class SkillMenuRenderer {
         if (rect.contains(x, y)) {
             renderingLayer.getShapeDrawer().rectangle(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(), Color.ORANGE);
         }
-        //TODO: skill icons
-        //        drawingLayer.getSpriteBatch()
-        //                    .draw(icons[item.getTemplate().getIconPos().getY()][item.getTemplate().getIconPos().getX()],
-        //                          rect.getX() + 10f,
-        //                          rect.getY(),
-        //                          20f,
-        //                          20f);
+
         Assets.renderSmallFont(renderingLayer, skillName, Vector2.of(rect.getX() + 40f, rect.getY() + 17f), Color.GOLD);
         i.getAndIncrement();
     }

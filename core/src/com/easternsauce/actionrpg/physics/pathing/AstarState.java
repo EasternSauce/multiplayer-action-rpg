@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import java.util.Map;
 import java.util.Set;
 
+@SuppressWarnings("SpellCheckingInspection")
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data

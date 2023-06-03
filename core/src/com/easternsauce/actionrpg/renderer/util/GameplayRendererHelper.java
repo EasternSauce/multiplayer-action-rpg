@@ -13,16 +13,12 @@ public class GameplayRendererHelper {
         RenderingLayer worldElementsRenderingLayer = renderer.getWorldElementsRenderingLayer();
         RenderingLayer worldTextRenderingLayer = renderer.getWorldTextRenderingLayer();
 
-        if (game.getIsAreaRenderersLoaded()) {
-            renderAreaLayers(renderer, Arrays.asList(0, 1), game);
-        }
+        renderAreaLayers(renderer, Arrays.asList(0, 1), game);
 
         renderWorldElements(renderer, worldElementsRenderingLayer, game);
         renderWorldText(renderer, worldTextRenderingLayer, game);
 
-        if (game.getIsAreaRenderersLoaded()) {
-            renderAreaLayers(renderer, Arrays.asList(2, 3), game);
-        }
+        renderAreaLayers(renderer, Arrays.asList(2, 3), game);
 
         renderAbilities(renderer, worldElementsRenderingLayer, game);
 

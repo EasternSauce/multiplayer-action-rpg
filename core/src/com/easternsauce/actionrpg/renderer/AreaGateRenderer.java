@@ -9,6 +9,7 @@ import com.easternsauce.actionrpg.model.area.AreaId;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@SuppressWarnings("SpellCheckingInspection")
 @NoArgsConstructor(staticName = "of")
 @Data
 public class AreaGateRenderer {

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
 
+@SuppressWarnings("SpellCheckingInspection")
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data

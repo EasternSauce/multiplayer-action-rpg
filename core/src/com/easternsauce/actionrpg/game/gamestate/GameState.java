@@ -15,8 +15,8 @@ import java.util.Set;
 public abstract class GameState {
     protected final GameStateDataHolder dataHolder = GameStateDataHolder.of(GameStateData.of());
 
-    protected AbilityAccessor abilityAccessor = AbilityAccessor.of(this, dataHolder);
-    protected CreatureAccessor creatureAccessor = CreatureAccessor.of(this, dataHolder);
+    protected final AbilityAccessor abilityAccessor = AbilityAccessor.of(this, dataHolder);
+    protected final CreatureAccessor creatureAccessor = CreatureAccessor.of(this, dataHolder);
 
     private GameStateData getData() {
         return dataHolder.getData();
@@ -90,6 +90,7 @@ public abstract class GameState {
 
     public abstract void scheduleServerSideAction(GameStateAction action);
 
+    @SuppressWarnings("SameReturnValue")
     public abstract CreatureId getThisClientPlayerId();
 
     public abstract AreaId getCurrentAreaId();

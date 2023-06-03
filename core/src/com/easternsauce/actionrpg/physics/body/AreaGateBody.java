@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @Data
 public class AreaGateBody {
-    @SuppressWarnings("FieldCanBeLocal")
     Body b2body;
 
     PhysicsWorld world;

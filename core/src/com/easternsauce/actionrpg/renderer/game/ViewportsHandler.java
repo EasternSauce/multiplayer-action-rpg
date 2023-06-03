@@ -10,6 +10,7 @@ import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.util.Constants;
 import lombok.NoArgsConstructor;
 
+@SuppressWarnings("SpellCheckingInspection")
 @NoArgsConstructor(staticName = "of")
 public class ViewportsHandler {
     private Viewport worldViewport;

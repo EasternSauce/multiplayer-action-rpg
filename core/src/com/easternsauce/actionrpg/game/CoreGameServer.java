@@ -214,17 +214,6 @@ public class CoreGameServer extends CoreGame {
                                                                   new ConcurrentSkipListSet<>(Arrays.asList(leatherArmor,
                                                                                                             crossbow))));
 
-        //        gameState.scheduleServerSideAction(LootPileSpawnAction.of(areaId,
-        //                Vector2.of(13.5f, 12),
-        //                new ConcurrentSkipListSet<>(Arrays.asList(Item.of()
-        //                                .setTemplate(ItemTemplate.templates.get(
-        //                                        "ringmailGreaves"))
-        //                                .setQualityModifier(0.9f),
-        //                        Item.of()
-        //                                .setTemplate(ItemTemplate.templates.get(
-        //                                        "hideGloves"))
-        //                                .setQualityModifier(0.5f)))));
-
         AreaGateId area1ToArea3 = AreaGateId.of("area1ToArea3_" + (int) (Math.random() * 10000000));
         AreaGateId area3ToArea1 = AreaGateId.of("area3ToArea1_" + (int) (Math.random() * 10000000));
         AreaGateId area1ToArea2 = AreaGateId.of("area1ToArea2_" + (int) (Math.random() * 10000000));
@@ -305,16 +294,7 @@ public class CoreGameServer extends CoreGame {
         return true; // always calculate this server side regardless of current area
     }
 
-    @Override
-    public CoreGameServer setIsAreaRenderersLoaded(Boolean isRendererToBeReset) {
-        return this;
-    }
-
-    @Override
-    public Boolean getIsAreaRenderersLoaded() {
-        return null;
-    }
-
+    @SuppressWarnings("unused")
     @Override
     public CoreGame setIsFirstBroadcastReceived(Boolean isFirstBroadcastReceived) {
         return this;

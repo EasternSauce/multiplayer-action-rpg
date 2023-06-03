@@ -22,6 +22,7 @@ public abstract class Creature implements Entity {
 
     public abstract CreatureParams getParams();
 
+    @SuppressWarnings("unused")
     public abstract Creature setParams(CreatureParams params);
 
     public void update(float delta, CoreGame game) {
@@ -239,6 +240,7 @@ public abstract class Creature implements Entity {
             if (shieldAbility != null && shieldAbility.getParams().getState() == AbilityState.ACTIVE) {
                 float angleDiff = (ability.getParams().getDirVector().angleDeg() -
                                    shieldAbility.getParams().getDirVector().multiplyBy(-1).angleDeg() + 180 + 360) % 360 - 180;
+
                 //noinspection RedundantIfStatement
                 if (angleDiff <= 60 && angleDiff >= -60) {
                     return true;
@@ -324,6 +326,12 @@ public abstract class Creature implements Entity {
         if (skill.getSkillType().getIsDamaging()) {
             getParams().getGeneralSkillPerformCooldownTimer().restart();
         }
+
+        onAfterPerformSkill();
+    }
+
+    public void onAfterPerformSkill() {
+
     }
 
     public Float nextDropRngValue() {
@@ -333,8 +341,8 @@ public abstract class Creature implements Entity {
     }
 
     public Float nextSkillUseRngValue() {
-        Float rngValue = RandomHelper.seededRandomFloat(getParams().getSkillUseRngSeed());
-        getParams().setSkillUseRngSeed(rngValue);
+        Float rngValue = RandomHelper.seededRandomFloat(getParams().getEnemyParams().getSkillUseRngSeed());
+        getParams().getEnemyParams().setSkillUseRngSeed(rngValue);
         return rngValue;
     }
 

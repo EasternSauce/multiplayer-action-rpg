@@ -93,18 +93,19 @@ public class CreatureAccessor {
             .forEach(creatureAction);
     }
 
+    // TODO: move to enemy?
     public void handleCreatureUseRandomSkillAtTarget(CreatureId creatureId, Vector2 vectorTowardsTarget) {
         Creature creature = gameState.accessCreatures().getCreatures().get(creatureId);
 
-        if (creature.getParams().getEnemyParams().getEnemySkillUseReadyToPick()) {
-            pickSkillUseSkillType(creature.getParams().getEnemySkillUses(), creature);
+        if (creature.getParams().getEnemyParams().getSkillUseReadyToPick()) {
+            pickSkillUseSkillType(creature.getParams().getEnemyParams().getSkillUses(), creature);
         }
 
         SkillTryPerformAction action = SkillTryPerformAction.of(creatureId,
                                                                 creature
                                                                     .getParams()
                                                                     .getEnemyParams()
-                                                                    .getEnemySkillUsePickedSkillType(),
+                                                                    .getSkillUsePickedSkillType(),
                                                                 creature.getParams().getPos(),
                                                                 vectorTowardsTarget);
 
@@ -116,7 +117,8 @@ public class CreatureAccessor {
 
         if (!creature
             .getParams()
-            .getEnemySkillUses()
+            .getEnemyParams()
+            .getSkillUses()
             .stream()
             .map(EnemySkillUseEntry::getSkillType)
             .collect(Collectors.toSet())
@@ -132,6 +134,7 @@ public class CreatureAccessor {
         gameState.scheduleServerSideAction(action);
     }
 
+    // TODO: move to enemy?
     private static void pickSkillUseSkillType(Set<EnemySkillUseEntry> skillUseEntries, Creature creature) {
         AtomicReference<Float> totalWeight = new AtomicReference<>((float) 0);
 
@@ -149,8 +152,8 @@ public class CreatureAccessor {
             randValue.set(randValue.get() - skillUseEntry.getWeight());
         });
 
-        creature.getParams().getEnemyParams().setEnemySkillUsePickedSkillType(pickedSkillType.get());
-        creature.getParams().getEnemyParams().setEnemySkillUseReadyToPick(false);
+        creature.getParams().getEnemyParams().setSkillUsePickedSkillType(pickedSkillType.get());
+        creature.getParams().getEnemyParams().setSkillUseReadyToPick(false);
     }
 
     public CreatureId getAliveCreatureIdClosestTo(Vector2 pos, float maxRange, Set<CreatureId> excluded) {

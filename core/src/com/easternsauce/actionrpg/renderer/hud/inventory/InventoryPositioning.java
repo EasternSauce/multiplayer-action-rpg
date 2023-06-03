@@ -8,24 +8,24 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class InventoryPositioning {
-    public static Rect backgroundInnerRect;
-    public static Rect backgroundOuterRect;
+    public static final Rect backgroundInnerRect;
+    public static final Rect backgroundOuterRect;
 
-    public static Integer TOTAL_ROWS = 5;
-    public static Integer TOTAL_COLUMNS = 8;
-    public static Integer INVENTORY_TOTAL_SLOTS = TOTAL_ROWS * TOTAL_COLUMNS;
-    public static Integer MARGIN = 20;
-    public static Float SLOT_SIZE = 40f;
-    public static Integer SPACE_BETWEEN_SLOTS = 12;
-    public static Integer SPACE_BEFORE_EQUIPMENT = 270;
+    public static final Integer TOTAL_ROWS = 5;
+    public static final Integer TOTAL_COLUMNS = 8;
+    public static final Integer INVENTORY_TOTAL_SLOTS = TOTAL_ROWS * TOTAL_COLUMNS;
+    public static final Integer MARGIN = 20;
+    public static final Float SLOT_SIZE = 40f;
+    public static final Integer SPACE_BETWEEN_SLOTS = 12;
+    public static final Integer SPACE_BEFORE_EQUIPMENT = 270;
 
-    public static Float INVENTORY_WIDTH = MARGIN + (SLOT_SIZE + SPACE_BETWEEN_SLOTS) * TOTAL_COLUMNS;
-    public static Float INVENTORY_HEIGHT = MARGIN + (SLOT_SIZE + SPACE_BETWEEN_SLOTS) * TOTAL_ROWS;
+    public static final Float INVENTORY_WIDTH = MARGIN + (SLOT_SIZE + SPACE_BETWEEN_SLOTS) * TOTAL_COLUMNS;
+    public static final Float INVENTORY_HEIGHT = MARGIN + (SLOT_SIZE + SPACE_BETWEEN_SLOTS) * TOTAL_ROWS;
 
-    public static Map<Integer, Rect> inventoryRectangles = new HashMap<>();
+    public static final Map<Integer, Rect> inventoryRectangles = new HashMap<>();
 
-    public static Integer EQUIPMENT_TOTAL_SLOTS = 8;
-    public static Map<Integer, Rect> equipmentRectangles = new HashMap<>();
+    public static final Integer EQUIPMENT_TOTAL_SLOTS = 8;
+    public static final Map<Integer, Rect> equipmentRectangles = new HashMap<>();
 
     static {
         backgroundInnerRect = Rect.of(Gdx.graphics.getWidth() * 0.2f,

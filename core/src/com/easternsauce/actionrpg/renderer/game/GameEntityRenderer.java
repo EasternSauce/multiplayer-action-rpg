@@ -72,12 +72,10 @@ public class GameEntityRenderer {
         poisonedIcon = atlas.findRegion("poisoned");
     }
 
-    public void loadAreaRenderers(Map<AreaId, TiledMap> maps, CoreGame game) {
+    public void loadAreaRenderers(Map<AreaId, TiledMap> maps, @SuppressWarnings("unused") CoreGame game) {
         areaRenderers = new HashMap<>();
         areaRenderers.putAll(maps.keySet().stream().collect(Collectors.toMap(areaId -> areaId, AreaRenderer::of)));
         areaRenderers.forEach((areaId, areaRenderer) -> areaRenderer.init(maps.get(areaId), mapScale));
-
-        game.setIsAreaRenderersLoaded(true);
     }
 
     public void renderAliveCreatures(RenderingLayer renderingLayer, CoreGame game) {

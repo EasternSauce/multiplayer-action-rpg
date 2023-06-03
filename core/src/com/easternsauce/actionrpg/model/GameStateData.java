@@ -34,22 +34,6 @@ public class GameStateData {
 
     Float lastRandomValue = (float) Math.random();
 
-    public static GameStateData of(GameStateData gameStateData) {
-        GameStateData newGameStateData = GameStateData.of();
-        newGameStateData.setCreatures(new ConcurrentSkipListMap<>(gameStateData.getCreatures()));
-        newGameStateData.setRemovedCreatures(new ConcurrentSkipListMap<>(gameStateData.getRemovedCreatures()));
-        newGameStateData.setAbilities(new ConcurrentSkipListMap<>(gameStateData.getAbilities()));
-        newGameStateData.setLootPiles(new ConcurrentSkipListMap<>(gameStateData.getLootPiles()));
-        newGameStateData.setAreaGates(new ConcurrentSkipListMap<>(gameStateData.getAreaGates()));
-        newGameStateData.setAreas(new ConcurrentSkipListMap<>(gameStateData.getAreas()));
-        newGameStateData.setDefaultAreaId(gameStateData.getDefaultAreaId());
-        newGameStateData.setGeneralTimer(gameStateData.getGeneralTimer());
-        newGameStateData.setPlayerConfig(new ConcurrentSkipListMap<>(gameStateData.getPlayerConfig()));
-        newGameStateData.setLastRandomValue(gameStateData.getLastRandomValue());
-
-        return newGameStateData;
-    }
-
     public static GameStateData of(GameStateData gameStateData, Map<CreatureId, Creature> creatures,
                                    Map<AbilityId, Ability> abilities, Map<LootPileId, LootPile> lootPiles, Map<AreaGateId,
         AreaGate> areaGates) {

@@ -7,6 +7,7 @@ import com.easternsauce.actionrpg.physics.world.PhysicsWorld;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("SpellCheckingInspection")
 public class Astar {
     public static void tryAddEdge(Map<Vector2Int, PathingNode> pathingNodes, PhysicsWorld world, Vector2Int fromPos,
                                   Vector2Int toPos, Float weight) {

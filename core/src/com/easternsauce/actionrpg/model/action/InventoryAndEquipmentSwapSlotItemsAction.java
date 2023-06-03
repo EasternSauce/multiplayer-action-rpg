@@ -71,6 +71,7 @@ public class InventoryAndEquipmentSwapSlotItemsAction extends GameStateAction {
         }
     }
 
+    @SuppressWarnings("SpellCheckingInspection")
     private static void removeSkillFromSkillMenuOnItemUnequip(Creature player, PlayerConfig playerConfig) {
         Set<Integer> slotsToRemove = new ConcurrentSkipListSet<>();
         playerConfig.getSkillMenuSlots().forEach((slotIndex, skillType) -> {

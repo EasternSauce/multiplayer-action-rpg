@@ -6,9 +6,11 @@ import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @NoArgsConstructor(staticName = "of")
 @Data
-public class EnemyCreatureParams {
+public class EnemyParams {
     private CreatureId targetCreatureId = null;
     private Boolean forcePathCalculation = false;
     private SimpleTimer pathCalculationCooldownTimer = SimpleTimer.getExpiredTimer();
@@ -21,14 +23,16 @@ public class EnemyCreatureParams {
     private CreatureId lastFoundTargetId = null;
     private SimpleTimer findTargetTimer = SimpleTimer.getExpiredTimer();
     private Float findTargetCooldown;
-    private EnemyAiState aiState;
-    private SimpleTimer aiStateTimer = SimpleTimer.getExpiredTimer();
-    private Float aiStateTime;
-    private Float aiStateRngSeed;
+    private EnemyAutoControlState autoControlState;
+    private SimpleTimer autoControlStateTimer = SimpleTimer.getExpiredTimer();
+    private Float autoControlStateTime;
+    private Float autoControlStateRngSeed;
     private Vector2 defensivePosition;
     private SimpleTimer justAttackedFromRangeTimer = SimpleTimer.getExpiredTimer();
     private Float attackDistance = 3f;
-    private Boolean enemySkillUseReadyToPick = true;
-    private SkillType enemySkillUsePickedSkillType = null;
-    private SimpleTimer enemyAttackCooldownTimer = SimpleTimer.getExpiredTimer();
+    private Boolean skillUseReadyToPick = true;
+    private SkillType skillUsePickedSkillType = null;
+    private SimpleTimer attackCooldownTimer = SimpleTimer.getExpiredTimer();
+    private Float skillUseRngSeed = (float) Math.random();
+    private Set<EnemySkillUseEntry> skillUses;
 }

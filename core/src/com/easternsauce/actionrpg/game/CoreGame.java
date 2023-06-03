@@ -63,6 +63,7 @@ public abstract class CoreGame extends Game {
         eventProcessor.getTeleportEvents().add(teleportEvent);
     }
 
+    @SuppressWarnings("unused")
     public abstract EndPoint getEndPoint();
 
     public boolean isGameplayRenderingAllowed() {
@@ -148,6 +149,7 @@ public abstract class CoreGame extends Game {
     }
 
     public Vector2 mousePosRelativeToCenter() { // relative to center of screen, in in-game length units
+        //noinspection SpellCheckingInspection
         Vector3 screenCoords = new Vector3((float) Gdx.input.getX(), (float) Gdx.input.getY(), 0f);
         entityManager.getGameEntityRenderer().getViewportsHandler().unprojectHudCamera(screenCoords);
         Vector2 mousePos = Vector2.of(screenCoords.x - Constants.WINDOW_WIDTH / 2f,
@@ -160,6 +162,7 @@ public abstract class CoreGame extends Game {
     }
 
     public Vector2 hudMousePos() {
+        //noinspection SpellCheckingInspection
         Vector3 screenCoords = new Vector3((float) Gdx.input.getX(), (float) Gdx.input.getY(), 0f);
         entityManager.getGameEntityRenderer().getViewportsHandler().unprojectHudCamera(screenCoords);
         return Vector2.of(screenCoords.x, screenCoords.y);
@@ -179,13 +182,11 @@ public abstract class CoreGame extends Game {
 
     public abstract boolean isPathfindingCalculatedForCreature(Creature creature);
 
-    @SuppressWarnings("UnusedReturnValue")
-    public abstract CoreGame setIsAreaRenderersLoaded(Boolean isRendererToBeReset);
+    @SuppressWarnings({
+        "UnusedReturnValue",
+        "unused"})
+    public abstract CoreGame setIsFirstBroadcastReceived(@SuppressWarnings("unused") Boolean isFirstBroadcastReceived);
 
-    public abstract Boolean getIsAreaRenderersLoaded();
-
-    @SuppressWarnings("UnusedReturnValue")
-    public abstract CoreGame setIsFirstBroadcastReceived(Boolean isFirstBroadcastReceived);
-
+    @SuppressWarnings("SameReturnValue")
     public abstract Boolean getIsFirstBroadcastReceived();
 }
