@@ -59,8 +59,8 @@ public class CreatureRenderer {
         Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
         if (creature != null) {
-            float currentLifeBarWidth =
-                LifeBarUtils.LIFE_BAR_WIDTH * creature.getParams().getLife() / creature.getParams().getMaxLife();
+            float currentLifeBarWidth = LifeBarUtils.LIFE_BAR_WIDTH * creature.getParams().getStats().getLife() /
+                                        creature.getParams().getStats().getMaxLife();
             float barPosX = LifeBarUtils.getLifeBarPosX(creature);
             float barPosY = LifeBarUtils.getLifeBarPosY(creature, getCreatureSprite().getWidth());
 

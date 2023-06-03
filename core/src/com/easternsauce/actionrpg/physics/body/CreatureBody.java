@@ -65,7 +65,7 @@ public class CreatureBody {
 
         setSensor(!creature.isAlive());
 
-        float v = creature.getParams().getSpeed();
+        float v = creature.getParams().getStats().getSpeed();
 
         if (bodyCreated) {
             if (!creature.getParams().getIsDashing()) {

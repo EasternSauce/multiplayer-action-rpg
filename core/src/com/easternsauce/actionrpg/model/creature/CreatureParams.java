@@ -21,6 +21,8 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(staticName = "of")
 @Data
 public class CreatureParams implements EntityParams {
+    private final CreatureStats stats = CreatureStats.of();
+
     private CreatureId id;
 
     private AreaId areaId;
@@ -42,9 +44,6 @@ public class CreatureParams implements EntityParams {
     private Boolean isMoving = false;
     private Boolean isDashing = false;
 
-    private Float speed = 10f;
-    private Float baseSpeed = 10f;
-
     private CreatureId targetCreatureId = null;
 
     private Boolean forcePathCalculation = false;
@@ -53,15 +52,7 @@ public class CreatureParams implements EntityParams {
 
     private List<Vector2> pathTowardsTarget = null;
 
-    private Float life = 100f;
-    private Float maxLife = 100f;
-    private Float stamina = 100f;
-    private Float maxStamina = 100f;
-    private Float mana = 100f;
-    private Float maxMana = 100f;
-    private Float armor = 0f;
-
-    private Float previousTickLife = life;
+    private Float previousTickLife = getStats().getLife();
 
     private String textureName;
 

@@ -137,22 +137,23 @@ public class GameEntityManager {
     }
 
     public void spawnEnemy(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn, CoreGame game) {
-        game
-            .getGameState()
-            .accessCreatures()
-            .getCreatures()
-            .put(creatureId,
-                 Enemy.of(CreatureParams
-                              .of(creatureId, areaId, enemySpawn)
-                              .setBaseSpeed(8.5f)
-                              .setAttackDistance(enemySpawn.getEnemyTemplate().getAttackDistance())
-                              .setMaxLife(enemySpawn.getEnemyTemplate().getMaxLife())
-                              .setLife(enemySpawn.getEnemyTemplate().getMaxLife())
-                              .setDropTable(enemySpawn.getEnemyTemplate().getDropTable())
-                              .setEnemySkillUses(enemySpawn.getEnemyTemplate().getEnemySkillUseEntries())
-                              .setRespawnTime(120f)
-                          // TODO: move it to enemy class?
-                         ));
+        Enemy enemy = Enemy.of(CreatureParams
+                                   .of(creatureId, areaId, enemySpawn)
+                                   .setAttackDistance(enemySpawn.getEnemyTemplate().getAttackDistance())
+                                   .setDropTable(enemySpawn.getEnemyTemplate().getDropTable())
+                                   .setEnemySkillUses(enemySpawn.getEnemyTemplate().getEnemySkillUseEntries())
+                                   .setRespawnTime(120f)
+                               // TODO: move it to enemy class?
+                              );
+
+        enemy
+            .getParams()
+            .getStats()
+            .setBaseSpeed(8.5f)
+            .setMaxLife(enemySpawn.getEnemyTemplate().getMaxLife())
+            .setLife(enemySpawn.getEnemyTemplate().getMaxLife());
+
+        game.getGameState().accessCreatures().getCreatures().put(creatureId, enemy);
 
         game.getEventProcessor().getCreatureModelsToBeCreated().add(creatureId);
     }

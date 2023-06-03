@@ -66,7 +66,7 @@ public class Enemy extends Creature {
 
         if (getParams().getJustAttackedFromRangeTimer().getTime() < Constants.JUST_ATTACKED_FROM_RANGE_TIME) {
             getParams().setAiState(EnemyAiState.AGGRESSIVE);
-            getParams().setSpeed(getParams().getBaseSpeed());
+            getParams().getStats().setSpeed(getParams().getStats().getBaseSpeed());
         }
 
         if (getParams().getAttackedByCreatureId() != null && game
@@ -316,7 +316,7 @@ public class Enemy extends Creature {
     private void processStateAiHandleMovementLogic(Creature potentialTarget, Float distance) {
         if (getParams().getAiState() == EnemyAiState.AGGRESSIVE) {
             if (distance > getParams().getAttackDistance() - 1f) {
-                getParams().setSpeed(getParams().getBaseSpeed());
+                getParams().getStats().setSpeed(getParams().getStats().getBaseSpeed());
                 moveTowards(potentialTarget.getParams().getPos());
             }
             else { // if no path or distance is small, then stop moving
@@ -324,13 +324,13 @@ public class Enemy extends Creature {
             }
         }
         else if (getParams().getAiState() == EnemyAiState.ALERTED) {
-            getParams().setSpeed(getParams().getBaseSpeed() / 3);
+            getParams().getStats().setSpeed(getParams().getStats().getBaseSpeed() / 3);
             if (getParams().getDefensivePosition() != null) {
                 moveTowards(getParams().getDefensivePosition());
             }
         }
         else if (getParams().getAiState() == EnemyAiState.KEEPING_DISTANCE) {
-            getParams().setSpeed(getParams().getBaseSpeed() / 2);
+            getParams().getStats().setSpeed(getParams().getStats().getBaseSpeed() / 2);
             if (getParams().getDefensivePosition() != null) {
                 moveTowards(getParams().getDefensivePosition());
             }
@@ -419,7 +419,7 @@ public class Enemy extends Creature {
 
     @Override
     public boolean canPerformSkill(Skill skill, CoreGame game) {
-        return isAlive() && getParams().getStamina() >= skill.getStaminaCost();
+        return isAlive() && getParams().getStats().getStamina() >= skill.getStaminaCost();
     }
 
 }

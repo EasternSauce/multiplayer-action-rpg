@@ -53,11 +53,11 @@ public abstract class Creature implements Entity {
         if (isEffectActive(CreatureEffect.LIFE_REGENERATION, game)) {
             float lifeRegen = 14f;
             if (getParams().getLifeRegenerationOverTimeTimer().getTime() > 0.333f) {
-                if (getParams().getLife() + lifeRegen < getParams().getMaxLife()) {
-                    getParams().setLife(getParams().getLife() + lifeRegen);
+                if (getParams().getStats().getLife() + lifeRegen < getParams().getStats().getMaxLife()) {
+                    getParams().getStats().setLife(getParams().getStats().getLife() + lifeRegen);
                 }
                 else {
-                    getParams().setLife(getParams().getMaxLife());
+                    getParams().getStats().setLife(getParams().getStats().getMaxLife());
                 }
 
                 getParams().getLifeRegenerationOverTimeTimer().restart();
@@ -66,11 +66,11 @@ public abstract class Creature implements Entity {
         if (isEffectActive(CreatureEffect.MANA_REGENERATION, game)) {
             float manaRegen = 14f;
             if (getParams().getManaRegenerationOverTimeTimer().getTime() > 0.333f) {
-                if (getParams().getMana() + manaRegen < getParams().getMaxMana()) {
-                    getParams().setMana(getParams().getMana() + manaRegen);
+                if (getParams().getStats().getMana() + manaRegen < getParams().getStats().getMaxMana()) {
+                    getParams().getStats().setMana(getParams().getStats().getMana() + manaRegen);
                 }
                 else {
-                    getParams().setMana(getParams().getMaxMana());
+                    getParams().getStats().setMana(getParams().getStats().getMaxMana());
                 }
 
                 getParams().getManaRegenerationOverTimeTimer().restart();
@@ -95,8 +95,8 @@ public abstract class Creature implements Entity {
 
     private void regenerateStamina() {
         if (getParams().getStaminaRegenerationTimer().getTime() > getParams().getStaminaRegenerationTickTime() && isAlive()) {
-            float afterRegeneration = getParams().getStamina() + getParams().getStaminaRegeneration();
-            getParams().setStamina(Math.min(afterRegeneration, getParams().getMaxStamina()));
+            float afterRegeneration = getParams().getStats().getStamina() + getParams().getStaminaRegeneration();
+            getParams().getStats().setStamina(Math.min(afterRegeneration, getParams().getStats().getMaxStamina()));
             getParams().getStaminaRegenerationTimer().restart();
 
         }
@@ -202,15 +202,15 @@ public abstract class Creature implements Entity {
     }
 
     public void takeLifeDamage(float damage) {
-        getParams().setPreviousTickLife(getParams().getLife());
+        getParams().setPreviousTickLife(getParams().getStats().getLife());
 
         float actualDamage = damage * 100f / (100f + totalArmor());
 
-        if (getParams().getLife() - actualDamage > 0) {
-            getParams().setLife(getParams().getLife() - actualDamage);
+        if (getParams().getStats().getLife() - actualDamage > 0) {
+            getParams().getStats().setLife(getParams().getStats().getLife() - actualDamage);
         }
         else {
-            getParams().setLife(0f);
+            getParams().getStats().setLife(0f);
         }
     }
 
@@ -261,20 +261,20 @@ public abstract class Creature implements Entity {
     }
 
     private void takeManaDamage(Float manaCost) {
-        if (getParams().getMana() - manaCost > 0) {
-            getParams().setMana(getParams().getMana() - manaCost);
+        if (getParams().getStats().getMana() - manaCost > 0) {
+            getParams().getStats().setMana(getParams().getStats().getMana() - manaCost);
         }
         else {
-            getParams().setMana(0f);
+            getParams().getStats().setMana(0f);
         }
     }
 
     private void takeStaminaDamage(Float staminaCost) {
-        if (getParams().getStamina() - staminaCost > 0) {
-            getParams().setStamina(getParams().getStamina() - staminaCost);
+        if (getParams().getStats().getStamina() - staminaCost > 0) {
+            getParams().getStats().setStamina(getParams().getStats().getStamina() - staminaCost);
         }
         else {
-            getParams().setStamina(0f);
+            getParams().getStats().setStamina(0f);
         }
     }
 
@@ -313,7 +313,8 @@ public abstract class Creature implements Entity {
             }
         }
 
-        return isAlive() && getParams().getStamina() >= skill.getStaminaCost() && getParams().getMana() >= skill.getManaCost();
+        return isAlive() && getParams().getStats().getStamina() >= skill.getStaminaCost() &&
+               getParams().getStats().getMana() >= skill.getManaCost();
     }
 
     public void onPerformSkill(Skill skill) {
@@ -359,26 +360,26 @@ public abstract class Creature implements Entity {
     }
 
     public void onKillEffect() {
-        float missingManaPercent = 1f - getParams().getMana() / getParams().getMaxMana();
+        float missingManaPercent = 1f - getParams().getStats().getMana() / getParams().getStats().getMaxMana();
 
-        float manaAfterOnKillRecovery = getParams().getMana() + missingManaPercent * 110;
+        float manaAfterOnKillRecovery = getParams().getStats().getMana() + missingManaPercent * 110;
 
-        if (manaAfterOnKillRecovery > getParams().getMaxMana()) {
-            getParams().setMana(getParams().getMaxMana());
+        if (manaAfterOnKillRecovery > getParams().getStats().getMaxMana()) {
+            getParams().getStats().setMana(getParams().getStats().getMaxMana());
         }
         else {
-            getParams().setMana(manaAfterOnKillRecovery);
+            getParams().getStats().setMana(manaAfterOnKillRecovery);
         }
 
-        float missingLifePercent = 1f - getParams().getLife() / getParams().getMaxLife();
+        float missingLifePercent = 1f - getParams().getStats().getLife() / getParams().getStats().getMaxLife();
 
-        float lifeAfterOnKillRecovery = getParams().getLife() + missingLifePercent * 100;
+        float lifeAfterOnKillRecovery = getParams().getStats().getLife() + missingLifePercent * 100;
 
-        if (lifeAfterOnKillRecovery > getParams().getMaxLife()) {
-            getParams().setLife(getParams().getMaxLife());
+        if (lifeAfterOnKillRecovery > getParams().getStats().getMaxLife()) {
+            getParams().getStats().setLife(getParams().getStats().getMaxLife());
         }
         else {
-            getParams().setLife(lifeAfterOnKillRecovery);
+            getParams().getStats().setLife(lifeAfterOnKillRecovery);
         }
     }
 

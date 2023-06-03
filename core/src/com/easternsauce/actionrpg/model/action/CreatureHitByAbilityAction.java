@@ -51,13 +51,13 @@ public class CreatureHitByAbilityAction extends GameStateAction {
 
         targetCreature.onBeingHitByRegularAbility(ability, game);
 
-        if (targetCreature.getParams().getPreviousTickLife() > 0f && targetCreature.getParams().getLife() <= 0f) {
+        if (targetCreature.getParams().getPreviousTickLife() > 0f && targetCreature.getParams().getStats().getLife() <= 0f) {
             onCreatureDeath(targetCreature, attackerCreature, game);
         }
     }
 
     private void onCreatureDeath(Creature targetCreature, Creature attackerCreature, CoreGame game) {
-        targetCreature.getParams().setLife(0f); // just to make sure its dead on client side
+        targetCreature.getParams().getStats().setLife(0f); // just to make sure its dead on client side
         targetCreature.getParams().setIsDead(true);
         targetCreature.getParams().getRespawnTimer().restart();
         targetCreature.getParams().setIsAwaitingRespawn(true);
