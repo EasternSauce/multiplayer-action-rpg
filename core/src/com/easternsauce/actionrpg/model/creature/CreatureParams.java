@@ -33,7 +33,6 @@ public class CreatureParams implements EntityParams {
     @NonNull
     private CreatureId id;
 
-    @NonNull
     private Vector2 pos;
     @NonNull
     private AreaId areaId;

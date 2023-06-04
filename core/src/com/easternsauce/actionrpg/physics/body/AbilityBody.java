@@ -92,10 +92,6 @@ public class AbilityBody {
     public void update(CoreGame game) {
         Ability ability = game.getGameState().accessAbilities().getAbilities().get(abilityId);
 
-        if (ability != null && ability.getParams().getCreatureId().getValue().startsWith("zaza")) {
-            System.out.println("updating body");
-        }
-
         if (getIsBodyInitialized() && ability != null && ability.bodyShouldExist()) {
             if (ability.isPositionChangedOnUpdate() && (ability.getParams().getState() == AbilityState.CHANNEL ||
                                                         ability.getParams().getState() == AbilityState.ACTIVE)) {

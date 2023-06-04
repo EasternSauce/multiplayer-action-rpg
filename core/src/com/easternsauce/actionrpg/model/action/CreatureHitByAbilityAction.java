@@ -45,6 +45,15 @@ public class CreatureHitByAbilityAction extends CreatureHitAction {
             if (ability.isCanStun()) {
                 targetCreature.applyEffect(CreatureEffect.STUN, ability.getStunDuration(), game);
             }
+
+            // TODO: add onBeingHit method to creature and override in enemy
+            if (targetCreature.getParams().getEnemyParams() != null) {
+                targetCreature.getParams().getEnemyParams().setAttackedByCreatureId(ability.getParams().getCreatureId());
+
+                if (ability.isRanged()) {
+                    targetCreature.getParams().getEnemyParams().getJustAttackedFromRangeTimer().restart();
+                }
+            }
         }
 
         handleCreatureDeath(targetCreature, attackerCreature, game);

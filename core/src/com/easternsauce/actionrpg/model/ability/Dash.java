@@ -15,19 +15,23 @@ public class Dash extends DirectionalAttachedAbility {
     public static Dash of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(abilityParams.getCreatureId());
 
+        float flipValue = abilityParams.getDirVector().angleDeg();
+
         Dash ability = Dash.of();
         ability.params = abilityParams
-            .setWidth(2.5f)
-            .setHeight(2.5f)
+            .setWidth(5.5f)
+            .setHeight(5.5f)
             .setChannelTime(0f)
             .setActiveTime(0.14f)
-            .setTextureName("warp")
+            .setTextureName("smoke")
             .setBaseDamage(0f)
             .setIsChannelAnimationLooping(false)
             .setIsActiveAnimationLooping(false)
             .setPos(creature.getParams().getPos())
-            .setRange(1.8f)
-            .setDirectionalAttachedAbilityRotationShift(180f);
+            .setRange(0.8f)
+            .setDirectionalAttachedAbilityRotationShift(180f)
+            .setIsFlip(Dash.calculateFlip(flipValue))
+            .setRotationShift(180f);
 
         return ability;
     }
@@ -89,5 +93,9 @@ public class Dash extends DirectionalAttachedAbility {
     @Override
     public Boolean isPositionChangedOnUpdate() {
         return true;
+    }
+
+    private static Boolean calculateFlip(Float rotationAngle) {
+        return rotationAngle >= 90 && rotationAngle < 270;
     }
 }

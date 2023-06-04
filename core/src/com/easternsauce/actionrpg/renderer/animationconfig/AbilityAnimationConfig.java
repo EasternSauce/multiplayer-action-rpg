@@ -55,6 +55,8 @@ public class AbilityAnimationConfig {
         configs.put("ring_of_fire",
                     AbilityAnimationConfig.of(96, 96, "ring_of_fire_channel", "ring_of_fire_active", 20, 8, 0.02f, 0.02f, 1f));
 
+        configs.put("smoke", AbilityAnimationConfig.of(64, 64, "smoke", "smoke", 0, 6, 0f, 0.022f, 1f));
+
     }
 
     Integer textureWidth;

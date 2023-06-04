@@ -19,7 +19,7 @@ public class AbilityParams implements EntityParams {
     @NonNull AbilityId id;
     @NonNull AreaId areaId;
     @NonNull AbilityState state = AbilityState.INACTIVE;
-    @NonNull Vector2 pos;
+    Vector2 pos;
     @NonNull Float width;
     @NonNull Float height;
     @NonNull CreatureId creatureId;

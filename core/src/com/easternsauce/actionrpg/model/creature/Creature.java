@@ -47,7 +47,7 @@ public abstract class Creature implements Entity {
             getParams().getMovementParams().getIsStillMovingCheckTimer().restart();
         }
 
-        updateAutomaticControls(game);
+        updateAutoControl(game);
         updateTimers(delta);
         updateEnemyTimers(delta);
 
@@ -193,7 +193,7 @@ public abstract class Creature implements Entity {
         return 4;
     }
 
-    public void updateAutomaticControls(CoreGame game) {
+    public void updateAutoControl(CoreGame game) {
 
     }
 

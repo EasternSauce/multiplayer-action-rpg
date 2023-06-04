@@ -67,7 +67,7 @@ public class MobSwordSlash extends DirectionalAttachedAbility {
 
     @Override
     public Float getStunDuration() {
-        return 1f;
+        return 0.65f;
     }
 
     @Override

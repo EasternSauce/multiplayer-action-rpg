@@ -34,7 +34,7 @@ public class EnemyTemplate {
 
     public static EnemyTemplate archer = EnemyTemplate.of(EnemyType.ARCHER,
                                                           150f,
-                                                          15f,
+                                                          20f,
                                                           randomDropSet,
                                                           new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(
                                                               SkillType.MOB_CROSSBOW_SHOT,
@@ -42,14 +42,14 @@ public class EnemyTemplate {
 
     public static EnemyTemplate skeleton = EnemyTemplate.of(EnemyType.SKELETON,
                                                             150f,
-                                                            3f,
+                                                            4f,
                                                             randomDropSet,
                                                             new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(
                                                                 SkillType.MOB_SWORD_SLASH,
                                                                 100f), EnemySkillUseEntry.of(SkillType.SUMMON_GUARD, 20f))));
     public static EnemyTemplate mage = EnemyTemplate.of(EnemyType.MAGE,
                                                         150f,
-                                                        15f,
+                                                        20f,
                                                         randomDropSet,
                                                         new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.MOB_MAGIC_ORB,
                                                                                                                         100f),
@@ -59,7 +59,7 @@ public class EnemyTemplate {
                                                                                                                         60f))));
     public static EnemyTemplate minos = EnemyTemplate.of(EnemyType.MINOS,
                                                          1000f,
-                                                         7f,
+                                                         8f,
                                                          randomDropSet,
                                                          new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.RICOCHET_BALLISTA,
                                                                                                                          100f),

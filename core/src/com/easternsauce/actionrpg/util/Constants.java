@@ -14,11 +14,11 @@ public class Constants {
     public static final float MAP_SCALE = 4.0f;
     public static final float MOVEMENT_COMMAND_COOLDOWN = 0.05f;
     public static final float CHANGE_AIM_DIRECTION_COMMAND_COOLDOWN = 0.05f;
-    public static final float LOSE_AGGRO_DISTANCE = 26f;
-    public static final float DEFENSIVE_POS_DISTANCE = 20f;
+    public static final float LOSE_AGGRO_DISTANCE = 28f;
+    public static final float DEFENSIVE_POS_DISTANCE = 22f;
     public static final float BACK_UP_DISTANCE = 5f;
-    public static final float TURN_ALERTED_DISTANCE = 24f;
-    public static final float TURN_AGGRESSIVE_DISTANCE = 13f;
+    public static final float TURN_ALERTED_DISTANCE = 26f;
+    public static final float TURN_AGGRESSIVE_DISTANCE = 15f;
     public static final float JUST_ATTACKED_FROM_RANGE_TIME = 3f;
     public static final float FORCE_UPDATE_MINIMUM_DISTANCE = 0.05f;
 

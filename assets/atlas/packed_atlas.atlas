@@ -6,7 +6,7 @@ filter: Nearest, Nearest
 repeat: none
 arrow
   rotate: false
-  xy: 7680, 970
+  xy: 7922, 970
   size: 40, 40
   orig: 40, 40
   offset: 0, 0
@@ -27,14 +27,14 @@ background2
   index: -1
 bag
   rotate: false
-  xy: 1336, 246
+  xy: 7304, 836
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 black_mage
   rotate: false
-  xy: 7206, 806
+  xy: 7108, 806
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
@@ -62,28 +62,28 @@ boomerang
   index: -1
 bubble
   rotate: false
-  xy: 1208, 155
+  xy: 1466, 278
   size: 128, 64
   orig: 128, 64
   offset: 0, 0
   index: -1
 cursor
   rotate: false
-  xy: 912, 126
+  xy: 6606, 730
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 downarrow
   rotate: false
-  xy: 6606, 640
+  xy: 7370, 902
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 evil_ninja
   rotate: false
-  xy: 7010, 806
+  xy: 6912, 806
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
@@ -104,7 +104,7 @@ explosion_windup
   index: -1
 female1
   rotate: false
-  xy: 6912, 806
+  xy: 1336, 150
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
@@ -132,28 +132,28 @@ fist_slam_windup
   index: -1
 ghost
   rotate: false
-  xy: 7108, 806
+  xy: 7010, 806
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: -1
 goblet
   rotate: false
-  xy: 6606, 674
+  xy: 1596, 278
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 goblet_lit
   rotate: false
-  xy: 6606, 740
+  xy: 7304, 870
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 goblin
   rotate: false
-  xy: 7304, 806
+  xy: 7206, 806
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
@@ -181,7 +181,7 @@ jawa
   index: -1
 lightning
   rotate: false
-  xy: 950, 155
+  xy: 628, 94
   size: 256, 64
   orig: 256, 64
   offset: 0, 0
@@ -251,7 +251,7 @@ poison_cloud
   index: -1
 poisoned
   rotate: false
-  xy: 1466, 296
+  xy: 886, 112
   size: 46, 46
   orig: 46, 46
   offset: 0, 0
@@ -328,44 +328,51 @@ slam_windup
   index: -1
 slash
   rotate: false
-  xy: 7438, 970
+  xy: 7680, 970
   size: 240, 40
   orig: 240, 40
   offset: 0, 0
   index: -1
 slash2
   rotate: false
-  xy: 1640, 474
+  xy: 6924, 936
   size: 240, 40
   orig: 240, 40
   offset: 0, 0
   index: -1
 slash2mirrored
   rotate: false
-  xy: 6924, 936
+  xy: 7166, 936
   size: 240, 40
   orig: 240, 40
   offset: 0, 0
   index: -1
 slash_windup
   rotate: false
-  xy: 628, 118
+  xy: 1398, 474
   size: 240, 40
   orig: 240, 40
   offset: 0, 0
   index: -1
 slash_windup2
   rotate: false
-  xy: 7166, 936
+  xy: 7438, 970
   size: 240, 40
   orig: 240, 40
   offset: 0, 0
   index: -1
 slash_windup3
   rotate: false
-  xy: 1398, 474
+  xy: 1640, 474
   size: 240, 40
   orig: 240, 40
+  offset: 0, 0
+  index: -1
+smoke
+  rotate: false
+  xy: 950, 155
+  size: 384, 64
+  orig: 384, 64
   offset: 0, 0
   index: -1
 stego
@@ -384,7 +391,7 @@ stunned
   index: -1
 sword
   rotate: false
-  xy: 870, 118
+  xy: 6606, 764
   size: 40, 40
   orig: 40, 40
   offset: 0, 0
@@ -398,7 +405,7 @@ taurus
   index: -1
 treasure
   rotate: false
-  xy: 1514, 310
+  xy: 1662, 310
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

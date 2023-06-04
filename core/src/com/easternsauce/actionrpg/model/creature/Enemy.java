@@ -30,7 +30,7 @@ public class Enemy extends Creature {
         CreatureParams params = CreatureParams.of(creatureId, areaId, enemySpawn);
 
         params.setDropTable(enemySpawn.getEnemyTemplate().getDropTable());
-        params.getStats().setBaseSpeed(9.5f);
+        params.getStats().setBaseSpeed(11f);
         params.getStats().setMaxLife(enemySpawn.getEnemyTemplate().getMaxLife());
         params.getStats().setLife(enemySpawn.getEnemyTemplate().getMaxLife());
 
@@ -72,8 +72,7 @@ public class Enemy extends Creature {
     }
 
     @Override
-    public void updateAutomaticControls(CoreGame game) {
-
+    public void updateAutoControl(CoreGame game) {
         if (getParams().getEnemyParams().getAutoControlStateTimer().getTime() >
             getParams().getEnemyParams().getAutoControlStateTime()) {
             getParams().getEnemyParams().getAutoControlStateTimer().restart();
@@ -176,8 +175,8 @@ public class Enemy extends Creature {
 
                 getParams()
                     .getEnemyParams()
-                    .setDefensivePosition(Vector2.of(defensivePos.getX() + nextAutoControlStateRngNegativeOrPositiveValue(),
-                                                     defensivePos.getY() + nextAutoControlStateRngNegativeOrPositiveValue()));
+                    .setCurrentDefensivePos(Vector2.of(defensivePos.getX() + nextAutoControlStateRngNegativeOrPositiveValue(),
+                                                       defensivePos.getY() + nextAutoControlStateRngNegativeOrPositiveValue()));
             }
 
             if (nextAutoControlStateRngValue() < 0.1f) {
@@ -199,12 +198,15 @@ public class Enemy extends Creature {
             if (targetPos != null) {
                 Vector2 vectorTowards = targetPos.vectorTowards(this.getParams().getPos());
 
-                Vector2 backUpPos = targetPos.add(vectorTowards.normalized().multiplyBy(Constants.BACK_UP_DISTANCE));
+                Vector2 backUpPos = targetPos.add(vectorTowards
+                                                      .normalized()
+                                                      .multiplyBy(getParams().getEnemyParams().getAttackDistance() +
+                                                                  Constants.BACK_UP_DISTANCE));
 
                 getParams()
                     .getEnemyParams()
-                    .setDefensivePosition(Vector2.of(backUpPos.getX() + nextAutoControlStateRngNegativeOrPositiveValue(),
-                                                     backUpPos.getY() + nextAutoControlStateRngNegativeOrPositiveValue()));
+                    .setCurrentDefensivePos(Vector2.of(backUpPos.getX() + nextAutoControlStateRngNegativeOrPositiveValue(),
+                                                       backUpPos.getY() + nextAutoControlStateRngNegativeOrPositiveValue()));
 
                 if (nextAutoControlStateRngValue() < 0.5f) {
                     getParams().getEnemyParams().setAutoControlState(EnemyAutoControlState.AGGRESSIVE);
@@ -337,12 +339,12 @@ public class Enemy extends Creature {
             }
         }
         else {
-            processStateAiHandleMovementLogic(potentialTarget, distance);
+            processAutoControlStateMovementLogic(potentialTarget, distance);
         }
 
     }
 
-    private void processStateAiHandleMovementLogic(Creature potentialTarget, Float distance) {
+    private void processAutoControlStateMovementLogic(Creature potentialTarget, Float distance) {
         if (getParams().getEnemyParams().getAutoControlState() == EnemyAutoControlState.AGGRESSIVE) {
             if (distance > getParams().getEnemyParams().getAttackDistance() - 1f) {
                 getParams().getStats().setSpeed(getParams().getStats().getBaseSpeed());
@@ -354,14 +356,14 @@ public class Enemy extends Creature {
         }
         else if (getParams().getEnemyParams().getAutoControlState() == EnemyAutoControlState.ALERTED) {
             getParams().getStats().setSpeed(getParams().getStats().getBaseSpeed() / 3);
-            if (getParams().getEnemyParams().getDefensivePosition() != null) {
-                moveTowards(getParams().getEnemyParams().getDefensivePosition());
+            if (getParams().getEnemyParams().getCurrentDefensivePos() != null) {
+                moveTowards(getParams().getEnemyParams().getCurrentDefensivePos());
             }
         }
         else if (getParams().getEnemyParams().getAutoControlState() == EnemyAutoControlState.KEEPING_DISTANCE) {
             getParams().getStats().setSpeed(getParams().getStats().getBaseSpeed() / 2);
-            if (getParams().getEnemyParams().getDefensivePosition() != null) {
-                moveTowards(getParams().getEnemyParams().getDefensivePosition());
+            if (getParams().getEnemyParams().getCurrentDefensivePos() != null) {
+                moveTowards(getParams().getEnemyParams().getCurrentDefensivePos());
             }
         }
         else {

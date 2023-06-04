@@ -14,8 +14,8 @@ public class Player extends Creature {
 
     public static Player of(CreatureId playerId, AreaId areaId, Vector2 pos, String textureName) {
         CreatureParams params = CreatureParams.of(playerId, areaId, pos, textureName);
-        params.getStats().setLife(350f);
-        params.getStats().setMaxLife(350f);
+        params.getStats().setLife(35000f);
+        params.getStats().setMaxLife(35000f);
         params.getStats().setMana(350f);
         params.getStats().setMaxMana(350f);
 
