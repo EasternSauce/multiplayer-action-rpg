@@ -25,7 +25,6 @@ public class VolatileBubble extends Projectile {
             .setBaseDamage(0f)
             .setIsChannelAnimationLooping(false)
             .setIsActiveAnimationLooping(true)
-            .setRotationShift(0f)
             .setDelayedActionTime(0.001f)
             .setSpeed(7f);
 

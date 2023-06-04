@@ -34,7 +34,6 @@ public class LightningSpark extends Ability {
             .setIsActiveAnimationLooping(true)
             .setAttackWithoutMoving(true)
             .setIsSkipCreatingBody(true)
-            .setRotationShift(0f)
             .setDelayedActionTime(0.001f)
             .setPos(LightningSpark.calculatePos(creature.getParams().getPos().add(abilityParams.getDirVector()),
                                                 creature.getParams().getPos()));

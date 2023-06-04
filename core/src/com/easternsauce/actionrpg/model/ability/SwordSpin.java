@@ -4,7 +4,6 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
-import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -15,7 +14,7 @@ import java.util.Set;
 @NoArgsConstructor(staticName = "of")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class SwordSpin extends Ability {
+public class SwordSpin extends DirectionalAttachedAbility {
     AbilityParams params;
 
     public static SwordSpin of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
@@ -30,7 +29,6 @@ public class SwordSpin extends Ability {
             .setBaseDamage(10f)
             .setIsChannelAnimationLooping(false)
             .setIsActiveAnimationLooping(false)
-            .setRotationShift(0f)
             .setDirVector(abilityParams.getDirVector().withRotatedDegAngle(90));
         return ability;
     }
@@ -47,12 +45,12 @@ public class SwordSpin extends Ability {
 
     @Override
     public void onChannelUpdate(CoreGame game) {
-        updatePosition(game);
+        updateDirectionalAttachedAbilityPosition(game);
     }
 
     @Override
     protected void onActiveUpdate(float delta, CoreGame game) {
-        updatePosition(game);
+        updateDirectionalAttachedAbilityPosition(game);
 
         getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(-10));
 
@@ -76,33 +74,8 @@ public class SwordSpin extends Ability {
         getParams().setState(AbilityState.CHANNEL);
         getParams().getStateTimer().restart();
 
-        updatePosition(game);
+        updateDirectionalAttachedAbilityPosition(game);
 
-    }
-
-    public void updatePosition(CoreGame game) {
-        Vector2 dirVector;
-        if (getParams().getDirVector().len() <= 0) {
-            dirVector = Vector2.of(1, 0);
-        }
-        else {
-            dirVector = getParams().getDirVector();
-        }
-
-        Float theta = dirVector.angleDeg();
-
-        float attackShiftX = dirVector.normalized().getX() * getParams().getRange();
-        float attackShiftY = dirVector.normalized().getY() * getParams().getRange();
-
-        Vector2 pos = game.getGameState().accessCreatures().getCreaturePos(getParams().getCreatureId());
-
-        if (pos != null) {
-            float attackRectX = attackShiftX + pos.getX();
-            float attackRectY = attackShiftY + pos.getY();
-
-            getParams().setPos(Vector2.of(attackRectX, attackRectY));
-            getParams().setRotationAngle(theta);
-        }
     }
 
     @Override

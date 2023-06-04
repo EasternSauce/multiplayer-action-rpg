@@ -26,7 +26,6 @@ public class TeleportSource extends Ability {
             .setBaseDamage(0f)
             .setIsChannelAnimationLooping(false)
             .setIsActiveAnimationLooping(false)
-            .setRotationShift(0f)
             .setPos(creature.getParams().getPos())
             .setDelayedActionTime(0.3f);
 

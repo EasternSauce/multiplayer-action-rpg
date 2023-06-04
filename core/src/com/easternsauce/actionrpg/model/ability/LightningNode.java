@@ -31,7 +31,6 @@ public class LightningNode extends Ability {
             .setIsActiveAnimationLooping(true)
             .setAttackWithoutMoving(true)
             .setIsSkipCreatingBody(true)
-            .setRotationShift(0f)
             .setDelayedActionTime(0.05f);
 
         return ability;

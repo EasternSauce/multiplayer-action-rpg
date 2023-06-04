@@ -27,7 +27,6 @@ public class Boomerang extends Projectile {
             .setBaseDamage(22f)
             .setIsChannelAnimationLooping(true)
             .setIsActiveAnimationLooping(true)
-            .setRotationShift(0f)
             .setSpeed(15f);
 
         return ability;

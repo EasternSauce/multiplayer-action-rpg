@@ -24,8 +24,7 @@ public class RingOfFire extends Ability {
             .setTextureName("ring_of_fire")
             .setIsChannelAnimationLooping(false)
             .setIsActiveAnimationLooping(false)
-            .setAttackWithoutMoving(true)
-            .setRotationShift(0f);
+            .setAttackWithoutMoving(true);
 
         return ability;
     }

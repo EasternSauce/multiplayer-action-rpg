@@ -29,7 +29,6 @@ public class IceSpear extends Projectile {
             .setBaseDamage(12f)
             .setIsChannelAnimationLooping(false)
             .setIsActiveAnimationLooping(true)
-            .setRotationShift(0f)
             .setDelayedActionTime(0.001f)
             .setSpeed(18f)
             .setCreaturesAlreadyHit(new ConcurrentSkipListMap<>());

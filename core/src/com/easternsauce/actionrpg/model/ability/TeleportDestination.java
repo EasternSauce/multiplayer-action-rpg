@@ -34,7 +34,6 @@ public class TeleportDestination extends Ability {
             .setBaseDamage(0f)
             .setIsChannelAnimationLooping(false)
             .setIsActiveAnimationLooping(false)
-            .setRotationShift(0f)
             .setPos(teleportPos)
             .setChainToPos(teleportPos);
 

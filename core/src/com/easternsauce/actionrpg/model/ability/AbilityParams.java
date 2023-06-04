@@ -59,7 +59,7 @@ public class AbilityParams implements EntityParams {
 
     @NonNull Boolean isSkipCreatingBody = false;
 
-    @NonNull Float rotationShift;
+    @NonNull Float rotationShift = 0f;
 
     @NonNull Boolean isFlip = false;
 
@@ -81,6 +81,8 @@ public class AbilityParams implements EntityParams {
     @NonNull SkillType skillType;
 
     @NonNull Boolean isHitShielded = false;
+
+    Float directionalAttachedAbilityRotationShift = null;
 
     Float overrideSize;
     Float overrideDuration;

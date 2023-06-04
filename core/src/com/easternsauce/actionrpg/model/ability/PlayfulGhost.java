@@ -32,7 +32,6 @@ public class PlayfulGhost extends Projectile {
             .setBaseDamage(15f)
             .setIsChannelAnimationLooping(false)
             .setIsActiveAnimationLooping(true)
-            .setRotationShift(0f)
             .setDelayedActionTime(0.001f)
             .setSpeed(5f)
             .setAbilityRngSeed((float) Math.random());

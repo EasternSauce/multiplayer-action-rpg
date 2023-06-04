@@ -24,7 +24,6 @@ public class RicochetBullet extends Projectile {
             .setBaseDamage(30f)
             .setIsChannelAnimationLooping(false)
             .setIsActiveAnimationLooping(true)
-            .setRotationShift(0f)
             .setDelayedActionTime(0.001f)
             .setSpeed(25f);
 

@@ -107,4 +107,8 @@ public class Vector2 {
     public Vector2 copy() {
         return Vector2.of(x, y);
     }
+
+    public Vector2 rotateDeg(float degrees) {
+        return rotateRad(degrees * (float) PI / 180);
+    }
 }

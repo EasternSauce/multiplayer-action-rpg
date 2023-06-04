@@ -25,7 +25,6 @@ public class FireballExplosion extends Ability {
             .setIsChannelAnimationLooping(false)
             .setIsActiveAnimationLooping(false)
             .setAttackWithoutMoving(true)
-            .setRotationShift(0f)
             .setCreaturesAlreadyHit(new ConcurrentSkipListMap<>());
 
         return ability;

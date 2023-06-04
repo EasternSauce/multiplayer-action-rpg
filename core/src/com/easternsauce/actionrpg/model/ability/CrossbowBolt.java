@@ -24,7 +24,6 @@ public class CrossbowBolt extends Projectile {
             .setBaseDamage(10f)
             .setIsChannelAnimationLooping(true)
             .setIsActiveAnimationLooping(true)
-            .setRotationShift(0f)
             .setSpeed(30f);
 
         return ability;

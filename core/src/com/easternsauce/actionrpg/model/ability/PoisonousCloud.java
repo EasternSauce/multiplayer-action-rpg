@@ -28,7 +28,6 @@ public class PoisonousCloud extends Ability {
             .setIsChannelAnimationLooping(false)
             .setIsActiveAnimationLooping(true)
             .setAttackWithoutMoving(true)
-            .setRotationShift(0f)
             .setCreaturesAlreadyHit(new ConcurrentSkipListMap<>());
 
         return ability;
