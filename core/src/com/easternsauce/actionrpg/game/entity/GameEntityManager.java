@@ -233,6 +233,10 @@ public class GameEntityManager {
     }
 
     public void teleportCreature(TeleportEvent teleportEvent, CoreGame game) {
+        Creature creature = game.getGameState().accessCreatures().getCreature(teleportEvent.getCreatureId());
+
+        creature.getParams().getMovementParams().setIsDashing(false);
+
         if (!teleportEvent.isUsedGate() && teleportEvent
             .getToAreaId()
             .getValue()
@@ -253,8 +257,6 @@ public class GameEntityManager {
         }
         else {
             if (teleportEvent.getCreatureId() != null) {
-                Creature creature = game.getGameState().accessCreatures().getCreature(teleportEvent.getCreatureId());
-
                 creature.getParams().setAreaId(teleportEvent.getToAreaId());
 
                 creature.getParams().setPos(teleportEvent.getPos());

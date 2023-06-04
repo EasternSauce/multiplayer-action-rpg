@@ -37,6 +37,16 @@ public class RicochetBullet extends Projectile {
     }
 
     @Override
+    public void onChannelUpdate(CoreGame game) {
+        onProjectileTravelUpdate();
+    }
+
+    @Override
+    protected void onActiveUpdate(float delta, CoreGame game) {
+        onProjectileTravelUpdate();
+    }
+
+    @Override
     public void onCreatureHit(CreatureId creatureId, CoreGame game) {
         params.setDamageMultiplier(params.getDamageMultiplier() * 3 / 5f);
     }

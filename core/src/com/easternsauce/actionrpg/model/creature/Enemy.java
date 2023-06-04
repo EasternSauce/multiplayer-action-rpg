@@ -1,7 +1,6 @@
 package com.easternsauce.actionrpg.model.creature;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.skill.Skill;
 import com.easternsauce.actionrpg.model.skill.SkillType;
@@ -231,25 +230,6 @@ public class Enemy extends Creature {
 
             }
 
-        }
-
-    }
-
-    public void onBeingHitByRegularAbility(Ability ability, CoreGame game) {
-        boolean isShielded = isAbilityShielded(ability, game);
-
-        if (!isShielded && !ability.getParams().getIsHitShielded()) {
-            takeLifeDamage(ability.getDamage(game));
-
-            if (ability.isCanStun()) {
-                applyEffect(CreatureEffect.STUN, ability.getStunDuration(), game);
-            }
-
-            getParams().getEnemyParams().setAttackedByCreatureId(ability.getParams().getCreatureId());
-
-            if (ability.isRanged()) {
-                getParams().getEnemyParams().getJustAttackedFromRangeTimer().restart();
-            }
         }
 
     }

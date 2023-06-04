@@ -37,8 +37,8 @@ public class AbilityParams implements EntityParams {
 
     @NonNull Map<CreatureId, Float> creaturesAlreadyHit = new ConcurrentSkipListMap<>();
 
-    @NonNull Vector2 velocity;
-    @NonNull Float speed;
+    @NonNull Vector2 velocity = Vector2.of(0f, 0f);
+    @NonNull Float speed = 0f;
 
     @NonNull Float baseDamage;
     @NonNull Float weaponDamage;
@@ -51,7 +51,7 @@ public class AbilityParams implements EntityParams {
 
     @NonNull Boolean attackWithoutMoving = false;
 
-    @NonNull Float delayedActionTime;
+    Float delayedActionTime;
 
     @NonNull Boolean delayedActionCompleted = false;
 

@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -65,7 +66,7 @@ public class CreatureParams implements EntityParams {
     private Map<SkillType, Skill> skills = new ConcurrentSkipListMap<>();
 
     @NonNull
-    private Set<DropTableEntry> dropTable;
+    private Set<DropTableEntry> dropTable = new ConcurrentSkipListSet<>();
 
     @NonNull
     private Map<Integer, Item> equipmentItems = new ConcurrentSkipListMap<>();

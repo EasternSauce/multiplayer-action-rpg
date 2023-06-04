@@ -39,6 +39,11 @@ public class Boomerang extends Projectile {
     }
 
     @Override
+    public void onChannelUpdate(CoreGame game) {
+        onProjectileTravelUpdate();
+    }
+
+    @Override
     public void onCreatureHit(CreatureId creatureId, CoreGame game) {
         getParams().setIsComingBack(true);
         getParams().setSpeed(20f);
@@ -74,10 +79,7 @@ public class Boomerang extends Projectile {
 
     @Override
     protected void onActiveUpdate(float delta, CoreGame game) {
-        if (getParams().getSpeed() != null) {
-            getParams().setVelocity(getParams().getDirVector().normalized().multiplyBy(getParams().getSpeed()));
-        }
-        getParams().setRotationAngle(getParams().getDirVector().angleDeg());
+        onProjectileTravelUpdate();
 
         Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
 

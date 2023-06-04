@@ -38,6 +38,11 @@ public class VolatileBubble extends Projectile {
     }
 
     @Override
+    public void onChannelUpdate(CoreGame game) {
+        onProjectileTravelUpdate();
+    }
+
+    @Override
     protected void onCompleted(CoreGame game) {
         float baseAngle = getParams().getDirVector().angleDeg();
 
@@ -91,10 +96,7 @@ public class VolatileBubble extends Projectile {
 
     @Override
     protected void onActiveUpdate(float delta, CoreGame game) {
-        if (getParams().getSpeed() != null) {
-            getParams().setVelocity(getParams().getDirVector().normalized().multiplyBy(getParams().getSpeed()));
-        }
-        getParams().setRotationAngle(getParams().getDirVector().angleDeg());
+        onProjectileTravelUpdate();
 
         if (getParams().getPos().distance(getParams().getSkillStartPos()) > 10f) {
             deactivate();

@@ -92,7 +92,7 @@ public class AbilityBody {
     public void update(CoreGame game) {
         Ability ability = game.getGameState().accessAbilities().getAbilities().get(abilityId);
 
-        if (ability.getParams().getCreatureId().getValue().startsWith("zaza")) {
+        if (ability != null && ability.getParams().getCreatureId().getValue().startsWith("zaza")) {
             System.out.println("updating body");
         }
 
@@ -102,7 +102,7 @@ public class AbilityBody {
                 b2body.setTransform(ability.getParams().getPos().getX(), ability.getParams().getPos().getY(), 0f);
             }
 
-            if (ability.getParams().getVelocity() != null) {
+            if (ability.getParams().getVelocity() != Vector2.of(0f, 0f)) {
                 setVelocity(ability.getParams().getVelocity());
             }
 

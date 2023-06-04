@@ -61,10 +61,6 @@ public abstract class CreatureHitAction extends GameStateAction {
 
         Set<DropTableEntry> dropTable = creature.getParams().getDropTable();
 
-        if (dropTable == null) {
-            return;
-        }
-
         dropTable.forEach(entry -> {
             if (creature.nextDropRngValue() < entry.getDropChance()) {
                 AtomicReference<SkillType> weightedSkillType = new AtomicReference<>(null);

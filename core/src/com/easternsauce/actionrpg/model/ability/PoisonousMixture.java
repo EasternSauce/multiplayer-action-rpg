@@ -40,10 +40,7 @@ public class PoisonousMixture extends Projectile {
     @Override
     protected void onActiveUpdate(float delta, CoreGame game) {
         //projectile speeds up over time
-        if (getParams().getSpeed() != null) {
-            getParams().setVelocity(getParams().getDirVector().normalized().multiplyBy(getParams().getSpeed()));
-        }
-        getParams().setRotationAngle(getParams().getDirVector().angleDeg());
+        onProjectileTravelUpdate();
 
         if (getParams().getStateTimer().getTime() < 1.5f) {
             getParams().setSpeed(2f + (getParams().getStateTimer().getTime() / 2f) * 28f);
@@ -60,6 +57,11 @@ public class PoisonousMixture extends Projectile {
     @Override
     public Boolean isRanged() {
         return true;
+    }
+
+    @Override
+    public void onChannelUpdate(CoreGame game) {
+        onProjectileTravelUpdate();
     }
 
     @Override

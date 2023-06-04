@@ -14,19 +14,18 @@ import java.util.Set;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class BossSwordSpin extends Ability {
-
     AbilityParams params;
 
     public static BossSwordSpin of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         BossSwordSpin ability = BossSwordSpin.of();
         ability.params = abilityParams
-            .setWidth(3.5f)
-            .setHeight(3.5f)
+            .setWidth(4f)
+            .setHeight(4f)
             .setChannelTime(0f)
             .setActiveTime(3f)
             .setRange(4f)
             .setTextureName("sword")
-            .setBaseDamage(32f)
+            .setBaseDamage(42f)
             .setIsChannelAnimationLooping(false)
             .setIsActiveAnimationLooping(false)
             .setRotationShift(0f)

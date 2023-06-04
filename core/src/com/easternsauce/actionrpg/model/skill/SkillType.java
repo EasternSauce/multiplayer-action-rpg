@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public enum SkillType {
     SWORD_SLASH("Sword Slash", true, AbilityType.SWORD_SLASH, 0.6f, 20f, 0f),
-    MOB_SWORD_SLASH("Sword Slash (mob only)", true, AbilityType.SWORD_SLASH, 0.6f, 20f, 0f),
+    MOB_SWORD_SLASH("Sword Slash (mob only)", true, AbilityType.MOB_SWORD_SLASH, 0.6f, 20f, 0f),
     FIREBALL("Fireball", true, AbilityType.FIREBALL, 1.5f, 30f, 20f),
     LIGHTNING("Lightning", true, AbilityType.LIGHTNING_SPARK, 2f, 20f, 26f),
     CROSSBOW_SHOT("Crossbow Shot", true, AbilityType.CROSSBOW_SHOT, 2f, 25f, 0f),
-    MOB_CROSSBOW_SHOT("Crossbow Shot (mob only)", true, AbilityType.CROSSBOW_SHOT, 2f, 25f, 0f),
+    MOB_CROSSBOW_SHOT("Crossbow Shot (mob only)", true, AbilityType.MOB_CROSSBOW_SHOT, 2f, 25f, 0f),
 
     MAGIC_ORB("Magic Orb", true, AbilityType.MAGIC_ORB, 0.8f, 15f, 10f),
 
@@ -29,7 +29,7 @@ public enum SkillType {
 
     SWORD_SPIN("Sword Spin", true, AbilityType.SWORD_SPIN, 4f, 30f, 0f),
 
-    BOSS_SWORD_SPIN("Sword Spin (boss only)", true, AbilityType.SWORD_SPIN, 4f, 30f, 0f),
+    BOSS_SWORD_SPIN("Sword Spin (boss only)", true, AbilityType.BOSS_SWORD_SPIN, 4f, 30f, 0f),
 
     TELEPORT("Teleport", false, AbilityType.TELEPORT_SOURCE, 2f, 10f, 35f),
 

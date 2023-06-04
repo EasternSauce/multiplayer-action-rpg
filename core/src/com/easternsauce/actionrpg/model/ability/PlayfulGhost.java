@@ -46,6 +46,11 @@ public class PlayfulGhost extends Projectile {
     }
 
     @Override
+    public void onChannelUpdate(CoreGame game) {
+        onProjectileTravelUpdate();
+    }
+
+    @Override
     public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
         deactivate();
     }
@@ -57,10 +62,7 @@ public class PlayfulGhost extends Projectile {
 
     @Override
     protected void onActiveUpdate(float delta, CoreGame game) {
-        if (getParams().getSpeed() != null) {
-            getParams().setVelocity(getParams().getDirVector().normalized().multiplyBy(getParams().getSpeed()));
-        }
-        getParams().setRotationAngle(getParams().getDirVector().angleDeg());
+        onProjectileTravelUpdate();
         getParams().setIsFlip(getParams().getRotationAngle() >= 90 && getParams().getRotationAngle() < 270);
 
         Creature minCreature = null;

@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class MagicOrb extends Projectile {
-
     AbilityParams params;
 
     public static MagicOrb of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
@@ -45,6 +44,11 @@ public class MagicOrb extends Projectile {
     }
 
     @Override
+    public void onChannelUpdate(CoreGame game) {
+        onProjectileTravelUpdate();
+    }
+
+    @Override
     public void onCreatureHit(CreatureId creatureId, CoreGame game) {
         deactivate();
     }
@@ -68,10 +72,7 @@ public class MagicOrb extends Projectile {
 
     @Override
     protected void onActiveUpdate(float delta, CoreGame game) {
-        if (getParams().getSpeed() != null) {
-            getParams().setVelocity(getParams().getDirVector().normalized().multiplyBy(getParams().getSpeed()));
-        }
-        getParams().setRotationAngle(getParams().getDirVector().angleDeg());
+        onProjectileTravelUpdate();
 
         Creature minimumDistanceCreature = null;
         float minimumDistance = Float.MAX_VALUE;
