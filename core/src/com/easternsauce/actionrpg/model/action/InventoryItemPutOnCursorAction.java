@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class EquipmentItemPickUpAction extends GameStateAction {
+public class InventoryItemPutOnCursorAction extends GameStateAction {
     private CreatureId playerId;
 
     private Integer slotIndex;
@@ -26,12 +26,12 @@ public class EquipmentItemPickUpAction extends GameStateAction {
         PlayerConfig playerConfig = game.getGameState().getPlayerConfig(playerId);
 
         if (playerConfig != null) {
-            playerConfig.setEquipmentItemBeingMoved(slotIndex);
+            playerConfig.setInventoryItemBeingMoved(slotIndex);
         }
     }
 
-    public static EquipmentItemPickUpAction of(CreatureId creatureId, Integer slotIndex) {
-        EquipmentItemPickUpAction action = EquipmentItemPickUpAction.of();
+    public static InventoryItemPutOnCursorAction of(CreatureId creatureId, Integer slotIndex) {
+        InventoryItemPutOnCursorAction action = InventoryItemPutOnCursorAction.of();
         action.playerId = creatureId;
         action.slotIndex = slotIndex;
         return action;

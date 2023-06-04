@@ -11,8 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class InventoryPickUpCancelAction extends GameStateAction {
+public class EquipmentItemPutOnCursorAction extends GameStateAction {
     private CreatureId playerId;
+
+    private Integer slotIndex;
 
     @Override
     public Entity getEntity(CoreGame game) {
@@ -24,14 +26,14 @@ public class InventoryPickUpCancelAction extends GameStateAction {
         PlayerConfig playerConfig = game.getGameState().getPlayerConfig(playerId);
 
         if (playerConfig != null) {
-            playerConfig.setInventoryItemBeingMoved(null);
-            playerConfig.setEquipmentItemBeingMoved(null);
+            playerConfig.setEquipmentItemBeingMoved(slotIndex);
         }
     }
 
-    public static InventoryPickUpCancelAction of(CreatureId creatureId) {
-        InventoryPickUpCancelAction action = InventoryPickUpCancelAction.of();
+    public static EquipmentItemPutOnCursorAction of(CreatureId creatureId, Integer slotIndex) {
+        EquipmentItemPutOnCursorAction action = EquipmentItemPutOnCursorAction.of();
         action.playerId = creatureId;
+        action.slotIndex = slotIndex;
         return action;
     }
 }

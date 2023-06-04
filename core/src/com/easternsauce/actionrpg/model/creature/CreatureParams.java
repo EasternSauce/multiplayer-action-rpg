@@ -9,6 +9,7 @@ import com.easternsauce.actionrpg.model.util.SimpleTimer;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -20,40 +21,61 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(staticName = "of")
 @Data
 public class CreatureParams implements EntityParams {
+    @NonNull
     private final CreatureStats stats = CreatureStats.of();
+    @NonNull
     private final CreatureMovementParams movementParams = CreatureMovementParams.of();
+    @NonNull
     private final CreatureEffectParams effectParams = CreatureEffectParams.of();
     private EnemyParams enemyParams;
 
+    @NonNull
     private CreatureId id;
 
+    @NonNull
     private Vector2 pos;
+    @NonNull
     private AreaId areaId;
 
+    @NonNull
     private Vector2 initialPos;
+    @NonNull
     private AreaId initialAreaId;
 
+    @NonNull
     private SimpleTimer animationTimer = SimpleTimer.getStartedTimer();
 
+    @NonNull
     private String textureName;
 
+    @NonNull
     private SimpleTimer respawnTimer = SimpleTimer.getExpiredTimer();
+    @NonNull
     private Float respawnTime = 5f;
 
+    @NonNull
     private Float actionCooldown = 0.7f;
 
+    @NonNull
     private Boolean isDead = false;
+    @NonNull
     private Boolean isAwaitingRespawn = false;
 
+    @NonNull
     private Map<SkillType, Skill> skills = new ConcurrentSkipListMap<>();
 
+    @NonNull
     private Set<DropTableEntry> dropTable;
 
+    @NonNull
     private Map<Integer, Item> equipmentItems = new ConcurrentSkipListMap<>();
+    @NonNull
     private Map<Integer, Item> inventoryItems = new ConcurrentSkipListMap<>();
 
+    @NonNull
     private Float dropRngSeed = (float) Math.random();
 
+    @NonNull
     private SimpleTimer generalSkillPerformCooldownTimer = SimpleTimer.getExpiredTimer();
 
     public static CreatureParams of(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn) {

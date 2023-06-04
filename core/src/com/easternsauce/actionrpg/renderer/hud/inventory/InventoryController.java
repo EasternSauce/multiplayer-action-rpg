@@ -65,9 +65,9 @@ public class InventoryController {
                                                      InventoryData inventoryData) {
         GameStateAction action = null;
         if (inventoryData.getInventoryItemBeingMoved() != null && inventoryData.getInventorySlotClicked() != null) {
-            action = InventoryOnlySwapSlotItemsAction.of(game.getGameState().getThisClientPlayerId(),
-                                                         inventoryData.getInventoryItemBeingMoved(),
-                                                         inventoryData.getInventorySlotClicked());
+            action = InventorySwapSlotItemsAction.of(game.getGameState().getThisClientPlayerId(),
+                                                     inventoryData.getInventoryItemBeingMoved(),
+                                                     inventoryData.getInventorySlotClicked());
         }
         else if (inventoryData.getInventoryItemBeingMoved() != null && inventoryData.getEquipmentSlotClicked() != null) {
             action = InventoryAndEquipmentSwapSlotItemsAction.of(game.getGameState().getThisClientPlayerId(),
@@ -80,24 +80,24 @@ public class InventoryController {
                                                                  inventoryData.getEquipmentItemBeingMoved());
         }
         else if (inventoryData.getEquipmentItemBeingMoved() != null && inventoryData.getEquipmentSlotClicked() != null) {
-            action = InventoryPickUpCancelAction.of(game.getGameState().getThisClientPlayerId());
+            action = InventoryPutOnCursorCancelAction.of(game.getGameState().getThisClientPlayerId());
         }
         else if (inventoryData.getInventorySlotClicked() != null) {
             if (player.getParams().getInventoryItems().containsKey(inventoryData.getInventorySlotClicked())) {
-                action = InventoryItemPickUpAction.of(game.getGameState().getThisClientPlayerId(),
-                                                      inventoryData.getInventorySlotClicked());
+                action = InventoryItemPutOnCursorAction.of(game.getGameState().getThisClientPlayerId(),
+                                                           inventoryData.getInventorySlotClicked());
             }
         }
         else if (inventoryData.getEquipmentSlotClicked() != null) {
             if (player.getParams().getEquipmentItems().containsKey(inventoryData.getEquipmentSlotClicked())) {
                 playerConfig.setEquipmentItemBeingMoved(inventoryData.getEquipmentSlotClicked());
 
-                action = EquipmentItemPickUpAction.of(game.getGameState().getThisClientPlayerId(),
-                                                      inventoryData.getEquipmentSlotClicked());
+                action = EquipmentItemPutOnCursorAction.of(game.getGameState().getThisClientPlayerId(),
+                                                           inventoryData.getEquipmentSlotClicked());
             }
         }
         else {
-            action = InventoryPickUpCancelAction.of(game.getGameState().getThisClientPlayerId());
+            action = InventoryPutOnCursorCancelAction.of(game.getGameState().getThisClientPlayerId());
         }
         return action;
     }

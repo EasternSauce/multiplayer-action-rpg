@@ -254,18 +254,6 @@ public abstract class Creature implements Entity {
         return false;
     }
 
-    public void onBeingHitByRegularAbility(Ability ability, CoreGame game) {
-        boolean isShielded = isAbilityShielded(ability, game);
-
-        if (!isShielded && !ability.getParams().getIsHitShielded()) {
-            takeLifeDamage(ability.getDamage(game));
-
-            if (ability.isCanStun()) {
-                applyEffect(CreatureEffect.STUN, ability.getStunDuration(), game);
-            }
-        }
-    }
-
     protected void takeManaDamage(Float manaCost) {
         if (getParams().getStats().getMana() - manaCost > 0) {
             getParams().getStats().setMana(getParams().getStats().getMana() - manaCost);

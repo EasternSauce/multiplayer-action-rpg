@@ -235,7 +235,6 @@ public class Enemy extends Creature {
 
     }
 
-    @Override
     public void onBeingHitByRegularAbility(Ability ability, CoreGame game) {
         boolean isShielded = isAbilityShielded(ability, game);
 

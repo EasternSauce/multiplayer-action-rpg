@@ -16,73 +16,73 @@ import java.util.concurrent.ConcurrentSkipListMap;
 @NoArgsConstructor(staticName = "of")
 @Data
 public class AbilityParams implements EntityParams {
-    AbilityId id;
-    AreaId areaId;
-    AbilityState state = AbilityState.INACTIVE;
-    Vector2 pos;
-    Float width;
-    Float height;
-    CreatureId creatureId;
-    SimpleTimer stateTimer = SimpleTimer.getExpiredTimer();
+    @NonNull AbilityId id;
+    @NonNull AreaId areaId;
+    @NonNull AbilityState state = AbilityState.INACTIVE;
+    @NonNull Vector2 pos;
+    @NonNull Float width;
+    @NonNull Float height;
+    @NonNull CreatureId creatureId;
+    @NonNull SimpleTimer stateTimer = SimpleTimer.getExpiredTimer();
     @NonNull Vector2 dirVector = Vector2.of(0f, 0f);
     @NonNull Vector2 vectorTowardsTarget = Vector2.of(0f, 0f);
-    String textureName;
+    @NonNull String textureName;
 
-    Float rotationAngle = 0f;
+    @NonNull Float rotationAngle = 0f;
 
-    Boolean isChannelAnimationLooping;
-    Boolean isActiveAnimationLooping;
+    @NonNull Boolean isChannelAnimationLooping;
+    @NonNull Boolean isActiveAnimationLooping;
 
-    Float range;
+    @NonNull Float range;
 
-    Map<CreatureId, Float> creaturesAlreadyHit = new ConcurrentSkipListMap<>();
+    @NonNull Map<CreatureId, Float> creaturesAlreadyHit = new ConcurrentSkipListMap<>();
 
-    Vector2 velocity;
-    Float speed;
+    @NonNull Vector2 velocity;
+    @NonNull Float speed;
 
-    Float baseDamage;
-    Float weaponDamage;
-    Float damageMultiplier = 1.0f;
+    @NonNull Float baseDamage;
+    @NonNull Float weaponDamage;
+    @NonNull Float damageMultiplier = 1.0f;
 
-    Boolean isPlayerAbility = false;
+    @NonNull Boolean isPlayerAbility = false;
 
-    Float channelTime;
-    Float activeTime;
+    @NonNull Float channelTime;
+    @NonNull Float activeTime;
 
-    Boolean attackWithoutMoving = false;
+    @NonNull Boolean attackWithoutMoving = false;
 
-    Float delayedActionTime;
+    @NonNull Float delayedActionTime;
 
-    Boolean delayedActionCompleted = false;
+    @NonNull Boolean delayedActionCompleted = false;
 
-    Float maxPlacementRange;
+    @NonNull Float maxPlacementRange;
 
-    Boolean isSkipCreatingBody = false;
+    @NonNull Boolean isSkipCreatingBody = false;
 
-    Float rotationShift;
+    @NonNull Float rotationShift;
 
-    Boolean isFlip = false;
+    @NonNull Boolean isFlip = false;
 
-    Float abilityRngSeed;
+    @NonNull Float abilityRngSeed;
 
-    SimpleTimer changeDirectionTimer = SimpleTimer.getStartedTimer();
+    @NonNull SimpleTimer changeDirectionTimer = SimpleTimer.getStartedTimer();
 
-    Boolean foundTarget = false;
+    @NonNull Boolean foundTarget = false;
 
-    Vector2 chainFromPos;
+    @NonNull Vector2 chainFromPos;
     Vector2 chainToPos;
 
-    Vector2 skillStartPos;
+    @NonNull Vector2 skillStartPos;
 
-    Float wallBounceCount = 0f;
+    @NonNull Float wallBounceCount = 0f;
 
-    Boolean isComingBack = false;
+    @NonNull Boolean isComingBack = false;
 
-    SkillType skillType;
+    @NonNull SkillType skillType;
 
-    Boolean isHitShielded = false;
+    @NonNull Boolean isHitShielded = false;
 
-    Float overrideSize = null;
-    Float overrideDuration = null;
+    Float overrideSize;
+    Float overrideDuration;
 
 }
