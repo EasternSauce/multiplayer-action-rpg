@@ -42,4 +42,6 @@ public class CreatureMovementParams {
     private Vector2 aimDirection = Vector2.of(0f, 0f);
     @NonNull
     private SimpleTimer gateTeleportCooldownTimer = SimpleTimer.getExpiredTimer();
+
+    private Vector2 lastStoppedPos = null;
 }

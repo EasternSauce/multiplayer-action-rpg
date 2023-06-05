@@ -198,7 +198,15 @@ public abstract class Creature implements Entity {
     }
 
     public void stopMoving() {
-        getParams().getMovementParams().setMovementCommandTargetPos(getParams().getPos());
+        if (getParams().getMovementParams().getLastStoppedPos() == null ||
+            getParams().getMovementParams().getLastStoppedPos().distance(getParams().getPos()) > 0.5f) {
+
+            getParams().getMovementParams().setMovementCommandTargetPos(getParams().getPos());
+            getParams().getMovementParams().setLastStoppedPos(getParams().getPos());
+        }
+        else {
+            getParams().getMovementParams().setMovementCommandTargetPos(getParams().getMovementParams().getLastStoppedPos());
+        }
     }
 
     public void moveTowards(Vector2 pos) {
