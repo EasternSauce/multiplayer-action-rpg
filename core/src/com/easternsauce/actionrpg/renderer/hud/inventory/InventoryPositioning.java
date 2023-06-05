@@ -24,7 +24,7 @@ public class InventoryPositioning {
 
     public static final Map<Integer, Rect> inventoryRectangles = new HashMap<>();
 
-    public static final Integer EQUIPMENT_TOTAL_SLOTS = 8;
+    public static final Integer EQUIPMENT_TOTAL_SLOTS = 7;
     public static final Map<Integer, Rect> equipmentRectangles = new HashMap<>();
 
     static {

@@ -390,4 +390,8 @@ public abstract class Creature implements Entity {
     public boolean isStunned(CoreGame game) {
         return isEffectActive(CreatureEffect.STUN, game) || isEffectActive(CreatureEffect.SELF_STUN, game);
     }
+
+    public void onBeingHit(Ability ability) {
+
+    }
 }

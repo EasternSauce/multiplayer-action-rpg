@@ -25,7 +25,7 @@ public class EnemyParams {
     private Float loseAggroTime = 3f;
     @SuppressWarnings("SpellCheckingInspection")
     private CreatureId aggroedCreatureId;
-    private CreatureId attackedByCreatureId;
+    private CreatureId justAttackedByCreatureId;
     private CreatureId lastFoundTargetId;
     @NonNull
     private SimpleTimer findTargetTimer = SimpleTimer.getExpiredTimer();
