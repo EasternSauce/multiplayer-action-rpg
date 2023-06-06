@@ -262,29 +262,31 @@ public class CoreGameClient extends CoreGame {
     }
 
     private void handleActionButtonInput(PlayerConfig playerConfig) {
-        if (playerConfig.getIsInventoryVisible()) {
-            inventoryController.performMoveItemClick(getEndPoint(), this);
-        }
-        else if (!playerConfig.getIsInventoryVisible() && !playerConfig.getItemPickupMenuLootPiles().isEmpty()) {
-            boolean isSuccessful = pickupMenuController.performItemPickupMenuClick(getEndPoint(), this);
-            if (isSuccessful) {
-                menuClickTime = gameState.getTime();
+        if (playerConfig != null) {
+            if (playerConfig.getIsInventoryVisible()) {
+                inventoryController.performMoveItemClick(getEndPoint(), this);
             }
+            else if (!playerConfig.getIsInventoryVisible() && !playerConfig.getItemPickupMenuLootPiles().isEmpty()) {
+                boolean isSuccessful = pickupMenuController.performItemPickupMenuClick(getEndPoint(), this);
+                if (isSuccessful) {
+                    menuClickTime = gameState.getTime();
+                }
 
-        }
-        else if (!playerConfig.getIsInventoryVisible() && playerConfig.getIsSkillMenuPickerSlotBeingChanged() != null) {
-            boolean isSuccessful = skillMenuController.performSkillMenuPickerClick(getEndPoint(), this);
-            if (isSuccessful) {
-                menuClickTime = gameState.getTime();
             }
+            else if (!playerConfig.getIsInventoryVisible() && playerConfig.getIsSkillMenuPickerSlotBeingChanged() != null) {
+                boolean isSuccessful = skillMenuController.performSkillMenuPickerClick(getEndPoint(), this);
+                if (isSuccessful) {
+                    menuClickTime = gameState.getTime();
+                }
 
-        }
-        else {
-            boolean isSuccessful = skillMenuController.performSkillMenuClick(getEndPoint(), this);
-            if (isSuccessful) {
-                menuClickTime = gameState.getTime();
             }
+            else {
+                boolean isSuccessful = skillMenuController.performSkillMenuClick(getEndPoint(), this);
+                if (isSuccessful) {
+                    menuClickTime = gameState.getTime();
+                }
 
+            }
         }
     }
 

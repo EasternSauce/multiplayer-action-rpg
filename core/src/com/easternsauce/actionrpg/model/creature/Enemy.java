@@ -75,7 +75,6 @@ public class Enemy extends Creature {
     @Override
     public void updateAutoControl(CoreGame game) {
         if (isAlive()) {
-            System.out.println(getParams().getEnemyParams().getAutoControlState());
             if (getParams().getEnemyParams().getAutoControlStateTimer().getTime() >
                 getParams().getEnemyParams().getAutoControlStateTime()) {
 

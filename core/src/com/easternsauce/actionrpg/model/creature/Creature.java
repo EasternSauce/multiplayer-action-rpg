@@ -120,11 +120,10 @@ public abstract class Creature implements Entity {
 
         getParams().getMovementParams().setIsMoving(false);
 
-        if (!isAlive() || vectorBetween.len() < 0.1f) {
+        if (!isAlive() || vectorBetween.len() < 0.2f) {
             getParams().getMovementParams().setReachedTargetPos(true);
         }
         else {
-
             Vector2 dirVector = vectorBetween.normalized();
 
             if (isEffectActive(CreatureEffect.STUN, game)) {
@@ -198,22 +197,7 @@ public abstract class Creature implements Entity {
     }
 
     public void stopMoving() {
-        System.out.println((getParams().getMovementParams().getLastStoppedPos() == null) + " " +
-                           (getParams().getMovementParams().getLastStoppedPos() != null ?
-                               getParams().getMovementParams().getLastStoppedPos().distance(getParams().getPos()) > 0.5f : ""));
-        if (getParams().getMovementParams().getLastStoppedPos() == null ||
-            getParams().getMovementParams().getLastStoppedPos().distance(getParams().getPos()) > 0.5f) {
-
-            if (getParams().getMovementParams().getLastStoppedPos() != null) {
-                System.out.println(
-                    " distance is " + getParams().getMovementParams().getLastStoppedPos().distance(getParams().getPos()));
-            }
-
-            getParams().getMovementParams().setMovementCommandTargetPos(getParams().getPos());
-            getParams().getMovementParams().setLastStoppedPos(getParams().getPos());
-            System.out.println("stopping1 at " + getParams().getPos());
-
-        }
+        getParams().getMovementParams().setMovementCommandTargetPos(getParams().getPos());
     }
 
     public void moveTowards(Vector2 pos) {
