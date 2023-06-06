@@ -36,7 +36,7 @@ public class PlayerInitAction extends GameStateAction {
 
         game.getEventProcessor().getCreatureModelsToBeCreated().add(playerId);
 
-        game.getGameState().initPlayerParams(playerId);
+        game.getGameState().initPlayerConfig(playerId);
 
     }
 

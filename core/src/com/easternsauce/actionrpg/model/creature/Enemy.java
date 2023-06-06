@@ -75,6 +75,7 @@ public class Enemy extends Creature {
     @Override
     public void updateAutoControl(CoreGame game) {
         if (isAlive()) {
+            System.out.println(getParams().getEnemyParams().getAutoControlState());
             if (getParams().getEnemyParams().getAutoControlStateTimer().getTime() >
                 getParams().getEnemyParams().getAutoControlStateTime()) {
 
@@ -175,8 +176,9 @@ public class Enemy extends Creature {
 
                 getParams()
                     .getEnemyParams()
-                    .setCurrentDefensivePos(Vector2.of(defensivePos.getX() + nextAutoControlStateRngNegativeOrPositiveValue(),
-                                                       defensivePos.getY() + nextAutoControlStateRngNegativeOrPositiveValue()));
+                    .setCurrentDefensivePos(Vector2.of(
+                        defensivePos.getX() + 4f * nextAutoControlStateRngNegativeOrPositiveValue(),
+                        defensivePos.getY() + 4f * nextAutoControlStateRngNegativeOrPositiveValue()));
             }
 
             if (nextAutoControlStateRngValue() < 0.3f) {

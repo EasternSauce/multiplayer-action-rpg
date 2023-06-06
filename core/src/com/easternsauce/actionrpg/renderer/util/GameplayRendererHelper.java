@@ -40,7 +40,9 @@ public class GameplayRendererHelper {
 
     private static void renderAreaLayers(GameEntityRenderer renderer, List<Integer> layers, CoreGame game) {
         int[] layersArray = layers.stream().mapToInt(Integer::intValue).toArray();
-        renderer.getAreaRenderers().get(game.getGameState().getCurrentAreaId()).render(layersArray);
+        if (renderer.getAreaRenderers().containsKey(game.getGameState().getCurrentAreaId())) {
+            renderer.getAreaRenderers().get(game.getGameState().getCurrentAreaId()).render(layersArray);
+        }
     }
 
     private static void renderWorldText(GameEntityRenderer renderer, RenderingLayer worldTextRenderingLayer, CoreGame game) {

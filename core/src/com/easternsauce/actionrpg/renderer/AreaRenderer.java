@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(staticName = "of")
 @Data
 public class AreaRenderer {
-
     AreaId id;
     OrthogonalTiledMapRenderer tiledMapRenderer;
 

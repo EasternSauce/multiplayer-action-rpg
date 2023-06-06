@@ -21,4 +21,5 @@ public class PlayerConfig {
     Set<LootPileId> itemPickupMenuLootPiles = new ConcurrentSkipListSet<>();
     Integer isSkillMenuPickerSlotBeingChanged;
     Map<Integer, SkillType> skillMenuSlots = new ConcurrentSkipListMap<>();
+    Boolean areAreasLoaded = false;
 }

@@ -56,6 +56,9 @@ public class GameEntityRenderer {
 
     private TextureRegion poisonedIcon = null;
 
+    @Getter
+    private Boolean isAreasLoaded = false;
+
     public void init(TextureAtlas atlas) {
         mapScale = 4.0f;
 
@@ -76,6 +79,7 @@ public class GameEntityRenderer {
         areaRenderers = new HashMap<>();
         areaRenderers.putAll(maps.keySet().stream().collect(Collectors.toMap(areaId -> areaId, AreaRenderer::of)));
         areaRenderers.forEach((areaId, areaRenderer) -> areaRenderer.init(maps.get(areaId), mapScale));
+        isAreasLoaded = true;
     }
 
     public void renderAliveCreatures(RenderingLayer renderingLayer, CoreGame game) {

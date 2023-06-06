@@ -197,11 +197,23 @@ public class ServerGameState extends GameState {
 
     @Override
     public CreatureId getThisClientPlayerId() {
-        return null;
+        Optional<Creature> any = accessCreatures()
+            .getCreatures()
+            .values()
+            .stream()
+            .filter(creature -> creature instanceof Player)
+            .findAny();
+        return any.map(Creature::getId).orElse(null);
     }
 
     @Override
     public AreaId getCurrentAreaId() {
-        return getDefaultAreaId();
+        Optional<Creature> any = accessCreatures()
+            .getCreatures()
+            .values()
+            .stream()
+            .filter(creature -> creature instanceof Player)
+            .findAny();
+        return any.map(creature -> creature.getParams().getAreaId()).orElse(getDefaultAreaId());
     }
 }

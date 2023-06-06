@@ -58,7 +58,7 @@ public class CoreGameServer extends CoreGame {
 
     @Override
     public boolean isGameplayRenderingAllowed() {
-        return false;
+        return true;
     }
 
     @Override
@@ -173,7 +173,7 @@ public class CoreGameServer extends CoreGame {
             try {
                 while (true) {
                     //noinspection BusyWait
-                    Thread.sleep(250);
+                    Thread.sleep(2000);
 
                     Connection[] connections = getEndPoint().getConnections();
                     for (Connection connection : connections) {
@@ -302,7 +302,7 @@ public class CoreGameServer extends CoreGame {
 
     @Override
     public Boolean getIsFirstBroadcastReceived() {
-        return false;
+        return true;
     }
 
     @Override

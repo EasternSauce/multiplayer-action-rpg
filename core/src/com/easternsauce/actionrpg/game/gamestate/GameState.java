@@ -30,7 +30,7 @@ public abstract class GameState {
         return creatureAccessor;
     }
 
-    public void initPlayerParams(CreatureId playerId) {
+    public void initPlayerConfig(CreatureId playerId) {
         getData().getPlayerConfig().put(playerId, PlayerConfig.of());
     }
 

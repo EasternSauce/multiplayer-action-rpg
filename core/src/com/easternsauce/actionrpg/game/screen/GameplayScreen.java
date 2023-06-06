@@ -92,7 +92,7 @@ public class GameplayScreen implements Screen {
             game.updateCameraPositions();
         }
 
-        if (game.getIsFirstBroadcastReceived()) {
+        if (!game.getEntityManager().getGameEntityRenderer().getIsAreasLoaded() && game.getIsFirstBroadcastReceived()) {
             game.getEntityManager().getGameEntityRenderer().loadAreaRenderers(maps, game);
         }
     }
@@ -101,13 +101,18 @@ public class GameplayScreen implements Screen {
     public void render(float delta) {
         update(delta);
         if (game.isGameplayRenderingAllowed()) {
-
-            game
+            if (game
                 .getEntityManager()
                 .getGameEntityRenderer()
                 .getAreaRenderers()
-                .get(game.getGameState().getCurrentAreaId())
-                .setView(game.getEntityManager().getGameEntityRenderer().getViewportsHandler().getWorldCamera());
+                .containsKey(game.getGameState().getCurrentAreaId())) {
+                game
+                    .getEntityManager()
+                    .getGameEntityRenderer()
+                    .getAreaRenderers()
+                    .get(game.getGameState().getCurrentAreaId())
+                    .setView(game.getEntityManager().getGameEntityRenderer().getViewportsHandler().getWorldCamera());
+            }
 
             game.getEntityManager().getGameEntityRenderer().setProjectionMatrices();
 
