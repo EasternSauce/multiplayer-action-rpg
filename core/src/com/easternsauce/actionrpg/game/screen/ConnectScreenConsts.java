@@ -2,7 +2,7 @@ package com.easternsauce.actionrpg.game.screen;
 
 import com.badlogic.gdx.Gdx;
 
-public class ConnectScreenPositioning {
+public class ConnectScreenConsts {
     private static final float CENTER_X = Gdx.graphics.getWidth() / 2f;
     private static final float CENTER_Y = Gdx.graphics.getHeight() / 2f;
 

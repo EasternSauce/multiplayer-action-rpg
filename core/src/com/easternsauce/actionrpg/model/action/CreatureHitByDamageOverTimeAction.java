@@ -35,7 +35,7 @@ public class CreatureHitByDamageOverTimeAction extends CreatureHitAction {
             return;
         }
 
-        targetCreature.takeLifeDamage(damage);
+        targetCreature.takeLifeDamage(damage, game);
 
         handleCreatureDeath(targetCreature, attackerCreature, game);
     }

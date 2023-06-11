@@ -13,6 +13,7 @@ import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.creature.Player;
+import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.renderer.*;
 import com.easternsauce.actionrpg.renderer.creature.CreatureRenderer;
 import com.easternsauce.actionrpg.renderer.creature.LifeBarUtils;
@@ -21,7 +22,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
@@ -50,6 +53,9 @@ public class GameEntityRenderer {
     private final Map<AreaGateId, AreaGateRenderer> areaGateRenderers = new HashMap<>();
     @Getter
     private final Map<LootPileId, LootPileRenderer> lootPileRenderers = new HashMap<>();
+
+    @Getter
+    private final Set<DamageNumber> damageNumbers = new HashSet<>();
 
     @Getter
     private final IconRetriever iconRetriever = IconRetriever.of();
@@ -83,14 +89,16 @@ public class GameEntityRenderer {
     }
 
     public void renderAliveCreatures(RenderingLayer renderingLayer, CoreGame game) {
-        game
-            .getGameState()
-            .accessCreatures()
-            .forEachAliveCreature(creature -> renderCreatureIfPossible(renderingLayer, creature, game));
-        game
-            .getGameState()
-            .accessCreatures()
-            .forEachAliveCreature(creature -> renderCreatureLifeBarIfPossible(renderingLayer, creature, game));
+        game.getGameState().accessCreatures().forEachAliveCreature(creature -> {
+            if (canCreatureBeRendered(creature, game)) {
+                renderCreature(renderingLayer, creature, game);
+            }
+        });
+        game.getGameState().accessCreatures().forEachAliveCreature(creature -> {
+            if (canCreatureBeRendered(creature, game)) {
+                renderCreatureLifeBar(renderingLayer, creature, game);
+            }
+        });
         game.getGameState().accessCreatures().forEachAliveCreature(creature -> {
             if (canCreatureBeRendered(creature, game)) {
                 renderCreatureStunnedAnimation(renderingLayer, creature, game);
@@ -117,23 +125,18 @@ public class GameEntityRenderer {
 
     }
 
-    private void renderCreatureLifeBarIfPossible(RenderingLayer renderingLayer, Creature creature, CoreGame game) {
-        if (canCreatureBeRendered(creature, game)) {
-            creatureRenderers.get(creature.getId()).renderLifeBar(renderingLayer, game);
-        }
+    private void renderCreatureLifeBar(RenderingLayer renderingLayer, Creature creature, CoreGame game) {
+        creatureRenderers.get(creature.getId()).renderLifeBar(renderingLayer, game);
+
     }
 
-    private void renderCreatureIfPossible(RenderingLayer renderingLayer, Creature creature, CoreGame game) {
-        if (canCreatureBeRendered(creature, game)) {
-            creatureRenderers.get(creature.getId()).render(renderingLayer);
-        }
+    @SuppressWarnings("unused")
+    private void renderCreature(RenderingLayer renderingLayer, Creature creature, CoreGame game) {
+        creatureRenderers.get(creature.getId()).render(renderingLayer);
     }
 
     public void renderDeadCreatures(RenderingLayer renderingLayer, CoreGame game) {
-        game
-            .getGameState()
-            .accessCreatures()
-            .forEachDeadCreature(creature -> renderCreatureIfPossible(renderingLayer, creature, game));
+        game.getGameState().accessCreatures().forEachDeadCreature(creature -> renderCreature(renderingLayer, creature, game));
     }
 
     public void renderAbilities(RenderingLayer renderingLayer, CoreGame game) {
@@ -156,7 +159,7 @@ public class GameEntityRenderer {
             .values()
             .stream()
             .filter(creature -> creature.isAlive() && canCreatureBeRendered(creature, game) && creature instanceof Player)
-            .forEach(creature -> creatureRenderers.get(creature.getId()).renderCreatureId(worldTextRenderingLayer, game));
+            .forEach(creature -> creatureRenderers.get(creature.getId()).renderCreatureName(worldTextRenderingLayer, game));
     }
 
     private boolean canCreatureBeRendered(Creature creature, CoreGame game) {
@@ -174,5 +177,19 @@ public class GameEntityRenderer {
         getHudRenderingLayer().setProjectionMatrix(getViewportsHandler().getHudCamera().combined);
 
         getWorldTextRenderingLayer().setProjectionMatrix(getViewportsHandler().getWorldTextCamera().combined);
+    }
+
+    public void updateDamageNumbers(CoreGame game) {
+        Set<DamageNumber> toRemove = damageNumbers
+            .stream()
+            .filter(damageNumber -> damageNumber.getDamageTime() + 1.5f < game.getGameState().getTime())
+            .collect(Collectors.toSet());
+        damageNumbers.removeAll(toRemove);
+    }
+
+    public void showDamageNumber(float actualDamageTaken, Vector2 pos, AreaId areaId, CoreGame game) {
+        Float currentTime = game.getGameState().getTime();
+
+        damageNumbers.add(DamageNumber.of(pos, areaId, actualDamageTaken, currentTime));
     }
 }

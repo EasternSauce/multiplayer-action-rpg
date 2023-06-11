@@ -128,6 +128,7 @@ public class GameplayScreen implements Screen {
 
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | coverageBuffer);
 
+            GameplayRendererHelper.updateRenderer(game);
             GameplayRendererHelper.renderGameplay(game);
 
             game.getHudRenderer().render(game);

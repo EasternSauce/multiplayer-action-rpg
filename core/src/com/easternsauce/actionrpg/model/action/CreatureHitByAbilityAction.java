@@ -40,7 +40,7 @@ public class CreatureHitByAbilityAction extends CreatureHitAction {
         boolean isShielded = targetCreature.isAbilityShielded(ability, game);
 
         if (!isShielded && !ability.getParams().getIsHitShielded()) {
-            targetCreature.takeLifeDamage(ability.getDamage(game));
+            targetCreature.takeLifeDamage(ability.getDamage(game), game);
 
             if (ability.isCanStun()) {
                 targetCreature.applyEffect(CreatureEffect.STUN, ability.getStunDuration(), game);

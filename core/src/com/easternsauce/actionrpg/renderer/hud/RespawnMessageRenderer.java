@@ -21,11 +21,11 @@ public class RespawnMessageRenderer {
                     creature.getParams().getRespawnTime() - creature.getParams().getRespawnTimer().getTime();
                 String timeRemainingBeforeRespawnText = String.format(Locale.US, "%.2f", timeRemainingBeforeRespawn);
 
-                Assets.renderLargeFont(renderingLayer,
-                                       "You are dead!\nRespawning...\n" + timeRemainingBeforeRespawnText,
-                                       Vector2.of(Constants.WINDOW_WIDTH / 2f - Constants.WINDOW_WIDTH / 8f,
-                                                  Constants.WINDOW_HEIGHT / 2f + Constants.WINDOW_HEIGHT / 5f),
-                                       Color.RED);
+                Assets.renderVeryLargeFont(renderingLayer,
+                                           "You are dead!\nRespawning...\n" + timeRemainingBeforeRespawnText,
+                                           Vector2.of(Constants.WINDOW_WIDTH / 2f - Constants.WINDOW_WIDTH / 8f,
+                                                      Constants.WINDOW_HEIGHT / 2f + Constants.WINDOW_HEIGHT / 5f),
+                                           Color.RED);
             }
         }
     }

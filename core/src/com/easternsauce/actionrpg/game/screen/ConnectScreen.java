@@ -96,16 +96,16 @@ public class ConnectScreen implements Screen {
 
         spriteBatch.begin();
 
-        spriteBatch.draw(background, ConnectScreenPositioning.BACKGROUND_POS_X, ConnectScreenPositioning.BACKGROUND_POS_Y);
+        spriteBatch.draw(background, ConnectScreenConsts.BACKGROUND_POS_X, ConnectScreenConsts.BACKGROUND_POS_Y);
 
         Assets.renderMediumFont(game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer(),
                                 "Your character name:",
-                                Vector2.of(ConnectScreenPositioning.PROMPT_POS_X, ConnectScreenPositioning.PROMPT_POS_Y),
+                                Vector2.of(ConnectScreenConsts.PROMPT_POS_X, ConnectScreenConsts.PROMPT_POS_Y),
                                 Color.BLACK);
 
         Assets.renderMediumFont(game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer(),
                                 messageHolder.getCurrentMessage(),
-                                Vector2.of(ConnectScreenPositioning.INPUT_POS_X, ConnectScreenPositioning.INPUT_POS_Y),
+                                Vector2.of(ConnectScreenConsts.INPUT_POS_X, ConnectScreenConsts.INPUT_POS_Y),
                                 Color.BLACK);
 
         spriteBatch.end();

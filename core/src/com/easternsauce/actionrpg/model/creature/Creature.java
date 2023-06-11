@@ -205,17 +205,22 @@ public abstract class Creature implements Entity {
         getParams().getMovementParams().setReachedTargetPos(false);
     }
 
-    public void takeLifeDamage(float damage) {
+    public void takeLifeDamage(float damage, CoreGame game) {
         getParams().getStats().setPreviousTickLife(getParams().getStats().getLife());
 
-        float actualDamage = damage * 100f / (100f + totalArmor());
+        float actualDamageTaken = damage * 100f / (100f + totalArmor());
 
-        if (getParams().getStats().getLife() - actualDamage > 0) {
-            getParams().getStats().setLife(getParams().getStats().getLife() - actualDamage);
+        if (getParams().getStats().getLife() - actualDamageTaken > 0) {
+            getParams().getStats().setLife(getParams().getStats().getLife() - actualDamageTaken);
         }
         else {
             getParams().getStats().setLife(0f);
         }
+
+        game
+            .getEntityManager()
+            .getGameEntityRenderer()
+            .showDamageNumber(actualDamageTaken, getParams().getPos(), getParams().getAreaId(), game);
     }
 
     private float totalArmor() {

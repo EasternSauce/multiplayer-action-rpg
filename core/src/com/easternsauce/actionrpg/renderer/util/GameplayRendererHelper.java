@@ -1,8 +1,12 @@
 package com.easternsauce.actionrpg.renderer.util;
 
+import com.badlogic.gdx.graphics.Color;
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.game.assets.Assets;
+import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
 import com.easternsauce.actionrpg.renderer.game.GameEntityRenderer;
+import com.easternsauce.actionrpg.util.Constants;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,6 +26,8 @@ public class GameplayRendererHelper {
 
         renderAbilities(renderer, worldElementsRenderingLayer, game);
 
+        renderDamageNumbers(renderer, worldTextRenderingLayer, game);
+
         game.renderB2BodyDebug();
     }
 
@@ -33,7 +39,6 @@ public class GameplayRendererHelper {
         renderer.renderDeadCreatures(worldElementsRenderingLayer, game);
         renderer.renderLootPiles(worldElementsRenderingLayer, game);
         renderer.renderAliveCreatures(worldElementsRenderingLayer, game);
-        //renderer.renderAbilities(worldElementsRenderingLayer, game);
 
         worldElementsRenderingLayer.end();
     }
@@ -59,5 +64,35 @@ public class GameplayRendererHelper {
         renderer.renderAbilities(worldElementsRenderingLayer, game);
 
         worldElementsRenderingLayer.end();
+    }
+
+    private static void renderDamageNumbers(GameEntityRenderer renderer, RenderingLayer worldTextRenderingLayer, CoreGame game) {
+        worldTextRenderingLayer.begin();
+
+        renderer
+            .getDamageNumbers()
+            .stream()
+            .filter(damageNumber -> damageNumber.getAreaId().getValue().equals(game.getGameState().getCurrentAreaId().getValue()))
+            .forEach(damageNumber -> {
+                float timeElapsed = game.getGameState().getTime() - damageNumber.getDamageTime();
+
+                float posX = damageNumber.getPos().getX();
+                float posY = damageNumber.getPos().getY() + 12f * (float) Math.pow(timeElapsed / 1.5f, 2f);
+
+                Vector2 rescaledPos = Vector2.of(posX * Constants.PPM, posY * Constants.PPM);
+
+                Assets.renderLargeFont(worldTextRenderingLayer,
+                                       Integer.toString(damageNumber.getDamageValue().intValue()),
+                                       rescaledPos,
+                                       new Color(1f, 0f, 0f, 1f - timeElapsed / 1.5f));
+            });
+
+        worldTextRenderingLayer.end();
+    }
+
+    public static void updateRenderer(CoreGame game) {
+        GameEntityRenderer renderer = game.getEntityManager().getGameEntityRenderer();
+
+        renderer.updateDamageNumbers(game);
     }
 }

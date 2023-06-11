@@ -69,7 +69,7 @@ public class CreatureRenderer {
         }
     }
 
-    public void renderCreatureId(RenderingLayer renderingLayer, CoreGame game) {
+    public void renderCreatureName(RenderingLayer renderingLayer, CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
         String name = creature.getId().getValue();

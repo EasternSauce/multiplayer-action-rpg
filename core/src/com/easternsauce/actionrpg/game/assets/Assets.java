@@ -18,12 +18,14 @@ public class Assets { // TODO: make separate font class
 
     final static BitmapFont mediumFont;
     final static BitmapFont largeFont;
+    final static BitmapFont veryLargeFont;
 
     static {
         smallFont = loadFont(Assets.youngSerifFontPath, 16);
         verySmallFont = loadFont(Assets.youngSerifFontPath, 12);
         mediumFont = loadFont(Assets.youngSerifFontPath, 20);
-        largeFont = loadFont(Assets.youngSerifFontPath, 64);
+        largeFont = loadFont(Assets.youngSerifFontPath, 32);
+        veryLargeFont = loadFont(Assets.youngSerifFontPath, 64);
     }
 
     public static BitmapFont loadFont(String fontPath, int size) {
@@ -55,5 +57,10 @@ public class Assets { // TODO: make separate font class
     public static void renderLargeFont(RenderingLayer renderingLayer, String text, Vector2 pos, Color color) {
         largeFont.setColor(color);
         largeFont.draw(renderingLayer.getSpriteBatch(), text, pos.getX(), pos.getY());
+    }
+
+    public static void renderVeryLargeFont(RenderingLayer renderingLayer, String text, Vector2 pos, Color color) {
+        veryLargeFont.setColor(color);
+        veryLargeFont.draw(renderingLayer.getSpriteBatch(), text, pos.getX(), pos.getY());
     }
 }
