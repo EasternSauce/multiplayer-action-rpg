@@ -32,14 +32,6 @@ public class CreatureStunnedAnimationRenderer {
         this.stunnedAnimation = new Animation<>(0.045f, frames);
     }
 
-    private TextureRegion getFrame(CoreGame game) {
-        Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
-
-        float stunTimeSinceStarted = creature.getTimeSinceStarted(CreatureEffect.STUN, game);
-
-        return stunnedAnimation.getKeyFrame(stunTimeSinceStarted, true);
-    }
-
     public void render(float spriteWidth, RenderingLayer renderingLayer, CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
@@ -50,5 +42,13 @@ public class CreatureStunnedAnimationRenderer {
             renderingLayer.getSpriteBatch().draw(getFrame(game), posX, posY, 3f, 1.5f);
         }
 
+    }
+
+    private TextureRegion getFrame(CoreGame game) {
+        Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
+
+        float stunTimeSinceStarted = creature.getTimeSinceStarted(CreatureEffect.STUN, game);
+
+        return stunnedAnimation.getKeyFrame(stunTimeSinceStarted, true);
     }
 }

@@ -18,10 +18,9 @@ public class SkillMenuPositioning {
 
     public static final float SKILL_PICKER_MENU_POS_X = 110f;
     public static final float SKILL_PICKER_MENU_POS_Y = 69f;
+    public static final Map<Integer, Rect> skillRectangles = new HashMap<>();
     private static final float SKILL_PICKER_MENU_WIDTH = Gdx.graphics.getWidth() / 6f;
     private static final float SKILL_PICKER_MENU_HEIGHT = 20f;
-
-    public static final Map<Integer, Rect> skillRectangles = new HashMap<>();
 
     static {
         for (int i = 0; i < SkillMenuPositioning.TOTAL_SKILL_SLOTS; i++) {

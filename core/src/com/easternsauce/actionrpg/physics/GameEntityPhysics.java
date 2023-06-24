@@ -57,6 +57,42 @@ public class GameEntityPhysics {
 
     }
 
+    private void createContactListener(PhysicsWorld physicsWorld) {
+        World b2World = physicsWorld.getB2world();
+
+        ContactListener contactListener = new ContactListener() {
+            @Override
+            public void beginContact(Contact contact) {
+                Object objA = contact.getFixtureA().getBody().getUserData();
+                Object objB = contact.getFixtureB().getBody().getUserData();
+
+                onContactStart(objA, objB);
+                onContactStart(objB, objA);
+            }
+
+            @Override
+            public void endContact(Contact contact) {
+                if (contact.getFixtureA() != null && contact.getFixtureB() != null) {
+                    Object objA = contact.getFixtureA().getBody().getUserData();
+                    Object objB = contact.getFixtureB().getBody().getUserData();
+
+                    onContactEnd(objA, objB);
+                    onContactEnd(objB, objA);
+                }
+            }
+
+            @Override
+            public void preSolve(Contact contact, Manifold oldManifold) {
+            }
+
+            @Override
+            public void postSolve(Contact contact, ContactImpulse impulse) {
+            }
+        };
+
+        b2World.setContactListener(contactListener);
+    }
+
     public void onContactStart(Object objA, Object objB) {
         if (objA instanceof CreatureBody && objB instanceof AbilityBody) {
             CreatureBody creatureBody = (CreatureBody) objA;
@@ -115,41 +151,5 @@ public class GameEntityPhysics {
             LootPileBody lootPileBody = (LootPileBody) objB;
             physicsEventQueue.add(CreatureLeavesLootPileEvent.of(creatureBody.getCreatureId(), lootPileBody.getLootPileId()));
         }
-    }
-
-    private void createContactListener(PhysicsWorld physicsWorld) {
-        World b2World = physicsWorld.getB2world();
-
-        ContactListener contactListener = new ContactListener() {
-            @Override
-            public void beginContact(Contact contact) {
-                Object objA = contact.getFixtureA().getBody().getUserData();
-                Object objB = contact.getFixtureB().getBody().getUserData();
-
-                onContactStart(objA, objB);
-                onContactStart(objB, objA);
-            }
-
-            @Override
-            public void endContact(Contact contact) {
-                if (contact.getFixtureA() != null && contact.getFixtureB() != null) {
-                    Object objA = contact.getFixtureA().getBody().getUserData();
-                    Object objB = contact.getFixtureB().getBody().getUserData();
-
-                    onContactEnd(objA, objB);
-                    onContactEnd(objB, objA);
-                }
-            }
-
-            @Override
-            public void preSolve(Contact contact, Manifold oldManifold) {
-            }
-
-            @Override
-            public void postSolve(Contact contact, ContactImpulse impulse) {
-            }
-        };
-
-        b2World.setContactListener(contactListener);
     }
 }

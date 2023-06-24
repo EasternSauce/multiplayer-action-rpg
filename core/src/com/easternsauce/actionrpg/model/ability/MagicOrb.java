@@ -48,28 +48,6 @@ public class MagicOrb extends Projectile {
     }
 
     @Override
-    public void onCreatureHit(CreatureId creatureId, CoreGame game) {
-        deactivate();
-    }
-
-    @Override
-    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
-        if (getParams().getStateTimer().getTime() > 0.1f) {
-            deactivate();
-        }
-    }
-
-    @Override
-    protected boolean isWeaponAttack() {
-        return false;
-    }
-
-    @Override
-    public Float getStunDuration() {
-        return 0.75f;
-    }
-
-    @Override
     protected void onActiveUpdate(float delta, CoreGame game) {
         onProjectileTravelUpdate();
 
@@ -127,6 +105,28 @@ public class MagicOrb extends Projectile {
 
         }
 
+    }
+
+    @Override
+    public void onCreatureHit(CreatureId creatureId, CoreGame game) {
+        deactivate();
+    }
+
+    @Override
+    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
+        if (getParams().getStateTimer().getTime() > 0.1f) {
+            deactivate();
+        }
+    }
+
+    @Override
+    protected boolean isWeaponAttack() {
+        return false;
+    }
+
+    @Override
+    public Float getStunDuration() {
+        return 0.75f;
     }
 
     private boolean isTargetingAllowed(Creature thisCreature, Creature targetCreature) {

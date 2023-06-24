@@ -12,16 +12,6 @@ public enum EquipmentSlotType {
     RING(5),
     BOOTS(6);
 
-    private final int sequenceNumber;
-
-    EquipmentSlotType(int sequenceNumber) {
-        this.sequenceNumber = sequenceNumber;
-    }
-
-    public int getSequenceNumber() {
-        return sequenceNumber;
-    }
-
     public static final Map<Integer, String> equipmentSlotNames = new ConcurrentSkipListMap<>();
     public static final Map<Integer, EquipmentSlotType> equipmentSlotSequenceNumbers = new ConcurrentSkipListMap<>();
 
@@ -45,5 +35,15 @@ public enum EquipmentSlotType {
         equipmentSlotSequenceNumbers.put(5, RING);
         equipmentSlotSequenceNumbers.put(6, BOOTS);
         //        equipmentSlotSequenceNumbers.put(7, CONSUMABLE);
+    }
+
+    private final int sequenceNumber;
+
+    EquipmentSlotType(int sequenceNumber) {
+        this.sequenceNumber = sequenceNumber;
+    }
+
+    public int getSequenceNumber() {
+        return sequenceNumber;
     }
 }

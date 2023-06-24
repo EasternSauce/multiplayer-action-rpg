@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class CreatureHitAnimation {
     private CreatureId creatureId;
-    private Vector2 pos;
+    private Vector2 vectorTowardsContactPoint;
     private AreaId areaId;
-    private Float damageTime;
+    private Float hitTime;
 }

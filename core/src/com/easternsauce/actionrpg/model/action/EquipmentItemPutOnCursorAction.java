@@ -16,9 +16,11 @@ public class EquipmentItemPutOnCursorAction extends GameStateAction {
 
     private Integer slotIndex;
 
-    @Override
-    public Entity getEntity(CoreGame game) {
-        return game.getGameState().accessCreatures().getCreature(playerId);
+    public static EquipmentItemPutOnCursorAction of(CreatureId creatureId, Integer slotIndex) {
+        EquipmentItemPutOnCursorAction action = EquipmentItemPutOnCursorAction.of();
+        action.playerId = creatureId;
+        action.slotIndex = slotIndex;
+        return action;
     }
 
     @Override
@@ -30,10 +32,8 @@ public class EquipmentItemPutOnCursorAction extends GameStateAction {
         }
     }
 
-    public static EquipmentItemPutOnCursorAction of(CreatureId creatureId, Integer slotIndex) {
-        EquipmentItemPutOnCursorAction action = EquipmentItemPutOnCursorAction.of();
-        action.playerId = creatureId;
-        action.slotIndex = slotIndex;
-        return action;
+    @Override
+    public Entity getEntity(CoreGame game) {
+        return game.getGameState().accessCreatures().getCreature(playerId);
     }
 }

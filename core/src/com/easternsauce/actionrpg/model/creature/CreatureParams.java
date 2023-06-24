@@ -85,10 +85,6 @@ public class CreatureParams implements EntityParams {
                                      enemySpawn.getEnemyTemplate().getEnemyType().textureName);
     }
 
-    public static CreatureParams of(CreatureId creatureId, AreaId areaId, Vector2 pos, String textureName) {
-        return produceCreatureParams(creatureId, areaId, pos, textureName);
-    }
-
     private static CreatureParams produceCreatureParams(CreatureId creatureId, AreaId areaId, Vector2 enemySpawn,
                                                         String textureName) {
         CreatureParams params = CreatureParams.of();
@@ -113,5 +109,9 @@ public class CreatureParams implements EntityParams {
         params.getEffectParams().setEffects(new ConcurrentSkipListMap<>(allPossibleEffects));
 
         return params;
+    }
+
+    public static CreatureParams of(CreatureId creatureId, AreaId areaId, Vector2 pos, String textureName) {
+        return produceCreatureParams(creatureId, areaId, pos, textureName);
     }
 }

@@ -62,15 +62,8 @@ public class CreatureSprite {
         sprite.setRegion(texture);
     }
 
-    public void updateForDeadCreature(CoreGame game) {
-        Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
-
-        TextureRegion texture = getFacingTexture(creature, WorldDirection.RIGHT);
-
-        sprite.setOriginCenter();
-        sprite.setRotation(90f);
-
-        sprite.setRegion(texture);
+    private TextureRegion getFacingTexture(Creature creature, WorldDirection direction) {
+        return facingTextures.get(creature.animationConfig().getDirMap().get(direction));
     }
 
     public TextureRegion getRunningAnimationFrame(CoreGame game) {
@@ -83,8 +76,15 @@ public class CreatureSprite {
             .getKeyFrame(creature.getParams().getAnimationTimer().getTime(), true);
     }
 
-    private TextureRegion getFacingTexture(Creature creature, WorldDirection direction) {
-        return facingTextures.get(creature.animationConfig().getDirMap().get(direction));
+    public void updateForDeadCreature(CoreGame game) {
+        Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
+
+        TextureRegion texture = getFacingTexture(creature, WorldDirection.RIGHT);
+
+        sprite.setOriginCenter();
+        sprite.setRotation(90f);
+
+        sprite.setRegion(texture);
     }
 
     public void render(RenderingLayer renderingLayer) {

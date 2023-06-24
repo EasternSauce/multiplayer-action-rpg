@@ -50,16 +50,6 @@ public class PlayfulGhost extends Projectile {
     }
 
     @Override
-    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
-        deactivate();
-    }
-
-    @Override
-    protected boolean isWeaponAttack() {
-        return false;
-    }
-
-    @Override
     protected void onActiveUpdate(float delta, CoreGame game) {
         onProjectileTravelUpdate();
         getParams().setIsFlip(getParams().getRotationAngle() >= 90 && getParams().getRotationAngle() < 270);
@@ -116,6 +106,16 @@ public class PlayfulGhost extends Projectile {
                 getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(nextFloat() * 20f));
             }
         }
+    }
+
+    @Override
+    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
+        deactivate();
+    }
+
+    @Override
+    protected boolean isWeaponAttack() {
+        return false;
     }
 
     private boolean isTargetingAllowed(Creature thisCreature, Creature targetCreature) {

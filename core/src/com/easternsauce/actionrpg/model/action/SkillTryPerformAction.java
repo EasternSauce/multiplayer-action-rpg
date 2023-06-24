@@ -24,24 +24,6 @@ public class SkillTryPerformAction extends GameStateAction {
 
     private Float damage;
 
-    @Override
-    public Entity getEntity(CoreGame game) {
-        return game.getGameState().accessCreatures().getCreature(creatureId);
-    }
-
-    @Override
-    public void applyToGame(CoreGame game) {
-        Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
-
-        if (creature != null) {
-            Skill skill = creature.getParams().getSkills().get(skillType);
-
-            skill.tryPerform(startingPos, dirVector, game);
-
-        }
-
-    }
-
     public static SkillTryPerformAction of(CreatureId creatureId, SkillType skillType, Vector2 startingPos, Vector2 dirVector) {
         SkillTryPerformAction action = SkillTryPerformAction.of();
         action.creatureId = creatureId;
@@ -60,5 +42,23 @@ public class SkillTryPerformAction extends GameStateAction {
         action.dirVector = dirVector;
         action.damage = damage;
         return action;
+    }
+
+    @Override
+    public void applyToGame(CoreGame game) {
+        Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
+
+        if (creature != null) {
+            Skill skill = creature.getParams().getSkills().get(skillType);
+
+            skill.tryPerform(startingPos, dirVector, game);
+
+        }
+
+    }
+
+    @Override
+    public Entity getEntity(CoreGame game) {
+        return game.getGameState().accessCreatures().getCreature(creatureId);
     }
 }

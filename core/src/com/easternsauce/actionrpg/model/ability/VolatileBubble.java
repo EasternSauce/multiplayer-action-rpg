@@ -42,6 +42,15 @@ public class VolatileBubble extends Projectile {
     }
 
     @Override
+    protected void onActiveUpdate(float delta, CoreGame game) {
+        onProjectileTravelUpdate();
+
+        if (getParams().getPos().distance(getParams().getSkillStartPos()) > 10f) {
+            deactivate();
+        }
+    }
+
+    @Override
     protected void onCompleted(CoreGame game) {
         float baseAngle = getParams().getDirVector().angleDeg();
 
@@ -91,14 +100,5 @@ public class VolatileBubble extends Projectile {
     @Override
     protected boolean isWeaponAttack() {
         return false;
-    }
-
-    @Override
-    protected void onActiveUpdate(float delta, CoreGame game) {
-        onProjectileTravelUpdate();
-
-        if (getParams().getPos().distance(getParams().getSkillStartPos()) > 10f) {
-            deactivate();
-        }
     }
 }

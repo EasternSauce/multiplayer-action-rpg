@@ -14,9 +14,10 @@ import lombok.NoArgsConstructor;
 public class PlayerRemoveAction extends GameStateAction {
     private CreatureId playerId;
 
-    @Override
-    public Entity getEntity(CoreGame game) {
-        return game.getGameState().accessCreatures().getCreature(playerId);
+    public static PlayerRemoveAction of(CreatureId playerId) {
+        PlayerRemoveAction action = PlayerRemoveAction.of();
+        action.playerId = playerId;
+        return action;
     }
 
     @Override
@@ -29,9 +30,8 @@ public class PlayerRemoveAction extends GameStateAction {
         }
     }
 
-    public static PlayerRemoveAction of(CreatureId playerId) {
-        PlayerRemoveAction action = PlayerRemoveAction.of();
-        action.playerId = playerId;
-        return action;
+    @Override
+    public Entity getEntity(CoreGame game) {
+        return game.getGameState().accessCreatures().getCreature(playerId);
     }
 }

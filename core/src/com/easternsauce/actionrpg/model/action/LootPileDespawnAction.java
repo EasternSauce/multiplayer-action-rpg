@@ -14,9 +14,10 @@ import lombok.NoArgsConstructor;
 public class LootPileDespawnAction extends GameStateAction {
     private LootPileId lootPileId;
 
-    @Override
-    public Entity getEntity(CoreGame game) {
-        return game.getGameState().getLootPiles().get(lootPileId);
+    public static LootPileDespawnAction of(LootPileId lootPileId) {
+        LootPileDespawnAction action = LootPileDespawnAction.of();
+        action.lootPileId = lootPileId;
+        return action;
     }
 
     @Override
@@ -24,9 +25,8 @@ public class LootPileDespawnAction extends GameStateAction {
         game.getEventProcessor().getLootPileModelsToBeRemoved().add(lootPileId);
     }
 
-    public static LootPileDespawnAction of(LootPileId lootPileId) {
-        LootPileDespawnAction action = LootPileDespawnAction.of();
-        action.lootPileId = lootPileId;
-        return action;
+    @Override
+    public Entity getEntity(CoreGame game) {
+        return game.getGameState().getLootPiles().get(lootPileId);
     }
 }

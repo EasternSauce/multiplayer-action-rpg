@@ -38,22 +38,6 @@ public abstract class CreatureHitAction extends GameStateAction {
         deactivateCreatureAbilities(targetCreature, game);
     }
 
-    private void deactivateCreatureAbilities(Creature targetCreature, CoreGame game) {
-        Set<Ability> creatureActiveAbilities = game
-            .getGameState()
-            .accessAbilities()
-            .getAbilities()
-            .values()
-            .stream()
-            .filter(ability -> ability.isCanBeDeactivated() &&
-                               ability.getParams().getCreatureId().equals(targetCreature.getId()) &&
-                               (ability.getParams().getState() == AbilityState.CHANNEL ||
-                                ability.getParams().getState() == AbilityState.ACTIVE))
-            .collect(Collectors.toSet());
-
-        creatureActiveAbilities.forEach(Ability::deactivate);
-    }
-
     private void spawnDrops(CreatureId targetId, CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(targetId);
 
@@ -143,5 +127,21 @@ public abstract class CreatureHitAction extends GameStateAction {
         game.getGameState().getLootPiles().put(lootPile.getParams().getId(), lootPile);
 
         game.getEventProcessor().getLootPileModelsToBeCreated().add(lootPile.getParams().getId());
+    }
+
+    private void deactivateCreatureAbilities(Creature targetCreature, CoreGame game) {
+        Set<Ability> creatureActiveAbilities = game
+            .getGameState()
+            .accessAbilities()
+            .getAbilities()
+            .values()
+            .stream()
+            .filter(ability -> ability.isCanBeDeactivated() &&
+                               ability.getParams().getCreatureId().equals(targetCreature.getId()) &&
+                               (ability.getParams().getState() == AbilityState.CHANNEL ||
+                                ability.getParams().getState() == AbilityState.ACTIVE))
+            .collect(Collectors.toSet());
+
+        creatureActiveAbilities.forEach(Ability::deactivate);
     }
 }

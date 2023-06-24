@@ -20,9 +20,11 @@ public class LootPileItemTryPickUpAction extends GameStateAction {
 
     private Item item;
 
-    @Override
-    public Entity getEntity(CoreGame game) {
-        return game.getGameState().getLootPiles().get(item.getLootPileId());
+    public static LootPileItemTryPickUpAction of(CreatureId playerId, Item item) {
+        LootPileItemTryPickUpAction action = LootPileItemTryPickUpAction.of();
+        action.playerId = playerId;
+        action.item = item;
+        return action;
     }
 
     @Override
@@ -92,10 +94,8 @@ public class LootPileItemTryPickUpAction extends GameStateAction {
 
     }
 
-    public static LootPileItemTryPickUpAction of(CreatureId playerId, Item item) {
-        LootPileItemTryPickUpAction action = LootPileItemTryPickUpAction.of();
-        action.playerId = playerId;
-        action.item = item;
-        return action;
+    @Override
+    public Entity getEntity(CoreGame game) {
+        return game.getGameState().getLootPiles().get(item.getLootPileId());
     }
 }

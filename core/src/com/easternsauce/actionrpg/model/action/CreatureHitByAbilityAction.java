@@ -20,14 +20,14 @@ public class CreatureHitByAbilityAction extends CreatureHitAction {
     private Ability ability;
     private Vector2 contactPoint;
 
-    @Override
-    public Entity getEntity(CoreGame game) {
-        return game.getGameState().accessCreatures().getCreature(targetId);
-    }
-
-    @Override
-    public boolean isActionObjectValid(CoreGame game) {
-        return true;
+    public static CreatureHitByAbilityAction of(CreatureId attackerId, CreatureId targetId, Ability ability,
+                                                Vector2 contactPoint) {
+        CreatureHitByAbilityAction action = CreatureHitByAbilityAction.of();
+        action.attackerId = attackerId;
+        action.targetId = targetId;
+        action.ability = ability;
+        action.contactPoint = contactPoint;
+        return action;
     }
 
     @Override
@@ -56,13 +56,13 @@ public class CreatureHitByAbilityAction extends CreatureHitAction {
         handleCreatureDeath(targetCreature, attackerCreature, game);
     }
 
-    public static CreatureHitByAbilityAction of(CreatureId attackerId, CreatureId targetId, Ability ability,
-                                                Vector2 contactPoint) {
-        CreatureHitByAbilityAction action = CreatureHitByAbilityAction.of();
-        action.attackerId = attackerId;
-        action.targetId = targetId;
-        action.ability = ability;
-        action.contactPoint = contactPoint;
-        return action;
+    @Override
+    public Entity getEntity(CoreGame game) {
+        return game.getGameState().accessCreatures().getCreature(targetId);
+    }
+
+    @Override
+    public boolean isActionObjectValid(CoreGame game) {
+        return true;
     }
 }

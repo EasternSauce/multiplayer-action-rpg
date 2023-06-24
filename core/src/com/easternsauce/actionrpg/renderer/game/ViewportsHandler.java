@@ -13,13 +13,12 @@ import lombok.NoArgsConstructor;
 @SuppressWarnings("SpellCheckingInspection")
 @NoArgsConstructor(staticName = "of")
 public class ViewportsHandler {
-    private Viewport worldViewport;
-    private Viewport hudViewport;
-    private Viewport worldTextViewport;
-
     private final OrthographicCamera worldCamera = new OrthographicCamera();
     private final OrthographicCamera hudCamera = new OrthographicCamera();
     private final OrthographicCamera worldTextCamera = new OrthographicCamera();
+    private Viewport worldViewport;
+    private Viewport hudViewport;
+    private Viewport worldTextViewport;
 
     public void initViewports() {
         worldViewport = new FitViewport(Constants.VIEWPOINT_WORLD_WIDTH / Constants.PPM,
@@ -54,6 +53,16 @@ public class ViewportsHandler {
         worldTextCamera.update();
     }
 
+    private void setWorldCameraPosition(float x, float y) {
+        worldCamera.position.x = x;
+        worldCamera.position.y = y;
+    }
+
+    private void setWorldTextCameraPosition(float x, float y) {
+        worldTextCamera.position.x = x;
+        worldTextCamera.position.y = y;
+    }
+
     public Matrix4 getWorldCameraCombinedProjectionMatrix() {
         return worldCamera.combined;
     }
@@ -64,16 +73,6 @@ public class ViewportsHandler {
 
     public void setHudCameraPosition(float x, float y) {
         hudCamera.position.set(x, y, 0);
-    }
-
-    private void setWorldCameraPosition(float x, float y) {
-        worldCamera.position.x = x;
-        worldCamera.position.y = y;
-    }
-
-    private void setWorldTextCameraPosition(float x, float y) {
-        worldTextCamera.position.x = x;
-        worldTextCamera.position.y = y;
     }
 
     public OrthographicCamera getWorldCamera() {

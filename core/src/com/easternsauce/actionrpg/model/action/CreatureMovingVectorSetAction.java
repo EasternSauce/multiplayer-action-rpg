@@ -16,9 +16,11 @@ public class CreatureMovingVectorSetAction extends GameStateAction {
     private CreatureId creatureId;
     private Vector2 movingVector;
 
-    @Override
-    public Entity getEntity(CoreGame game) {
-        return game.getGameState().accessCreatures().getCreature(creatureId);
+    public static CreatureMovingVectorSetAction of(CreatureId creatureId, Vector2 movingVector) {
+        CreatureMovingVectorSetAction action = CreatureMovingVectorSetAction.of();
+        action.creatureId = creatureId;
+        action.movingVector = movingVector;
+        return action;
     }
 
     @Override
@@ -31,10 +33,8 @@ public class CreatureMovingVectorSetAction extends GameStateAction {
 
     }
 
-    public static CreatureMovingVectorSetAction of(CreatureId creatureId, Vector2 movingVector) {
-        CreatureMovingVectorSetAction action = CreatureMovingVectorSetAction.of();
-        action.creatureId = creatureId;
-        action.movingVector = movingVector;
-        return action;
+    @Override
+    public Entity getEntity(CoreGame game) {
+        return game.getGameState().accessCreatures().getCreature(creatureId);
     }
 }

@@ -13,9 +13,10 @@ import lombok.NoArgsConstructor;
 public class InventoryWindowToggleAction extends GameStateAction {
     private CreatureId playerId;
 
-    @Override
-    public Entity getEntity(CoreGame game) {
-        return game.getGameState().accessCreatures().getCreature(playerId);
+    public static InventoryWindowToggleAction of(CreatureId creatureId) {
+        InventoryWindowToggleAction action = InventoryWindowToggleAction.of();
+        action.playerId = creatureId;
+        return action;
     }
 
     @Override
@@ -28,9 +29,8 @@ public class InventoryWindowToggleAction extends GameStateAction {
 
     }
 
-    public static InventoryWindowToggleAction of(CreatureId creatureId) {
-        InventoryWindowToggleAction action = InventoryWindowToggleAction.of();
-        action.playerId = creatureId;
-        return action;
+    @Override
+    public Entity getEntity(CoreGame game) {
+        return game.getGameState().accessCreatures().getCreature(playerId);
     }
 }

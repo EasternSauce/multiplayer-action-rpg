@@ -13,6 +13,14 @@ public class Vector2 {
     float x;
     float y;
 
+    public Vector2 withRotatedDegAngle(float degrees) {
+        return withSetDegAngle(angleDeg() + degrees);
+    }
+
+    public Vector2 withSetDegAngle(float degrees) {
+        return setAngleRad(degrees * (float) PI / 180);
+    }
+
     public float angleDeg() {
         float angle = (float) Math.atan2(y, x) * 180f / 3.141592653589793f;
         if (angle < 0) {
@@ -21,17 +29,13 @@ public class Vector2 {
         return angle;
     }
 
-    public Vector2 withSetDegAngle(float degrees) {
-        return setAngleRad(degrees * (float) PI / 180);
-    }
-
-    public Vector2 withRotatedDegAngle(float degrees) {
-        return withSetDegAngle(angleDeg() + degrees);
-    }
-
     public Vector2 setAngleRad(float radians) {
         Vector2 newVec = Vector2.of(len(), 0f);
         return newVec.rotateRad(radians);
+    }
+
+    public float len() {
+        return (float) Math.sqrt(x * x + y * y);
     }
 
     public Vector2 rotateRad(float radians) {
@@ -42,10 +46,6 @@ public class Vector2 {
         float newY = this.x * sin + this.y * cos;
 
         return Vector2.of(newX, newY);
-    }
-
-    public float len() {
-        return (float) Math.sqrt(x * x + y * y);
     }
 
     public Float distance(Vector2 v) {
@@ -97,6 +97,11 @@ public class Vector2 {
 
     public Vector2 add(Vector2 vector) {
         return Vector2.of(getX() + vector.getX(), getY() + vector.getY());
+    }
+
+    @SuppressWarnings("unused")
+    public Vector2 sub(Vector2 vector) {
+        return Vector2.of(getX() - vector.getX(), getY() - vector.getY());
     }
 
     @SuppressWarnings("unused")

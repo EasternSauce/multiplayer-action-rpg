@@ -17,9 +17,11 @@ public class CreatureChangeAimDirectionAction extends GameStateAction {
 
     private Vector2 mousePos;
 
-    @Override
-    public Entity getEntity(CoreGame game) {
-        return game.getGameState().accessCreatures().getCreature(creatureId);
+    public static CreatureChangeAimDirectionAction of(CreatureId creatureId, Vector2 mousePos) {
+        CreatureChangeAimDirectionAction action = CreatureChangeAimDirectionAction.of();
+        action.creatureId = creatureId;
+        action.mousePos = mousePos;
+        return action;
     }
 
     @Override
@@ -33,10 +35,8 @@ public class CreatureChangeAimDirectionAction extends GameStateAction {
         }
     }
 
-    public static CreatureChangeAimDirectionAction of(CreatureId creatureId, Vector2 mousePos) {
-        CreatureChangeAimDirectionAction action = CreatureChangeAimDirectionAction.of();
-        action.creatureId = creatureId;
-        action.mousePos = mousePos;
-        return action;
+    @Override
+    public Entity getEntity(CoreGame game) {
+        return game.getGameState().accessCreatures().getCreature(creatureId);
     }
 }

@@ -62,48 +62,6 @@ public class CoreGameServer extends CoreGame {
     }
 
     @Override
-    public void setStartingScreen() {
-        setScreen(gameplayScreen);
-    }
-
-    @Override
-    public void onUpdate() {
-        gameState.handleCreatureDeaths();
-
-        gameState.handleExpiredLootPiles();
-
-        ArrayList<GameStateAction> onTickActions = new ArrayList<>(gameState.getOnTickActions());
-
-        onTickActions.forEach(gameStateAction -> gameStateAction.applyToGame(this));
-
-        Connection[] connections = getEndPoint().getConnections();
-        for (Connection connection : connections) {
-            if (!clientIds.contains(connection.getID())) {
-                continue;// don't update until player is initialized
-            }
-
-            if (getClientPlayers().containsKey(connection.getID()) &&
-                getGameState().accessCreatures().getCreatures().containsKey(getClientPlayers().get(connection.getID()))) {
-                Creature player = getGameState().accessCreatures().getCreatures().get(getClientPlayers().get(connection.getID()));
-
-                List<GameStateAction> personalizedTickActions = onTickActions
-                    .stream()
-                    .filter(action -> action.isActionObjectValid(this) && action
-                        .getActionObjectAreaId(this)
-                        .getValue()
-                        .equals(player.getParams().getAreaId().getValue()) &&
-                                      action.getActionObjectPos(this).distance(player.getParams().getPos()) <
-                                      Constants.CLIENT_GAME_UPDATE_RANGE)
-                    .collect(Collectors.toList());
-                connection.sendTCP(ActionsHolder.of(personalizedTickActions));
-            }
-
-        }
-
-        gameState.getOnTickActions().clear();
-    }
-
-    @Override
     public void establishConnection() {
         setEndPoint(new Server(6400000, 6400000));
         EndPointHelper.registerEndPointClasses(getEndPoint());
@@ -116,6 +74,17 @@ public class CoreGameServer extends CoreGame {
         }
 
         getEndPoint().addListener(new Listener() {
+
+            @Override
+            public void disconnected(Connection connection) {
+                CreatureId disconnectedCreatureId = getClientPlayers().get(connection.getID());
+
+                PlayerRemoveAction playerRemoveAction = PlayerRemoveAction.of(disconnectedCreatureId);
+                gameState.scheduleServerSideAction(playerRemoveAction);
+
+                clientIds.remove((Object) connection.getID());
+                getClientPlayers().remove(connection.getID());
+            }
 
             @Override
             public void received(Connection connection, Object object) {
@@ -156,17 +125,6 @@ public class CoreGameServer extends CoreGame {
 
             }
 
-            @Override
-            public void disconnected(Connection connection) {
-                CreatureId disconnectedCreatureId = getClientPlayers().get(connection.getID());
-
-                PlayerRemoveAction playerRemoveAction = PlayerRemoveAction.of(disconnectedCreatureId);
-                gameState.scheduleServerSideAction(playerRemoveAction);
-
-                clientIds.remove((Object) connection.getID());
-                getClientPlayers().remove(connection.getID());
-            }
-
         });
 
         broadcastThread = new Thread(() -> {
@@ -194,6 +152,48 @@ public class CoreGameServer extends CoreGame {
         });
         broadcastThread.start();
 
+    }
+
+    @Override
+    public void setStartingScreen() {
+        setScreen(gameplayScreen);
+    }
+
+    @Override
+    public void onUpdate() {
+        gameState.handleCreatureDeaths();
+
+        gameState.handleExpiredLootPiles();
+
+        ArrayList<GameStateAction> onTickActions = new ArrayList<>(gameState.getOnTickActions());
+
+        onTickActions.forEach(gameStateAction -> gameStateAction.applyToGame(this));
+
+        Connection[] connections = getEndPoint().getConnections();
+        for (Connection connection : connections) {
+            if (!clientIds.contains(connection.getID())) {
+                continue;// don't update until player is initialized
+            }
+
+            if (getClientPlayers().containsKey(connection.getID()) &&
+                getGameState().accessCreatures().getCreatures().containsKey(getClientPlayers().get(connection.getID()))) {
+                Creature player = getGameState().accessCreatures().getCreatures().get(getClientPlayers().get(connection.getID()));
+
+                List<GameStateAction> personalizedTickActions = onTickActions
+                    .stream()
+                    .filter(action -> action.isActionObjectValid(this) && action
+                        .getActionObjectAreaId(this)
+                        .getValue()
+                        .equals(player.getParams().getAreaId().getValue()) &&
+                                      action.getActionObjectPos(this).distance(player.getParams().getPos()) <
+                                      Constants.CLIENT_GAME_UPDATE_RANGE)
+                    .collect(Collectors.toList());
+                connection.sendTCP(ActionsHolder.of(personalizedTickActions));
+            }
+
+        }
+
+        gameState.getOnTickActions().clear();
     }
 
     @Override
@@ -296,15 +296,19 @@ public class CoreGameServer extends CoreGame {
         return true; // always calculate this server side regardless of current area
     }
 
+    @Override
+    public Boolean getIsFirstBroadcastReceived() {
+        return true;
+    }
+
     @SuppressWarnings("unused")
     @Override
     public CoreGame setIsFirstBroadcastReceived(Boolean isFirstBroadcastReceived) {
         return this;
     }
 
-    @Override
-    public Boolean getIsFirstBroadcastReceived() {
-        return true;
+    public Map<Integer, CreatureId> getClientPlayers() {
+        return getGameState().getClientPlayers();
     }
 
     @Override
@@ -312,10 +316,6 @@ public class CoreGameServer extends CoreGame {
         getEndPoint().stop();
         broadcastThread.interrupt();
 
-    }
-
-    public Map<Integer, CreatureId> getClientPlayers() {
-        return getGameState().getClientPlayers();
     }
 
 }

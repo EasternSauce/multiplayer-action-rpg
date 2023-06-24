@@ -23,9 +23,13 @@ public class InventoryAndEquipmentSwapSlotItemsAction extends GameStateAction {
     private Integer inventoryIndex;
     private Integer equipmentIndex;
 
-    @Override
-    public Entity getEntity(CoreGame game) {
-        return game.getGameState().accessCreatures().getCreature(playerId);
+    public static InventoryAndEquipmentSwapSlotItemsAction of(CreatureId creatureId, Integer inventoryIndex,
+                                                              Integer equipmentIndex) {
+        InventoryAndEquipmentSwapSlotItemsAction action = InventoryAndEquipmentSwapSlotItemsAction.of();
+        action.playerId = creatureId;
+        action.inventoryIndex = inventoryIndex;
+        action.equipmentIndex = equipmentIndex;
+        return action;
     }
 
     @Override
@@ -44,22 +48,14 @@ public class InventoryAndEquipmentSwapSlotItemsAction extends GameStateAction {
         finalizeItemSwap(player, playerConfig);
     }
 
-    private static void finalizeItemSwap(Creature player, PlayerConfig playerConfig) {
-        playerConfig.setInventoryItemBeingMoved(null);
-        playerConfig.setEquipmentItemBeingMoved(null);
-
-        playerConfig.setIsSkillMenuPickerSlotBeingChanged(null);
-
-        removeSkillFromSkillMenuOnItemUnequip(player, playerConfig);
+    @Override
+    public Entity getEntity(CoreGame game) {
+        return game.getGameState().accessCreatures().getCreature(playerId);
     }
 
-    private void handleSwapInInventory(Creature player, Item inventoryItem) {
-        if (inventoryItem != null) {
-            player.getParams().getEquipmentItems().put(equipmentIndex, inventoryItem);
-        }
-        else {
-            player.getParams().getEquipmentItems().remove(equipmentIndex);
-        }
+    private boolean checkInventoryItemSlotTypeMatchesEquipmentSlot(Item inventoryItem) {
+        return inventoryItem == null || inventoryItem.getTemplate().getEquipmentSlotType() ==
+                                        EquipmentSlotType.equipmentSlotSequenceNumbers.get(equipmentIndex);
     }
 
     private void handleSwapInEquipment(Creature player, Item equipmentItem) {
@@ -71,6 +67,24 @@ public class InventoryAndEquipmentSwapSlotItemsAction extends GameStateAction {
         }
     }
 
+    private void handleSwapInInventory(Creature player, Item inventoryItem) {
+        if (inventoryItem != null) {
+            player.getParams().getEquipmentItems().put(equipmentIndex, inventoryItem);
+        }
+        else {
+            player.getParams().getEquipmentItems().remove(equipmentIndex);
+        }
+    }
+
+    private static void finalizeItemSwap(Creature player, PlayerConfig playerConfig) {
+        playerConfig.setInventoryItemBeingMoved(null);
+        playerConfig.setEquipmentItemBeingMoved(null);
+
+        playerConfig.setIsSkillMenuPickerSlotBeingChanged(null);
+
+        removeSkillFromSkillMenuOnItemUnequip(player, playerConfig);
+    }
+
     @SuppressWarnings("SpellCheckingInspection")
     private static void removeSkillFromSkillMenuOnItemUnequip(Creature player, PlayerConfig playerConfig) {
         Set<Integer> slotsToRemove = new ConcurrentSkipListSet<>();
@@ -80,19 +94,5 @@ public class InventoryAndEquipmentSwapSlotItemsAction extends GameStateAction {
             }
         });
         slotsToRemove.forEach(slotIndex -> playerConfig.getSkillMenuSlots().remove(slotIndex));
-    }
-
-    private boolean checkInventoryItemSlotTypeMatchesEquipmentSlot(Item inventoryItem) {
-        return inventoryItem == null || inventoryItem.getTemplate().getEquipmentSlotType() ==
-                                        EquipmentSlotType.equipmentSlotSequenceNumbers.get(equipmentIndex);
-    }
-
-    public static InventoryAndEquipmentSwapSlotItemsAction of(CreatureId creatureId, Integer inventoryIndex,
-                                                              Integer equipmentIndex) {
-        InventoryAndEquipmentSwapSlotItemsAction action = InventoryAndEquipmentSwapSlotItemsAction.of();
-        action.playerId = creatureId;
-        action.inventoryIndex = inventoryIndex;
-        action.equipmentIndex = equipmentIndex;
-        return action;
     }
 }

@@ -36,9 +36,23 @@ public class Dash extends DirectionalAttachedAbility {
         return ability;
     }
 
+    private static Boolean calculateFlip(Float rotationAngle) {
+        return rotationAngle >= 90 && rotationAngle < 270;
+    }
+
+    @Override
+    public Boolean isPositionChangedOnUpdate() {
+        return true;
+    }
+
     @Override
     public Boolean isRanged() {
         return false;
+    }
+
+    @Override
+    public void onChannelUpdate(CoreGame game) {
+        updateDirectionalAttachedAbilityPosition(game);
     }
 
     @Override
@@ -48,6 +62,11 @@ public class Dash extends DirectionalAttachedAbility {
         creature.getParams().getMovementParams().setIsDashing(true);
         creature.getParams().getMovementParams().setDashingVector(getParams().getDirVector());
         creature.getParams().getMovementParams().setDashingVelocity(30f);
+    }
+
+    @Override
+    protected void onActiveUpdate(float delta, CoreGame game) {
+        updateDirectionalAttachedAbilityPosition(game);
     }
 
     @Override
@@ -66,16 +85,6 @@ public class Dash extends DirectionalAttachedAbility {
     }
 
     @Override
-    public void onChannelUpdate(CoreGame game) {
-        updateDirectionalAttachedAbilityPosition(game);
-    }
-
-    @Override
-    protected void onActiveUpdate(float delta, CoreGame game) {
-        updateDirectionalAttachedAbilityPosition(game);
-    }
-
-    @Override
     protected boolean isWeaponAttack() {
         return false;
     }
@@ -88,14 +97,5 @@ public class Dash extends DirectionalAttachedAbility {
     @Override
     public boolean isCanStun() {
         return false;
-    }
-
-    @Override
-    public Boolean isPositionChangedOnUpdate() {
-        return true;
-    }
-
-    private static Boolean calculateFlip(Float rotationAngle) {
-        return rotationAngle >= 90 && rotationAngle < 270;
     }
 }

@@ -4,7 +4,8 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.area.AreaId;
+import com.easternsauce.actionrpg.model.creature.Creature;
+import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
 import com.easternsauce.actionrpg.util.Constants;
@@ -13,6 +14,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 public class CreatureHitAnimationRenderer {
     private Animation<TextureRegion> hitByAbilityAnimation;
+    private CreatureId creatureId;
+
+    public static CreatureHitAnimationRenderer of(CreatureId creatureId) {
+        CreatureHitAnimationRenderer creatureHitAnimationRenderer = CreatureHitAnimationRenderer.of();
+        creatureHitAnimationRenderer.creatureId = creatureId;
+        return creatureHitAnimationRenderer;
+    }
 
     public void prepareAnimation(TextureAtlas atlas) {
         TextureRegion textureRegion = atlas.findRegion("circle_explosion");
@@ -29,21 +37,22 @@ public class CreatureHitAnimationRenderer {
         hitByAbilityAnimation = new Animation<>(Constants.DAMAGE_ANIMATION_DURATION / frameCount, frames);
     }
 
-    private TextureRegion getFrame(float timeSinceStarted, @SuppressWarnings("unused") CoreGame game) {
-        return hitByAbilityAnimation.getKeyFrame(timeSinceStarted, false);
+    public void render(float timeSinceStarted, Vector2 vectorTowardsContactPoint, RenderingLayer renderingLayer, CoreGame game) {
+        Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
+
+        float realWidth = 1.8f;
+        float realHeight = 1.8f;
+        renderingLayer
+            .getSpriteBatch()
+            .draw(getFrame(timeSinceStarted, game),
+                  creature.getParams().getPos().getX() - realWidth / 2f + vectorTowardsContactPoint.getX(),
+                  creature.getParams().getPos().getY() - realHeight / 2f + vectorTowardsContactPoint.getY(),
+                  realWidth,
+                  realHeight);
+
     }
 
-    public void render(float timeSinceStarted, AreaId areaId, Vector2 pos, RenderingLayer renderingLayer, CoreGame game) {
-        if (areaId.getValue().equals(game.getGameState().getCurrentAreaId().getValue())) {
-            float realWidth = 1.8f;
-            float realHeight = 1.8f;
-            renderingLayer
-                .getSpriteBatch()
-                .draw(getFrame(timeSinceStarted, game),
-                      pos.getX() - realWidth / 2f,
-                      pos.getY() - realHeight / 2f,
-                      realWidth,
-                      realHeight);
-        }
+    private TextureRegion getFrame(float timeSinceStarted, @SuppressWarnings("unused") CoreGame game) {
+        return hitByAbilityAnimation.getKeyFrame(timeSinceStarted, false);
     }
 }

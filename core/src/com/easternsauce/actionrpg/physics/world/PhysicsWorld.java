@@ -50,14 +50,6 @@ public class PhysicsWorld {
         return world;
     }
 
-    public Integer widthInTiles() {
-        return layer.getWidth();
-    }
-
-    public Integer heightInTiles() {
-        return layer.getHeight();
-    }
-
     public Map<Vector2Int, PathingNode> pathingGraph() {
         return pathingGraph;
     }
@@ -103,8 +95,12 @@ public class PhysicsWorld {
         pathingGraph = Astar.generatePathingGraph(this);
     }
 
-    private Boolean tileExists(Integer x, Integer y) {
-        return x >= 0 && x < widthInTiles() && y >= 0 && y < heightInTiles();
+    public Integer heightInTiles() {
+        return layer.getHeight();
+    }
+
+    public Integer widthInTiles() {
+        return layer.getWidth();
     }
 
     public void createTerrainTiles() {
@@ -192,11 +188,8 @@ public class PhysicsWorld {
 
     }
 
-    public void tryAddClearance(Vector2Int pos, Integer level) {
-        if (!clearances.containsKey(pos) && pos.getX() >= 0 && pos.getY() >= 0 && pos.getX() < widthInTiles() &&
-            pos.getY() < heightInTiles() && traversables.get(pos)) {
-            clearances.put(pos, level);
-        }
+    private Boolean tileExists(Integer x, Integer y) {
+        return x >= 0 && x < widthInTiles() && y >= 0 && y < heightInTiles();
     }
 
     public void calculateClearances(Map<Vector2Int, Boolean> traversables) {
@@ -247,6 +240,13 @@ public class PhysicsWorld {
             currentLevel++;
         }
 
+    }
+
+    public void tryAddClearance(Vector2Int pos, Integer level) {
+        if (!clearances.containsKey(pos) && pos.getX() >= 0 && pos.getY() >= 0 && pos.getX() < widthInTiles() &&
+            pos.getY() < heightInTiles() && traversables.get(pos)) {
+            clearances.put(pos, level);
+        }
     }
 
     public void step() {

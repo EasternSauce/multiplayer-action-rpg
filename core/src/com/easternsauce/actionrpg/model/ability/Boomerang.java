@@ -43,40 +43,6 @@ public class Boomerang extends Projectile {
     }
 
     @Override
-    public void onCreatureHit(CreatureId creatureId, CoreGame game) {
-        getParams().setIsComingBack(true);
-        getParams().setSpeed(20f);
-    }
-
-    @Override
-    public void onSelfCreatureHit(CoreGame game) {
-        if (getParams().getIsComingBack()) {
-            Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
-            Skill skill = creature.getParams().getSkills().get(getParams().getSkillType());
-
-            skill.resetCooldown();
-
-            deactivate();
-        }
-    }
-
-    @Override
-    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
-        getParams().setIsComingBack(true);
-        getParams().setSpeed(20f);
-    }
-
-    @Override
-    protected boolean isWeaponAttack() {
-        return true;
-    }
-
-    @Override
-    public Float getStunDuration() {
-        return 0.65f;
-    }
-
-    @Override
     protected void onActiveUpdate(float delta, CoreGame game) {
         onProjectileTravelUpdate();
 
@@ -108,5 +74,39 @@ public class Boomerang extends Projectile {
 
         }
 
+    }
+
+    @Override
+    public void onCreatureHit(CreatureId creatureId, CoreGame game) {
+        getParams().setIsComingBack(true);
+        getParams().setSpeed(20f);
+    }
+
+    @Override
+    public void onSelfCreatureHit(CoreGame game) {
+        if (getParams().getIsComingBack()) {
+            Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
+            Skill skill = creature.getParams().getSkills().get(getParams().getSkillType());
+
+            skill.resetCooldown();
+
+            deactivate();
+        }
+    }
+
+    @Override
+    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
+        getParams().setIsComingBack(true);
+        getParams().setSpeed(20f);
+    }
+
+    @Override
+    protected boolean isWeaponAttack() {
+        return true;
+    }
+
+    @Override
+    public Float getStunDuration() {
+        return 0.65f;
     }
 }

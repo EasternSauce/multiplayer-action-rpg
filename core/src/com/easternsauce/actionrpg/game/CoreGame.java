@@ -34,13 +34,10 @@ import java.util.Set;
 
 public abstract class CoreGame extends Game {
 
+    final protected GameplayScreen gameplayScreen = GameplayScreen.of();
+    final protected ConnectScreen connectScreen = ConnectScreen.of();
     @Getter
     final private GameEntityManager entityManager = GameEntityManager.of();
-
-    final protected GameplayScreen gameplayScreen = GameplayScreen.of();
-
-    final protected ConnectScreen connectScreen = ConnectScreen.of();
-
     @Getter
     final private EntityEventProcessor eventProcessor = EntityEventProcessor.of();
 
@@ -54,10 +51,6 @@ public abstract class CoreGame extends Game {
 
     @Getter
     private final HudRenderer hudRenderer = HudRenderer.of();
-
-    public Boolean isDebugEnabled() {
-        return isDebugEnabled;
-    }
 
     public void addTeleportEvent(TeleportEvent teleportEvent) {
         eventProcessor.getTeleportEvents().add(teleportEvent);
@@ -86,11 +79,11 @@ public abstract class CoreGame extends Game {
         setStartingScreen();
     }
 
+    abstract public void establishConnection() throws IOException;
+
     public abstract void setStartingScreen();
 
     abstract public void onUpdate();
-
-    abstract public void establishConnection() throws IOException;
 
     abstract public void initState();
 
@@ -127,6 +120,12 @@ public abstract class CoreGame extends Game {
                         entityManager.getGameEntityRenderer().getViewportsHandler().getWorldCameraCombinedProjectionMatrix());
         }
     }
+
+    public Boolean isDebugEnabled() {
+        return isDebugEnabled;
+    }
+
+    public abstract GameState getGameState();
 
     public List<PhysicsEvent> getPhysicsEventQueue() {
         return entityManager.getGameEntityPhysics().getPhysicsEventQueue();
@@ -174,19 +173,17 @@ public abstract class CoreGame extends Game {
 
     public abstract void initializePlayer(String playerName);
 
-    public abstract GameState getGameState();
-
     public abstract void setChatInputProcessor();
 
     public abstract void renderServerRunningMessage(RenderingLayer renderingLayer);
 
     public abstract boolean isPathfindingCalculatedForCreature(Creature creature);
 
+    @SuppressWarnings("SameReturnValue")
+    public abstract Boolean getIsFirstBroadcastReceived();
+
     @SuppressWarnings({
         "UnusedReturnValue",
         "unused"})
     public abstract CoreGame setIsFirstBroadcastReceived(@SuppressWarnings("unused") Boolean isFirstBroadcastReceived);
-
-    @SuppressWarnings("SameReturnValue")
-    public abstract Boolean getIsFirstBroadcastReceived();
 }

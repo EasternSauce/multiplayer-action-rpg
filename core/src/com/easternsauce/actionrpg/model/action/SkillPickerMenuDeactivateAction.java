@@ -14,9 +14,10 @@ import lombok.NoArgsConstructor;
 public class SkillPickerMenuDeactivateAction extends GameStateAction {
     private CreatureId playerId;
 
-    @Override
-    public Entity getEntity(CoreGame game) {
-        return game.getGameState().accessCreatures().getCreature(playerId);
+    public static SkillPickerMenuDeactivateAction of(CreatureId playerId) {
+        SkillPickerMenuDeactivateAction action = SkillPickerMenuDeactivateAction.of();
+        action.playerId = playerId;
+        return action;
     }
 
     @Override
@@ -26,9 +27,8 @@ public class SkillPickerMenuDeactivateAction extends GameStateAction {
         playerConfig.setIsSkillMenuPickerSlotBeingChanged(null);
     }
 
-    public static SkillPickerMenuDeactivateAction of(CreatureId playerId) {
-        SkillPickerMenuDeactivateAction action = SkillPickerMenuDeactivateAction.of();
-        action.playerId = playerId;
-        return action;
+    @Override
+    public Entity getEntity(CoreGame game) {
+        return game.getGameState().accessCreatures().getCreature(playerId);
     }
 }

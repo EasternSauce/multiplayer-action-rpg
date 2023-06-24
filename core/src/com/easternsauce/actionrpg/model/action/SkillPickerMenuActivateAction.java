@@ -16,9 +16,11 @@ public class SkillPickerMenuActivateAction extends GameStateAction {
 
     private Integer slotNum;
 
-    @Override
-    public Entity getEntity(CoreGame game) {
-        return game.getGameState().accessCreatures().getCreature(playerId);
+    public static SkillPickerMenuActivateAction of(CreatureId playerId, Integer slotNum) {
+        SkillPickerMenuActivateAction action = SkillPickerMenuActivateAction.of();
+        action.playerId = playerId;
+        action.slotNum = slotNum;
+        return action;
     }
 
     @Override
@@ -28,10 +30,8 @@ public class SkillPickerMenuActivateAction extends GameStateAction {
         playerConfig.setIsSkillMenuPickerSlotBeingChanged(slotNum);
     }
 
-    public static SkillPickerMenuActivateAction of(CreatureId playerId, Integer slotNum) {
-        SkillPickerMenuActivateAction action = SkillPickerMenuActivateAction.of();
-        action.playerId = playerId;
-        action.slotNum = slotNum;
-        return action;
+    @Override
+    public Entity getEntity(CoreGame game) {
+        return game.getGameState().accessCreatures().getCreature(playerId);
     }
 }

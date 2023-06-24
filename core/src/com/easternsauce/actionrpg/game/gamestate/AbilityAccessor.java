@@ -26,17 +26,6 @@ public class AbilityAccessor {
     private GameState gameState;
     private GameStateDataHolder dataHolder;
 
-    private GameStateData getData() {
-        return dataHolder.getData();
-    }
-
-    public Ability getAbility(AbilityId abilityId) {
-        if (abilityId == null || !getData().getAbilities().containsKey(abilityId)) {
-            return null;
-        }
-        return getData().getAbilities().get(abilityId);
-    }
-
     public Ability getAbilityBySkillType(CreatureId creatureId, SkillType skillType) {
         Optional<Ability> first = getData()
             .getAbilities()
@@ -49,8 +38,8 @@ public class AbilityAccessor {
         return first.orElse(null);
     }
 
-    public Map<AbilityId, Ability> getAbilities() {
-        return getData().getAbilities();
+    private GameStateData getData() {
+        return dataHolder.getData();
     }
 
     public Set<AbilityId> getAbilitiesWithinRange(Creature player) {
@@ -63,24 +52,8 @@ public class AbilityAccessor {
         }).collect(Collectors.toSet());
     }
 
-    public void spawnAbility(AbilityType abilityType, AbilityParams abilityParams, CoreGame game) {
-        Creature creature = gameState.accessCreatures().getCreature(abilityParams.getCreatureId());
-
-        if (creature != null) {
-            Ability ability = AbilityFactory.produceAbility(abilityType, abilityParams, game);
-
-            initializeAbility(creature, ability, game);
-        }
-    }
-
-    private void initializeAbility(Creature creature, Ability ability, CoreGame game) {
-        game.getGameState().accessAbilities().getAbilities().put(ability.getParams().getId(), ability);
-
-        game.getEventProcessor().getAbilityModelsToBeCreated().add(ability.getParams().getId());
-
-        ability.init(game);
-
-        creature.onAbilityPerformed(ability);
+    public Map<AbilityId, Ability> getAbilities() {
+        return getData().getAbilities();
     }
 
     public void chainAnotherAbility(Ability chainFromAbility, AbilityType abilityType, Vector2 chainToPos, Vector2 dirVector,
@@ -115,6 +88,26 @@ public class AbilityAccessor {
         }
     }
 
+    public void spawnAbility(AbilityType abilityType, AbilityParams abilityParams, CoreGame game) {
+        Creature creature = gameState.accessCreatures().getCreature(abilityParams.getCreatureId());
+
+        if (creature != null) {
+            Ability ability = AbilityFactory.produceAbility(abilityType, abilityParams, game);
+
+            initializeAbility(creature, ability, game);
+        }
+    }
+
+    private void initializeAbility(Creature creature, Ability ability, CoreGame game) {
+        game.getGameState().accessAbilities().getAbilities().put(ability.getParams().getId(), ability);
+
+        game.getEventProcessor().getAbilityModelsToBeCreated().add(ability.getParams().getId());
+
+        ability.init(game);
+
+        creature.onAbilityPerformed(ability);
+    }
+
     public void onAbilityHitsCreature(CreatureId attackerId, CreatureId targetId, AbilityId abilityId, Vector2 contactPoint,
                                       CoreGame game) {
         Ability ability = game.getGameState().accessAbilities().getAbility(abilityId);
@@ -125,6 +118,13 @@ public class AbilityAccessor {
 
         CreatureHitByAbilityAction action = CreatureHitByAbilityAction.of(attackerId, targetId, ability, contactPoint);
         gameState.scheduleServerSideAction(action);
+    }
+
+    public Ability getAbility(AbilityId abilityId) {
+        if (abilityId == null || !getData().getAbilities().containsKey(abilityId)) {
+            return null;
+        }
+        return getData().getAbilities().get(abilityId);
     }
 
 }

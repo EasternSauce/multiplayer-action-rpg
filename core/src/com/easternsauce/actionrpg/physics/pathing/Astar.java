@@ -9,17 +9,6 @@ import java.util.stream.Collectors;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class Astar {
-    public static void tryAddEdge(Map<Vector2Int, PathingNode> pathingNodes, PhysicsWorld world, Vector2Int fromPos,
-                                  Vector2Int toPos, Float weight) {
-        if (0 <= toPos.getY() && toPos.getY() < world.heightInTiles() && 0 <= toPos.getX() &&
-            toPos.getX() < world.widthInTiles()) {
-            if (world.getTraversables().get(fromPos) && world.getTraversables().get(toPos)) {
-                PathingNode targetNode = pathingNodes.get(toPos);
-                pathingNodes.put(fromPos, pathingNodes.get(fromPos).withEdge(weight, targetNode));
-            }
-        }
-    }
-
     public static Map<Vector2Int, PathingNode> generatePathingGraph(PhysicsWorld world) {
         Map<Vector2Int, PathingNode> pathingNodes = new HashMap<>();
         for (int y = 0; y < world.heightInTiles(); y++) {
@@ -64,6 +53,17 @@ public class Astar {
             }
         }
         return pathingNodes;
+    }
+
+    public static void tryAddEdge(Map<Vector2Int, PathingNode> pathingNodes, PhysicsWorld world, Vector2Int fromPos,
+                                  Vector2Int toPos, Float weight) {
+        if (0 <= toPos.getY() && toPos.getY() < world.heightInTiles() && 0 <= toPos.getX() &&
+            toPos.getX() < world.widthInTiles()) {
+            if (world.getTraversables().get(fromPos) && world.getTraversables().get(toPos)) {
+                PathingNode targetNode = pathingNodes.get(toPos);
+                pathingNodes.put(fromPos, pathingNodes.get(fromPos).withEdge(weight, targetNode));
+            }
+        }
     }
 
     public static AstarState traverse(AstarState astarState, Vector2Int finishTilePos, PhysicsWorld world, Integer capability) {

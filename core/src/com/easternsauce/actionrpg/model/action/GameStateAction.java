@@ -8,16 +8,6 @@ import com.easternsauce.actionrpg.model.util.Vector2;
 // actions are sent to clients immediately once they happen on server side to be applied to client game state
 public abstract class GameStateAction {
 
-    public abstract Entity getEntity(CoreGame game);
-
-    protected Vector2 getOverridePos() {
-        return null;
-    }
-
-    protected AreaId getOverrideAreaId() {
-        return null;
-    }
-
     public abstract void applyToGame(CoreGame game);
 
     public final Vector2 getActionObjectPos(CoreGame game) {
@@ -31,6 +21,12 @@ public abstract class GameStateAction {
         return getEntity(game).getParams().getPos();
     }
 
+    protected Vector2 getOverridePos() {
+        return null;
+    }
+
+    public abstract Entity getEntity(CoreGame game);
+
     public final AreaId getActionObjectAreaId(CoreGame game) {
         if (getOverrideAreaId() != null) {
             return getOverrideAreaId();
@@ -40,6 +36,10 @@ public abstract class GameStateAction {
             throw new RuntimeException("calling action on non-existent object");
         }
         return getEntity(game).getParams().getAreaId();
+    }
+
+    protected AreaId getOverrideAreaId() {
+        return null;
     }
 
     public boolean isActionObjectValid(CoreGame game) {

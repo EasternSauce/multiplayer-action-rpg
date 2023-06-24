@@ -73,18 +73,6 @@ public class CoreGameClient extends CoreGame {
         return instance;
     }
 
-    @Override
-    public void setStartingScreen() {
-        setScreen(connectScreen);
-    }
-
-    @Override
-    public void onUpdate() {
-        processClientInputs();
-        updateClientCreatureAimDirection();
-        correctPlayerBodyArea();
-    }
-
     private void correctPlayerBodyArea() {
         Creature player = gameState.accessCreatures().getCreature(gameState.getThisClientPlayerId());
         if (getCreatureBodies().containsKey(gameState.getThisClientPlayerId()) &&
@@ -357,6 +345,12 @@ public class CoreGameClient extends CoreGame {
 
         getEndPoint().addListener(new Listener() {
             @Override
+            public void disconnected(Connection connection) {
+                System.out.println("Disconnecting...");
+                System.exit(0);
+            }
+
+            @Override
             public void received(Connection connection, Object object) {
                 if (object instanceof ActionsHolder) {
                     ActionsHolder actionsHolder = (ActionsHolder) object;
@@ -394,16 +388,22 @@ public class CoreGameClient extends CoreGame {
                 }
 
             }
-
-            @Override
-            public void disconnected(Connection connection) {
-                System.out.println("Disconnecting...");
-                System.exit(0);
-            }
         });
 
         getEndPoint().sendTCP(ConnectionInitCommand.of());
 
+    }
+
+    @Override
+    public void setStartingScreen() {
+        setScreen(connectScreen);
+    }
+
+    @Override
+    public void onUpdate() {
+        processClientInputs();
+        updateClientCreatureAimDirection();
+        correctPlayerBodyArea();
     }
 
     @Override
@@ -447,6 +447,11 @@ public class CoreGameClient extends CoreGame {
     }
 
     @Override
+    public GameState getGameState() {
+        return gameState;
+    }
+
+    @Override
     public void initializePlayer(String playerName) {
         gameState.setThisClientPlayerId(CreatureId.of(playerName));
         getEndPoint().sendTCP(PlayerInitCommand.of(getGameState().getThisClientPlayerId()));
@@ -487,10 +492,5 @@ public class CoreGameClient extends CoreGame {
     @Override
     public void dispose() {
         getEndPoint().stop();
-    }
-
-    @Override
-    public GameState getGameState() {
-        return gameState;
     }
 }

@@ -38,29 +38,6 @@ public class InventoryController {
         }
     }
 
-    public void performUseItemClick(Client client, CoreGame game) {
-        PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
-
-        float x = game.hudMousePos().getX();
-        float y = game.hudMousePos().getY();
-
-        GameStateAction action = null;
-
-        if (InventoryPositioning.backgroundOuterRect.contains(x, y)) {
-            InventoryData inventoryData = InventoryData.of(InventoryPositioning.getInventorySlotClicked(x, y),
-                                                           InventoryPositioning.getEquipmentSlotClicked(x, y),
-                                                           playerConfig.getInventoryItemBeingMoved(),
-                                                           playerConfig.getEquipmentItemBeingMoved());
-
-            action = InventoryItemUseAction.of(game.getGameState().getThisClientPlayerId(),
-                                               inventoryData.getInventorySlotClicked());
-        }
-
-        if (action != null) {
-            client.sendTCP(ActionPerformCommand.of(action));
-        }
-    }
-
     private GameStateAction determineInventoryAction(CoreGame game, Creature player, PlayerConfig playerConfig,
                                                      InventoryData inventoryData) {
         GameStateAction action = null;
@@ -100,5 +77,28 @@ public class InventoryController {
             action = InventoryPutOnCursorCancelAction.of(game.getGameState().getThisClientPlayerId());
         }
         return action;
+    }
+
+    public void performUseItemClick(Client client, CoreGame game) {
+        PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
+
+        float x = game.hudMousePos().getX();
+        float y = game.hudMousePos().getY();
+
+        GameStateAction action = null;
+
+        if (InventoryPositioning.backgroundOuterRect.contains(x, y)) {
+            InventoryData inventoryData = InventoryData.of(InventoryPositioning.getInventorySlotClicked(x, y),
+                                                           InventoryPositioning.getEquipmentSlotClicked(x, y),
+                                                           playerConfig.getInventoryItemBeingMoved(),
+                                                           playerConfig.getEquipmentItemBeingMoved());
+
+            action = InventoryItemUseAction.of(game.getGameState().getThisClientPlayerId(),
+                                               inventoryData.getInventorySlotClicked());
+        }
+
+        if (action != null) {
+            client.sendTCP(ActionPerformCommand.of(action));
+        }
     }
 }

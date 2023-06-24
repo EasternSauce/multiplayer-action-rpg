@@ -23,47 +23,39 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
 public class GameEntityRenderer {
+    private final TmxMapLoader mapLoader = new TmxMapLoader();
+    @Getter
+    private final Map<CreatureId, CreatureRenderer> creatureRenderers = new HashMap<>();
+    @Getter
+    private final Map<AbilityId, AbilityRenderer> abilityRenderers = new HashMap<>();
+    @Getter
+    private final Map<AreaGateId, AreaGateRenderer> areaGateRenderers = new HashMap<>();
+    @Getter
+    private final Map<LootPileId, LootPileRenderer> lootPileRenderers = new HashMap<>();
+    @Getter
+    private final Set<DamageNumber> damageNumbers = ConcurrentHashMap.newKeySet();
+    @Getter
+    private final Set<CreatureHitAnimation> creatureHitAnimations = ConcurrentHashMap.newKeySet();
+    @Getter
+    private final IconRetriever iconRetriever = IconRetriever.of();
     @Getter
     private ViewportsHandler viewportsHandler;
-
     @Getter
     private RenderingLayer worldElementsRenderingLayer;
     @Getter
     private RenderingLayer hudRenderingLayer;
     @Getter
     private RenderingLayer worldTextRenderingLayer;
-
     private float mapScale;
-
-    private final TmxMapLoader mapLoader = new TmxMapLoader();
-
-    @Getter
-    private final Map<CreatureId, CreatureRenderer> creatureRenderers = new HashMap<>();
-    @Getter
-    private final Map<AbilityId, AbilityRenderer> abilityRenderers = new HashMap<>();
     @Getter
     private Map<AreaId, AreaRenderer> areaRenderers = new HashMap<>();
-    @Getter
-    private final Map<AreaGateId, AreaGateRenderer> areaGateRenderers = new HashMap<>();
-    @Getter
-    private final Map<LootPileId, LootPileRenderer> lootPileRenderers = new HashMap<>();
-
-    @Getter
-    private final Set<DamageNumber> damageNumbers = new HashSet<>();
-
-    @Getter
-    private final Set<CreatureHitAnimation> creatureHitAnimations = new HashSet<>();
-
-    @Getter
-    private final IconRetriever iconRetriever = IconRetriever.of();
-
     private TextureRegion poisonedIcon = null;
 
     @Getter
@@ -111,15 +103,19 @@ public class GameEntityRenderer {
         });
     }
 
-    private void renderCreaturePoisonedIcon(RenderingLayer renderingLayer, Creature creature, CoreGame game) {
-        if (creature != null && creature.isEffectActive(CreatureEffect.POISON, game)) {
-            CreatureRenderer creatureRenderer = creatureRenderers.get(creature.getId());
-            float spriteWidth = creatureRenderer.getCreatureSprite().getWidth();
+    private boolean canCreatureBeRendered(Creature creature, CoreGame game) {
+        return creatureRenderers.containsKey(creature.getId()) &&
+               GameRendererHelper.isCreatureInCurrentlyVisibleArea(creature, game);
+    }
 
-            float posX = creature.getParams().getPos().getX() - 0.5f;
-            float posY = LifeBarUtils.getLifeBarPosY(creature, spriteWidth) + 0.5f;
-            renderingLayer.getSpriteBatch().draw(poisonedIcon, posX, posY, 1f, 1f);
-        }
+    @SuppressWarnings("unused")
+    private void renderCreature(RenderingLayer renderingLayer, Creature creature, CoreGame game) {
+        creatureRenderers.get(creature.getId()).render(renderingLayer);
+    }
+
+    private void renderCreatureLifeBar(RenderingLayer renderingLayer, Creature creature, CoreGame game) {
+        creatureRenderers.get(creature.getId()).renderLifeBar(renderingLayer, game);
+
     }
 
     private void renderCreatureStunnedAnimation(RenderingLayer renderingLayer, Creature creature, CoreGame game) {
@@ -129,14 +125,15 @@ public class GameEntityRenderer {
 
     }
 
-    private void renderCreatureLifeBar(RenderingLayer renderingLayer, Creature creature, CoreGame game) {
-        creatureRenderers.get(creature.getId()).renderLifeBar(renderingLayer, game);
+    private void renderCreaturePoisonedIcon(RenderingLayer renderingLayer, Creature creature, CoreGame game) {
+        if (creature != null && creature.isEffectActive(CreatureEffect.POISON, game)) {
+            CreatureRenderer creatureRenderer = creatureRenderers.get(creature.getId());
+            float spriteWidth = creatureRenderer.getCreatureSprite().getWidth();
 
-    }
-
-    @SuppressWarnings("unused")
-    private void renderCreature(RenderingLayer renderingLayer, Creature creature, CoreGame game) {
-        creatureRenderers.get(creature.getId()).render(renderingLayer);
+            float posX = creature.getParams().getPos().getX() - 0.5f;
+            float posY = LifeBarUtils.getLifeBarPosY(creature, spriteWidth) + 0.5f;
+            renderingLayer.getSpriteBatch().draw(poisonedIcon, posX, posY, 1f, 1f);
+        }
     }
 
     public void renderDeadCreatures(RenderingLayer renderingLayer, CoreGame game) {
@@ -170,11 +167,6 @@ public class GameEntityRenderer {
             .forEach(creature -> creatureRenderers.get(creature.getId()).renderCreatureName(worldTextRenderingLayer, game));
     }
 
-    private boolean canCreatureBeRendered(Creature creature, CoreGame game) {
-        return creatureRenderers.containsKey(creature.getId()) &&
-               GameRendererHelper.isCreatureInCurrentlyVisibleArea(creature, game);
-    }
-
     public TiledMap loadMap(String filePath) {
         return mapLoader.load(filePath);
     }
@@ -199,7 +191,7 @@ public class GameEntityRenderer {
     public void updateCreatureHitAnimations(CoreGame game) {
         Set<CreatureHitAnimation> toRemove = creatureHitAnimations
             .stream()
-            .filter(creatureHitAnimation -> creatureHitAnimation.getDamageTime() + Constants.DAMAGE_ANIMATION_DURATION <
+            .filter(creatureHitAnimation -> creatureHitAnimation.getHitTime() + Constants.DAMAGE_ANIMATION_DURATION <
                                             game.getGameState().getTime())
             .collect(Collectors.toSet());
         creatureHitAnimations.removeAll(toRemove);
@@ -211,10 +203,11 @@ public class GameEntityRenderer {
         damageNumbers.add(DamageNumber.of(pos, areaId, actualDamageTaken, currentTime));
     }
 
-    public void startCreatureHitAnimation(CreatureId creatureId, Vector2 pos, AreaId areaId, CoreGame game) {
+    public void startCreatureHitAnimation(CreatureId creatureId, Vector2 vectorTowardsContactPoint, AreaId areaId,
+                                          CoreGame game) {
         Float currentTime = game.getGameState().getTime();
 
-        CreatureHitAnimation animation = CreatureHitAnimation.of(creatureId, pos, areaId, currentTime);
+        CreatureHitAnimation animation = CreatureHitAnimation.of(creatureId, vectorTowardsContactPoint, areaId, currentTime);
         creatureHitAnimations.add(animation);
     }
 }

@@ -35,14 +35,6 @@ public class Item implements Comparable<Item> {
         return builder.toString();
     }
 
-    @Override
-    public int compareTo(Item o) {
-        if (this.template.getId().equals(o.template.getId())) {
-            return this.qualityModifier.compareTo(o.qualityModifier);
-        }
-        return this.template.getId().compareTo(o.template.getId());
-    }
-
     public Integer getDamage() {
         return (int) (template.getDamage() * qualityModifier);
     }
@@ -53,6 +45,14 @@ public class Item implements Comparable<Item> {
 
     public Integer getWorth() {
         return (int) (template.getWorth() * qualityModifier);
+    }
+
+    @Override
+    public int compareTo(Item o) {
+        if (this.template.getId().equals(o.template.getId())) {
+            return this.qualityModifier.compareTo(o.qualityModifier);
+        }
+        return this.template.getId().compareTo(o.template.getId());
     }
 
     public Item copy() {

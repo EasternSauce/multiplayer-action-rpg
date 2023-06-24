@@ -80,6 +80,25 @@ public class AbilityRenderer {
 
     }
 
+    public void update(CoreGame game) {
+
+        Ability ability = game.getGameState().accessAbilities().getAbilities().get(abilityId);
+
+        if (ability != null) {
+            if (ability.getParams().getChannelTime() > 0f && ability.getParams().getState() == AbilityState.CHANNEL) {
+                TextureRegion texture = getChannelAnimation().getKeyFrame(ability.getParams().getStateTimer().getTime(),
+                                                                          ability.getParams().getIsChannelAnimationLooping());
+                updateSprite(texture, game);
+            }
+            else if (ability.getParams().getActiveTime() > 0f && ability.getParams().getState() == AbilityState.ACTIVE) {
+                TextureRegion texture = getActiveAnimation().getKeyFrame(ability.getParams().getStateTimer().getTime(),
+                                                                         ability.getParams().getIsActiveAnimationLooping());
+                updateSprite(texture, game);
+            }
+        }
+
+    }
+
     private void updateSprite(TextureRegion texture, CoreGame game) {
 
         Ability ability = game.getGameState().accessAbilities().getAbilities().get(abilityId);
@@ -98,25 +117,6 @@ public class AbilityRenderer {
         sprite.setOriginCenter();
         sprite.setRotation(ability.getParams().getRotationAngle() + ability.getParams().getRotationShift());
         sprite.setFlip(false, ability.getParams().getIsFlip());
-
-    }
-
-    public void update(CoreGame game) {
-
-        Ability ability = game.getGameState().accessAbilities().getAbilities().get(abilityId);
-
-        if (ability != null) {
-            if (ability.getParams().getChannelTime() > 0f && ability.getParams().getState() == AbilityState.CHANNEL) {
-                TextureRegion texture = getChannelAnimation().getKeyFrame(ability.getParams().getStateTimer().getTime(),
-                                                                          ability.getParams().getIsChannelAnimationLooping());
-                updateSprite(texture, game);
-            }
-            else if (ability.getParams().getActiveTime() > 0f && ability.getParams().getState() == AbilityState.ACTIVE) {
-                TextureRegion texture = getActiveAnimation().getKeyFrame(ability.getParams().getStateTimer().getTime(),
-                                                                         ability.getParams().getIsActiveAnimationLooping());
-                updateSprite(texture, game);
-            }
-        }
 
     }
 

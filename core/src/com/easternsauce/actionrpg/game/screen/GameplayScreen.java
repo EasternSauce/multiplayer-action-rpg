@@ -64,39 +64,6 @@ public class GameplayScreen implements Screen {
         game.setChatInputProcessor();
     }
 
-    public void update(float delta) {
-        game.performPhysicsWorldStep();
-
-        PhysicsHelper.handleForceUpdateBodyPositions(game);
-
-        game.onUpdate();
-        game.getGameState().handleExpiredAbilities(game);
-
-        game.getEventProcessor().process(game.getEntityManager(), atlas, game);
-
-        game
-            .getEventProcessor()
-            .getTeleportEvents()
-            .forEach(teleportInfo -> game.getEntityManager().teleportCreature(teleportInfo, game));
-        game.getEventProcessor().getTeleportEvents().clear();
-
-        game.getGameState().updateGeneralTimer(delta);
-
-        game.getEntityManager().updateCreatures(delta, game);
-        game.getEntityManager().updateAbilities(delta, game);
-
-        PhysicsHelper.processPhysicsEventQueue(game);
-
-        if (game.getGameState().getThisClientPlayerId() != null &&
-            game.getGameState().accessCreatures().getCreature(game.getGameState().getThisClientPlayerId()) != null) {
-            game.updateCameraPositions();
-        }
-
-        if (!game.getEntityManager().getGameEntityRenderer().getIsAreasLoaded() && game.getIsFirstBroadcastReceived()) {
-            game.getEntityManager().getGameEntityRenderer().loadAreaRenderers(maps, game);
-        }
-    }
-
     @Override
     public void render(float delta) {
         update(delta);
@@ -136,6 +103,39 @@ public class GameplayScreen implements Screen {
             game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer().begin();
             game.renderServerRunningMessage(game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer());
             game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer().end();
+        }
+    }
+
+    public void update(float delta) {
+        game.performPhysicsWorldStep();
+
+        PhysicsHelper.handleForceUpdateBodyPositions(game);
+
+        game.onUpdate();
+        game.getGameState().handleExpiredAbilities(game);
+
+        game.getEventProcessor().process(game.getEntityManager(), atlas, game);
+
+        game
+            .getEventProcessor()
+            .getTeleportEvents()
+            .forEach(teleportInfo -> game.getEntityManager().teleportCreature(teleportInfo, game));
+        game.getEventProcessor().getTeleportEvents().clear();
+
+        game.getGameState().updateGeneralTimer(delta);
+
+        game.getEntityManager().updateCreatures(delta, game);
+        game.getEntityManager().updateAbilities(delta, game);
+
+        PhysicsHelper.processPhysicsEventQueue(game);
+
+        if (game.getGameState().getThisClientPlayerId() != null &&
+            game.getGameState().accessCreatures().getCreature(game.getGameState().getThisClientPlayerId()) != null) {
+            game.updateCameraPositions();
+        }
+
+        if (!game.getEntityManager().getGameEntityRenderer().getIsAreasLoaded() && game.getIsFirstBroadcastReceived()) {
+            game.getEntityManager().getGameEntityRenderer().loadAreaRenderers(maps, game);
         }
     }
 

@@ -19,9 +19,12 @@ public class InventorySwapSlotItemsAction extends GameStateAction {
     private Integer fromSlotIndex;
     private Integer toSlotIndex;
 
-    @Override
-    public Entity getEntity(CoreGame game) {
-        return game.getGameState().accessCreatures().getCreature(playerId);
+    public static InventorySwapSlotItemsAction of(CreatureId creatureId, Integer fromSlotIndex, Integer toSlotIndex) {
+        InventorySwapSlotItemsAction action = InventorySwapSlotItemsAction.of();
+        action.playerId = creatureId;
+        action.fromSlotIndex = fromSlotIndex;
+        action.toSlotIndex = toSlotIndex;
+        return action;
     }
 
     @Override
@@ -61,11 +64,8 @@ public class InventorySwapSlotItemsAction extends GameStateAction {
         playerConfig.setEquipmentItemBeingMoved(null);
     }
 
-    public static InventorySwapSlotItemsAction of(CreatureId creatureId, Integer fromSlotIndex, Integer toSlotIndex) {
-        InventorySwapSlotItemsAction action = InventorySwapSlotItemsAction.of();
-        action.playerId = creatureId;
-        action.fromSlotIndex = fromSlotIndex;
-        action.toSlotIndex = toSlotIndex;
-        return action;
+    @Override
+    public Entity getEntity(CoreGame game) {
+        return game.getGameState().accessCreatures().getCreature(playerId);
     }
 }

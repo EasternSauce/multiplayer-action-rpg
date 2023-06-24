@@ -17,6 +17,27 @@ import java.util.concurrent.atomic.AtomicInteger;
 @NoArgsConstructor(staticName = "of")
 @Data
 public class ItemPickupMenuRenderer {
+    public void render(RenderingLayer renderingLayer, CoreGame game) {
+        PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
+
+        if (playerConfig == null || playerConfig.getIsInventoryVisible()) {
+            return;
+        }
+
+        float x = game.hudMousePos().getX();
+        float y = game.hudMousePos().getY();
+
+        IconRetriever iconRetriever = game.getEntityManager().getGameEntityRenderer().getIconRetriever();
+
+        AtomicInteger i = new AtomicInteger();
+        playerConfig
+            .getItemPickupMenuLootPiles()
+            .stream()
+            .filter(lootPileId -> game.getGameState().getLootPiles().containsKey(lootPileId))
+            .flatMap(lootPileId -> game.getGameState().getLootPile(lootPileId).getParams().getItems().stream())
+            .forEach(item -> renderMenuOption(renderingLayer, iconRetriever, x, y, i, item));
+    }
+
     private void renderMenuOption(RenderingLayer renderingLayer, IconRetriever iconRetriever, float x, float y, AtomicInteger i
         , Item item) {
         Rect rect = ItemPickupMenuPositioning.getMenuOptionRect(i.get());
@@ -42,27 +63,6 @@ public class ItemPickupMenuRenderer {
                                Vector2.of(rect.getX() + 40f, rect.getY() + 17f),
                                Color.CYAN);
         i.getAndIncrement();
-    }
-
-    public void render(RenderingLayer renderingLayer, CoreGame game) {
-        PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
-
-        if (playerConfig == null || playerConfig.getIsInventoryVisible()) {
-            return;
-        }
-
-        float x = game.hudMousePos().getX();
-        float y = game.hudMousePos().getY();
-
-        IconRetriever iconRetriever = game.getEntityManager().getGameEntityRenderer().getIconRetriever();
-
-        AtomicInteger i = new AtomicInteger();
-        playerConfig
-            .getItemPickupMenuLootPiles()
-            .stream()
-            .filter(lootPileId -> game.getGameState().getLootPiles().containsKey(lootPileId))
-            .flatMap(lootPileId -> game.getGameState().getLootPile(lootPileId).getParams().getItems().stream())
-            .forEach(item -> renderMenuOption(renderingLayer, iconRetriever, x, y, i, item));
     }
 
 }

@@ -18,20 +18,16 @@ public abstract class GameState {
     protected final AbilityAccessor abilityAccessor = AbilityAccessor.of(this, dataHolder);
     protected final CreatureAccessor creatureAccessor = CreatureAccessor.of(this, dataHolder);
 
-    private GameStateData getData() {
-        return dataHolder.getData();
-    }
-
-    public AbilityAccessor accessAbilities() {
-        return abilityAccessor;
-    }
-
     public CreatureAccessor accessCreatures() {
         return creatureAccessor;
     }
 
     public void initPlayerConfig(CreatureId playerId) {
         getData().getPlayerConfig().put(playerId, PlayerConfig.of());
+    }
+
+    private GameStateData getData() {
+        return dataHolder.getData();
     }
 
     public PlayerConfig getPlayerConfig(CreatureId creatureId) {
@@ -72,6 +68,10 @@ public abstract class GameState {
             .stream()
             .filter(entry -> entry.getValue().getParams().getState() == AbilityState.INACTIVE)
             .forEach(entry -> game.getEventProcessor().getAbilityModelsToBeRemoved().add(entry.getKey()));
+    }
+
+    public AbilityAccessor accessAbilities() {
+        return abilityAccessor;
     }
 
     public Float getTime() {

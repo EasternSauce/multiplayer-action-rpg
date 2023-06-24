@@ -33,6 +33,13 @@ public class GameplayRendererHelper {
         game.renderB2BodyDebug();
     }
 
+    private static void renderAreaLayers(GameEntityRenderer renderer, List<Integer> layers, CoreGame game) {
+        int[] layersArray = layers.stream().mapToInt(Integer::intValue).toArray();
+        if (renderer.getAreaRenderers().containsKey(game.getGameState().getCurrentAreaId())) {
+            renderer.getAreaRenderers().get(game.getGameState().getCurrentAreaId()).render(layersArray);
+        }
+    }
+
     private static void renderWorldElements(GameEntityRenderer renderer, RenderingLayer worldElementsRenderingLayer,
                                             CoreGame game) {
         worldElementsRenderingLayer.getSpriteBatch().begin();
@@ -43,13 +50,6 @@ public class GameplayRendererHelper {
         renderer.renderAliveCreatures(worldElementsRenderingLayer, game);
 
         worldElementsRenderingLayer.end();
-    }
-
-    private static void renderAreaLayers(GameEntityRenderer renderer, List<Integer> layers, CoreGame game) {
-        int[] layersArray = layers.stream().mapToInt(Integer::intValue).toArray();
-        if (renderer.getAreaRenderers().containsKey(game.getGameState().getCurrentAreaId())) {
-            renderer.getAreaRenderers().get(game.getGameState().getCurrentAreaId()).render(layersArray);
-        }
     }
 
     private static void renderWorldText(GameEntityRenderer renderer, RenderingLayer worldTextRenderingLayer, CoreGame game) {
@@ -64,6 +64,34 @@ public class GameplayRendererHelper {
         worldElementsRenderingLayer.begin();
 
         renderer.renderAbilities(worldElementsRenderingLayer, game);
+
+        worldElementsRenderingLayer.end();
+    }
+
+    private static void renderCreatureHitAnimations(GameEntityRenderer renderer, RenderingLayer worldElementsRenderingLayer,
+                                                    CoreGame game) {
+
+        worldElementsRenderingLayer.begin();
+
+        renderer
+            .getCreatureHitAnimations()
+            .stream()
+            .filter(creatureHitAnimation -> creatureHitAnimation
+                .getAreaId()
+                .getValue()
+                .equals(game.getGameState().getCurrentAreaId().getValue()))
+
+            .forEach(creatureHitAnimation -> {
+                CreatureRenderer creatureRenderer = renderer.getCreatureRenderers().get(creatureHitAnimation.getCreatureId());
+
+                float timeSinceStarted = game.getGameState().getTime() - creatureHitAnimation.getHitTime();
+                creatureRenderer
+                    .getCreatureHitAnimationRenderer()
+                    .render(timeSinceStarted,
+                            creatureHitAnimation.getVectorTowardsContactPoint(),
+                            worldElementsRenderingLayer,
+                            game);
+            });
 
         worldElementsRenderingLayer.end();
     }
@@ -92,27 +120,6 @@ public class GameplayRendererHelper {
             });
 
         worldTextRenderingLayer.end();
-    }
-
-    private static void renderCreatureHitAnimations(GameEntityRenderer renderer, RenderingLayer worldElementsRenderingLayer,
-                                                    CoreGame game) {
-
-        worldElementsRenderingLayer.begin();
-
-        renderer.getCreatureHitAnimations().forEach(creatureHitAnimation -> {
-            CreatureRenderer creatureRenderer = renderer.getCreatureRenderers().get(creatureHitAnimation.getCreatureId());
-
-            float timeSinceStarted = game.getGameState().getTime() - creatureHitAnimation.getDamageTime();
-            creatureRenderer
-                .getCreatureHitAnimationRenderer()
-                .render(timeSinceStarted,
-                        creatureHitAnimation.getAreaId(),
-                        creatureHitAnimation.getPos(),
-                        worldElementsRenderingLayer,
-                        game);
-        });
-
-        worldElementsRenderingLayer.end();
     }
 
     public static void updateRenderer(CoreGame game) {

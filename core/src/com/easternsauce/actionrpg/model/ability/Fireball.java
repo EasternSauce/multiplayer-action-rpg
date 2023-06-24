@@ -38,6 +38,16 @@ public class Fireball extends Projectile {
     }
 
     @Override
+    public Boolean isRanged() {
+        return true;
+    }
+
+    @Override
+    public void onChannelUpdate(CoreGame game) {
+        onProjectileTravelUpdate();
+    }
+
+    @Override
     protected void onActiveUpdate(float delta, CoreGame game) {
         //projectile speeds up over time
         onProjectileTravelUpdate();
@@ -48,16 +58,6 @@ public class Fireball extends Projectile {
         else {
             getParams().setSpeed(80f);
         }
-    }
-
-    @Override
-    public Boolean isRanged() {
-        return true;
-    }
-
-    @Override
-    public void onChannelUpdate(CoreGame game) {
-        onProjectileTravelUpdate();
     }
 
     @Override

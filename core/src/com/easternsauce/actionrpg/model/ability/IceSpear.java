@@ -48,6 +48,15 @@ public class IceSpear extends Projectile {
     }
 
     @Override
+    protected void onActiveUpdate(float delta, CoreGame game) {
+        onProjectileTravelUpdate();
+
+        if (getParams().getPos().distance(getParams().getSkillStartPos()) > 6.5f) {
+            deactivate();
+        }
+    }
+
+    @Override
     public void onCreatureHit(CreatureId creatureId, CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
@@ -65,15 +74,6 @@ public class IceSpear extends Projectile {
     @Override
     protected boolean isWeaponAttack() {
         return false;
-    }
-
-    @Override
-    protected void onActiveUpdate(float delta, CoreGame game) {
-        onProjectileTravelUpdate();
-
-        if (getParams().getPos().distance(getParams().getSkillStartPos()) > 6.5f) {
-            deactivate();
-        }
     }
 }
 

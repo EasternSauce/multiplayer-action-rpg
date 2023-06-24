@@ -28,16 +28,12 @@ public class CreatureAccessor {
     private GameState gameState;
     private GameStateDataHolder dataHolder;
 
-    private GameStateData getData() {
-        return dataHolder.getData();
-    }
-
     public Map<CreatureId, Creature> getRemovedCreatures() {
         return getData().getRemovedCreatures();
     }
 
-    public Map<CreatureId, Creature> getCreatures() {
-        return getData().getCreatures();
+    private GameStateData getData() {
+        return dataHolder.getData();
     }
 
     public Vector2 getCreaturePos(CreatureId creatureId) {
@@ -83,6 +79,10 @@ public class CreatureAccessor {
         gameState.accessCreatures().getCreatures().values().stream().filter(Creature::isAlive).forEach(creatureAction);
     }
 
+    public Map<CreatureId, Creature> getCreatures() {
+        return getData().getCreatures();
+    }
+
     public void forEachDeadCreature(Consumer<Creature> creatureAction) {
         gameState
             .accessCreatures()
@@ -112,28 +112,6 @@ public class CreatureAccessor {
         gameState.scheduleServerSideAction(action);
     }
 
-    public void handleCreatureUseSkillAtTarget(CreatureId creatureId, Vector2 vectorTowardsTarget, SkillType skillType) {
-        Creature creature = gameState.accessCreatures().getCreatures().get(creatureId);
-
-        if (!creature
-            .getParams()
-            .getEnemyParams()
-            .getSkillUses()
-            .stream()
-            .map(EnemySkillUseEntry::getSkillType)
-            .collect(Collectors.toSet())
-            .contains(skillType)) {
-            throw new RuntimeException("trying to use a skill that is not in enemy's skill uses!");
-        }
-
-        SkillTryPerformAction action = SkillTryPerformAction.of(creatureId,
-                                                                skillType,
-                                                                creature.getParams().getPos(),
-                                                                vectorTowardsTarget);
-
-        gameState.scheduleServerSideAction(action);
-    }
-
     // TODO: move to enemy?
     private static void pickSkillUseSkillType(Set<EnemySkillUseEntry> skillUseEntries, Creature creature) {
         AtomicReference<Float> totalWeight = new AtomicReference<>((float) 0);
@@ -154,6 +132,28 @@ public class CreatureAccessor {
 
         creature.getParams().getEnemyParams().setSkillUsePickedSkillType(pickedSkillType.get());
         creature.getParams().getEnemyParams().setSkillUseReadyToPick(false);
+    }
+
+    public void handleCreatureUseSkillAtTarget(CreatureId creatureId, Vector2 vectorTowardsTarget, SkillType skillType) {
+        Creature creature = gameState.accessCreatures().getCreatures().get(creatureId);
+
+        if (!creature
+            .getParams()
+            .getEnemyParams()
+            .getSkillUses()
+            .stream()
+            .map(EnemySkillUseEntry::getSkillType)
+            .collect(Collectors.toSet())
+            .contains(skillType)) {
+            throw new RuntimeException("trying to use a skill that is not in enemy's skill uses!");
+        }
+
+        SkillTryPerformAction action = SkillTryPerformAction.of(creatureId,
+                                                                skillType,
+                                                                creature.getParams().getPos(),
+                                                                vectorTowardsTarget);
+
+        gameState.scheduleServerSideAction(action);
     }
 
     public CreatureId getAliveCreatureIdClosestTo(Vector2 pos, float maxRange, Set<CreatureId> excluded) {

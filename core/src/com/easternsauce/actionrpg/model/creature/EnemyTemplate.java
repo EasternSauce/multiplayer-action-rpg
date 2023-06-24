@@ -13,12 +13,6 @@ import java.util.concurrent.ConcurrentSkipListSet;
 @AllArgsConstructor(staticName = "of")
 @Data
 public class EnemyTemplate {
-    private EnemyType enemyType;
-    private Float maxLife;
-    private Float attackDistance;
-    private Set<DropTableEntry> dropTable;
-    private Set<EnemySkillUseEntry> enemySkillUseEntries;
-
     private static Set<DropTableEntry> randomDropSet = new ConcurrentSkipListSet<>(Arrays.asList(DropTableEntry.leatherArmorDrop,
                                                                                                  DropTableEntry.specialLeatherArmorDrop,
                                                                                                  DropTableEntry.hideGlovesDrop,
@@ -31,7 +25,6 @@ public class EnemyTemplate {
                                                                                                  DropTableEntry.shieldDrop,
                                                                                                  DropTableEntry.lifePotionDrop,
                                                                                                  DropTableEntry.manaPotionDrop));
-
     public static EnemyTemplate archer = EnemyTemplate.of(EnemyType.ARCHER,
                                                           150f,
                                                           20f,
@@ -39,7 +32,6 @@ public class EnemyTemplate {
                                                           new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(
                                                               SkillType.MOB_CROSSBOW_SHOT,
                                                               100f), EnemySkillUseEntry.of(SkillType.POISONOUS_MIXTURE, 40f))));
-
     public static EnemyTemplate skeleton = EnemyTemplate.of(EnemyType.SKELETON,
                                                             150f,
                                                             4f,
@@ -69,4 +61,9 @@ public class EnemyTemplate {
                                                                                                                          60f),
                                                                                                    EnemySkillUseEntry.of(SkillType.FIREBALL,
                                                                                                                          60f))));
+    private EnemyType enemyType;
+    private Float maxLife;
+    private Float attackDistance;
+    private Set<DropTableEntry> dropTable;
+    private Set<EnemySkillUseEntry> enemySkillUseEntries;
 }

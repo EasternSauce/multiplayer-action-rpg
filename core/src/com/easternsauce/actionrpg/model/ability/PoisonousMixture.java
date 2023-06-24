@@ -37,6 +37,16 @@ public class PoisonousMixture extends Projectile {
     }
 
     @Override
+    public Boolean isRanged() {
+        return true;
+    }
+
+    @Override
+    public void onChannelUpdate(CoreGame game) {
+        onProjectileTravelUpdate();
+    }
+
+    @Override
     protected void onActiveUpdate(float delta, CoreGame game) {
         //projectile speeds up over time
         onProjectileTravelUpdate();
@@ -51,16 +61,6 @@ public class PoisonousMixture extends Projectile {
         if (getParams().getPos().distance(getParams().getSkillStartPos()) > 13f) {
             deactivate();
         }
-    }
-
-    @Override
-    public Boolean isRanged() {
-        return true;
-    }
-
-    @Override
-    public void onChannelUpdate(CoreGame game) {
-        onProjectileTravelUpdate();
     }
 
     @Override

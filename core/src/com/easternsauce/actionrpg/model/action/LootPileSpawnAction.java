@@ -24,19 +24,12 @@ public class LootPileSpawnAction extends GameStateAction {
     private Vector2 pos;
     private Set<Item> items;
 
-    @Override
-    public Entity getEntity(CoreGame game) {
-        return null;
-    }
-
-    @Override
-    protected Vector2 getOverridePos() {
-        return pos;
-    }
-
-    @Override
-    protected AreaId getOverrideAreaId() {
-        return areaId;
+    public static LootPileSpawnAction of(AreaId areaId, Vector2 pos, Set<Item> items) {
+        LootPileSpawnAction action = LootPileSpawnAction.of();
+        action.areaId = areaId;
+        action.pos = pos;
+        action.items = items;
+        return action;
     }
 
     @Override
@@ -62,11 +55,18 @@ public class LootPileSpawnAction extends GameStateAction {
         game.getEventProcessor().getLootPileModelsToBeCreated().add(lootPile.getParams().getId());
     }
 
-    public static LootPileSpawnAction of(AreaId areaId, Vector2 pos, Set<Item> items) {
-        LootPileSpawnAction action = LootPileSpawnAction.of();
-        action.areaId = areaId;
-        action.pos = pos;
-        action.items = items;
-        return action;
+    @Override
+    protected Vector2 getOverridePos() {
+        return pos;
+    }
+
+    @Override
+    public Entity getEntity(CoreGame game) {
+        return null;
+    }
+
+    @Override
+    protected AreaId getOverrideAreaId() {
+        return areaId;
     }
 }

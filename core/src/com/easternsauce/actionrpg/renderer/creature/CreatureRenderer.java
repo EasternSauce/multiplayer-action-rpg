@@ -30,7 +30,7 @@ public class CreatureRenderer {
     public void init(TextureAtlas atlas, CoreGame game) {
         creatureSprite = CreatureSprite.of(creatureId);
         creatureStunnedAnimationRenderer = CreatureStunnedAnimationRenderer.of(creatureId);
-        creatureHitAnimationRenderer = CreatureHitAnimationRenderer.of();
+        creatureHitAnimationRenderer = CreatureHitAnimationRenderer.of(creatureId);
 
         CreatureAnimationConfig config = game.getGameState().accessCreatures().getCreatures().get(creatureId).animationConfig();
 

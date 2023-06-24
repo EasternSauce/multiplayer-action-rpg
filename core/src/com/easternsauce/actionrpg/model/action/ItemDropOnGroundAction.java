@@ -22,9 +22,10 @@ import java.util.concurrent.ConcurrentSkipListSet;
 public class ItemDropOnGroundAction extends GameStateAction {
     private CreatureId playerId;
 
-    @Override
-    public Entity getEntity(CoreGame game) {
-        return game.getGameState().accessCreatures().getCreature(playerId);
+    public static ItemDropOnGroundAction of(CreatureId playerId) {
+        ItemDropOnGroundAction action = ItemDropOnGroundAction.of();
+        action.playerId = playerId;
+        return action;
     }
 
     @Override
@@ -65,9 +66,8 @@ public class ItemDropOnGroundAction extends GameStateAction {
 
     }
 
-    public static ItemDropOnGroundAction of(CreatureId playerId) {
-        ItemDropOnGroundAction action = ItemDropOnGroundAction.of();
-        action.playerId = playerId;
-        return action;
+    @Override
+    public Entity getEntity(CoreGame game) {
+        return game.getGameState().accessCreatures().getCreature(playerId);
     }
 }

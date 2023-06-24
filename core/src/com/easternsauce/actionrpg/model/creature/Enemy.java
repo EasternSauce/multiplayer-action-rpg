@@ -72,88 +72,6 @@ public class Enemy extends Creature {
 
     }
 
-    @Override
-    public void updateAutoControl(CoreGame game) {
-        if (isAlive()) {
-            if (getParams().getEnemyParams().getAutoControlStateTimer().getTime() >
-                getParams().getEnemyParams().getAutoControlStateTime()) {
-
-                getParams().getEnemyParams().getAutoControlStateTimer().restart();
-
-                processAutoControlStateChangeLogic(game);
-
-                getParams().getEnemyParams().setAutoControlStateTime(1f + 1f * nextAutoControlStateRngValue());
-            }
-
-            if (getParams().getEnemyParams().getJustAttackedByCreatureId() != null && game
-                .getGameState()
-                .accessCreatures()
-                .getCreature(getParams()
-                                 .getEnemyParams()
-                                 .getJustAttackedByCreatureId()) instanceof Player) { // if attacked by player,
-                // aggro no matter what
-                params.getEnemyParams().setAggroedCreatureId(getParams().getEnemyParams().getJustAttackedByCreatureId());
-            }
-            else { // if not attacked, search around for targets
-                CreatureId foundTargetId = getParams().getEnemyParams().getLastFoundTargetId();
-
-                if (getParams().getEnemyParams().getFindTargetTimer().getTime() >
-                    getParams().getEnemyParams().getFindTargetCooldown()) {
-                    foundTargetId = findTarget(game);
-                    getParams().getEnemyParams().getFindTargetTimer().restart();
-                }
-
-                if (foundTargetId != null) {
-                    if (getParams().getEnemyParams().getLastFoundTargetId() == null ||
-                        !getParams().getEnemyParams().getLastFoundTargetId().equals(foundTargetId)) {
-                        getParams().getEnemyParams().setAutoControlState(EnemyAutoControlState.ALERTED);
-                        params.getEnemyParams().setAggroedCreatureId(foundTargetId);
-                        getParams().getEnemyParams().setLastFoundTargetId(foundTargetId);
-                    }
-
-                }
-            }
-
-            Creature potentialTarget = null;
-            if (getParams().getEnemyParams().getAggroedCreatureId() != null) {
-                potentialTarget = game
-                    .getGameState()
-                    .accessCreatures()
-                    .getCreature(getParams().getEnemyParams().getAggroedCreatureId());
-
-                if (potentialTarget != null) {
-                    Float distance = getParams().getPos().distance(potentialTarget.getParams().getPos());
-
-                    if (distance < Constants.LOSE_AGGRO_DISTANCE) {
-                        getParams().getEnemyParams().getAggroTimer().restart();
-                    }
-                }
-
-            }
-
-            if (getParams().getEnemyParams().getAggroTimer().getTime() < getParams().getEnemyParams().getLoseAggroTime() &&
-                potentialTarget != null && potentialTarget.isAlive() && this.isAlive()) { // if aggro not timed
-                // out and potential target is found
-
-                Vector2 vectorTowardsTarget = getParams().getPos().vectorTowards(potentialTarget.getParams().getPos());
-
-                handleAutoControlStateTargetDistanceLogic(potentialTarget);
-                handleNewTarget(potentialTarget.getParams().getId()); // logic for when target changed
-                handleMovement(potentialTarget); // set movement command, causing creature to walk towards target
-                handleAimDirectionAdjustment(vectorTowardsTarget);
-                handleUseAbilityAtTarget(potentialTarget, vectorTowardsTarget, game); // attack target if within range
-            }
-            else { // if aggro timed out and out of range
-                if (potentialTarget != null) {
-                    handleTargetLost();
-                }
-
-            }
-
-            processPathfinding(game); // set path towards creature target
-        }
-    }
-
     private void handleAimDirectionAdjustment(Vector2 vectorTowardsTarget) {
         getParams().getMovementParams().setAimDirection(vectorTowardsTarget.normalized());
     }
@@ -409,15 +327,6 @@ public class Enemy extends Creature {
         stopMoving();
     }
 
-    public Float nextAutoControlStateRngValue() {
-        getParams()
-            .getEnemyParams()
-            .setAutoControlStateRngSeed(RandomHelper.seededRandomFloat(getParams()
-                                                                           .getEnemyParams()
-                                                                           .getAutoControlStateRngSeed()));
-        return getParams().getEnemyParams().getAutoControlStateRngSeed();
-    }
-
     public Float nextAutoControlStateRngNegativeOrPositiveValue() {
         getParams()
             .getEnemyParams()
@@ -425,6 +334,16 @@ public class Enemy extends Creature {
                                                                            .getEnemyParams()
                                                                            .getAutoControlStateRngSeed()));
         return (getParams().getEnemyParams().getAutoControlStateRngSeed() - 0.5f) * 2;
+    }
+
+    @Override
+    protected void updateEnemyTimers(float delta) {
+        getParams().getEnemyParams().getPathCalculationCooldownTimer().update(delta);
+        getParams().getEnemyParams().getAggroTimer().update(delta);
+        getParams().getEnemyParams().getFindTargetTimer().update(delta);
+        getParams().getEnemyParams().getAutoControlStateTimer().update(delta);
+        getParams().getEnemyParams().getAttackCooldownTimer().update(delta);
+        getParams().getEnemyParams().getJustAttackedFromRangeTimer().update(delta);
     }
 
     @Override
@@ -464,18 +383,90 @@ public class Enemy extends Creature {
     }
 
     @Override
-    public boolean canPerformSkill(Skill skill, CoreGame game) {
-        return isAlive() && getParams().getStats().getStamina() >= skill.getStaminaCost();
+    public void updateAutoControl(CoreGame game) {
+        if (isAlive()) {
+            if (getParams().getEnemyParams().getAutoControlStateTimer().getTime() >
+                getParams().getEnemyParams().getAutoControlStateTime()) {
+
+                getParams().getEnemyParams().getAutoControlStateTimer().restart();
+
+                processAutoControlStateChangeLogic(game);
+
+                getParams().getEnemyParams().setAutoControlStateTime(1f + 1f * nextAutoControlStateRngValue());
+            }
+
+            if (getParams().getEnemyParams().getJustAttackedByCreatureId() != null && game
+                .getGameState()
+                .accessCreatures()
+                .getCreature(getParams()
+                                 .getEnemyParams()
+                                 .getJustAttackedByCreatureId()) instanceof Player) { // if attacked by player,
+                // aggro no matter what
+                params.getEnemyParams().setAggroedCreatureId(getParams().getEnemyParams().getJustAttackedByCreatureId());
+            }
+            else { // if not attacked, search around for targets
+                CreatureId foundTargetId = getParams().getEnemyParams().getLastFoundTargetId();
+
+                if (getParams().getEnemyParams().getFindTargetTimer().getTime() >
+                    getParams().getEnemyParams().getFindTargetCooldown()) {
+                    foundTargetId = findTarget(game);
+                    getParams().getEnemyParams().getFindTargetTimer().restart();
+                }
+
+                if (foundTargetId != null) {
+                    if (getParams().getEnemyParams().getLastFoundTargetId() == null ||
+                        !getParams().getEnemyParams().getLastFoundTargetId().equals(foundTargetId)) {
+                        getParams().getEnemyParams().setAutoControlState(EnemyAutoControlState.ALERTED);
+                        params.getEnemyParams().setAggroedCreatureId(foundTargetId);
+                        getParams().getEnemyParams().setLastFoundTargetId(foundTargetId);
+                    }
+
+                }
+            }
+
+            Creature potentialTarget = null;
+            if (getParams().getEnemyParams().getAggroedCreatureId() != null) {
+                potentialTarget = game
+                    .getGameState()
+                    .accessCreatures()
+                    .getCreature(getParams().getEnemyParams().getAggroedCreatureId());
+
+                if (potentialTarget != null) {
+                    Float distance = getParams().getPos().distance(potentialTarget.getParams().getPos());
+
+                    if (distance < Constants.LOSE_AGGRO_DISTANCE) {
+                        getParams().getEnemyParams().getAggroTimer().restart();
+                    }
+                }
+
+            }
+
+            if (getParams().getEnemyParams().getAggroTimer().getTime() < getParams().getEnemyParams().getLoseAggroTime() &&
+                potentialTarget != null && potentialTarget.isAlive() && this.isAlive()) { // if aggro not timed
+                // out and potential target is found
+
+                Vector2 vectorTowardsTarget = getParams().getPos().vectorTowards(potentialTarget.getParams().getPos());
+
+                handleAutoControlStateTargetDistanceLogic(potentialTarget);
+                handleNewTarget(potentialTarget.getParams().getId()); // logic for when target changed
+                handleMovement(potentialTarget); // set movement command, causing creature to walk towards target
+                handleAimDirectionAdjustment(vectorTowardsTarget);
+                handleUseAbilityAtTarget(potentialTarget, vectorTowardsTarget, game); // attack target if within range
+            }
+            else { // if aggro timed out and out of range
+                if (potentialTarget != null) {
+                    handleTargetLost();
+                }
+
+            }
+
+            processPathfinding(game); // set path towards creature target
+        }
     }
 
     @Override
-    protected void updateEnemyTimers(float delta) {
-        getParams().getEnemyParams().getPathCalculationCooldownTimer().update(delta);
-        getParams().getEnemyParams().getAggroTimer().update(delta);
-        getParams().getEnemyParams().getFindTargetTimer().update(delta);
-        getParams().getEnemyParams().getAutoControlStateTimer().update(delta);
-        getParams().getEnemyParams().getAttackCooldownTimer().update(delta);
-        getParams().getEnemyParams().getJustAttackedFromRangeTimer().update(delta);
+    public boolean canPerformSkill(Skill skill, CoreGame game) {
+        return isAlive() && getParams().getStats().getStamina() >= skill.getStaminaCost();
     }
 
     @Override
@@ -505,5 +496,14 @@ public class Enemy extends Creature {
         getParams().getEnemyParams().setAutoControlState(EnemyAutoControlState.AGGRESSIVE);
         getParams().getStats().setSpeed(getParams().getStats().getBaseSpeed());
         getParams().getEnemyParams().setAggroedCreatureId(ability.getParams().getCreatureId());
+    }
+
+    public Float nextAutoControlStateRngValue() {
+        getParams()
+            .getEnemyParams()
+            .setAutoControlStateRngSeed(RandomHelper.seededRandomFloat(getParams()
+                                                                           .getEnemyParams()
+                                                                           .getAutoControlStateRngSeed()));
+        return getParams().getEnemyParams().getAutoControlStateRngSeed();
     }
 }

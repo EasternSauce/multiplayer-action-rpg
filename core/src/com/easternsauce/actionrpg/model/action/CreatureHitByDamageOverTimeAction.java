@@ -16,14 +16,12 @@ public class CreatureHitByDamageOverTimeAction extends CreatureHitAction {
     private CreatureId targetId;
     private Float damage;
 
-    @Override
-    public Entity getEntity(CoreGame game) {
-        return game.getGameState().accessCreatures().getCreature(targetId);
-    }
-
-    @Override
-    public boolean isActionObjectValid(CoreGame game) {
-        return true;
+    public static CreatureHitByDamageOverTimeAction of(CreatureId attackerId, CreatureId targetId, Float damage) {
+        CreatureHitByDamageOverTimeAction action = CreatureHitByDamageOverTimeAction.of();
+        action.attackerId = attackerId;
+        action.targetId = targetId;
+        action.damage = damage;
+        return action;
     }
 
     @Override
@@ -40,11 +38,13 @@ public class CreatureHitByDamageOverTimeAction extends CreatureHitAction {
         handleCreatureDeath(targetCreature, attackerCreature, game);
     }
 
-    public static CreatureHitByDamageOverTimeAction of(CreatureId attackerId, CreatureId targetId, Float damage) {
-        CreatureHitByDamageOverTimeAction action = CreatureHitByDamageOverTimeAction.of();
-        action.attackerId = attackerId;
-        action.targetId = targetId;
-        action.damage = damage;
-        return action;
+    @Override
+    public Entity getEntity(CoreGame game) {
+        return game.getGameState().accessCreatures().getCreature(targetId);
+    }
+
+    @Override
+    public boolean isActionObjectValid(CoreGame game) {
+        return true;
     }
 }

@@ -19,9 +19,11 @@ public class InventoryItemUseAction extends GameStateAction {
 
     private Integer slotIndex;
 
-    @Override
-    public Entity getEntity(CoreGame game) {
-        return game.getGameState().accessCreatures().getCreature(playerId);
+    public static InventoryItemUseAction of(CreatureId creatureId, Integer slotIndex) {
+        InventoryItemUseAction action = InventoryItemUseAction.of();
+        action.playerId = creatureId;
+        action.slotIndex = slotIndex;
+        return action;
     }
 
     @Override
@@ -45,6 +47,11 @@ public class InventoryItemUseAction extends GameStateAction {
         }
     }
 
+    @Override
+    public Entity getEntity(CoreGame game) {
+        return game.getGameState().accessCreatures().getCreature(playerId);
+    }
+
     private void processUseItem(Creature creature, Item item, CoreGame game) {
         if (item.getTemplate().getId().equals("lifePotion")) {
             creature.applyEffect(CreatureEffect.LIFE_REGENERATION, 3f, game);
@@ -52,12 +59,5 @@ public class InventoryItemUseAction extends GameStateAction {
         else if (item.getTemplate().getId().equals("manaPotion")) {
             creature.applyEffect(CreatureEffect.MANA_REGENERATION, 3f, game);
         }
-    }
-
-    public static InventoryItemUseAction of(CreatureId creatureId, Integer slotIndex) {
-        InventoryItemUseAction action = InventoryItemUseAction.of();
-        action.playerId = creatureId;
-        action.slotIndex = slotIndex;
-        return action;
     }
 }

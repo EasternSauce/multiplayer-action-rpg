@@ -26,6 +26,20 @@ public class ClientGameState extends GameState {
         return accessCreatures().getCreaturesToUpdateForPlayerCreatureId(getThisClientPlayerId());
     }
 
+    @Override
+    public void scheduleServerSideAction(GameStateAction action) {
+        // do nothing on client side
+    }
+
+    @Override
+    public AreaId getCurrentAreaId() {
+        if (!accessCreatures().getCreatures().containsKey(getThisClientPlayerId())) {
+            return getDefaultAreaId();
+        }
+
+        return accessCreatures().getCreature(getThisClientPlayerId()).getParams().getAreaId();
+    }
+
     public void createEventsFromReceivedGameStateData(GameStateData newGameStateData, EntityEventProcessor eventProcessor) {
         GameStateData oldGameStateData = dataHolder.getData();
 
@@ -74,20 +88,6 @@ public class ClientGameState extends GameState {
 
     public void setNewGameState(GameStateData receivedGameStateData) {
         dataHolder.setData(receivedGameStateData);
-    }
-
-    @Override
-    public void scheduleServerSideAction(GameStateAction action) {
-        // do nothing on client side
-    }
-
-    @Override
-    public AreaId getCurrentAreaId() {
-        if (!accessCreatures().getCreatures().containsKey(getThisClientPlayerId())) {
-            return getDefaultAreaId();
-        }
-
-        return accessCreatures().getCreature(getThisClientPlayerId()).getParams().getAreaId();
     }
 
 }

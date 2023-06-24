@@ -17,9 +17,10 @@ import lombok.NoArgsConstructor;
 public class PlayerInitAction extends GameStateAction {
     private CreatureId playerId;
 
-    @Override
-    public Entity getEntity(CoreGame game) {
-        return game.getGameState().accessCreatures().getCreature(playerId);
+    public static PlayerInitAction of(CreatureId playerId) {
+        PlayerInitAction action = PlayerInitAction.of();
+        action.playerId = playerId;
+        return action;
     }
 
     public void applyToGame(CoreGame game) {
@@ -40,6 +41,18 @@ public class PlayerInitAction extends GameStateAction {
 
     }
 
+    @Override
+    public Entity getEntity(CoreGame game) {
+        return game.getGameState().accessCreatures().getCreature(playerId);
+    }
+
+    private Creature loadExistingPlayerData(CoreGame game) {
+        Creature player;
+        player = game.getGameState().accessCreatures().getRemovedCreatures().get(playerId);
+        game.getGameState().accessCreatures().getRemovedCreatures().remove(playerId);
+        return player;
+    }
+
     private Creature createNewPlayer(CoreGame game) {
         String[] textures = new String[]{
             "male1",
@@ -52,18 +65,5 @@ public class PlayerInitAction extends GameStateAction {
         String textureName = textures[((int) (Math.random() * 100) % 3)];
 
         return Player.of(playerId, AreaId.of("area3"), pos, textureName);
-    }
-
-    private Creature loadExistingPlayerData(CoreGame game) {
-        Creature player;
-        player = game.getGameState().accessCreatures().getRemovedCreatures().get(playerId);
-        game.getGameState().accessCreatures().getRemovedCreatures().remove(playerId);
-        return player;
-    }
-
-    public static PlayerInitAction of(CreatureId playerId) {
-        PlayerInitAction action = PlayerInitAction.of();
-        action.playerId = playerId;
-        return action;
     }
 }

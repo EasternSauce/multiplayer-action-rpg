@@ -46,6 +46,33 @@ public class ServerGameState extends GameState {
         return creaturesToUpdate;
     }
 
+    @Override
+    public void scheduleServerSideAction(GameStateAction action) {
+        onTickActions.add(action);
+    }
+
+    @Override
+    public CreatureId getThisClientPlayerId() {
+        Optional<Creature> any = accessCreatures()
+            .getCreatures()
+            .values()
+            .stream()
+            .filter(creature -> creature instanceof Player)
+            .findAny();
+        return any.map(Creature::getId).orElse(null);
+    }
+
+    @Override
+    public AreaId getCurrentAreaId() {
+        Optional<Creature> any = accessCreatures()
+            .getCreatures()
+            .values()
+            .stream()
+            .filter(creature -> creature instanceof Player)
+            .findAny();
+        return any.map(creature -> creature.getParams().getAreaId()).orElse(getDefaultAreaId());
+    }
+
     public void sendGameDataPersonalizedForPlayer(Connection connection) {
         Creature player = accessCreatures().getCreatures().get(getClientPlayers().get(connection.getID()));
 
@@ -188,32 +215,5 @@ public class ServerGameState extends GameState {
             .stream()
             .filter(entry -> entry.getValue().getParams().getIsFullyLooted())
             .forEach(entry -> scheduleServerSideAction(LootPileDespawnAction.of(entry.getKey())));
-    }
-
-    @Override
-    public void scheduleServerSideAction(GameStateAction action) {
-        onTickActions.add(action);
-    }
-
-    @Override
-    public CreatureId getThisClientPlayerId() {
-        Optional<Creature> any = accessCreatures()
-            .getCreatures()
-            .values()
-            .stream()
-            .filter(creature -> creature instanceof Player)
-            .findAny();
-        return any.map(Creature::getId).orElse(null);
-    }
-
-    @Override
-    public AreaId getCurrentAreaId() {
-        Optional<Creature> any = accessCreatures()
-            .getCreatures()
-            .values()
-            .stream()
-            .filter(creature -> creature instanceof Player)
-            .findAny();
-        return any.map(creature -> creature.getParams().getAreaId()).orElse(getDefaultAreaId());
     }
 }

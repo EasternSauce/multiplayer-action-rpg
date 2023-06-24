@@ -19,9 +19,12 @@ public class CreatureRespawnAction extends GameStateAction {
     private Vector2 pos;
     private AreaId areaId;
 
-    @Override
-    public Entity getEntity(CoreGame game) {
-        return game.getGameState().accessCreatures().getCreature(creatureId);
+    public static CreatureRespawnAction of(CreatureId creatureId, Vector2 pos, AreaId areaId) {
+        CreatureRespawnAction action = CreatureRespawnAction.of();
+        action.creatureId = creatureId;
+        action.pos = pos;
+        action.areaId = areaId;
+        return action;
     }
 
     public void applyToGame(CoreGame game) {
@@ -41,11 +44,8 @@ public class CreatureRespawnAction extends GameStateAction {
 
     }
 
-    public static CreatureRespawnAction of(CreatureId creatureId, Vector2 pos, AreaId areaId) {
-        CreatureRespawnAction action = CreatureRespawnAction.of();
-        action.creatureId = creatureId;
-        action.pos = pos;
-        action.areaId = areaId;
-        return action;
+    @Override
+    public Entity getEntity(CoreGame game) {
+        return game.getGameState().accessCreatures().getCreature(creatureId);
     }
 }

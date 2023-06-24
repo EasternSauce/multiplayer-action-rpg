@@ -32,22 +32,6 @@ public class CreatureBody {
         return creatureBody;
     }
 
-    public void init(AreaId areaId, CoreGame game) {
-        Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
-
-        this.world = game.getPhysicsWorld(areaId);
-
-        this.areaId = areaId;
-
-        this.b2body = B2BodyFactory.createCreatureB2Body(world, this, creature);
-
-        if (!creature.isAlive()) {
-            this.b2body.getFixtureList().get(0).setSensor(true);
-        }
-
-        this.bodyCreated = true;
-    }
-
     public void update(CoreGame game) {
         if (!game.getGameState().accessCreatures().getCreatures().containsKey(creatureId)) {
             return;
@@ -105,6 +89,10 @@ public class CreatureBody {
         }
     }
 
+    public void setSensor(boolean sensor) {
+        b2body.getFixtureList().get(0).setSensor(sensor);
+    }
+
     public void setVelocity(Vector2 velocity) {
         b2body.setLinearVelocity(new com.badlogic.gdx.math.Vector2(velocity.getX(), velocity.getY()));
     }
@@ -124,14 +112,6 @@ public class CreatureBody {
         b2body.setTransform(vector.getX(), vector.getY(), b2body.getAngle());
     }
 
-    public void onRemove() {
-        world.getB2world().destroyBody(b2body);
-    }
-
-    public void setSensor(boolean sensor) {
-        b2body.getFixtureList().get(0).setSensor(sensor);
-    }
-
     public void setActive(boolean isActive) {
         if (this.isActive != isActive) {
             this.isActive = isActive;
@@ -146,5 +126,25 @@ public class CreatureBody {
     public void moveBodyToNewArea(AreaId areaId, CoreGame game) {
         onRemove();
         init(areaId, game);
+    }
+
+    public void onRemove() {
+        world.getB2world().destroyBody(b2body);
+    }
+
+    public void init(AreaId areaId, CoreGame game) {
+        Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
+
+        this.world = game.getPhysicsWorld(areaId);
+
+        this.areaId = areaId;
+
+        this.b2body = B2BodyFactory.createCreatureB2Body(world, this, creature);
+
+        if (!creature.isAlive()) {
+            this.b2body.getFixtureList().get(0).setSensor(true);
+        }
+
+        this.bodyCreated = true;
     }
 }

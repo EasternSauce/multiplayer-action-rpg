@@ -35,34 +35,6 @@ public class AbilityBody {
         return abilityBody;
     }
 
-    private float[] hitboxVertices(Ability ability) {
-        if (ability.getParams().getOverrideSize() != null) {
-            sprite.setSize(ability.getParams().getOverrideSize(), ability.getParams().getOverrideSize());
-        }
-        else {
-            sprite.setSize(ability.getParams().getWidth(), ability.getParams().getHeight());
-        }
-        sprite.setCenter(0, 0);
-        sprite.setOriginCenter();
-        sprite.setRotation(ability.getParams().getRotationAngle());
-
-        float[] vertices = sprite.getVertices();
-
-        return new float[]{
-            vertices[0],
-            vertices[1],
-            vertices[5],
-            vertices[6],
-            vertices[10],
-            vertices[11],
-            vertices[15],
-            vertices[16]};
-    }
-
-    public void setVelocity(Vector2 velocity) {
-        b2body.setLinearVelocity(new com.badlogic.gdx.math.Vector2(velocity.getX(), velocity.getY()));
-    }
-
     public Vector2 getBodyPos() {
         return Vector2.of(b2body.getWorldCenter().x, b2body.getWorldCenter().y);
     }
@@ -89,6 +61,30 @@ public class AbilityBody {
 
     }
 
+    private float[] hitboxVertices(Ability ability) {
+        if (ability.getParams().getOverrideSize() != null) {
+            sprite.setSize(ability.getParams().getOverrideSize(), ability.getParams().getOverrideSize());
+        }
+        else {
+            sprite.setSize(ability.getParams().getWidth(), ability.getParams().getHeight());
+        }
+        sprite.setCenter(0, 0);
+        sprite.setOriginCenter();
+        sprite.setRotation(ability.getParams().getRotationAngle());
+
+        float[] vertices = sprite.getVertices();
+
+        return new float[]{
+            vertices[0],
+            vertices[1],
+            vertices[5],
+            vertices[6],
+            vertices[10],
+            vertices[11],
+            vertices[15],
+            vertices[16]};
+    }
+
     public void update(CoreGame game) {
         Ability ability = game.getGameState().accessAbilities().getAbilities().get(abilityId);
 
@@ -103,6 +99,10 @@ public class AbilityBody {
             }
 
         }
+    }
+
+    public void setVelocity(Vector2 velocity) {
+        b2body.setLinearVelocity(new com.badlogic.gdx.math.Vector2(velocity.getX(), velocity.getY()));
     }
 
     public void onRemove() {

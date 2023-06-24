@@ -17,9 +17,11 @@ public class CreatureMoveTowardsTargetAction extends GameStateAction {
 
     private Vector2 mousePos;
 
-    @Override
-    public Entity getEntity(CoreGame game) {
-        return game.getGameState().accessCreatures().getCreature(creatureId);
+    public static CreatureMoveTowardsTargetAction of(CreatureId creatureId, Vector2 mousePos) {
+        CreatureMoveTowardsTargetAction action = CreatureMoveTowardsTargetAction.of();
+        action.creatureId = creatureId;
+        action.mousePos = mousePos;
+        return action;
     }
 
     @Override
@@ -36,10 +38,8 @@ public class CreatureMoveTowardsTargetAction extends GameStateAction {
         }
     }
 
-    public static CreatureMoveTowardsTargetAction of(CreatureId creatureId, Vector2 mousePos) {
-        CreatureMoveTowardsTargetAction action = CreatureMoveTowardsTargetAction.of();
-        action.creatureId = creatureId;
-        action.mousePos = mousePos;
-        return action;
+    @Override
+    public Entity getEntity(CoreGame game) {
+        return game.getGameState().accessCreatures().getCreature(creatureId);
     }
 }

@@ -14,9 +14,10 @@ import lombok.NoArgsConstructor;
 public class InventoryPutOnCursorCancelAction extends GameStateAction {
     private CreatureId playerId;
 
-    @Override
-    public Entity getEntity(CoreGame game) {
-        return game.getGameState().accessCreatures().getCreature(playerId);
+    public static InventoryPutOnCursorCancelAction of(CreatureId creatureId) {
+        InventoryPutOnCursorCancelAction action = InventoryPutOnCursorCancelAction.of();
+        action.playerId = creatureId;
+        return action;
     }
 
     @Override
@@ -29,9 +30,8 @@ public class InventoryPutOnCursorCancelAction extends GameStateAction {
         }
     }
 
-    public static InventoryPutOnCursorCancelAction of(CreatureId creatureId) {
-        InventoryPutOnCursorCancelAction action = InventoryPutOnCursorCancelAction.of();
-        action.playerId = creatureId;
-        return action;
+    @Override
+    public Entity getEntity(CoreGame game) {
+        return game.getGameState().accessCreatures().getCreature(playerId);
     }
 }
