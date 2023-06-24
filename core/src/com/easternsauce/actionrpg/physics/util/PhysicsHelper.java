@@ -119,6 +119,8 @@ public class PhysicsHelper {
         Ability ability = game.getGameState().accessAbilities().getAbility(event.getAbilityId());
 
         if (ability != null && destinationCreature.isAlive()) {
+            Vector2 contactPoint = calculateContactPoint(destinationCreature, ability);
+
             if ((sourceCreature instanceof Player || destinationCreature instanceof Player) &&
                 !ability.getParams().getCreaturesAlreadyHit().containsKey(event.getDestinationCreatureId())) {
 
@@ -128,10 +130,27 @@ public class PhysicsHelper {
                     .onAbilityHitsCreature(event.getSourceCreatureId(),
                                            event.getDestinationCreatureId(),
                                            ability.getParams().getId(),
+                                           contactPoint,
                                            game);
             }
 
         }
+    }
+
+    private static Vector2 calculateContactPoint(Creature destinationCreature, Ability ability) {
+        Vector2 creaturePos = destinationCreature.getParams().getPos();
+        Vector2 abilityPos = ability.getParams().getPos();
+        Float creatureRadius = destinationCreature.animationConfig().getSpriteWidth();
+
+        Vector2 contactPoint;
+        if (creaturePos.distance(abilityPos) < creatureRadius) {
+            contactPoint = creaturePos.midpointTowards(abilityPos);
+        }
+        else {
+            Vector2 hitVector = creaturePos.vectorTowards(abilityPos);
+            contactPoint = creaturePos.add(hitVector.normalized().multiplyBy(creatureRadius));
+        }
+        return contactPoint;
     }
 
     public static void handleForceUpdateBodyPositions(CoreGame game) {

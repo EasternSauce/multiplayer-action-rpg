@@ -283,10 +283,12 @@ public class CoreGameServer extends CoreGame {
 
     @Override
     public void renderServerRunningMessage(RenderingLayer renderingLayer) {
-        Assets.renderVeryLargeFont(renderingLayer,
-                                   "Server is running...",
-                                   Vector2.of(Constants.WINDOW_WIDTH / 2f - 250, Constants.WINDOW_HEIGHT / 2f + 25),
-                                   Color.WHITE);
+        float x = Constants.WINDOW_WIDTH / 2f - 250;
+        float y = Constants.WINDOW_HEIGHT / 2f + Constants.WINDOW_HEIGHT * 0.45f;
+
+        renderingLayer.getShapeDrawer().filledRectangle(x - 50f, y - 90f, 650f, 110f, new Color(0f, 0f, 0f, 0.6f));
+
+        Assets.renderVeryLargeFont(renderingLayer, "Server is running...", Vector2.of(x, y), Color.WHITE);
     }
 
     @Override

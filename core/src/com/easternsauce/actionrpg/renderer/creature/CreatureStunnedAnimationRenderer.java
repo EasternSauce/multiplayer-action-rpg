@@ -32,21 +32,22 @@ public class CreatureStunnedAnimationRenderer {
         this.stunnedAnimation = new Animation<>(0.045f, frames);
     }
 
-    private TextureRegion getStunnedAnimationFrame(CoreGame game) {
+    private TextureRegion getFrame(CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
-        float currentStunDuration = creature.getCurrentEffectDuration(CreatureEffect.STUN, game);
+        float stunTimeSinceStarted = creature.getTimeSinceStarted(CreatureEffect.STUN, game);
 
-        return stunnedAnimation.getKeyFrame(currentStunDuration, true);
+        return stunnedAnimation.getKeyFrame(stunTimeSinceStarted, true);
     }
 
-    public void render(RenderingLayer renderingLayer, float spriteWidth, CoreGame game) {
+    public void render(float spriteWidth, RenderingLayer renderingLayer, CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
         if (creature != null && creature.isEffectActive(CreatureEffect.STUN, game)) {
             float posX = creature.getParams().getPos().getX() - 1.5f;
             float posY = LifeBarUtils.getLifeBarPosY(creature, spriteWidth) - 1f;
-            renderingLayer.getSpriteBatch().draw(getStunnedAnimationFrame(game), posX, posY, 3f, 1.5f);
+
+            renderingLayer.getSpriteBatch().draw(getFrame(game), posX, posY, 3f, 1.5f);
         }
 
     }

@@ -19,7 +19,7 @@ public class Punch extends DirectionalAttachedAbility {
             .setActiveTime(0.18f)
             .setRange(1.2f)
             .setTextureName("punch")
-            .setBaseDamage(7f)
+            .setBaseDamage(10f)
             .setIsChannelAnimationLooping(false)
             .setIsActiveAnimationLooping(false);
         return ability;

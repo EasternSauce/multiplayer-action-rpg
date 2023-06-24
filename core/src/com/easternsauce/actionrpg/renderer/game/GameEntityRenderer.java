@@ -18,6 +18,7 @@ import com.easternsauce.actionrpg.renderer.*;
 import com.easternsauce.actionrpg.renderer.creature.CreatureRenderer;
 import com.easternsauce.actionrpg.renderer.creature.LifeBarUtils;
 import com.easternsauce.actionrpg.renderer.icons.IconRetriever;
+import com.easternsauce.actionrpg.util.Constants;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -56,6 +57,9 @@ public class GameEntityRenderer {
 
     @Getter
     private final Set<DamageNumber> damageNumbers = new HashSet<>();
+
+    @Getter
+    private final Set<CreatureHitAnimation> creatureHitAnimations = new HashSet<>();
 
     @Getter
     private final IconRetriever iconRetriever = IconRetriever.of();
@@ -121,7 +125,7 @@ public class GameEntityRenderer {
     private void renderCreatureStunnedAnimation(RenderingLayer renderingLayer, Creature creature, CoreGame game) {
         CreatureRenderer creatureRenderer = creatureRenderers.get(creature.getId());
         float spriteWidth = creatureRenderer.getCreatureSprite().getWidth();
-        creatureRenderer.getCreatureStunnedAnimationRenderer().render(renderingLayer, spriteWidth, game);
+        creatureRenderer.getCreatureStunnedAnimationRenderer().render(spriteWidth, renderingLayer, game);
 
     }
 
@@ -136,7 +140,11 @@ public class GameEntityRenderer {
     }
 
     public void renderDeadCreatures(RenderingLayer renderingLayer, CoreGame game) {
-        game.getGameState().accessCreatures().forEachDeadCreature(creature -> renderCreature(renderingLayer, creature, game));
+        game.getGameState().accessCreatures().forEachDeadCreature(creature -> {
+            if (canCreatureBeRendered(creature, game)) {
+                renderCreature(renderingLayer, creature, game);
+            }
+        });
     }
 
     public void renderAbilities(RenderingLayer renderingLayer, CoreGame game) {
@@ -182,14 +190,31 @@ public class GameEntityRenderer {
     public void updateDamageNumbers(CoreGame game) {
         Set<DamageNumber> toRemove = damageNumbers
             .stream()
-            .filter(damageNumber -> damageNumber.getDamageTime() + 1.5f < game.getGameState().getTime())
+            .filter(damageNumber -> damageNumber.getDamageTime() + Constants.DAMAGE_NUMBER_SHOW_DURATION <
+                                    game.getGameState().getTime())
             .collect(Collectors.toSet());
         damageNumbers.removeAll(toRemove);
+    }
+
+    public void updateCreatureHitAnimations(CoreGame game) {
+        Set<CreatureHitAnimation> toRemove = creatureHitAnimations
+            .stream()
+            .filter(creatureHitAnimation -> creatureHitAnimation.getDamageTime() + Constants.DAMAGE_ANIMATION_DURATION <
+                                            game.getGameState().getTime())
+            .collect(Collectors.toSet());
+        creatureHitAnimations.removeAll(toRemove);
     }
 
     public void showDamageNumber(float actualDamageTaken, Vector2 pos, AreaId areaId, CoreGame game) {
         Float currentTime = game.getGameState().getTime();
 
         damageNumbers.add(DamageNumber.of(pos, areaId, actualDamageTaken, currentTime));
+    }
+
+    public void startCreatureHitAnimation(CreatureId creatureId, Vector2 pos, AreaId areaId, CoreGame game) {
+        Float currentTime = game.getGameState().getTime();
+
+        CreatureHitAnimation animation = CreatureHitAnimation.of(creatureId, pos, areaId, currentTime);
+        creatureHitAnimations.add(animation);
     }
 }

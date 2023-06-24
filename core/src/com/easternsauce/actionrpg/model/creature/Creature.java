@@ -89,7 +89,7 @@ public abstract class Creature implements Entity {
 
     private void processDamageOverTime(CoreGame game) {
         if (isEffectActive(CreatureEffect.POISON, game)) {
-            if (getParams().getEffectParams().getDamageOverTimeTimer().getTime() > 0.333f) {
+            if (getParams().getEffectParams().getDamageOverTimeTimer().getTime() > 0.666f) {
                 game
                     .getGameState()
                     .accessCreatures()
@@ -205,7 +205,7 @@ public abstract class Creature implements Entity {
         getParams().getMovementParams().setReachedTargetPos(false);
     }
 
-    public void takeLifeDamage(float damage, CoreGame game) {
+    public void takeLifeDamage(float damage, Vector2 contactPoint, CoreGame game) {
         getParams().getStats().setPreviousTickLife(getParams().getStats().getLife());
 
         float actualDamageTaken = damage * 100f / (100f + totalArmor());
@@ -221,6 +221,11 @@ public abstract class Creature implements Entity {
             .getEntityManager()
             .getGameEntityRenderer()
             .showDamageNumber(actualDamageTaken, getParams().getPos(), getParams().getAreaId(), game);
+
+        game
+            .getEntityManager()
+            .getGameEntityRenderer()
+            .startCreatureHitAnimation(getParams().getId(), contactPoint, getParams().getAreaId(), game);
     }
 
     private float totalArmor() {
@@ -348,7 +353,7 @@ public abstract class Creature implements Entity {
                game.getGameState().getTime() < effectState.getStartTime() + effectState.getDuration();
     }
 
-    public float getCurrentEffectDuration(CreatureEffect effect, CoreGame game) {
+    public float getTimeSinceStarted(CreatureEffect effect, CoreGame game) {
         CreatureEffectState effectState = getParams().getEffectParams().getEffects().get(effect);
         return game.getGameState().getTime() - effectState.getStartTime();
     }

@@ -5,6 +5,7 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.assets.Assets;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
+import com.easternsauce.actionrpg.renderer.creature.CreatureRenderer;
 import com.easternsauce.actionrpg.renderer.game.GameEntityRenderer;
 import com.easternsauce.actionrpg.util.Constants;
 
@@ -26,6 +27,7 @@ public class GameplayRendererHelper {
 
         renderAbilities(renderer, worldElementsRenderingLayer, game);
 
+        renderCreatureHitAnimations(renderer, worldElementsRenderingLayer, game);
         renderDamageNumbers(renderer, worldTextRenderingLayer, game);
 
         game.renderB2BodyDebug();
@@ -76,23 +78,47 @@ public class GameplayRendererHelper {
             .forEach(damageNumber -> {
                 float timeElapsed = game.getGameState().getTime() - damageNumber.getDamageTime();
 
-                float posX = damageNumber.getPos().getX();
-                float posY = damageNumber.getPos().getY() + 12f * (float) Math.pow(timeElapsed / 1.5f, 2f);
+                float posX = damageNumber.getPos().getX() - 8f / Constants.PPM;
+                float posY = damageNumber.getPos().getY() +
+                             12f * (float) Math.pow(timeElapsed / Constants.DAMAGE_NUMBER_SHOW_DURATION, 2f) +
+                             12f / Constants.PPM;
 
                 Vector2 rescaledPos = Vector2.of(posX * Constants.PPM, posY * Constants.PPM);
 
                 Assets.renderLargeFont(worldTextRenderingLayer,
                                        Integer.toString(damageNumber.getDamageValue().intValue()),
                                        rescaledPos,
-                                       new Color(1f, 0f, 0f, 1f - timeElapsed / 1.5f));
+                                       new Color(1f, 0f, 0f, 1f - timeElapsed / Constants.DAMAGE_NUMBER_SHOW_DURATION));
             });
 
         worldTextRenderingLayer.end();
+    }
+
+    private static void renderCreatureHitAnimations(GameEntityRenderer renderer, RenderingLayer worldElementsRenderingLayer,
+                                                    CoreGame game) {
+
+        worldElementsRenderingLayer.begin();
+
+        renderer.getCreatureHitAnimations().forEach(creatureHitAnimation -> {
+            CreatureRenderer creatureRenderer = renderer.getCreatureRenderers().get(creatureHitAnimation.getCreatureId());
+
+            float timeSinceStarted = game.getGameState().getTime() - creatureHitAnimation.getDamageTime();
+            creatureRenderer
+                .getCreatureHitAnimationRenderer()
+                .render(timeSinceStarted,
+                        creatureHitAnimation.getAreaId(),
+                        creatureHitAnimation.getPos(),
+                        worldElementsRenderingLayer,
+                        game);
+        });
+
+        worldElementsRenderingLayer.end();
     }
 
     public static void updateRenderer(CoreGame game) {
         GameEntityRenderer renderer = game.getEntityManager().getGameEntityRenderer();
 
         renderer.updateDamageNumbers(game);
+        renderer.updateCreatureHitAnimations(game);
     }
 }

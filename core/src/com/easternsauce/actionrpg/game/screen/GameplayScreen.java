@@ -133,13 +133,10 @@ public class GameplayScreen implements Screen {
 
             game.getHudRenderer().render(game);
 
-        }
-        else {
             game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer().begin();
             game.renderServerRunningMessage(game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer());
             game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer().end();
         }
-
     }
 
     @Override

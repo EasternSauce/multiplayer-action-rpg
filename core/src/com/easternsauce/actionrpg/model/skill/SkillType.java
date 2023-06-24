@@ -31,7 +31,7 @@ public enum SkillType {
 
     BOSS_SWORD_SPIN("Sword Spin (boss only)", true, AbilityType.BOSS_SWORD_SPIN, 4f, 30f, 0f),
 
-    TELEPORT("Teleport", false, AbilityType.TELEPORT_SOURCE, 2f, 10f, 35f),
+    TELEPORT("Teleport", false, AbilityType.TELEPORT_SOURCE, 1.5f, 10f, 9f),
 
     POISONOUS_MIXTURE("Poisonous Mixture", false, AbilityType.POISONOUS_MIXTURE, 2f, 10f, 35f),
 

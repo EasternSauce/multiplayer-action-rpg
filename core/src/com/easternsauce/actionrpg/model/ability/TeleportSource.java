@@ -46,6 +46,7 @@ public class TeleportSource extends Ability {
     public void onStarted(CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
         creature.applyEffect(CreatureEffect.SELF_STUN, 0.5f, game);
+        creature.stopMoving();
     }
 
     @Override

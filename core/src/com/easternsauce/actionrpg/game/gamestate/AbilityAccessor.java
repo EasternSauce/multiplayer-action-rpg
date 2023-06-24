@@ -115,14 +115,15 @@ public class AbilityAccessor {
         }
     }
 
-    public void onAbilityHitsCreature(CreatureId attackerId, CreatureId targetId, AbilityId abilityId, CoreGame game) {
+    public void onAbilityHitsCreature(CreatureId attackerId, CreatureId targetId, AbilityId abilityId, Vector2 contactPoint,
+                                      CoreGame game) {
         Ability ability = game.getGameState().accessAbilities().getAbility(abilityId);
 
         ability.onCreatureHit(targetId, game);
 
         ability.getParams().getCreaturesAlreadyHit().put(targetId, ability.getParams().getStateTimer().getTime());
 
-        CreatureHitByAbilityAction action = CreatureHitByAbilityAction.of(attackerId, targetId, ability);
+        CreatureHitByAbilityAction action = CreatureHitByAbilityAction.of(attackerId, targetId, ability, contactPoint);
         gameState.scheduleServerSideAction(action);
     }
 

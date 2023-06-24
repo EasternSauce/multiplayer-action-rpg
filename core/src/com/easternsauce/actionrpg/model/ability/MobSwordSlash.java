@@ -21,7 +21,7 @@ public class MobSwordSlash extends DirectionalAttachedAbility {
             .setActiveTime(0.3f)
             .setRange(1.8f)
             .setTextureName("slash")
-            .setBaseDamage(50f)
+            .setBaseDamage(30f)
             .setIsChannelAnimationLooping(false)
             .setIsActiveAnimationLooping(false);
         return ability;

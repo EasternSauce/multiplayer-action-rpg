@@ -28,7 +28,7 @@ public class InventoryItemUseAction extends GameStateAction {
     public void applyToGame(CoreGame game) {
         PlayerConfig playerConfig = game.getGameState().getPlayerConfig(playerId);
 
-        if (playerConfig != null) {
+        if (playerConfig != null && slotIndex != null) {
             Creature creature = game.getGameState().accessCreatures().getCreature(playerId);
             Item item = creature.getParams().getInventoryItems().get(slotIndex);
 

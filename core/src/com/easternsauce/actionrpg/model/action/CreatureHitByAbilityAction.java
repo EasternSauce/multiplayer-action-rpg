@@ -6,6 +6,7 @@ import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
+import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,7 @@ public class CreatureHitByAbilityAction extends CreatureHitAction {
     private CreatureId attackerId;
     private CreatureId targetId;
     private Ability ability;
+    private Vector2 contactPoint;
 
     @Override
     public Entity getEntity(CoreGame game) {
@@ -39,8 +41,10 @@ public class CreatureHitByAbilityAction extends CreatureHitAction {
 
         boolean isShielded = targetCreature.isAbilityShielded(ability, game);
 
-        if (!isShielded && !ability.getParams().getIsHitShielded()) {
-            targetCreature.takeLifeDamage(ability.getDamage(game), game);
+        Float damage = ability.getDamage(game);
+
+        if (!isShielded && !ability.getParams().getIsHitShielded() && damage > 0f) {
+            targetCreature.takeLifeDamage(damage, contactPoint, game);
 
             if (ability.isCanStun()) {
                 targetCreature.applyEffect(CreatureEffect.STUN, ability.getStunDuration(), game);
@@ -52,11 +56,13 @@ public class CreatureHitByAbilityAction extends CreatureHitAction {
         handleCreatureDeath(targetCreature, attackerCreature, game);
     }
 
-    public static CreatureHitByAbilityAction of(CreatureId attackerId, CreatureId targetId, Ability ability) {
+    public static CreatureHitByAbilityAction of(CreatureId attackerId, CreatureId targetId, Ability ability,
+                                                Vector2 contactPoint) {
         CreatureHitByAbilityAction action = CreatureHitByAbilityAction.of();
         action.attackerId = attackerId;
         action.targetId = targetId;
         action.ability = ability;
+        action.contactPoint = contactPoint;
         return action;
     }
 }

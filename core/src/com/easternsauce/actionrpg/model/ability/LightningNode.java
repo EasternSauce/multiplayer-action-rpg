@@ -70,7 +70,11 @@ public class LightningNode extends Ability {
             game
                 .getGameState()
                 .accessAbilities()
-                .onAbilityHitsCreature(getParams().getCreatureId(), targetCreature.getId(), getParams().getId(), game);
+                .onAbilityHitsCreature(getParams().getCreatureId(),
+                                       targetCreature.getId(),
+                                       getParams().getId(),
+                                       targetCreature.getParams().getPos(),
+                                       game);
 
             getParams().getCreaturesAlreadyHit().put(targetCreature.getId(), getParams().getStateTimer().getTime());
 
