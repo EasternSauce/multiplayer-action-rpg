@@ -19,7 +19,10 @@ public class RenderingLayer {
 
     final SpriteBatch spriteBatch = new SpriteBatch();
     Texture texture;
-    final ShapeDrawer shapeDrawer = new ShapeDrawer(spriteBatch, createTextureAndRegion());
+    final ShapeDrawer shapeDrawer = new ShapeDrawer(
+        spriteBatch,
+        createTextureAndRegion()
+    );
 
     public void begin() {
         spriteBatch.begin();
@@ -29,8 +32,14 @@ public class RenderingLayer {
         spriteBatch.end();
     }
 
-    public void filledRectangle(Rectangle rect, Color color) {
-        shapeDrawer.filledRectangle(rect, color);
+    public void filledRectangle(
+        Rectangle rect,
+        Color color
+    ) {
+        shapeDrawer.filledRectangle(
+            rect,
+            color
+        );
     }
 
     public void setProjectionMatrix(Matrix4 projection) {
@@ -38,13 +47,26 @@ public class RenderingLayer {
     }
 
     TextureRegion createTextureAndRegion() {
-        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+        Pixmap pixmap = new Pixmap(
+            1,
+            1,
+            Pixmap.Format.RGBA8888
+        );
         pixmap.setColor(Color.WHITE);
-        pixmap.drawPixel(0, 0);
+        pixmap.drawPixel(
+            0,
+            0
+        );
         texture = new Texture(pixmap); //remember to dispose of later
 
         pixmap.dispose();
-        return new TextureRegion(texture, 0, 0, 1, 1);
+        return new TextureRegion(
+            texture,
+            0,
+            0,
+            1,
+            1
+        );
     }
 
 }

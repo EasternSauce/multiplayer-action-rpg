@@ -25,30 +25,55 @@ public class Chat {
     Float holdBackspaceTime;
     Boolean isHoldingBackspace = false;
 
-    public void sendMessage(String posterId, String message, CoreGame game) {
+    public void sendMessage(
+        String posterId,
+        String message,
+        CoreGame game
+    ) {
         if (getMessages().size() < 6) {
-            getMessages().add(ChatMessage.of(game.getGameState().getTime(), posterId, message));
+            getMessages().add(ChatMessage.of(
+                game.getGameState().getTime(),
+                posterId,
+                message
+            ));
         } else {
             List<ChatMessage> newMessages = new ArrayList<>();
             for (int i = 0; i < 5; i++) {
                 newMessages.add(getMessages().get(i + 1));
             }
             setMessages(newMessages);
-            getMessages().add(ChatMessage.of(game.getGameState().getTime(), posterId, message));
+            getMessages().add(ChatMessage.of(
+                game.getGameState().getTime(),
+                posterId,
+                message
+            ));
         }
     }
 
     public void render(RenderingLayer renderingLayer) {
-        for (int i = 0; i < Math.min(getMessages().size(), 6); i++) {
-            Assets.renderSmallFont(renderingLayer,
+        for (int i = 0; i < Math.min(
+            getMessages().size(),
+            6
+        ); i++) {
+            Assets.renderSmallFont(
+                renderingLayer,
                 getMessages().get(i).getPoster() + ": " + getMessages().get(i).getText(),
-                Vector2.of(30, 220 - 20 * i),
-                Color.PURPLE);
+                Vector2.of(
+                    30,
+                    220 - 20 * i
+                ),
+                Color.PURPLE
+            );
         }
 
-        Assets.renderSmallFont(renderingLayer,
+        Assets.renderSmallFont(
+            renderingLayer,
             (getIsTyping() ? "> " : "") + getCurrentMessage(),
-            Vector2.of(30, 70),
-            Color.PURPLE);
+            Vector2.of(
+                30,
+                70
+            ),
+            Color.PURPLE
+        );
     }
 }

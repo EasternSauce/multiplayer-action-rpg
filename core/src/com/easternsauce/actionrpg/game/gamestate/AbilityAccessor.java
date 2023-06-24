@@ -26,14 +26,14 @@ public class AbilityAccessor {
     private GameState gameState;
     private GameStateDataHolder dataHolder;
 
-    public Ability getAbilityBySkillType(CreatureId creatureId, SkillType skillType) {
-        Optional<Ability> first = getData()
-            .getAbilities()
-            .values()
-            .stream()
-            .filter(ability -> ability.getParams().getCreatureId().equals(creatureId) &&
-                ability.getParams().getSkillType() == skillType)
-            .findFirst();
+    public Ability getAbilityBySkillType(
+        CreatureId creatureId,
+        SkillType skillType
+    ) {
+        Optional<Ability> first = getData().getAbilities().values().stream().filter(ability -> ability
+            .getParams()
+            .getCreatureId()
+            .equals(creatureId) && ability.getParams().getSkillType() == skillType).findFirst();
 
         return first.orElse(null);
     }
@@ -46,7 +46,8 @@ public class AbilityAccessor {
         return getAbilities().keySet().stream().filter(abilityId -> {
             Ability ability = getAbilities().get(abilityId);
             if (ability != null && player.getParams().getPos() != null && ability.getParams().getPos() != null) {
-                return ability.getParams().getPos().distance(player.getParams().getPos()) < Constants.CLIENT_GAME_UPDATE_RANGE;
+                return ability.getParams().getPos().distance(player.getParams().getPos()) <
+                    Constants.CLIENT_GAME_UPDATE_RANGE;
             }
             return false;
         }).collect(Collectors.toSet());
@@ -56,9 +57,18 @@ public class AbilityAccessor {
         return getData().getAbilities();
     }
 
-    public void chainAnotherAbility(Ability chainFromAbility, AbilityType abilityType, Vector2 chainToPos, Vector2 dirVector,
-                                    Float overrideSize, Float overrideDuration, CoreGame game) {
-        Creature creature = game.getGameState().accessCreatures().getCreature(chainFromAbility.getParams().getCreatureId());
+    public void chainAnotherAbility(
+        Ability chainFromAbility,
+        AbilityType abilityType,
+        Vector2 chainToPos,
+        Vector2 dirVector,
+        Float overrideSize,
+        Float overrideDuration,
+        CoreGame game
+    ) {
+        Creature creature = game.getGameState().accessCreatures().getCreature(chainFromAbility
+            .getParams()
+            .getCreatureId());
 
         if (creature != null && (creature.isAlive() || chainFromAbility.isAbleToChainAfterCreatureDeath())) {
             AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
@@ -72,7 +82,9 @@ public class AbilityAccessor {
             AbilityParams abilityParams = AbilityParams
                 .of()
                 .setId(abilityId)
-                .setAreaId(chainFromAbility.getParams().getAreaId())
+                .setAreaId(chainFromAbility
+                    .getParams()
+                    .getAreaId())
                 .setCreatureId(chainFromAbility.getParams().getCreatureId())
                 .setCreaturesAlreadyHit(creaturesAlreadyHit)
                 .setChainFromPos(chainFromPos)
@@ -84,22 +96,45 @@ public class AbilityAccessor {
                 .setSkillType(chainFromAbility.getParams().getSkillType())
                 .setSkillStartPos(chainFromPos);
 
-            spawnAbility(abilityType, abilityParams, game);
+            spawnAbility(
+                abilityType,
+                abilityParams,
+                game
+            );
         }
     }
 
-    public void spawnAbility(AbilityType abilityType, AbilityParams abilityParams, CoreGame game) {
+    public void spawnAbility(
+        AbilityType abilityType,
+        AbilityParams abilityParams,
+        CoreGame game
+    ) {
         Creature creature = gameState.accessCreatures().getCreature(abilityParams.getCreatureId());
 
         if (creature != null) {
-            Ability ability = AbilityFactory.produceAbility(abilityType, abilityParams, game);
+            Ability ability = AbilityFactory.produceAbility(
+                abilityType,
+                abilityParams,
+                game
+            );
 
-            initializeAbility(creature, ability, game);
+            initializeAbility(
+                creature,
+                ability,
+                game
+            );
         }
     }
 
-    private void initializeAbility(Creature creature, Ability ability, CoreGame game) {
-        game.getGameState().accessAbilities().getAbilities().put(ability.getParams().getId(), ability);
+    private void initializeAbility(
+        Creature creature,
+        Ability ability,
+        CoreGame game
+    ) {
+        game.getGameState().accessAbilities().getAbilities().put(
+            ability.getParams().getId(),
+            ability
+        );
 
         game.getEventProcessor().getAbilityModelsToBeCreated().add(ability.getParams().getId());
 
@@ -108,15 +143,31 @@ public class AbilityAccessor {
         creature.onAbilityPerformed(ability);
     }
 
-    public void onAbilityHitsCreature(CreatureId attackerId, CreatureId targetId, AbilityId abilityId, Vector2 contactPoint,
-                                      CoreGame game) {
+    public void onAbilityHitsCreature(
+        CreatureId attackerId,
+        CreatureId targetId,
+        AbilityId abilityId,
+        Vector2 contactPoint,
+        CoreGame game
+    ) {
         Ability ability = game.getGameState().accessAbilities().getAbility(abilityId);
 
-        ability.onCreatureHit(targetId, game);
+        ability.onCreatureHit(
+            targetId,
+            game
+        );
 
-        ability.getParams().getCreaturesAlreadyHit().put(targetId, ability.getParams().getStateTimer().getTime());
+        ability.getParams().getCreaturesAlreadyHit().put(
+            targetId,
+            ability.getParams().getStateTimer().getTime()
+        );
 
-        CreatureHitByAbilityAction action = CreatureHitByAbilityAction.of(attackerId, targetId, ability, contactPoint);
+        CreatureHitByAbilityAction action = CreatureHitByAbilityAction.of(
+            attackerId,
+            targetId,
+            ability,
+            contactPoint
+        );
         gameState.scheduleServerSideAction(action);
     }
 

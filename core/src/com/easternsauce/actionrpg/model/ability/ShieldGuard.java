@@ -15,7 +15,10 @@ public class ShieldGuard extends DirectionalAttachedAbility {
 
     AbilityParams params;
 
-    public static ShieldGuard of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+    public static ShieldGuard of(
+        AbilityParams abilityParams,
+        @SuppressWarnings("unused") CoreGame game
+    ) {
         float flipValue = abilityParams.getDirVector().angleDeg();
 
         ShieldGuard ability = ShieldGuard.of();
@@ -54,7 +57,10 @@ public class ShieldGuard extends DirectionalAttachedAbility {
     }
 
     @Override
-    protected void onActiveUpdate(float delta, CoreGame game) {
+    protected void onActiveUpdate(
+        float delta,
+        CoreGame game
+    ) {
         updateDirectionalAttachedAbilityPosition(game);
 
     }
@@ -71,12 +77,17 @@ public class ShieldGuard extends DirectionalAttachedAbility {
     }
 
     @Override
-    public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
+    public void onOtherAbilityHit(
+        AbilityId otherAbilityId,
+        CoreGame game
+    ) {
         Ability otherAbility = game.getGameState().accessAbilities().getAbility(otherAbilityId);
 
         if (otherAbility != null) {
             Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
-            Creature abilityOwner = game.getGameState().accessCreatures().getCreature(otherAbility.getParams().getCreatureId());
+            Creature abilityOwner = game.getGameState().accessCreatures().getCreature(otherAbility
+                .getParams()
+                .getCreatureId());
 
             if ((creature instanceof Player && abilityOwner instanceof Enemy ||
                 creature instanceof Enemy && abilityOwner instanceof Player) && otherAbility.isRanged()) {
@@ -85,10 +96,16 @@ public class ShieldGuard extends DirectionalAttachedAbility {
                 }
 
                 if (otherAbility instanceof RicochetBullet) {
-                    otherAbility.onTerrainHit(otherAbility.getParams().getPos(), getParams().getPos());
+                    otherAbility.onTerrainHit(
+                        otherAbility.getParams().getPos(),
+                        getParams().getPos()
+                    );
 
                 } else if (otherAbility instanceof Boomerang) {
-                    otherAbility.onCreatureHit(getParams().getCreatureId(), game);
+                    otherAbility.onCreatureHit(
+                        getParams().getCreatureId(),
+                        game
+                    );
                 } else {
                     otherAbility.deactivate();
                 }

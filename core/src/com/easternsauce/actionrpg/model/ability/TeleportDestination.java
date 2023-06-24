@@ -16,13 +16,18 @@ import lombok.NoArgsConstructor;
 public class TeleportDestination extends Ability {
     AbilityParams params;
 
-    public static TeleportDestination of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+    public static TeleportDestination of(
+        AbilityParams abilityParams,
+        @SuppressWarnings("unused") CoreGame game
+    ) {
         Creature creature = game.getGameState().accessCreatures().getCreature(abilityParams.getCreatureId());
 
-        Vector2 teleportPos = TeleportDestination.calculatePos(creature.getParams().getPos().add(abilityParams.getDirVector()),
+        Vector2 teleportPos = TeleportDestination.calculatePos(
+            creature.getParams().getPos().add(abilityParams.getDirVector()),
             creature.getParams().getPos(),
             creature.getParams().getAreaId(),
-            game);
+            game
+        );
 
         TeleportDestination ability = TeleportDestination.of();
         ability.params = abilityParams
@@ -40,7 +45,12 @@ public class TeleportDestination extends Ability {
         return ability;
     }
 
-    private static Vector2 calculatePos(Vector2 pos, Vector2 creaturePos, AreaId areaId, CoreGame game) {
+    private static Vector2 calculatePos(
+        Vector2 pos,
+        Vector2 creaturePos,
+        AreaId areaId,
+        CoreGame game
+    ) {
         Vector2 vectorTowards = creaturePos.vectorTowards(pos);
 
         float maxRange = 17f;
@@ -51,7 +61,11 @@ public class TeleportDestination extends Ability {
             destinationPos = pos;
         }
 
-        if (!game.isLineBetweenPointsUnobstructedByTerrain(areaId, creaturePos, destinationPos)) {
+        if (!game.isLineBetweenPointsUnobstructedByTerrain(
+            areaId,
+            creaturePos,
+            destinationPos
+        )) {
             return creaturePos;
         }
 
@@ -71,16 +85,25 @@ public class TeleportDestination extends Ability {
     @Override
     public void onStarted(CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
-        creature.applyEffect(CreatureEffect.SELF_STUN, 0.3f, game);
-        game.addTeleportEvent(TeleportEvent.of(getParams().getCreatureId(),
+        creature.applyEffect(
+            CreatureEffect.SELF_STUN,
+            0.3f,
+            game
+        );
+        game.addTeleportEvent(TeleportEvent.of(
+            getParams().getCreatureId(),
             getParams().getPos(),
             getParams().getAreaId(),
             getParams().getAreaId(),
-            false));
+            false
+        ));
     }
 
     @Override
-    protected void onActiveUpdate(float delta, CoreGame game) {
+    protected void onActiveUpdate(
+        float delta,
+        CoreGame game
+    ) {
 
     }
 

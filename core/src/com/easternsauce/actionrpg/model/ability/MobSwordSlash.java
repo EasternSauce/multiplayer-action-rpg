@@ -12,7 +12,10 @@ public class MobSwordSlash extends DirectionalAttachedAbility {
 
     AbilityParams params;
 
-    public static MobSwordSlash of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+    public static MobSwordSlash of(
+        AbilityParams abilityParams,
+        @SuppressWarnings("unused") CoreGame game
+    ) {
         MobSwordSlash ability = MobSwordSlash.of();
         ability.params = abilityParams
             .setWidth(2f)
@@ -44,7 +47,10 @@ public class MobSwordSlash extends DirectionalAttachedAbility {
     }
 
     @Override
-    protected void onActiveUpdate(float delta, CoreGame game) {
+    protected void onActiveUpdate(
+        float delta,
+        CoreGame game
+    ) {
 
         updateDirectionalAttachedAbilityPosition(game);
 

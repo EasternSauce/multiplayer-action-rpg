@@ -22,8 +22,14 @@ public class AreaRenderer {
         return areaRenderer;
     }
 
-    public void init(TiledMap map, float mapScale) {
-        tiledMapRenderer = new OrthogonalTiledMapRenderer(map, mapScale / Constants.PPM);
+    public void init(
+        TiledMap map,
+        float mapScale
+    ) {
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(
+            map,
+            mapScale / Constants.PPM
+        );
     }
 
     public void render(int[] layers) {

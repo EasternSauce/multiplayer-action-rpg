@@ -16,7 +16,10 @@ public class CreatureMovingVectorSetAction extends GameStateAction {
     private CreatureId creatureId;
     private Vector2 movingVector;
 
-    public static CreatureMovingVectorSetAction of(CreatureId creatureId, Vector2 movingVector) {
+    public static CreatureMovingVectorSetAction of(
+        CreatureId creatureId,
+        Vector2 movingVector
+    ) {
         CreatureMovingVectorSetAction action = CreatureMovingVectorSetAction.of();
         action.creatureId = creatureId;
         action.movingVector = movingVector;

@@ -27,7 +27,10 @@ public class PhysicsHelper {
                         Ability ability = game.getGameState().accessAbilities().getAbility(event.getAbilityId());
                         ability.onSelfCreatureHit(game);
                     } else {
-                        handleCreatureAttacked(event, game);
+                        handleCreatureAttacked(
+                            event,
+                            game
+                        );
                     }
 
                 }
@@ -37,7 +40,10 @@ public class PhysicsHelper {
                 Ability ability = game.getGameState().accessAbilities().getAbility(event.getAbilityId());
 
                 if (ability != null && ability.getParams().getState() == AbilityState.ACTIVE) {
-                    ability.onTerrainHit(event.getAbilityPos(), event.getTilePos());
+                    ability.onTerrainHit(
+                        event.getAbilityPos(),
+                        event.getTilePos()
+                    );
                 }
 
             } else if (physicsEvent instanceof AbilityHitsAbilityEvent) {
@@ -47,10 +53,16 @@ public class PhysicsHelper {
                 Ability abilityB = game.getGameState().accessAbilities().getAbility(event.getAbilityB_Id());
 
                 if (abilityA != null && abilityA.getParams().getState() == AbilityState.ACTIVE) {
-                    abilityA.onOtherAbilityHit(event.getAbilityB_Id(), game);
+                    abilityA.onOtherAbilityHit(
+                        event.getAbilityB_Id(),
+                        game
+                    );
                 }
                 if (abilityB != null && abilityB.getParams().getState() == AbilityState.ACTIVE) {
-                    abilityB.onOtherAbilityHit(event.getAbilityA_Id(), game);
+                    abilityB.onOtherAbilityHit(
+                        event.getAbilityA_Id(),
+                        game
+                    );
                 }
             } else if (physicsEvent instanceof CreatureHitsAreaGateEvent) {
                 CreatureHitsAreaGateEvent event = (CreatureHitsAreaGateEvent) physicsEvent;
@@ -59,7 +71,8 @@ public class PhysicsHelper {
 
                 creature.getParams().getMovementParams().setAreaWhenEnteredGate(creature.getParams().getAreaId());
 
-                if (creature instanceof Player && !creature.getParams().getMovementParams().getIsStillInsideGateAfterTeleport()) {
+                if (creature instanceof Player &&
+                    !creature.getParams().getMovementParams().getIsStillInsideGateAfterTeleport()) {
                     AreaGate areaGate = game.getGameState().getAreaGate(event.getAreaGateId());
                     AreaGate leadingToAreaGate = game.getGameState().getAreaGate(areaGate.getLeadingToAreaGateId());
 
@@ -67,7 +80,13 @@ public class PhysicsHelper {
                     AreaId toAreaId = leadingToAreaGate.getAreaId();
                     Vector2 pos = leadingToAreaGate.getPos();
 
-                    game.addTeleportEvent(TeleportEvent.of(event.getCreatureId(), pos, fromAreaId, toAreaId, true));
+                    game.addTeleportEvent(TeleportEvent.of(
+                        event.getCreatureId(),
+                        pos,
+                        fromAreaId,
+                        toAreaId,
+                        true
+                    ));
 
                 }
             } else if (physicsEvent instanceof CreatureLeavesAreaGateEvent) {
@@ -76,8 +95,11 @@ public class PhysicsHelper {
 
                 Creature creature = game.getGameState().accessCreatures().getCreature(event.getCreatureId());
 
-                if (creature instanceof Player && creature.getParams().getMovementParams().getIsStillInsideGateAfterTeleport() &&
-                    creature.getParams().getMovementParams().getAreaWhenEnteredGate().equals(creature.getParams().getAreaId())) {
+                if (creature instanceof Player &&
+                    creature.getParams().getMovementParams().getIsStillInsideGateAfterTeleport() &&
+                    creature.getParams().getMovementParams().getAreaWhenEnteredGate().equals(creature
+                        .getParams()
+                        .getAreaId())) {
 
                     creature.getParams().getMovementParams().setIsStillInsideGateAfterTeleport(false);
 
@@ -106,31 +128,42 @@ public class PhysicsHelper {
 
     }
 
-    private static void handleCreatureAttacked(AbilityHitsCreatureEvent event, CoreGame game) {
+    private static void handleCreatureAttacked(
+        AbilityHitsCreatureEvent event,
+        CoreGame game
+    ) {
         Creature sourceCreature = game.getGameState().accessCreatures().getCreature(event.getSourceCreatureId());
-        Creature destinationCreature = game.getGameState().accessCreatures().getCreature(event.getDestinationCreatureId());
+        Creature destinationCreature = game
+            .getGameState()
+            .accessCreatures()
+            .getCreature(event.getDestinationCreatureId());
         Ability ability = game.getGameState().accessAbilities().getAbility(event.getAbilityId());
 
         if (ability != null && destinationCreature.isAlive()) {
-            Vector2 contactPoint = calculateContactPoint(destinationCreature, ability);
+            Vector2 contactPoint = calculateContactPoint(
+                destinationCreature,
+                ability
+            );
 
             if ((sourceCreature instanceof Player || destinationCreature instanceof Player) &&
                 !ability.getParams().getCreaturesAlreadyHit().containsKey(event.getDestinationCreatureId())) {
 
-                game
-                    .getGameState()
-                    .accessAbilities()
-                    .onAbilityHitsCreature(event.getSourceCreatureId(),
-                        event.getDestinationCreatureId(),
-                        ability.getParams().getId(),
-                        contactPoint,
-                        game);
+                game.getGameState().accessAbilities().onAbilityHitsCreature(
+                    event.getSourceCreatureId(),
+                    event.getDestinationCreatureId(),
+                    ability.getParams().getId(),
+                    contactPoint,
+                    game
+                );
             }
 
         }
     }
 
-    private static Vector2 calculateContactPoint(Creature destinationCreature, Ability ability) {
+    private static Vector2 calculateContactPoint(
+        Creature destinationCreature,
+        Ability ability
+    ) {
         Vector2 creaturePos = destinationCreature.getParams().getPos();
         Vector2 abilityPos = ability.getParams().getPos();
         Float creatureRadius = destinationCreature.animationConfig().getSpriteWidth();

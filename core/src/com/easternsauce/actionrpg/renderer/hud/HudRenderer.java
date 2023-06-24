@@ -34,20 +34,41 @@ public class HudRenderer {
         fpsCounterRenderer.render(renderingLayer);
 
         if (game.getGameState().getThisClientPlayerId() != null) {
-            Creature player = game.getGameState().accessCreatures().getCreature(game.getGameState().getThisClientPlayerId());
+            Creature player = game.getGameState().accessCreatures().getCreature(game
+                .getGameState()
+                .getThisClientPlayerId());
 
-            skillMenuRenderer.renderMenu(renderingLayer, game);
+            skillMenuRenderer.renderMenu(
+                renderingLayer,
+                game
+            );
 
-            skillMenuRenderer.renderPicker(player, renderingLayer, game);
+            skillMenuRenderer.renderPicker(
+                player,
+                renderingLayer,
+                game
+            );
 
-            respawnMessageRenderer.render(player, renderingLayer);
+            respawnMessageRenderer.render(
+                player,
+                renderingLayer
+            );
 
-            playerStatBarsRenderer.render(player, renderingLayer);
+            playerStatBarsRenderer.render(
+                player,
+                renderingLayer
+            );
 
         }
 
-        inventoryRenderer.render(renderingLayer, game);
-        pickUpMenuRenderer.render(renderingLayer, game);
+        inventoryRenderer.render(
+            renderingLayer,
+            game
+        );
+        pickUpMenuRenderer.render(
+            renderingLayer,
+            game
+        );
 
         renderingLayer.end();
     }

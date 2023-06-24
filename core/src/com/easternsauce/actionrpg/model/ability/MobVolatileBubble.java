@@ -14,7 +14,10 @@ public class MobVolatileBubble extends Projectile {
 
     AbilityParams params;
 
-    public static MobVolatileBubble of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+    public static MobVolatileBubble of(
+        AbilityParams abilityParams,
+        @SuppressWarnings("unused") CoreGame game
+    ) {
         MobVolatileBubble ability = MobVolatileBubble.of();
         ability.params = abilityParams
             .setWidth(3.2f)
@@ -42,7 +45,10 @@ public class MobVolatileBubble extends Projectile {
     }
 
     @Override
-    protected void onActiveUpdate(float delta, CoreGame game) {
+    protected void onActiveUpdate(
+        float delta,
+        CoreGame game
+    ) {
         onProjectileTravelUpdate();
 
         if (getParams().getPos().distance(getParams().getSkillStartPos()) > 10f) {
@@ -54,47 +60,36 @@ public class MobVolatileBubble extends Projectile {
     protected void onCompleted(CoreGame game) {
         float baseAngle = getParams().getDirVector().angleDeg();
 
-        float[] angles = {
-            0f,
-            22.5f,
-            45f,
-            67.5f,
-            90f,
-            112.5f,
-            135f,
-            157.5f,
-            180f,
-            202.5f,
-            225f,
-            247.5f,
-            270f,
-            292.5f,
-            315f,
-            337.5f};
+        float[] angles = {0f, 22.5f, 45f, 67.5f, 90f, 112.5f, 135f, 157.5f, 180f, 202.5f, 225f, 247.5f, 270f, 292.5f, 315f, 337.5f};
 
         for (float angle : angles) {
-            game
-                .getGameState()
-                .accessAbilities()
-                .chainAnotherAbility(this,
-                    AbilityType.ICE_SPEAR,
-                    getParams().getPos(),
-                    params.getDirVector().withSetDegAngle(baseAngle + angle),
-                    null,
-                    null,
-                    game);
+            game.getGameState().accessAbilities().chainAnotherAbility(
+                this,
+                AbilityType.ICE_SPEAR,
+                getParams().getPos(),
+                params.getDirVector().withSetDegAngle(baseAngle + angle),
+                null,
+                null,
+                game
+            );
 
         }
     }
 
 
     @Override
-    public void onCreatureHit(CreatureId creatureId, CoreGame game) {
+    public void onCreatureHit(
+        CreatureId creatureId,
+        CoreGame game
+    ) {
         deactivate();
     }
 
     @Override
-    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
+    public void onTerrainHit(
+        Vector2 abilityPos,
+        Vector2 tilePos
+    ) {
         deactivate();
     }
 

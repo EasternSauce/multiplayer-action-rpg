@@ -81,81 +81,44 @@ public class ServerGameState extends GameState {
             .getCreatures()
             .entrySet()
             .stream()
-            .filter(entry -> entry
-                .getValue()
-                .getParams()
-                .getAreaId()
-                .equals(
-                    player
-                        .getParams()
-                        .getAreaId()) &&
-                entry
-                    .getValue()
-                    .getParams()
-                    .getPos()
-                    .distance(
-                        player
-                            .getParams()
-                            .getPos()) <
+            .filter(entry -> entry.getValue().getParams().getAreaId().equals(player.getParams().getAreaId()) &&
+                entry.getValue().getParams().getPos().distance(player.getParams().getPos()) <
                     Constants.CLIENT_GAME_UPDATE_RANGE)
             .collect(Collectors.toMap(
                 Map.Entry::getKey,
-                Map.Entry::getValue)));
+                Map.Entry::getValue
+            )));
         ConcurrentSkipListMap<AbilityId, Ability> personalizedAbilities = new ConcurrentSkipListMap<>(accessAbilities()
             .getAbilities()
             .entrySet()
             .stream()
-            .filter(entry -> entry
-                .getValue()
-                .getParams()
-                .getAreaId()
-                .equals(
-                    player
-                        .getParams()
-                        .getAreaId()) &&
-                entry
-                    .getValue()
-                    .getParams()
-                    .getPos()
-                    .distance(
-                        player
-                            .getParams()
-                            .getPos()) <
+            .filter(entry -> entry.getValue().getParams().getAreaId().equals(player.getParams().getAreaId()) &&
+                entry.getValue().getParams().getPos().distance(player.getParams().getPos()) <
                     Constants.CLIENT_GAME_UPDATE_RANGE)
             .collect(Collectors.toMap(
                 Map.Entry::getKey,
-                Map.Entry::getValue)));
+                Map.Entry::getValue
+            )));
 
         ConcurrentSkipListMap<LootPileId, LootPile> personalizedLootPiles = new ConcurrentSkipListMap<>(getLootPiles()
             .entrySet()
             .stream()
-            .filter(entry -> entry
-                .getValue()
-                .getParams()
-                .getAreaId()
-                .equals(
-                    player
-                        .getParams()
-                        .getAreaId()) &&
-                entry
-                    .getValue()
+            .filter(entry -> entry.getValue().getParams().getAreaId().equals(player.getParams().getAreaId()) &&
+                entry.getValue()
 
-                    .getParams()
-                    .getPos()
-                    .distance(
-                        player
-                            .getParams()
-                            .getPos()) <
-                    Constants.CLIENT_GAME_UPDATE_RANGE)
+                     .getParams().getPos().distance(player.getParams().getPos()) < Constants.CLIENT_GAME_UPDATE_RANGE)
             .collect(Collectors.toMap(
                 Map.Entry::getKey,
-                Map.Entry::getValue)));
+                Map.Entry::getValue
+            )));
 
-        GameStateData personalizedGameStateData = GameStateData.of(dataHolder.getData(),
+        GameStateData personalizedGameStateData = GameStateData.of(
+            dataHolder.getData(),
             personalizedCreatures,
             personalizedAbilities,
             personalizedLootPiles,
-            getAreaGates());
+            getAreaGates()
+        );
 
         connection.sendTCP(GameStateBroadcast.of(personalizedGameStateData));
     }
@@ -172,11 +135,15 @@ public class ServerGameState extends GameState {
                 // handle respawns server side
                 creature.getParams().getRespawnTimer().getTime() > creature.getParams().getRespawnTime()) {
                 if (creature instanceof Player) {
-                    Vector2 pos = Vector2.of((float) ((Math.random() * (28 - 18)) + 18),
-                        (float) ((Math.random() * (12 - 6)) + 6));
-                    CreatureRespawnAction action = CreatureRespawnAction.of(creatureId,
+                    Vector2 pos = Vector2.of(
+                        (float) ((Math.random() * (28 - 18)) + 18),
+                        (float) ((Math.random() * (12 - 6)) + 6)
+                    );
+                    CreatureRespawnAction action = CreatureRespawnAction.of(
+                        creatureId,
                         pos,
-                        AreaId.of("area1")); // TODO: respawns
+                        AreaId.of("area1")
+                    ); // TODO: respawns
 
                     scheduleServerSideAction(action);
                 } else if (creature instanceof Enemy) {
@@ -186,18 +153,23 @@ public class ServerGameState extends GameState {
                         .getCreatures()
                         .values()
                         .stream()
-                        .filter(otherCreature -> otherCreature instanceof Player && otherCreature
-                            .getParams()
-                            .getAreaId()
-                            .getValue()
-                            .equals(creature.getParams().getAreaId().getValue()) &&
+                        .filter(otherCreature -> otherCreature instanceof Player &&
+                            otherCreature
+                                .getParams()
+                                .getAreaId()
+                                .getValue()
+                                .equals(creature.getParams().getAreaId().getValue()) &&
                             otherCreature.getParams().getPos().distance(respawnPos) <
                                 Constants.PREVENT_ENEMY_RESPAWN_DISTANCE)
                         .collect(Collectors.toSet());
 
                     if (playersNearby.isEmpty()) {
                         AreaId initialAreaId = creature.getParams().getInitialAreaId();
-                        CreatureRespawnAction action = CreatureRespawnAction.of(creatureId, respawnPos, initialAreaId);
+                        CreatureRespawnAction action = CreatureRespawnAction.of(
+                            creatureId,
+                            respawnPos,
+                            initialAreaId
+                        );
 
                         scheduleServerSideAction(action);
                     }

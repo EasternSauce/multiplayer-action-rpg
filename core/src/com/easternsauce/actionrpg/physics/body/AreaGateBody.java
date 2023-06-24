@@ -29,7 +29,13 @@ public class AreaGateBody {
 
         world = game.getPhysicsWorld(areaGate.getAreaId());
 
-        b2body = B2BodyFactory.createAreaGateB2body(world, this, areaGate.getPos(), areaGate.getWidth(), areaGate.getHeight());
+        b2body = B2BodyFactory.createAreaGateB2body(
+            world,
+            this,
+            areaGate.getPos(),
+            areaGate.getWidth(),
+            areaGate.getHeight()
+        );
     }
 
     public void onRemove() {

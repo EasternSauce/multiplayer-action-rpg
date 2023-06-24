@@ -11,11 +11,20 @@ import lombok.NonNull;
 @Data
 public class CreatureMovementParams {
     @NonNull
-    private Vector2 movingVector = Vector2.of(0, 0);
+    private Vector2 movingVector = Vector2.of(
+        0,
+        0
+    );
     @NonNull
-    private Vector2 dashingVector = Vector2.of(0, 0);
+    private Vector2 dashingVector = Vector2.of(
+        0,
+        0
+    );
     @NonNull
-    private Vector2 movementCommandTargetPos = Vector2.of(0, 0);
+    private Vector2 movementCommandTargetPos = Vector2.of(
+        0,
+        0
+    );
     @NonNull
     private Boolean reachedTargetPos = true;
     @NonNull
@@ -29,7 +38,10 @@ public class CreatureMovementParams {
     @NonNull
     private SimpleTimer isStillMovingCheckTimer = SimpleTimer.getExpiredTimer();
     @NonNull
-    private Vector2 facingVector = Vector2.of(0f, 0f);
+    private Vector2 facingVector = Vector2.of(
+        0f,
+        0f
+    );
     @NonNull
     private java.lang.Float dashingVelocity = 0f;
     @NonNull
@@ -39,7 +51,10 @@ public class CreatureMovementParams {
     @NonNull
     private AreaId areaWhenEnteredGate;
     @NonNull
-    private Vector2 aimDirection = Vector2.of(0f, 0f);
+    private Vector2 aimDirection = Vector2.of(
+        0f,
+        0f
+    );
     @NonNull
     private SimpleTimer gateTeleportCooldownTimer = SimpleTimer.getExpiredTimer();
 

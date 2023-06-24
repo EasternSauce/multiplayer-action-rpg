@@ -19,26 +19,47 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 public abstract class CreatureHitAction extends GameStateAction {
-    protected void handleCreatureDeath(Creature targetCreature, Creature attackerCreature, CoreGame game) {
+    protected void handleCreatureDeath(
+        Creature targetCreature,
+        Creature attackerCreature,
+        CoreGame game
+    ) {
         if (targetCreature.getParams().getStats().getPreviousTickLife() > 0f &&
             targetCreature.getParams().getStats().getLife() <= 0f) {
-            onCreatureDeath(targetCreature, attackerCreature, game);
+            onCreatureDeath(
+                targetCreature,
+                attackerCreature,
+                game
+            );
         }
     }
 
-    private void onCreatureDeath(Creature targetCreature, Creature attackerCreature, CoreGame game) {
+    private void onCreatureDeath(
+        Creature targetCreature,
+        Creature attackerCreature,
+        CoreGame game
+    ) {
         targetCreature.getParams().getStats().setLife(0f); // just to make sure its dead on client side
         targetCreature.getParams().setIsDead(true);
         targetCreature.getParams().getRespawnTimer().restart();
         targetCreature.getParams().setIsAwaitingRespawn(true);
         attackerCreature.onKillEffect();
 
-        spawnDrops(targetCreature.getId(), game);
+        spawnDrops(
+            targetCreature.getId(),
+            game
+        );
 
-        deactivateCreatureAbilities(targetCreature, game);
+        deactivateCreatureAbilities(
+            targetCreature,
+            game
+        );
     }
 
-    private void spawnDrops(CreatureId targetId, CoreGame game) {
+    private void spawnDrops(
+        CreatureId targetId,
+        CoreGame game
+    ) {
         Creature creature = game.getGameState().accessCreatures().getCreature(targetId);
 
         Set<Item> items = new ConcurrentSkipListSet<>();
@@ -52,9 +73,11 @@ public abstract class CreatureHitAction extends GameStateAction {
                 if (creature.nextDropRngValue() < entry.getGrantedSkillChance()) {
                     AtomicReference<Float> totalWeight = new AtomicReference<>((float) 0);
 
-                    entry.getGrantedSkillWeights().forEach((skillType, weight) -> totalWeight.set(totalWeight.get() + weight));
+                    entry.getGrantedSkillWeights().forEach((skillType, weight) -> totalWeight.set(totalWeight.get() +
+                        weight));
 
-                    AtomicReference<Float> randValue = new AtomicReference<>(creature.nextDropRngValue() * totalWeight.get());
+                    AtomicReference<Float> randValue = new AtomicReference<>(creature.nextDropRngValue() *
+                        totalWeight.get());
 
                     entry.getGrantedSkillWeights().forEach((skillType, weight) -> {
                         if (weightedSkillType.get() == null && randValue.get() < weight) {
@@ -79,7 +102,10 @@ public abstract class CreatureHitAction extends GameStateAction {
                         level = 3;
                     }
 
-                    grantedSkills.put(weightedSkillType.get(), level);
+                    grantedSkills.put(
+                        weightedSkillType.get(),
+                        level
+                    );
                 }
 
                 float quality;
@@ -105,28 +131,33 @@ public abstract class CreatureHitAction extends GameStateAction {
 
         LootPileId lootPileId = LootPileId.of("LootPile_" + (int) (Math.random() * 10000000)); // TODO: use seeded rng
 
-        Set<Item> lootPileItems = items
-            .stream()
-            .map(item -> Item
-                .of()
-                .setTemplate(item.getTemplate())
-                .setQuantity(item.getQuantity())
-                .setQualityModifier(item.getQualityModifier())
-                .setGrantedSkills(item.getGrantedSkills())
-                .setLootPileId(lootPileId))
-            .collect(Collectors.toCollection(ConcurrentSkipListSet::new));
+        Set<Item> lootPileItems = items.stream().map(item -> Item
+            .of()
+            .setTemplate(item.getTemplate())
+            .setQuantity(item.getQuantity())
+            .setQualityModifier(item.getQualityModifier())
+            .setGrantedSkills(item.getGrantedSkills())
+            .setLootPileId(lootPileId)).collect(Collectors.toCollection(ConcurrentSkipListSet::new));
 
-        LootPile lootPile = LootPile.of(lootPileId,
+        LootPile lootPile = LootPile.of(
+            lootPileId,
             creature.getParams().getAreaId(),
             creature.getParams().getPos(),
-            lootPileItems);
+            lootPileItems
+        );
 
-        game.getGameState().getLootPiles().put(lootPile.getParams().getId(), lootPile);
+        game.getGameState().getLootPiles().put(
+            lootPile.getParams().getId(),
+            lootPile
+        );
 
         game.getEventProcessor().getLootPileModelsToBeCreated().add(lootPile.getParams().getId());
     }
 
-    private void deactivateCreatureAbilities(Creature targetCreature, CoreGame game) {
+    private void deactivateCreatureAbilities(
+        Creature targetCreature,
+        CoreGame game
+    ) {
         Set<Ability> creatureActiveAbilities = game
             .getGameState()
             .accessAbilities()

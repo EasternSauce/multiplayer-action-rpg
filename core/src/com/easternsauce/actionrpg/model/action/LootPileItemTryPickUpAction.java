@@ -20,7 +20,10 @@ public class LootPileItemTryPickUpAction extends GameStateAction {
 
     private Item item;
 
-    public static LootPileItemTryPickUpAction of(CreatureId playerId, Item item) {
+    public static LootPileItemTryPickUpAction of(
+        CreatureId playerId,
+        Item item
+    ) {
         LootPileItemTryPickUpAction action = LootPileItemTryPickUpAction.of();
         action.playerId = playerId;
         action.item = item;
@@ -42,8 +45,9 @@ public class LootPileItemTryPickUpAction extends GameStateAction {
         if (item.getTemplate().getIsStackable()) {
 
             for (int i = 0; i < InventoryPositioning.INVENTORY_TOTAL_SLOTS; i++) {
-                if (inventoryItems.containsKey(i) &&
-                    inventoryItems.get(i).getTemplate().getId().equals(item.getTemplate().getId())) {
+                if (inventoryItems.containsKey(i) && inventoryItems.get(i).getTemplate().getId().equals(item
+                    .getTemplate()
+                    .getId())) {
                     existingStackableSlot = i;
                     break;
                 }
@@ -54,9 +58,9 @@ public class LootPileItemTryPickUpAction extends GameStateAction {
             LootPile lootPile = game.getGameState().getLootPile(item.getLootPileId());
 
             if (lootPile != null) {
-                inventoryItems
+                inventoryItems.get(existingStackableSlot).setQuantity(inventoryItems
                     .get(existingStackableSlot)
-                    .setQuantity(inventoryItems.get(existingStackableSlot).getQuantity() + item.getQuantity());
+                    .getQuantity() + item.getQuantity());
 
                 lootPile.getParams().getItems().remove(item);
                 if (lootPile.getParams().getItems().isEmpty()) {
@@ -75,14 +79,16 @@ public class LootPileItemTryPickUpAction extends GameStateAction {
             LootPile lootPile = game.getGameState().getLootPile(item.getLootPileId());
 
             if (freeSlot != null && lootPile != null) {
-                inventoryItems.put(freeSlot,
+                inventoryItems.put(
+                    freeSlot,
                     Item
                         .of()
                         .setTemplate(item.getTemplate())
                         .setQuantity(item.getQuantity())
                         .setQualityModifier(item.getQualityModifier())
                         .setGrantedSkills(item.getGrantedSkills())
-                        .setLootPileId(null));
+                        .setLootPileId(null)
+                );
 
                 lootPile.getParams().getItems().remove(item);
                 if (lootPile.getParams().getItems().isEmpty()) {

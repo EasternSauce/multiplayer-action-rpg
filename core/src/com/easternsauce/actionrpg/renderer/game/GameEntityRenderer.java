@@ -89,100 +89,219 @@ public class GameEntityRenderer {
 
         CreatureAnimationConfig.configs.forEach((name, config) -> {
             CreatureModelAnimation modelAnimation = CreatureModelAnimation.of();
-            modelAnimation.prepareRunningAnimations(config, atlas);
-            modelAnimation.prepareFacingTextures(config, atlas);
-            creatureModelAnimations.put(name, modelAnimation);
+            modelAnimation.prepareRunningAnimations(
+                config,
+                atlas
+            );
+            modelAnimation.prepareFacingTextures(
+                config,
+                atlas
+            );
+            creatureModelAnimations.put(
+                name,
+                modelAnimation
+            );
         });
     }
 
-    public void loadAreaRenderers(Map<AreaId, TiledMap> maps, @SuppressWarnings("unused") CoreGame game) {
+    public void loadAreaRenderers(
+        Map<AreaId, TiledMap> maps,
+        @SuppressWarnings("unused") CoreGame game
+    ) {
         areaRenderers = new HashMap<>();
-        areaRenderers.putAll(maps.keySet().stream().collect(Collectors.toMap(areaId -> areaId, AreaRenderer::of)));
-        areaRenderers.forEach((areaId, areaRenderer) -> areaRenderer.init(maps.get(areaId), mapScale));
+        areaRenderers.putAll(maps.keySet().stream().collect(Collectors.toMap(
+            areaId -> areaId,
+            AreaRenderer::of
+        )));
+        areaRenderers.forEach((areaId, areaRenderer) -> areaRenderer.init(
+            maps.get(areaId),
+            mapScale
+        ));
         isAreasLoaded = true;
     }
 
-    public void renderAliveCreatures(RenderingLayer renderingLayer, CoreGame game) {
+    public void renderAliveCreatures(
+        RenderingLayer renderingLayer,
+        CoreGame game
+    ) {
         game.getGameState().accessCreatures().forEachAliveCreature(creature -> {
-            if (canCreatureBeRendered(creature, game)) {
-                renderCreature(renderingLayer, creature, game);
+            if (canCreatureBeRendered(
+                creature,
+                game
+            )) {
+                renderCreature(
+                    renderingLayer,
+                    creature,
+                    game
+                );
             }
         });
         game.getGameState().accessCreatures().forEachAliveCreature(creature -> {
-            if (canCreatureBeRendered(creature, game)) {
-                renderCreatureLifeBar(renderingLayer, creature, game);
+            if (canCreatureBeRendered(
+                creature,
+                game
+            )) {
+                renderCreatureLifeBar(
+                    renderingLayer,
+                    creature,
+                    game
+                );
             }
         });
         game.getGameState().accessCreatures().forEachAliveCreature(creature -> {
-            if (canCreatureBeRendered(creature, game)) {
-                renderCreatureStunnedAnimation(creature.getId(), renderingLayer, game);
-                renderCreaturePoisonedIcon(renderingLayer, creature, game);
+            if (canCreatureBeRendered(
+                creature,
+                game
+            )) {
+                renderCreatureStunnedAnimation(
+                    creature.getId(),
+                    renderingLayer,
+                    game
+                );
+                renderCreaturePoisonedIcon(
+                    renderingLayer,
+                    creature,
+                    game
+                );
             }
         });
     }
 
-    private boolean canCreatureBeRendered(Creature creature, CoreGame game) {
-        return creatureRenderers.containsKey(creature.getId()) &&
-            GameRendererHelper.isCreatureInCurrentlyVisibleArea(creature, game);
+    private boolean canCreatureBeRendered(
+        Creature creature,
+        CoreGame game
+    ) {
+        return creatureRenderers.containsKey(creature.getId()) && GameRendererHelper.isCreatureInCurrentlyVisibleArea(
+            creature,
+            game
+        );
     }
 
     @SuppressWarnings("unused")
-    private void renderCreature(RenderingLayer renderingLayer, Creature creature, CoreGame game) {
+    private void renderCreature(
+        RenderingLayer renderingLayer,
+        Creature creature,
+        CoreGame game
+    ) {
         creatureRenderers.get(creature.getId()).render(renderingLayer);
     }
 
-    private void renderCreatureLifeBar(RenderingLayer renderingLayer, Creature creature, CoreGame game) {
-        creatureRenderers.get(creature.getId()).renderLifeBar(renderingLayer, game);
+    private void renderCreatureLifeBar(
+        RenderingLayer renderingLayer,
+        Creature creature,
+        CoreGame game
+    ) {
+        creatureRenderers.get(creature.getId()).renderLifeBar(
+            renderingLayer,
+            game
+        );
 
     }
 
-    private void renderCreatureStunnedAnimation(CreatureId creatureId, RenderingLayer renderingLayer, CoreGame game) {
+    private void renderCreatureStunnedAnimation(
+        CreatureId creatureId,
+        RenderingLayer renderingLayer,
+        CoreGame game
+    ) {
         CreatureRenderer creatureRenderer = creatureRenderers.get(creatureId);
         float spriteWidth = creatureRenderer.getCreatureSprite().getWidth();
-        getCreatureStunnedAnimationRenderer().render(creatureId, spriteWidth, renderingLayer, game);
+        getCreatureStunnedAnimationRenderer().render(
+            creatureId,
+            spriteWidth,
+            renderingLayer,
+            game
+        );
 
     }
 
-    private void renderCreaturePoisonedIcon(RenderingLayer renderingLayer, Creature creature, CoreGame game) {
-        if (creature != null && creature.isEffectActive(CreatureEffect.POISON, game)) {
+    private void renderCreaturePoisonedIcon(
+        RenderingLayer renderingLayer,
+        Creature creature,
+        CoreGame game
+    ) {
+        if (creature != null && creature.isEffectActive(
+            CreatureEffect.POISON,
+            game
+        )) {
             CreatureRenderer creatureRenderer = creatureRenderers.get(creature.getId());
             float spriteWidth = creatureRenderer.getCreatureSprite().getWidth();
 
             float posX = creature.getParams().getPos().getX() - 0.5f;
-            float posY = LifeBarUtils.getLifeBarPosY(creature, spriteWidth) + 0.5f;
-            renderingLayer.getSpriteBatch().draw(poisonedIcon, posX, posY, 1f, 1f);
+            float posY = LifeBarUtils.getLifeBarPosY(
+                creature,
+                spriteWidth
+            ) + 0.5f;
+            renderingLayer.getSpriteBatch().draw(
+                poisonedIcon,
+                posX,
+                posY,
+                1f,
+                1f
+            );
         }
     }
 
-    public void renderDeadCreatures(RenderingLayer renderingLayer, CoreGame game) {
+    public void renderDeadCreatures(
+        RenderingLayer renderingLayer,
+        CoreGame game
+    ) {
         game.getGameState().accessCreatures().forEachDeadCreature(creature -> {
-            if (canCreatureBeRendered(creature, game)) {
-                renderCreature(renderingLayer, creature, game);
+            if (canCreatureBeRendered(
+                creature,
+                game
+            )) {
+                renderCreature(
+                    renderingLayer,
+                    creature,
+                    game
+                );
             }
         });
     }
 
-    public void renderAbilities(RenderingLayer renderingLayer, CoreGame game) {
-        getAbilityRenderers().values().forEach(abilityAnimation -> abilityAnimation.render(renderingLayer, game));
+    public void renderAbilities(
+        RenderingLayer renderingLayer,
+        CoreGame game
+    ) {
+        getAbilityRenderers().values().forEach(abilityAnimation -> abilityAnimation.render(
+            renderingLayer,
+            game
+        ));
     }
 
-    public void renderAreaGates(RenderingLayer renderingLayer, CoreGame game) {
-        areaGateRenderers.values().forEach(areaGateRenderer -> areaGateRenderer.render(renderingLayer, game));
+    public void renderAreaGates(
+        RenderingLayer renderingLayer,
+        CoreGame game
+    ) {
+        areaGateRenderers.values().forEach(areaGateRenderer -> areaGateRenderer.render(
+            renderingLayer,
+            game
+        ));
     }
 
-    public void renderLootPiles(RenderingLayer renderingLayer, CoreGame game) {
-        lootPileRenderers.values().forEach(lootPileRenderer -> lootPileRenderer.render(renderingLayer, game));
+    public void renderLootPiles(
+        RenderingLayer renderingLayer,
+        CoreGame game
+    ) {
+        lootPileRenderers.values().forEach(lootPileRenderer -> lootPileRenderer.render(
+            renderingLayer,
+            game
+        ));
     }
 
-    public void renderPlayerNames(RenderingLayer worldTextRenderingLayer, CoreGame game) {
-        game
-            .getGameState()
-            .accessCreatures()
-            .getCreatures()
-            .values()
-            .stream()
-            .filter(creature -> creature.isAlive() && canCreatureBeRendered(creature, game) && creature instanceof Player)
-            .forEach(creature -> creatureRenderers.get(creature.getId()).renderCreatureName(worldTextRenderingLayer, game));
+    public void renderPlayerNames(
+        RenderingLayer worldTextRenderingLayer,
+        CoreGame game
+    ) {
+        game.getGameState().accessCreatures().getCreatures().values().stream().filter(creature -> creature.isAlive() &&
+            canCreatureBeRendered(
+                creature,
+                game
+            ) &&
+            creature instanceof Player).forEach(creature -> creatureRenderers.get(creature.getId()).renderCreatureName(
+            worldTextRenderingLayer,
+            game
+        ));
     }
 
     public TiledMap loadMap(String filePath) {
@@ -198,34 +317,48 @@ public class GameEntityRenderer {
     }
 
     public void updateDamageNumbers(CoreGame game) {
-        Set<DamageNumber> toRemove = damageNumbers
-            .stream()
-            .filter(damageNumber -> damageNumber.getDamageTime() + Constants.DAMAGE_NUMBER_SHOW_DURATION <
-                game.getGameState().getTime())
-            .collect(Collectors.toSet());
+        Set<DamageNumber> toRemove = damageNumbers.stream().filter(damageNumber -> damageNumber.getDamageTime() +
+            Constants.DAMAGE_NUMBER_SHOW_DURATION < game.getGameState().getTime()).collect(Collectors.toSet());
         damageNumbers.removeAll(toRemove);
     }
 
     public void updateCreatureHitAnimations(CoreGame game) {
-        Set<CreatureHitAnimation> toRemove = creatureHitAnimations
-            .stream()
-            .filter(creatureHitAnimation -> creatureHitAnimation.getHitTime() + Constants.DAMAGE_ANIMATION_DURATION <
-                game.getGameState().getTime())
-            .collect(Collectors.toSet());
+        Set<CreatureHitAnimation> toRemove = creatureHitAnimations.stream().filter(creatureHitAnimation ->
+            creatureHitAnimation.getHitTime() + Constants.DAMAGE_ANIMATION_DURATION <
+                game.getGameState().getTime()).collect(Collectors.toSet());
         creatureHitAnimations.removeAll(toRemove);
     }
 
-    public void showDamageNumber(float actualDamageTaken, Vector2 pos, AreaId areaId, CoreGame game) {
+    public void showDamageNumber(
+        float actualDamageTaken,
+        Vector2 pos,
+        AreaId areaId,
+        CoreGame game
+    ) {
         Float currentTime = game.getGameState().getTime();
 
-        damageNumbers.add(DamageNumber.of(pos, areaId, actualDamageTaken, currentTime));
+        damageNumbers.add(DamageNumber.of(
+            pos,
+            areaId,
+            actualDamageTaken,
+            currentTime
+        ));
     }
 
-    public void startCreatureHitAnimation(CreatureId creatureId, Vector2 vectorTowardsContactPoint, AreaId areaId,
-                                          CoreGame game) {
+    public void startCreatureHitAnimation(
+        CreatureId creatureId,
+        Vector2 vectorTowardsContactPoint,
+        AreaId areaId,
+        CoreGame game
+    ) {
         Float currentTime = game.getGameState().getTime();
 
-        CreatureHitAnimation animation = CreatureHitAnimation.of(creatureId, vectorTowardsContactPoint, areaId, currentTime);
+        CreatureHitAnimation animation = CreatureHitAnimation.of(
+            creatureId,
+            vectorTowardsContactPoint,
+            areaId,
+            currentTime
+        );
         creatureHitAnimations.add(animation);
     }
 }

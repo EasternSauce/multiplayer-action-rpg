@@ -20,7 +20,10 @@ import java.util.stream.Collectors;
 public class MagicOrb extends Projectile {
     AbilityParams params;
 
-    public static MagicOrb of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+    public static MagicOrb of(
+        AbilityParams abilityParams,
+        @SuppressWarnings("unused") CoreGame game
+    ) {
         MagicOrb ability = MagicOrb.of();
         ability.params = abilityParams
             .setWidth(1.5f)
@@ -48,7 +51,10 @@ public class MagicOrb extends Projectile {
     }
 
     @Override
-    protected void onActiveUpdate(float delta, CoreGame game) {
+    protected void onActiveUpdate(
+        float delta,
+        CoreGame game
+    ) {
         onProjectileTravelUpdate();
 
         Creature minimumDistanceCreature = null;
@@ -62,11 +68,17 @@ public class MagicOrb extends Projectile {
             .getCreatures()
             .values()
             .stream()
-            .filter(targetCreature ->
-                Objects.equals(targetCreature.getParams().getAreaId().getValue(), getParams().getAreaId().getValue()) &&
-                    !targetCreature.getId().equals(getParams().getCreatureId()) && targetCreature.isAlive() &&
-                    isTargetingAllowed(thisCreature, targetCreature) &&
-                    targetCreature.getParams().getPos().distance(getParams().getPos()) < 20f)
+            .filter(targetCreature -> Objects.equals(
+                targetCreature.getParams().getAreaId().getValue(),
+                getParams().getAreaId().getValue()
+            ) &&
+                !targetCreature.getId().equals(getParams().getCreatureId()) &&
+                targetCreature.isAlive() &&
+                isTargetingAllowed(
+                    thisCreature,
+                    targetCreature
+                ) &&
+                targetCreature.getParams().getPos().distance(getParams().getPos()) < 20f)
             .collect(Collectors.toSet())) {
             if (creature.getParams().getPos().distance(getParams().getPos()) < minimumDistance) {
                 minimumDistanceCreature = creature;
@@ -79,13 +91,17 @@ public class MagicOrb extends Projectile {
             float targetAngleDeg = vectorTowards.angleDeg();
             float currentAngleDeg = getParams().getDirVector().angleDeg();
 
-            float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(currentAngleDeg, targetAngleDeg);
+            float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(
+                currentAngleDeg,
+                targetAngleDeg
+            );
 
             float incrementFactor = 60f;
             float baseIncrement = incrementFactor;
 
             if (getParams().getStateTimer().getTime() > 0.5f && getParams().getStateTimer().getTime() < 2f) {
-                baseIncrement = incrementFactor - (getParams().getStateTimer().getTime() - 0.5f) / 1.5f * incrementFactor;
+                baseIncrement = incrementFactor -
+                    (getParams().getStateTimer().getTime() - 0.5f) / 1.5f * incrementFactor;
             } else if (getParams().getStateTimer().getTime() >= 2f) {
                 baseIncrement = 0f;
             }
@@ -106,12 +122,18 @@ public class MagicOrb extends Projectile {
 
 
     @Override
-    public void onCreatureHit(CreatureId creatureId, CoreGame game) {
+    public void onCreatureHit(
+        CreatureId creatureId,
+        CoreGame game
+    ) {
         deactivate();
     }
 
     @Override
-    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
+    public void onTerrainHit(
+        Vector2 abilityPos,
+        Vector2 tilePos
+    ) {
         if (getParams().getStateTimer().getTime() > 0.1f) {
             deactivate();
         }
@@ -127,7 +149,10 @@ public class MagicOrb extends Projectile {
         return 0.75f;
     }
 
-    private boolean isTargetingAllowed(Creature thisCreature, Creature targetCreature) {
+    private boolean isTargetingAllowed(
+        Creature thisCreature,
+        Creature targetCreature
+    ) {
         if (thisCreature instanceof Enemy) {
             return targetCreature instanceof Player;
         }

@@ -10,10 +10,12 @@ public class ItemPickupMenuPositioning {
     public static final float HEIGHT = 20f;
 
     public static Rect getMenuOptionRect(int i) {
-        return Rect.of(ItemPickupMenuPositioning.POS_X,
+        return Rect.of(
+            ItemPickupMenuPositioning.POS_X,
             ItemPickupMenuPositioning.POS_Y + 25f * i,
             ItemPickupMenuPositioning.WIDTH,
-            ItemPickupMenuPositioning.HEIGHT);
+            ItemPickupMenuPositioning.HEIGHT
+        );
     }
 
 }

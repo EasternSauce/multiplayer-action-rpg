@@ -18,7 +18,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Data
 public class SkillMenuController {
     @SuppressWarnings("UnusedReturnValue")
-    public boolean performSkillMenuPickerClick(Client client, CoreGame game) {
+    public boolean performSkillMenuPickerClick(
+        Client client,
+        CoreGame game
+    ) {
         float x = game.hudMousePos().getX();
         float y = game.hudMousePos().getY();
 
@@ -26,16 +29,21 @@ public class SkillMenuController {
 
         AtomicInteger i = new AtomicInteger();
 
-        Creature player = game.getGameState().accessCreatures().getCreature(game.getGameState().getThisClientPlayerId());
+        Creature player = game.getGameState().accessCreatures().getCreature(game
+            .getGameState()
+            .getThisClientPlayerId());
 
         player.availableSkills().forEach((skillType, level) -> {
             Rect rect = SkillMenuPositioning.getSkillPickerRect(i.get());
 
-            if (rect.contains(x, y)) {
-                client.sendTCP(ActionPerformCommand.of(SkillPickerMenuSlotChangeAction.of(game
-                        .getGameState()
-                        .getThisClientPlayerId(),
-                    skillType)));
+            if (rect.contains(
+                x,
+                y
+            )) {
+                client.sendTCP(ActionPerformCommand.of(SkillPickerMenuSlotChangeAction.of(
+                    game.getGameState().getThisClientPlayerId(),
+                    skillType
+                )));
                 isSuccessful.set(true);
             }
 
@@ -51,17 +59,24 @@ public class SkillMenuController {
         return isSuccessful.get();
     }
 
-    public boolean performSkillMenuClick(Client client, CoreGame game) {
+    public boolean performSkillMenuClick(
+        Client client,
+        CoreGame game
+    ) {
         float x = game.hudMousePos().getX();
         float y = game.hudMousePos().getY();
 
         AtomicBoolean isSuccessful = new AtomicBoolean(false);
 
         SkillMenuPositioning.skillRectangles.forEach((slotNum, rect) -> {
-            if (rect.contains(x, y)) {
-                client.sendTCP(ActionPerformCommand.of(SkillPickerMenuActivateAction.of(game
-                    .getGameState()
-                    .getThisClientPlayerId(), slotNum)));
+            if (rect.contains(
+                x,
+                y
+            )) {
+                client.sendTCP(ActionPerformCommand.of(SkillPickerMenuActivateAction.of(
+                    game.getGameState().getThisClientPlayerId(),
+                    slotNum
+                )));
                 isSuccessful.set(true);
             }
         });

@@ -15,7 +15,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 @NoArgsConstructor(staticName = "of")
 @Data
 public class ItemPickupMenuController {
-    public boolean performItemPickupMenuClick(Client client, CoreGame game) {
+    public boolean performItemPickupMenuClick(
+        Client client,
+        CoreGame game
+    ) {
         PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
 
         float x = game.hudMousePos().getX();
@@ -24,23 +27,30 @@ public class ItemPickupMenuController {
         AtomicBoolean isSuccessful = new AtomicBoolean(false);
 
         AtomicInteger i = new AtomicInteger();
-        playerConfig
-            .getItemPickupMenuLootPiles()
-            .stream()
-            .filter(lootPileId -> game.getGameState().getLootPiles().containsKey(lootPileId))
-            .flatMap(lootPileId -> game.getGameState().getLootPile(lootPileId).getParams().getItems().stream())
-            .forEach(item -> {
-                Rect rect = ItemPickupMenuPositioning.getMenuOptionRect(i.get());
+        playerConfig.getItemPickupMenuLootPiles().stream().filter(lootPileId -> game
+            .getGameState()
+            .getLootPiles()
+            .containsKey(lootPileId)).flatMap(lootPileId -> game
+            .getGameState()
+            .getLootPile(lootPileId)
+            .getParams()
+            .getItems()
+            .stream()).forEach(item -> {
+            Rect rect = ItemPickupMenuPositioning.getMenuOptionRect(i.get());
 
-                if (rect.contains(x, y)) {
-                    client.sendTCP(ActionPerformCommand.of(LootPileItemTryPickUpAction.of(game
-                        .getGameState()
-                        .getThisClientPlayerId(), item)));
-                    isSuccessful.set(true);
-                }
+            if (rect.contains(
+                x,
+                y
+            )) {
+                client.sendTCP(ActionPerformCommand.of(LootPileItemTryPickUpAction.of(
+                    game.getGameState().getThisClientPlayerId(),
+                    item
+                )));
+                isSuccessful.set(true);
+            }
 
-                i.getAndIncrement();
-            });
+            i.getAndIncrement();
+        });
         return isSuccessful.get();
     }
 }

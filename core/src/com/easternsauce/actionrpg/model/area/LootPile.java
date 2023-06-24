@@ -16,7 +16,12 @@ public class LootPile implements Entity {
     Float width = 1f;
     Float height = 1f;
 
-    public static LootPile of(LootPileId id, AreaId areaId, Vector2 pos, Set<Item> items) {
+    public static LootPile of(
+        LootPileId id,
+        AreaId areaId,
+        Vector2 pos,
+        Set<Item> items
+    ) {
         LootPileParams params = LootPileParams.of();
         params.setId(id);
         params.setAreaId(areaId);

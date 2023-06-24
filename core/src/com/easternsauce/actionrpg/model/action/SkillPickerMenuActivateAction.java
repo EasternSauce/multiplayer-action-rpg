@@ -16,7 +16,10 @@ public class SkillPickerMenuActivateAction extends GameStateAction {
 
     private Integer slotNum;
 
-    public static SkillPickerMenuActivateAction of(CreatureId playerId, Integer slotNum) {
+    public static SkillPickerMenuActivateAction of(
+        CreatureId playerId,
+        Integer slotNum
+    ) {
         SkillPickerMenuActivateAction action = SkillPickerMenuActivateAction.of();
         action.playerId = playerId;
         action.slotNum = slotNum;

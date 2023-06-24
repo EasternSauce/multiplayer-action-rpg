@@ -61,7 +61,8 @@ public class CreatureAccessor {
             Creature creature = getData().getCreatures().get(creatureId);
             if (creature != null) {
                 return player.getParams().getAreaId().equals(creature.getParams().getAreaId()) &&
-                    creature.getParams().getPos().distance(player.getParams().getPos()) < Constants.CLIENT_GAME_UPDATE_RANGE;
+                    creature.getParams().getPos().distance(player.getParams().getPos()) <
+                        Constants.CLIENT_GAME_UPDATE_RANGE;
             }
 
             return false;
@@ -69,8 +70,14 @@ public class CreatureAccessor {
         }).collect(Collectors.toSet());
     }
 
-    public void setCreatureMovingVector(CreatureId creatureId, Vector2 dirVector) {
-        CreatureMovingVectorSetAction action = CreatureMovingVectorSetAction.of(creatureId, dirVector);
+    public void setCreatureMovingVector(
+        CreatureId creatureId,
+        Vector2 dirVector
+    ) {
+        CreatureMovingVectorSetAction action = CreatureMovingVectorSetAction.of(
+            creatureId,
+            dirVector
+        );
 
         gameState.scheduleServerSideAction(action);
     }
@@ -94,26 +101,34 @@ public class CreatureAccessor {
     }
 
     // TODO: move to enemy?
-    public void handleCreatureUseRandomSkillAtTarget(CreatureId creatureId, Vector2 vectorTowardsTarget) {
+    public void handleCreatureUseRandomSkillAtTarget(
+        CreatureId creatureId,
+        Vector2 vectorTowardsTarget
+    ) {
         Creature creature = gameState.accessCreatures().getCreatures().get(creatureId);
 
         if (creature.getParams().getEnemyParams().getSkillUseReadyToPick()) {
-            pickSkillUseSkillType(creature.getParams().getEnemyParams().getSkillUses(), creature);
+            pickSkillUseSkillType(
+                creature.getParams().getEnemyParams().getSkillUses(),
+                creature
+            );
         }
 
-        SkillTryPerformAction action = SkillTryPerformAction.of(creatureId,
-            creature
-                .getParams()
-                .getEnemyParams()
-                .getSkillUsePickedSkillType(),
+        SkillTryPerformAction action = SkillTryPerformAction.of(
+            creatureId,
+            creature.getParams().getEnemyParams().getSkillUsePickedSkillType(),
             creature.getParams().getPos(),
-            vectorTowardsTarget);
+            vectorTowardsTarget
+        );
 
         gameState.scheduleServerSideAction(action);
     }
 
     // TODO: move to enemy?
-    private static void pickSkillUseSkillType(Set<EnemySkillUseEntry> skillUseEntries, Creature creature) {
+    private static void pickSkillUseSkillType(
+        Set<EnemySkillUseEntry> skillUseEntries,
+        Creature creature
+    ) {
         AtomicReference<Float> totalWeight = new AtomicReference<>((float) 0);
 
         // TODO: pick subset of skill use entries based on distance to enemy
@@ -134,7 +149,11 @@ public class CreatureAccessor {
         creature.getParams().getEnemyParams().setSkillUseReadyToPick(false);
     }
 
-    public void handleCreatureUseSkillAtTarget(CreatureId creatureId, Vector2 vectorTowardsTarget, SkillType skillType) {
+    public void handleCreatureUseSkillAtTarget(
+        CreatureId creatureId,
+        Vector2 vectorTowardsTarget,
+        SkillType skillType
+    ) {
         Creature creature = gameState.accessCreatures().getCreatures().get(creatureId);
 
         if (!creature
@@ -148,15 +167,21 @@ public class CreatureAccessor {
             throw new RuntimeException("trying to use a skill that is not in enemy's skill uses!");
         }
 
-        SkillTryPerformAction action = SkillTryPerformAction.of(creatureId,
+        SkillTryPerformAction action = SkillTryPerformAction.of(
+            creatureId,
             skillType,
             creature.getParams().getPos(),
-            vectorTowardsTarget);
+            vectorTowardsTarget
+        );
 
         gameState.scheduleServerSideAction(action);
     }
 
-    public CreatureId getAliveCreatureIdClosestTo(Vector2 pos, float maxRange, Set<CreatureId> excluded) {
+    public CreatureId getAliveCreatureIdClosestTo(
+        Vector2 pos,
+        float maxRange,
+        Set<CreatureId> excluded
+    ) {
         CreatureId minCreatureId = null;
         float minDistance = Float.MAX_VALUE;
         for (CreatureId creatureId : gameState.getCreaturesToUpdate()) {
@@ -170,8 +195,16 @@ public class CreatureAccessor {
         return minCreatureId;
     }
 
-    public void creatureTakeDamageOverTime(CreatureId attackerId, CreatureId targetId, Float damage) {
-        CreatureHitByDamageOverTimeAction action = CreatureHitByDamageOverTimeAction.of(attackerId, targetId, damage);
+    public void creatureTakeDamageOverTime(
+        CreatureId attackerId,
+        CreatureId targetId,
+        Float damage
+    ) {
+        CreatureHitByDamageOverTimeAction action = CreatureHitByDamageOverTimeAction.of(
+            attackerId,
+            targetId,
+            damage
+        );
         gameState.scheduleServerSideAction(action);
     }
 }

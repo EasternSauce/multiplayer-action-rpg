@@ -16,18 +16,34 @@ public class PathingNode {
     Integer clearance;
     List<PathingEdge> outgoingEdges = new ArrayList<>();
 
-    public static PathingNode of(Vector2Int pos, Integer clearance) {
+    public static PathingNode of(
+        Vector2Int pos,
+        Integer clearance
+    ) {
         PathingNode pathingNode = new PathingNode();
         pathingNode.setPos(pos);
         pathingNode.setClearance(clearance);
         return pathingNode;
     }
 
-    public PathingNode withEdge(Float weight, PathingNode node) {
-        PathingEdge newEdge = PathingEdge.of(weight, node.getPos());
+    public PathingNode withEdge(
+        Float weight,
+        PathingNode node
+    ) {
+        PathingEdge newEdge = PathingEdge.of(
+            weight,
+            node.getPos()
+        );
         ArrayList<PathingEdge> newOutgoingEdges = new ArrayList<>(outgoingEdges);
-        newOutgoingEdges.add(0, newEdge);
-        return PathingNode.of(pos, clearance, newOutgoingEdges);
+        newOutgoingEdges.add(
+            0,
+            newEdge
+        );
+        return PathingNode.of(
+            pos,
+            clearance,
+            newOutgoingEdges
+        );
     }
 }
 

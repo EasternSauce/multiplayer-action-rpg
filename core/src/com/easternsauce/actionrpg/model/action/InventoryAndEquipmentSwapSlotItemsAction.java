@@ -23,8 +23,11 @@ public class InventoryAndEquipmentSwapSlotItemsAction extends GameStateAction {
     private Integer inventoryIndex;
     private Integer equipmentIndex;
 
-    public static InventoryAndEquipmentSwapSlotItemsAction of(CreatureId creatureId, Integer inventoryIndex,
-                                                              Integer equipmentIndex) {
+    public static InventoryAndEquipmentSwapSlotItemsAction of(
+        CreatureId creatureId,
+        Integer inventoryIndex,
+        Integer equipmentIndex
+    ) {
         InventoryAndEquipmentSwapSlotItemsAction action = InventoryAndEquipmentSwapSlotItemsAction.of();
         action.playerId = creatureId;
         action.inventoryIndex = inventoryIndex;
@@ -42,11 +45,20 @@ public class InventoryAndEquipmentSwapSlotItemsAction extends GameStateAction {
         Item equipmentItem = player.getParams().getEquipmentItems().get(equipmentIndex);
 
         if (checkInventoryItemSlotTypeMatchesEquipmentSlot(inventoryItem)) {
-            handleSwapInEquipment(player, equipmentItem);
-            handleSwapInInventory(player, inventoryItem);
+            handleSwapInEquipment(
+                player,
+                equipmentItem
+            );
+            handleSwapInInventory(
+                player,
+                inventoryItem
+            );
         }
 
-        finalizeItemSwap(player, playerConfig);
+        finalizeItemSwap(
+            player,
+            playerConfig
+        );
     }
 
     @Override
@@ -55,37 +67,59 @@ public class InventoryAndEquipmentSwapSlotItemsAction extends GameStateAction {
     }
 
     private boolean checkInventoryItemSlotTypeMatchesEquipmentSlot(Item inventoryItem) {
-        return inventoryItem == null || inventoryItem.getTemplate().getEquipmentSlotType() ==
-            EquipmentSlotType.equipmentSlotSequenceNumbers.get(equipmentIndex);
+        return inventoryItem == null ||
+            inventoryItem.getTemplate().getEquipmentSlotType() ==
+                EquipmentSlotType.equipmentSlotSequenceNumbers.get(equipmentIndex);
     }
 
-    private void handleSwapInEquipment(Creature player, Item equipmentItem) {
+    private void handleSwapInEquipment(
+        Creature player,
+        Item equipmentItem
+    ) {
         if (equipmentItem != null) {
-            player.getParams().getInventoryItems().put(inventoryIndex, equipmentItem);
+            player.getParams().getInventoryItems().put(
+                inventoryIndex,
+                equipmentItem
+            );
         } else {
             player.getParams().getInventoryItems().remove(inventoryIndex);
         }
     }
 
-    private void handleSwapInInventory(Creature player, Item inventoryItem) {
+    private void handleSwapInInventory(
+        Creature player,
+        Item inventoryItem
+    ) {
         if (inventoryItem != null) {
-            player.getParams().getEquipmentItems().put(equipmentIndex, inventoryItem);
+            player.getParams().getEquipmentItems().put(
+                equipmentIndex,
+                inventoryItem
+            );
         } else {
             player.getParams().getEquipmentItems().remove(equipmentIndex);
         }
     }
 
-    private void finalizeItemSwap(Creature player, PlayerConfig playerConfig) {
+    private void finalizeItemSwap(
+        Creature player,
+        PlayerConfig playerConfig
+    ) {
         playerConfig.setInventoryItemBeingMoved(null);
         playerConfig.setEquipmentItemBeingMoved(null);
 
         playerConfig.setIsSkillMenuPickerSlotBeingChanged(null);
 
-        removeSkillFromSkillMenuOnItemUnequip(player, playerConfig);
+        removeSkillFromSkillMenuOnItemUnequip(
+            player,
+            playerConfig
+        );
     }
 
     @SuppressWarnings("SpellCheckingInspection")
-    private void removeSkillFromSkillMenuOnItemUnequip(Creature player, PlayerConfig playerConfig) {
+    private void removeSkillFromSkillMenuOnItemUnequip(
+        Creature player,
+        PlayerConfig playerConfig
+    ) {
         Set<Integer> slotsToRemove = new ConcurrentSkipListSet<>();
         playerConfig.getSkillMenuSlots().forEach((slotIndex, skillType) -> {
             if (!player.availableSkills().containsKey(skillType)) {

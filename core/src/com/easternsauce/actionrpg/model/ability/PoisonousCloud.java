@@ -16,7 +16,10 @@ import java.util.concurrent.ConcurrentSkipListMap;
 public class PoisonousCloud extends Ability {
     AbilityParams params;
 
-    public static PoisonousCloud of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+    public static PoisonousCloud of(
+        AbilityParams abilityParams,
+        @SuppressWarnings("unused") CoreGame game
+    ) {
         PoisonousCloud ability = PoisonousCloud.of();
         ability.params = abilityParams
             .setWidth(9f)
@@ -44,18 +47,32 @@ public class PoisonousCloud extends Ability {
     }
 
     @Override
-    protected void onActiveUpdate(float delta, CoreGame game) {
+    protected void onActiveUpdate(
+        float delta,
+        CoreGame game
+    ) {
 
     }
 
 
     @Override
-    public void onCreatureHit(CreatureId creatureId, CoreGame game) {
+    public void onCreatureHit(
+        CreatureId creatureId,
+        CoreGame game
+    ) {
         Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
-        creature.applyEffect(CreatureEffect.SLOW, 1f, game);
+        creature.applyEffect(
+            CreatureEffect.SLOW,
+            1f,
+            game
+        );
         creature.getParams().getEffectParams().setCurrentSlowMagnitude(0.65f);
-        creature.applyEffect(CreatureEffect.POISON, 4f, game);
+        creature.applyEffect(
+            CreatureEffect.POISON,
+            4f,
+            game
+        );
         creature.getParams().getEffectParams().setCurrentDamageOverTimeTaken(16f);
         creature.getParams().getEffectParams().setCurrentDamageOverTimeDealerCreatureId(getParams().getCreatureId());
     }

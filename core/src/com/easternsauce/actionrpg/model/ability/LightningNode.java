@@ -19,7 +19,10 @@ import java.util.concurrent.ConcurrentSkipListMap;
 public class LightningNode extends Ability {
     AbilityParams params;
 
-    public static LightningNode of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+    public static LightningNode of(
+        AbilityParams abilityParams,
+        @SuppressWarnings("unused") CoreGame game
+    ) {
         LightningNode ability = LightningNode.of();
         ability.params = abilityParams
             .setWidth(3f)
@@ -47,7 +50,10 @@ public class LightningNode extends Ability {
     }
 
     @Override
-    protected void onActiveUpdate(float delta, CoreGame game) {
+    protected void onActiveUpdate(
+        float delta,
+        CoreGame game
+    ) {
 
     }
 
@@ -57,44 +63,56 @@ public class LightningNode extends Ability {
         Set<CreatureId> excluded = new HashSet<>(getParams().getCreaturesAlreadyHit().keySet());
         excluded.add(getParams().getCreatureId());
 
-        Creature targetCreature = game
+        Creature targetCreature = game.getGameState().accessCreatures().getCreature(game
             .getGameState()
             .accessCreatures()
-            .getCreature(game.getGameState().accessCreatures().getAliveCreatureIdClosestTo(getParams().getPos(), 13f, excluded));
-
-        if (targetCreature != null && getParams().getCreaturesAlreadyHit().size() <= 10 &&
-            game.isLineBetweenPointsUnobstructedByTerrain(getParams().getAreaId(),
+            .getAliveCreatureIdClosestTo(
                 getParams().getPos(),
-                targetCreature.getParams().getPos())) {
+                13f,
+                excluded
+            ));
 
-            game
-                .getGameState()
-                .accessAbilities()
-                .onAbilityHitsCreature(getParams().getCreatureId(),
-                    targetCreature.getId(),
-                    getParams().getId(),
-                    targetCreature.getParams().getPos(),
-                    game);
+        if (targetCreature != null &&
+            getParams().getCreaturesAlreadyHit().size() <= 10 &&
+            game.isLineBetweenPointsUnobstructedByTerrain(
+                getParams().getAreaId(),
+                getParams().getPos(),
+                targetCreature.getParams().getPos()
+            )) {
 
-            getParams().getCreaturesAlreadyHit().put(targetCreature.getId(), getParams().getStateTimer().getTime());
+            game.getGameState().accessAbilities().onAbilityHitsCreature(
+                getParams().getCreatureId(),
+                targetCreature.getId(),
+                getParams().getId(),
+                targetCreature.getParams().getPos(),
+                game
+            );
 
-            game
-                .getGameState()
-                .accessAbilities()
-                .chainAnotherAbility(this, AbilityType.LIGHTNING_CHAIN, targetCreature.getParams().getPos(),
-                    // this pos is later changed, TODO: move it to other param?
-                    params.getDirVector(), null, null, game);
+            getParams().getCreaturesAlreadyHit().put(
+                targetCreature.getId(),
+                getParams().getStateTimer().getTime()
+            );
 
-            game
-                .getGameState()
-                .accessAbilities()
-                .chainAnotherAbility(this,
-                    AbilityType.LIGHTNING_NODE,
-                    targetCreature.getParams().getPos(),
-                    params.getDirVector(),
-                    null,
-                    null,
-                    game);
+            game.getGameState().accessAbilities().chainAnotherAbility(
+                this,
+                AbilityType.LIGHTNING_CHAIN,
+                targetCreature.getParams().getPos(),
+                // this pos is later changed, TODO: move it to other param?
+                params.getDirVector(),
+                null,
+                null,
+                game
+            );
+
+            game.getGameState().accessAbilities().chainAnotherAbility(
+                this,
+                AbilityType.LIGHTNING_NODE,
+                targetCreature.getParams().getPos(),
+                params.getDirVector(),
+                null,
+                null,
+                game
+            );
         }
     }
 
@@ -107,9 +125,18 @@ public class LightningNode extends Ability {
     @Override
     public Map<Integer, Float> levelScalings() {
         ConcurrentSkipListMap<Integer, Float> scalings = new ConcurrentSkipListMap<>();
-        scalings.put(1, 1.0f);
-        scalings.put(2, 1.1f);
-        scalings.put(3, 1.2f);
+        scalings.put(
+            1,
+            1.0f
+        );
+        scalings.put(
+            2,
+            1.1f
+        );
+        scalings.put(
+            3,
+            1.2f
+        );
         return scalings;
     }
 }

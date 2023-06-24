@@ -20,8 +20,12 @@ public class CreatureHitByAbilityAction extends CreatureHitAction {
     private Ability ability;
     private Vector2 contactPoint;
 
-    public static CreatureHitByAbilityAction of(CreatureId attackerId, CreatureId targetId, Ability ability,
-                                                Vector2 contactPoint) {
+    public static CreatureHitByAbilityAction of(
+        CreatureId attackerId,
+        CreatureId targetId,
+        Ability ability,
+        Vector2 contactPoint
+    ) {
         CreatureHitByAbilityAction action = CreatureHitByAbilityAction.of();
         action.attackerId = attackerId;
         action.targetId = targetId;
@@ -39,21 +43,36 @@ public class CreatureHitByAbilityAction extends CreatureHitAction {
             return;
         }
 
-        boolean isShielded = targetCreature.isAbilityShielded(ability, game);
+        boolean isShielded = targetCreature.isAbilityShielded(
+            ability,
+            game
+        );
 
         Float damage = ability.getDamage(game);
 
         if (!isShielded && !ability.getParams().getIsHitShielded() && damage > 0f) {
-            targetCreature.takeLifeDamage(damage, contactPoint, game);
+            targetCreature.takeLifeDamage(
+                damage,
+                contactPoint,
+                game
+            );
 
             if (ability.isCanStun()) {
-                targetCreature.applyEffect(CreatureEffect.STUN, ability.getStunDuration(), game);
+                targetCreature.applyEffect(
+                    CreatureEffect.STUN,
+                    ability.getStunDuration(),
+                    game
+                );
             }
 
             targetCreature.onBeingHit(ability);
         }
 
-        handleCreatureDeath(targetCreature, attackerCreature, game);
+        handleCreatureDeath(
+            targetCreature,
+            attackerCreature,
+            game
+        );
     }
 
     @Override

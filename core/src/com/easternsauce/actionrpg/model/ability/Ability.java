@@ -23,7 +23,10 @@ public abstract class Ability implements Entity {
 
     public abstract Boolean isRanged();
 
-    public void update(Float delta, CoreGame game) {
+    public void update(
+        Float delta,
+        CoreGame game
+    ) {
         AbilityState state = getParams().getState();
 
         if (state == AbilityState.CHANNEL) {
@@ -39,9 +42,13 @@ public abstract class Ability implements Entity {
                 getParams().getStateTimer().restart();
             }
         } else if (state == AbilityState.ACTIVE) {
-            onActiveUpdate(delta, game);
+            onActiveUpdate(
+                delta,
+                game
+            );
 
-            if (!getParams().getDelayedActionCompleted() && getParams().getDelayedActionTime() != null &&
+            if (!getParams().getDelayedActionCompleted() &&
+                getParams().getDelayedActionTime() != null &&
                 getParams().getStateTimer().getTime() > getParams().getDelayedActionTime()) {
                 getParams().setDelayedActionCompleted(true);
                 onDelayedAction(game);
@@ -75,7 +82,10 @@ public abstract class Ability implements Entity {
     public void onStarted(CoreGame game) {
     }
 
-    abstract protected void onActiveUpdate(float delta, CoreGame game);
+    abstract protected void onActiveUpdate(
+        float delta,
+        CoreGame game
+    );
 
     public void onDelayedAction(CoreGame game) {
 
@@ -129,16 +139,25 @@ public abstract class Ability implements Entity {
         getParams().getStateTimer().setTime(activeDuration + 1f);
     }
 
-    public void onCreatureHit(CreatureId creatureId, CoreGame game) {
+    public void onCreatureHit(
+        CreatureId creatureId,
+        CoreGame game
+    ) {
     }
 
     public void onSelfCreatureHit(CoreGame game) {
     }
 
-    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
+    public void onTerrainHit(
+        Vector2 abilityPos,
+        Vector2 tilePos
+    ) {
     }
 
-    public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
+    public void onOtherAbilityHit(
+        AbilityId otherAbilityId,
+        CoreGame game
+    ) {
 
     }
 

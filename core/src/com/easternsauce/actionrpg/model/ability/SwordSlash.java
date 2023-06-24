@@ -11,7 +11,10 @@ import lombok.NoArgsConstructor;
 public class SwordSlash extends DirectionalAttachedAbility {
     AbilityParams params;
 
-    public static SwordSlash of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+    public static SwordSlash of(
+        AbilityParams abilityParams,
+        @SuppressWarnings("unused") CoreGame game
+    ) {
         SwordSlash ability = SwordSlash.of();
         ability.params = abilityParams
             .setWidth(2.5f)
@@ -42,7 +45,10 @@ public class SwordSlash extends DirectionalAttachedAbility {
     }
 
     @Override
-    protected void onActiveUpdate(float delta, CoreGame game) {
+    protected void onActiveUpdate(
+        float delta,
+        CoreGame game
+    ) {
         updateDirectionalAttachedAbilityPosition(game);
     }
 

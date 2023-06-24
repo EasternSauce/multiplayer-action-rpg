@@ -63,12 +63,18 @@ public class CoreGameServer extends CoreGame {
 
     @Override
     public void establishConnection() {
-        setEndPoint(new Server(6400000, 6400000));
+        setEndPoint(new Server(
+            6400000,
+            6400000
+        ));
         EndPointHelper.registerEndPointClasses(getEndPoint());
         getEndPoint().start();
 
         try {
-            getEndPoint().bind(20445, 20445);
+            getEndPoint().bind(
+                20445,
+                20445
+            );
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -87,7 +93,10 @@ public class CoreGameServer extends CoreGame {
             }
 
             @Override
-            public void received(Connection connection, Object object) {
+            public void received(
+                Connection connection,
+                Object object
+            ) {
                 if (object instanceof ActionPerformCommand) {
                     ActionPerformCommand command = (ActionPerformCommand) object;
 
@@ -99,7 +108,10 @@ public class CoreGameServer extends CoreGame {
                     PlayerInitAction playerInitAction = PlayerInitAction.of(command.getPlayerId());
 
                     if (clientIds.contains(connection.getID())) {
-                        getClientPlayers().put(connection.getID(), playerInitAction.getPlayerId());
+                        getClientPlayers().put(
+                            connection.getID(),
+                            playerInitAction.getPlayerId()
+                        );
 
                         gameState.scheduleServerSideAction(playerInitAction);
                     }
@@ -110,10 +122,12 @@ public class CoreGameServer extends CoreGame {
                     getEndPoint().sendToAllTCP(command);
                 } else if (object instanceof EnemySpawnCommand) {
                     EnemySpawnCommand command = (EnemySpawnCommand) object;
-                    getEntityManager().spawnEnemy(command.getCreatureId(),
+                    getEntityManager().spawnEnemy(
+                        command.getCreatureId(),
                         command.getAreaId(),
                         command.getEnemySpawn(),
-                        CoreGameServer.this);
+                        CoreGameServer.this
+                    );
 
                     getEndPoint().sendToAllTCP(command); // TODO: add to tick actions instead
 
@@ -131,10 +145,11 @@ public class CoreGameServer extends CoreGame {
 
                     Connection[] connections = getEndPoint().getConnections();
                     for (Connection connection : connections) {
-                        if (!getClientPlayers().containsKey(connection.getID()) || !getGameState()
-                            .accessCreatures()
-                            .getCreatures()
-                            .containsKey(getClientPlayers().get(connection.getID()))) {
+                        if (!getClientPlayers().containsKey(connection.getID()) ||
+                            !getGameState()
+                                .accessCreatures()
+                                .getCreatures()
+                                .containsKey(getClientPlayers().get(connection.getID()))) {
                             gameState.sendGameDataWithEntitiesEmpty(connection);
                         } else {
                             gameState.sendGameDataPersonalizedForPlayer(connection);
@@ -171,15 +186,22 @@ public class CoreGameServer extends CoreGame {
             }
 
             if (getClientPlayers().containsKey(connection.getID()) &&
-                getGameState().accessCreatures().getCreatures().containsKey(getClientPlayers().get(connection.getID()))) {
-                Creature player = getGameState().accessCreatures().getCreatures().get(getClientPlayers().get(connection.getID()));
+                getGameState()
+                    .accessCreatures()
+                    .getCreatures()
+                    .containsKey(getClientPlayers().get(connection.getID()))) {
+                Creature player = getGameState()
+                    .accessCreatures()
+                    .getCreatures()
+                    .get(getClientPlayers().get(connection.getID()));
 
                 List<GameStateAction> personalizedTickActions = onTickActions
                     .stream()
-                    .filter(action -> action.isActionObjectValid(this) && action
-                        .getActionObjectAreaId(this)
-                        .getValue()
-                        .equals(player.getParams().getAreaId().getValue()) &&
+                    .filter(action -> action.isActionObjectValid(this) &&
+                        action
+                            .getActionObjectAreaId(this)
+                            .getValue()
+                            .equals(player.getParams().getAreaId().getValue()) &&
                         action.getActionObjectPos(this).distance(player.getParams().getPos()) <
                             Constants.CLIENT_GAME_UPDATE_RANGE)
                     .collect(Collectors.toList());
@@ -196,7 +218,10 @@ public class CoreGameServer extends CoreGame {
         AreaId areaId = AreaId.of("area1");
 
         Map<SkillType, Integer> grantedSkills = new ConcurrentSkipListMap<>();
-        grantedSkills.put(SkillType.DASH, 1);
+        grantedSkills.put(
+            SkillType.DASH,
+            1
+        );
         Item leatherArmor = Item
             .of()
             .setTemplate(ItemTemplate.templates.get("leatherArmor"))
@@ -204,10 +229,17 @@ public class CoreGameServer extends CoreGame {
             .setGrantedSkills(grantedSkills);
         Item crossbow = Item.of().setTemplate(ItemTemplate.templates.get("crossbow")).setQualityModifier(0.8f);
 
-        gameState.scheduleServerSideAction(LootPileSpawnAction.of(AreaId.of("area3"),
-            Vector2.of(12, 12),
-            new ConcurrentSkipListSet<>(Arrays.asList(leatherArmor,
-                crossbow))));
+        gameState.scheduleServerSideAction(LootPileSpawnAction.of(
+            AreaId.of("area3"),
+            Vector2.of(
+                12,
+                12
+            ),
+            new ConcurrentSkipListSet<>(Arrays.asList(
+                leatherArmor,
+                crossbow
+            ))
+        ));
 
         AreaGateId area1ToArea3 = AreaGateId.of("area1ToArea3_" + (int) (Math.random() * 10000000));
         AreaGateId area3ToArea1 = AreaGateId.of("area3ToArea1_" + (int) (Math.random() * 10000000));
@@ -216,32 +248,94 @@ public class CoreGameServer extends CoreGame {
 
         getGameState().getAreaGates().clear();
 
-        getGameState()
-            .getAreaGates()
-            .put(area1ToArea3, AreaGate.of(area1ToArea3, 1.5f, 1.5f, Vector2.of(199.5f, 15f), AreaId.of("area1"), area3ToArea1));
-        getGameState()
-            .getAreaGates()
-            .put(area3ToArea1, AreaGate.of(area3ToArea1, 1.5f, 1.5f, Vector2.of(17f, 2.5f), AreaId.of("area3"), area1ToArea3));
-        getGameState()
-            .getAreaGates()
-            .put(area1ToArea2, AreaGate.of(area1ToArea2, 1.5f, 1.5f, Vector2.of(2f, 63f), AreaId.of("area1"), area2ToArea1));
-        getGameState()
-            .getAreaGates()
-            .put(area2ToArea1, AreaGate.of(area2ToArea1, 1.5f, 1.5f, Vector2.of(58f, 9f), AreaId.of("area2"), area1ToArea2));
+        getGameState().getAreaGates().put(
+            area1ToArea3,
+            AreaGate.of(
+                area1ToArea3,
+                1.5f,
+                1.5f,
+                Vector2.of(
+                    199.5f,
+                    15f
+                ),
+                AreaId.of("area1"),
+                area3ToArea1
+            )
+        );
+        getGameState().getAreaGates().put(
+            area3ToArea1,
+            AreaGate.of(
+                area3ToArea1,
+                1.5f,
+                1.5f,
+                Vector2.of(
+                    17f,
+                    2.5f
+                ),
+                AreaId.of("area3"),
+                area1ToArea3
+            )
+        );
+        getGameState().getAreaGates().put(
+            area1ToArea2,
+            AreaGate.of(
+                area1ToArea2,
+                1.5f,
+                1.5f,
+                Vector2.of(
+                    2f,
+                    63f
+                ),
+                AreaId.of("area1"),
+                area2ToArea1
+            )
+        );
+        getGameState().getAreaGates().put(
+            area2ToArea1,
+            AreaGate.of(
+                area2ToArea1,
+                1.5f,
+                1.5f,
+                Vector2.of(
+                    58f,
+                    9f
+                ),
+                AreaId.of("area2"),
+                area1ToArea2
+            )
+        );
 
         List<EnemySpawn> enemySpawns1 = EnemySpawnUtils.area1EnemySpawns();
 
         enemySpawns1.forEach(enemySpawn -> {
             CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 10000000));
-            getEntityManager().spawnEnemy(enemyId, areaId, enemySpawn, this);
-            getEndPoint().sendToAllTCP(EnemySpawnCommand.of(enemyId, areaId, enemySpawn)); // TODO: use actions instead
+            getEntityManager().spawnEnemy(
+                enemyId,
+                areaId,
+                enemySpawn,
+                this
+            );
+            getEndPoint().sendToAllTCP(EnemySpawnCommand.of(
+                enemyId,
+                areaId,
+                enemySpawn
+            )); // TODO: use actions instead
         });
 
         List<EnemySpawn> enemySpawns3 = EnemySpawnUtils.area3EnemySpawns();
         enemySpawns3.forEach(enemySpawn -> {
             CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 10000000));
-            getEntityManager().spawnEnemy(enemyId, AreaId.of("area3"), enemySpawn, this);
-            getEndPoint().sendToAllTCP(EnemySpawnCommand.of(enemyId, AreaId.of("area3"), enemySpawn));
+            getEntityManager().spawnEnemy(
+                enemyId,
+                AreaId.of("area3"),
+                enemySpawn,
+                this
+            );
+            getEndPoint().sendToAllTCP(EnemySpawnCommand.of(
+                enemyId,
+                AreaId.of("area3"),
+                enemySpawn
+            ));
         });
     }
 
@@ -281,9 +375,28 @@ public class CoreGameServer extends CoreGame {
         float x = Constants.WINDOW_WIDTH / 2f - 250;
         float y = Constants.WINDOW_HEIGHT / 2f + Constants.WINDOW_HEIGHT * 0.45f;
 
-        renderingLayer.getShapeDrawer().filledRectangle(x - 50f, y - 90f, 650f, 110f, new Color(0f, 0f, 0f, 0.6f));
+        renderingLayer.getShapeDrawer().filledRectangle(
+            x - 50f,
+            y - 90f,
+            650f,
+            110f,
+            new Color(
+                0f,
+                0f,
+                0f,
+                0.6f
+            )
+        );
 
-        Assets.renderVeryLargeFont(renderingLayer, "Server is running...", Vector2.of(x, y), Color.WHITE);
+        Assets.renderVeryLargeFont(
+            renderingLayer,
+            "Server is running...",
+            Vector2.of(
+                x,
+                y
+            ),
+            Color.WHITE
+        );
     }
 
     @Override

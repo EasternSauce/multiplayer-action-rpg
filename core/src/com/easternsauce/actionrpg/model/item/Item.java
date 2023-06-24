@@ -27,8 +27,11 @@ public class Item implements Comparable<Item> {
         if (template.getArmor() != null) {
             builder.append("Armor: " + getArmor() + "\n");
         }
-        getGrantedSkills().forEach((skillType, level) -> builder.append(
-            "Grants Level " + level + " " + skillType.getPrettyName() + "\n"));
+        getGrantedSkills().forEach((skillType, level) -> builder.append("Grants Level " +
+            level +
+            " " +
+            skillType.getPrettyName() +
+            "\n"));
         if (template.getWorth() != null) {
             builder.append("Worth: " + getWorth() + "\n");
         }

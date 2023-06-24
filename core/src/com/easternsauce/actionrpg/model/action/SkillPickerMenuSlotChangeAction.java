@@ -17,7 +17,10 @@ public class SkillPickerMenuSlotChangeAction extends GameStateAction {
 
     private SkillType skillType;
 
-    public static SkillPickerMenuSlotChangeAction of(CreatureId playerId, SkillType skillType) {
+    public static SkillPickerMenuSlotChangeAction of(
+        CreatureId playerId,
+        SkillType skillType
+    ) {
         SkillPickerMenuSlotChangeAction action = SkillPickerMenuSlotChangeAction.of();
         action.playerId = playerId;
         action.skillType = skillType;
@@ -28,7 +31,10 @@ public class SkillPickerMenuSlotChangeAction extends GameStateAction {
     public void applyToGame(CoreGame game) {
         PlayerConfig playerConfig = game.getGameState().getPlayerConfig(playerId);
 
-        playerConfig.getSkillMenuSlots().put(playerConfig.getIsSkillMenuPickerSlotBeingChanged(), skillType);
+        playerConfig.getSkillMenuSlots().put(
+            playerConfig.getIsSkillMenuPickerSlotBeingChanged(),
+            skillType
+        );
         playerConfig.setIsSkillMenuPickerSlotBeingChanged(null);
     }
 

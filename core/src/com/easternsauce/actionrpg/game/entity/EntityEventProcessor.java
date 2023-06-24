@@ -44,32 +44,66 @@ public class EntityEventProcessor {
     @Getter
     private final List<TeleportEvent> teleportEvents = Collections.synchronizedList(new ArrayList<>());
 
-    public void process(GameEntityManager gameEntityManager, TextureAtlas atlas, CoreGame game) {
-        getCreatureModelsToBeCreated().forEach(creatureId -> gameEntityManager.createCreatureEntity(creatureId, game));
+    public void process(
+        GameEntityManager gameEntityManager,
+        TextureAtlas atlas,
+        CoreGame game
+    ) {
+        getCreatureModelsToBeCreated().forEach(creatureId -> gameEntityManager.createCreatureEntity(
+            creatureId,
+            game
+        ));
         getCreatureModelsToBeCreated().clear();
 
-        getAbilityModelsToBeCreated().forEach(abilityId -> gameEntityManager.createAbilityEntity(abilityId, atlas, game));
+        getAbilityModelsToBeCreated().forEach(abilityId -> gameEntityManager.createAbilityEntity(
+            abilityId,
+            atlas,
+            game
+        ));
         getAbilityModelsToBeCreated().clear();
 
-        getLootPileModelsToBeCreated().forEach(lootPileId -> gameEntityManager.createLootPileEntity(lootPileId, atlas, game));
+        getLootPileModelsToBeCreated().forEach(lootPileId -> gameEntityManager.createLootPileEntity(
+            lootPileId,
+            atlas,
+            game
+        ));
         getLootPileModelsToBeCreated().clear();
 
-        getAreaGateModelsToBeCreated().forEach(areaGateId -> gameEntityManager.createAreaGateEntity(areaGateId, atlas, game));
+        getAreaGateModelsToBeCreated().forEach(areaGateId -> gameEntityManager.createAreaGateEntity(
+            areaGateId,
+            atlas,
+            game
+        ));
         getAreaGateModelsToBeCreated().clear();
 
-        getAbilityModelsToBeActivated().forEach(abilityId -> gameEntityManager.activateAbility(abilityId, game));
+        getAbilityModelsToBeActivated().forEach(abilityId -> gameEntityManager.activateAbility(
+            abilityId,
+            game
+        ));
         getAbilityModelsToBeActivated().clear();
 
-        getCreatureModelsToBeRemoved().forEach(creatureId -> gameEntityManager.removeCreatureEntity(creatureId, game));
+        getCreatureModelsToBeRemoved().forEach(creatureId -> gameEntityManager.removeCreatureEntity(
+            creatureId,
+            game
+        ));
         getCreatureModelsToBeRemoved().clear();
 
-        getAbilityModelsToBeRemoved().forEach(abilityId -> gameEntityManager.removeAbilityEntity(abilityId, game));
+        getAbilityModelsToBeRemoved().forEach(abilityId -> gameEntityManager.removeAbilityEntity(
+            abilityId,
+            game
+        ));
         getAbilityModelsToBeRemoved().clear();
 
-        getLootPileModelsToBeRemoved().forEach(lootPileId -> gameEntityManager.removeLootPileEntity(lootPileId, game));
+        getLootPileModelsToBeRemoved().forEach(lootPileId -> gameEntityManager.removeLootPileEntity(
+            lootPileId,
+            game
+        ));
         getLootPileModelsToBeRemoved().clear();
 
-        getAreaGateModelsToBeRemoved().forEach(areaGateId -> gameEntityManager.removeAreaGateEntity(areaGateId, game));
+        getAreaGateModelsToBeRemoved().forEach(areaGateId -> gameEntityManager.removeAreaGateEntity(
+            areaGateId,
+            game
+        ));
         getAreaGateModelsToBeRemoved().clear();
 
     }

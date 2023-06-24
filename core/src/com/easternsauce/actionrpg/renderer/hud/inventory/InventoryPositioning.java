@@ -28,22 +28,42 @@ public class InventoryPositioning {
     public static final Map<Integer, Rect> equipmentRectangles = new HashMap<>();
 
     static {
-        backgroundInnerRect = Rect.of(Gdx.graphics.getWidth() * 0.2f,
+        backgroundInnerRect = Rect.of(
+            Gdx.graphics.getWidth() * 0.2f,
             Gdx.graphics.getHeight() * 0.3f,
             Gdx.graphics.getWidth() * 0.6f,
-            Gdx.graphics.getHeight() * 0.6f);
+            Gdx.graphics.getHeight() * 0.6f
+        );
 
-        backgroundOuterRect = Rect.of(backgroundInnerRect.getX() - Gdx.graphics.getWidth() * 0.1f,
+        backgroundOuterRect = Rect.of(
+            backgroundInnerRect.getX() - Gdx.graphics.getWidth() * 0.1f,
             backgroundInnerRect.getY() - Gdx.graphics.getHeight() * 0.1f,
             backgroundInnerRect.getWidth() + Gdx.graphics.getWidth() * 0.2f,
-            backgroundInnerRect.getHeight() + Gdx.graphics.getHeight() * 0.2f);
+            backgroundInnerRect.getHeight() + Gdx.graphics.getHeight() * 0.2f
+        );
 
         for (int i = 0; i < INVENTORY_TOTAL_SLOTS; i++) {
-            inventoryRectangles.put(i, Rect.of(inventorySlotPositionX(i), inventorySlotPositionY(i), SLOT_SIZE, SLOT_SIZE));
+            inventoryRectangles.put(
+                i,
+                Rect.of(
+                    inventorySlotPositionX(i),
+                    inventorySlotPositionY(i),
+                    SLOT_SIZE,
+                    SLOT_SIZE
+                )
+            );
         }
 
         for (int i = 0; i < EQUIPMENT_TOTAL_SLOTS; i++) {
-            equipmentRectangles.put(i, Rect.of(equipmentSlotPositionX(i), equipmentSlotPositionY(i), SLOT_SIZE, SLOT_SIZE));
+            equipmentRectangles.put(
+                i,
+                Rect.of(
+                    equipmentSlotPositionX(i),
+                    equipmentSlotPositionY(i),
+                    SLOT_SIZE,
+                    SLOT_SIZE
+                )
+            );
         }
     }
 
@@ -67,26 +87,30 @@ public class InventoryPositioning {
             (SLOT_SIZE + MARGIN + (SLOT_SIZE + SPACE_BETWEEN_SLOTS) * index);
     }
 
-    public static Integer getEquipmentSlotClicked(float x, float y) {
+    public static Integer getEquipmentSlotClicked(
+        float x,
+        float y
+    ) {
         AtomicReference<Integer> atomicEquipmentSlotClicked = new AtomicReference<>(null);
 
-        InventoryPositioning.equipmentRectangles
-            .entrySet()
-            .stream()
-            .filter(entry -> entry.getValue().contains(x, y))
-            .forEach(entry -> atomicEquipmentSlotClicked.set(entry.getKey()));
+        InventoryPositioning.equipmentRectangles.entrySet().stream().filter(entry -> entry.getValue().contains(
+            x,
+            y
+        )).forEach(entry -> atomicEquipmentSlotClicked.set(entry.getKey()));
 
         return atomicEquipmentSlotClicked.get();
     }
 
-    public static Integer getInventorySlotClicked(float x, float y) {
+    public static Integer getInventorySlotClicked(
+        float x,
+        float y
+    ) {
         AtomicReference<Integer> atomicInventorySlotClicked = new AtomicReference<>(null);
 
-        InventoryPositioning.inventoryRectangles
-            .entrySet()
-            .stream()
-            .filter(entry -> entry.getValue().contains(x, y))
-            .forEach(entry -> atomicInventorySlotClicked.set(entry.getKey()));
+        InventoryPositioning.inventoryRectangles.entrySet().stream().filter(entry -> entry.getValue().contains(
+            x,
+            y
+        )).forEach(entry -> atomicInventorySlotClicked.set(entry.getKey()));
         return atomicInventorySlotClicked.get();
     }
 }

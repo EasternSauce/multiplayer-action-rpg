@@ -12,37 +12,56 @@ import lombok.NoArgsConstructor;
 public class LightningChain extends Ability {
     AbilityParams params;
 
-    public static LightningChain of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+    public static LightningChain of(
+        AbilityParams abilityParams,
+        @SuppressWarnings("unused") CoreGame game
+    ) {
         LightningChain ability = LightningChain.of();
         ability.params = abilityParams
             .setWidth(1f)
-            .setHeight(abilityParams.getChainFromPos().distance(abilityParams.getChainToPos()))
+            .setHeight(abilityParams
+                .getChainFromPos()
+                .distance(abilityParams.getChainToPos()))
             .setChannelTime(0f)
             .setActiveTime(0.4f)
             .setTextureName("lightning_chain")
             .setBaseDamage(0f)
             .setIsActiveAnimationLooping(true)
             .setAttackWithoutMoving(true)
-            .setPos(LightningChain.calculatePos(abilityParams.getChainToPos(), abilityParams.getChainFromPos()))
-            .setRotationAngle(LightningChain.calculateRotationAngle(abilityParams.getChainToPos(),
-                abilityParams.getChainFromPos()))
+            .setPos(LightningChain.calculatePos(
+                abilityParams.getChainToPos(),
+                abilityParams.getChainFromPos()
+            ))
+            .setRotationAngle(LightningChain.calculateRotationAngle(
+                abilityParams.getChainToPos(),
+                abilityParams.getChainFromPos()
+            ))
             .setIsSkipCreatingBody(true)
             .setRotationShift(90f);
 
         return ability;
     }
 
-    private static Vector2 calculatePos(Vector2 pos, Vector2 chainFromPos) {
+    private static Vector2 calculatePos(
+        Vector2 pos,
+        Vector2 chainFromPos
+    ) {
         Vector2 chainDirVector = pos.vectorTowards(chainFromPos);
 
         float attackShiftX = chainDirVector.normalized().getX() * chainFromPos.distance(pos) / 2;
         float attackShiftY = chainDirVector.normalized().getY() * chainFromPos.distance(pos) / 2;
 
-        return Vector2.of(pos.getX() + attackShiftX, pos.getY() + attackShiftY);
+        return Vector2.of(
+            pos.getX() + attackShiftX,
+            pos.getY() + attackShiftY
+        );
 
     }
 
-    private static Float calculateRotationAngle(Vector2 pos, Vector2 chainFromPos) {
+    private static Float calculateRotationAngle(
+        Vector2 pos,
+        Vector2 chainFromPos
+    ) {
         Vector2 chainDirVector = pos.vectorTowards(chainFromPos);
 
         return chainDirVector.angleDeg();
@@ -59,7 +78,10 @@ public class LightningChain extends Ability {
     }
 
     @Override
-    protected void onActiveUpdate(float delta, CoreGame game) {
+    protected void onActiveUpdate(
+        float delta,
+        CoreGame game
+    ) {
 
     }
 

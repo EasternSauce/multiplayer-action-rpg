@@ -11,7 +11,10 @@ import lombok.NoArgsConstructor;
 public class SummonGhosts extends Ability {
     AbilityParams params;
 
-    public static SummonGhosts of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+    public static SummonGhosts of(
+        AbilityParams abilityParams,
+        @SuppressWarnings("unused") CoreGame game
+    ) {
         SummonGhosts ability = SummonGhosts.of();
         ability.params = abilityParams.setChannelTime(0f).setActiveTime(0f);
 
@@ -29,37 +32,43 @@ public class SummonGhosts extends Ability {
     }
 
     @Override
-    protected void onActiveUpdate(float delta, CoreGame game) {
+    protected void onActiveUpdate(
+        float delta,
+        CoreGame game
+    ) {
 
     }
 
     @Override
     protected void onCompleted(CoreGame game) {
         float baseAngle = getParams().getDirVector().angleDeg();
-        game
-            .getGameState()
-            .accessAbilities()
-            .chainAnotherAbility(this, AbilityType.PLAYFUL_GHOST, getParams().getPos(), params.getDirVector(), null, null, game);
-        game
-            .getGameState()
-            .accessAbilities()
-            .chainAnotherAbility(this,
-                AbilityType.PLAYFUL_GHOST,
-                getParams().getPos(),
-                params.getDirVector().withSetDegAngle(baseAngle - 30f),
-                null,
-                null,
-                game);
-        game
-            .getGameState()
-            .accessAbilities()
-            .chainAnotherAbility(this,
-                AbilityType.PLAYFUL_GHOST,
-                getParams().getPos(),
-                params.getDirVector().withSetDegAngle(baseAngle + 30f),
-                null,
-                null,
-                game);
+        game.getGameState().accessAbilities().chainAnotherAbility(
+            this,
+            AbilityType.PLAYFUL_GHOST,
+            getParams().getPos(),
+            params.getDirVector(),
+            null,
+            null,
+            game
+        );
+        game.getGameState().accessAbilities().chainAnotherAbility(
+            this,
+            AbilityType.PLAYFUL_GHOST,
+            getParams().getPos(),
+            params.getDirVector().withSetDegAngle(baseAngle - 30f),
+            null,
+            null,
+            game
+        );
+        game.getGameState().accessAbilities().chainAnotherAbility(
+            this,
+            AbilityType.PLAYFUL_GHOST,
+            getParams().getPos(),
+            params.getDirVector().withSetDegAngle(baseAngle + 30f),
+            null,
+            null,
+            game
+        );
     }
 
 

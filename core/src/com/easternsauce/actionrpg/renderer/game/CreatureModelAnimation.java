@@ -15,28 +15,48 @@ public class CreatureModelAnimation {
     private List<TextureRegion> facingTextures;
     private List<Animation<TextureRegion>> runningAnimations;
 
-    public void prepareFacingTextures(CreatureAnimationConfig animationConfig, TextureAtlas atlas) {
+    public void prepareFacingTextures(
+        CreatureAnimationConfig animationConfig,
+        TextureAtlas atlas
+    ) {
         TextureRegion runningAnimationTextureRegion = atlas.findRegion(animationConfig.getTextureName());
 
-        facingTextures = CreatureSpriteHelper.createFacingTextures(animationConfig, runningAnimationTextureRegion);
+        facingTextures = CreatureSpriteHelper.createFacingTextures(
+            animationConfig,
+            runningAnimationTextureRegion
+        );
     }
 
-    public void prepareRunningAnimations(CreatureAnimationConfig animationConfig, TextureAtlas atlas) {
+    public void prepareRunningAnimations(
+        CreatureAnimationConfig animationConfig,
+        TextureAtlas atlas
+    ) {
         TextureRegion runningAnimationTextureRegion = atlas.findRegion(animationConfig.getTextureName());
 
-        runningAnimations = CreatureSpriteHelper.createRunningAnimations(animationConfig, runningAnimationTextureRegion);
+        runningAnimations = CreatureSpriteHelper.createRunningAnimations(
+            animationConfig,
+            runningAnimationTextureRegion
+        );
     }
 
-    public TextureRegion getFacingTexture(String textureName, WorldDirection direction) {
+    public TextureRegion getFacingTexture(
+        String textureName,
+        WorldDirection direction
+    ) {
         CreatureAnimationConfig animationConfig = CreatureAnimationConfig.configs.get(textureName);
         return facingTextures.get(animationConfig.getDirMap().get(direction));
     }
 
-    public TextureRegion getRunningAnimationFrame(String textureName, WorldDirection facingDirection, float animationTime) {
+    public TextureRegion getRunningAnimationFrame(
+        String textureName,
+        WorldDirection facingDirection,
+        float animationTime
+    ) {
         CreatureAnimationConfig animationConfig = CreatureAnimationConfig.configs.get(textureName);
 
-        return runningAnimations
-            .get(animationConfig.getDirMap().get(facingDirection))
-            .getKeyFrame(animationTime, true);
+        return runningAnimations.get(animationConfig.getDirMap().get(facingDirection)).getKeyFrame(
+            animationTime,
+            true
+        );
     }
 }

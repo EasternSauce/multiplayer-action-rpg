@@ -16,7 +16,11 @@ public class CreatureHitByDamageOverTimeAction extends CreatureHitAction {
     private CreatureId targetId;
     private Float damage;
 
-    public static CreatureHitByDamageOverTimeAction of(CreatureId attackerId, CreatureId targetId, Float damage) {
+    public static CreatureHitByDamageOverTimeAction of(
+        CreatureId attackerId,
+        CreatureId targetId,
+        Float damage
+    ) {
         CreatureHitByDamageOverTimeAction action = CreatureHitByDamageOverTimeAction.of();
         action.attackerId = attackerId;
         action.targetId = targetId;
@@ -33,9 +37,17 @@ public class CreatureHitByDamageOverTimeAction extends CreatureHitAction {
             return;
         }
 
-        targetCreature.takeLifeDamage(damage, targetCreature.getParams().getPos(), game);
+        targetCreature.takeLifeDamage(
+            damage,
+            targetCreature.getParams().getPos(),
+            game
+        );
 
-        handleCreatureDeath(targetCreature, attackerCreature, game);
+        handleCreatureDeath(
+            targetCreature,
+            attackerCreature,
+            game
+        );
     }
 
     @Override

@@ -17,7 +17,10 @@ import java.util.concurrent.ConcurrentSkipListMap;
 public class PoisonousMixture extends Projectile {
     AbilityParams params;
 
-    public static PoisonousMixture of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+    public static PoisonousMixture of(
+        AbilityParams abilityParams,
+        @SuppressWarnings("unused") CoreGame game
+    ) {
         Creature creature = game.getGameState().accessCreatures().getCreature(abilityParams.getCreatureId());
 
         PoisonousMixture ability = PoisonousMixture.of();
@@ -47,7 +50,10 @@ public class PoisonousMixture extends Projectile {
     }
 
     @Override
-    protected void onActiveUpdate(float delta, CoreGame game) {
+    protected void onActiveUpdate(
+        float delta,
+        CoreGame game
+    ) {
         //projectile speeds up over time
         onProjectileTravelUpdate();
 
@@ -64,26 +70,31 @@ public class PoisonousMixture extends Projectile {
 
     @Override
     protected void onCompleted(CoreGame game) {
-        game
-            .getGameState()
-            .accessAbilities()
-            .chainAnotherAbility(this,
-                AbilityType.SPREADING_POISONOUS_CLOUD,
-                getParams().getPos(),
-                params.getDirVector(),
-                null,
-                null,
-                game);
+        game.getGameState().accessAbilities().chainAnotherAbility(
+            this,
+            AbilityType.SPREADING_POISONOUS_CLOUD,
+            getParams().getPos(),
+            params.getDirVector(),
+            null,
+            null,
+            game
+        );
     }
 
 
     @Override
-    public void onCreatureHit(CreatureId creatureId, CoreGame game) {
+    public void onCreatureHit(
+        CreatureId creatureId,
+        CoreGame game
+    ) {
         deactivate();
     }
 
     @Override
-    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
+    public void onTerrainHit(
+        Vector2 abilityPos,
+        Vector2 tilePos
+    ) {
         deactivate();
     }
 
@@ -96,9 +107,18 @@ public class PoisonousMixture extends Projectile {
     @Override
     public Map<Integer, Float> levelScalings() {
         ConcurrentSkipListMap<Integer, Float> scalings = new ConcurrentSkipListMap<>();
-        scalings.put(1, 1.0f);
-        scalings.put(2, 1.1f);
-        scalings.put(3, 1.2f);
+        scalings.put(
+            1,
+            1.0f
+        );
+        scalings.put(
+            2,
+            1.1f
+        );
+        scalings.put(
+            3,
+            1.2f
+        );
         return scalings;
     }
 

@@ -78,15 +78,25 @@ public class CreatureParams implements EntityParams {
     @NonNull
     private SimpleTimer generalSkillPerformCooldownTimer = SimpleTimer.getExpiredTimer();
 
-    public static CreatureParams of(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn) {
-        return produceCreatureParams(creatureId,
+    public static CreatureParams of(
+        CreatureId creatureId,
+        AreaId areaId,
+        EnemySpawn enemySpawn
+    ) {
+        return produceCreatureParams(
+            creatureId,
             areaId,
             enemySpawn.getPos(),
-            enemySpawn.getEnemyTemplate().getEnemyType().textureName);
+            enemySpawn.getEnemyTemplate().getEnemyType().textureName
+        );
     }
 
-    private static CreatureParams produceCreatureParams(CreatureId creatureId, AreaId areaId, Vector2 enemySpawn,
-                                                        String textureName) {
+    private static CreatureParams produceCreatureParams(
+        CreatureId creatureId,
+        AreaId areaId,
+        Vector2 enemySpawn,
+        String textureName
+    ) {
         CreatureParams params = CreatureParams.of();
         params.id = creatureId;
         params.areaId = areaId;
@@ -95,23 +105,40 @@ public class CreatureParams implements EntityParams {
         params.initialAreaId = areaId;
         params.textureName = textureName;
 
-        Map<SkillType, Skill> allPossibleSkills = Arrays
-            .stream(SkillType.values())
-            .collect(Collectors.toMap(Function.identity(), skillType -> Skill.of(skillType, creatureId)));
+        Map<SkillType, Skill> allPossibleSkills = Arrays.stream(SkillType.values()).collect(Collectors.toMap(
+            Function.identity(),
+            skillType -> Skill.of(
+                skillType,
+                creatureId
+            )
+        ));
 
         // TODO: should we restrict which creature can perform which skill?
         params.skills = new ConcurrentSkipListMap<>(allPossibleSkills);
 
         Map<CreatureEffect, CreatureEffectState> allPossibleEffects = Arrays
             .stream(CreatureEffect.values())
-            .collect(Collectors.toMap(effect -> effect, effect -> CreatureEffectState.of()));
+            .collect(Collectors.toMap(
+                effect -> effect,
+                effect -> CreatureEffectState.of()
+            ));
 
         params.getEffectParams().setEffects(new ConcurrentSkipListMap<>(allPossibleEffects));
 
         return params;
     }
 
-    public static CreatureParams of(CreatureId creatureId, AreaId areaId, Vector2 pos, String textureName) {
-        return produceCreatureParams(creatureId, areaId, pos, textureName);
+    public static CreatureParams of(
+        CreatureId creatureId,
+        AreaId areaId,
+        Vector2 pos,
+        String textureName
+    ) {
+        return produceCreatureParams(
+            creatureId,
+            areaId,
+            pos,
+            textureName
+        );
     }
 }

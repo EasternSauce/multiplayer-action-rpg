@@ -16,7 +16,10 @@ import lombok.NoArgsConstructor;
 public class Boomerang extends Projectile {
     AbilityParams params;
 
-    public static Boomerang of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+    public static Boomerang of(
+        AbilityParams abilityParams,
+        @SuppressWarnings("unused") CoreGame game
+    ) {
         Boomerang ability = Boomerang.of();
         ability.params = abilityParams
             .setWidth(1.3f)
@@ -43,7 +46,10 @@ public class Boomerang extends Projectile {
     }
 
     @Override
-    protected void onActiveUpdate(float delta, CoreGame game) {
+    protected void onActiveUpdate(
+        float delta,
+        CoreGame game
+    ) {
         onProjectileTravelUpdate();
 
         Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
@@ -59,7 +65,10 @@ public class Boomerang extends Projectile {
                 float targetAngleDeg = vectorTowards.angleDeg();
                 float currentAngleDeg = getParams().getDirVector().angleDeg();
 
-                float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(currentAngleDeg, targetAngleDeg);
+                float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(
+                    currentAngleDeg,
+                    targetAngleDeg
+                );
 
                 float incrementFactor = 330f;
                 float increment = incrementFactor * delta;
@@ -77,7 +86,10 @@ public class Boomerang extends Projectile {
 
 
     @Override
-    public void onCreatureHit(CreatureId creatureId, CoreGame game) {
+    public void onCreatureHit(
+        CreatureId creatureId,
+        CoreGame game
+    ) {
         getParams().setIsComingBack(true);
         getParams().setSpeed(20f);
     }
@@ -95,7 +107,10 @@ public class Boomerang extends Projectile {
     }
 
     @Override
-    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
+    public void onTerrainHit(
+        Vector2 abilityPos,
+        Vector2 tilePos
+    ) {
         getParams().setIsComingBack(true);
         getParams().setSpeed(20f);
     }

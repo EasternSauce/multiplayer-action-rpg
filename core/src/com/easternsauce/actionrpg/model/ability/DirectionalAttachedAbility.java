@@ -9,10 +9,15 @@ public abstract class DirectionalAttachedAbility extends Ability {
     public void updateDirectionalAttachedAbilityPosition(CoreGame game) {
         Vector2 dirVector;
         if (getParams().getDirVector().len() <= 0) {
-            dirVector = Vector2.of(1, 0);
+            dirVector = Vector2.of(
+                1,
+                0
+            );
         } else {
             if (getParams().getDirectionalAttachedAbilityRotationShift() != null) {
-                dirVector = getParams().getDirVector().rotateDeg(getParams().getDirectionalAttachedAbilityRotationShift());
+                dirVector = getParams()
+                    .getDirVector()
+                    .rotateDeg(getParams().getDirectionalAttachedAbilityRotationShift());
             } else {
                 dirVector = getParams().getDirVector();
             }
@@ -29,7 +34,10 @@ public abstract class DirectionalAttachedAbility extends Ability {
             float attackRectX = attackShiftX + pos.getX();
             float attackRectY = attackShiftY + pos.getY();
 
-            getParams().setPos(Vector2.of(attackRectX, attackRectY));
+            getParams().setPos(Vector2.of(
+                attackRectX,
+                attackRectY
+            ));
             getParams().setRotationAngle(theta);
         }
 

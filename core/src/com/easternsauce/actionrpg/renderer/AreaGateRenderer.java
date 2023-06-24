@@ -25,18 +25,30 @@ public class AreaGateRenderer {
 
     }
 
-    public void init(TextureAtlas atlas, CoreGame game) {
+    public void init(
+        TextureAtlas atlas,
+        CoreGame game
+    ) {
         sprite = new Sprite();
         sprite.setRegion(atlas.findRegion("downarrow"));
 
         AreaGate areaGate = game.getGameState().getAreaGate(areaGateId);
 
-        sprite.setSize(areaGate.getWidth(), areaGate.getHeight());
-        sprite.setCenter(areaGate.getPos().getX(), areaGate.getPos().getY());
+        sprite.setSize(
+            areaGate.getWidth(),
+            areaGate.getHeight()
+        );
+        sprite.setCenter(
+            areaGate.getPos().getX(),
+            areaGate.getPos().getY()
+        );
 
     }
 
-    public void render(RenderingLayer renderingLayer, CoreGame game) {
+    public void render(
+        RenderingLayer renderingLayer,
+        CoreGame game
+    ) {
         AreaId currentAreaId = game.getGameState().getCurrentAreaId();
 
         AreaGate areaGate = game.getGameState().getAreaGate(areaGateId);
