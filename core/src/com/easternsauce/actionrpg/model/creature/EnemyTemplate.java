@@ -45,7 +45,7 @@ public class EnemyTemplate {
             randomDropSet,
             new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.MOB_MAGIC_ORB,
                             100f),
-                    EnemySkillUseEntry.of(SkillType.VOLATILE_BUBBLE,
+                    EnemySkillUseEntry.of(SkillType.MOB_VOLATILE_BUBBLE,
                             60f),
                     EnemySkillUseEntry.of(SkillType.FIREBALL,
                             60f))));

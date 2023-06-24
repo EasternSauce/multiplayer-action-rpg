@@ -77,6 +77,7 @@ public class DropTableEntry implements Comparable<DropTableEntry> {
         specialMagicGrantedSkillDrops.put(SkillType.LIGHTNING, 80);
         specialMagicGrantedSkillDrops.put(SkillType.MAGIC_ORB, 70);
         specialMagicGrantedSkillDrops.put(SkillType.VOLATILE_BUBBLE, 70);
+        specialMagicGrantedSkillDrops.put(SkillType.MOB_VOLATILE_BUBBLE, 70);
 
         movementGrantedSkillDrops.put(SkillType.TELEPORT, 100);
 

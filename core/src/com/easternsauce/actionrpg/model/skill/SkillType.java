@@ -18,6 +18,7 @@ public enum SkillType {
     MOB_MAGIC_ORB("Magic Orb (mob only)", true, AbilityType.MAGIC_ORB, 1.3f, 15f, 10f),
 
     VOLATILE_BUBBLE("Volatile Bubble", true, AbilityType.VOLATILE_BUBBLE, 1.3f, 15f, 22f),
+    MOB_VOLATILE_BUBBLE("Volatile Bubble (mob only)", true, AbilityType.MOB_VOLATILE_BUBBLE, 1.3f, 15f, 22f),
 
     SUMMON_GHOSTS("Summon Ghosts", true, AbilityType.SUMMON_GHOSTS, 1.3f, 15f, 20f),
 

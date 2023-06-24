@@ -20,6 +20,7 @@ public enum AbilityType {
     MOB_MAGIC_ORB,
 
     VOLATILE_BUBBLE,
+    MOB_VOLATILE_BUBBLE,
 
     ICE_SPEAR,
 
