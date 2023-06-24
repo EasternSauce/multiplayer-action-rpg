@@ -1,42 +1,24 @@
 package com.easternsauce.actionrpg.renderer.creature;
 
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.util.WorldDirection;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
-import com.easternsauce.actionrpg.renderer.animationconfig.CreatureAnimationConfig;
+import com.easternsauce.actionrpg.renderer.game.CreatureModelAnimation;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @NoArgsConstructor(staticName = "of")
 public class CreatureSprite {
     private final Sprite sprite = new Sprite();
-    private List<TextureRegion> facingTextures;
-    private List<Animation<TextureRegion>> runningAnimations;
     private CreatureId creatureId;
 
     public static CreatureSprite of(CreatureId creatureId) {
         CreatureSprite creatureSprite = CreatureSprite.of();
         creatureSprite.creatureId = creatureId;
         return creatureSprite;
-    }
-
-    public void prepareFacingTextures(CreatureAnimationConfig animationConfig, TextureAtlas atlas) {
-        TextureRegion runningAnimationTextureRegion = atlas.findRegion(animationConfig.getTextureName());
-
-        this.facingTextures = CreatureSpriteHelper.createFacingTextures(animationConfig, runningAnimationTextureRegion);
-    }
-
-    public void prepareRunningAnimations(CreatureAnimationConfig animationConfig, TextureAtlas atlas) {
-        TextureRegion runningAnimationTextureRegion = atlas.findRegion(animationConfig.getTextureName());
-
-        this.runningAnimations = CreatureSpriteHelper.createRunningAnimations(animationConfig, runningAnimationTextureRegion);
     }
 
     public void updatePosition(Creature creature) {
@@ -47,12 +29,22 @@ public class CreatureSprite {
         sprite.setSize(creature.animationConfig().getSpriteWidth(), creature.animationConfig().getSpriteHeight());
     }
 
-    public void updateForAliveCreature(CoreGame game, Creature creature) {
+    public void updateForAliveCreature(Creature creature, CoreGame game) {
+        CreatureModelAnimation creatureModelAnimation = game
+                .getEntityManager()
+                .getGameEntityRenderer()
+                .getCreatureModelAnimations()
+                .get(creature.getParams().getTextureName());
+
         TextureRegion texture;
         if (!creature.getParams().getMovementParams().getIsMoving() || creature.isStunned(game)) {
-            texture = getFacingTexture(creature, creature.facingDirection(game));
+            texture = creatureModelAnimation.getFacingTexture(creature.getParams().getTextureName(), creature.facingDirection(game));
         } else {
-            texture = getRunningAnimationFrame(game);
+            texture = creatureModelAnimation.getRunningAnimationFrame(
+                    creature.getParams().getTextureName(),
+                    creature.facingDirection(game),
+                    creature.getParams().getAnimationTimer().getTime()
+            );
         }
 
         sprite.setRotation(0f);
@@ -61,24 +53,16 @@ public class CreatureSprite {
         sprite.setRegion(texture);
     }
 
-    private TextureRegion getFacingTexture(Creature creature, WorldDirection direction) {
-        return facingTextures.get(creature.animationConfig().getDirMap().get(direction));
-    }
-
-    public TextureRegion getRunningAnimationFrame(CoreGame game) {
-        Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
-
-        WorldDirection currentDirection = creature.facingDirection(game);
-
-        return runningAnimations
-                .get(creature.animationConfig().getDirMap().get(currentDirection))
-                .getKeyFrame(creature.getParams().getAnimationTimer().getTime(), true);
-    }
-
     public void updateForDeadCreature(CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
-        TextureRegion texture = getFacingTexture(creature, WorldDirection.RIGHT);
+        CreatureModelAnimation creatureModelAnimation = game
+                .getEntityManager()
+                .getGameEntityRenderer()
+                .getCreatureModelAnimations()
+                .get(creature.getParams().getTextureName());
+
+        TextureRegion texture = creatureModelAnimation.getFacingTexture(creature.getParams().getTextureName(), WorldDirection.RIGHT);
 
         sprite.setOriginCenter();
         sprite.setRotation(90f);

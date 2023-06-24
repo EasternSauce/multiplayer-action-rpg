@@ -15,6 +15,7 @@ import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.creature.Player;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.renderer.*;
+import com.easternsauce.actionrpg.renderer.animationconfig.CreatureAnimationConfig;
 import com.easternsauce.actionrpg.renderer.creature.CreatureHitAnimationRenderer;
 import com.easternsauce.actionrpg.renderer.creature.CreatureRenderer;
 import com.easternsauce.actionrpg.renderer.creature.CreatureStunnedAnimationRenderer;
@@ -65,6 +66,8 @@ public class GameEntityRenderer {
     private TextureRegion poisonedIcon = null;
     @Getter
     private Boolean isAreasLoaded = false;
+    @Getter
+    private final Map<String, CreatureModelAnimation> creatureModelAnimations = new HashMap<>();
 
     public void init(TextureAtlas atlas) {
         mapScale = 4.0f;
@@ -83,6 +86,13 @@ public class GameEntityRenderer {
 
         creatureStunnedAnimationRenderer.getAnimationRenderer().loadAnimation(atlas);
         creatureHitAnimationRenderer.getAnimationRenderer().loadAnimation(atlas);
+
+        CreatureAnimationConfig.configs.forEach((name, config) -> {
+            CreatureModelAnimation modelAnimation = CreatureModelAnimation.of();
+            modelAnimation.prepareRunningAnimations(config, atlas);
+            modelAnimation.prepareFacingTextures(config, atlas);
+            creatureModelAnimations.put(name, modelAnimation);
+        });
     }
 
     public void loadAreaRenderers(Map<AreaId, TiledMap> maps, @SuppressWarnings("unused") CoreGame game) {

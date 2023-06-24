@@ -45,7 +45,7 @@ public class EntityEventProcessor {
     private final List<TeleportEvent> teleportEvents = Collections.synchronizedList(new ArrayList<>());
 
     public void process(GameEntityManager gameEntityManager, TextureAtlas atlas, CoreGame game) {
-        getCreatureModelsToBeCreated().forEach(creatureId -> gameEntityManager.createCreatureEntity(creatureId, atlas, game));
+        getCreatureModelsToBeCreated().forEach(creatureId -> gameEntityManager.createCreatureEntity(creatureId, game));
         getCreatureModelsToBeCreated().clear();
 
         getAbilityModelsToBeCreated().forEach(abilityId -> gameEntityManager.createAbilityEntity(abilityId, atlas, game));

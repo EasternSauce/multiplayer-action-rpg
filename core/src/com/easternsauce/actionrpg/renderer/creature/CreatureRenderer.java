@@ -1,14 +1,12 @@
 package com.easternsauce.actionrpg.renderer.creature;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.assets.Assets;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
-import com.easternsauce.actionrpg.renderer.animationconfig.CreatureAnimationConfig;
 import com.easternsauce.actionrpg.util.Constants;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,21 +15,12 @@ import lombok.NoArgsConstructor;
 @Data
 public class CreatureRenderer {
     private CreatureId creatureId;
-    private CreatureSprite creatureSprite;
+    private CreatureSprite creatureSprite = CreatureSprite.of(creatureId);
 
     public static CreatureRenderer of(CreatureId creatureId) {
         CreatureRenderer creatureRenderer = new CreatureRenderer();
         creatureRenderer.setCreatureId(creatureId);
         return creatureRenderer;
-    }
-
-    public void init(TextureAtlas atlas, CoreGame game) {
-        creatureSprite = CreatureSprite.of(creatureId);
-
-        CreatureAnimationConfig config = game.getGameState().accessCreatures().getCreatures().get(creatureId).animationConfig();
-
-        creatureSprite.prepareFacingTextures(config, atlas);
-        creatureSprite.prepareRunningAnimations(config, atlas);
     }
 
     public void update(CoreGame game) {
@@ -41,7 +30,7 @@ public class CreatureRenderer {
         creatureSprite.updateSize(creature);
 
         if (creature.isAlive()) {
-            creatureSprite.updateForAliveCreature(game, creature);
+            creatureSprite.updateForAliveCreature(creature, game);
         } else {
             creatureSprite.updateForDeadCreature(game);
         }

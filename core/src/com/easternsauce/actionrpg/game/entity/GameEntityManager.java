@@ -36,13 +36,12 @@ public class GameEntityManager {
     @Getter
     private final GameEntityPhysics gameEntityPhysics = GameEntityPhysics.of();
 
-    public void createCreatureEntity(CreatureId creatureId, TextureAtlas atlas, CoreGame game) {
+    public void createCreatureEntity(CreatureId creatureId, CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreatures().get(creatureId);
 
         if (creature != null) {
             if (!gameEntityRenderer.getCreatureRenderers().containsKey(creatureId)) {
                 CreatureRenderer creatureRenderer = CreatureRenderer.of(creatureId);
-                creatureRenderer.init(atlas, game);
                 gameEntityRenderer.getCreatureRenderers().put(creatureId, creatureRenderer);
             }
             if (!gameEntityPhysics.getCreatureBodies().containsKey(creatureId)) {
