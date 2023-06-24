@@ -15,6 +15,7 @@ import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.creature.Player;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.renderer.*;
+import com.easternsauce.actionrpg.renderer.creature.CreatureHitAnimationRenderer;
 import com.easternsauce.actionrpg.renderer.creature.CreatureRenderer;
 import com.easternsauce.actionrpg.renderer.creature.CreatureStunnedAnimationRenderer;
 import com.easternsauce.actionrpg.renderer.creature.LifeBarUtils;
@@ -49,6 +50,8 @@ public class GameEntityRenderer {
     @Getter
     private final CreatureStunnedAnimationRenderer creatureStunnedAnimationRenderer = CreatureStunnedAnimationRenderer.of();
     @Getter
+    private final CreatureHitAnimationRenderer creatureHitAnimationRenderer = CreatureHitAnimationRenderer.of();
+    @Getter
     private ViewportsHandler viewportsHandler;
     @Getter
     private RenderingLayer worldElementsRenderingLayer;
@@ -79,6 +82,7 @@ public class GameEntityRenderer {
         poisonedIcon = atlas.findRegion("poisoned");
 
         creatureStunnedAnimationRenderer.loadAnimation(atlas);
+        creatureHitAnimationRenderer.loadAnimation(atlas);
     }
 
     public void loadAreaRenderers(Map<AreaId, TiledMap> maps, @SuppressWarnings("unused") CoreGame game) {

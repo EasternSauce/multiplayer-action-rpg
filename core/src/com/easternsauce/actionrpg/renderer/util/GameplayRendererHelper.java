@@ -5,7 +5,6 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.assets.Assets;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
-import com.easternsauce.actionrpg.renderer.creature.CreatureRenderer;
 import com.easternsauce.actionrpg.renderer.game.GameEntityRenderer;
 import com.easternsauce.actionrpg.util.Constants;
 
@@ -82,12 +81,10 @@ public class GameplayRendererHelper {
                         .equals(game.getGameState().getCurrentAreaId().getValue()))
 
                 .forEach(creatureHitAnimation -> {
-                    CreatureRenderer creatureRenderer = renderer.getCreatureRenderers().get(creatureHitAnimation.getCreatureId());
-
                     float timeSinceStarted = game.getGameState().getTime() - creatureHitAnimation.getHitTime();
-                    creatureRenderer
-                            .getCreatureHitAnimationRenderer()
-                            .render(timeSinceStarted,
+                    renderer.getCreatureHitAnimationRenderer()
+                            .render(creatureHitAnimation.getCreatureId(),
+                                    timeSinceStarted,
                                     creatureHitAnimation.getVectorTowardsContactPoint(),
                                     worldElementsRenderingLayer,
                                     game);

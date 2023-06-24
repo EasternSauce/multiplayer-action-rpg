@@ -14,13 +14,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 public class CreatureHitAnimationRenderer {
     private Animation<TextureRegion> hitByAbilityAnimation;
-    private CreatureId creatureId;
-
-    public static CreatureHitAnimationRenderer of(CreatureId creatureId) {
-        CreatureHitAnimationRenderer creatureHitAnimationRenderer = CreatureHitAnimationRenderer.of();
-        creatureHitAnimationRenderer.creatureId = creatureId;
-        return creatureHitAnimationRenderer;
-    }
 
     public void loadAnimation(TextureAtlas atlas) {
         TextureRegion textureRegion = atlas.findRegion("circle_explosion");
@@ -37,7 +30,7 @@ public class CreatureHitAnimationRenderer {
         hitByAbilityAnimation = new Animation<>(Constants.DAMAGE_ANIMATION_DURATION / frameCount, frames);
     }
 
-    public void render(float timeSinceStarted, Vector2 vectorTowardsContactPoint, RenderingLayer renderingLayer, CoreGame game) {
+    public void render(CreatureId creatureId, float timeSinceStarted, Vector2 vectorTowardsContactPoint, RenderingLayer renderingLayer, CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
         float realWidth = 1.8f;
