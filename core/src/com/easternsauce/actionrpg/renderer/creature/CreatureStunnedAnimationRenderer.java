@@ -1,29 +1,31 @@
 package com.easternsauce.actionrpg.renderer.creature;
 
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
+import com.easternsauce.actionrpg.model.util.Vector2;
+import com.easternsauce.actionrpg.renderer.AnimationRenderer;
+import com.easternsauce.actionrpg.renderer.AnimationSpec;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 public class CreatureStunnedAnimationRenderer {
-    private Animation<TextureRegion> stunnedAnimation;
-
-    public void loadAnimation(TextureAtlas atlas) {
-        TextureRegion stunnedAnimationTextureRegion = atlas.findRegion("stunned");
-
-        TextureRegion[] frames = new TextureRegion[8];
-        for (int i = 0; i < 8; i++) {
-            frames[i] = (new TextureRegion(stunnedAnimationTextureRegion, i * 60, 0, 60, 30));
-        }
-
-        this.stunnedAnimation = new Animation<>(0.045f, frames);
-    }
+    @Getter
+    private final AnimationRenderer animationRenderer = AnimationRenderer.of(
+            AnimationSpec.of(
+                    60,
+                    30,
+                    3f,
+                    1.5f,
+                    0.045f,
+                    8,
+                    "stunned",
+                    true
+            )
+    );
 
     public void render(CreatureId creatureId, float spriteWidth, RenderingLayer renderingLayer, CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
@@ -32,16 +34,12 @@ public class CreatureStunnedAnimationRenderer {
             float posX = creature.getParams().getPos().getX() - 1.5f;
             float posY = LifeBarUtils.getLifeBarPosY(creature, spriteWidth) - 1f;
 
-            renderingLayer.getSpriteBatch().draw(getFrame(creatureId, game), posX, posY, 3f, 1.5f);
+            Vector2 pos = Vector2.of(posX, posY);
+
+            float stunTimeSinceStarted = creature.getTimeSinceStarted(CreatureEffect.STUN, game);
+
+            animationRenderer.render(pos, stunTimeSinceStarted, renderingLayer);
         }
-
     }
 
-    private TextureRegion getFrame(CreatureId creatureId, CoreGame game) {
-        Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
-
-        float stunTimeSinceStarted = creature.getTimeSinceStarted(CreatureEffect.STUN, game);
-
-        return stunnedAnimation.getKeyFrame(stunTimeSinceStarted, true);
-    }
 }

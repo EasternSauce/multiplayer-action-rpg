@@ -69,7 +69,6 @@ public class GameplayRendererHelper {
 
     private static void renderCreatureHitAnimations(GameEntityRenderer renderer, RenderingLayer worldElementsRenderingLayer,
                                                     CoreGame game) {
-
         worldElementsRenderingLayer.begin();
 
         renderer
@@ -79,12 +78,10 @@ public class GameplayRendererHelper {
                         .getAreaId()
                         .getValue()
                         .equals(game.getGameState().getCurrentAreaId().getValue()))
-
                 .forEach(creatureHitAnimation -> {
-                    float timeSinceStarted = game.getGameState().getTime() - creatureHitAnimation.getHitTime();
                     renderer.getCreatureHitAnimationRenderer()
                             .render(creatureHitAnimation.getCreatureId(),
-                                    timeSinceStarted,
+                                    game.getGameState().getTime() - creatureHitAnimation.getHitTime(),
                                     creatureHitAnimation.getVectorTowardsContactPoint(),
                                     worldElementsRenderingLayer,
                                     game);

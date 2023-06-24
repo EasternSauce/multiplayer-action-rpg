@@ -81,8 +81,8 @@ public class GameEntityRenderer {
 
         poisonedIcon = atlas.findRegion("poisoned");
 
-        creatureStunnedAnimationRenderer.loadAnimation(atlas);
-        creatureHitAnimationRenderer.loadAnimation(atlas);
+        creatureStunnedAnimationRenderer.getAnimationRenderer().loadAnimation(atlas);
+        creatureHitAnimationRenderer.getAnimationRenderer().loadAnimation(atlas);
     }
 
     public void loadAreaRenderers(Map<AreaId, TiledMap> maps, @SuppressWarnings("unused") CoreGame game) {
