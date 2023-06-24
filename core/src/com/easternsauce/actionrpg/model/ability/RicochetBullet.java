@@ -16,16 +16,16 @@ public class RicochetBullet extends Projectile {
     public static RicochetBullet of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         RicochetBullet ability = RicochetBullet.of();
         ability.params = abilityParams
-                .setWidth(0.8f)
-                .setHeight(0.8f)
-                .setChannelTime(0f)
-                .setActiveTime(10f)
-                .setTextureName("fireball")
-                .setBaseDamage(30f)
-                .setIsChannelAnimationLooping(false)
-                .setIsActiveAnimationLooping(true)
-                .setDelayedActionTime(0.001f)
-                .setSpeed(25f);
+            .setWidth(0.8f)
+            .setHeight(0.8f)
+            .setChannelTime(0f)
+            .setActiveTime(10f)
+            .setTextureName("fireball")
+            .setBaseDamage(30f)
+            .setIsChannelAnimationLooping(false)
+            .setIsActiveAnimationLooping(true)
+            .setDelayedActionTime(0.001f)
+            .setSpeed(25f);
 
         return ability;
     }
@@ -55,7 +55,7 @@ public class RicochetBullet extends Projectile {
     public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
 
         if (getParams().getDirVector().normalized().dot(abilityPos.vectorTowards(tilePos).normalized()) <
-                0.6f) { // check if it is facing the tile
+            0.6f) { // check if it is facing the tile
             return;
         }
 

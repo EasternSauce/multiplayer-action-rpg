@@ -28,7 +28,7 @@ public class Item implements Comparable<Item> {
             builder.append("Armor: " + getArmor() + "\n");
         }
         getGrantedSkills().forEach((skillType, level) -> builder.append(
-                "Grants Level " + level + " " + skillType.getPrettyName() + "\n"));
+            "Grants Level " + level + " " + skillType.getPrettyName() + "\n"));
         if (template.getWorth() != null) {
             builder.append("Worth: " + getWorth() + "\n");
         }
@@ -57,10 +57,10 @@ public class Item implements Comparable<Item> {
 
     public Item copy() {
         return Item
-                .of()
-                .setTemplate(template)
-                .setQuantity(quantity)
-                .setQualityModifier(qualityModifier)
-                .setGrantedSkills(new ConcurrentSkipListMap<>(grantedSkills));
+            .of()
+            .setTemplate(template)
+            .setQuantity(quantity)
+            .setQualityModifier(qualityModifier)
+            .setGrantedSkills(new ConcurrentSkipListMap<>(grantedSkills));
     }
 }

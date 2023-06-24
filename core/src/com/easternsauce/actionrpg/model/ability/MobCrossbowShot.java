@@ -37,11 +37,11 @@ public class MobCrossbowShot extends Ability {
     @Override
     protected void onActiveUpdate(float delta, CoreGame game) {
         float[] boltFireTimes = {
-                0f,
-                0.4f,
-                1f,
-                1.2f,
-                1.4f};
+            0f,
+            0.4f,
+            1f,
+            1.2f,
+            1.4f};
 
         Vector2 currentDirVector;
         if (previousDirVector != null) {
@@ -53,11 +53,11 @@ public class MobCrossbowShot extends Ability {
         Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
 
         if (creature != null && currentBoltToFire < boltFireTimes.length &&
-                getParams().getStateTimer().getTime() > boltFireTimes[currentBoltToFire]) {
+            getParams().getStateTimer().getTime() > boltFireTimes[currentBoltToFire]) {
             Vector2 aimDirection = creature.getParams().getMovementParams().getAimDirection();
 
             float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(currentDirVector.angleDeg(),
-                    aimDirection.angleDeg());
+                aimDirection.angleDeg());
 
             float turningSpeed = 1.5f;
             float incrementFactor = 330f;
@@ -72,15 +72,15 @@ public class MobCrossbowShot extends Ability {
             float increment = baseIncrement * delta;
 
             Vector2 chainedDirVector = calculateShootingVectorForNextBolt(currentDirVector,
-                    aimDirection,
-                    shortestAngleRotation,
-                    increment,
-                    game);
+                aimDirection,
+                shortestAngleRotation,
+                increment,
+                game);
 
             game
-                    .getGameState()
-                    .accessAbilities()
-                    .chainAnotherAbility(this, AbilityType.CROSSBOW_BOLT, null, chainedDirVector, null, null, game);
+                .getGameState()
+                .accessAbilities()
+                .chainAnotherAbility(this, AbilityType.CROSSBOW_BOLT, null, chainedDirVector, null, null, game);
 
             currentBoltToFire += 1;
             previousDirVector = chainedDirVector.copy();

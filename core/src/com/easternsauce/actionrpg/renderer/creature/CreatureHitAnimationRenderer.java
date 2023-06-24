@@ -19,16 +19,16 @@ public class CreatureHitAnimationRenderer {
     {
         int frameCount = 10;
         animationRenderer = AnimationRenderer.of(
-                AnimationSpec.of(
-                        256,
-                        256,
-                        1.8f,
-                        1.8f,
-                        Constants.DAMAGE_ANIMATION_DURATION / frameCount,
-                        frameCount,
-                        "circle_explosion",
-                        false
-                )
+            AnimationSpec.of(
+                256,
+                256,
+                1.8f,
+                1.8f,
+                Constants.DAMAGE_ANIMATION_DURATION / frameCount,
+                frameCount,
+                "circle_explosion",
+                false
+            )
         );
     }
 

@@ -16,15 +16,15 @@ public class RingOfFire extends Ability {
     public static RingOfFire of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         RingOfFire ability = RingOfFire.of();
         ability.params = abilityParams
-                .setWidth(8f)
-                .setHeight(8f)
-                .setChannelTime(0.4f)
-                .setActiveTime(0.16f)
-                .setBaseDamage(28f)
-                .setTextureName("ring_of_fire")
-                .setIsChannelAnimationLooping(false)
-                .setIsActiveAnimationLooping(false)
-                .setAttackWithoutMoving(true);
+            .setWidth(8f)
+            .setHeight(8f)
+            .setChannelTime(0.4f)
+            .setActiveTime(0.16f)
+            .setBaseDamage(28f)
+            .setTextureName("ring_of_fire")
+            .setIsChannelAnimationLooping(false)
+            .setIsActiveAnimationLooping(false)
+            .setAttackWithoutMoving(true);
 
         return ability;
     }

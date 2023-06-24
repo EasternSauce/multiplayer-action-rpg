@@ -16,17 +16,17 @@ import com.easternsauce.actionrpg.physics.world.PhysicsWorld;
 public class B2BodyFactory {
     public static Body createTerrainTileB2body(PhysicsWorld world, TerrainTileBody terrainTileBody) {
         return createB2Body(world,
-                Vector2.of(terrainTileBody.getPos().getX() * terrainTileBody.getTileWidth() +
-                                terrainTileBody.getTileWidth() / 2,
-                        terrainTileBody.getPos().getY() * terrainTileBody.getTileHeight() +
-                                terrainTileBody.getTileHeight() / 2),
-                BodyType.StaticBody,
-                terrainTileBody,
-                Rectangle.of(terrainTileBody.getTileWidth(), terrainTileBody.getTileHeight()),
-                false,
-                false,
-                null,
-                null);
+            Vector2.of(terrainTileBody.getPos().getX() * terrainTileBody.getTileWidth() +
+                    terrainTileBody.getTileWidth() / 2,
+                terrainTileBody.getPos().getY() * terrainTileBody.getTileHeight() +
+                    terrainTileBody.getTileHeight() / 2),
+            BodyType.StaticBody,
+            terrainTileBody,
+            Rectangle.of(terrainTileBody.getTileWidth(), terrainTileBody.getTileHeight()),
+            false,
+            false,
+            null,
+            null);
 
     }
 
@@ -65,14 +65,14 @@ public class B2BodyFactory {
 
     public static Body createCreatureB2Body(PhysicsWorld world, CreatureBody creatureBody, Creature creature) {
         return createB2Body(world,
-                creature.getParams().getPos(),
-                BodyType.DynamicBody,
-                creatureBody,
-                Circle.of(creature.animationConfig().getSpriteWidth() / 2f),
-                false,
-                false,
-                10f,
-                1000f);
+            creature.getParams().getPos(),
+            BodyType.DynamicBody,
+            creatureBody,
+            Circle.of(creature.animationConfig().getSpriteWidth() / 2f),
+            false,
+            false,
+            10f,
+            1000f);
     }
 
     public static Body createAbilityB2Body(PhysicsWorld world, AbilityBody abilityBody, Vector2 pos, float[] vertices) {

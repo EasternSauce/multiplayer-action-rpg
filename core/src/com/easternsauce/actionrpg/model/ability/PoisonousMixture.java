@@ -22,16 +22,16 @@ public class PoisonousMixture extends Projectile {
 
         PoisonousMixture ability = PoisonousMixture.of();
         ability.params = abilityParams
-                .setWidth(1.5f)
-                .setHeight(1.5f)
-                .setChannelTime(0f)
-                .setActiveTime(30f)
-                .setTextureName("green_potion_throw")
-                .setBaseDamage(0f)
-                .setIsChannelAnimationLooping(false)
-                .setIsActiveAnimationLooping(true)
-                .setDelayedActionTime(0.001f)
-                .setPos(creature.getParams().getPos());
+            .setWidth(1.5f)
+            .setHeight(1.5f)
+            .setChannelTime(0f)
+            .setActiveTime(30f)
+            .setTextureName("green_potion_throw")
+            .setBaseDamage(0f)
+            .setIsChannelAnimationLooping(false)
+            .setIsActiveAnimationLooping(true)
+            .setDelayedActionTime(0.001f)
+            .setPos(creature.getParams().getPos());
 
         return ability;
     }
@@ -65,15 +65,15 @@ public class PoisonousMixture extends Projectile {
     @Override
     protected void onCompleted(CoreGame game) {
         game
-                .getGameState()
-                .accessAbilities()
-                .chainAnotherAbility(this,
-                        AbilityType.SPREADING_POISONOUS_CLOUD,
-                        getParams().getPos(),
-                        params.getDirVector(),
-                        null,
-                        null,
-                        game);
+            .getGameState()
+            .accessAbilities()
+            .chainAnotherAbility(this,
+                AbilityType.SPREADING_POISONOUS_CLOUD,
+                getParams().getPos(),
+                params.getDirVector(),
+                null,
+                null,
+                game);
     }
 
 

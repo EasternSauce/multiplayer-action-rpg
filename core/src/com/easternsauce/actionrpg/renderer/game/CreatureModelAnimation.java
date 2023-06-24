@@ -36,7 +36,7 @@ public class CreatureModelAnimation {
         CreatureAnimationConfig animationConfig = CreatureAnimationConfig.configs.get(textureName);
 
         return runningAnimations
-                .get(animationConfig.getDirMap().get(facingDirection))
-                .getKeyFrame(animationTime, true);
+            .get(animationConfig.getDirMap().get(facingDirection))
+            .getKeyFrame(animationTime, true);
     }
 }

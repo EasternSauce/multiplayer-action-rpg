@@ -19,11 +19,11 @@ public class CreatureAnimationConfig {
         configs.put("male2", CreatureAnimationConfig.of("male2", 1, 1.8f, 1.8f, 32, 32, 3, 0.1f, textureDirMap(3, 0, 1, 2)));
         configs.put("female1", CreatureAnimationConfig.of("female1", 1, 1.8f, 1.8f, 32, 32, 3, 0.1f, textureDirMap(3, 0, 1, 2)));
         configs.put("skeleton",
-                CreatureAnimationConfig.of("skeleton", 0, 1.8f, 1.8f, 64, 64, 9, 0.05f, textureDirMap(0, 2, 1, 3)));
+            CreatureAnimationConfig.of("skeleton", 0, 1.8f, 1.8f, 64, 64, 9, 0.05f, textureDirMap(0, 2, 1, 3)));
         configs.put("undead_adventurer",
-                CreatureAnimationConfig.of("undead_adventurer", 0, 1.2f, 1.8f, 32, 48, 4, 0.1f, textureDirMap(3, 0, 1, 2)));
+            CreatureAnimationConfig.of("undead_adventurer", 0, 1.2f, 1.8f, 32, 48, 4, 0.1f, textureDirMap(3, 0, 1, 2)));
         configs.put("black_mage",
-                CreatureAnimationConfig.of("black_mage", 0, 1.5f, 1.5f, 32, 32, 3, 0.1f, textureDirMap(3, 0, 1, 2)));
+            CreatureAnimationConfig.of("black_mage", 0, 1.5f, 1.5f, 32, 32, 3, 0.1f, textureDirMap(3, 0, 1, 2)));
         configs.put("minos", CreatureAnimationConfig.of("minos", 0, 2.56f, 4.8f, 64, 120, 4, 0.1f, textureDirMap(3, 0, 1, 2)));
 
     }

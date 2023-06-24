@@ -27,8 +27,8 @@ import lombok.NoArgsConstructor;
 import java.util.Set;
 
 @SuppressWarnings({
-        "GrazieInspection",
-        "SpellCheckingInspection"})
+    "GrazieInspection",
+    "SpellCheckingInspection"})
 @NoArgsConstructor(staticName = "of")
 public class GameEntityManager {
     @Getter
@@ -76,11 +76,11 @@ public class GameEntityManager {
         Ability ability = game.getGameState().accessAbilities().getAbilities().get(abilityId);
 
         if (ability != null && gameEntityPhysics.getAbilityBodies().containsKey(ability.getParams().getId()) &&
-                !gameEntityPhysics.getAbilityBodies().get(ability.getParams().getId()).getIsBodyInitialized()) {
+            !gameEntityPhysics.getAbilityBodies().get(ability.getParams().getId()).getIsBodyInitialized()) {
             gameEntityPhysics
-                    .getAbilityBodies()
-                    .get(ability.getParams().getId())
-                    .activate(ability.getParams().getIsSkipCreatingBody(), game);
+                .getAbilityBodies()
+                .get(ability.getParams().getId())
+                .activate(ability.getParams().getIsSkipCreatingBody(), game);
         }
     }
 
@@ -161,30 +161,30 @@ public class GameEntityManager {
         // set gamestate position based on b2body position
         creaturesToUpdate.forEach(creatureId -> {
             if (game.getGameState().accessCreatures().getCreatures().containsKey(creatureId) &&
-                    getGameEntityPhysics().getCreatureBodies().containsKey(creatureId)) {
+                getGameEntityPhysics().getCreatureBodies().containsKey(creatureId)) {
 
                 game
-                        .getGameState()
-                        .accessCreatures()
-                        .getCreatures()
-                        .get(creatureId)
-                        .getParams()
-                        .setPos(getGameEntityPhysics().getCreatureBodies().get(creatureId).getBodyPos());
+                    .getGameState()
+                    .accessCreatures()
+                    .getCreatures()
+                    .get(creatureId)
+                    .getParams()
+                    .setPos(getGameEntityPhysics().getCreatureBodies().get(creatureId).getBodyPos());
 
             }
         });
 
         // if creature is to be updated, then body should be active, otherwise it should be inactive
         getGameEntityPhysics()
+            .getCreatureBodies()
+            .forEach((key, value) -> getGameEntityPhysics()
                 .getCreatureBodies()
-                .forEach((key, value) -> getGameEntityPhysics()
-                        .getCreatureBodies()
-                        .get(key)
-                        .setActive(creaturesToUpdate.contains(key)));
+                .get(key)
+                .setActive(creaturesToUpdate.contains(key)));
 
         creaturesToUpdate.forEach(creatureId -> {
             if (game.getGameState().accessCreatures().getCreatures().containsKey(creatureId) &&
-                    getGameEntityRenderer().getCreatureRenderers().containsKey(creatureId)) {
+                getGameEntityRenderer().getCreatureRenderers().containsKey(creatureId)) {
                 getGameEntityRenderer().getCreatureRenderers().get(creatureId).update(game);
             }
         });
@@ -202,7 +202,7 @@ public class GameEntityManager {
 
         abilitiesToUpdate.forEach(abilityId -> {
             if (game.getGameState().accessAbilities().getAbilities().containsKey(abilityId) &&
-                    game.getGameState().accessAbilities().getAbilities().get(abilityId) != null) {
+                game.getGameState().accessAbilities().getAbilities().get(abilityId) != null) {
                 game.getGameState().accessAbilities().getAbilities().get(abilityId).update(delta, game);
             }
         });
@@ -217,7 +217,7 @@ public class GameEntityManager {
             if (getGameEntityPhysics().getAbilityBodies().containsKey(abilityId)) {
                 Ability ability = game.getGameState().accessAbilities().getAbilities().get(abilityId);
                 if (ability != null && !ability.isPositionChangedOnUpdate() && !ability.getParams().getIsSkipCreatingBody() &&
-                        getGameEntityPhysics().getAbilityBodies().get(abilityId).getIsBodyInitialized()) {
+                    getGameEntityPhysics().getAbilityBodies().get(abilityId).getIsBodyInitialized()) {
                     ability.getParams().setPos(getGameEntityPhysics().getAbilityBodies().get(abilityId).getBodyPos());
                 }
             }
@@ -237,22 +237,22 @@ public class GameEntityManager {
         creature.getParams().getMovementParams().setIsDashing(false);
 
         if (!teleportEvent.isUsedGate() && teleportEvent
-                .getToAreaId()
-                .getValue()
-                .equals(game
-                        .getGameState()
-                        .accessCreatures()
-                        .getCreature(teleportEvent.getCreatureId())
-                        .getParams()
-                        .getAreaId()
-                        .getValue()) && teleportEvent
-                .getToAreaId()
-                .getValue()
-                .equals(game.getCreatureBodies().get(teleportEvent.getCreatureId()).getAreaId().getValue())) {
+            .getToAreaId()
+            .getValue()
+            .equals(game
+                .getGameState()
+                .accessCreatures()
+                .getCreature(teleportEvent.getCreatureId())
+                .getParams()
+                .getAreaId()
+                .getValue()) && teleportEvent
+            .getToAreaId()
+            .getValue()
+            .equals(game.getCreatureBodies().get(teleportEvent.getCreatureId()).getAreaId().getValue())) {
             getGameEntityPhysics()
-                    .getCreatureBodies()
-                    .get(teleportEvent.getCreatureId())
-                    .forceSetTransform(teleportEvent.getPos());
+                .getCreatureBodies()
+                .get(teleportEvent.getCreatureId())
+                .forceSetTransform(teleportEvent.getPos());
         } else {
             if (teleportEvent.getCreatureId() != null) {
                 creature.getParams().setAreaId(teleportEvent.getToAreaId());
@@ -262,9 +262,9 @@ public class GameEntityManager {
 
                 if (getGameEntityPhysics().getCreatureBodies().containsKey(teleportEvent.getCreatureId())) {
                     getGameEntityPhysics()
-                            .getCreatureBodies()
-                            .get(teleportEvent.getCreatureId())
-                            .moveBodyToNewArea(teleportEvent.getToAreaId(), game);
+                        .getCreatureBodies()
+                        .get(teleportEvent.getCreatureId())
+                        .moveBodyToNewArea(teleportEvent.getToAreaId(), game);
                 } else {
                     CreatureBody creatureBody = CreatureBody.of(teleportEvent.getCreatureId());
                     creatureBody.init(teleportEvent.getToAreaId(), game);

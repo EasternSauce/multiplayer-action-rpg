@@ -33,9 +33,9 @@ public class SkillMenuController {
 
             if (rect.contains(x, y)) {
                 client.sendTCP(ActionPerformCommand.of(SkillPickerMenuSlotChangeAction.of(game
-                                .getGameState()
-                                .getThisClientPlayerId(),
-                        skillType)));
+                        .getGameState()
+                        .getThisClientPlayerId(),
+                    skillType)));
                 isSuccessful.set(true);
             }
 
@@ -44,8 +44,8 @@ public class SkillMenuController {
 
         if (!isSuccessful.get()) {
             client.sendTCP(ActionPerformCommand.of(SkillPickerMenuDeactivateAction.of(game
-                    .getGameState()
-                    .getThisClientPlayerId())));
+                .getGameState()
+                .getThisClientPlayerId())));
         }
 
         return isSuccessful.get();
@@ -60,8 +60,8 @@ public class SkillMenuController {
         SkillMenuPositioning.skillRectangles.forEach((slotNum, rect) -> {
             if (rect.contains(x, y)) {
                 client.sendTCP(ActionPerformCommand.of(SkillPickerMenuActivateAction.of(game
-                        .getGameState()
-                        .getThisClientPlayerId(), slotNum)));
+                    .getGameState()
+                    .getThisClientPlayerId(), slotNum)));
                 isSuccessful.set(true);
             }
         });

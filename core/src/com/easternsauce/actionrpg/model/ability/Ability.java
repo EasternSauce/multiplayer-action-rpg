@@ -42,7 +42,7 @@ public abstract class Ability implements Entity {
             onActiveUpdate(delta, game);
 
             if (!getParams().getDelayedActionCompleted() && getParams().getDelayedActionTime() != null &&
-                    getParams().getStateTimer().getTime() > getParams().getDelayedActionTime()) {
+                getParams().getStateTimer().getTime() > getParams().getDelayedActionTime()) {
                 getParams().setDelayedActionCompleted(true);
                 onDelayedAction(game);
             }

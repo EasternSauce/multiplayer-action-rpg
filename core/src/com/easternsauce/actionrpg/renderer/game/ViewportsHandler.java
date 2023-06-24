@@ -22,8 +22,8 @@ public class ViewportsHandler {
 
     public void initViewports() {
         worldViewport = new FitViewport(Constants.VIEWPOINT_WORLD_WIDTH / Constants.PPM,
-                Constants.VIEWPOINT_WORLD_HEIGHT / Constants.PPM,
-                worldCamera);
+            Constants.VIEWPOINT_WORLD_HEIGHT / Constants.PPM,
+            worldCamera);
 
         hudViewport = new FitViewport((float) Constants.WINDOW_WIDTH, (float) Constants.WINDOW_HEIGHT, hudCamera);
 

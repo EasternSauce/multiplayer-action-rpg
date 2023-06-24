@@ -21,7 +21,7 @@ public class PhysicsHelper {
                 AbilityHitsCreatureEvent event = (AbilityHitsCreatureEvent) physicsEvent;
 
                 if (game.getGameState().getCreaturesToUpdate().contains(event.getDestinationCreatureId()) &&
-                        game.getAbilitiesToUpdate().contains(event.getAbilityId())) {
+                    game.getAbilitiesToUpdate().contains(event.getAbilityId())) {
 
                     if (event.getSourceCreatureId().equals(event.getDestinationCreatureId())) {
                         Ability ability = game.getGameState().accessAbilities().getAbility(event.getAbilityId());
@@ -77,7 +77,7 @@ public class PhysicsHelper {
                 Creature creature = game.getGameState().accessCreatures().getCreature(event.getCreatureId());
 
                 if (creature instanceof Player && creature.getParams().getMovementParams().getIsStillInsideGateAfterTeleport() &&
-                        creature.getParams().getMovementParams().getAreaWhenEnteredGate().equals(creature.getParams().getAreaId())) {
+                    creature.getParams().getMovementParams().getAreaWhenEnteredGate().equals(creature.getParams().getAreaId())) {
 
                     creature.getParams().getMovementParams().setIsStillInsideGateAfterTeleport(false);
 
@@ -115,16 +115,16 @@ public class PhysicsHelper {
             Vector2 contactPoint = calculateContactPoint(destinationCreature, ability);
 
             if ((sourceCreature instanceof Player || destinationCreature instanceof Player) &&
-                    !ability.getParams().getCreaturesAlreadyHit().containsKey(event.getDestinationCreatureId())) {
+                !ability.getParams().getCreaturesAlreadyHit().containsKey(event.getDestinationCreatureId())) {
 
                 game
-                        .getGameState()
-                        .accessAbilities()
-                        .onAbilityHitsCreature(event.getSourceCreatureId(),
-                                event.getDestinationCreatureId(),
-                                ability.getParams().getId(),
-                                contactPoint,
-                                game);
+                    .getGameState()
+                    .accessAbilities()
+                    .onAbilityHitsCreature(event.getSourceCreatureId(),
+                        event.getDestinationCreatureId(),
+                        ability.getParams().getId(),
+                        contactPoint,
+                        game);
             }
 
         }
@@ -151,8 +151,8 @@ public class PhysicsHelper {
 
             game.getGameState().accessCreatures().getCreatures().forEach((creatureId, creature) -> {
                 if (game.getCreatureBodies().containsKey(creatureId) &&
-                        game.getCreatureBodies().get(creatureId).getBodyPos().distance(creature.getParams().getPos()) >
-                                Constants.FORCE_UPDATE_MINIMUM_DISTANCE // only setTransform if positions
+                    game.getCreatureBodies().get(creatureId).getBodyPos().distance(creature.getParams().getPos()) >
+                        Constants.FORCE_UPDATE_MINIMUM_DISTANCE // only setTransform if positions
                     // are far apart
                 ) {
                     game.getCreatureBodies().get(creatureId).trySetTransform(creature.getParams().getPos());
@@ -162,11 +162,11 @@ public class PhysicsHelper {
             game.getGameState().accessAbilities().getAbilities().forEach((abilityId, ability) -> {
                 //noinspection SpellCheckingInspection
                 if (game.getAbilityBodies().containsKey(abilityId) &&
-                        game.getAbilityBodies().get(abilityId).getIsBodyInitialized() &&
-                        // this is needed to fix body created client/server desync
-                        !ability.getParams().getIsSkipCreatingBody() &&
-                        game.getAbilityBodies().get(abilityId).getBodyPos().distance(ability.getParams().getPos()) >
-                                Constants.FORCE_UPDATE_MINIMUM_DISTANCE
+                    game.getAbilityBodies().get(abilityId).getIsBodyInitialized() &&
+                    // this is needed to fix body created client/server desync
+                    !ability.getParams().getIsSkipCreatingBody() &&
+                    game.getAbilityBodies().get(abilityId).getBodyPos().distance(ability.getParams().getPos()) >
+                        Constants.FORCE_UPDATE_MINIMUM_DISTANCE
                     // only setTransform if positions are far apart
                 ) {
                     game.getAbilityBodies().get(abilityId).trySetTransform(ability.getParams().getPos());

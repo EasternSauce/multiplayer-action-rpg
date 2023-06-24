@@ -36,13 +36,13 @@ public class GameplayScreen implements Screen {
         mapsToLoad.put(AreaId.of("area3"), "assets/areas/area3");
 
         maps = mapsToLoad
-                .entrySet()
-                .stream()
-                .collect(Collectors.toMap(Map.Entry::getKey,
-                        entry -> game
-                                .getEntityManager()
-                                .getGameEntityRenderer()
-                                .loadMap(entry.getValue() + "/tile_map.tmx")));
+            .entrySet()
+            .stream()
+            .collect(Collectors.toMap(Map.Entry::getKey,
+                entry -> game
+                    .getEntityManager()
+                    .getGameEntityRenderer()
+                    .loadMap(entry.getValue() + "/tile_map.tmx")));
 
         game.initState();
 
@@ -52,10 +52,10 @@ public class GameplayScreen implements Screen {
         game.getEntityManager().getGameEntityPhysics().init(maps, game); // TODO: doesn't run if we receive state too late....
 
         game
-                .getEntityManager()
-                .getGameEntityRenderer()
-                .getViewportsHandler()
-                .setHudCameraPosition(Constants.WINDOW_WIDTH / 2f, Constants.WINDOW_HEIGHT / 2f); // TODO: move it inward?
+            .getEntityManager()
+            .getGameEntityRenderer()
+            .getViewportsHandler()
+            .setHudCameraPosition(Constants.WINDOW_WIDTH / 2f, Constants.WINDOW_HEIGHT / 2f); // TODO: move it inward?
 
     }
 
@@ -69,16 +69,16 @@ public class GameplayScreen implements Screen {
         update(delta);
         if (game.isGameplayRenderingAllowed()) {
             if (game
+                .getEntityManager()
+                .getGameEntityRenderer()
+                .getAreaRenderers()
+                .containsKey(game.getGameState().getCurrentAreaId())) {
+                game
                     .getEntityManager()
                     .getGameEntityRenderer()
                     .getAreaRenderers()
-                    .containsKey(game.getGameState().getCurrentAreaId())) {
-                game
-                        .getEntityManager()
-                        .getGameEntityRenderer()
-                        .getAreaRenderers()
-                        .get(game.getGameState().getCurrentAreaId())
-                        .setView(game.getEntityManager().getGameEntityRenderer().getViewportsHandler().getWorldCamera());
+                    .get(game.getGameState().getCurrentAreaId())
+                    .setView(game.getEntityManager().getGameEntityRenderer().getViewportsHandler().getWorldCamera());
             }
 
             game.getEntityManager().getGameEntityRenderer().setProjectionMatrices();
@@ -116,9 +116,9 @@ public class GameplayScreen implements Screen {
         game.getEventProcessor().process(game.getEntityManager(), atlas, game);
 
         game
-                .getEventProcessor()
-                .getTeleportEvents()
-                .forEach(teleportInfo -> game.getEntityManager().teleportCreature(teleportInfo, game));
+            .getEventProcessor()
+            .getTeleportEvents()
+            .forEach(teleportInfo -> game.getEntityManager().teleportCreature(teleportInfo, game));
         game.getEventProcessor().getTeleportEvents().clear();
 
         game.getGameState().updateGeneralTimer(delta);
@@ -129,7 +129,7 @@ public class GameplayScreen implements Screen {
         PhysicsHelper.processPhysicsEventQueue(game);
 
         if (game.getGameState().getThisClientPlayerId() != null &&
-                game.getGameState().accessCreatures().getCreature(game.getGameState().getThisClientPlayerId()) != null) {
+            game.getGameState().accessCreatures().getCreature(game.getGameState().getThisClientPlayerId()) != null) {
             game.updateCameraPositions();
         }
 

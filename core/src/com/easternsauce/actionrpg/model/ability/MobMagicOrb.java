@@ -23,16 +23,16 @@ public class MobMagicOrb extends Projectile {
     public static MobMagicOrb of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         MobMagicOrb ability = MobMagicOrb.of();
         ability.params = abilityParams
-                .setWidth(1.5f)
-                .setHeight(1.5f)
-                .setChannelTime(0f)
-                .setActiveTime(30f)
-                .setTextureName("magic_orb")
-                .setBaseDamage(40f)
-                .setIsChannelAnimationLooping(false)
-                .setIsActiveAnimationLooping(true)
-                .setDelayedActionTime(0.001f)
-                .setSpeed(13f);
+            .setWidth(1.5f)
+            .setHeight(1.5f)
+            .setChannelTime(0f)
+            .setActiveTime(30f)
+            .setTextureName("magic_orb")
+            .setBaseDamage(40f)
+            .setIsChannelAnimationLooping(false)
+            .setIsActiveAnimationLooping(true)
+            .setDelayedActionTime(0.001f)
+            .setSpeed(13f);
 
         return ability;
     }
@@ -57,17 +57,17 @@ public class MobMagicOrb extends Projectile {
         Creature thisCreature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
 
         for (Creature creature : game
-                .getGameState()
-                .accessCreatures()
-                .getCreatures()
-                .values()
-                .stream()
-                .filter(targetCreature ->
-                        Objects.equals(targetCreature.getParams().getAreaId().getValue(), getParams().getAreaId().getValue()) &&
-                                !targetCreature.getId().equals(getParams().getCreatureId()) && targetCreature.isAlive() &&
-                                isTargetingAllowed(thisCreature, targetCreature) &&
-                                targetCreature.getParams().getPos().distance(getParams().getPos()) < 20f)
-                .collect(Collectors.toSet())) {
+            .getGameState()
+            .accessCreatures()
+            .getCreatures()
+            .values()
+            .stream()
+            .filter(targetCreature ->
+                Objects.equals(targetCreature.getParams().getAreaId().getValue(), getParams().getAreaId().getValue()) &&
+                    !targetCreature.getId().equals(getParams().getCreatureId()) && targetCreature.isAlive() &&
+                    isTargetingAllowed(thisCreature, targetCreature) &&
+                    targetCreature.getParams().getPos().distance(getParams().getPos()) < 20f)
+            .collect(Collectors.toSet())) {
             if (creature.getParams().getPos().distance(getParams().getPos()) < minimumDistance) {
                 minimumDistanceCreature = creature;
                 minimumDistance = creature.getParams().getPos().distance(getParams().getPos());

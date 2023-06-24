@@ -38,8 +38,8 @@ public class InventorySwapSlotItemsAction extends GameStateAction {
         @SuppressWarnings("UnnecessaryLocalVariable") Item temp = itemTo;
 
         boolean isCanStackItems =
-                itemFrom != null && temp != null && itemFrom.getTemplate().getIsStackable() && temp.getTemplate().getIsStackable() &&
-                        itemFrom.getTemplate().getId().equals(temp.getTemplate().getId());
+            itemFrom != null && temp != null && itemFrom.getTemplate().getIsStackable() && temp.getTemplate().getIsStackable() &&
+                itemFrom.getTemplate().getId().equals(temp.getTemplate().getId());
 
         if (isCanStackItems) {
             player.getParams().getInventoryItems().remove(fromSlotIndex);

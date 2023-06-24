@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public abstract class CreatureHitAction extends GameStateAction {
     protected void handleCreatureDeath(Creature targetCreature, Creature attackerCreature, CoreGame game) {
         if (targetCreature.getParams().getStats().getPreviousTickLife() > 0f &&
-                targetCreature.getParams().getStats().getLife() <= 0f) {
+            targetCreature.getParams().getStats().getLife() <= 0f) {
             onCreatureDeath(targetCreature, attackerCreature, game);
         }
     }
@@ -90,10 +90,10 @@ public abstract class CreatureHitAction extends GameStateAction {
                 }
 
                 Item item = Item
-                        .of()
-                        .setTemplate(entry.getTemplate())
-                        .setQualityModifier(quality)
-                        .setGrantedSkills(grantedSkills);
+                    .of()
+                    .setTemplate(entry.getTemplate())
+                    .setQualityModifier(quality)
+                    .setGrantedSkills(grantedSkills);
 
                 items.add(item);
             }
@@ -106,20 +106,20 @@ public abstract class CreatureHitAction extends GameStateAction {
         LootPileId lootPileId = LootPileId.of("LootPile_" + (int) (Math.random() * 10000000)); // TODO: use seeded rng
 
         Set<Item> lootPileItems = items
-                .stream()
-                .map(item -> Item
-                        .of()
-                        .setTemplate(item.getTemplate())
-                        .setQuantity(item.getQuantity())
-                        .setQualityModifier(item.getQualityModifier())
-                        .setGrantedSkills(item.getGrantedSkills())
-                        .setLootPileId(lootPileId))
-                .collect(Collectors.toCollection(ConcurrentSkipListSet::new));
+            .stream()
+            .map(item -> Item
+                .of()
+                .setTemplate(item.getTemplate())
+                .setQuantity(item.getQuantity())
+                .setQualityModifier(item.getQualityModifier())
+                .setGrantedSkills(item.getGrantedSkills())
+                .setLootPileId(lootPileId))
+            .collect(Collectors.toCollection(ConcurrentSkipListSet::new));
 
         LootPile lootPile = LootPile.of(lootPileId,
-                creature.getParams().getAreaId(),
-                creature.getParams().getPos(),
-                lootPileItems);
+            creature.getParams().getAreaId(),
+            creature.getParams().getPos(),
+            lootPileItems);
 
         game.getGameState().getLootPiles().put(lootPile.getParams().getId(), lootPile);
 
@@ -128,16 +128,16 @@ public abstract class CreatureHitAction extends GameStateAction {
 
     private void deactivateCreatureAbilities(Creature targetCreature, CoreGame game) {
         Set<Ability> creatureActiveAbilities = game
-                .getGameState()
-                .accessAbilities()
-                .getAbilities()
-                .values()
-                .stream()
-                .filter(ability -> ability.isCanBeDeactivated() &&
-                        ability.getParams().getCreatureId().equals(targetCreature.getId()) &&
-                        (ability.getParams().getState() == AbilityState.CHANNEL ||
-                                ability.getParams().getState() == AbilityState.ACTIVE))
-                .collect(Collectors.toSet());
+            .getGameState()
+            .accessAbilities()
+            .getAbilities()
+            .values()
+            .stream()
+            .filter(ability -> ability.isCanBeDeactivated() &&
+                ability.getParams().getCreatureId().equals(targetCreature.getId()) &&
+                (ability.getParams().getState() == AbilityState.CHANNEL ||
+                    ability.getParams().getState() == AbilityState.ACTIVE))
+            .collect(Collectors.toSet());
 
         creatureActiveAbilities.forEach(Ability::deactivate);
     }

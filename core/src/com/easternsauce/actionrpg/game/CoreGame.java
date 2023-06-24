@@ -97,10 +97,10 @@ public abstract class CoreGame extends Game {
 
     public boolean isLineBetweenPointsUnobstructedByTerrain(AreaId areaId, Vector2 fromPos, Vector2 toPos) {
         return entityManager
-                .getGameEntityPhysics()
-                .getPhysicsWorlds()
-                .get(areaId)
-                .isLineBetweenPointsUnobstructedByTerrain(fromPos, toPos);
+            .getGameEntityPhysics()
+            .getPhysicsWorlds()
+            .get(areaId)
+            .isLineBetweenPointsUnobstructedByTerrain(fromPos, toPos);
     }
 
     public void updateCameraPositions() {
@@ -110,14 +110,14 @@ public abstract class CoreGame extends Game {
     public void renderB2BodyDebug() {
         if (isDebugEnabled()) {
             entityManager
-                    .getGameEntityPhysics()
-                    .getDebugRenderer()
-                    .render(entityManager
-                                    .getGameEntityPhysics()
-                                    .getPhysicsWorlds()
-                                    .get(getGameState().getCurrentAreaId())
-                                    .getB2world(),
-                            entityManager.getGameEntityRenderer().getViewportsHandler().getWorldCameraCombinedProjectionMatrix());
+                .getGameEntityPhysics()
+                .getDebugRenderer()
+                .render(entityManager
+                        .getGameEntityPhysics()
+                        .getPhysicsWorlds()
+                        .get(getGameState().getCurrentAreaId())
+                        .getB2world(),
+                    entityManager.getGameEntityRenderer().getViewportsHandler().getWorldCameraCombinedProjectionMatrix());
         }
     }
 
@@ -152,7 +152,7 @@ public abstract class CoreGame extends Game {
         Vector3 screenCoords = new Vector3((float) Gdx.input.getX(), (float) Gdx.input.getY(), 0f);
         entityManager.getGameEntityRenderer().getViewportsHandler().unprojectHudCamera(screenCoords);
         Vector2 mousePos = Vector2.of(screenCoords.x - Constants.WINDOW_WIDTH / 2f,
-                screenCoords.y - Constants.WINDOW_HEIGHT / 2f);
+            screenCoords.y - Constants.WINDOW_HEIGHT / 2f);
 
         float viewportRatioX = Constants.VIEWPOINT_WORLD_WIDTH / Constants.WINDOW_WIDTH;
         float viewportRatioY = Constants.VIEWPOINT_WORLD_HEIGHT / Constants.WINDOW_HEIGHT;
@@ -183,7 +183,7 @@ public abstract class CoreGame extends Game {
     public abstract Boolean getIsFirstBroadcastReceived();
 
     @SuppressWarnings({
-            "UnusedReturnValue",
-            "unused"})
+        "UnusedReturnValue",
+        "unused"})
     public abstract CoreGame setIsFirstBroadcastReceived(@SuppressWarnings("unused") Boolean isFirstBroadcastReceived);
 }

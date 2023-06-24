@@ -47,7 +47,7 @@ public class ConnectScreen implements Screen {
             @Override
             public boolean keyTyped(char character) {
                 if ((Character.isAlphabetic(character) || Character.isDigit(character)) &&
-                        messageHolder.getCurrentMessage().length() <= 20f) {
+                    messageHolder.getCurrentMessage().length() <= 20f) {
                     messageHolder.setCurrentMessage(messageHolder.getCurrentMessage().concat("" + character));
                 }
 
@@ -72,16 +72,16 @@ public class ConnectScreen implements Screen {
             if (isHoldingBackspace) {
                 if (!messageHolder.getCurrentMessage().isEmpty() && timer.getTime() > holdBackspaceTime + 0.3f) {
                     messageHolder.setCurrentMessage(messageHolder
-                            .getCurrentMessage()
-                            .substring(0, messageHolder.getCurrentMessage().length() - 1));
+                        .getCurrentMessage()
+                        .substring(0, messageHolder.getCurrentMessage().length() - 1));
                 }
             } else {
                 isHoldingBackspace = true;
                 holdBackspaceTime = timer.getTime();
                 if (!messageHolder.getCurrentMessage().isEmpty()) {
                     messageHolder.setCurrentMessage(messageHolder
-                            .getCurrentMessage()
-                            .substring(0, messageHolder.getCurrentMessage().length() - 1));
+                        .getCurrentMessage()
+                        .substring(0, messageHolder.getCurrentMessage().length() - 1));
                 }
             }
         } else {
@@ -97,14 +97,14 @@ public class ConnectScreen implements Screen {
         spriteBatch.draw(background, ConnectScreenConsts.BACKGROUND_POS_X, ConnectScreenConsts.BACKGROUND_POS_Y);
 
         Assets.renderMediumFont(game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer(),
-                "Your character name:",
-                Vector2.of(ConnectScreenConsts.PROMPT_POS_X, ConnectScreenConsts.PROMPT_POS_Y),
-                Color.BLACK);
+            "Your character name:",
+            Vector2.of(ConnectScreenConsts.PROMPT_POS_X, ConnectScreenConsts.PROMPT_POS_Y),
+            Color.BLACK);
 
         Assets.renderMediumFont(game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer(),
-                messageHolder.getCurrentMessage(),
-                Vector2.of(ConnectScreenConsts.INPUT_POS_X, ConnectScreenConsts.INPUT_POS_Y),
-                Color.BLACK);
+            messageHolder.getCurrentMessage(),
+            Vector2.of(ConnectScreenConsts.INPUT_POS_X, ConnectScreenConsts.INPUT_POS_Y),
+            Color.BLACK);
 
         spriteBatch.end();
     }

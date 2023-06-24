@@ -19,16 +19,16 @@ public class PoisonousCloud extends Ability {
     public static PoisonousCloud of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         PoisonousCloud ability = PoisonousCloud.of();
         ability.params = abilityParams
-                .setWidth(9f)
-                .setHeight(9f)
-                .setChannelTime(0f)
-                .setActiveTime(5f)
-                .setTextureName("poison_cloud")
-                .setBaseDamage(0f)
-                .setIsChannelAnimationLooping(false)
-                .setIsActiveAnimationLooping(true)
-                .setAttackWithoutMoving(true)
-                .setCreaturesAlreadyHit(new ConcurrentSkipListMap<>());
+            .setWidth(9f)
+            .setHeight(9f)
+            .setChannelTime(0f)
+            .setActiveTime(5f)
+            .setTextureName("poison_cloud")
+            .setBaseDamage(0f)
+            .setIsChannelAnimationLooping(false)
+            .setIsActiveAnimationLooping(true)
+            .setAttackWithoutMoving(true)
+            .setCreaturesAlreadyHit(new ConcurrentSkipListMap<>());
 
         return ability;
     }

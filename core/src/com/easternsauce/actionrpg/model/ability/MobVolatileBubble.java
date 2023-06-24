@@ -17,16 +17,16 @@ public class MobVolatileBubble extends Projectile {
     public static MobVolatileBubble of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         MobVolatileBubble ability = MobVolatileBubble.of();
         ability.params = abilityParams
-                .setWidth(3.2f)
-                .setHeight(3.2f)
-                .setChannelTime(0f)
-                .setActiveTime(30f)
-                .setTextureName("bubble")
-                .setBaseDamage(0f)
-                .setIsChannelAnimationLooping(false)
-                .setIsActiveAnimationLooping(true)
-                .setDelayedActionTime(0.001f)
-                .setSpeed(12f);
+            .setWidth(3.2f)
+            .setHeight(3.2f)
+            .setChannelTime(0f)
+            .setActiveTime(30f)
+            .setTextureName("bubble")
+            .setBaseDamage(0f)
+            .setIsChannelAnimationLooping(false)
+            .setIsActiveAnimationLooping(true)
+            .setDelayedActionTime(0.001f)
+            .setSpeed(12f);
 
         return ability;
     }
@@ -55,34 +55,34 @@ public class MobVolatileBubble extends Projectile {
         float baseAngle = getParams().getDirVector().angleDeg();
 
         float[] angles = {
-                0f,
-                22.5f,
-                45f,
-                67.5f,
-                90f,
-                112.5f,
-                135f,
-                157.5f,
-                180f,
-                202.5f,
-                225f,
-                247.5f,
-                270f,
-                292.5f,
-                315f,
-                337.5f};
+            0f,
+            22.5f,
+            45f,
+            67.5f,
+            90f,
+            112.5f,
+            135f,
+            157.5f,
+            180f,
+            202.5f,
+            225f,
+            247.5f,
+            270f,
+            292.5f,
+            315f,
+            337.5f};
 
         for (float angle : angles) {
             game
-                    .getGameState()
-                    .accessAbilities()
-                    .chainAnotherAbility(this,
-                            AbilityType.ICE_SPEAR,
-                            getParams().getPos(),
-                            params.getDirVector().withSetDegAngle(baseAngle + angle),
-                            null,
-                            null,
-                            game);
+                .getGameState()
+                .accessAbilities()
+                .chainAnotherAbility(this,
+                    AbilityType.ICE_SPEAR,
+                    getParams().getPos(),
+                    params.getDirVector().withSetDegAngle(baseAngle + angle),
+                    null,
+                    null,
+                    game);
 
         }
     }

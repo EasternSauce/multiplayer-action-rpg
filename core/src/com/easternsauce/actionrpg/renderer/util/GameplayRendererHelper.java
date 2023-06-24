@@ -72,20 +72,18 @@ public class GameplayRendererHelper {
         worldElementsRenderingLayer.begin();
 
         renderer
-                .getCreatureHitAnimations()
-                .stream()
-                .filter(creatureHitAnimation -> creatureHitAnimation
-                        .getAreaId()
-                        .getValue()
-                        .equals(game.getGameState().getCurrentAreaId().getValue()))
-                .forEach(creatureHitAnimation -> {
-                    renderer.getCreatureHitAnimationRenderer()
-                            .render(creatureHitAnimation.getCreatureId(),
-                                    game.getGameState().getTime() - creatureHitAnimation.getHitTime(),
-                                    creatureHitAnimation.getVectorTowardsContactPoint(),
-                                    worldElementsRenderingLayer,
-                                    game);
-                });
+            .getCreatureHitAnimations()
+            .stream()
+            .filter(creatureHitAnimation -> creatureHitAnimation
+                .getAreaId()
+                .getValue()
+                .equals(game.getGameState().getCurrentAreaId().getValue()))
+            .forEach(creatureHitAnimation -> renderer.getCreatureHitAnimationRenderer()
+                .render(creatureHitAnimation.getCreatureId(),
+                    game.getGameState().getTime() - creatureHitAnimation.getHitTime(),
+                    creatureHitAnimation.getVectorTowardsContactPoint(),
+                    worldElementsRenderingLayer,
+                    game));
 
         worldElementsRenderingLayer.end();
     }
@@ -94,24 +92,24 @@ public class GameplayRendererHelper {
         worldTextRenderingLayer.begin();
 
         renderer
-                .getDamageNumbers()
-                .stream()
-                .filter(damageNumber -> damageNumber.getAreaId().getValue().equals(game.getGameState().getCurrentAreaId().getValue()))
-                .forEach(damageNumber -> {
-                    float timeElapsed = game.getGameState().getTime() - damageNumber.getDamageTime();
+            .getDamageNumbers()
+            .stream()
+            .filter(damageNumber -> damageNumber.getAreaId().getValue().equals(game.getGameState().getCurrentAreaId().getValue()))
+            .forEach(damageNumber -> {
+                float timeElapsed = game.getGameState().getTime() - damageNumber.getDamageTime();
 
-                    float posX = damageNumber.getPos().getX() - 8f / Constants.PPM;
-                    float posY = damageNumber.getPos().getY() +
-                            12f * (float) Math.pow(timeElapsed / Constants.DAMAGE_NUMBER_SHOW_DURATION, 2f) +
-                            12f / Constants.PPM;
+                float posX = damageNumber.getPos().getX() - 8f / Constants.PPM;
+                float posY = damageNumber.getPos().getY() +
+                    12f * (float) Math.pow(timeElapsed / Constants.DAMAGE_NUMBER_SHOW_DURATION, 2f) +
+                    12f / Constants.PPM;
 
-                    Vector2 rescaledPos = Vector2.of(posX * Constants.PPM, posY * Constants.PPM);
+                Vector2 rescaledPos = Vector2.of(posX * Constants.PPM, posY * Constants.PPM);
 
-                    Assets.renderLargeFont(worldTextRenderingLayer,
-                            Integer.toString(damageNumber.getDamageValue().intValue()),
-                            rescaledPos,
-                            new Color(1f, 0f, 0f, 1f - timeElapsed / Constants.DAMAGE_NUMBER_SHOW_DURATION));
-                });
+                Assets.renderLargeFont(worldTextRenderingLayer,
+                    Integer.toString(damageNumber.getDamageValue().intValue()),
+                    rescaledPos,
+                    new Color(1f, 0f, 0f, 1f - timeElapsed / Constants.DAMAGE_NUMBER_SHOW_DURATION));
+            });
 
         worldTextRenderingLayer.end();
     }

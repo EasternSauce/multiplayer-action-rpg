@@ -34,57 +34,57 @@ public class SpreadingPoisonousCloud extends Ability {
     @Override
     protected void onActiveUpdate(float delta, CoreGame game) {
         float[] cloudSpreadTimes = {
-                0f,
-                0.2f,
-                0.4f,
-                0.6f,
-                0.8f,
-                1.2f,
-                1.6f,
-                2.0f,
-                2.4f,
-                2.8f};
+            0f,
+            0.2f,
+            0.4f,
+            0.6f,
+            0.8f,
+            1.2f,
+            1.6f,
+            2.0f,
+            2.4f,
+            2.8f};
 
         //noinspection SpellCheckingInspection
         float[] cloudRadiuses = {
-                1f,
-                2f,
-                3f,
-                4f,
-                5f,
-                6f,
-                8f,
-                10f,
-                10f,
-                10f};
+            1f,
+            2f,
+            3f,
+            4f,
+            5f,
+            6f,
+            8f,
+            10f,
+            10f,
+            10f};
 
         float[] cloudDurations = {
-                0.2f,
-                0.2f,
-                0.2f,
-                0.2f,
-                0.4f,
-                0.4f,
-                0.4f,
-                0.4f,
-                0.4f,
-                0.4f};
+            0.2f,
+            0.2f,
+            0.2f,
+            0.2f,
+            0.4f,
+            0.4f,
+            0.4f,
+            0.4f,
+            0.4f,
+            0.4f};
 
         Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
 
         if (creature != null && currentCloud < cloudSpreadTimes.length &&
-                getParams().getStateTimer().getTime() > cloudSpreadTimes[currentCloud]) {
+            getParams().getStateTimer().getTime() > cloudSpreadTimes[currentCloud]) {
 
             game
-                    .getGameState()
-                    .accessAbilities()
-                    .chainAnotherAbility(this,
-                            AbilityType.POISONOUS_CLOUD,
-                            getParams().getPos(),
-                            getParams().getDirVector(),
-                            cloudRadiuses[currentCloud],
-                            cloudDurations[currentCloud],
-                            game);
+                .getGameState()
+                .accessAbilities()
+                .chainAnotherAbility(this,
+                    AbilityType.POISONOUS_CLOUD,
+                    getParams().getPos(),
+                    getParams().getDirVector(),
+                    cloudRadiuses[currentCloud],
+                    cloudDurations[currentCloud],
+                    game);
 
             currentCloud += 1;
         }

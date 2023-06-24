@@ -25,10 +25,10 @@ public class AnimationRenderer {
         TextureRegion[] frames = new TextureRegion[animationSpec.getFrameCount()];
         for (int i = 0; i < animationSpec.getFrameCount(); i++) {
             frames[i] = new TextureRegion(stunnedAnimationTextureRegion,
-                    i * animationSpec.getFrameWidth(),
-                    0,
-                    animationSpec.getFrameWidth(),
-                    animationSpec.getFrameHeight()
+                i * animationSpec.getFrameWidth(),
+                0,
+                animationSpec.getFrameWidth(),
+                animationSpec.getFrameHeight()
             );
         }
 

@@ -35,24 +35,24 @@ public class SkillMenuRenderer {
         AtomicInteger i = new AtomicInteger();
         SkillMenuPositioning.skillRectangles.values().forEach(rect -> {
             renderingLayer
-                    .getShapeDrawer()
-                    .filledRectangle(rect.getX() - 3, rect.getY() - 3, rect.getWidth() + 6, rect.getHeight() + 6, Color.WHITE);
+                .getShapeDrawer()
+                .filledRectangle(rect.getX() - 3, rect.getY() - 3, rect.getWidth() + 6, rect.getHeight() + 6, Color.WHITE);
             renderingLayer
-                    .getShapeDrawer()
-                    .filledRectangle(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(), Color.BLACK);
+                .getShapeDrawer()
+                .filledRectangle(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(), Color.BLACK);
 
             SkillType skillType = playerConfig.getSkillMenuSlots().get(i.get());
 
             if (skillType != null) {
                 Assets.renderMediumFont(renderingLayer,
-                        skillType.getPrettyName().substring(0, 2),
-                        Vector2.of(rect.getX() + 5f, rect.getY() + SkillMenuPositioning.SLOT_SIZE - 7f),
-                        Color.GOLD);
+                    skillType.getPrettyName().substring(0, 2),
+                    Vector2.of(rect.getX() + 5f, rect.getY() + SkillMenuPositioning.SLOT_SIZE - 7f),
+                    Color.GOLD);
             }
             Assets.renderVerySmallFont(renderingLayer,
-                    keys.get(i.get()),
-                    Vector2.of(rect.getX() + 2f, rect.getY() + SkillMenuPositioning.SLOT_SIZE - 27f),
-                    Color.WHITE);
+                keys.get(i.get()),
+                Vector2.of(rect.getX() + 2f, rect.getY() + SkillMenuPositioning.SLOT_SIZE - 27f),
+                Color.WHITE);
 
             i.getAndIncrement();
         });
@@ -62,7 +62,7 @@ public class SkillMenuRenderer {
         PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
 
         if (playerConfig == null || playerConfig.getIsInventoryVisible() ||
-                playerConfig.getIsSkillMenuPickerSlotBeingChanged() == null) {
+            playerConfig.getIsSkillMenuPickerSlotBeingChanged() == null) {
             return;
         }
 
@@ -72,19 +72,19 @@ public class SkillMenuRenderer {
         AtomicInteger i = new AtomicInteger();
 
         player
-                .availableSkills()
-                .forEach((skillType, level) -> renderPickerOption(renderingLayer, x, y, i, skillType.getPrettyName()));
+            .availableSkills()
+            .forEach((skillType, level) -> renderPickerOption(renderingLayer, x, y, i, skillType.getPrettyName()));
     }
 
     public void renderPickerOption(RenderingLayer renderingLayer, float x, float y, AtomicInteger i, String skillName) {
         Rect rect = SkillMenuPositioning.getSkillPickerRect(i.get());
         renderingLayer
-                .getShapeDrawer()
-                .filledRectangle(rect.getX(),
-                        rect.getY(),
-                        rect.getWidth(),
-                        rect.getHeight(),
-                        Color.DARK_GRAY.cpy().sub(0, 0, 0, 0.3f));
+            .getShapeDrawer()
+            .filledRectangle(rect.getX(),
+                rect.getY(),
+                rect.getWidth(),
+                rect.getHeight(),
+                Color.DARK_GRAY.cpy().sub(0, 0, 0, 0.3f));
         if (rect.contains(x, y)) {
             renderingLayer.getShapeDrawer().rectangle(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(), Color.ORANGE);
         }

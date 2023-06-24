@@ -31,10 +31,10 @@ public abstract class Creature implements Entity {
         }
 
         if (!isEffectActive(CreatureEffect.STUN, game) &&
-                getParams().getMovementParams().getIsStillMovingCheckTimer().getTime() > 0.02f) {
+            getParams().getMovementParams().getIsStillMovingCheckTimer().getTime() > 0.02f) {
             //on stopped moving before reaching target (e.g. hit a wall)
             if (getParams().getMovementParams().getIsMoving() &&
-                    getParams().getPos().distance(getParams().getMovementParams().getPreviousPos()) < 0.005f) {
+                getParams().getPos().distance(getParams().getMovementParams().getPreviousPos()) < 0.005f) {
                 stopMoving();
             }
             getParams().getMovementParams().setPreviousPos(getParams().getPos());
@@ -83,11 +83,11 @@ public abstract class Creature implements Entity {
         if (isEffectActive(CreatureEffect.POISON, game)) {
             if (getParams().getEffectParams().getDamageOverTimeTimer().getTime() > 0.666f) {
                 game
-                        .getGameState()
-                        .accessCreatures()
-                        .creatureTakeDamageOverTime(getParams().getEffectParams().getCurrentDamageOverTimeDealerCreatureId(),
-                                getId(),
-                                getParams().getEffectParams().getCurrentDamageOverTimeTaken());
+                    .getGameState()
+                    .accessCreatures()
+                    .creatureTakeDamageOverTime(getParams().getEffectParams().getCurrentDamageOverTimeDealerCreatureId(),
+                        getId(),
+                        getParams().getEffectParams().getCurrentDamageOverTimeTaken());
                 getParams().getEffectParams().getDamageOverTimeTimer().restart();
             }
         }
@@ -95,9 +95,9 @@ public abstract class Creature implements Entity {
 
     private void regenerateStamina() {
         if (getParams().getEffectParams().getStaminaRegenerationTimer().getTime() >
-                getParams().getEffectParams().getStaminaRegenerationTickTime() && isAlive()) {
+            getParams().getEffectParams().getStaminaRegenerationTickTime() && isAlive()) {
             float afterRegeneration =
-                    getParams().getStats().getStamina() + getParams().getEffectParams().getStaminaRegeneration();
+                getParams().getStats().getStamina() + getParams().getEffectParams().getStaminaRegeneration();
             getParams().getStats().setStamina(Math.min(afterRegeneration, getParams().getStats().getMaxStamina()));
             getParams().getEffectParams().getStaminaRegenerationTimer().restart();
 
@@ -207,26 +207,26 @@ public abstract class Creature implements Entity {
         }
 
         game
-                .getEntityManager()
-                .getGameEntityRenderer()
-                .showDamageNumber(actualDamageTaken, getParams().getPos(), getParams().getAreaId(), game);
+            .getEntityManager()
+            .getGameEntityRenderer()
+            .showDamageNumber(actualDamageTaken, getParams().getPos(), getParams().getAreaId(), game);
 
         game
-                .getEntityManager()
-                .getGameEntityRenderer()
-                .startCreatureHitAnimation(getParams().getId(),
-                        getParams().getPos().vectorTowards(contactPoint),
-                        getParams().getAreaId(),
-                        game);
+            .getEntityManager()
+            .getGameEntityRenderer()
+            .startCreatureHitAnimation(getParams().getId(),
+                getParams().getPos().vectorTowards(contactPoint),
+                getParams().getAreaId(),
+                game);
     }
 
     private float totalArmor() {
         return getParams()
-                .getEquipmentItems()
-                .values()
-                .stream()
-                .filter(item -> item.getTemplate().getArmor() != null)
-                .reduce(0, ((acc, item) -> acc + item.getArmor()), Integer::sum);
+            .getEquipmentItems()
+            .values()
+            .stream()
+            .filter(item -> item.getTemplate().getArmor() != null)
+            .reduce(0, ((acc, item) -> acc + item.getArmor()), Integer::sum);
     }
 
     public Map<SkillType, Integer> availableSkills() {
@@ -239,12 +239,12 @@ public abstract class Creature implements Entity {
         if (!ability.isRanged() && ability.isBlockable()) { // check if target is pointing shield at the attack
             // TODO: if don't have shield ability return false
             Ability shieldAbility = game
-                    .getGameState()
-                    .accessAbilities()
-                    .getAbilityBySkillType(getParams().getId(), SkillType.SUMMON_GUARD);
+                .getGameState()
+                .accessAbilities()
+                .getAbilityBySkillType(getParams().getId(), SkillType.SUMMON_GUARD);
             if (shieldAbility != null && shieldAbility.getParams().getState() == AbilityState.ACTIVE) {
                 float angleDiff = (ability.getParams().getDirVector().angleDeg() -
-                        shieldAbility.getParams().getDirVector().multiplyBy(-1).angleDeg() + 180 + 360) % 360 - 180;
+                    shieldAbility.getParams().getDirVector().multiplyBy(-1).angleDeg() + 180 + 360) % 360 - 180;
 
                 //noinspection RedundantIfStatement
                 if (angleDiff <= 60 && angleDiff >= -60) {
@@ -258,10 +258,10 @@ public abstract class Creature implements Entity {
     public void onAbilityPerformed(Ability ability) {
         if (!ability.getParams().getAttackWithoutMoving() && getParams().getMovementParams().getIsMoving()) {
             Vector2 movementVector = getParams()
-                    .getPos()
-                    .vectorTowards(getParams().getMovementParams().getMovementCommandTargetPos())
-                    .normalized()
-                    .multiplyBy(0.15f);
+                .getPos()
+                .vectorTowards(getParams().getMovementParams().getMovementCommandTargetPos())
+                .normalized()
+                .multiplyBy(0.15f);
             // move slightly forward if attacking while moving
             getParams().getMovementParams().setMovementCommandTargetPos(getParams().getPos().add(movementVector));
         }
@@ -270,16 +270,16 @@ public abstract class Creature implements Entity {
     public boolean canPerformSkill(Skill skill, CoreGame game) {
         if (skill.getSkillType().getIsDamaging()) {
             Set<Ability> damagingSKillNotAllowedAbilities = game
-                    .getGameState()
-                    .accessAbilities()
-                    .getAbilities()
-                    .values()
-                    .stream()
-                    .filter(ability -> !ability.isDamagingSkillAllowedDuring() &&
-                            ability.getParams().getCreatureId().equals(this.getParams().getId()) &&
+                .getGameState()
+                .accessAbilities()
+                .getAbilities()
+                .values()
+                .stream()
+                .filter(ability -> !ability.isDamagingSkillAllowedDuring() &&
+                    ability.getParams().getCreatureId().equals(this.getParams().getId()) &&
 
-                            ability.getParams().getState() == AbilityState.ACTIVE)
-                    .collect(Collectors.toSet());
+                    ability.getParams().getState() == AbilityState.ACTIVE)
+                .collect(Collectors.toSet());
 
             if (!damagingSKillNotAllowedAbilities.isEmpty()) {
                 return false;
@@ -287,7 +287,7 @@ public abstract class Creature implements Entity {
         }
 
         return isAlive() && getParams().getStats().getStamina() >= skill.getStaminaCost() &&
-                getParams().getStats().getMana() >= skill.getManaCost();
+            getParams().getStats().getMana() >= skill.getManaCost();
     }
 
     public boolean isAlive() {
@@ -385,7 +385,7 @@ public abstract class Creature implements Entity {
     public boolean isEffectActive(CreatureEffect effect, CoreGame game) {
         CreatureEffectState effectState = getParams().getEffectParams().getEffects().get(effect);
         return game.getGameState().getTime() >= effectState.getStartTime() &&
-                game.getGameState().getTime() < effectState.getStartTime() + effectState.getDuration();
+            game.getGameState().getTime() < effectState.getStartTime() + effectState.getDuration();
     }
 
     public void onBeingHit(Ability ability) {

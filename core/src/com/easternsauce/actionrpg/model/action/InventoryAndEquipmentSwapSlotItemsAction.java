@@ -56,7 +56,7 @@ public class InventoryAndEquipmentSwapSlotItemsAction extends GameStateAction {
 
     private boolean checkInventoryItemSlotTypeMatchesEquipmentSlot(Item inventoryItem) {
         return inventoryItem == null || inventoryItem.getTemplate().getEquipmentSlotType() ==
-                EquipmentSlotType.equipmentSlotSequenceNumbers.get(equipmentIndex);
+            EquipmentSlotType.equipmentSlotSequenceNumbers.get(equipmentIndex);
     }
 
     private void handleSwapInEquipment(Creature player, Item equipmentItem) {
