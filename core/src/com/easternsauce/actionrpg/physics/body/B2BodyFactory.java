@@ -14,10 +14,7 @@ import com.easternsauce.actionrpg.physics.shape.Rectangle;
 import com.easternsauce.actionrpg.physics.world.PhysicsWorld;
 
 public class B2BodyFactory {
-    public static Body createTerrainTileB2body(
-        PhysicsWorld world,
-        TerrainTileBody terrainTileBody
-    ) {
+    public static Body createTerrainTileB2body(PhysicsWorld world, TerrainTileBody terrainTileBody) {
         return createB2Body(
             world,
             Vector2.of(
@@ -83,11 +80,7 @@ public class B2BodyFactory {
         return b2body;
     }
 
-    public static Body createCreatureB2Body(
-        PhysicsWorld world,
-        CreatureBody creatureBody,
-        Creature creature
-    ) {
+    public static Body createCreatureB2Body(PhysicsWorld world, CreatureBody creatureBody, Creature creature) {
         return createB2Body(
             world,
             creature.getParams().getPos(),
@@ -101,12 +94,7 @@ public class B2BodyFactory {
         );
     }
 
-    public static Body createAbilityB2Body(
-        PhysicsWorld world,
-        AbilityBody abilityBody,
-        Vector2 pos,
-        float[] vertices
-    ) {
+    public static Body createAbilityB2Body(PhysicsWorld world, AbilityBody abilityBody, Vector2 pos, float[] vertices) {
         return createB2Body(
             world,
             pos,

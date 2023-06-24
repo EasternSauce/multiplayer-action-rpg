@@ -14,10 +14,7 @@ public class SpreadingPoisonousCloud extends Ability {
 
     int currentCloud = 0;
 
-    public static SpreadingPoisonousCloud of(
-        AbilityParams abilityParams,
-        @SuppressWarnings("unused") CoreGame game
-    ) {
+    public static SpreadingPoisonousCloud of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         SpreadingPoisonousCloud ability = SpreadingPoisonousCloud.of();
         ability.params = abilityParams.setChannelTime(0f).setActiveTime(10f);
 
@@ -35,10 +32,7 @@ public class SpreadingPoisonousCloud extends Ability {
     }
 
     @Override
-    protected void onActiveUpdate(
-        float delta,
-        CoreGame game
-    ) {
+    protected void onActiveUpdate(float delta, CoreGame game) {
         float[] cloudSpreadTimes = {0f, 0.2f, 0.4f, 0.6f, 0.8f, 1.2f, 1.6f, 2.0f, 2.4f, 2.8f};
 
         //noinspection SpellCheckingInspection

@@ -17,10 +17,7 @@ public class CreatureMoveTowardsTargetAction extends GameStateAction {
 
     private Vector2 mousePos;
 
-    public static CreatureMoveTowardsTargetAction of(
-        CreatureId creatureId,
-        Vector2 mousePos
-    ) {
+    public static CreatureMoveTowardsTargetAction of(CreatureId creatureId, Vector2 mousePos) {
         CreatureMoveTowardsTargetAction action = CreatureMoveTowardsTargetAction.of();
         action.creatureId = creatureId;
         action.mousePos = mousePos;

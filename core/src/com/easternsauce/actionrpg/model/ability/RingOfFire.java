@@ -13,10 +13,7 @@ import lombok.NoArgsConstructor;
 public class RingOfFire extends Ability {
     AbilityParams params;
 
-    public static RingOfFire of(
-        AbilityParams abilityParams,
-        @SuppressWarnings("unused") CoreGame game
-    ) {
+    public static RingOfFire of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         RingOfFire ability = RingOfFire.of();
         ability.params = abilityParams
             .setWidth(8f)
@@ -56,10 +53,7 @@ public class RingOfFire extends Ability {
     }
 
     @Override
-    protected void onActiveUpdate(
-        float delta,
-        CoreGame game
-    ) {
+    protected void onActiveUpdate(float delta, CoreGame game) {
         updatePosition(game);
     }
 

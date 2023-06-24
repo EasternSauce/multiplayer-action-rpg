@@ -15,10 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @NoArgsConstructor(staticName = "of")
 @Data
 public class ItemPickupMenuController {
-    public boolean performItemPickupMenuClick(
-        Client client,
-        CoreGame game
-    ) {
+    public boolean performItemPickupMenuClick(Client client, CoreGame game) {
         PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
 
         float x = game.hudMousePos().getX();

@@ -34,10 +34,7 @@ public class GameEntityManager {
     @Getter
     private final GameEntityPhysics gameEntityPhysics = GameEntityPhysics.of();
 
-    public void createCreatureEntity(
-        CreatureId creatureId,
-        CoreGame game
-    ) {
+    public void createCreatureEntity(CreatureId creatureId, CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreatures().get(creatureId);
 
         if (creature != null) {
@@ -62,11 +59,7 @@ public class GameEntityManager {
         }
     }
 
-    public void createAbilityEntity(
-        AbilityId abilityId,
-        TextureAtlas atlas,
-        CoreGame game
-    ) {
+    public void createAbilityEntity(AbilityId abilityId, TextureAtlas atlas, CoreGame game) {
         Ability ability = game.getGameState().accessAbilities().getAbilities().get(abilityId);
 
         if (ability != null && ability.usesEntityModel()) {
@@ -98,10 +91,7 @@ public class GameEntityManager {
 
     }
 
-    public void activateAbility(
-        AbilityId abilityId,
-        CoreGame game
-    ) {
+    public void activateAbility(AbilityId abilityId, CoreGame game) {
         Ability ability = game.getGameState().accessAbilities().getAbilities().get(abilityId);
 
         if (ability != null &&
@@ -114,11 +104,7 @@ public class GameEntityManager {
         }
     }
 
-    public void createLootPileEntity(
-        LootPileId lootPileId,
-        TextureAtlas atlas,
-        CoreGame game
-    ) {
+    public void createLootPileEntity(LootPileId lootPileId, TextureAtlas atlas, CoreGame game) {
         LootPile lootPile = game.getGameState().getLootPile(lootPileId);
 
         if (lootPile != null) {
@@ -144,10 +130,7 @@ public class GameEntityManager {
         }
     }
 
-    public void removeCreatureEntity(
-        CreatureId creatureId,
-        CoreGame game
-    ) {
+    public void removeCreatureEntity(CreatureId creatureId, CoreGame game) {
         if (creatureId != null) {
             game.getGameState().accessCreatures().getCreatures().remove(creatureId);
 
@@ -160,10 +143,7 @@ public class GameEntityManager {
         }
     }
 
-    public void removeAbilityEntity(
-        AbilityId abilityId,
-        CoreGame game
-    ) {
+    public void removeAbilityEntity(AbilityId abilityId, CoreGame game) {
         if (abilityId != null) {
             game.getGameState().accessAbilities().getAbilities().remove(abilityId);
 
@@ -176,10 +156,7 @@ public class GameEntityManager {
         }
     }
 
-    public void removeLootPileEntity(
-        LootPileId lootPileId,
-        CoreGame game
-    ) {
+    public void removeLootPileEntity(LootPileId lootPileId, CoreGame game) {
         if (lootPileId != null) {
 
             game.getGameState().getLootPiles().remove(lootPileId);
@@ -193,12 +170,7 @@ public class GameEntityManager {
         }
     }
 
-    public void spawnEnemy(
-        CreatureId creatureId,
-        AreaId areaId,
-        EnemySpawn enemySpawn,
-        CoreGame game
-    ) {
+    public void spawnEnemy(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn, CoreGame game) {
         Enemy enemy = Enemy.of(
             creatureId,
             areaId,
@@ -213,10 +185,7 @@ public class GameEntityManager {
         game.getEventProcessor().getCreatureModelsToBeCreated().add(creatureId);
     }
 
-    public void updateCreatures(
-        float delta,
-        CoreGame game
-    ) {
+    public void updateCreatures(float delta, CoreGame game) {
         Set<CreatureId> creaturesToUpdate = game.getGameState().getCreaturesToUpdate();
 
         creaturesToUpdate.forEach(creatureId -> {
@@ -265,10 +234,7 @@ public class GameEntityManager {
 
     }
 
-    public void updateAbilities(
-        float delta,
-        CoreGame game
-    ) {
+    public void updateAbilities(float delta, CoreGame game) {
         Set<AbilityId> abilitiesToUpdate = game.getAbilitiesToUpdate();
 
         abilitiesToUpdate.forEach(abilityId -> {
@@ -307,10 +273,7 @@ public class GameEntityManager {
 
     }
 
-    public void teleportCreature(
-        TeleportEvent teleportEvent,
-        CoreGame game
-    ) {
+    public void teleportCreature(TeleportEvent teleportEvent, CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(teleportEvent.getCreatureId());
 
         creature.getParams().getMovementParams().setIsDashing(false);
@@ -362,11 +325,7 @@ public class GameEntityManager {
         }
     }
 
-    public void createAreaGateEntity(
-        AreaGateId areaGateId,
-        TextureAtlas atlas,
-        CoreGame game
-    ) {
+    public void createAreaGateEntity(AreaGateId areaGateId, TextureAtlas atlas, CoreGame game) {
         AreaGate areaGate = game.getGameState().getAreaGate(areaGateId);
 
         if (areaGate != null) {
@@ -392,10 +351,7 @@ public class GameEntityManager {
         }
     }
 
-    public void removeAreaGateEntity(
-        AreaGateId areaGateId,
-        CoreGame game
-    ) {
+    public void removeAreaGateEntity(AreaGateId areaGateId, CoreGame game) {
         if (areaGateId != null) {
 
             game.getGameState().getAreaGates().remove(areaGateId);

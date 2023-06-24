@@ -66,11 +66,7 @@ public class GameplayRendererHelper {
         game.renderB2BodyDebug();
     }
 
-    private static void renderAreaLayers(
-        GameEntityRenderer renderer,
-        List<Integer> layers,
-        CoreGame game
-    ) {
+    private static void renderAreaLayers(GameEntityRenderer renderer, List<Integer> layers, CoreGame game) {
         int[] layersArray = layers.stream().mapToInt(Integer::intValue).toArray();
         if (renderer.getAreaRenderers().containsKey(game.getGameState().getCurrentAreaId())) {
             renderer.getAreaRenderers().get(game.getGameState().getCurrentAreaId()).render(layersArray);

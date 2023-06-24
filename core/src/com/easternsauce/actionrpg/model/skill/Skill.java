@@ -26,10 +26,7 @@ public class Skill {
     Float staminaCost;
     Float manaCost;
 
-    public static Skill of(
-        SkillType skillType,
-        CreatureId creatureId
-    ) {
+    public static Skill of(SkillType skillType, CreatureId creatureId) {
         Skill skill = Skill.of();
         skill.setSkillType(skillType);
         skill.setCreatureId(creatureId);
@@ -41,11 +38,7 @@ public class Skill {
         return skill;
     }
 
-    public void tryPerform(
-        Vector2 startingPos,
-        Vector2 dirVector,
-        CoreGame game
-    ) {
+    public void tryPerform(Vector2 startingPos, Vector2 dirVector, CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
         if (creature != null &&

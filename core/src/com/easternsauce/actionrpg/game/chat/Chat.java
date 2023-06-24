@@ -25,11 +25,7 @@ public class Chat {
     Float holdBackspaceTime;
     Boolean isHoldingBackspace = false;
 
-    public void sendMessage(
-        String posterId,
-        String message,
-        CoreGame game
-    ) {
+    public void sendMessage(String posterId, String message, CoreGame game) {
         if (getMessages().size() < 6) {
             getMessages().add(ChatMessage.of(
                 game.getGameState().getTime(),

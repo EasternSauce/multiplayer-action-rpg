@@ -15,10 +15,7 @@ public class CreatureModelAnimation {
     private List<TextureRegion> facingTextures;
     private List<Animation<TextureRegion>> runningAnimations;
 
-    public void prepareFacingTextures(
-        CreatureAnimationConfig animationConfig,
-        TextureAtlas atlas
-    ) {
+    public void prepareFacingTextures(CreatureAnimationConfig animationConfig, TextureAtlas atlas) {
         TextureRegion runningAnimationTextureRegion = atlas.findRegion(animationConfig.getTextureName());
 
         facingTextures = CreatureSpriteHelper.createFacingTextures(
@@ -27,10 +24,7 @@ public class CreatureModelAnimation {
         );
     }
 
-    public void prepareRunningAnimations(
-        CreatureAnimationConfig animationConfig,
-        TextureAtlas atlas
-    ) {
+    public void prepareRunningAnimations(CreatureAnimationConfig animationConfig, TextureAtlas atlas) {
         TextureRegion runningAnimationTextureRegion = atlas.findRegion(animationConfig.getTextureName());
 
         runningAnimations = CreatureSpriteHelper.createRunningAnimations(
@@ -39,10 +33,7 @@ public class CreatureModelAnimation {
         );
     }
 
-    public TextureRegion getFacingTexture(
-        String textureName,
-        WorldDirection direction
-    ) {
+    public TextureRegion getFacingTexture(String textureName, WorldDirection direction) {
         CreatureAnimationConfig animationConfig = CreatureAnimationConfig.configs.get(textureName);
         return facingTextures.get(animationConfig.getDirMap().get(direction));
     }

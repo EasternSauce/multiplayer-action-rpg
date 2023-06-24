@@ -17,10 +17,7 @@ import java.util.Set;
 public class SwordSpin extends DirectionalAttachedAbility {
     AbilityParams params;
 
-    public static SwordSpin of(
-        AbilityParams abilityParams,
-        @SuppressWarnings("unused") CoreGame game
-    ) {
+    public static SwordSpin of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         SwordSpin ability = SwordSpin.of();
         ability.params = abilityParams
             .setWidth(2.8f)
@@ -52,10 +49,7 @@ public class SwordSpin extends DirectionalAttachedAbility {
     }
 
     @Override
-    protected void onActiveUpdate(
-        float delta,
-        CoreGame game
-    ) {
+    protected void onActiveUpdate(float delta, CoreGame game) {
         updateDirectionalAttachedAbilityPosition(game);
 
         getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(-10));

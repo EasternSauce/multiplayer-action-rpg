@@ -25,12 +25,7 @@ public class CreatureStunnedAnimationRenderer {
         true
     ));
 
-    public void render(
-        CreatureId creatureId,
-        float spriteWidth,
-        RenderingLayer renderingLayer,
-        CoreGame game
-    ) {
+    public void render(CreatureId creatureId, float spriteWidth, RenderingLayer renderingLayer, CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
         if (creature != null && creature.isEffectActive(

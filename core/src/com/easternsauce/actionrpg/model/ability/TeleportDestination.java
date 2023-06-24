@@ -16,10 +16,7 @@ import lombok.NoArgsConstructor;
 public class TeleportDestination extends Ability {
     AbilityParams params;
 
-    public static TeleportDestination of(
-        AbilityParams abilityParams,
-        @SuppressWarnings("unused") CoreGame game
-    ) {
+    public static TeleportDestination of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(abilityParams.getCreatureId());
 
         Vector2 teleportPos = TeleportDestination.calculatePos(
@@ -45,12 +42,7 @@ public class TeleportDestination extends Ability {
         return ability;
     }
 
-    private static Vector2 calculatePos(
-        Vector2 pos,
-        Vector2 creaturePos,
-        AreaId areaId,
-        CoreGame game
-    ) {
+    private static Vector2 calculatePos(Vector2 pos, Vector2 creaturePos, AreaId areaId, CoreGame game) {
         Vector2 vectorTowards = creaturePos.vectorTowards(pos);
 
         float maxRange = 17f;
@@ -100,10 +92,7 @@ public class TeleportDestination extends Ability {
     }
 
     @Override
-    protected void onActiveUpdate(
-        float delta,
-        CoreGame game
-    ) {
+    protected void onActiveUpdate(float delta, CoreGame game) {
 
     }
 

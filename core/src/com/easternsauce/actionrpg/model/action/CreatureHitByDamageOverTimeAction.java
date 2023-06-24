@@ -16,11 +16,7 @@ public class CreatureHitByDamageOverTimeAction extends CreatureHitAction {
     private CreatureId targetId;
     private Float damage;
 
-    public static CreatureHitByDamageOverTimeAction of(
-        CreatureId attackerId,
-        CreatureId targetId,
-        Float damage
-    ) {
+    public static CreatureHitByDamageOverTimeAction of(CreatureId attackerId, CreatureId targetId, Float damage) {
         CreatureHitByDamageOverTimeAction action = CreatureHitByDamageOverTimeAction.of();
         action.attackerId = attackerId;
         action.targetId = targetId;

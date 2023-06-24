@@ -19,10 +19,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.stream.Collectors;
 
 public abstract class Creature implements Entity {
-    public void update(
-        float delta,
-        CoreGame game
-    ) {
+    public void update(float delta, CoreGame game) {
         if (isAlive()) {
             regenerateStamina();
             processRegenerationOverTime(game);
@@ -227,11 +224,7 @@ public abstract class Creature implements Entity {
         getParams().getMovementParams().setReachedTargetPos(false);
     }
 
-    public void takeLifeDamage(
-        float damage,
-        Vector2 contactPoint,
-        CoreGame game
-    ) {
+    public void takeLifeDamage(float damage, Vector2 contactPoint, CoreGame game) {
         getParams().getStats().setPreviousTickLife(getParams().getStats().getLife());
 
         float actualDamageTaken = damage * 100f / (100f + totalArmor());
@@ -276,10 +269,7 @@ public abstract class Creature implements Entity {
         return skills;
     }
 
-    public boolean isAbilityShielded(
-        Ability ability,
-        CoreGame game
-    ) {
+    public boolean isAbilityShielded(Ability ability, CoreGame game) {
         if (!ability.isRanged() && ability.isBlockable()) { // check if target is pointing shield at the attack
             // TODO: if don't have shield ability return false
             Ability shieldAbility = game.getGameState().accessAbilities().getAbilityBySkillType(
@@ -309,10 +299,7 @@ public abstract class Creature implements Entity {
         }
     }
 
-    public boolean canPerformSkill(
-        Skill skill,
-        CoreGame game
-    ) {
+    public boolean canPerformSkill(Skill skill, CoreGame game) {
         if (skill.getSkillType().getIsDamaging()) {
             Set<Ability> damagingSKillNotAllowedAbilities = game
                 .getGameState()
@@ -383,19 +370,12 @@ public abstract class Creature implements Entity {
         return rngValue;
     }
 
-    public float getTimeSinceStarted(
-        CreatureEffect effect,
-        CoreGame game
-    ) {
+    public float getTimeSinceStarted(CreatureEffect effect, CoreGame game) {
         CreatureEffectState effectState = getParams().getEffectParams().getEffects().get(effect);
         return game.getGameState().getTime() - effectState.getStartTime();
     }
 
-    public void applyEffect(
-        CreatureEffect effect,
-        float duration,
-        CoreGame game
-    ) {
+    public void applyEffect(CreatureEffect effect, float duration, CoreGame game) {
         CreatureEffectState effectState = getParams().getEffectParams().getEffects().get(effect);
         effectState.setStartTime(game.getGameState().getTime());
         effectState.setDuration(duration);
@@ -441,10 +421,7 @@ public abstract class Creature implements Entity {
         );
     }
 
-    public boolean isEffectActive(
-        CreatureEffect effect,
-        CoreGame game
-    ) {
+    public boolean isEffectActive(CreatureEffect effect, CoreGame game) {
         CreatureEffectState effectState = getParams().getEffectParams().getEffects().get(effect);
         return game.getGameState().getTime() >= effectState.getStartTime() &&
             game.getGameState().getTime() < effectState.getStartTime() + effectState.getDuration();

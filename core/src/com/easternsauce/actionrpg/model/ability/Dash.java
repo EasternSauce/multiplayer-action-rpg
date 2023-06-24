@@ -12,10 +12,7 @@ import lombok.NoArgsConstructor;
 public class Dash extends DirectionalAttachedAbility {
     AbilityParams params;
 
-    public static Dash of(
-        AbilityParams abilityParams,
-        @SuppressWarnings("unused") CoreGame game
-    ) {
+    public static Dash of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(abilityParams.getCreatureId());
 
         float flipValue = abilityParams.getDirVector().angleDeg();
@@ -68,10 +65,7 @@ public class Dash extends DirectionalAttachedAbility {
     }
 
     @Override
-    protected void onActiveUpdate(
-        float delta,
-        CoreGame game
-    ) {
+    protected void onActiveUpdate(float delta, CoreGame game) {
         updateDirectionalAttachedAbilityPosition(game);
     }
 

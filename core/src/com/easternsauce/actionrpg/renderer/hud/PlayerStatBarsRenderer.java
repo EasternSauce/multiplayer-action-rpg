@@ -11,10 +11,7 @@ import space.earlygrey.shapedrawer.ShapeDrawer;
 @NoArgsConstructor(staticName = "of")
 @Data
 public class PlayerStatBarsRenderer {
-    public void render(
-        Creature creature,
-        RenderingLayer renderingLayer
-    ) {
+    public void render(Creature creature, RenderingLayer renderingLayer) {
         ShapeDrawer shapeDrawer = renderingLayer.getShapeDrawer();
 
         if (creature != null) {

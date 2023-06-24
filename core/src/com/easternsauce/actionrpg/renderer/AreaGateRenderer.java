@@ -25,10 +25,7 @@ public class AreaGateRenderer {
 
     }
 
-    public void init(
-        TextureAtlas atlas,
-        CoreGame game
-    ) {
+    public void init(TextureAtlas atlas, CoreGame game) {
         sprite = new Sprite();
         sprite.setRegion(atlas.findRegion("downarrow"));
 
@@ -45,10 +42,7 @@ public class AreaGateRenderer {
 
     }
 
-    public void render(
-        RenderingLayer renderingLayer,
-        CoreGame game
-    ) {
+    public void render(RenderingLayer renderingLayer, CoreGame game) {
         AreaId currentAreaId = game.getGameState().getCurrentAreaId();
 
         AreaGate areaGate = game.getGameState().getAreaGate(areaGateId);

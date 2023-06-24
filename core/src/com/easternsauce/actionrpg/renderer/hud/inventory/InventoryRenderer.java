@@ -38,10 +38,7 @@ public class InventoryRenderer {
 
     }
 
-    public void render(
-        RenderingLayer renderingLayer,
-        CoreGame game
-    ) {
+    public void render(RenderingLayer renderingLayer, CoreGame game) {
         PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
 
         if (playerConfig == null) {
@@ -109,10 +106,7 @@ public class InventoryRenderer {
 
     }
 
-    public void renderItems(
-        RenderingLayer renderingLayer,
-        CoreGame game
-    ) {
+    public void renderItems(RenderingLayer renderingLayer, CoreGame game) {
         Creature player = game.getGameState().accessCreatures().getCreature(game
             .getGameState()
             .getThisClientPlayerId());
@@ -242,10 +236,7 @@ public class InventoryRenderer {
 
     }
 
-    public void renderDescription(
-        RenderingLayer renderingLayer,
-        CoreGame game
-    ) {
+    public void renderDescription(RenderingLayer renderingLayer, CoreGame game) {
         Creature player = game.getGameState().accessCreatures().getCreature(game
             .getGameState()
             .getThisClientPlayerId());

@@ -13,10 +13,7 @@ import lombok.NoArgsConstructor;
 public class RicochetBullet extends Projectile {
     AbilityParams params;
 
-    public static RicochetBullet of(
-        AbilityParams abilityParams,
-        @SuppressWarnings("unused") CoreGame game
-    ) {
+    public static RicochetBullet of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         RicochetBullet ability = RicochetBullet.of();
         ability.params = abilityParams
             .setWidth(0.8f)
@@ -44,27 +41,18 @@ public class RicochetBullet extends Projectile {
     }
 
     @Override
-    protected void onActiveUpdate(
-        float delta,
-        CoreGame game
-    ) {
+    protected void onActiveUpdate(float delta, CoreGame game) {
         onProjectileTravelUpdate();
     }
 
 
     @Override
-    public void onCreatureHit(
-        CreatureId creatureId,
-        CoreGame game
-    ) {
+    public void onCreatureHit(CreatureId creatureId, CoreGame game) {
         params.setDamageMultiplier(params.getDamageMultiplier() * 3 / 5f);
     }
 
     @Override
-    public void onTerrainHit(
-        Vector2 abilityPos,
-        Vector2 tilePos
-    ) {
+    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
 
         if (getParams().getDirVector().normalized().dot(abilityPos.vectorTowards(tilePos).normalized()) <
             0.6f) { // check if it is facing the tile

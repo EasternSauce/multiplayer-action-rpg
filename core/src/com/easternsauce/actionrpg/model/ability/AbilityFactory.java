@@ -6,11 +6,7 @@ import java.util.function.BiFunction;
 
 public class AbilityFactory {
 
-    public static Ability produceAbility(
-        AbilityType abilityType,
-        AbilityParams abilityParams,
-        CoreGame game
-    ) {
+    public static Ability produceAbility(AbilityType abilityType, AbilityParams abilityParams, CoreGame game) {
 
         return getAbilityByType(abilityType).apply(
             abilityParams,

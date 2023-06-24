@@ -19,10 +19,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 public class LightningNode extends Ability {
     AbilityParams params;
 
-    public static LightningNode of(
-        AbilityParams abilityParams,
-        @SuppressWarnings("unused") CoreGame game
-    ) {
+    public static LightningNode of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         LightningNode ability = LightningNode.of();
         ability.params = abilityParams
             .setWidth(3f)
@@ -50,10 +47,7 @@ public class LightningNode extends Ability {
     }
 
     @Override
-    protected void onActiveUpdate(
-        float delta,
-        CoreGame game
-    ) {
+    protected void onActiveUpdate(float delta, CoreGame game) {
 
     }
 

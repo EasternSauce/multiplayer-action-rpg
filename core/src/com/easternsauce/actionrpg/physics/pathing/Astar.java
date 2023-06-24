@@ -281,17 +281,11 @@ public class Astar {
         return astarState;
     }
 
-    public static Double calculateHeuristic(
-        Vector2Int startPos,
-        Vector2Int finishPos
-    ) {
+    public static Double calculateHeuristic(Vector2Int startPos, Vector2Int finishPos) {
         return (Math.abs(finishPos.getX() - startPos.getX()) + Math.abs(finishPos.getY() - startPos.getY())) * 10.0;
     }
 
-    public static List<Vector2Int> reconstructPath(
-        AstarNode lastNode,
-        AstarState result
-    ) {
+    public static List<Vector2Int> reconstructPath(AstarNode lastNode, AstarState result) {
         if (lastNode.getParent() != null) {
             List<Vector2Int> list = new LinkedList<>(reconstructPath(
                 result.getAstarGraph().get(lastNode.getParent()),
@@ -394,12 +388,7 @@ public class Astar {
 
     }
 
-    public static AstarResult findPath(
-        PhysicsWorld world,
-        Vector2 startPos,
-        Vector2 finishPos,
-        Integer capability
-    ) {
+    public static AstarResult findPath(PhysicsWorld world, Vector2 startPos, Vector2 finishPos, Integer capability) {
         Vector2Int startTilePos = world.getClosestTile(startPos);
         Vector2Int finishTilePos = world.getClosestTile(finishPos);
 

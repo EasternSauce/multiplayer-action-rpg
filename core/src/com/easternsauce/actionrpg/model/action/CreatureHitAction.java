@@ -19,11 +19,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 public abstract class CreatureHitAction extends GameStateAction {
-    protected void handleCreatureDeath(
-        Creature targetCreature,
-        Creature attackerCreature,
-        CoreGame game
-    ) {
+    protected void handleCreatureDeath(Creature targetCreature, Creature attackerCreature, CoreGame game) {
         if (targetCreature.getParams().getStats().getPreviousTickLife() > 0f &&
             targetCreature.getParams().getStats().getLife() <= 0f) {
             onCreatureDeath(
@@ -34,11 +30,7 @@ public abstract class CreatureHitAction extends GameStateAction {
         }
     }
 
-    private void onCreatureDeath(
-        Creature targetCreature,
-        Creature attackerCreature,
-        CoreGame game
-    ) {
+    private void onCreatureDeath(Creature targetCreature, Creature attackerCreature, CoreGame game) {
         targetCreature.getParams().getStats().setLife(0f); // just to make sure its dead on client side
         targetCreature.getParams().setIsDead(true);
         targetCreature.getParams().getRespawnTimer().restart();
@@ -56,10 +48,7 @@ public abstract class CreatureHitAction extends GameStateAction {
         );
     }
 
-    private void spawnDrops(
-        CreatureId targetId,
-        CoreGame game
-    ) {
+    private void spawnDrops(CreatureId targetId, CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(targetId);
 
         Set<Item> items = new ConcurrentSkipListSet<>();
@@ -154,10 +143,7 @@ public abstract class CreatureHitAction extends GameStateAction {
         game.getEventProcessor().getLootPileModelsToBeCreated().add(lootPile.getParams().getId());
     }
 
-    private void deactivateCreatureAbilities(
-        Creature targetCreature,
-        CoreGame game
-    ) {
+    private void deactivateCreatureAbilities(Creature targetCreature, CoreGame game) {
         Set<Ability> creatureActiveAbilities = game
             .getGameState()
             .accessAbilities()

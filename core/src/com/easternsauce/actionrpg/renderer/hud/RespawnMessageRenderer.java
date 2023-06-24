@@ -14,10 +14,7 @@ import java.util.Locale;
 @NoArgsConstructor(staticName = "of")
 @Data
 public class RespawnMessageRenderer {
-    public void render(
-        Creature creature,
-        RenderingLayer renderingLayer
-    ) {
+    public void render(Creature creature, RenderingLayer renderingLayer) {
         if (creature != null && !creature.isAlive()) {
             if (creature.getParams().getRespawnTimer().getTime() < creature.getParams().getRespawnTime()) {
                 float timeRemainingBeforeRespawn = creature.getParams().getRespawnTime() -

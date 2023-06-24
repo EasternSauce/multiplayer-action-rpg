@@ -317,10 +317,7 @@ public class PhysicsWorld {
 
     }
 
-    private Boolean tileExists(
-        Integer x,
-        Integer y
-    ) {
+    private Boolean tileExists(Integer x, Integer y) {
         return x >= 0 && x < widthInTiles() && y >= 0 && y < heightInTiles();
     }
 
@@ -469,10 +466,7 @@ public class PhysicsWorld {
 
     }
 
-    public void tryAddClearance(
-        Vector2Int pos,
-        Integer level
-    ) {
+    public void tryAddClearance(Vector2Int pos, Integer level) {
         if (!clearances.containsKey(pos) &&
             pos.getX() >= 0 &&
             pos.getY() >= 0 &&
@@ -497,10 +491,7 @@ public class PhysicsWorld {
         );
     }
 
-    public Boolean isLineBetweenPointsUnobstructedByTerrain(
-        Vector2 fromPos,
-        Vector2 toPos
-    ) {
+    public Boolean isLineBetweenPointsUnobstructedByTerrain(Vector2 fromPos, Vector2 toPos) {
         float lineWidth = 0.3f;
         com.badlogic.gdx.math.Polygon lineOfSightRect = new com.badlogic.gdx.math.Polygon(new float[]{fromPos.getX(), fromPos.getY(),
             fromPos.getX() +

@@ -33,10 +33,7 @@ public class AbilityRenderer {
         return abilityRenderer;
     }
 
-    public void init(
-        TextureAtlas atlas,
-        CoreGame game
-    ) {
+    public void init(TextureAtlas atlas, CoreGame game) {
         sprite = new Sprite();
 
         Ability ability = game.getGameState().accessAbilities().getAbilities().get(abilityId);
@@ -126,10 +123,7 @@ public class AbilityRenderer {
 
     }
 
-    private void updateSprite(
-        TextureRegion texture,
-        CoreGame game
-    ) {
+    private void updateSprite(TextureRegion texture, CoreGame game) {
 
         Ability ability = game.getGameState().accessAbilities().getAbilities().get(abilityId);
         if (ability == null) {
@@ -161,10 +155,7 @@ public class AbilityRenderer {
 
     }
 
-    public void render(
-        RenderingLayer renderingLayer,
-        CoreGame game
-    ) {
+    public void render(RenderingLayer renderingLayer, CoreGame game) {
         Ability ability = game.getGameState().accessAbilities().getAbility(abilityId);
 
         if (ability != null) {

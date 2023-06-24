@@ -101,11 +101,7 @@ public abstract class CoreGame extends Game {
 
     abstract public void performPhysicsWorldStep();
 
-    public boolean isLineBetweenPointsUnobstructedByTerrain(
-        AreaId areaId,
-        Vector2 fromPos,
-        Vector2 toPos
-    ) {
+    public boolean isLineBetweenPointsUnobstructedByTerrain(AreaId areaId, Vector2 fromPos, Vector2 toPos) {
         return entityManager
             .getGameEntityPhysics()
             .getPhysicsWorlds()

@@ -186,10 +186,7 @@ public class CoreGameClient extends CoreGame {
         getEndPoint().sendTCP(ActionPerformCommand.of(InventoryWindowToggleAction.of(getGameState().getThisClientPlayerId())));
     }
 
-    private void handlePerformAbilityInput(
-        PlayerConfig playerConfig,
-        int abilitySequenceNumber
-    ) {
+    private void handlePerformAbilityInput(PlayerConfig playerConfig, int abilitySequenceNumber) {
         Creature player = gameState.accessCreatures().getCreatures().get(getGameState().getThisClientPlayerId());
 
         Vector2 dirVector = mousePosRelativeToCenter();
@@ -398,10 +395,7 @@ public class CoreGameClient extends CoreGame {
             }
 
             @Override
-            public void received(
-                Connection connection,
-                Object object
-            ) {
+            public void received(Connection connection, Object object) {
                 if (object instanceof ActionsHolder) {
                     ActionsHolder actionsHolder = (ActionsHolder) object;
 

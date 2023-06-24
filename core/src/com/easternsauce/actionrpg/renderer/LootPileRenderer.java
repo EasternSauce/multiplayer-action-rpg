@@ -22,10 +22,7 @@ public class LootPileRenderer {
         return lootPileRenderer;
     }
 
-    public void init(
-        TextureAtlas atlas,
-        CoreGame game
-    ) {
+    public void init(TextureAtlas atlas, CoreGame game) {
 
         LootPile lootPile = game.getGameState().getLootPiles().get(lootPileId);
 
@@ -42,10 +39,7 @@ public class LootPileRenderer {
 
     }
 
-    public void render(
-        RenderingLayer renderingLayer,
-        CoreGame game
-    ) {
+    public void render(RenderingLayer renderingLayer, CoreGame game) {
         AreaId currentAreaId = game.getGameState().getCurrentAreaId();
         LootPile lootPile = game.getGameState().getLootPile(lootPileId);
 

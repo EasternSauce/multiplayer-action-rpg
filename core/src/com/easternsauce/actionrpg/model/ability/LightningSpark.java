@@ -20,10 +20,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 public class LightningSpark extends Ability {
     AbilityParams params;
 
-    public static LightningSpark of(
-        AbilityParams abilityParams,
-        CoreGame game
-    ) {
+    public static LightningSpark of(AbilityParams abilityParams, CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(abilityParams.getCreatureId());
 
         LightningSpark ability = LightningSpark.of();
@@ -46,10 +43,7 @@ public class LightningSpark extends Ability {
         return ability;
     }
 
-    private static Vector2 calculatePos(
-        Vector2 pos,
-        Vector2 creaturePos
-    ) {
+    private static Vector2 calculatePos(Vector2 pos, Vector2 creaturePos) {
         Vector2 vectorTowards = creaturePos.vectorTowards(pos);
 
         float maxRange = 5f;
@@ -70,10 +64,7 @@ public class LightningSpark extends Ability {
     }
 
     @Override
-    protected void onActiveUpdate(
-        float delta,
-        CoreGame game
-    ) {
+    protected void onActiveUpdate(float delta, CoreGame game) {
 
     }
 

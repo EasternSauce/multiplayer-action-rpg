@@ -19,10 +19,7 @@ public class InventoryItemUseAction extends GameStateAction {
 
     private Integer slotIndex;
 
-    public static InventoryItemUseAction of(
-        CreatureId creatureId,
-        Integer slotIndex
-    ) {
+    public static InventoryItemUseAction of(CreatureId creatureId, Integer slotIndex) {
         InventoryItemUseAction action = InventoryItemUseAction.of();
         action.playerId = creatureId;
         action.slotIndex = slotIndex;
@@ -58,11 +55,7 @@ public class InventoryItemUseAction extends GameStateAction {
         return game.getGameState().accessCreatures().getCreature(playerId);
     }
 
-    private void processUseItem(
-        Creature creature,
-        Item item,
-        CoreGame game
-    ) {
+    private void processUseItem(Creature creature, Item item, CoreGame game) {
         if (item.getTemplate().getId().equals("lifePotion")) {
             creature.applyEffect(
                 CreatureEffect.LIFE_REGENERATION,

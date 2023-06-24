@@ -18,10 +18,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Data
 public class SkillMenuController {
     @SuppressWarnings("UnusedReturnValue")
-    public boolean performSkillMenuPickerClick(
-        Client client,
-        CoreGame game
-    ) {
+    public boolean performSkillMenuPickerClick(Client client, CoreGame game) {
         float x = game.hudMousePos().getX();
         float y = game.hudMousePos().getY();
 
@@ -59,10 +56,7 @@ public class SkillMenuController {
         return isSuccessful.get();
     }
 
-    public boolean performSkillMenuClick(
-        Client client,
-        CoreGame game
-    ) {
+    public boolean performSkillMenuClick(Client client, CoreGame game) {
         float x = game.hudMousePos().getX();
         float y = game.hudMousePos().getY();
 

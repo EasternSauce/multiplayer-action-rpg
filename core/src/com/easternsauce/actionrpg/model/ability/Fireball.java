@@ -18,10 +18,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 public class Fireball extends Projectile {
     AbilityParams params;
 
-    public static Fireball of(
-        AbilityParams abilityParams,
-        @SuppressWarnings("unused") CoreGame game
-    ) {
+    public static Fireball of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(abilityParams.getCreatureId());
 
         Fireball ability = Fireball.of();
@@ -51,10 +48,7 @@ public class Fireball extends Projectile {
     }
 
     @Override
-    protected void onActiveUpdate(
-        float delta,
-        CoreGame game
-    ) {
+    protected void onActiveUpdate(float delta, CoreGame game) {
         //projectile speeds up over time
         onProjectileTravelUpdate();
 
@@ -80,18 +74,12 @@ public class Fireball extends Projectile {
 
 
     @Override
-    public void onCreatureHit(
-        CreatureId creatureId,
-        CoreGame game
-    ) {
+    public void onCreatureHit(CreatureId creatureId, CoreGame game) {
         deactivate();
     }
 
     @Override
-    public void onTerrainHit(
-        Vector2 abilityPos,
-        Vector2 tilePos
-    ) {
+    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
         deactivate();
     }
 

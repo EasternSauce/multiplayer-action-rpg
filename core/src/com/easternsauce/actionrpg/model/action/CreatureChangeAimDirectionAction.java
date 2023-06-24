@@ -17,10 +17,7 @@ public class CreatureChangeAimDirectionAction extends GameStateAction {
 
     private Vector2 mousePos;
 
-    public static CreatureChangeAimDirectionAction of(
-        CreatureId creatureId,
-        Vector2 mousePos
-    ) {
+    public static CreatureChangeAimDirectionAction of(CreatureId creatureId, Vector2 mousePos) {
         CreatureChangeAimDirectionAction action = CreatureChangeAimDirectionAction.of();
         action.creatureId = creatureId;
         action.mousePos = mousePos;

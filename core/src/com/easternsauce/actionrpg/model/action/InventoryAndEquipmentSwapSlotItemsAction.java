@@ -72,10 +72,7 @@ public class InventoryAndEquipmentSwapSlotItemsAction extends GameStateAction {
                 EquipmentSlotType.equipmentSlotSequenceNumbers.get(equipmentIndex);
     }
 
-    private void handleSwapInEquipment(
-        Creature player,
-        Item equipmentItem
-    ) {
+    private void handleSwapInEquipment(Creature player, Item equipmentItem) {
         if (equipmentItem != null) {
             player.getParams().getInventoryItems().put(
                 inventoryIndex,
@@ -86,10 +83,7 @@ public class InventoryAndEquipmentSwapSlotItemsAction extends GameStateAction {
         }
     }
 
-    private void handleSwapInInventory(
-        Creature player,
-        Item inventoryItem
-    ) {
+    private void handleSwapInInventory(Creature player, Item inventoryItem) {
         if (inventoryItem != null) {
             player.getParams().getEquipmentItems().put(
                 equipmentIndex,
@@ -100,10 +94,7 @@ public class InventoryAndEquipmentSwapSlotItemsAction extends GameStateAction {
         }
     }
 
-    private void finalizeItemSwap(
-        Creature player,
-        PlayerConfig playerConfig
-    ) {
+    private void finalizeItemSwap(Creature player, PlayerConfig playerConfig) {
         playerConfig.setInventoryItemBeingMoved(null);
         playerConfig.setEquipmentItemBeingMoved(null);
 
@@ -116,10 +107,7 @@ public class InventoryAndEquipmentSwapSlotItemsAction extends GameStateAction {
     }
 
     @SuppressWarnings("SpellCheckingInspection")
-    private void removeSkillFromSkillMenuOnItemUnequip(
-        Creature player,
-        PlayerConfig playerConfig
-    ) {
+    private void removeSkillFromSkillMenuOnItemUnequip(Creature player, PlayerConfig playerConfig) {
         Set<Integer> slotsToRemove = new ConcurrentSkipListSet<>();
         playerConfig.getSkillMenuSlots().forEach((slotIndex, skillType) -> {
             if (!player.availableSkills().containsKey(skillType)) {

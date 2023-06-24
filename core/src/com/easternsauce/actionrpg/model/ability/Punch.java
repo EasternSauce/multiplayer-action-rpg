@@ -10,10 +10,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class Punch extends DirectionalAttachedAbility {
 
-    public static Punch of(
-        AbilityParams abilityParams,
-        @SuppressWarnings("unused") CoreGame game
-    ) {
+    public static Punch of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         Punch ability = Punch.of();
         ability.params = abilityParams
             .setWidth(1.5f)
@@ -45,10 +42,7 @@ public class Punch extends DirectionalAttachedAbility {
     }
 
     @Override
-    protected void onActiveUpdate(
-        float delta,
-        CoreGame game
-    ) {
+    protected void onActiveUpdate(float delta, CoreGame game) {
         updateDirectionalAttachedAbilityPosition(game);
     }
 

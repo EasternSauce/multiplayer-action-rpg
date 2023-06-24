@@ -17,10 +17,7 @@ public class MobCrossbowShot extends Ability {
     int currentBoltToFire = 0;
     Vector2 previousDirVector = null;
 
-    public static MobCrossbowShot of(
-        AbilityParams abilityParams,
-        @SuppressWarnings("unused") CoreGame game
-    ) {
+    public static MobCrossbowShot of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         MobCrossbowShot ability = MobCrossbowShot.of();
         ability.params = abilityParams.setChannelTime(0f).setActiveTime(2f);
 
@@ -38,10 +35,7 @@ public class MobCrossbowShot extends Ability {
     }
 
     @Override
-    protected void onActiveUpdate(
-        float delta,
-        CoreGame game
-    ) {
+    protected void onActiveUpdate(float delta, CoreGame game) {
         float[] boltFireTimes = {0f, 0.4f, 1f, 1.2f, 1.4f};
 
         Vector2 currentDirVector;

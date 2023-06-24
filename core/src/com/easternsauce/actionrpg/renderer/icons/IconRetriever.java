@@ -17,10 +17,7 @@ public class IconRetriever {
         );
     }
 
-    public TextureRegion getIcon(
-        int x,
-        int y
-    ) {
+    public TextureRegion getIcon(int x, int y) {
         return icons[y][x];
     }
 }

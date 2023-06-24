@@ -20,10 +20,7 @@ public class LootPileItemTryPickUpAction extends GameStateAction {
 
     private Item item;
 
-    public static LootPileItemTryPickUpAction of(
-        CreatureId playerId,
-        Item item
-    ) {
+    public static LootPileItemTryPickUpAction of(CreatureId playerId, Item item) {
         LootPileItemTryPickUpAction action = LootPileItemTryPickUpAction.of();
         action.playerId = playerId;
         action.item = item;

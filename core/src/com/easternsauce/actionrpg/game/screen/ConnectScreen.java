@@ -29,10 +29,7 @@ public class ConnectScreen implements Screen {
 
     private TextureAtlas.AtlasRegion background;
 
-    public void init(
-        TextureAtlas atlas,
-        CoreGame game
-    ) {
+    public void init(TextureAtlas atlas, CoreGame game) {
         this.game = game;
 
         background = atlas.findRegion("background2");
@@ -137,10 +134,7 @@ public class ConnectScreen implements Screen {
     }
 
     @Override
-    public void resize(
-        int width,
-        int height
-    ) {
+    public void resize(int width, int height) {
 
     }
 

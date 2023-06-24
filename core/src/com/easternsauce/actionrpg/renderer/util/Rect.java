@@ -13,10 +13,7 @@ public class Rect {
     Float width;
     Float height;
 
-    public boolean contains(
-        float x,
-        float y
-    ) {
+    public boolean contains(float x, float y) {
         return this.x <= x && this.x + this.width >= x && this.y <= y && this.y + this.height >= y;
     }
 }

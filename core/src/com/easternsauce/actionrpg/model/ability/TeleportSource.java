@@ -13,10 +13,7 @@ import lombok.NoArgsConstructor;
 public class TeleportSource extends Ability {
     AbilityParams params;
 
-    public static TeleportSource of(
-        AbilityParams abilityParams,
-        @SuppressWarnings("unused") CoreGame game
-    ) {
+    public static TeleportSource of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(abilityParams.getCreatureId());
 
         TeleportSource ability = TeleportSource.of();
@@ -57,10 +54,7 @@ public class TeleportSource extends Ability {
     }
 
     @Override
-    protected void onActiveUpdate(
-        float delta,
-        CoreGame game
-    ) {
+    protected void onActiveUpdate(float delta, CoreGame game) {
 
     }
 

@@ -128,10 +128,7 @@ public class PhysicsHelper {
 
     }
 
-    private static void handleCreatureAttacked(
-        AbilityHitsCreatureEvent event,
-        CoreGame game
-    ) {
+    private static void handleCreatureAttacked(AbilityHitsCreatureEvent event, CoreGame game) {
         Creature sourceCreature = game.getGameState().accessCreatures().getCreature(event.getSourceCreatureId());
         Creature destinationCreature = game
             .getGameState()
@@ -160,10 +157,7 @@ public class PhysicsHelper {
         }
     }
 
-    private static Vector2 calculateContactPoint(
-        Creature destinationCreature,
-        Ability ability
-    ) {
+    private static Vector2 calculateContactPoint(Creature destinationCreature, Ability ability) {
         Vector2 creaturePos = destinationCreature.getParams().getPos();
         Vector2 abilityPos = ability.getParams().getPos();
         Float creatureRadius = destinationCreature.animationConfig().getSpriteWidth();

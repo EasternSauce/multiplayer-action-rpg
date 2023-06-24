@@ -40,10 +40,7 @@ public class ViewportsHandler {
         );
     }
 
-    public void updateViewportsOnResize(
-        int width,
-        int height
-    ) {
+    public void updateViewportsOnResize(int width, int height) {
         worldViewport.update(
             width,
             height
@@ -83,18 +80,12 @@ public class ViewportsHandler {
         worldTextCamera.update();
     }
 
-    private void setWorldCameraPosition(
-        float x,
-        float y
-    ) {
+    private void setWorldCameraPosition(float x, float y) {
         worldCamera.position.x = x;
         worldCamera.position.y = y;
     }
 
-    private void setWorldTextCameraPosition(
-        float x,
-        float y
-    ) {
+    private void setWorldTextCameraPosition(float x, float y) {
         worldTextCamera.position.x = x;
         worldTextCamera.position.y = y;
     }
@@ -107,10 +98,7 @@ public class ViewportsHandler {
         hudCamera.unproject(screenCoords);
     }
 
-    public void setHudCameraPosition(
-        float x,
-        float y
-    ) {
+    public void setHudCameraPosition(float x, float y) {
         hudCamera.position.set(
             x,
             y,

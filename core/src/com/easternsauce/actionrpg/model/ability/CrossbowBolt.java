@@ -13,10 +13,7 @@ import lombok.NoArgsConstructor;
 public class CrossbowBolt extends Projectile {
     AbilityParams params;
 
-    public static CrossbowBolt of(
-        AbilityParams abilityParams,
-        @SuppressWarnings("unused") CoreGame game
-    ) {
+    public static CrossbowBolt of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         CrossbowBolt ability = CrossbowBolt.of();
         ability.params = abilityParams
             .setWidth(0.9f)
@@ -43,27 +40,18 @@ public class CrossbowBolt extends Projectile {
     }
 
     @Override
-    protected void onActiveUpdate(
-        float delta,
-        CoreGame game
-    ) {
+    protected void onActiveUpdate(float delta, CoreGame game) {
         onProjectileTravelUpdate();
     }
 
 
     @Override
-    public void onCreatureHit(
-        CreatureId creatureId,
-        CoreGame game
-    ) {
+    public void onCreatureHit(CreatureId creatureId, CoreGame game) {
         deactivate();
     }
 
     @Override
-    public void onTerrainHit(
-        Vector2 abilityPos,
-        Vector2 tilePos
-    ) {
+    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
         deactivate();
     }
 

@@ -43,10 +43,7 @@ public class Assets { // TODO: make separate font class
         );
     }
 
-    public static BitmapFont loadFont(
-        String fontPath,
-        int size
-    ) {
+    public static BitmapFont loadFont(String fontPath, int size) {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(fontPath));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = size;
@@ -60,12 +57,7 @@ public class Assets { // TODO: make separate font class
         return font;
     }
 
-    public static void renderSmallFont(
-        RenderingLayer renderingLayer,
-        String text,
-        Vector2 pos,
-        Color color
-    ) {
+    public static void renderSmallFont(RenderingLayer renderingLayer, String text, Vector2 pos, Color color) {
         smallFont.setColor(color);
         smallFont.draw(
             renderingLayer.getSpriteBatch(),
@@ -75,12 +67,7 @@ public class Assets { // TODO: make separate font class
         );
     }
 
-    public static void renderVerySmallFont(
-        RenderingLayer renderingLayer,
-        String text,
-        Vector2 pos,
-        Color color
-    ) {
+    public static void renderVerySmallFont(RenderingLayer renderingLayer, String text, Vector2 pos, Color color) {
         verySmallFont.setColor(color);
         verySmallFont.draw(
             renderingLayer.getSpriteBatch(),
@@ -90,12 +77,7 @@ public class Assets { // TODO: make separate font class
         );
     }
 
-    public static void renderMediumFont(
-        RenderingLayer renderingLayer,
-        String text,
-        Vector2 pos,
-        Color color
-    ) {
+    public static void renderMediumFont(RenderingLayer renderingLayer, String text, Vector2 pos, Color color) {
         mediumFont.setColor(color);
         mediumFont.draw(
             renderingLayer.getSpriteBatch(),
@@ -105,12 +87,7 @@ public class Assets { // TODO: make separate font class
         );
     }
 
-    public static void renderLargeFont(
-        RenderingLayer renderingLayer,
-        String text,
-        Vector2 pos,
-        Color color
-    ) {
+    public static void renderLargeFont(RenderingLayer renderingLayer, String text, Vector2 pos, Color color) {
         largeFont.setColor(color);
         largeFont.draw(
             renderingLayer.getSpriteBatch(),
@@ -120,12 +97,7 @@ public class Assets { // TODO: make separate font class
         );
     }
 
-    public static void renderVeryLargeFont(
-        RenderingLayer renderingLayer,
-        String text,
-        Vector2 pos,
-        Color color
-    ) {
+    public static void renderVeryLargeFont(RenderingLayer renderingLayer, String text, Vector2 pos, Color color) {
         veryLargeFont.setColor(color);
         veryLargeFont.draw(
             renderingLayer.getSpriteBatch(),

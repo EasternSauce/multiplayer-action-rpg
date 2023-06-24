@@ -87,10 +87,7 @@ public class InventoryPositioning {
             (SLOT_SIZE + MARGIN + (SLOT_SIZE + SPACE_BETWEEN_SLOTS) * index);
     }
 
-    public static Integer getEquipmentSlotClicked(
-        float x,
-        float y
-    ) {
+    public static Integer getEquipmentSlotClicked(float x, float y) {
         AtomicReference<Integer> atomicEquipmentSlotClicked = new AtomicReference<>(null);
 
         InventoryPositioning.equipmentRectangles.entrySet().stream().filter(entry -> entry.getValue().contains(
@@ -101,10 +98,7 @@ public class InventoryPositioning {
         return atomicEquipmentSlotClicked.get();
     }
 
-    public static Integer getInventorySlotClicked(
-        float x,
-        float y
-    ) {
+    public static Integer getInventorySlotClicked(float x, float y) {
         AtomicReference<Integer> atomicInventorySlotClicked = new AtomicReference<>(null);
 
         InventoryPositioning.inventoryRectangles.entrySet().stream().filter(entry -> entry.getValue().contains(

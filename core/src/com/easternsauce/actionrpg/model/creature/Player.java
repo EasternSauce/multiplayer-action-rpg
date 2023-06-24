@@ -12,12 +12,7 @@ import lombok.NoArgsConstructor;
 public class Player extends Creature {
     CreatureParams params;
 
-    public static Player of(
-        CreatureId playerId,
-        AreaId areaId,
-        Vector2 pos,
-        String textureName
-    ) {
+    public static Player of(CreatureId playerId, AreaId areaId, Vector2 pos, String textureName) {
         CreatureParams params = CreatureParams.of(
             playerId,
             areaId,

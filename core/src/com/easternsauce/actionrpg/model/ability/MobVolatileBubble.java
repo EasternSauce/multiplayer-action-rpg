@@ -14,10 +14,7 @@ public class MobVolatileBubble extends Projectile {
 
     AbilityParams params;
 
-    public static MobVolatileBubble of(
-        AbilityParams abilityParams,
-        @SuppressWarnings("unused") CoreGame game
-    ) {
+    public static MobVolatileBubble of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         MobVolatileBubble ability = MobVolatileBubble.of();
         ability.params = abilityParams
             .setWidth(3.2f)
@@ -45,10 +42,7 @@ public class MobVolatileBubble extends Projectile {
     }
 
     @Override
-    protected void onActiveUpdate(
-        float delta,
-        CoreGame game
-    ) {
+    protected void onActiveUpdate(float delta, CoreGame game) {
         onProjectileTravelUpdate();
 
         if (getParams().getPos().distance(getParams().getSkillStartPos()) > 10f) {
@@ -78,18 +72,12 @@ public class MobVolatileBubble extends Projectile {
 
 
     @Override
-    public void onCreatureHit(
-        CreatureId creatureId,
-        CoreGame game
-    ) {
+    public void onCreatureHit(CreatureId creatureId, CoreGame game) {
         deactivate();
     }
 
     @Override
-    public void onTerrainHit(
-        Vector2 abilityPos,
-        Vector2 tilePos
-    ) {
+    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
         deactivate();
     }
 

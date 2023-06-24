@@ -70,10 +70,7 @@ public class CreatureAccessor {
         }).collect(Collectors.toSet());
     }
 
-    public void setCreatureMovingVector(
-        CreatureId creatureId,
-        Vector2 dirVector
-    ) {
+    public void setCreatureMovingVector(CreatureId creatureId, Vector2 dirVector) {
         CreatureMovingVectorSetAction action = CreatureMovingVectorSetAction.of(
             creatureId,
             dirVector
@@ -101,10 +98,7 @@ public class CreatureAccessor {
     }
 
     // TODO: move to enemy?
-    public void handleCreatureUseRandomSkillAtTarget(
-        CreatureId creatureId,
-        Vector2 vectorTowardsTarget
-    ) {
+    public void handleCreatureUseRandomSkillAtTarget(CreatureId creatureId, Vector2 vectorTowardsTarget) {
         Creature creature = gameState.accessCreatures().getCreatures().get(creatureId);
 
         if (creature.getParams().getEnemyParams().getSkillUseReadyToPick()) {
@@ -125,10 +119,7 @@ public class CreatureAccessor {
     }
 
     // TODO: move to enemy?
-    private static void pickSkillUseSkillType(
-        Set<EnemySkillUseEntry> skillUseEntries,
-        Creature creature
-    ) {
+    private static void pickSkillUseSkillType(Set<EnemySkillUseEntry> skillUseEntries, Creature creature) {
         AtomicReference<Float> totalWeight = new AtomicReference<>((float) 0);
 
         // TODO: pick subset of skill use entries based on distance to enemy
@@ -177,11 +168,7 @@ public class CreatureAccessor {
         gameState.scheduleServerSideAction(action);
     }
 
-    public CreatureId getAliveCreatureIdClosestTo(
-        Vector2 pos,
-        float maxRange,
-        Set<CreatureId> excluded
-    ) {
+    public CreatureId getAliveCreatureIdClosestTo(Vector2 pos, float maxRange, Set<CreatureId> excluded) {
         CreatureId minCreatureId = null;
         float minDistance = Float.MAX_VALUE;
         for (CreatureId creatureId : gameState.getCreaturesToUpdate()) {
@@ -195,11 +182,7 @@ public class CreatureAccessor {
         return minCreatureId;
     }
 
-    public void creatureTakeDamageOverTime(
-        CreatureId attackerId,
-        CreatureId targetId,
-        Float damage
-    ) {
+    public void creatureTakeDamageOverTime(CreatureId attackerId, CreatureId targetId, Float damage) {
         CreatureHitByDamageOverTimeAction action = CreatureHitByDamageOverTimeAction.of(
             attackerId,
             targetId,

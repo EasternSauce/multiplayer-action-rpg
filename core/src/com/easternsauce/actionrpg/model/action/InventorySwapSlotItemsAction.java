@@ -19,11 +19,7 @@ public class InventorySwapSlotItemsAction extends GameStateAction {
     private Integer fromSlotIndex;
     private Integer toSlotIndex;
 
-    public static InventorySwapSlotItemsAction of(
-        CreatureId creatureId,
-        Integer fromSlotIndex,
-        Integer toSlotIndex
-    ) {
+    public static InventorySwapSlotItemsAction of(CreatureId creatureId, Integer fromSlotIndex, Integer toSlotIndex) {
         InventorySwapSlotItemsAction action = InventorySwapSlotItemsAction.of();
         action.playerId = creatureId;
         action.fromSlotIndex = fromSlotIndex;

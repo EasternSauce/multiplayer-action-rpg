@@ -18,10 +18,7 @@ public class IceSpear extends Projectile {
 
     AbilityParams params;
 
-    public static IceSpear of(
-        AbilityParams abilityParams,
-        @SuppressWarnings("unused") CoreGame game
-    ) {
+    public static IceSpear of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         IceSpear ability = IceSpear.of();
         ability.params = abilityParams
             .setWidth(2.1f)
@@ -51,10 +48,7 @@ public class IceSpear extends Projectile {
     }
 
     @Override
-    protected void onActiveUpdate(
-        float delta,
-        CoreGame game
-    ) {
+    protected void onActiveUpdate(float delta, CoreGame game) {
         onProjectileTravelUpdate();
 
         if (getParams().getPos().distance(getParams().getSkillStartPos()) > 6.5f) {
@@ -64,10 +58,7 @@ public class IceSpear extends Projectile {
 
 
     @Override
-    public void onCreatureHit(
-        CreatureId creatureId,
-        CoreGame game
-    ) {
+    public void onCreatureHit(CreatureId creatureId, CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
         creature.applyEffect(
@@ -79,10 +70,7 @@ public class IceSpear extends Projectile {
     }
 
     @Override
-    public void onTerrainHit(
-        Vector2 abilityPos,
-        Vector2 tilePos
-    ) {
+    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
         if (getParams().getStateTimer().getTime() > 0.1f) {
             deactivate();
         }

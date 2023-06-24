@@ -159,12 +159,7 @@ public class ItemTemplate {
     Integer armor;
     SkillType attackSkill;
 
-    public static ItemTemplate of(
-        String id,
-        String name,
-        String description,
-        Vector2Int iconPos
-    ) {
+    public static ItemTemplate of(String id, String name, String description, Vector2Int iconPos) {
         ItemTemplate itemTemplate = ItemTemplate.of();
 
         itemTemplate.id = id;

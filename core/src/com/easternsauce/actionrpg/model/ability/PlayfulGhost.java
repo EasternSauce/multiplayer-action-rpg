@@ -21,10 +21,7 @@ public class PlayfulGhost extends Projectile {
 
     AbilityParams params;
 
-    public static PlayfulGhost of(
-        AbilityParams abilityParams,
-        @SuppressWarnings("unused") CoreGame game
-    ) {
+    public static PlayfulGhost of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         PlayfulGhost ability = PlayfulGhost.of();
         ability.params = abilityParams
             .setWidth(1.5f)
@@ -53,10 +50,7 @@ public class PlayfulGhost extends Projectile {
     }
 
     @Override
-    protected void onActiveUpdate(
-        float delta,
-        CoreGame game
-    ) {
+    protected void onActiveUpdate(float delta, CoreGame game) {
         onProjectileTravelUpdate();
         getParams().setIsFlip(getParams().getRotationAngle() >= 90 && getParams().getRotationAngle() < 270);
 
@@ -122,10 +116,7 @@ public class PlayfulGhost extends Projectile {
 
 
     @Override
-    public void onTerrainHit(
-        Vector2 abilityPos,
-        Vector2 tilePos
-    ) {
+    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
         deactivate();
     }
 
@@ -134,10 +125,7 @@ public class PlayfulGhost extends Projectile {
         return false;
     }
 
-    private boolean isTargetingAllowed(
-        Creature thisCreature,
-        Creature targetCreature
-    ) {
+    private boolean isTargetingAllowed(Creature thisCreature, Creature targetCreature) {
         if (thisCreature instanceof Enemy) {
             return targetCreature instanceof Player;
         }

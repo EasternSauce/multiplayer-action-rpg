@@ -1,10 +1,7 @@
 package com.easternsauce.actionrpg.model.util;
 
 public class MathHelper {
-    public static float findShortestDegAngleRotation(
-        float currentAngleDeg,
-        float targetAngleDeg
-    ) {
+    public static float findShortestDegAngleRotation(float currentAngleDeg, float targetAngleDeg) {
         float alpha = targetAngleDeg - currentAngleDeg;
         float beta = targetAngleDeg - currentAngleDeg + 360;
         float gamma = targetAngleDeg - currentAngleDeg - 360;

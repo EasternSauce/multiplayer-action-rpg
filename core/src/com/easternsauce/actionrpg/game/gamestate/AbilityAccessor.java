@@ -26,10 +26,7 @@ public class AbilityAccessor {
     private GameState gameState;
     private GameStateDataHolder dataHolder;
 
-    public Ability getAbilityBySkillType(
-        CreatureId creatureId,
-        SkillType skillType
-    ) {
+    public Ability getAbilityBySkillType(CreatureId creatureId, SkillType skillType) {
         Optional<Ability> first = getData().getAbilities().values().stream().filter(ability -> ability
             .getParams()
             .getCreatureId()
@@ -104,11 +101,7 @@ public class AbilityAccessor {
         }
     }
 
-    public void spawnAbility(
-        AbilityType abilityType,
-        AbilityParams abilityParams,
-        CoreGame game
-    ) {
+    public void spawnAbility(AbilityType abilityType, AbilityParams abilityParams, CoreGame game) {
         Creature creature = gameState.accessCreatures().getCreature(abilityParams.getCreatureId());
 
         if (creature != null) {
@@ -126,11 +119,7 @@ public class AbilityAccessor {
         }
     }
 
-    private void initializeAbility(
-        Creature creature,
-        Ability ability,
-        CoreGame game
-    ) {
+    private void initializeAbility(Creature creature, Ability ability, CoreGame game) {
         game.getGameState().accessAbilities().getAbilities().put(
             ability.getParams().getId(),
             ability

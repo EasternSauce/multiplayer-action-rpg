@@ -14,10 +14,7 @@ public class CrossbowShot extends Ability {
 
     int currentBoltToFire = 0;
 
-    public static CrossbowShot of(
-        AbilityParams abilityParams,
-        @SuppressWarnings("unused") CoreGame game
-    ) {
+    public static CrossbowShot of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         CrossbowShot ability = CrossbowShot.of();
         ability.params = abilityParams.setChannelTime(0f).setActiveTime(2f);
 
@@ -35,10 +32,7 @@ public class CrossbowShot extends Ability {
     }
 
     @Override
-    protected void onActiveUpdate(
-        float delta,
-        CoreGame game
-    ) {
+    protected void onActiveUpdate(float delta, CoreGame game) {
         float[] boltFireTimes = {0f, 0.4f, 1f, 1.2f, 1.4f};
 
         Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());

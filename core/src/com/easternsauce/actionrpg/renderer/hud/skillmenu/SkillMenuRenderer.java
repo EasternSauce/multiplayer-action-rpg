@@ -20,10 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Data
 public class SkillMenuRenderer {
 
-    public void renderMenu(
-        RenderingLayer renderingLayer,
-        CoreGame game
-    ) {
+    public void renderMenu(RenderingLayer renderingLayer, CoreGame game) {
         PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
 
         if (playerConfig == null) {
@@ -91,11 +88,7 @@ public class SkillMenuRenderer {
         });
     }
 
-    public void renderPicker(
-        Creature player,
-        RenderingLayer renderingLayer,
-        CoreGame game
-    ) {
+    public void renderPicker(Creature player, RenderingLayer renderingLayer, CoreGame game) {
         PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
 
         if (playerConfig == null ||
@@ -118,13 +111,7 @@ public class SkillMenuRenderer {
         ));
     }
 
-    public void renderPickerOption(
-        RenderingLayer renderingLayer,
-        float x,
-        float y,
-        AtomicInteger i,
-        String skillName
-    ) {
+    public void renderPickerOption(RenderingLayer renderingLayer, float x, float y, AtomicInteger i, String skillName) {
         Rect rect = SkillMenuPositioning.getSkillPickerRect(i.get());
         renderingLayer.getShapeDrawer().filledRectangle(
             rect.getX(),

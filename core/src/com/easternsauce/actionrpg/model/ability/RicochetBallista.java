@@ -12,10 +12,7 @@ import lombok.NoArgsConstructor;
 public class RicochetBallista extends Ability {
     AbilityParams params;
 
-    public static RicochetBallista of(
-        AbilityParams abilityParams,
-        @SuppressWarnings("unused") CoreGame game
-    ) {
+    public static RicochetBallista of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         RicochetBallista ability = RicochetBallista.of();
         ability.params = abilityParams.setChannelTime(0f).setActiveTime(0f);
 
@@ -33,10 +30,7 @@ public class RicochetBallista extends Ability {
     }
 
     @Override
-    protected void onActiveUpdate(
-        float delta,
-        CoreGame game
-    ) {
+    protected void onActiveUpdate(float delta, CoreGame game) {
 
     }
 

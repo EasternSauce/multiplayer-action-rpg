@@ -43,10 +43,7 @@ public class CreatureRenderer {
         creatureSprite.render(renderingLayer);
     }
 
-    public void renderLifeBar(
-        RenderingLayer renderingLayer,
-        CoreGame game
-    ) {
+    public void renderLifeBar(RenderingLayer renderingLayer, CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
         if (creature != null) {
@@ -75,10 +72,7 @@ public class CreatureRenderer {
         }
     }
 
-    public void renderCreatureName(
-        RenderingLayer renderingLayer,
-        CoreGame game
-    ) {
+    public void renderCreatureName(RenderingLayer renderingLayer, CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
         String name = creature.getId().getValue();

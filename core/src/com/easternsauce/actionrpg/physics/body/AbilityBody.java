@@ -52,10 +52,7 @@ public class AbilityBody {
 
     }
 
-    public void activate(
-        boolean skipCreatingBody,
-        CoreGame game
-    ) {
+    public void activate(boolean skipCreatingBody, CoreGame game) {
         Ability ability = game.getGameState().accessAbilities().getAbility(abilityId);
 
         if (!skipCreatingBody && ability != null) {

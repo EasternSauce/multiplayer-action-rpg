@@ -19,11 +19,7 @@ public class CreatureRespawnAction extends GameStateAction {
     private Vector2 pos;
     private AreaId areaId;
 
-    public static CreatureRespawnAction of(
-        CreatureId creatureId,
-        Vector2 pos,
-        AreaId areaId
-    ) {
+    public static CreatureRespawnAction of(CreatureId creatureId, Vector2 pos, AreaId areaId) {
         CreatureRespawnAction action = CreatureRespawnAction.of();
         action.creatureId = creatureId;
         action.pos = pos;

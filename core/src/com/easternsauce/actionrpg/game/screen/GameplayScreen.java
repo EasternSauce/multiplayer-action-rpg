@@ -24,10 +24,7 @@ public class GameplayScreen implements Screen {
 
     private TextureAtlas atlas;
 
-    public void init(
-        TextureAtlas atlas,
-        CoreGame game
-    ) {
+    public void init(TextureAtlas atlas, CoreGame game) {
         this.game = game;
         this.atlas = atlas;
 
@@ -166,10 +163,7 @@ public class GameplayScreen implements Screen {
     }
 
     @Override
-    public void resize(
-        int width,
-        int height
-    ) {
+    public void resize(int width, int height) {
         game.getEntityManager().getGameEntityRenderer().getViewportsHandler().updateViewportsOnResize(
             width,
             height

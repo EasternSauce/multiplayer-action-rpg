@@ -35,10 +35,7 @@ public class CreatureSprite {
         );
     }
 
-    public void updateForAliveCreature(
-        Creature creature,
-        CoreGame game
-    ) {
+    public void updateForAliveCreature(Creature creature, CoreGame game) {
         CreatureModelAnimation creatureModelAnimation = game
             .getEntityManager()
             .getGameEntityRenderer()

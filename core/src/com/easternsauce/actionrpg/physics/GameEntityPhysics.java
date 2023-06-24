@@ -35,10 +35,7 @@ public class GameEntityPhysics {
     Box2DDebugRenderer debugRenderer;
     Boolean isForceUpdateBodyPositions = false;
 
-    public void init(
-        Map<AreaId, TiledMap> maps,
-        CoreGame game
-    ) {
+    public void init(Map<AreaId, TiledMap> maps, CoreGame game) {
         physicsWorlds = maps.entrySet().stream().collect(Collectors.toMap(
             Map.Entry::getKey,
             entry -> PhysicsWorld.of(entry.getValue())
@@ -96,27 +93,18 @@ public class GameEntityPhysics {
             }
 
             @Override
-            public void preSolve(
-                Contact contact,
-                Manifold oldManifold
-            ) {
+            public void preSolve(Contact contact, Manifold oldManifold) {
             }
 
             @Override
-            public void postSolve(
-                Contact contact,
-                ContactImpulse impulse
-            ) {
+            public void postSolve(Contact contact, ContactImpulse impulse) {
             }
         };
 
         b2World.setContactListener(contactListener);
     }
 
-    public void onContactStart(
-        Object objA,
-        Object objB
-    ) {
+    public void onContactStart(Object objA, Object objB) {
         if (objA instanceof CreatureBody && objB instanceof AbilityBody) {
             CreatureBody creatureBody = (CreatureBody) objA;
             AbilityBody abilityBody = (AbilityBody) objB;
@@ -178,10 +166,7 @@ public class GameEntityPhysics {
         }
     }
 
-    public void onContactEnd(
-        Object objA,
-        Object objB
-    ) {
+    public void onContactEnd(Object objA, Object objB) {
         if (objA instanceof CreatureBody && objB instanceof AreaGateBody) {
             CreatureBody creatureBody = (CreatureBody) objA;
             AreaGateBody areaGateBody = (AreaGateBody) objB;

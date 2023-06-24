@@ -154,10 +154,7 @@ public class CreatureBody {
         return creatureId;
     }
 
-    public void moveBodyToNewArea(
-        AreaId areaId,
-        CoreGame game
-    ) {
+    public void moveBodyToNewArea(AreaId areaId, CoreGame game) {
         onRemove();
         init(
             areaId,
@@ -169,10 +166,7 @@ public class CreatureBody {
         world.getB2world().destroyBody(b2body);
     }
 
-    public void init(
-        AreaId areaId,
-        CoreGame game
-    ) {
+    public void init(AreaId areaId, CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
         this.world = game.getPhysicsWorld(areaId);

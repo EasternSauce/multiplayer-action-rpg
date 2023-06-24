@@ -32,10 +32,7 @@ public class RenderingLayer {
         spriteBatch.end();
     }
 
-    public void filledRectangle(
-        Rectangle rect,
-        Color color
-    ) {
+    public void filledRectangle(Rectangle rect, Color color) {
         shapeDrawer.filledRectangle(
             rect,
             color

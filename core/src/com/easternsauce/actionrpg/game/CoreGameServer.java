@@ -93,10 +93,7 @@ public class CoreGameServer extends CoreGame {
             }
 
             @Override
-            public void received(
-                Connection connection,
-                Object object
-            ) {
+            public void received(Connection connection, Object object) {
                 if (object instanceof ActionPerformCommand) {
                     ActionPerformCommand command = (ActionPerformCommand) object;
 

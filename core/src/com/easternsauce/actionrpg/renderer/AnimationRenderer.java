@@ -39,11 +39,7 @@ public class AnimationRenderer {
         );
     }
 
-    public void render(
-        Vector2 pos,
-        float animationTime,
-        RenderingLayer renderingLayer
-    ) {
+    public void render(Vector2 pos, float animationTime, RenderingLayer renderingLayer) {
         renderingLayer.getSpriteBatch().draw(
             getFrame(animationTime),
             pos.getX(),

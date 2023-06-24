@@ -17,10 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @NoArgsConstructor(staticName = "of")
 @Data
 public class ItemPickupMenuRenderer {
-    public void render(
-        RenderingLayer renderingLayer,
-        CoreGame game
-    ) {
+    public void render(RenderingLayer renderingLayer, CoreGame game) {
         PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
 
         if (playerConfig == null || playerConfig.getIsInventoryVisible()) {

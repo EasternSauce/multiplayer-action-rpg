@@ -12,10 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @Data
 public class InventoryController {
-    public void performMoveItemClick(
-        Client client,
-        CoreGame game
-    ) {
+    public void performMoveItemClick(Client client, CoreGame game) {
         Creature player = game.getGameState().accessCreatures().getCreature(game
             .getGameState()
             .getThisClientPlayerId());
@@ -111,10 +108,7 @@ public class InventoryController {
         return action;
     }
 
-    public void performUseItemClick(
-        Client client,
-        CoreGame game
-    ) {
+    public void performUseItemClick(Client client, CoreGame game) {
         PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
 
         float x = game.hudMousePos().getX();

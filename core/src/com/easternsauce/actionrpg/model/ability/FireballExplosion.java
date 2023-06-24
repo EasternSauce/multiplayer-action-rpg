@@ -13,10 +13,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 public class FireballExplosion extends Ability {
     AbilityParams params;
 
-    public static FireballExplosion of(
-        AbilityParams abilityParams,
-        @SuppressWarnings("unused") CoreGame game
-    ) {
+    public static FireballExplosion of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         FireballExplosion ability = FireballExplosion.of();
         ability.params = abilityParams
             .setWidth(9f)
@@ -44,10 +41,7 @@ public class FireballExplosion extends Ability {
     }
 
     @Override
-    protected void onActiveUpdate(
-        float delta,
-        CoreGame game
-    ) {
+    protected void onActiveUpdate(float delta, CoreGame game) {
 
     }
 

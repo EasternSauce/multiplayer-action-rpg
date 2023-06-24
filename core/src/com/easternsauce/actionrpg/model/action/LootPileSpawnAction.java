@@ -24,11 +24,7 @@ public class LootPileSpawnAction extends GameStateAction {
     private Vector2 pos;
     private Set<Item> items;
 
-    public static LootPileSpawnAction of(
-        AreaId areaId,
-        Vector2 pos,
-        Set<Item> items
-    ) {
+    public static LootPileSpawnAction of(AreaId areaId, Vector2 pos, Set<Item> items) {
         LootPileSpawnAction action = LootPileSpawnAction.of();
         action.areaId = areaId;
         action.pos = pos;

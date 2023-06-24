@@ -78,11 +78,7 @@ public class CreatureParams implements EntityParams {
     @NonNull
     private SimpleTimer generalSkillPerformCooldownTimer = SimpleTimer.getExpiredTimer();
 
-    public static CreatureParams of(
-        CreatureId creatureId,
-        AreaId areaId,
-        EnemySpawn enemySpawn
-    ) {
+    public static CreatureParams of(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn) {
         return produceCreatureParams(
             creatureId,
             areaId,
@@ -128,12 +124,7 @@ public class CreatureParams implements EntityParams {
         return params;
     }
 
-    public static CreatureParams of(
-        CreatureId creatureId,
-        AreaId areaId,
-        Vector2 pos,
-        String textureName
-    ) {
+    public static CreatureParams of(CreatureId creatureId, AreaId areaId, Vector2 pos, String textureName) {
         return produceCreatureParams(
             creatureId,
             areaId,

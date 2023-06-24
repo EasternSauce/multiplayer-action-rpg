@@ -27,11 +27,7 @@ import java.util.stream.Collectors;
 public class Enemy extends Creature {
     private CreatureParams params;
 
-    public static Enemy of(
-        CreatureId creatureId,
-        AreaId areaId,
-        EnemySpawn enemySpawn
-    ) {
+    public static Enemy of(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn) {
         CreatureParams params = CreatureParams.of(
             creatureId,
             areaId,
@@ -211,10 +207,7 @@ public class Enemy extends Creature {
         }
     }
 
-    private List<Vector2> mirrorPathFromNearbyCreature(
-        CreatureId targetId,
-        CoreGame game
-    ) {
+    private List<Vector2> mirrorPathFromNearbyCreature(CreatureId targetId, CoreGame game) {
 
         Predicate<Creature> creaturePredicate = creature -> creature instanceof Enemy &&
             creature.getParams().getPos().distance(this.getParams().getPos()) < 4f &&
@@ -270,10 +263,7 @@ public class Enemy extends Creature {
 
     }
 
-    private void processAutoControlStateMovementLogic(
-        Creature potentialTarget,
-        Float distance
-    ) {
+    private void processAutoControlStateMovementLogic(Creature potentialTarget, Float distance) {
         if (getParams().getEnemyParams().getAutoControlState() == EnemyAutoControlState.AGGRESSIVE) {
             if (distance > getParams().getEnemyParams().getAttackDistance() - 1f) {
                 getParams().getStats().setSpeed(getParams().getStats().getBaseSpeed());
@@ -296,11 +286,7 @@ public class Enemy extends Creature {
         }
     }
 
-    public void handleUseAbilityAtTarget(
-        Creature potentialTarget,
-        Vector2 vectorTowardsTarget,
-        CoreGame game
-    ) {
+    public void handleUseAbilityAtTarget(Creature potentialTarget, Vector2 vectorTowardsTarget, CoreGame game) {
         if (getParams().getEnemyParams().getAttackCooldownTimer().getTime() > Constants.ENEMY_ATTACK_COOLDOWN_TIMER) {
             if (potentialTarget.getParams().getPos().distance(getParams().getPos()) <
                 getParams().getEnemyParams().getAttackDistance()) {
@@ -471,10 +457,7 @@ public class Enemy extends Creature {
     }
 
     @Override
-    public boolean canPerformSkill(
-        Skill skill,
-        CoreGame game
-    ) {
+    public boolean canPerformSkill(Skill skill, CoreGame game) {
         return isAlive() && getParams().getStats().getStamina() >= skill.getStaminaCost();
     }
 

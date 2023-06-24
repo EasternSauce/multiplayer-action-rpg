@@ -162,12 +162,7 @@ public class CreatureAnimationConfig {
     Map<WorldDirection, Integer> dirMap;
 
     @SuppressWarnings("SameParameterValue")
-    private static Map<WorldDirection, Integer> textureDirMap(
-        int up,
-        int down,
-        int left,
-        int right
-    ) {
+    private static Map<WorldDirection, Integer> textureDirMap(int up, int down, int left, int right) {
         Map<WorldDirection, Integer> textureDirMap = new ConcurrentSkipListMap<>();
         textureDirMap.put(
             WorldDirection.UP,
