@@ -27,7 +27,7 @@ public class CrossbowShot extends Ability {
     }
 
     @Override
-    public void onChannelUpdate(CoreGame game) {
+    protected void onChannelUpdate(CoreGame game) {
 
     }
 
@@ -57,6 +57,7 @@ public class CrossbowShot extends Ability {
             deactivate();
         }
     }
+
 
     @Override
     protected boolean isWeaponAttack() {

@@ -35,7 +35,7 @@ public class CrossbowBolt extends Projectile {
     }
 
     @Override
-    public void onChannelUpdate(CoreGame game) {
+    protected void onChannelUpdate(CoreGame game) {
         onProjectileTravelUpdate();
     }
 
@@ -43,6 +43,7 @@ public class CrossbowBolt extends Projectile {
     protected void onActiveUpdate(float delta, CoreGame game) {
         onProjectileTravelUpdate();
     }
+
 
     @Override
     public void onCreatureHit(CreatureId creatureId, CoreGame game) {

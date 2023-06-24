@@ -40,7 +40,7 @@ public class RingOfFire extends Ability {
     }
 
     @Override
-    public void onChannelUpdate(CoreGame game) {
+    protected void onChannelUpdate(CoreGame game) {
         updatePosition(game);
     }
 
@@ -56,6 +56,7 @@ public class RingOfFire extends Ability {
     protected void onActiveUpdate(float delta, CoreGame game) {
         updatePosition(game);
     }
+
 
     @Override
     protected boolean isWeaponAttack() {

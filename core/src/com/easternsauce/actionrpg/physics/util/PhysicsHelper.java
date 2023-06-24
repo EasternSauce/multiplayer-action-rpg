@@ -164,7 +164,7 @@ public class PhysicsHelper {
                 if (game.getAbilityBodies().containsKey(abilityId) &&
                         game.getAbilityBodies().get(abilityId).getIsBodyInitialized() &&
                         // this is needed to fix body created client/server desync
-                        ability.bodyShouldExist() &&
+                        !ability.getParams().getIsSkipCreatingBody() &&
                         game.getAbilityBodies().get(abilityId).getBodyPos().distance(ability.getParams().getPos()) >
                                 Constants.FORCE_UPDATE_MINIMUM_DISTANCE
                     // only setTransform if positions are far apart

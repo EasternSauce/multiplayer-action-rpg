@@ -30,7 +30,7 @@ public class MobCrossbowShot extends Ability {
     }
 
     @Override
-    public void onChannelUpdate(CoreGame game) {
+    protected void onChannelUpdate(CoreGame game) {
 
     }
 
@@ -91,20 +91,6 @@ public class MobCrossbowShot extends Ability {
         }
     }
 
-    private Vector2 calculateShootingVectorForNextBolt(Vector2 currentDirVector, Vector2 aimDirection,
-                                                       float shortestAngleRotation, float increment,
-                                                       @SuppressWarnings("unused") CoreGame game) {
-        float aimDirectionMaximumAngle = 60;
-        if (shortestAngleRotation < -aimDirectionMaximumAngle || shortestAngleRotation > aimDirectionMaximumAngle) {
-            return currentDirVector.copy();
-        } else if (shortestAngleRotation > increment) {
-            return currentDirVector.withRotatedDegAngle(increment);
-        } else if (shortestAngleRotation < -increment) {
-            return currentDirVector.withRotatedDegAngle(-increment);
-        } else {
-            return currentDirVector.withSetDegAngle(aimDirection.angleDeg());
-        }
-    }
 
     @Override
     protected boolean isWeaponAttack() {
@@ -119,5 +105,20 @@ public class MobCrossbowShot extends Ability {
     @Override
     public boolean isAbleToChainAfterCreatureDeath() {
         return false;
+    }
+
+    private Vector2 calculateShootingVectorForNextBolt(Vector2 currentDirVector, Vector2 aimDirection,
+                                                       float shortestAngleRotation, float increment,
+                                                       @SuppressWarnings("unused") CoreGame game) {
+        float aimDirectionMaximumAngle = 60;
+        if (shortestAngleRotation < -aimDirectionMaximumAngle || shortestAngleRotation > aimDirectionMaximumAngle) {
+            return currentDirVector.copy();
+        } else if (shortestAngleRotation > increment) {
+            return currentDirVector.withRotatedDegAngle(increment);
+        } else if (shortestAngleRotation < -increment) {
+            return currentDirVector.withRotatedDegAngle(-increment);
+        } else {
+            return currentDirVector.withSetDegAngle(aimDirection.angleDeg());
+        }
     }
 }

@@ -36,7 +36,7 @@ public class Punch extends DirectionalAttachedAbility {
     }
 
     @Override
-    public void onChannelUpdate(CoreGame game) {
+    protected void onChannelUpdate(CoreGame game) {
         updateDirectionalAttachedAbilityPosition(game);
 
     }
@@ -45,6 +45,7 @@ public class Punch extends DirectionalAttachedAbility {
     protected void onActiveUpdate(float delta, CoreGame game) {
         updateDirectionalAttachedAbilityPosition(game);
     }
+
 
     @Override
     public void init(CoreGame game) {

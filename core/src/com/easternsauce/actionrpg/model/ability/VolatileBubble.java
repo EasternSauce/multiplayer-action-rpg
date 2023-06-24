@@ -37,7 +37,7 @@ public class VolatileBubble extends Projectile {
     }
 
     @Override
-    public void onChannelUpdate(CoreGame game) {
+    protected void onChannelUpdate(CoreGame game) {
         onProjectileTravelUpdate();
     }
 
@@ -86,6 +86,7 @@ public class VolatileBubble extends Projectile {
 
         }
     }
+
 
     @Override
     public void onCreatureHit(CreatureId creatureId, CoreGame game) {

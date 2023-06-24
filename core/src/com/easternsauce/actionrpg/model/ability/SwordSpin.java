@@ -44,7 +44,7 @@ public class SwordSpin extends DirectionalAttachedAbility {
     }
 
     @Override
-    public void onChannelUpdate(CoreGame game) {
+    protected void onChannelUpdate(CoreGame game) {
         updateDirectionalAttachedAbilityPosition(game);
     }
 
@@ -68,6 +68,7 @@ public class SwordSpin extends DirectionalAttachedAbility {
         creature.applyEffect(CreatureEffect.SELF_SLOW, 0.1f, game);
         creature.getParams().getEffectParams().setCurrentSlowMagnitude(0.3f);
     }
+
 
     @Override
     public void init(CoreGame game) {

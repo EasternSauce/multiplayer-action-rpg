@@ -39,7 +39,7 @@ public class PoisonousCloud extends Ability {
     }
 
     @Override
-    public void onChannelUpdate(CoreGame game) {
+    protected void onChannelUpdate(CoreGame game) {
 
     }
 
@@ -47,6 +47,7 @@ public class PoisonousCloud extends Ability {
     protected void onActiveUpdate(float delta, CoreGame game) {
 
     }
+
 
     @Override
     public void onCreatureHit(CreatureId creatureId, CoreGame game) {

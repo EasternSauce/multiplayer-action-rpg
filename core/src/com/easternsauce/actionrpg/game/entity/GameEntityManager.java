@@ -217,7 +217,7 @@ public class GameEntityManager {
         abilitiesToUpdate.forEach(abilityId -> {
             if (getGameEntityPhysics().getAbilityBodies().containsKey(abilityId)) {
                 Ability ability = game.getGameState().accessAbilities().getAbilities().get(abilityId);
-                if (ability != null && !ability.isPositionChangedOnUpdate() && ability.bodyShouldExist() &&
+                if (ability != null && !ability.isPositionChangedOnUpdate() && !ability.getParams().getIsSkipCreatingBody() &&
                         getGameEntityPhysics().getAbilityBodies().get(abilityId).getIsBodyInitialized()) {
                     ability.getParams().setPos(getGameEntityPhysics().getAbilityBodies().get(abilityId).getBodyPos());
                 }

@@ -24,7 +24,7 @@ public class SummonGhosts extends Ability {
     }
 
     @Override
-    public void onChannelUpdate(CoreGame game) {
+    protected void onChannelUpdate(CoreGame game) {
 
     }
 
@@ -61,6 +61,7 @@ public class SummonGhosts extends Ability {
                         null,
                         game);
     }
+
 
     @Override
     protected boolean isWeaponAttack() {

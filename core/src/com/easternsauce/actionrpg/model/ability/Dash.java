@@ -51,7 +51,7 @@ public class Dash extends DirectionalAttachedAbility {
     }
 
     @Override
-    public void onChannelUpdate(CoreGame game) {
+    protected void onChannelUpdate(CoreGame game) {
         updateDirectionalAttachedAbilityPosition(game);
     }
 

@@ -42,7 +42,7 @@ public class BossSwordSpin extends DirectionalAttachedAbility {
     }
 
     @Override
-    public void onChannelUpdate(CoreGame game) {
+    protected void onChannelUpdate(CoreGame game) {
         updateDirectionalAttachedAbilityPosition(game);
     }
 
@@ -62,6 +62,7 @@ public class BossSwordSpin extends DirectionalAttachedAbility {
 
         creaturesHitRemove.forEach(creatureId -> getParams().getCreaturesAlreadyHit().remove(creatureId));
     }
+
 
     @Override
     public void init(CoreGame game) {

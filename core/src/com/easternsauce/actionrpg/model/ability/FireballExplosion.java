@@ -36,7 +36,7 @@ public class FireballExplosion extends Ability {
     }
 
     @Override
-    public void onChannelUpdate(CoreGame game) {
+    protected void onChannelUpdate(CoreGame game) {
 
     }
 
@@ -44,6 +44,7 @@ public class FireballExplosion extends Ability {
     protected void onActiveUpdate(float delta, CoreGame game) {
 
     }
+
 
     @Override
     protected boolean isWeaponAttack() {

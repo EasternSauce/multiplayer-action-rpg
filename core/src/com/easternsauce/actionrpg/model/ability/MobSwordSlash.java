@@ -38,7 +38,7 @@ public class MobSwordSlash extends DirectionalAttachedAbility {
     }
 
     @Override
-    public void onChannelUpdate(CoreGame game) {
+    protected void onChannelUpdate(CoreGame game) {
         updateDirectionalAttachedAbilityPosition(game);
 
     }
@@ -49,6 +49,7 @@ public class MobSwordSlash extends DirectionalAttachedAbility {
         updateDirectionalAttachedAbilityPosition(game);
 
     }
+
 
     @Override
     public void init(CoreGame game) {

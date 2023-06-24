@@ -5,7 +5,6 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.ability.AbilityId;
-import com.easternsauce.actionrpg.model.ability.AbilityState;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.physics.world.PhysicsWorld;
@@ -87,9 +86,8 @@ public class AbilityBody {
     public void update(CoreGame game) {
         Ability ability = game.getGameState().accessAbilities().getAbilities().get(abilityId);
 
-        if (getIsBodyInitialized() && ability != null && ability.bodyShouldExist()) {
-            if (ability.isPositionChangedOnUpdate() && (ability.getParams().getState() == AbilityState.CHANNEL ||
-                    ability.getParams().getState() == AbilityState.ACTIVE)) {
+        if (getIsBodyInitialized() && ability != null && !ability.getParams().getIsSkipCreatingBody()) {
+            if (ability.isPositionChangedOnUpdate()) {
                 b2body.setTransform(ability.getParams().getPos().getX(), ability.getParams().getPos().getY(), 0f);
             }
 

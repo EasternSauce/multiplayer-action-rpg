@@ -64,7 +64,7 @@ public abstract class Ability implements Entity {
         updateTimers(delta);
     }
 
-    abstract public void onChannelUpdate(CoreGame game);
+    abstract protected void onChannelUpdate(CoreGame game);
 
     private void activate(CoreGame game) {
         //        game.getGameState().accessAbilities().sendActivateAbilityAction(this); // send action to update the server
@@ -140,10 +140,6 @@ public abstract class Ability implements Entity {
 
     public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
 
-    }
-
-    public boolean bodyShouldExist() {
-        return !(getParams().getIsSkipCreatingBody() || getParams().getState() != AbilityState.ACTIVE);
     }
 
     public Float getDamage(CoreGame game) {

@@ -36,7 +36,6 @@ public class AnimationRenderer {
     }
 
     public void render(Vector2 pos, float animationTime, RenderingLayer renderingLayer) {
-        System.out.println("rendering at + " + pos);
         renderingLayer.getSpriteBatch().draw(getFrame(animationTime), pos.getX(), pos.getY(), animationSpec.getRealWidth(), animationSpec.getRealHeight());
     }
 

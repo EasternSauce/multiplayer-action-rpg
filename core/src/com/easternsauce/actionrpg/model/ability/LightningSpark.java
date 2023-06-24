@@ -57,7 +57,7 @@ public class LightningSpark extends Ability {
     }
 
     @Override
-    public void onChannelUpdate(CoreGame game) {
+    protected void onChannelUpdate(CoreGame game) {
 
     }
 
@@ -111,6 +111,7 @@ public class LightningSpark extends Ability {
                             game);
         }
     }
+
 
     @Override
     protected boolean isWeaponAttack() {

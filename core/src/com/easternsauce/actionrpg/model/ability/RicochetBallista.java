@@ -25,7 +25,7 @@ public class RicochetBallista extends Ability {
     }
 
     @Override
-    public void onChannelUpdate(CoreGame game) {
+    protected void onChannelUpdate(CoreGame game) {
 
     }
 
@@ -62,6 +62,7 @@ public class RicochetBallista extends Ability {
                 .accessAbilities()
                 .chainAnotherAbility(this, AbilityType.RICOCHET_BULLET, rightSidePos, params.getDirVector(), null, null, game);
     }
+
 
     @Override
     protected boolean isWeaponAttack() {

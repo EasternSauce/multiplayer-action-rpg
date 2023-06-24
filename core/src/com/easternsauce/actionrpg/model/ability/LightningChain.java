@@ -54,7 +54,7 @@ public class LightningChain extends Ability {
     }
 
     @Override
-    public void onChannelUpdate(CoreGame game) {
+    protected void onChannelUpdate(CoreGame game) {
 
     }
 
@@ -62,6 +62,7 @@ public class LightningChain extends Ability {
     protected void onActiveUpdate(float delta, CoreGame game) {
 
     }
+
 
     @Override
     public void init(CoreGame game) {

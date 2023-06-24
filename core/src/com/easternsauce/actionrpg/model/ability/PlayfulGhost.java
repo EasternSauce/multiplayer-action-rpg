@@ -45,7 +45,7 @@ public class PlayfulGhost extends Projectile {
     }
 
     @Override
-    public void onChannelUpdate(CoreGame game) {
+    protected void onChannelUpdate(CoreGame game) {
         onProjectileTravelUpdate();
     }
 
@@ -104,6 +104,7 @@ public class PlayfulGhost extends Projectile {
             }
         }
     }
+
 
     @Override
     public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {

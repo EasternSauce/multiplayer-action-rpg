@@ -38,6 +38,8 @@ public class AbilityRenderer {
 
         Ability ability = game.getGameState().accessAbilities().getAbilities().get(abilityId);
 
+        if (ability == null) return;
+
         AbilityAnimationConfig animationConfig = ability.animationConfig();
 
         if (animationConfig == null) {
