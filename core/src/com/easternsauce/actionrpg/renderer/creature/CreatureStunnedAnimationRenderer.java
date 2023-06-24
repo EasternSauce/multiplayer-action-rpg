@@ -13,15 +13,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 public class CreatureStunnedAnimationRenderer {
     private Animation<TextureRegion> stunnedAnimation;
-    private CreatureId creatureId;
 
-    public static CreatureStunnedAnimationRenderer of(CreatureId creatureId) {
-        CreatureStunnedAnimationRenderer creatureStunnedAnimationRenderer = CreatureStunnedAnimationRenderer.of();
-        creatureStunnedAnimationRenderer.creatureId = creatureId;
-        return creatureStunnedAnimationRenderer;
-    }
-
-    public void prepareAnimation(TextureAtlas atlas) {
+    public void loadAnimation(TextureAtlas atlas) {
         TextureRegion stunnedAnimationTextureRegion = atlas.findRegion("stunned");
 
         TextureRegion[] frames = new TextureRegion[8];
@@ -32,19 +25,19 @@ public class CreatureStunnedAnimationRenderer {
         this.stunnedAnimation = new Animation<>(0.045f, frames);
     }
 
-    public void render(float spriteWidth, RenderingLayer renderingLayer, CoreGame game) {
+    public void render(CreatureId creatureId, float spriteWidth, RenderingLayer renderingLayer, CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
         if (creature != null && creature.isEffectActive(CreatureEffect.STUN, game)) {
             float posX = creature.getParams().getPos().getX() - 1.5f;
             float posY = LifeBarUtils.getLifeBarPosY(creature, spriteWidth) - 1f;
 
-            renderingLayer.getSpriteBatch().draw(getFrame(game), posX, posY, 3f, 1.5f);
+            renderingLayer.getSpriteBatch().draw(getFrame(creatureId, game), posX, posY, 3f, 1.5f);
         }
 
     }
 
-    private TextureRegion getFrame(CoreGame game) {
+    private TextureRegion getFrame(CreatureId creatureId, CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
         float stunTimeSinceStarted = creature.getTimeSinceStarted(CreatureEffect.STUN, game);

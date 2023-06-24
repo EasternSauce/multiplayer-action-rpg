@@ -18,7 +18,6 @@ import lombok.NoArgsConstructor;
 public class CreatureRenderer {
     private CreatureId creatureId;
     private CreatureSprite creatureSprite;
-    private CreatureStunnedAnimationRenderer creatureStunnedAnimationRenderer;
     private CreatureHitAnimationRenderer creatureHitAnimationRenderer;
 
     public static CreatureRenderer of(CreatureId creatureId) {
@@ -29,15 +28,13 @@ public class CreatureRenderer {
 
     public void init(TextureAtlas atlas, CoreGame game) {
         creatureSprite = CreatureSprite.of(creatureId);
-        creatureStunnedAnimationRenderer = CreatureStunnedAnimationRenderer.of(creatureId);
         creatureHitAnimationRenderer = CreatureHitAnimationRenderer.of(creatureId);
 
         CreatureAnimationConfig config = game.getGameState().accessCreatures().getCreatures().get(creatureId).animationConfig();
 
         creatureSprite.prepareFacingTextures(config, atlas);
         creatureSprite.prepareRunningAnimations(config, atlas);
-        creatureStunnedAnimationRenderer.prepareAnimation(atlas);
-        creatureHitAnimationRenderer.prepareAnimation(atlas);
+        creatureHitAnimationRenderer.loadAnimation(atlas);
     }
 
     public void update(CoreGame game) {

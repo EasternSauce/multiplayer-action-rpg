@@ -22,7 +22,7 @@ public class CreatureHitAnimationRenderer {
         return creatureHitAnimationRenderer;
     }
 
-    public void prepareAnimation(TextureAtlas atlas) {
+    public void loadAnimation(TextureAtlas atlas) {
         TextureRegion textureRegion = atlas.findRegion("circle_explosion");
 
         int frameCount = 10;

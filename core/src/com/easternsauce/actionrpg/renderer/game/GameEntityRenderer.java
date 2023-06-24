@@ -16,6 +16,7 @@ import com.easternsauce.actionrpg.model.creature.Player;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.renderer.*;
 import com.easternsauce.actionrpg.renderer.creature.CreatureRenderer;
+import com.easternsauce.actionrpg.renderer.creature.CreatureStunnedAnimationRenderer;
 import com.easternsauce.actionrpg.renderer.creature.LifeBarUtils;
 import com.easternsauce.actionrpg.renderer.icons.IconRetriever;
 import com.easternsauce.actionrpg.util.Constants;
@@ -61,6 +62,9 @@ public class GameEntityRenderer {
     @Getter
     private Boolean isAreasLoaded = false;
 
+    @Getter
+    private final CreatureStunnedAnimationRenderer creatureStunnedAnimationRenderer = CreatureStunnedAnimationRenderer.of();
+
     public void init(TextureAtlas atlas) {
         mapScale = 4.0f;
 
@@ -75,6 +79,8 @@ public class GameEntityRenderer {
         viewportsHandler.initViewports();
 
         poisonedIcon = atlas.findRegion("poisoned");
+
+        creatureStunnedAnimationRenderer.loadAnimation(atlas);
     }
 
     public void loadAreaRenderers(Map<AreaId, TiledMap> maps, @SuppressWarnings("unused") CoreGame game) {
@@ -97,7 +103,7 @@ public class GameEntityRenderer {
         });
         game.getGameState().accessCreatures().forEachAliveCreature(creature -> {
             if (canCreatureBeRendered(creature, game)) {
-                renderCreatureStunnedAnimation(renderingLayer, creature, game);
+                renderCreatureStunnedAnimation(creature.getId(), renderingLayer, game);
                 renderCreaturePoisonedIcon(renderingLayer, creature, game);
             }
         });
@@ -118,10 +124,10 @@ public class GameEntityRenderer {
 
     }
 
-    private void renderCreatureStunnedAnimation(RenderingLayer renderingLayer, Creature creature, CoreGame game) {
-        CreatureRenderer creatureRenderer = creatureRenderers.get(creature.getId());
+    private void renderCreatureStunnedAnimation(CreatureId creatureId, RenderingLayer renderingLayer, CoreGame game) {
+        CreatureRenderer creatureRenderer = creatureRenderers.get(creatureId);
         float spriteWidth = creatureRenderer.getCreatureSprite().getWidth();
-        creatureRenderer.getCreatureStunnedAnimationRenderer().render(spriteWidth, renderingLayer, game);
+        getCreatureStunnedAnimationRenderer().render(creatureId, spriteWidth, renderingLayer, game);
 
     }
 
