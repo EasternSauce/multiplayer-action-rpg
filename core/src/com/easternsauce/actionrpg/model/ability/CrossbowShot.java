@@ -34,21 +34,21 @@ public class CrossbowShot extends Ability {
     @Override
     protected void onActiveUpdate(float delta, CoreGame game) {
         float[] boltFireTimes = {
-            0f,
-            0.4f,
-            1f,
-            1.2f,
-            1.4f};
+                0f,
+                0.4f,
+                1f,
+                1.2f,
+                1.4f};
 
         Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
 
         if (creature != null && currentBoltToFire < boltFireTimes.length &&
-            getParams().getStateTimer().getTime() > boltFireTimes[currentBoltToFire]) {
+                getParams().getStateTimer().getTime() > boltFireTimes[currentBoltToFire]) {
 
             game
-                .getGameState()
-                .accessAbilities()
-                .chainAnotherAbility(this, AbilityType.CROSSBOW_BOLT, null, getParams().getDirVector(), null, null, game);
+                    .getGameState()
+                    .accessAbilities()
+                    .chainAnotherAbility(this, AbilityType.CROSSBOW_BOLT, null, getParams().getDirVector(), null, null, game);
 
             currentBoltToFire += 1;
         }

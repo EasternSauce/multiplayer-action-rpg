@@ -47,6 +47,8 @@ public class GameEntityRenderer {
     @Getter
     private final IconRetriever iconRetriever = IconRetriever.of();
     @Getter
+    private final CreatureStunnedAnimationRenderer creatureStunnedAnimationRenderer = CreatureStunnedAnimationRenderer.of();
+    @Getter
     private ViewportsHandler viewportsHandler;
     @Getter
     private RenderingLayer worldElementsRenderingLayer;
@@ -58,12 +60,8 @@ public class GameEntityRenderer {
     @Getter
     private Map<AreaId, AreaRenderer> areaRenderers = new HashMap<>();
     private TextureRegion poisonedIcon = null;
-
     @Getter
     private Boolean isAreasLoaded = false;
-
-    @Getter
-    private final CreatureStunnedAnimationRenderer creatureStunnedAnimationRenderer = CreatureStunnedAnimationRenderer.of();
 
     public void init(TextureAtlas atlas) {
         mapScale = 4.0f;
@@ -111,7 +109,7 @@ public class GameEntityRenderer {
 
     private boolean canCreatureBeRendered(Creature creature, CoreGame game) {
         return creatureRenderers.containsKey(creature.getId()) &&
-               GameRendererHelper.isCreatureInCurrentlyVisibleArea(creature, game);
+                GameRendererHelper.isCreatureInCurrentlyVisibleArea(creature, game);
     }
 
     @SuppressWarnings("unused")
@@ -164,13 +162,13 @@ public class GameEntityRenderer {
 
     public void renderPlayerNames(RenderingLayer worldTextRenderingLayer, CoreGame game) {
         game
-            .getGameState()
-            .accessCreatures()
-            .getCreatures()
-            .values()
-            .stream()
-            .filter(creature -> creature.isAlive() && canCreatureBeRendered(creature, game) && creature instanceof Player)
-            .forEach(creature -> creatureRenderers.get(creature.getId()).renderCreatureName(worldTextRenderingLayer, game));
+                .getGameState()
+                .accessCreatures()
+                .getCreatures()
+                .values()
+                .stream()
+                .filter(creature -> creature.isAlive() && canCreatureBeRendered(creature, game) && creature instanceof Player)
+                .forEach(creature -> creatureRenderers.get(creature.getId()).renderCreatureName(worldTextRenderingLayer, game));
     }
 
     public TiledMap loadMap(String filePath) {
@@ -187,19 +185,19 @@ public class GameEntityRenderer {
 
     public void updateDamageNumbers(CoreGame game) {
         Set<DamageNumber> toRemove = damageNumbers
-            .stream()
-            .filter(damageNumber -> damageNumber.getDamageTime() + Constants.DAMAGE_NUMBER_SHOW_DURATION <
-                                    game.getGameState().getTime())
-            .collect(Collectors.toSet());
+                .stream()
+                .filter(damageNumber -> damageNumber.getDamageTime() + Constants.DAMAGE_NUMBER_SHOW_DURATION <
+                        game.getGameState().getTime())
+                .collect(Collectors.toSet());
         damageNumbers.removeAll(toRemove);
     }
 
     public void updateCreatureHitAnimations(CoreGame game) {
         Set<CreatureHitAnimation> toRemove = creatureHitAnimations
-            .stream()
-            .filter(creatureHitAnimation -> creatureHitAnimation.getHitTime() + Constants.DAMAGE_ANIMATION_DURATION <
-                                            game.getGameState().getTime())
-            .collect(Collectors.toSet());
+                .stream()
+                .filter(creatureHitAnimation -> creatureHitAnimation.getHitTime() + Constants.DAMAGE_ANIMATION_DURATION <
+                        game.getGameState().getTime())
+                .collect(Collectors.toSet());
         creatureHitAnimations.removeAll(toRemove);
     }
 

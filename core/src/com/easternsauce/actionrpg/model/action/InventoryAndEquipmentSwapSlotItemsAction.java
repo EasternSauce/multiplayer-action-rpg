@@ -32,6 +32,7 @@ public class InventoryAndEquipmentSwapSlotItemsAction extends GameStateAction {
         return action;
     }
 
+
     @Override
     public void applyToGame(CoreGame game) {
         Creature player = game.getGameState().accessCreatures().getCreature(playerId);
@@ -55,14 +56,13 @@ public class InventoryAndEquipmentSwapSlotItemsAction extends GameStateAction {
 
     private boolean checkInventoryItemSlotTypeMatchesEquipmentSlot(Item inventoryItem) {
         return inventoryItem == null || inventoryItem.getTemplate().getEquipmentSlotType() ==
-                                        EquipmentSlotType.equipmentSlotSequenceNumbers.get(equipmentIndex);
+                EquipmentSlotType.equipmentSlotSequenceNumbers.get(equipmentIndex);
     }
 
     private void handleSwapInEquipment(Creature player, Item equipmentItem) {
         if (equipmentItem != null) {
             player.getParams().getInventoryItems().put(inventoryIndex, equipmentItem);
-        }
-        else {
+        } else {
             player.getParams().getInventoryItems().remove(inventoryIndex);
         }
     }
@@ -70,13 +70,12 @@ public class InventoryAndEquipmentSwapSlotItemsAction extends GameStateAction {
     private void handleSwapInInventory(Creature player, Item inventoryItem) {
         if (inventoryItem != null) {
             player.getParams().getEquipmentItems().put(equipmentIndex, inventoryItem);
-        }
-        else {
+        } else {
             player.getParams().getEquipmentItems().remove(equipmentIndex);
         }
     }
 
-    private static void finalizeItemSwap(Creature player, PlayerConfig playerConfig) {
+    private void finalizeItemSwap(Creature player, PlayerConfig playerConfig) {
         playerConfig.setInventoryItemBeingMoved(null);
         playerConfig.setEquipmentItemBeingMoved(null);
 
@@ -86,7 +85,7 @@ public class InventoryAndEquipmentSwapSlotItemsAction extends GameStateAction {
     }
 
     @SuppressWarnings("SpellCheckingInspection")
-    private static void removeSkillFromSkillMenuOnItemUnequip(Creature player, PlayerConfig playerConfig) {
+    private void removeSkillFromSkillMenuOnItemUnequip(Creature player, PlayerConfig playerConfig) {
         Set<Integer> slotsToRemove = new ConcurrentSkipListSet<>();
         playerConfig.getSkillMenuSlots().forEach((slotIndex, skillType) -> {
             if (!player.availableSkills().containsKey(skillType)) {

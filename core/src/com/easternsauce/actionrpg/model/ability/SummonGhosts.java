@@ -37,29 +37,29 @@ public class SummonGhosts extends Ability {
     protected void onCompleted(CoreGame game) {
         float baseAngle = getParams().getDirVector().angleDeg();
         game
-            .getGameState()
-            .accessAbilities()
-            .chainAnotherAbility(this, AbilityType.PLAYFUL_GHOST, getParams().getPos(), params.getDirVector(), null, null, game);
+                .getGameState()
+                .accessAbilities()
+                .chainAnotherAbility(this, AbilityType.PLAYFUL_GHOST, getParams().getPos(), params.getDirVector(), null, null, game);
         game
-            .getGameState()
-            .accessAbilities()
-            .chainAnotherAbility(this,
-                                 AbilityType.PLAYFUL_GHOST,
-                                 getParams().getPos(),
-                                 params.getDirVector().withSetDegAngle(baseAngle - 30f),
-                                 null,
-                                 null,
-                                 game);
+                .getGameState()
+                .accessAbilities()
+                .chainAnotherAbility(this,
+                        AbilityType.PLAYFUL_GHOST,
+                        getParams().getPos(),
+                        params.getDirVector().withSetDegAngle(baseAngle - 30f),
+                        null,
+                        null,
+                        game);
         game
-            .getGameState()
-            .accessAbilities()
-            .chainAnotherAbility(this,
-                                 AbilityType.PLAYFUL_GHOST,
-                                 getParams().getPos(),
-                                 params.getDirVector().withSetDegAngle(baseAngle + 30f),
-                                 null,
-                                 null,
-                                 game);
+                .getGameState()
+                .accessAbilities()
+                .chainAnotherAbility(this,
+                        AbilityType.PLAYFUL_GHOST,
+                        getParams().getPos(),
+                        params.getDirVector().withSetDegAngle(baseAngle + 30f),
+                        null,
+                        null,
+                        game);
     }
 
     @Override

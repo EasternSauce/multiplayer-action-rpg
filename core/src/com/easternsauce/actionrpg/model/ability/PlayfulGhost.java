@@ -24,17 +24,17 @@ public class PlayfulGhost extends Projectile {
     public static PlayfulGhost of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         PlayfulGhost ability = PlayfulGhost.of();
         ability.params = abilityParams
-            .setWidth(1.5f)
-            .setHeight(1.5f)
-            .setChannelTime(0f)
-            .setActiveTime(10f)
-            .setTextureName("ghost")
-            .setBaseDamage(15f)
-            .setIsChannelAnimationLooping(false)
-            .setIsActiveAnimationLooping(true)
-            .setDelayedActionTime(0.001f)
-            .setSpeed(5f)
-            .setAbilityRngSeed((float) Math.random());
+                .setWidth(1.5f)
+                .setHeight(1.5f)
+                .setChannelTime(0f)
+                .setActiveTime(10f)
+                .setTextureName("ghost")
+                .setBaseDamage(15f)
+                .setIsChannelAnimationLooping(false)
+                .setIsActiveAnimationLooping(true)
+                .setDelayedActionTime(0.001f)
+                .setSpeed(5f)
+                .setAbilityRngSeed((float) Math.random());
 
         return ability;
     }
@@ -60,18 +60,18 @@ public class PlayfulGhost extends Projectile {
         Creature thisCreature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
 
         for (Creature creature : game
-            .getGameState()
-            .accessCreatures()
-            .getCreatures()
-            .values()
-            .stream()
-            .filter(targetCreature ->
+                .getGameState()
+                .accessCreatures()
+                .getCreatures()
+                .values()
+                .stream()
+                .filter(targetCreature ->
                         Objects.equals(targetCreature.getParams().getAreaId().getValue(), getParams().getAreaId().getValue()) &&
-                        !targetCreature.getId().equals(getParams().getCreatureId()) && targetCreature.isAlive() &&
-                        isTargetingAllowed(thisCreature, targetCreature) &&
-                        targetCreature.getParams().getPos().distance(getParams().getPos()) < 10f &&
-                        !getParams().getCreaturesAlreadyHit().containsKey(targetCreature.getId()))
-            .collect(Collectors.toSet())) {
+                                !targetCreature.getId().equals(getParams().getCreatureId()) && targetCreature.isAlive() &&
+                                isTargetingAllowed(thisCreature, targetCreature) &&
+                                targetCreature.getParams().getPos().distance(getParams().getPos()) < 10f &&
+                                !getParams().getCreaturesAlreadyHit().containsKey(targetCreature.getId()))
+                .collect(Collectors.toSet())) {
             if (creature.getParams().getPos().distance(getParams().getPos()) < minDistance) {
                 minCreature = creature;
                 minDistance = creature.getParams().getPos().distance(getParams().getPos());
@@ -91,16 +91,13 @@ public class PlayfulGhost extends Projectile {
 
             if (shortestAngleRotation > increment) {
                 getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(increment));
-            }
-            else if (shortestAngleRotation < -increment) {
+            } else if (shortestAngleRotation < -increment) {
                 getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(-increment));
-            }
-            else {
+            } else {
                 getParams().setDirVector(getParams().getDirVector().withSetDegAngle(targetAngleDeg));
             }
 
-        }
-        else {
+        } else {
             if (getParams().getChangeDirectionTimer().getTime() > 1f) {
                 getParams().getChangeDirectionTimer().restart();
                 getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(nextFloat() * 20f));

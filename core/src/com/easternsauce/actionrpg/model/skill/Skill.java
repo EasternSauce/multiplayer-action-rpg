@@ -42,19 +42,19 @@ public class Skill {
         Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
         if (creature != null && creature.canPerformSkill(this, game) && performTimer.getTime() > cooldown &&
-            (!skillType.getIsDamaging() || creature.getParams().getGeneralSkillPerformCooldownTimer().getTime() >
-                                           Constants.GENERAL_PLAYER_SKILL_PERFORM_COOLDOWN) && !creature.isStunned(game)) {
+                (!skillType.getIsDamaging() || creature.getParams().getGeneralSkillPerformCooldownTimer().getTime() >
+                        Constants.GENERAL_PLAYER_SKILL_PERFORM_COOLDOWN) && !creature.isStunned(game)) {
 
             AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
             AbilityParams abilityParams = AbilityParams
-                .of()
-                .setId(abilityId)
-                .setAreaId(creature.getParams().getAreaId())
-                .setCreatureId(creatureId)
-                .setDirVector(dirVector)
-                .setVectorTowardsTarget(dirVector)
-                .setSkillStartPos(startingPos)
-                .setSkillType(skillType);
+                    .of()
+                    .setId(abilityId)
+                    .setAreaId(creature.getParams().getAreaId())
+                    .setCreatureId(creatureId)
+                    .setDirVector(dirVector)
+                    .setVectorTowardsTarget(dirVector)
+                    .setSkillStartPos(startingPos)
+                    .setSkillType(skillType);
 
             game.getGameState().accessAbilities().spawnAbility(startingAbilityType, abilityParams, game);
 

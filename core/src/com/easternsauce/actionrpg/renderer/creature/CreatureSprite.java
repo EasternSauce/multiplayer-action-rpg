@@ -51,8 +51,7 @@ public class CreatureSprite {
         TextureRegion texture;
         if (!creature.getParams().getMovementParams().getIsMoving() || creature.isStunned(game)) {
             texture = getFacingTexture(creature, creature.facingDirection(game));
-        }
-        else {
+        } else {
             texture = getRunningAnimationFrame(game);
         }
 
@@ -72,8 +71,8 @@ public class CreatureSprite {
         WorldDirection currentDirection = creature.facingDirection(game);
 
         return runningAnimations
-            .get(creature.animationConfig().getDirMap().get(currentDirection))
-            .getKeyFrame(creature.getParams().getAnimationTimer().getTime(), true);
+                .get(creature.animationConfig().getDirMap().get(currentDirection))
+                .getKeyFrame(creature.getParams().getAnimationTimer().getTime(), true);
     }
 
     public void updateForDeadCreature(CoreGame game) {

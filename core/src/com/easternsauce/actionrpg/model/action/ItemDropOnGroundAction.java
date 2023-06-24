@@ -43,13 +43,11 @@ public class ItemDropOnGroundAction extends GameStateAction {
             item = inventoryItems.get(playerConfig.getInventoryItemBeingMoved());
             inventoryItems.remove(playerConfig.getInventoryItemBeingMoved());
             playerConfig.setInventoryItemBeingMoved(null);
-        }
-        else if (playerConfig.getEquipmentItemBeingMoved() != null) {
+        } else if (playerConfig.getEquipmentItemBeingMoved() != null) {
             item = equipmentItems.get(playerConfig.getEquipmentItemBeingMoved());
             equipmentItems.remove(playerConfig.getEquipmentItemBeingMoved());
             playerConfig.setEquipmentItemBeingMoved(null);
-        }
-        else {
+        } else {
             throw new RuntimeException("impossible state");
         }
 

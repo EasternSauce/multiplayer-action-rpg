@@ -31,11 +31,11 @@ public class LootPileItemTryPickUpAction extends GameStateAction {
     public void applyToGame(CoreGame game) {
 
         Map<Integer, Item> inventoryItems = game
-            .getGameState()
-            .accessCreatures()
-            .getCreature(playerId)
-            .getParams()
-            .getInventoryItems();
+                .getGameState()
+                .accessCreatures()
+                .getCreature(playerId)
+                .getParams()
+                .getInventoryItems();
 
         Integer existingStackableSlot = null;
 
@@ -43,7 +43,7 @@ public class LootPileItemTryPickUpAction extends GameStateAction {
 
             for (int i = 0; i < InventoryPositioning.INVENTORY_TOTAL_SLOTS; i++) {
                 if (inventoryItems.containsKey(i) &&
-                    inventoryItems.get(i).getTemplate().getId().equals(item.getTemplate().getId())) {
+                        inventoryItems.get(i).getTemplate().getId().equals(item.getTemplate().getId())) {
                     existingStackableSlot = i;
                     break;
                 }
@@ -55,16 +55,15 @@ public class LootPileItemTryPickUpAction extends GameStateAction {
 
             if (lootPile != null) {
                 inventoryItems
-                    .get(existingStackableSlot)
-                    .setQuantity(inventoryItems.get(existingStackableSlot).getQuantity() + item.getQuantity());
+                        .get(existingStackableSlot)
+                        .setQuantity(inventoryItems.get(existingStackableSlot).getQuantity() + item.getQuantity());
 
                 lootPile.getParams().getItems().remove(item);
                 if (lootPile.getParams().getItems().isEmpty()) {
                     lootPile.getParams().setIsFullyLooted(true);
                 }
             }
-        }
-        else {
+        } else {
             Integer freeSlot = null;
             for (int i = 0; i < InventoryPositioning.INVENTORY_TOTAL_SLOTS; i++) {
                 if (!inventoryItems.containsKey(i)) {
@@ -77,13 +76,13 @@ public class LootPileItemTryPickUpAction extends GameStateAction {
 
             if (freeSlot != null && lootPile != null) {
                 inventoryItems.put(freeSlot,
-                                   Item
-                                       .of()
-                                       .setTemplate(item.getTemplate())
-                                       .setQuantity(item.getQuantity())
-                                       .setQualityModifier(item.getQualityModifier())
-                                       .setGrantedSkills(item.getGrantedSkills())
-                                       .setLootPileId(null));
+                        Item
+                                .of()
+                                .setTemplate(item.getTemplate())
+                                .setQuantity(item.getQuantity())
+                                .setQualityModifier(item.getQualityModifier())
+                                .setGrantedSkills(item.getGrantedSkills())
+                                .setLootPileId(null));
 
                 lootPile.getParams().getItems().remove(item);
                 if (lootPile.getParams().getItems().isEmpty()) {

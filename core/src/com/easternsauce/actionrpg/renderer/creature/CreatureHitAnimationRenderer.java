@@ -43,12 +43,12 @@ public class CreatureHitAnimationRenderer {
         float realWidth = 1.8f;
         float realHeight = 1.8f;
         renderingLayer
-            .getSpriteBatch()
-            .draw(getFrame(timeSinceStarted, game),
-                  creature.getParams().getPos().getX() - realWidth / 2f + vectorTowardsContactPoint.getX(),
-                  creature.getParams().getPos().getY() - realHeight / 2f + vectorTowardsContactPoint.getY(),
-                  realWidth,
-                  realHeight);
+                .getSpriteBatch()
+                .draw(getFrame(timeSinceStarted, game),
+                        creature.getParams().getPos().getX() - realWidth / 2f + vectorTowardsContactPoint.getX(),
+                        creature.getParams().getPos().getY() - realHeight / 2f + vectorTowardsContactPoint.getY(),
+                        realWidth,
+                        realHeight);
 
     }
 

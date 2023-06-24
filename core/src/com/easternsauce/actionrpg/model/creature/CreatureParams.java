@@ -80,9 +80,9 @@ public class CreatureParams implements EntityParams {
 
     public static CreatureParams of(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn) {
         return produceCreatureParams(creatureId,
-                                     areaId,
-                                     enemySpawn.getPos(),
-                                     enemySpawn.getEnemyTemplate().getEnemyType().textureName);
+                areaId,
+                enemySpawn.getPos(),
+                enemySpawn.getEnemyTemplate().getEnemyType().textureName);
     }
 
     private static CreatureParams produceCreatureParams(CreatureId creatureId, AreaId areaId, Vector2 enemySpawn,
@@ -96,15 +96,15 @@ public class CreatureParams implements EntityParams {
         params.textureName = textureName;
 
         Map<SkillType, Skill> allPossibleSkills = Arrays
-            .stream(SkillType.values())
-            .collect(Collectors.toMap(Function.identity(), skillType -> Skill.of(skillType, creatureId)));
+                .stream(SkillType.values())
+                .collect(Collectors.toMap(Function.identity(), skillType -> Skill.of(skillType, creatureId)));
 
         // TODO: should we restrict which creature can perform which skill?
         params.skills = new ConcurrentSkipListMap<>(allPossibleSkills);
 
         Map<CreatureEffect, CreatureEffectState> allPossibleEffects = Arrays
-            .stream(CreatureEffect.values())
-            .collect(Collectors.toMap(effect -> effect, effect -> CreatureEffectState.of()));
+                .stream(CreatureEffect.values())
+                .collect(Collectors.toMap(effect -> effect, effect -> CreatureEffectState.of()));
 
         params.getEffectParams().setEffects(new ConcurrentSkipListMap<>(allPossibleEffects));
 

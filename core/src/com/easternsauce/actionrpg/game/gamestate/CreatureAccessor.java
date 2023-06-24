@@ -61,7 +61,7 @@ public class CreatureAccessor {
             Creature creature = getData().getCreatures().get(creatureId);
             if (creature != null) {
                 return player.getParams().getAreaId().equals(creature.getParams().getAreaId()) &&
-                       creature.getParams().getPos().distance(player.getParams().getPos()) < Constants.CLIENT_GAME_UPDATE_RANGE;
+                        creature.getParams().getPos().distance(player.getParams().getPos()) < Constants.CLIENT_GAME_UPDATE_RANGE;
             }
 
             return false;
@@ -85,12 +85,12 @@ public class CreatureAccessor {
 
     public void forEachDeadCreature(Consumer<Creature> creatureAction) {
         gameState
-            .accessCreatures()
-            .getCreatures()
-            .values()
-            .stream()
-            .filter(creature -> !creature.isAlive())
-            .forEach(creatureAction);
+                .accessCreatures()
+                .getCreatures()
+                .values()
+                .stream()
+                .filter(creature -> !creature.isAlive())
+                .forEach(creatureAction);
     }
 
     // TODO: move to enemy?
@@ -102,12 +102,12 @@ public class CreatureAccessor {
         }
 
         SkillTryPerformAction action = SkillTryPerformAction.of(creatureId,
-                                                                creature
-                                                                    .getParams()
-                                                                    .getEnemyParams()
-                                                                    .getSkillUsePickedSkillType(),
-                                                                creature.getParams().getPos(),
-                                                                vectorTowardsTarget);
+                creature
+                        .getParams()
+                        .getEnemyParams()
+                        .getSkillUsePickedSkillType(),
+                creature.getParams().getPos(),
+                vectorTowardsTarget);
 
         gameState.scheduleServerSideAction(action);
     }
@@ -138,20 +138,20 @@ public class CreatureAccessor {
         Creature creature = gameState.accessCreatures().getCreatures().get(creatureId);
 
         if (!creature
-            .getParams()
-            .getEnemyParams()
-            .getSkillUses()
-            .stream()
-            .map(EnemySkillUseEntry::getSkillType)
-            .collect(Collectors.toSet())
-            .contains(skillType)) {
+                .getParams()
+                .getEnemyParams()
+                .getSkillUses()
+                .stream()
+                .map(EnemySkillUseEntry::getSkillType)
+                .collect(Collectors.toSet())
+                .contains(skillType)) {
             throw new RuntimeException("trying to use a skill that is not in enemy's skill uses!");
         }
 
         SkillTryPerformAction action = SkillTryPerformAction.of(creatureId,
-                                                                skillType,
-                                                                creature.getParams().getPos(),
-                                                                vectorTowardsTarget);
+                skillType,
+                creature.getParams().getPos(),
+                vectorTowardsTarget);
 
         gameState.scheduleServerSideAction(action);
     }

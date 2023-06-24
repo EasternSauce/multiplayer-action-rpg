@@ -39,8 +39,7 @@ public class InventoryItemUseAction extends GameStateAction {
 
                 if (item.getQuantity() == 1) {
                     creature.getParams().getInventoryItems().remove(slotIndex);
-                }
-                else {
+                } else {
                     item.setQuantity(item.getQuantity() - 1);
                 }
             }
@@ -55,8 +54,7 @@ public class InventoryItemUseAction extends GameStateAction {
     private void processUseItem(Creature creature, Item item, CoreGame game) {
         if (item.getTemplate().getId().equals("lifePotion")) {
             creature.applyEffect(CreatureEffect.LIFE_REGENERATION, 3f, game);
-        }
-        else if (item.getTemplate().getId().equals("manaPotion")) {
+        } else if (item.getTemplate().getId().equals("manaPotion")) {
             creature.applyEffect(CreatureEffect.MANA_REGENERATION, 3f, game);
         }
     }

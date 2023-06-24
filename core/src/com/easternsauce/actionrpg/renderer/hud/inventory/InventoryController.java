@@ -23,13 +23,12 @@ public class InventoryController {
 
         if (InventoryPositioning.backgroundOuterRect.contains(x, y)) {
             InventoryData inventoryData = InventoryData.of(InventoryPositioning.getInventorySlotClicked(x, y),
-                                                           InventoryPositioning.getEquipmentSlotClicked(x, y),
-                                                           playerConfig.getInventoryItemBeingMoved(),
-                                                           playerConfig.getEquipmentItemBeingMoved());
+                    InventoryPositioning.getEquipmentSlotClicked(x, y),
+                    playerConfig.getInventoryItemBeingMoved(),
+                    playerConfig.getEquipmentItemBeingMoved());
 
             action = determineInventoryAction(game, player, playerConfig, inventoryData);
-        }
-        else if (playerConfig.getInventoryItemBeingMoved() != null || playerConfig.getEquipmentItemBeingMoved() != null) {
+        } else if (playerConfig.getInventoryItemBeingMoved() != null || playerConfig.getEquipmentItemBeingMoved() != null) {
             action = ItemDropOnGroundAction.of(game.getGameState().getThisClientPlayerId());
         }
 
@@ -43,37 +42,31 @@ public class InventoryController {
         GameStateAction action = null;
         if (inventoryData.getInventoryItemBeingMoved() != null && inventoryData.getInventorySlotClicked() != null) {
             action = InventorySwapSlotItemsAction.of(game.getGameState().getThisClientPlayerId(),
-                                                     inventoryData.getInventoryItemBeingMoved(),
-                                                     inventoryData.getInventorySlotClicked());
-        }
-        else if (inventoryData.getInventoryItemBeingMoved() != null && inventoryData.getEquipmentSlotClicked() != null) {
+                    inventoryData.getInventoryItemBeingMoved(),
+                    inventoryData.getInventorySlotClicked());
+        } else if (inventoryData.getInventoryItemBeingMoved() != null && inventoryData.getEquipmentSlotClicked() != null) {
             action = InventoryAndEquipmentSwapSlotItemsAction.of(game.getGameState().getThisClientPlayerId(),
-                                                                 inventoryData.getInventoryItemBeingMoved(),
-                                                                 inventoryData.getEquipmentSlotClicked());
-        }
-        else if (inventoryData.getEquipmentItemBeingMoved() != null && inventoryData.getInventorySlotClicked() != null) {
+                    inventoryData.getInventoryItemBeingMoved(),
+                    inventoryData.getEquipmentSlotClicked());
+        } else if (inventoryData.getEquipmentItemBeingMoved() != null && inventoryData.getInventorySlotClicked() != null) {
             action = InventoryAndEquipmentSwapSlotItemsAction.of(game.getGameState().getThisClientPlayerId(),
-                                                                 inventoryData.getInventorySlotClicked(),
-                                                                 inventoryData.getEquipmentItemBeingMoved());
-        }
-        else if (inventoryData.getEquipmentItemBeingMoved() != null && inventoryData.getEquipmentSlotClicked() != null) {
+                    inventoryData.getInventorySlotClicked(),
+                    inventoryData.getEquipmentItemBeingMoved());
+        } else if (inventoryData.getEquipmentItemBeingMoved() != null && inventoryData.getEquipmentSlotClicked() != null) {
             action = InventoryPutOnCursorCancelAction.of(game.getGameState().getThisClientPlayerId());
-        }
-        else if (inventoryData.getInventorySlotClicked() != null) {
+        } else if (inventoryData.getInventorySlotClicked() != null) {
             if (player.getParams().getInventoryItems().containsKey(inventoryData.getInventorySlotClicked())) {
                 action = InventoryItemPutOnCursorAction.of(game.getGameState().getThisClientPlayerId(),
-                                                           inventoryData.getInventorySlotClicked());
+                        inventoryData.getInventorySlotClicked());
             }
-        }
-        else if (inventoryData.getEquipmentSlotClicked() != null) {
+        } else if (inventoryData.getEquipmentSlotClicked() != null) {
             if (player.getParams().getEquipmentItems().containsKey(inventoryData.getEquipmentSlotClicked())) {
                 playerConfig.setEquipmentItemBeingMoved(inventoryData.getEquipmentSlotClicked());
 
                 action = EquipmentItemPutOnCursorAction.of(game.getGameState().getThisClientPlayerId(),
-                                                           inventoryData.getEquipmentSlotClicked());
+                        inventoryData.getEquipmentSlotClicked());
             }
-        }
-        else {
+        } else {
             action = InventoryPutOnCursorCancelAction.of(game.getGameState().getThisClientPlayerId());
         }
         return action;
@@ -89,12 +82,12 @@ public class InventoryController {
 
         if (InventoryPositioning.backgroundOuterRect.contains(x, y)) {
             InventoryData inventoryData = InventoryData.of(InventoryPositioning.getInventorySlotClicked(x, y),
-                                                           InventoryPositioning.getEquipmentSlotClicked(x, y),
-                                                           playerConfig.getInventoryItemBeingMoved(),
-                                                           playerConfig.getEquipmentItemBeingMoved());
+                    InventoryPositioning.getEquipmentSlotClicked(x, y),
+                    playerConfig.getInventoryItemBeingMoved(),
+                    playerConfig.getEquipmentItemBeingMoved());
 
             action = InventoryItemUseAction.of(game.getGameState().getThisClientPlayerId(),
-                                               inventoryData.getInventorySlotClicked());
+                    inventoryData.getInventorySlotClicked());
         }
 
         if (action != null) {

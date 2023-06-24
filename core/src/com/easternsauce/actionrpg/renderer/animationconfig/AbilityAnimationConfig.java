@@ -25,7 +25,7 @@ public class AbilityAnimationConfig {
         configs.put("lightning", AbilityAnimationConfig.of(64, 64, "lightning", "lightning", 0, 4, 0f, 0.1f, 1.7f));
 
         configs.put("lightning_chain",
-                    AbilityAnimationConfig.of(64, 192, "lightning_chain", "lightning_chain", 0, 6, 0f, 0.1f, 1.7f));
+                AbilityAnimationConfig.of(64, 192, "lightning_chain", "lightning_chain", 0, 6, 0f, 0.1f, 1.7f));
 
         configs.put("arrow", AbilityAnimationConfig.of(40, 40, "arrow", "arrow", 0, 1, 0f, 0.1f, 1.7f));
 
@@ -46,14 +46,14 @@ public class AbilityAnimationConfig {
         configs.put("poison_cloud", AbilityAnimationConfig.of(200, 200, "poison_cloud", "poison_cloud", 0, 3, 0f, 0.135f, 1f));
 
         configs.put("green_potion_throw",
-                    AbilityAnimationConfig.of(16, 16, "green_potion_throw", "green_potion_throw", 0, 12, 0f, 0.05f, 1f));
+                AbilityAnimationConfig.of(16, 16, "green_potion_throw", "green_potion_throw", 0, 12, 0f, 0.05f, 1f));
 
         configs.put("warp", AbilityAnimationConfig.of(76, 53, "warp", "warp", 0, 16, 0f, 0.04f, 1f));
 
         configs.put("punch", AbilityAnimationConfig.of(40, 40, "punch", "punch", 0, 9, 0f, 0.02f, 1f));
 
         configs.put("ring_of_fire",
-                    AbilityAnimationConfig.of(96, 96, "ring_of_fire_channel", "ring_of_fire_active", 20, 8, 0.02f, 0.02f, 1f));
+                AbilityAnimationConfig.of(96, 96, "ring_of_fire_channel", "ring_of_fire_active", 20, 8, 0.02f, 0.02f, 1f));
 
         configs.put("smoke", AbilityAnimationConfig.of(64, 64, "smoke", "smoke", 0, 6, 0f, 0.022f, 1f));
 

@@ -18,16 +18,16 @@ public class TeleportSource extends Ability {
 
         TeleportSource ability = TeleportSource.of();
         ability.params = abilityParams
-            .setWidth(4.5f)
-            .setHeight(4.5f)
-            .setChannelTime(0f)
-            .setActiveTime(3f)
-            .setTextureName("warp")
-            .setBaseDamage(0f)
-            .setIsChannelAnimationLooping(false)
-            .setIsActiveAnimationLooping(false)
-            .setPos(creature.getParams().getPos())
-            .setDelayedActionTime(0.3f);
+                .setWidth(4.5f)
+                .setHeight(4.5f)
+                .setChannelTime(0f)
+                .setActiveTime(3f)
+                .setTextureName("warp")
+                .setBaseDamage(0f)
+                .setIsChannelAnimationLooping(false)
+                .setIsActiveAnimationLooping(false)
+                .setPos(creature.getParams().getPos())
+                .setDelayedActionTime(0.3f);
 
         return ability;
     }
@@ -57,15 +57,15 @@ public class TeleportSource extends Ability {
     @Override
     public void onDelayedAction(CoreGame game) {
         game
-            .getGameState()
-            .accessAbilities()
-            .chainAnotherAbility(this,
-                                 AbilityType.TELEPORT_DESTINATION,
-                                 getParams().getPos(),
-                                 getParams().getDirVector(),
-                                 null,
-                                 null,
-                                 game);
+                .getGameState()
+                .accessAbilities()
+                .chainAnotherAbility(this,
+                        AbilityType.TELEPORT_DESTINATION,
+                        getParams().getPos(),
+                        getParams().getDirVector(),
+                        null,
+                        null,
+                        game);
     }
 
     @Override

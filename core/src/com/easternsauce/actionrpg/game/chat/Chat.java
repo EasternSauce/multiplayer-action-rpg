@@ -28,8 +28,7 @@ public class Chat {
     public void sendMessage(String posterId, String message, CoreGame game) {
         if (getMessages().size() < 6) {
             getMessages().add(ChatMessage.of(game.getGameState().getTime(), posterId, message));
-        }
-        else {
+        } else {
             List<ChatMessage> newMessages = new ArrayList<>();
             for (int i = 0; i < 5; i++) {
                 newMessages.add(getMessages().get(i + 1));
@@ -42,14 +41,14 @@ public class Chat {
     public void render(RenderingLayer renderingLayer) {
         for (int i = 0; i < Math.min(getMessages().size(), 6); i++) {
             Assets.renderSmallFont(renderingLayer,
-                                   getMessages().get(i).getPoster() + ": " + getMessages().get(i).getText(),
-                                   Vector2.of(30, 220 - 20 * i),
-                                   Color.PURPLE);
+                    getMessages().get(i).getPoster() + ": " + getMessages().get(i).getText(),
+                    Vector2.of(30, 220 - 20 * i),
+                    Color.PURPLE);
         }
 
         Assets.renderSmallFont(renderingLayer,
-                               (getIsTyping() ? "> " : "") + getCurrentMessage(),
-                               Vector2.of(30, 70),
-                               Color.PURPLE);
+                (getIsTyping() ? "> " : "") + getCurrentMessage(),
+                Vector2.of(30, 70),
+                Color.PURPLE);
     }
 }

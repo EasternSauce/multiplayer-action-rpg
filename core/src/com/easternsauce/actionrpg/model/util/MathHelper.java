@@ -10,16 +10,13 @@ public class MathHelper {
         if (Math.abs(alpha) < Math.abs(beta)) {
             if (Math.abs(alpha) < Math.abs(gamma)) {
                 result = alpha;
-            }
-            else {
+            } else {
                 result = gamma;
             }
-        }
-        else {
+        } else {
             if (Math.abs(beta) < Math.abs(gamma)) {
                 result = beta;
-            }
-            else {
+            } else {
                 result = gamma;
             }
         }

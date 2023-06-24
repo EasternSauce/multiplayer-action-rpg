@@ -63,11 +63,11 @@ public abstract class GameState {
 
     public void handleExpiredAbilities(CoreGame game) {
         accessAbilities()
-            .getAbilities()
-            .entrySet()
-            .stream()
-            .filter(entry -> entry.getValue().getParams().getState() == AbilityState.INACTIVE)
-            .forEach(entry -> game.getEventProcessor().getAbilityModelsToBeRemoved().add(entry.getKey()));
+                .getAbilities()
+                .entrySet()
+                .stream()
+                .filter(entry -> entry.getValue().getParams().getState() == AbilityState.INACTIVE)
+                .forEach(entry -> game.getEventProcessor().getAbilityModelsToBeRemoved().add(entry.getKey()));
     }
 
     public AbilityAccessor accessAbilities() {

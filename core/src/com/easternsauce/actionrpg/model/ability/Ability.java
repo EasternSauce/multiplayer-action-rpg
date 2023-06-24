@@ -38,12 +38,11 @@ public abstract class Ability implements Entity {
 
                 getParams().getStateTimer().restart();
             }
-        }
-        else if (state == AbilityState.ACTIVE) {
+        } else if (state == AbilityState.ACTIVE) {
             onActiveUpdate(delta, game);
 
             if (!getParams().getDelayedActionCompleted() && getParams().getDelayedActionTime() != null &&
-                getParams().getStateTimer().getTime() > getParams().getDelayedActionTime()) {
+                    getParams().getStateTimer().getTime() > getParams().getDelayedActionTime()) {
                 getParams().setDelayedActionCompleted(true);
                 onDelayedAction(game);
             }
@@ -51,8 +50,7 @@ public abstract class Ability implements Entity {
             float activeDuration;
             if (getParams().getOverrideDuration() != null) {
                 activeDuration = getParams().getOverrideDuration();
-            }
-            else {
+            } else {
                 activeDuration = getParams().getActiveTime();
             }
 
@@ -101,8 +99,7 @@ public abstract class Ability implements Entity {
         if (creature != null) {
             if (getParams().getChainToPos() != null) {
                 getParams().setPos(getParams().getChainToPos());
-            }
-            else {
+            } else {
                 getParams().setPos(creature.getParams().getPos());
             }
 
@@ -125,8 +122,7 @@ public abstract class Ability implements Entity {
         float activeDuration;
         if (getParams().getOverrideDuration() != null) {
             activeDuration = getParams().getOverrideDuration();
-        }
-        else {
+        } else {
             activeDuration = getParams().getActiveTime();
         }
 
@@ -153,8 +149,7 @@ public abstract class Ability implements Entity {
     public Float getDamage(CoreGame game) {
         if (getParams().getIsPlayerAbility() && isWeaponAttack()) {
             return getParams().getWeaponDamage() * getParams().getDamageMultiplier();
-        }
-        else {
+        } else {
             return getParams().getBaseDamage() * getParams().getDamageMultiplier() * getLevelScaling(game);
         }
     }

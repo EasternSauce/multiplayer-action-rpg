@@ -20,16 +20,16 @@ public class SwordSpin extends DirectionalAttachedAbility {
     public static SwordSpin of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         SwordSpin ability = SwordSpin.of();
         ability.params = abilityParams
-            .setWidth(2.8f)
-            .setHeight(2.8f)
-            .setChannelTime(0f)
-            .setActiveTime(3f)
-            .setRange(2f)
-            .setTextureName("sword")
-            .setBaseDamage(10f)
-            .setIsChannelAnimationLooping(false)
-            .setIsActiveAnimationLooping(false)
-            .setDirVector(abilityParams.getDirVector().withRotatedDegAngle(90));
+                .setWidth(2.8f)
+                .setHeight(2.8f)
+                .setChannelTime(0f)
+                .setActiveTime(3f)
+                .setRange(2f)
+                .setTextureName("sword")
+                .setBaseDamage(10f)
+                .setIsChannelAnimationLooping(false)
+                .setIsActiveAnimationLooping(false)
+                .setDirVector(abilityParams.getDirVector().withRotatedDegAngle(90));
         return ability;
     }
 

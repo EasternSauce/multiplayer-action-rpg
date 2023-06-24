@@ -10,12 +10,10 @@ public abstract class DirectionalAttachedAbility extends Ability {
         Vector2 dirVector;
         if (getParams().getDirVector().len() <= 0) {
             dirVector = Vector2.of(1, 0);
-        }
-        else {
+        } else {
             if (getParams().getDirectionalAttachedAbilityRotationShift() != null) {
                 dirVector = getParams().getDirVector().rotateDeg(getParams().getDirectionalAttachedAbilityRotationShift());
-            }
-            else {
+            } else {
                 dirVector = getParams().getDirVector();
             }
         }

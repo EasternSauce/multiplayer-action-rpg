@@ -28,8 +28,7 @@ public class PlayerInitAction extends GameStateAction {
 
         if (game.getGameState().accessCreatures().getRemovedCreatures().containsKey(playerId)) {
             player = loadExistingPlayerData(game);
-        }
-        else {
+        } else {
             player = createNewPlayer(game);
         }
 
@@ -55,12 +54,12 @@ public class PlayerInitAction extends GameStateAction {
 
     private Creature createNewPlayer(CoreGame game) {
         String[] textures = new String[]{
-            "male1",
-            "male2",
-            "female1"};
+                "male1",
+                "male2",
+                "female1"};
 
         Vector2 pos = Vector2.of(((game.getGameState().nextRandomValue() * (28 - 18)) + 18),
-                                 ((game.getGameState().nextRandomValue() * (12 - 6)) + 6));
+                ((game.getGameState().nextRandomValue() * (12 - 6)) + 6));
 
         String textureName = textures[((int) (Math.random() * 100) % 3)];
 

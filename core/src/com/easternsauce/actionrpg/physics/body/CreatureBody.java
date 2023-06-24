@@ -53,15 +53,14 @@ public class CreatureBody {
                     Vector2 normalizedMovingVector;
 
                     if (creature.isEffectActive(CreatureEffect.SLOW, game) ||
-                        creature.isEffectActive(CreatureEffect.SELF_SLOW, game)) {
+                            creature.isEffectActive(CreatureEffect.SELF_SLOW, game)) {
                         normalizedMovingVector = creature
-                            .getParams()
-                            .getMovementParams()
-                            .getMovingVector()
-                            .normalized()
-                            .multiplyBy(1f - creature.getParams().getEffectParams().getCurrentSlowMagnitude());
-                    }
-                    else {
+                                .getParams()
+                                .getMovementParams()
+                                .getMovingVector()
+                                .normalized()
+                                .multiplyBy(1f - creature.getParams().getEffectParams().getCurrentSlowMagnitude());
+                    } else {
                         normalizedMovingVector = creature.getParams().getMovementParams().getMovingVector().normalized();
                     }
 
@@ -73,12 +72,10 @@ public class CreatureBody {
                     float vectorY = normalizedMovingVector.getY() * v;
 
                     setVelocity(Vector2.of(vectorX, vectorY));
-                }
-                else {
+                } else {
                     setVelocity(Vector2.of(0, 0));
                 }
-            }
-            else {
+            } else {
                 Vector2 normalizedDashingVector = creature.getParams().getMovementParams().getDashingVector().normalized();
 
                 float vectorX = normalizedDashingVector.getX() * creature.getParams().getMovementParams().getDashingVelocity();

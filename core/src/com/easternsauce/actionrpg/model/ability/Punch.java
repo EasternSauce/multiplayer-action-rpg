@@ -13,15 +13,15 @@ public class Punch extends DirectionalAttachedAbility {
     public static Punch of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         Punch ability = Punch.of();
         ability.params = abilityParams
-            .setWidth(1.5f)
-            .setHeight(1.5f)
-            .setChannelTime(0f)
-            .setActiveTime(0.18f)
-            .setRange(1.2f)
-            .setTextureName("punch")
-            .setBaseDamage(10f)
-            .setIsChannelAnimationLooping(false)
-            .setIsActiveAnimationLooping(false);
+                .setWidth(1.5f)
+                .setHeight(1.5f)
+                .setChannelTime(0f)
+                .setActiveTime(0.18f)
+                .setRange(1.2f)
+                .setTextureName("punch")
+                .setBaseDamage(10f)
+                .setIsChannelAnimationLooping(false)
+                .setIsActiveAnimationLooping(false);
         return ability;
     }
 

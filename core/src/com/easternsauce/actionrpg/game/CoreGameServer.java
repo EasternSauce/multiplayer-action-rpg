@@ -92,11 +92,9 @@ public class CoreGameServer extends CoreGame {
                     ActionPerformCommand command = (ActionPerformCommand) object;
 
                     gameState.scheduleServerSideAction(command.getAction());
-                }
-                else if (object instanceof ConnectionInitCommand) {
+                } else if (object instanceof ConnectionInitCommand) {
                     clientIds.add(connection.getID());
-                }
-                else if (object instanceof PlayerInitCommand) {
+                } else if (object instanceof PlayerInitCommand) {
                     PlayerInitCommand command = (PlayerInitCommand) object;
                     PlayerInitAction playerInitAction = PlayerInitAction.of(command.getPlayerId());
 
@@ -106,18 +104,16 @@ public class CoreGameServer extends CoreGame {
                         gameState.scheduleServerSideAction(playerInitAction);
                     }
 
-                }
-                else if (object instanceof ChatMessageSendCommand) {
+                } else if (object instanceof ChatMessageSendCommand) {
                     ChatMessageSendCommand command = (ChatMessageSendCommand) object;
 
                     getEndPoint().sendToAllTCP(command);
-                }
-                else if (object instanceof EnemySpawnCommand) {
+                } else if (object instanceof EnemySpawnCommand) {
                     EnemySpawnCommand command = (EnemySpawnCommand) object;
                     getEntityManager().spawnEnemy(command.getCreatureId(),
-                                                  command.getAreaId(),
-                                                  command.getEnemySpawn(),
-                                                  CoreGameServer.this);
+                            command.getAreaId(),
+                            command.getEnemySpawn(),
+                            CoreGameServer.this);
 
                     getEndPoint().sendToAllTCP(command); // TODO: add to tick actions instead
 
@@ -136,12 +132,11 @@ public class CoreGameServer extends CoreGame {
                     Connection[] connections = getEndPoint().getConnections();
                     for (Connection connection : connections) {
                         if (!getClientPlayers().containsKey(connection.getID()) || !getGameState()
-                            .accessCreatures()
-                            .getCreatures()
-                            .containsKey(getClientPlayers().get(connection.getID()))) {
+                                .accessCreatures()
+                                .getCreatures()
+                                .containsKey(getClientPlayers().get(connection.getID()))) {
                             gameState.sendGameDataWithEntitiesEmpty(connection);
-                        }
-                        else {
+                        } else {
                             gameState.sendGameDataPersonalizedForPlayer(connection);
                         }
                     }
@@ -176,18 +171,18 @@ public class CoreGameServer extends CoreGame {
             }
 
             if (getClientPlayers().containsKey(connection.getID()) &&
-                getGameState().accessCreatures().getCreatures().containsKey(getClientPlayers().get(connection.getID()))) {
+                    getGameState().accessCreatures().getCreatures().containsKey(getClientPlayers().get(connection.getID()))) {
                 Creature player = getGameState().accessCreatures().getCreatures().get(getClientPlayers().get(connection.getID()));
 
                 List<GameStateAction> personalizedTickActions = onTickActions
-                    .stream()
-                    .filter(action -> action.isActionObjectValid(this) && action
-                        .getActionObjectAreaId(this)
-                        .getValue()
-                        .equals(player.getParams().getAreaId().getValue()) &&
-                                      action.getActionObjectPos(this).distance(player.getParams().getPos()) <
-                                      Constants.CLIENT_GAME_UPDATE_RANGE)
-                    .collect(Collectors.toList());
+                        .stream()
+                        .filter(action -> action.isActionObjectValid(this) && action
+                                .getActionObjectAreaId(this)
+                                .getValue()
+                                .equals(player.getParams().getAreaId().getValue()) &&
+                                action.getActionObjectPos(this).distance(player.getParams().getPos()) <
+                                        Constants.CLIENT_GAME_UPDATE_RANGE)
+                        .collect(Collectors.toList());
                 connection.sendTCP(ActionsHolder.of(personalizedTickActions));
             }
 
@@ -203,16 +198,16 @@ public class CoreGameServer extends CoreGame {
         Map<SkillType, Integer> grantedSkills = new ConcurrentSkipListMap<>();
         grantedSkills.put(SkillType.DASH, 1);
         Item leatherArmor = Item
-            .of()
-            .setTemplate(ItemTemplate.templates.get("leatherArmor"))
-            .setQualityModifier(0.9f)
-            .setGrantedSkills(grantedSkills);
+                .of()
+                .setTemplate(ItemTemplate.templates.get("leatherArmor"))
+                .setQualityModifier(0.9f)
+                .setGrantedSkills(grantedSkills);
         Item crossbow = Item.of().setTemplate(ItemTemplate.templates.get("crossbow")).setQualityModifier(0.8f);
 
         gameState.scheduleServerSideAction(LootPileSpawnAction.of(AreaId.of("area3"),
-                                                                  Vector2.of(12, 12),
-                                                                  new ConcurrentSkipListSet<>(Arrays.asList(leatherArmor,
-                                                                                                            crossbow))));
+                Vector2.of(12, 12),
+                new ConcurrentSkipListSet<>(Arrays.asList(leatherArmor,
+                        crossbow))));
 
         AreaGateId area1ToArea3 = AreaGateId.of("area1ToArea3_" + (int) (Math.random() * 10000000));
         AreaGateId area3ToArea1 = AreaGateId.of("area3ToArea1_" + (int) (Math.random() * 10000000));
@@ -222,17 +217,17 @@ public class CoreGameServer extends CoreGame {
         getGameState().getAreaGates().clear();
 
         getGameState()
-            .getAreaGates()
-            .put(area1ToArea3, AreaGate.of(area1ToArea3, 1.5f, 1.5f, Vector2.of(199.5f, 15f), AreaId.of("area1"), area3ToArea1));
+                .getAreaGates()
+                .put(area1ToArea3, AreaGate.of(area1ToArea3, 1.5f, 1.5f, Vector2.of(199.5f, 15f), AreaId.of("area1"), area3ToArea1));
         getGameState()
-            .getAreaGates()
-            .put(area3ToArea1, AreaGate.of(area3ToArea1, 1.5f, 1.5f, Vector2.of(17f, 2.5f), AreaId.of("area3"), area1ToArea3));
+                .getAreaGates()
+                .put(area3ToArea1, AreaGate.of(area3ToArea1, 1.5f, 1.5f, Vector2.of(17f, 2.5f), AreaId.of("area3"), area1ToArea3));
         getGameState()
-            .getAreaGates()
-            .put(area1ToArea2, AreaGate.of(area1ToArea2, 1.5f, 1.5f, Vector2.of(2f, 63f), AreaId.of("area1"), area2ToArea1));
+                .getAreaGates()
+                .put(area1ToArea2, AreaGate.of(area1ToArea2, 1.5f, 1.5f, Vector2.of(2f, 63f), AreaId.of("area1"), area2ToArea1));
         getGameState()
-            .getAreaGates()
-            .put(area2ToArea1, AreaGate.of(area2ToArea1, 1.5f, 1.5f, Vector2.of(58f, 9f), AreaId.of("area2"), area1ToArea2));
+                .getAreaGates()
+                .put(area2ToArea1, AreaGate.of(area2ToArea1, 1.5f, 1.5f, Vector2.of(58f, 9f), AreaId.of("area2"), area1ToArea2));
 
         List<EnemySpawn> enemySpawns1 = EnemySpawnUtils.area1EnemySpawns();
 

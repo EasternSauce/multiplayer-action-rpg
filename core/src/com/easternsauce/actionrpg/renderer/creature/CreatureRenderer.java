@@ -45,8 +45,7 @@ public class CreatureRenderer {
 
         if (creature.isAlive()) {
             creatureSprite.updateForAliveCreature(game, creature);
-        }
-        else {
+        } else {
             creatureSprite.updateForDeadCreature(game);
         }
     }
@@ -60,7 +59,7 @@ public class CreatureRenderer {
 
         if (creature != null) {
             float currentLifeBarWidth = LifeBarUtils.LIFE_BAR_WIDTH * creature.getParams().getStats().getLife() /
-                                        creature.getParams().getStats().getMaxLife();
+                    creature.getParams().getStats().getMaxLife();
             float barPosX = LifeBarUtils.getLifeBarPosX(creature);
             float barPosY = LifeBarUtils.getLifeBarPosY(creature, getCreatureSprite().getWidth());
 

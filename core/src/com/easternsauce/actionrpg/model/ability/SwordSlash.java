@@ -14,15 +14,15 @@ public class SwordSlash extends DirectionalAttachedAbility {
     public static SwordSlash of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         SwordSlash ability = SwordSlash.of();
         ability.params = abilityParams
-            .setWidth(2.5f)
-            .setHeight(2.5f)
-            .setChannelTime(0.15f)
-            .setActiveTime(0.3f)
-            .setRange(1.8f)
-            .setTextureName("slash")
-            .setBaseDamage(22f)
-            .setIsChannelAnimationLooping(false)
-            .setIsActiveAnimationLooping(false);
+                .setWidth(2.5f)
+                .setHeight(2.5f)
+                .setChannelTime(0.15f)
+                .setActiveTime(0.3f)
+                .setRange(1.8f)
+                .setTextureName("slash")
+                .setBaseDamage(22f)
+                .setIsChannelAnimationLooping(false)
+                .setIsActiveAnimationLooping(false);
         return ability;
     }
 

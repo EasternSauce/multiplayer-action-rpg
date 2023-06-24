@@ -11,9 +11,9 @@ public class ItemPickupMenuPositioning {
 
     public static Rect getMenuOptionRect(int i) {
         return Rect.of(ItemPickupMenuPositioning.POS_X,
-                       ItemPickupMenuPositioning.POS_Y + 25f * i,
-                       ItemPickupMenuPositioning.WIDTH,
-                       ItemPickupMenuPositioning.HEIGHT);
+                ItemPickupMenuPositioning.POS_Y + 25f * i,
+                ItemPickupMenuPositioning.WIDTH,
+                ItemPickupMenuPositioning.HEIGHT);
     }
 
 }
