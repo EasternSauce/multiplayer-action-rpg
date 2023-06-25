@@ -8,8 +8,8 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.area.AreaId;
-import com.easternsauce.actionrpg.physics.util.PhysicsHelper;
-import com.easternsauce.actionrpg.renderer.util.GameplayRendererHelper;
+import com.easternsauce.actionrpg.physics.util.PhysicsEventQueueProcessor;
+import com.easternsauce.actionrpg.renderer.util.GameplayRenderer;
 import com.easternsauce.actionrpg.util.Constants;
 import lombok.NoArgsConstructor;
 
@@ -19,9 +19,10 @@ import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
 public class GameplayScreen implements Screen {
+    private final PhysicsEventQueueProcessor processPhysicsEventQueueProcessor = PhysicsEventQueueProcessor.of();
+    private final GameplayRenderer gameplayRenderer = GameplayRenderer.of();
     private CoreGame game;
     private Map<AreaId, TiledMap> maps;
-
     private TextureAtlas atlas;
 
     public void init(TextureAtlas atlas, CoreGame game) {
@@ -105,8 +106,8 @@ public class GameplayScreen implements Screen {
 
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | coverageBuffer);
 
-            GameplayRendererHelper.updateRenderer(game);
-            GameplayRendererHelper.renderGameplay(game);
+            gameplayRenderer.updateRenderer(game);
+            gameplayRenderer.renderGameplay(game);
 
             game.getHudRenderer().render(game);
 
@@ -119,7 +120,7 @@ public class GameplayScreen implements Screen {
     public void update(float delta) {
         game.performPhysicsWorldStep();
 
-        PhysicsHelper.handleForceUpdateBodyPositions(game);
+        handleForceUpdateBodyPositions(game);
 
         game.onUpdate();
         game.getGameState().handleExpiredAbilities(game);
@@ -147,7 +148,7 @@ public class GameplayScreen implements Screen {
             game
         );
 
-        PhysicsHelper.processPhysicsEventQueue(game);
+        processPhysicsEventQueueProcessor.process(game);
 
         if (game.getGameState().getThisClientPlayerId() != null &&
             game.getGameState().accessCreatures().getCreature(game.getGameState().getThisClientPlayerId()) != null) {
@@ -159,6 +160,36 @@ public class GameplayScreen implements Screen {
                 maps,
                 game
             );
+        }
+    }
+
+    private void handleForceUpdateBodyPositions(CoreGame game) {
+        if (game.isForceUpdateBodyPositions()) { // only runs after receiving gameState state update
+            game.setForceUpdateBodyPositions(false);
+
+            game.getGameState().accessCreatures().getCreatures().forEach((creatureId, creature) -> {
+                if (game.getCreatureBodies().containsKey(creatureId) &&
+                    game.getCreatureBodies().get(creatureId).getBodyPos().distance(creature.getParams().getPos()) >
+                        Constants.FORCE_UPDATE_MINIMUM_DISTANCE // only setTransform if positions
+                    // are far apart
+                ) {
+                    game.getCreatureBodies().get(creatureId).trySetTransform(creature.getParams().getPos());
+                }
+            });
+
+            game.getGameState().accessAbilities().getAbilities().forEach((abilityId, ability) -> {
+                //noinspection SpellCheckingInspection
+                if (game.getAbilityBodies().containsKey(abilityId) &&
+                    game.getAbilityBodies().get(abilityId).getIsBodyInitialized() &&
+                    // this is needed to fix body created client/server desync
+                    !ability.getParams().getIsSkipCreatingBody() &&
+                    game.getAbilityBodies().get(abilityId).getBodyPos().distance(ability.getParams().getPos()) >
+                        Constants.FORCE_UPDATE_MINIMUM_DISTANCE
+                    // only setTransform if positions are far apart
+                ) {
+                    game.getAbilityBodies().get(abilityId).trySetTransform(ability.getParams().getPos());
+                }
+            });
         }
     }
 

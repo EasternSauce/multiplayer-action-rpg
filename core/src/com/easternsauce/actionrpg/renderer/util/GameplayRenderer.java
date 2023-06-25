@@ -7,12 +7,14 @@ import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
 import com.easternsauce.actionrpg.renderer.game.GameEntityRenderer;
 import com.easternsauce.actionrpg.util.Constants;
+import lombok.NoArgsConstructor;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class GameplayRendererHelper {
-    public static void renderGameplay(CoreGame game) {
+@NoArgsConstructor(staticName = "of")
+public class GameplayRenderer {
+    public void renderGameplay(CoreGame game) {
         GameEntityRenderer renderer = game.getEntityManager().getGameEntityRenderer();
         RenderingLayer worldElementsRenderingLayer = renderer.getWorldElementsRenderingLayer();
         RenderingLayer worldTextRenderingLayer = renderer.getWorldTextRenderingLayer();
@@ -66,16 +68,16 @@ public class GameplayRendererHelper {
         game.renderB2BodyDebug();
     }
 
-    private static void renderAreaLayers(GameEntityRenderer renderer, List<Integer> layers, CoreGame game) {
+    private void renderAreaLayers(GameEntityRenderer renderer, List<Integer> layers, CoreGame game) {
         int[] layersArray = layers.stream().mapToInt(Integer::intValue).toArray();
         if (renderer.getAreaRenderers().containsKey(game.getGameState().getCurrentAreaId())) {
             renderer.getAreaRenderers().get(game.getGameState().getCurrentAreaId()).render(layersArray);
         }
     }
 
-    private static void renderWorldElements(GameEntityRenderer renderer,
-                                            RenderingLayer worldElementsRenderingLayer,
-                                            CoreGame game) {
+    private void renderWorldElements(GameEntityRenderer renderer,
+                                     RenderingLayer worldElementsRenderingLayer,
+                                     CoreGame game) {
         worldElementsRenderingLayer.getSpriteBatch().begin();
 
         renderer.renderAreaGates(
@@ -98,9 +100,7 @@ public class GameplayRendererHelper {
         worldElementsRenderingLayer.end();
     }
 
-    private static void renderWorldText(GameEntityRenderer renderer,
-                                        RenderingLayer worldTextRenderingLayer,
-                                        CoreGame game) {
+    private void renderWorldText(GameEntityRenderer renderer, RenderingLayer worldTextRenderingLayer, CoreGame game) {
         worldTextRenderingLayer.begin();
 
         renderer.renderPlayerNames(
@@ -111,9 +111,9 @@ public class GameplayRendererHelper {
         worldTextRenderingLayer.end();
     }
 
-    private static void renderAbilities(GameEntityRenderer renderer,
-                                        RenderingLayer worldElementsRenderingLayer,
-                                        CoreGame game) {
+    private void renderAbilities(GameEntityRenderer renderer,
+                                 RenderingLayer worldElementsRenderingLayer,
+                                 CoreGame game) {
         worldElementsRenderingLayer.begin();
 
         renderer.renderAbilities(
@@ -124,9 +124,9 @@ public class GameplayRendererHelper {
         worldElementsRenderingLayer.end();
     }
 
-    private static void renderCreatureHitAnimations(GameEntityRenderer renderer,
-                                                    RenderingLayer worldElementsRenderingLayer,
-                                                    CoreGame game) {
+    private void renderCreatureHitAnimations(GameEntityRenderer renderer,
+                                             RenderingLayer worldElementsRenderingLayer,
+                                             CoreGame game) {
         worldElementsRenderingLayer.begin();
 
         renderer.getCreatureHitAnimations().stream().filter(creatureHitAnimation -> creatureHitAnimation
@@ -145,9 +145,9 @@ public class GameplayRendererHelper {
         worldElementsRenderingLayer.end();
     }
 
-    private static void renderDamageNumbers(GameEntityRenderer renderer,
-                                            RenderingLayer worldTextRenderingLayer,
-                                            CoreGame game) {
+    private void renderDamageNumbers(GameEntityRenderer renderer,
+                                     RenderingLayer worldTextRenderingLayer,
+                                     CoreGame game) {
         worldTextRenderingLayer.begin();
 
         renderer.getDamageNumbers().stream().filter(damageNumber -> damageNumber
@@ -183,7 +183,7 @@ public class GameplayRendererHelper {
         worldTextRenderingLayer.end();
     }
 
-    public static void updateRenderer(CoreGame game) {
+    public void updateRenderer(CoreGame game) {
         GameEntityRenderer renderer = game.getEntityManager().getGameEntityRenderer();
 
         renderer.updateDamageNumbers(game);

@@ -11,11 +11,11 @@ import com.easternsauce.actionrpg.model.util.PlayerConfig;
 import com.easternsauce.actionrpg.model.util.TeleportEvent;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.physics.event.*;
-import com.easternsauce.actionrpg.util.Constants;
+import lombok.NoArgsConstructor;
 
-public class PhysicsHelper {
-
-    public static void processPhysicsEventQueue(CoreGame game) {
+@NoArgsConstructor(staticName = "of")
+public class PhysicsEventQueueProcessor {
+    public void process(CoreGame game) {
         game.getPhysicsEventQueue().forEach(physicsEvent -> {
             if (physicsEvent instanceof AbilityHitsCreatureEvent) {
                 AbilityHitsCreatureEvent event = (AbilityHitsCreatureEvent) physicsEvent;
@@ -128,7 +128,7 @@ public class PhysicsHelper {
 
     }
 
-    private static void handleCreatureAttacked(AbilityHitsCreatureEvent event, CoreGame game) {
+    private void handleCreatureAttacked(AbilityHitsCreatureEvent event, CoreGame game) {
         Creature sourceCreature = game.getGameState().accessCreatures().getCreature(event.getSourceCreatureId());
         Creature destinationCreature = game
             .getGameState()
@@ -157,7 +157,7 @@ public class PhysicsHelper {
         }
     }
 
-    private static Vector2 calculateContactPoint(Creature destinationCreature, Ability ability) {
+    private Vector2 calculateContactPoint(Creature destinationCreature, Ability ability) {
         Vector2 creaturePos = destinationCreature.getParams().getPos();
         Vector2 abilityPos = ability.getParams().getPos();
         Float creatureRadius = destinationCreature.animationConfig().getSpriteWidth();
@@ -172,33 +172,4 @@ public class PhysicsHelper {
         return contactPoint;
     }
 
-    public static void handleForceUpdateBodyPositions(CoreGame game) {
-        if (game.isForceUpdateBodyPositions()) { // only runs after receiving gameState state update
-            game.setForceUpdateBodyPositions(false);
-
-            game.getGameState().accessCreatures().getCreatures().forEach((creatureId, creature) -> {
-                if (game.getCreatureBodies().containsKey(creatureId) &&
-                    game.getCreatureBodies().get(creatureId).getBodyPos().distance(creature.getParams().getPos()) >
-                        Constants.FORCE_UPDATE_MINIMUM_DISTANCE // only setTransform if positions
-                    // are far apart
-                ) {
-                    game.getCreatureBodies().get(creatureId).trySetTransform(creature.getParams().getPos());
-                }
-            });
-
-            game.getGameState().accessAbilities().getAbilities().forEach((abilityId, ability) -> {
-                //noinspection SpellCheckingInspection
-                if (game.getAbilityBodies().containsKey(abilityId) &&
-                    game.getAbilityBodies().get(abilityId).getIsBodyInitialized() &&
-                    // this is needed to fix body created client/server desync
-                    !ability.getParams().getIsSkipCreatingBody() &&
-                    game.getAbilityBodies().get(abilityId).getBodyPos().distance(ability.getParams().getPos()) >
-                        Constants.FORCE_UPDATE_MINIMUM_DISTANCE
-                    // only setTransform if positions are far apart
-                ) {
-                    game.getAbilityBodies().get(abilityId).trySetTransform(ability.getParams().getPos());
-                }
-            });
-        }
-    }
 }

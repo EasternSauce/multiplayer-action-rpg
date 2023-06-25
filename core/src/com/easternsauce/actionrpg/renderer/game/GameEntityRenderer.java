@@ -162,7 +162,7 @@ public class GameEntityRenderer {
     }
 
     private boolean canCreatureBeRendered(Creature creature, CoreGame game) {
-        return creatureRenderers.containsKey(creature.getId()) && GameRendererHelper.isCreatureInCurrentlyVisibleArea(
+        return creatureRenderers.containsKey(creature.getId()) && isCreatureInCurrentlyVisibleArea(
             creature,
             game
         );
@@ -214,6 +214,10 @@ public class GameEntityRenderer {
                 1f
             );
         }
+    }
+
+    private boolean isCreatureInCurrentlyVisibleArea(Creature creature, CoreGame game) {
+        return creature.getParams().getAreaId().equals(game.getGameState().getCurrentAreaId());
     }
 
     public void renderDeadCreatures(RenderingLayer renderingLayer, CoreGame game) {

@@ -25,7 +25,6 @@ import com.easternsauce.actionrpg.renderer.hud.inventory.InventoryController;
 import com.easternsauce.actionrpg.renderer.hud.itempickupmenu.ItemPickupMenuController;
 import com.easternsauce.actionrpg.renderer.hud.skillmenu.SkillMenuController;
 import com.easternsauce.actionrpg.util.Constants;
-import com.easternsauce.actionrpg.util.EndPointHelper;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -378,7 +377,7 @@ public class CoreGameClient extends CoreGame {
             6400000,
             6400000
         ));
-        EndPointHelper.registerEndPointClasses(getEndPoint());
+        getEndPoint().getKryo().setRegistrationRequired(false);
         getEndPoint().start();
         getEndPoint().connect(
             12000 * 99999,

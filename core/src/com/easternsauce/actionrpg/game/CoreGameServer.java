@@ -20,7 +20,6 @@ import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.physics.world.PhysicsWorld;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
 import com.easternsauce.actionrpg.util.Constants;
-import com.easternsauce.actionrpg.util.EndPointHelper;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
@@ -67,7 +66,7 @@ public class CoreGameServer extends CoreGame {
             6400000,
             6400000
         ));
-        EndPointHelper.registerEndPointClasses(getEndPoint());
+        getEndPoint().getKryo().setRegistrationRequired(false);
         getEndPoint().start();
 
         try {
