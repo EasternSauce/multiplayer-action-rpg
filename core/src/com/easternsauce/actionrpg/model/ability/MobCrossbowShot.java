@@ -96,7 +96,6 @@ public class MobCrossbowShot extends Ability {
         }
     }
 
-
     @Override
     protected boolean isWeaponAttack() {
         return true;
@@ -112,13 +111,11 @@ public class MobCrossbowShot extends Ability {
         return false;
     }
 
-    private Vector2 calculateShootingVectorForNextBolt(
-        Vector2 currentDirVector,
-        Vector2 aimDirection,
-        float shortestAngleRotation,
-        float increment,
-        @SuppressWarnings("unused") CoreGame game
-    ) {
+    private Vector2 calculateShootingVectorForNextBolt(Vector2 currentDirVector,
+                                                       Vector2 aimDirection,
+                                                       float shortestAngleRotation,
+                                                       float increment,
+                                                       @SuppressWarnings("unused") CoreGame game) {
         float aimDirectionMaximumAngle = 60;
         if (shortestAngleRotation < -aimDirectionMaximumAngle || shortestAngleRotation > aimDirectionMaximumAngle) {
             return currentDirVector.copy();

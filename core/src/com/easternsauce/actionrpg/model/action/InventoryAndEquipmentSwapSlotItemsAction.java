@@ -23,18 +23,15 @@ public class InventoryAndEquipmentSwapSlotItemsAction extends GameStateAction {
     private Integer inventoryIndex;
     private Integer equipmentIndex;
 
-    public static InventoryAndEquipmentSwapSlotItemsAction of(
-        CreatureId creatureId,
-        Integer inventoryIndex,
-        Integer equipmentIndex
-    ) {
+    public static InventoryAndEquipmentSwapSlotItemsAction of(CreatureId creatureId,
+                                                              Integer inventoryIndex,
+                                                              Integer equipmentIndex) {
         InventoryAndEquipmentSwapSlotItemsAction action = InventoryAndEquipmentSwapSlotItemsAction.of();
         action.playerId = creatureId;
         action.inventoryIndex = inventoryIndex;
         action.equipmentIndex = equipmentIndex;
         return action;
     }
-
 
     @Override
     public void applyToGame(CoreGame game) {

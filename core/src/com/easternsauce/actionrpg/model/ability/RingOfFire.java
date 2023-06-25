@@ -57,7 +57,6 @@ public class RingOfFire extends Ability {
         updatePosition(game);
     }
 
-
     @Override
     protected boolean isWeaponAttack() {
         return false;

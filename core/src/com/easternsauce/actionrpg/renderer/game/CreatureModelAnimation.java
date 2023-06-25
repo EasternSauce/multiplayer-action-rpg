@@ -38,11 +38,9 @@ public class CreatureModelAnimation {
         return facingTextures.get(animationConfig.getDirMap().get(direction));
     }
 
-    public TextureRegion getRunningAnimationFrame(
-        String textureName,
-        WorldDirection facingDirection,
-        float animationTime
-    ) {
+    public TextureRegion getRunningAnimationFrame(String textureName,
+                                                  WorldDirection facingDirection,
+                                                  float animationTime) {
         CreatureAnimationConfig animationConfig = CreatureAnimationConfig.configs.get(textureName);
 
         return runningAnimations.get(animationConfig.getDirMap().get(facingDirection)).getKeyFrame(

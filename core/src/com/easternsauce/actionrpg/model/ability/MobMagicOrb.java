@@ -114,7 +114,6 @@ public class MobMagicOrb extends Projectile {
 
     }
 
-
     @Override
     public void onCreatureHit(CreatureId creatureId, CoreGame game) {
         deactivate();

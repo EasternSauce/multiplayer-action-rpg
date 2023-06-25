@@ -50,7 +50,6 @@ public class MobSwordSlash extends DirectionalAttachedAbility {
 
     }
 
-
     @Override
     public void init(CoreGame game) {
 

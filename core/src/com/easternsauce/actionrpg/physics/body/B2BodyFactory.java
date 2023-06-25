@@ -35,17 +35,15 @@ public class B2BodyFactory {
 
     }
 
-    public static Body createB2Body(
-        PhysicsWorld world,
-        Vector2 pos,
-        BodyType bodyType,
-        Object userData,
-        BodyShape shape,
-        Boolean isSensor,
-        Boolean sleepingAllowed,
-        Float linearDamping,
-        Float mass
-    ) {
+    public static Body createB2Body(PhysicsWorld world,
+                                    Vector2 pos,
+                                    BodyType bodyType,
+                                    Object userData,
+                                    BodyShape shape,
+                                    Boolean isSensor,
+                                    Boolean sleepingAllowed,
+                                    Float linearDamping,
+                                    Float mass) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = bodyType;
         bodyDef.position.set(
@@ -108,13 +106,11 @@ public class B2BodyFactory {
         );
     }
 
-    public static Body createAreaGateB2body(
-        PhysicsWorld world,
-        AreaGateBody areaGateBody,
-        Vector2 pos,
-        float width,
-        float height
-    ) {
+    public static Body createAreaGateB2body(PhysicsWorld world,
+                                            AreaGateBody areaGateBody,
+                                            Vector2 pos,
+                                            float width,
+                                            float height) {
         return createB2Body(
             world,
             pos,
@@ -131,13 +127,11 @@ public class B2BodyFactory {
         );
     }
 
-    public static Body createLootPileB2body(
-        PhysicsWorld world,
-        LootPileBody areaGateBody,
-        Vector2 pos,
-        float width,
-        float height
-    ) {
+    public static Body createLootPileB2body(PhysicsWorld world,
+                                            LootPileBody areaGateBody,
+                                            Vector2 pos,
+                                            float width,
+                                            float height) {
         return createB2Body(
             world,
             pos,

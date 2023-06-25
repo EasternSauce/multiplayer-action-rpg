@@ -56,7 +56,6 @@ public class IceSpear extends Projectile {
         }
     }
 
-
     @Override
     public void onCreatureHit(CreatureId creatureId, CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);

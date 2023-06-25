@@ -24,12 +24,10 @@ public class SkillTryPerformAction extends GameStateAction {
 
     private Float damage;
 
-    public static SkillTryPerformAction of(
-        CreatureId creatureId,
-        SkillType skillType,
-        Vector2 startingPos,
-        Vector2 dirVector
-    ) {
+    public static SkillTryPerformAction of(CreatureId creatureId,
+                                           SkillType skillType,
+                                           Vector2 startingPos,
+                                           Vector2 dirVector) {
         SkillTryPerformAction action = SkillTryPerformAction.of();
         action.creatureId = creatureId;
         action.skillType = skillType;
@@ -38,13 +36,11 @@ public class SkillTryPerformAction extends GameStateAction {
         return action;
     }
 
-    public static SkillTryPerformAction of(
-        CreatureId creatureId,
-        SkillType skillType,
-        Vector2 startingPos,
-        Vector2 dirVector,
-        Float damage
-    ) {
+    public static SkillTryPerformAction of(CreatureId creatureId,
+                                           SkillType skillType,
+                                           Vector2 startingPos,
+                                           Vector2 dirVector,
+                                           Float damage) {
         SkillTryPerformAction action = SkillTryPerformAction.of();
         action.creatureId = creatureId;
         action.skillType = skillType;

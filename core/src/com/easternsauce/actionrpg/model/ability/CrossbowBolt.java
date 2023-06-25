@@ -44,7 +44,6 @@ public class CrossbowBolt extends Projectile {
         onProjectileTravelUpdate();
     }
 
-
     @Override
     public void onCreatureHit(CreatureId creatureId, CoreGame game) {
         deactivate();

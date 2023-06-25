@@ -96,7 +96,6 @@ public class TeleportDestination extends Ability {
 
     }
 
-
     @Override
     protected boolean isWeaponAttack() {
         return false;

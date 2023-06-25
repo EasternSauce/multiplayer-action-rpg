@@ -17,13 +17,11 @@ public class TerrainTileBody {
     Body b2body;
     com.badlogic.gdx.math.Polygon polygon;
 
-    public static TerrainTileBody of(
-        Vector2Int pos,
-        Float tileWidth,
-        Float tileHeight,
-        Integer layer,
-        Boolean isFlyover
-    ) {
+    public static TerrainTileBody of(Vector2Int pos,
+                                     Float tileWidth,
+                                     Float tileHeight,
+                                     Integer layer,
+                                     Boolean isFlyover) {
         TerrainTileBody body = new TerrainTileBody();
         body.pos = pos;
         body.tileWidth = tileWidth;

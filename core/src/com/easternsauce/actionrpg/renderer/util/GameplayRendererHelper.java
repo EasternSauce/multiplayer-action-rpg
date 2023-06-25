@@ -73,11 +73,9 @@ public class GameplayRendererHelper {
         }
     }
 
-    private static void renderWorldElements(
-        GameEntityRenderer renderer,
-        RenderingLayer worldElementsRenderingLayer,
-        CoreGame game
-    ) {
+    private static void renderWorldElements(GameEntityRenderer renderer,
+                                            RenderingLayer worldElementsRenderingLayer,
+                                            CoreGame game) {
         worldElementsRenderingLayer.getSpriteBatch().begin();
 
         renderer.renderAreaGates(
@@ -100,11 +98,9 @@ public class GameplayRendererHelper {
         worldElementsRenderingLayer.end();
     }
 
-    private static void renderWorldText(
-        GameEntityRenderer renderer,
-        RenderingLayer worldTextRenderingLayer,
-        CoreGame game
-    ) {
+    private static void renderWorldText(GameEntityRenderer renderer,
+                                        RenderingLayer worldTextRenderingLayer,
+                                        CoreGame game) {
         worldTextRenderingLayer.begin();
 
         renderer.renderPlayerNames(
@@ -115,11 +111,9 @@ public class GameplayRendererHelper {
         worldTextRenderingLayer.end();
     }
 
-    private static void renderAbilities(
-        GameEntityRenderer renderer,
-        RenderingLayer worldElementsRenderingLayer,
-        CoreGame game
-    ) {
+    private static void renderAbilities(GameEntityRenderer renderer,
+                                        RenderingLayer worldElementsRenderingLayer,
+                                        CoreGame game) {
         worldElementsRenderingLayer.begin();
 
         renderer.renderAbilities(
@@ -130,11 +124,9 @@ public class GameplayRendererHelper {
         worldElementsRenderingLayer.end();
     }
 
-    private static void renderCreatureHitAnimations(
-        GameEntityRenderer renderer,
-        RenderingLayer worldElementsRenderingLayer,
-        CoreGame game
-    ) {
+    private static void renderCreatureHitAnimations(GameEntityRenderer renderer,
+                                                    RenderingLayer worldElementsRenderingLayer,
+                                                    CoreGame game) {
         worldElementsRenderingLayer.begin();
 
         renderer.getCreatureHitAnimations().stream().filter(creatureHitAnimation -> creatureHitAnimation
@@ -153,11 +145,9 @@ public class GameplayRendererHelper {
         worldElementsRenderingLayer.end();
     }
 
-    private static void renderDamageNumbers(
-        GameEntityRenderer renderer,
-        RenderingLayer worldTextRenderingLayer,
-        CoreGame game
-    ) {
+    private static void renderDamageNumbers(GameEntityRenderer renderer,
+                                            RenderingLayer worldTextRenderingLayer,
+                                            CoreGame game) {
         worldTextRenderingLayer.begin();
 
         renderer.getDamageNumbers().stream().filter(damageNumber -> damageNumber

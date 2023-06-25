@@ -46,7 +46,6 @@ public class Punch extends DirectionalAttachedAbility {
         updateDirectionalAttachedAbilityPosition(game);
     }
 
-
     @Override
     public void init(CoreGame game) {
 

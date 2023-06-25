@@ -59,7 +59,6 @@ public class CrossbowShot extends Ability {
         }
     }
 
-
     @Override
     protected boolean isWeaponAttack() {
         return true;

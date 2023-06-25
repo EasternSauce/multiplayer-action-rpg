@@ -196,14 +196,12 @@ public enum SkillType {
     @Getter
     Float manaCost;
 
-    SkillType(
-        String prettyName,
-        Boolean isDamaging,
-        AbilityType startingAbilityType,
-        Float cooldown,
-        Float staminaCost,
-        Float manaCost
-    ) {
+    SkillType(String prettyName,
+              Boolean isDamaging,
+              AbilityType startingAbilityType,
+              Float cooldown,
+              Float staminaCost,
+              Float manaCost) {
         this.prettyName = prettyName;
         this.isDamaging = isDamaging;
         this.startingAbilityType = startingAbilityType;

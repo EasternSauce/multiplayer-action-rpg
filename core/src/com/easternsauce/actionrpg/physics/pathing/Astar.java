@@ -189,13 +189,11 @@ public class Astar {
         return pathingNodes;
     }
 
-    public static void tryAddEdge(
-        Map<Vector2Int, PathingNode> pathingNodes,
-        PhysicsWorld world,
-        Vector2Int fromPos,
-        Vector2Int toPos,
-        Float weight
-    ) {
+    public static void tryAddEdge(Map<Vector2Int, PathingNode> pathingNodes,
+                                  PhysicsWorld world,
+                                  Vector2Int fromPos,
+                                  Vector2Int toPos,
+                                  Float weight) {
         if (0 <= toPos.getY() &&
             toPos.getY() < world.heightInTiles() &&
             0 <= toPos.getX() &&
@@ -213,12 +211,10 @@ public class Astar {
         }
     }
 
-    public static AstarState traverse(
-        AstarState astarState,
-        Vector2Int finishTilePos,
-        PhysicsWorld world,
-        Integer capability
-    ) {
+    public static AstarState traverse(AstarState astarState,
+                                      Vector2Int finishTilePos,
+                                      PhysicsWorld world,
+                                      Integer capability) {
         while (!astarState.getIsGaveUp() && !astarState.getOpenSet().isEmpty() && !astarState.getFoundPath()) {
             AstarState finalAstarState = astarState;
             Vector2Int minimumTile = Collections.min(
@@ -300,14 +296,12 @@ public class Astar {
         return new LinkedList<>();
     }
 
-    public static AstarState processNeighbor(
-        AstarState astarState,
-        Vector2Int originNodePos,
-        PathingEdge pathingEdge,
-        Float distanceBetweenNodes,
-        PhysicsWorld world,
-        Integer capability
-    ) {
+    public static AstarState processNeighbor(AstarState astarState,
+                                             Vector2Int originNodePos,
+                                             PathingEdge pathingEdge,
+                                             Float distanceBetweenNodes,
+                                             PhysicsWorld world,
+                                             Integer capability) {
         if (astarState.getClosedSet().contains(pathingEdge.getNeighborPos()) || Astar.calculateHeuristic(
             originNodePos,
             astarState.getFinishPos()

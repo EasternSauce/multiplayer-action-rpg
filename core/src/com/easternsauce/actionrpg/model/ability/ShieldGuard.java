@@ -59,7 +59,6 @@ public class ShieldGuard extends DirectionalAttachedAbility {
 
     }
 
-
     @Override
     public void init(CoreGame game) {
 

@@ -30,13 +30,11 @@ public class CreatureHitAnimationRenderer {
         ));
     }
 
-    public void render(
-        CreatureId creatureId,
-        float timeSinceStarted,
-        Vector2 vectorTowardsContactPoint,
-        RenderingLayer renderingLayer,
-        CoreGame game
-    ) {
+    public void render(CreatureId creatureId,
+                       float timeSinceStarted,
+                       Vector2 vectorTowardsContactPoint,
+                       RenderingLayer renderingLayer,
+                       CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
         float posX = creature.getParams().getPos().getX() - animationRenderer.getAnimationSpec().getRealWidth() / 2f +

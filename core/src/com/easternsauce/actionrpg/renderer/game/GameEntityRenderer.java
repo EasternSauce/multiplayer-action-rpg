@@ -300,12 +300,10 @@ public class GameEntityRenderer {
         ));
     }
 
-    public void startCreatureHitAnimation(
-        CreatureId creatureId,
-        Vector2 vectorTowardsContactPoint,
-        AreaId areaId,
-        CoreGame game
-    ) {
+    public void startCreatureHitAnimation(CreatureId creatureId,
+                                          Vector2 vectorTowardsContactPoint,
+                                          AreaId areaId,
+                                          CoreGame game) {
         Float currentTime = game.getGameState().getTime();
 
         CreatureHitAnimation animation = CreatureHitAnimation.of(

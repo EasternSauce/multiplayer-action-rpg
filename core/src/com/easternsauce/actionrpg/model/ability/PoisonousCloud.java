@@ -48,7 +48,6 @@ public class PoisonousCloud extends Ability {
 
     }
 
-
     @Override
     public void onCreatureHit(CreatureId creatureId, CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);

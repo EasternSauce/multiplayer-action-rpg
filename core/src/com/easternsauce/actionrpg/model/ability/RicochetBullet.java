@@ -45,7 +45,6 @@ public class RicochetBullet extends Projectile {
         onProjectileTravelUpdate();
     }
 
-
     @Override
     public void onCreatureHit(CreatureId creatureId, CoreGame game) {
         params.setDamageMultiplier(params.getDamageMultiplier() * 3 / 5f);

@@ -110,7 +110,6 @@ public class LightningNode extends Ability {
         }
     }
 
-
     @Override
     protected boolean isWeaponAttack() {
         return false;

@@ -87,12 +87,10 @@ public class CreatureParams implements EntityParams {
         );
     }
 
-    private static CreatureParams produceCreatureParams(
-        CreatureId creatureId,
-        AreaId areaId,
-        Vector2 enemySpawn,
-        String textureName
-    ) {
+    private static CreatureParams produceCreatureParams(CreatureId creatureId,
+                                                        AreaId areaId,
+                                                        Vector2 enemySpawn,
+                                                        String textureName) {
         CreatureParams params = CreatureParams.of();
         params.id = creatureId;
         params.areaId = areaId;

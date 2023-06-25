@@ -78,7 +78,6 @@ public class Boomerang extends Projectile {
 
     }
 
-
     @Override
     public void onCreatureHit(CreatureId creatureId, CoreGame game) {
         getParams().setIsComingBack(true);

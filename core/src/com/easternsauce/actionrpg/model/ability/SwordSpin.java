@@ -73,7 +73,6 @@ public class SwordSpin extends DirectionalAttachedAbility {
         creature.getParams().getEffectParams().setCurrentSlowMagnitude(0.3f);
     }
 
-
     @Override
     public void init(CoreGame game) {
         getParams().setState(AbilityState.CHANNEL);

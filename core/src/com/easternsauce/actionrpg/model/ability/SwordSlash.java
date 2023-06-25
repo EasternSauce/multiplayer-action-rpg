@@ -46,7 +46,6 @@ public class SwordSlash extends DirectionalAttachedAbility {
         updateDirectionalAttachedAbilityPosition(game);
     }
 
-
     @Override
     public void init(CoreGame game) {
         getParams().setState(AbilityState.CHANNEL);

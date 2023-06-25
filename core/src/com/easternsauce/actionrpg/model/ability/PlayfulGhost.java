@@ -114,7 +114,6 @@ public class PlayfulGhost extends Projectile {
         }
     }
 
-
     @Override
     public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
         deactivate();

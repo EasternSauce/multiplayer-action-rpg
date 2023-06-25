@@ -48,14 +48,12 @@ public class ItemPickupMenuRenderer {
         ));
     }
 
-    private void renderMenuOption(
-        RenderingLayer renderingLayer,
-        IconRetriever iconRetriever,
-        float x,
-        float y,
-        AtomicInteger i,
-        Item item
-    ) {
+    private void renderMenuOption(RenderingLayer renderingLayer,
+                                  IconRetriever iconRetriever,
+                                  float x,
+                                  float y,
+                                  AtomicInteger i,
+                                  Item item) {
         Rect rect = ItemPickupMenuPositioning.getMenuOptionRect(i.get());
         renderingLayer.getShapeDrawer().filledRectangle(
             rect.getX(),

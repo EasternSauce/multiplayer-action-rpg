@@ -64,7 +64,6 @@ public class SpreadingPoisonousCloud extends Ability {
         }
     }
 
-
     @Override
     protected boolean isWeaponAttack() {
         return true;

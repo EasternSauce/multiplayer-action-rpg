@@ -56,12 +56,10 @@ public class InventoryController {
         }
     }
 
-    private GameStateAction determineInventoryAction(
-        CoreGame game,
-        Creature player,
-        PlayerConfig playerConfig,
-        InventoryData inventoryData
-    ) {
+    private GameStateAction determineInventoryAction(CoreGame game,
+                                                     Creature player,
+                                                     PlayerConfig playerConfig,
+                                                     InventoryData inventoryData) {
         GameStateAction action = null;
         if (inventoryData.getInventoryItemBeingMoved() != null && inventoryData.getInventorySlotClicked() != null) {
             action = InventorySwapSlotItemsAction.of(

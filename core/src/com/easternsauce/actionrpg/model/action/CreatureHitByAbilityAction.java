@@ -20,12 +20,10 @@ public class CreatureHitByAbilityAction extends CreatureHitAction {
     private Ability ability;
     private Vector2 contactPoint;
 
-    public static CreatureHitByAbilityAction of(
-        CreatureId attackerId,
-        CreatureId targetId,
-        Ability ability,
-        Vector2 contactPoint
-    ) {
+    public static CreatureHitByAbilityAction of(CreatureId attackerId,
+                                                CreatureId targetId,
+                                                Ability ability,
+                                                Vector2 contactPoint) {
         CreatureHitByAbilityAction action = CreatureHitByAbilityAction.of();
         action.attackerId = attackerId;
         action.targetId = targetId;

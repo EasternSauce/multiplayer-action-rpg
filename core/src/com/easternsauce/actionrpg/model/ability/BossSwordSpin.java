@@ -63,7 +63,6 @@ public class BossSwordSpin extends DirectionalAttachedAbility {
         creaturesHitRemove.forEach(creatureId -> getParams().getCreaturesAlreadyHit().remove(creatureId));
     }
 
-
     @Override
     public void init(CoreGame game) {
         getParams().setState(AbilityState.CHANNEL);

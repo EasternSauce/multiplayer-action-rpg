@@ -17,13 +17,11 @@ public class LifeBarUtils {
         return creature.getParams().getPos().getY() + spriteWidth / 2 + 0.3125f;
     }
 
-    public static void renderBar(
-        RenderingLayer renderingLayer,
-        float barPosX,
-        float barPosY,
-        float lifeBarWidth,
-        Color color
-    ) {
+    public static void renderBar(RenderingLayer renderingLayer,
+                                 float barPosX,
+                                 float barPosY,
+                                 float lifeBarWidth,
+                                 Color color) {
         renderingLayer.filledRectangle(
             new Rectangle(
                 barPosX,

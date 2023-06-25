@@ -8,10 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CreatureSpriteHelper {
-    public static List<TextureRegion> createFacingTextures(
-        CreatureAnimationConfig animationConfig,
-        TextureRegion runningAnimationTextureRegion
-    ) {
+    public static List<TextureRegion> createFacingTextures(CreatureAnimationConfig animationConfig,
+                                                           TextureRegion runningAnimationTextureRegion) {
         List<TextureRegion> facingTextures = new ArrayList<>();
 
         for (int i = 0; i < 4; i++) {
@@ -27,10 +25,8 @@ public class CreatureSpriteHelper {
         return facingTextures;
     }
 
-    public static List<Animation<TextureRegion>> createRunningAnimations(
-        CreatureAnimationConfig animationConfig,
-        TextureRegion runningAnimationTextureRegion
-    ) {
+    public static List<Animation<TextureRegion>> createRunningAnimations(CreatureAnimationConfig animationConfig,
+                                                                         TextureRegion runningAnimationTextureRegion) {
         List<Animation<TextureRegion>> runningAnimations = new ArrayList<>();
 
         for (int i = 0; i < 4; i++) {

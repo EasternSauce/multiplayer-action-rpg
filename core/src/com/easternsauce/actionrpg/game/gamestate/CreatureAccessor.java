@@ -140,11 +140,9 @@ public class CreatureAccessor {
         creature.getParams().getEnemyParams().setSkillUseReadyToPick(false);
     }
 
-    public void handleCreatureUseSkillAtTarget(
-        CreatureId creatureId,
-        Vector2 vectorTowardsTarget,
-        SkillType skillType
-    ) {
+    public void handleCreatureUseSkillAtTarget(CreatureId creatureId,
+                                               Vector2 vectorTowardsTarget,
+                                               SkillType skillType) {
         Creature creature = gameState.accessCreatures().getCreatures().get(creatureId);
 
         if (!creature

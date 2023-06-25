@@ -54,15 +54,13 @@ public class AbilityAccessor {
         return getData().getAbilities();
     }
 
-    public void chainAnotherAbility(
-        Ability chainFromAbility,
-        AbilityType abilityType,
-        Vector2 chainToPos,
-        Vector2 dirVector,
-        Float overrideSize,
-        Float overrideDuration,
-        CoreGame game
-    ) {
+    public void chainAnotherAbility(Ability chainFromAbility,
+                                    AbilityType abilityType,
+                                    Vector2 chainToPos,
+                                    Vector2 dirVector,
+                                    Float overrideSize,
+                                    Float overrideDuration,
+                                    CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(chainFromAbility
             .getParams()
             .getCreatureId());
@@ -132,13 +130,11 @@ public class AbilityAccessor {
         creature.onAbilityPerformed(ability);
     }
 
-    public void onAbilityHitsCreature(
-        CreatureId attackerId,
-        CreatureId targetId,
-        AbilityId abilityId,
-        Vector2 contactPoint,
-        CoreGame game
-    ) {
+    public void onAbilityHitsCreature(CreatureId attackerId,
+                                      CreatureId targetId,
+                                      AbilityId abilityId,
+                                      Vector2 contactPoint,
+                                      CoreGame game) {
         Ability ability = game.getGameState().accessAbilities().getAbility(abilityId);
 
         ability.onCreatureHit(

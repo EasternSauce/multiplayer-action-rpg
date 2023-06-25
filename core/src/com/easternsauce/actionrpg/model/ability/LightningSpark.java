@@ -125,7 +125,6 @@ public class LightningSpark extends Ability {
         }
     }
 
-
     @Override
     protected boolean isWeaponAttack() {
         return false;

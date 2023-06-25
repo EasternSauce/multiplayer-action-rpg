@@ -65,7 +65,6 @@ public class SummonGhosts extends Ability {
         );
     }
 
-
     @Override
     protected boolean isWeaponAttack() {
         return false;

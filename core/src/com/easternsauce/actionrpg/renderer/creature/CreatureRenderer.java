@@ -52,7 +52,7 @@ public class CreatureRenderer {
             float barPosX = LifeBarUtils.getLifeBarPosX(creature);
             float barPosY = LifeBarUtils.getLifeBarPosY(
                 creature,
-                getCreatureSprite().getWidth()
+                creatureSprite.getWidth()
             );
 
             LifeBarUtils.renderBar(

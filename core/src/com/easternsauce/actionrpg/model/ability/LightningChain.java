@@ -73,7 +73,6 @@ public class LightningChain extends Ability {
 
     }
 
-
     @Override
     public void init(CoreGame game) {
         getParams().setState(AbilityState.CHANNEL);
