@@ -372,6 +372,11 @@ public class CoreGameClient extends CoreGame {
     }
 
     @Override
+    public boolean isGameplayRunning() {
+        return getIsFirstBroadcastReceived();
+    }
+
+    @Override
     public void establishConnection() throws IOException {
         setEndPoint(new Client(
             6400000,
@@ -545,4 +550,5 @@ public class CoreGameClient extends CoreGame {
     public void dispose() {
         getEndPoint().stop();
     }
+
 }

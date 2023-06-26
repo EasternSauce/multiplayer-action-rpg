@@ -59,9 +59,7 @@ public abstract class CoreGame extends Game {
     @SuppressWarnings("unused")
     public abstract EndPoint getEndPoint();
 
-    public boolean isGameplayRenderingAllowed() {
-        return true;
-    }
+    public abstract boolean isGameplayRunning();
 
     @Override
     public void create() {

@@ -8,6 +8,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.area.AreaId;
+import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.physics.util.PhysicsEventQueueProcessor;
 import com.easternsauce.actionrpg.renderer.util.GameplayRenderer;
 import com.easternsauce.actionrpg.util.Constants;
@@ -75,92 +76,112 @@ public class GameplayScreen implements Screen {
     @Override
     public void render(float delta) {
         update(delta);
-        if (game.isGameplayRenderingAllowed()) {
-            if (game.getEntityManager().getGameEntityRenderer().getAreaRenderers().containsKey(game
-                .getGameState()
-                .getCurrentAreaId())) {
-                game.getEntityManager().getGameEntityRenderer().getAreaRenderers().get(game
-                    .getGameState()
-                    .getCurrentAreaId()).setView(game
-                    .getEntityManager()
-                    .getGameEntityRenderer()
-                    .getViewportsHandler()
-                    .getWorldCamera());
-            }
 
-            game.getEntityManager().getGameEntityRenderer().setProjectionMatrices();
+        clearScreen();
 
-            Gdx.gl.glClearColor(
-                0,
-                0,
-                0,
-                1
-            );
-
-            int coverageBuffer;
-            if (Gdx.graphics.getBufferFormat().coverageSampling) {
-                coverageBuffer = GL20.GL_COVERAGE_BUFFER_BIT_NV;
+        if (game.isGameplayRunning()) {
+            if (game.getGameState().getThisClientPlayerId() == null) {
+                renderServerRunningMessage();
             } else {
-                coverageBuffer = 0;
+                if (game.getEntityManager().getGameEntityRenderer().getAreaRenderers().containsKey(game
+                    .getGameState()
+                    .getCurrentAreaId())) {
+                    game.getEntityManager().getGameEntityRenderer().getAreaRenderers().get(game
+                        .getGameState()
+                        .getCurrentAreaId()).setView(game
+                        .getEntityManager()
+                        .getGameEntityRenderer()
+                        .getViewportsHandler()
+                        .getWorldCamera());
+                }
+
+                game.getEntityManager().getGameEntityRenderer().setProjectionMatrices();
+
+                gameplayRenderer.updateRenderer(game);
+                gameplayRenderer.renderGameplay(game);
+
+                game.getHudRenderer().render(game);
+
+                renderServerRunningMessage();
             }
-
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | coverageBuffer);
-
-            gameplayRenderer.updateRenderer(game);
-            gameplayRenderer.renderGameplay(game);
-
-            game.getHudRenderer().render(game);
-
-            game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer().begin();
-            game.renderServerRunningMessage(game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer());
-            game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer().end();
         }
     }
 
     public void update(float delta) {
-        game.performPhysicsWorldStep();
+        if (game.isGameplayRunning()) {
+            game.performPhysicsWorldStep();
 
-        handleForceUpdateBodyPositions(game);
+            handleForceUpdateBodyPositions(game);
 
-        game.onUpdate();
-        game.getGameState().handleExpiredAbilities(game);
+            game.onUpdate();
+            game.getGameState().handleExpiredAbilities(game);
 
-        game.getEventProcessor().process(
-            game.getEntityManager(),
-            atlas,
-            game
-        );
-
-        game.getEventProcessor().getTeleportEvents().forEach(teleportInfo -> game.getEntityManager().teleportCreature(
-            teleportInfo,
-            game
-        ));
-        game.getEventProcessor().getTeleportEvents().clear();
-
-        game.getGameState().updateGeneralTimer(delta);
-
-        game.getEntityManager().updateCreatures(
-            delta,
-            game
-        );
-        game.getEntityManager().updateAbilities(
-            delta,
-            game
-        );
-
-        processPhysicsEventQueueProcessor.process(game);
-
-        if (game.getGameState().getThisClientPlayerId() != null &&
-            game.getGameState().accessCreatures().getCreature(game.getGameState().getThisClientPlayerId()) != null) {
-            game.updateCameraPositions();
-        }
-
-        if (!game.getEntityManager().getGameEntityRenderer().getIsAreasLoaded() && game.getIsFirstBroadcastReceived()) {
-            game.getEntityManager().getGameEntityRenderer().loadAreaRenderers(
-                maps,
+            game.getEventProcessor().process(
+                game.getEntityManager(),
+                atlas,
                 game
             );
+
+            game.getEventProcessor().getTeleportEvents().forEach(teleportInfo -> game
+                .getEntityManager()
+                .teleportCreature(
+                    teleportInfo,
+                    game
+                ));
+            game.getEventProcessor().getTeleportEvents().clear();
+
+            game.getGameState().updateGeneralTimer(delta);
+
+            game.getEntityManager().updateCreatures(
+                delta,
+                game
+            );
+            game.getEntityManager().updateAbilities(
+                delta,
+                game
+            );
+
+            processPhysicsEventQueueProcessor.process(game);
+
+            CreatureId thisClientPlayerId = game.getGameState().getThisClientPlayerId();
+
+            if (thisClientPlayerId != null &&
+                game.getGameState().accessCreatures().getCreature(thisClientPlayerId) != null) {
+                game.updateCameraPositions();
+            }
+
+            if (!game.getEntityManager().getGameEntityRenderer().getIsAreasLoaded() &&
+                game.getIsFirstBroadcastReceived()) {
+                game.getEntityManager().getGameEntityRenderer().loadAreaRenderers(
+                    maps,
+                    game
+                );
+            }
         }
+    }
+
+    private static void clearScreen() {
+        Gdx.gl.glClearColor(
+            0,
+            0,
+            0,
+            1
+        );
+
+        int coverageBuffer;
+        if (Gdx.graphics.getBufferFormat().coverageSampling) {
+            coverageBuffer = GL20.GL_COVERAGE_BUFFER_BIT_NV;
+        } else {
+            coverageBuffer = 0;
+        }
+
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | coverageBuffer);
+    }
+
+    private void renderServerRunningMessage() {
+        game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer().begin();
+        game.renderServerRunningMessage(game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer());
+        game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer().end();
     }
 
     private void handleForceUpdateBodyPositions(CoreGame game) {

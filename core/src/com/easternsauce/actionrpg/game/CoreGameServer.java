@@ -56,7 +56,7 @@ public class CoreGameServer extends CoreGame {
     }
 
     @Override
-    public boolean isGameplayRenderingAllowed() {
+    public boolean isGameplayRunning() {
         return true;
     }
 
