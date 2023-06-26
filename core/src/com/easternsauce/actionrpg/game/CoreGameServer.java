@@ -4,18 +4,13 @@ import com.badlogic.gdx.graphics.Color;
 import com.easternsauce.actionrpg.game.assets.Assets;
 import com.easternsauce.actionrpg.game.command.*;
 import com.easternsauce.actionrpg.game.gamestate.ServerGameState;
-import com.easternsauce.actionrpg.game.util.EnemySpawnUtils;
 import com.easternsauce.actionrpg.model.ability.AbilityId;
-import com.easternsauce.actionrpg.model.action.*;
-import com.easternsauce.actionrpg.model.area.AreaGate;
-import com.easternsauce.actionrpg.model.area.AreaGateId;
-import com.easternsauce.actionrpg.model.area.AreaId;
+import com.easternsauce.actionrpg.model.action.ActionsHolder;
+import com.easternsauce.actionrpg.model.action.GameStateAction;
+import com.easternsauce.actionrpg.model.action.PlayerInitAction;
+import com.easternsauce.actionrpg.model.action.PlayerRemoveAction;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
-import com.easternsauce.actionrpg.model.creature.EnemySpawn;
-import com.easternsauce.actionrpg.model.item.Item;
-import com.easternsauce.actionrpg.model.item.ItemTemplate;
-import com.easternsauce.actionrpg.model.skill.SkillType;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.physics.world.PhysicsWorld;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
@@ -28,8 +23,6 @@ import lombok.Setter;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.ConcurrentSkipListMap;
-import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.stream.Collectors;
 
 public class CoreGameServer extends CoreGame {
@@ -44,6 +37,8 @@ public class CoreGameServer extends CoreGame {
     @Setter
     private Server endPoint;
     private Thread broadcastThread;
+
+    private final InitialStateLoader initialStateLoader = InitialStateLoader.of();
 
     private CoreGameServer() {
     }
@@ -181,25 +176,17 @@ public class CoreGameServer extends CoreGame {
                 continue;// don't update until player is initialized
             }
 
+            Map<CreatureId, Creature> creatures = getGameState().accessCreatures().getCreatures();
             if (getClientPlayers().containsKey(connection.getID()) &&
-                getGameState()
-                    .accessCreatures()
-                    .getCreatures()
-                    .containsKey(getClientPlayers().get(connection.getID()))) {
-                Creature player = getGameState()
-                    .accessCreatures()
-                    .getCreatures()
-                    .get(getClientPlayers().get(connection.getID()));
+                creatures.containsKey(getClientPlayers().get(connection.getID()))) {
+                Creature player = creatures.get(getClientPlayers().get(connection.getID()));
 
                 List<GameStateAction> personalizedTickActions = onTickActions
                     .stream()
-                    .filter(action -> action.isActionObjectValid(this) &&
+                    .filter(action -> isActionRelevantForPlayer(
+                        player,
                         action
-                            .getActionObjectAreaId(this)
-                            .getValue()
-                            .equals(player.getParams().getAreaId().getValue()) &&
-                        action.getActionObjectPos(this).distance(player.getParams().getPos()) <
-                            Constants.CLIENT_GAME_UPDATE_RANGE)
+                    ))
                     .collect(Collectors.toList());
                 connection.sendTCP(ActionsHolder.of(personalizedTickActions));
             }
@@ -209,130 +196,20 @@ public class CoreGameServer extends CoreGame {
         gameState.getOnTickActions().clear();
     }
 
+    private boolean isActionRelevantForPlayer(Creature player, GameStateAction action) {
+        return action.isActionObjectValid(this) && action.getActionObjectAreaId(this).getValue().equals(player
+            .getParams()
+            .getAreaId()
+            .getValue()) && action.getActionObjectPos(this).distance(player.getParams().getPos()) <
+            Constants.CLIENT_GAME_UPDATE_RANGE;
+    }
+
     @Override
     public void initState() {
-        AreaId areaId = AreaId.of("area1");
-
-        Map<SkillType, Integer> grantedSkills = new ConcurrentSkipListMap<>();
-        grantedSkills.put(
-            SkillType.DASH,
-            1
+        initialStateLoader.setupInitialState(
+            this,
+            endPoint
         );
-        Item leatherArmor = Item
-            .of()
-            .setTemplate(ItemTemplate.templates.get("leatherArmor"))
-            .setQualityModifier(0.9f)
-            .setGrantedSkills(grantedSkills);
-        Item crossbow = Item.of().setTemplate(ItemTemplate.templates.get("crossbow")).setQualityModifier(0.8f);
-
-        gameState.scheduleServerSideAction(LootPileSpawnAction.of(
-            AreaId.of("area3"),
-            Vector2.of(
-                12,
-                12
-            ),
-            new ConcurrentSkipListSet<>(Arrays.asList(
-                leatherArmor,
-                crossbow
-            ))
-        ));
-
-        AreaGateId area1ToArea3 = AreaGateId.of("area1ToArea3_" + (int) (Math.random() * 10000000));
-        AreaGateId area3ToArea1 = AreaGateId.of("area3ToArea1_" + (int) (Math.random() * 10000000));
-        AreaGateId area1ToArea2 = AreaGateId.of("area1ToArea2_" + (int) (Math.random() * 10000000));
-        AreaGateId area2ToArea1 = AreaGateId.of("area2ToArea1_" + (int) (Math.random() * 10000000));
-
-        getGameState().getAreaGates().clear();
-
-        getGameState().getAreaGates().put(
-            area1ToArea3,
-            AreaGate.of(
-                area1ToArea3,
-                1.5f,
-                1.5f,
-                Vector2.of(
-                    199.5f,
-                    15f
-                ),
-                AreaId.of("area1"),
-                area3ToArea1
-            )
-        );
-        getGameState().getAreaGates().put(
-            area3ToArea1,
-            AreaGate.of(
-                area3ToArea1,
-                1.5f,
-                1.5f,
-                Vector2.of(
-                    17f,
-                    2.5f
-                ),
-                AreaId.of("area3"),
-                area1ToArea3
-            )
-        );
-        getGameState().getAreaGates().put(
-            area1ToArea2,
-            AreaGate.of(
-                area1ToArea2,
-                1.5f,
-                1.5f,
-                Vector2.of(
-                    2f,
-                    63f
-                ),
-                AreaId.of("area1"),
-                area2ToArea1
-            )
-        );
-        getGameState().getAreaGates().put(
-            area2ToArea1,
-            AreaGate.of(
-                area2ToArea1,
-                1.5f,
-                1.5f,
-                Vector2.of(
-                    58f,
-                    9f
-                ),
-                AreaId.of("area2"),
-                area1ToArea2
-            )
-        );
-
-        List<EnemySpawn> enemySpawns1 = EnemySpawnUtils.area1EnemySpawns();
-
-        enemySpawns1.forEach(enemySpawn -> {
-            CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 10000000));
-            getEntityManager().spawnEnemy(
-                enemyId,
-                areaId,
-                enemySpawn,
-                this
-            );
-            getEndPoint().sendToAllTCP(EnemySpawnCommand.of(
-                enemyId,
-                areaId,
-                enemySpawn
-            )); // TODO: use actions instead
-        });
-
-        List<EnemySpawn> enemySpawns3 = EnemySpawnUtils.area3EnemySpawns();
-        enemySpawns3.forEach(enemySpawn -> {
-            CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 10000000));
-            getEntityManager().spawnEnemy(
-                enemyId,
-                AreaId.of("area3"),
-                enemySpawn,
-                this
-            );
-            getEndPoint().sendToAllTCP(EnemySpawnCommand.of(
-                enemyId,
-                AreaId.of("area3"),
-                enemySpawn
-            ));
-        });
     }
 
     @Override
