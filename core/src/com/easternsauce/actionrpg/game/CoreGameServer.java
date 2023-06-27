@@ -2,13 +2,10 @@ package com.easternsauce.actionrpg.game;
 
 import com.badlogic.gdx.graphics.Color;
 import com.easternsauce.actionrpg.game.assets.Assets;
-import com.easternsauce.actionrpg.game.command.*;
 import com.easternsauce.actionrpg.game.gamestate.ServerGameState;
 import com.easternsauce.actionrpg.model.ability.AbilityId;
 import com.easternsauce.actionrpg.model.action.ActionsHolder;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
-import com.easternsauce.actionrpg.model.action.PlayerInitAction;
-import com.easternsauce.actionrpg.model.action.PlayerRemoveAction;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.util.Vector2;
@@ -16,7 +13,6 @@ import com.easternsauce.actionrpg.physics.world.PhysicsWorld;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
 import com.easternsauce.actionrpg.util.Constants;
 import com.esotericsoftware.kryonet.Connection;
-import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,14 +27,14 @@ public class CoreGameServer extends CoreGame {
     @Getter
     private final ServerGameState gameState = ServerGameState.of();
 
+    @Getter
     private final List<Integer> clientIds = Collections.synchronizedList(new ArrayList<>());
-
+    private final InitialStateLoader initialStateLoader = InitialStateLoader.of();
+    private final CoreGameServerListener serverListener = CoreGameServerListener.of(this);
     @Getter
     @Setter
     private Server endPoint;
     private Thread broadcastThread;
-
-    private final InitialStateLoader initialStateLoader = InitialStateLoader.of();
 
     private CoreGameServer() {
     }
@@ -73,60 +69,7 @@ public class CoreGameServer extends CoreGame {
             throw new RuntimeException(e);
         }
 
-        getEndPoint().addListener(new Listener() {
-
-            @Override
-            public void disconnected(Connection connection) {
-                CreatureId disconnectedCreatureId = getClientPlayers().get(connection.getID());
-
-                PlayerRemoveAction playerRemoveAction = PlayerRemoveAction.of(disconnectedCreatureId);
-                gameState.scheduleServerSideAction(playerRemoveAction);
-
-                clientIds.remove((Object) connection.getID());
-                getClientPlayers().remove(connection.getID());
-            }
-
-            @Override
-            public void received(Connection connection, Object object) {
-                if (object instanceof ActionPerformCommand) {
-                    ActionPerformCommand command = (ActionPerformCommand) object;
-
-                    gameState.scheduleServerSideAction(command.getAction());
-                } else if (object instanceof ConnectionInitCommand) {
-                    clientIds.add(connection.getID());
-                } else if (object instanceof PlayerInitCommand) {
-                    PlayerInitCommand command = (PlayerInitCommand) object;
-                    PlayerInitAction playerInitAction = PlayerInitAction.of(command.getPlayerId());
-
-                    if (clientIds.contains(connection.getID())) {
-                        getClientPlayers().put(
-                            connection.getID(),
-                            playerInitAction.getPlayerId()
-                        );
-
-                        gameState.scheduleServerSideAction(playerInitAction);
-                    }
-
-                } else if (object instanceof ChatMessageSendCommand) {
-                    ChatMessageSendCommand command = (ChatMessageSendCommand) object;
-
-                    getEndPoint().sendToAllTCP(command);
-                } else if (object instanceof EnemySpawnCommand) {
-                    EnemySpawnCommand command = (EnemySpawnCommand) object;
-                    getEntityManager().spawnEnemy(
-                        command.getCreatureId(),
-                        command.getAreaId(),
-                        command.getEnemySpawn(),
-                        CoreGameServer.this
-                    );
-
-                    getEndPoint().sendToAllTCP(command); // TODO: add to tick actions instead
-
-                }
-
-            }
-
-        });
+        getEndPoint().addListener(serverListener);
 
         broadcastThread = new Thread(() -> {
             try {
@@ -136,15 +79,7 @@ public class CoreGameServer extends CoreGame {
 
                     Connection[] connections = getEndPoint().getConnections();
                     for (Connection connection : connections) {
-                        if (!getClientPlayers().containsKey(connection.getID()) ||
-                            !getGameState()
-                                .accessCreatures()
-                                .getCreatures()
-                                .containsKey(getClientPlayers().get(connection.getID()))) {
-                            gameState.sendGameDataWithEntitiesEmpty(connection);
-                        } else {
-                            gameState.sendGameDataPersonalizedForPlayer(connection);
-                        }
+                        broadcastToConnection(connection);
                     }
                 }
             } catch (InterruptedException e) {
@@ -153,6 +88,19 @@ public class CoreGameServer extends CoreGame {
         });
         broadcastThread.start();
 
+    }
+
+    private void broadcastToConnection(Connection connection) {
+        if (!getClientPlayers().containsKey(connection.getID()) ||
+            !getGameState().accessCreatures().getCreatures().containsKey(getClientPlayers().get(connection.getID()))) {
+            gameState.sendGameDataWithEntitiesEmpty(connection);
+        } else {
+            gameState.sendGameDataPersonalizedForPlayer(connection);
+        }
+    }
+
+    public Map<Integer, CreatureId> getClientPlayers() {
+        return getGameState().getClientPlayers();
     }
 
     @Override
@@ -288,15 +236,10 @@ public class CoreGameServer extends CoreGame {
         return this;
     }
 
-    public Map<Integer, CreatureId> getClientPlayers() {
-        return getGameState().getClientPlayers();
-    }
-
     @Override
     public void dispose() {
         getEndPoint().stop();
         broadcastThread.interrupt();
-
     }
 
 }

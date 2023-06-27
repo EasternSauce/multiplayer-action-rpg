@@ -15,11 +15,12 @@ import lombok.NoArgsConstructor;
 @Data
 public class CreatureRenderer {
     private CreatureId creatureId;
-    private CreatureSprite creatureSprite = CreatureSprite.of(creatureId);
+    private CreatureSprite creatureSprite;
 
     public static CreatureRenderer of(CreatureId creatureId) {
         CreatureRenderer creatureRenderer = new CreatureRenderer();
         creatureRenderer.setCreatureId(creatureId);
+        creatureRenderer.setCreatureSprite(CreatureSprite.of(creatureId));
         return creatureRenderer;
     }
 
