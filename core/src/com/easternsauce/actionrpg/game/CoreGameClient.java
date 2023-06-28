@@ -23,6 +23,7 @@ import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
 import com.easternsauce.actionrpg.renderer.hud.inventory.InventoryController;
 import com.easternsauce.actionrpg.renderer.hud.itempickupmenu.ItemPickupMenuController;
+import com.easternsauce.actionrpg.renderer.hud.potionmenu.PotionMenuController;
 import com.easternsauce.actionrpg.renderer.hud.skillmenu.SkillMenuController;
 import com.easternsauce.actionrpg.util.Constants;
 import com.esotericsoftware.kryonet.Client;
@@ -47,6 +48,7 @@ public class CoreGameClient extends CoreGame {
     private final SkillMenuController skillMenuController = SkillMenuController.of();
     private final InventoryController inventoryController = InventoryController.of();
     private final ItemPickupMenuController pickupMenuController = ItemPickupMenuController.of();
+    private final PotionMenuController potionMenuController = PotionMenuController.of();
 
     @Getter
     @Setter
@@ -270,13 +272,22 @@ public class CoreGameClient extends CoreGame {
 
     private void handleActionButtonInput(PlayerConfig playerConfig) {
         if (playerConfig != null) {
+
+            boolean isSuccessful = potionMenuController.performPotionMenuClick(
+                getEndPoint(),
+                this
+            );
+            if (isSuccessful) {
+                menuClickTime = gameState.getTime();
+            }
+
             if (playerConfig.getIsInventoryVisible()) {
                 inventoryController.performMoveItemClick(
                     getEndPoint(),
                     this
                 );
             } else if (!playerConfig.getIsInventoryVisible() && !playerConfig.getItemPickupMenuLootPiles().isEmpty()) {
-                boolean isSuccessful = pickupMenuController.performItemPickupMenuClick(
+                isSuccessful = pickupMenuController.performItemPickupMenuClick(
                     getEndPoint(),
                     this
                 );
@@ -286,7 +297,7 @@ public class CoreGameClient extends CoreGame {
 
             } else if (!playerConfig.getIsInventoryVisible() &&
                 playerConfig.getIsSkillMenuPickerSlotBeingChanged() != null) {
-                boolean isSuccessful = skillMenuController.performSkillMenuPickerClick(
+                isSuccessful = skillMenuController.performSkillMenuPickerClick(
                     getEndPoint(),
                     this
                 );
@@ -295,7 +306,7 @@ public class CoreGameClient extends CoreGame {
                 }
 
             } else {
-                boolean isSuccessful = skillMenuController.performSkillMenuClick(
+                isSuccessful = skillMenuController.performSkillMenuClick(
                     getEndPoint(),
                     this
                 );

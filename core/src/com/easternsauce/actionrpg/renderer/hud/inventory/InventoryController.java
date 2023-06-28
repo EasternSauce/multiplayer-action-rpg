@@ -23,16 +23,16 @@ public class InventoryController {
 
         GameStateAction action = null;
 
-        if (InventoryPositioning.backgroundOuterRect.contains(
+        if (InventoryConsts.backgroundOuterRect.contains(
             x,
             y
         )) {
             InventoryData inventoryData = InventoryData.of(
-                InventoryPositioning.getInventorySlotClicked(
+                InventoryConsts.getInventorySlotClicked(
                     x,
                     y
                 ),
-                InventoryPositioning.getEquipmentSlotClicked(
+                InventoryConsts.getEquipmentSlotClicked(
                     x,
                     y
                 ),
@@ -114,16 +114,16 @@ public class InventoryController {
 
         GameStateAction action = null;
 
-        if (InventoryPositioning.backgroundOuterRect.contains(
+        if (InventoryConsts.backgroundOuterRect.contains(
             x,
             y
         )) {
             InventoryData inventoryData = InventoryData.of(
-                InventoryPositioning.getInventorySlotClicked(
+                InventoryConsts.getInventorySlotClicked(
                     x,
                     y
                 ),
-                InventoryPositioning.getEquipmentSlotClicked(
+                InventoryConsts.getEquipmentSlotClicked(
                     x,
                     y
                 ),

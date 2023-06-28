@@ -54,7 +54,7 @@ public class ItemPickupMenuRenderer {
                                   float y,
                                   AtomicInteger i,
                                   Item item) {
-        Rect rect = ItemPickupMenuPositioning.getMenuOptionRect(i.get());
+        Rect rect = ItemPickupMenuConsts.getMenuOptionRect(i.get());
         renderingLayer.getShapeDrawer().filledRectangle(
             rect.getX(),
             rect.getY(),

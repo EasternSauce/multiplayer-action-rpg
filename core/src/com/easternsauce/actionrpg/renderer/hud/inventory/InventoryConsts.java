@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class InventoryPositioning {
+public class InventoryConsts {
     public static final Rect backgroundInnerRect;
     public static final Rect backgroundOuterRect;
 
@@ -90,7 +90,7 @@ public class InventoryPositioning {
     public static Integer getEquipmentSlotClicked(float x, float y) {
         AtomicReference<Integer> atomicEquipmentSlotClicked = new AtomicReference<>(null);
 
-        InventoryPositioning.equipmentRectangles.entrySet().stream().filter(entry -> entry.getValue().contains(
+        InventoryConsts.equipmentRectangles.entrySet().stream().filter(entry -> entry.getValue().contains(
             x,
             y
         )).forEach(entry -> atomicEquipmentSlotClicked.set(entry.getKey()));
@@ -101,7 +101,7 @@ public class InventoryPositioning {
     public static Integer getInventorySlotClicked(float x, float y) {
         AtomicReference<Integer> atomicInventorySlotClicked = new AtomicReference<>(null);
 
-        InventoryPositioning.inventoryRectangles.entrySet().stream().filter(entry -> entry.getValue().contains(
+        InventoryConsts.inventoryRectangles.entrySet().stream().filter(entry -> entry.getValue().contains(
             x,
             y
         )).forEach(entry -> atomicInventorySlotClicked.set(entry.getKey()));

@@ -31,7 +31,7 @@ public class SkillMenuController {
             .getThisClientPlayerId());
 
         player.availableSkills().forEach((skillType, level) -> {
-            Rect rect = SkillMenuPositioning.getSkillPickerRect(i.get());
+            Rect rect = SkillMenuConsts.getSkillPickerRect(i.get());
 
             if (rect.contains(
                 x,
@@ -62,7 +62,7 @@ public class SkillMenuController {
 
         AtomicBoolean isSuccessful = new AtomicBoolean(false);
 
-        SkillMenuPositioning.skillRectangles.forEach((slotNum, rect) -> {
+        SkillMenuConsts.skillRectangles.forEach((slotNum, rect) -> {
             if (rect.contains(
                 x,
                 y

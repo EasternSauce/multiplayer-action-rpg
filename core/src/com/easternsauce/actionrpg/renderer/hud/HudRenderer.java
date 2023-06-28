@@ -6,6 +6,7 @@ import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
 import com.easternsauce.actionrpg.renderer.hud.inventory.InventoryRenderer;
 import com.easternsauce.actionrpg.renderer.hud.itempickupmenu.ItemPickupMenuRenderer;
+import com.easternsauce.actionrpg.renderer.hud.potionmenu.PotionMenuRenderer;
 import com.easternsauce.actionrpg.renderer.hud.skillmenu.SkillMenuRenderer;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ public class HudRenderer {
     RespawnMessageRenderer respawnMessageRenderer = RespawnMessageRenderer.of();
     SkillMenuRenderer skillMenuRenderer = SkillMenuRenderer.of();
     ItemPickupMenuRenderer pickUpMenuRenderer = ItemPickupMenuRenderer.of();
+    PotionMenuRenderer potionMenuRenderer = PotionMenuRenderer.of();
 
     public void init(TextureAtlas atlas) {
         inventoryRenderer.init(atlas);
@@ -65,7 +67,13 @@ public class HudRenderer {
             renderingLayer,
             game
         );
+
         pickUpMenuRenderer.render(
+            renderingLayer,
+            game
+        );
+
+        potionMenuRenderer.renderMenu(
             renderingLayer,
             game
         );

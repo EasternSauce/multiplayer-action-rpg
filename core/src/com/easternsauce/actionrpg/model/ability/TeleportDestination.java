@@ -31,7 +31,7 @@ public class TeleportDestination extends Ability {
             .setWidth(4.5f)
             .setHeight(4.5f)
             .setChannelTime(0f)
-            .setActiveTime(3f)
+            .setActiveTime(1f)
             .setTextureName("warp")
             .setBaseDamage(0f)
             .setIsChannelAnimationLooping(false)

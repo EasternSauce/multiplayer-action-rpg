@@ -30,10 +30,10 @@ public class InventoryRenderer {
         backgroundImage = new Image(atlas.findRegion("background2"));
 
         backgroundImage.setBounds(
-            InventoryPositioning.backgroundOuterRect.getX(),
-            InventoryPositioning.backgroundOuterRect.getY(),
-            InventoryPositioning.backgroundOuterRect.getWidth(),
-            InventoryPositioning.backgroundOuterRect.getHeight()
+            InventoryConsts.backgroundOuterRect.getX(),
+            InventoryConsts.backgroundOuterRect.getY(),
+            InventoryConsts.backgroundOuterRect.getWidth(),
+            InventoryConsts.backgroundOuterRect.getHeight()
         );
 
     }
@@ -51,7 +51,7 @@ public class InventoryRenderer {
                 1.0f
             );
 
-            InventoryPositioning.inventoryRectangles.values().forEach(rect -> {
+            InventoryConsts.inventoryRectangles.values().forEach(rect -> {
                 renderingLayer.getShapeDrawer().filledRectangle(
                     rect.getX() - 3,
                     rect.getY() - 3,
@@ -68,7 +68,7 @@ public class InventoryRenderer {
                 );
             });
 
-            InventoryPositioning.equipmentRectangles.forEach((index, rect) -> {
+            InventoryConsts.equipmentRectangles.forEach((index, rect) -> {
                 renderingLayer.getShapeDrawer().filledRectangle(
                     rect.getX() - 3,
                     rect.getY() - 3,
@@ -87,8 +87,8 @@ public class InventoryRenderer {
                     renderingLayer,
                     EquipmentSlotType.equipmentSlotNames.get(index) + ":",
                     Vector2.of(
-                        rect.getX() - InventoryPositioning.SLOT_SIZE / 2f - 170f,
-                        rect.getY() + InventoryPositioning.SLOT_SIZE / 2f + 7f
+                        rect.getX() - InventoryConsts.SLOT_SIZE / 2f - 170f,
+                        rect.getY() + InventoryConsts.SLOT_SIZE / 2f + 7f
                     ),
                     Color.DARK_GRAY
                 );
@@ -132,14 +132,14 @@ public class InventoryRenderer {
                 iconPos.getX(),
                 iconPos.getY()
             );
-            float x = InventoryPositioning.inventorySlotPositionX(entry.getKey());
-            float y = InventoryPositioning.inventorySlotPositionY(entry.getKey());
+            float x = InventoryConsts.inventorySlotPositionX(entry.getKey());
+            float y = InventoryConsts.inventorySlotPositionY(entry.getKey());
             renderingLayer.getSpriteBatch().draw(
                 textureRegion,
                 x,
                 y,
-                InventoryPositioning.SLOT_SIZE,
-                InventoryPositioning.SLOT_SIZE
+                InventoryConsts.SLOT_SIZE,
+                InventoryConsts.SLOT_SIZE
             );
 
             if (entry.getValue().getQuantity() > 1) {
@@ -170,14 +170,14 @@ public class InventoryRenderer {
                 iconPos.getX(),
                 iconPos.getY()
             );
-            float x = InventoryPositioning.equipmentSlotPositionX(entry.getKey());
-            float y = InventoryPositioning.equipmentSlotPositionY(entry.getKey());
+            float x = InventoryConsts.equipmentSlotPositionX(entry.getKey());
+            float y = InventoryConsts.equipmentSlotPositionY(entry.getKey());
             renderingLayer.getSpriteBatch().draw(
                 textureRegion,
                 x,
                 y,
-                InventoryPositioning.SLOT_SIZE,
-                InventoryPositioning.SLOT_SIZE
+                InventoryConsts.SLOT_SIZE,
+                InventoryConsts.SLOT_SIZE
             );
 
             if (entry.getValue().getQuantity() > 1) {
@@ -209,10 +209,10 @@ public class InventoryRenderer {
                     iconPos.getX(),
                     iconPos.getY()
                 ),
-                x - InventoryPositioning.SLOT_SIZE / 2f,
-                y - InventoryPositioning.SLOT_SIZE / 2f,
-                InventoryPositioning.SLOT_SIZE,
-                InventoryPositioning.SLOT_SIZE
+                x - InventoryConsts.SLOT_SIZE / 2f,
+                y - InventoryConsts.SLOT_SIZE / 2f,
+                InventoryConsts.SLOT_SIZE,
+                InventoryConsts.SLOT_SIZE
             );
         }
         if (playerConfig.getEquipmentItemBeingMoved() != null &&
@@ -227,10 +227,10 @@ public class InventoryRenderer {
                     iconPos.getX(),
                     iconPos.getY()
                 ),
-                x - InventoryPositioning.SLOT_SIZE / 2f,
-                y - InventoryPositioning.SLOT_SIZE / 2f,
-                InventoryPositioning.SLOT_SIZE,
-                InventoryPositioning.SLOT_SIZE
+                x - InventoryConsts.SLOT_SIZE / 2f,
+                y - InventoryConsts.SLOT_SIZE / 2f,
+                InventoryConsts.SLOT_SIZE,
+                InventoryConsts.SLOT_SIZE
             );
         }
 
@@ -248,12 +248,12 @@ public class InventoryRenderer {
         AtomicReference<Integer> inventorySlotMousedOver = new AtomicReference<>(null);
         AtomicReference<Integer> equipmentSlotMousedOver = new AtomicReference<>(null);
 
-        InventoryPositioning.inventoryRectangles.entrySet().stream().filter(entry -> entry.getValue().contains(
+        InventoryConsts.inventoryRectangles.entrySet().stream().filter(entry -> entry.getValue().contains(
             x,
             y
         )).forEach(entry -> inventorySlotMousedOver.set(entry.getKey()));
 
-        InventoryPositioning.equipmentRectangles.entrySet().stream().filter(entry -> entry.getValue().contains(
+        InventoryConsts.equipmentRectangles.entrySet().stream().filter(entry -> entry.getValue().contains(
             x,
             y
         )).forEach(entry -> equipmentSlotMousedOver.set(entry.getKey()));
@@ -280,10 +280,9 @@ public class InventoryRenderer {
                 renderingLayer,
                 mouseOverItem.getTemplate().getName(),
                 Vector2.of(
-                    InventoryPositioning.backgroundInnerRect.getX() + InventoryPositioning.MARGIN,
-                    InventoryPositioning.backgroundInnerRect.getY() +
-                        InventoryPositioning.backgroundInnerRect.getHeight() -
-                        (InventoryPositioning.INVENTORY_HEIGHT + 5)
+                    InventoryConsts.backgroundInnerRect.getX() + InventoryConsts.MARGIN,
+                    InventoryConsts.backgroundInnerRect.getY() + InventoryConsts.backgroundInnerRect.getHeight() -
+                        (InventoryConsts.INVENTORY_HEIGHT + 5)
                 ),
                 Color.DARK_GRAY
             );
@@ -292,10 +291,9 @@ public class InventoryRenderer {
                 renderingLayer,
                 mouseOverItem.getItemInformation(),
                 Vector2.of(
-                    InventoryPositioning.backgroundInnerRect.getX() + InventoryPositioning.MARGIN,
-                    InventoryPositioning.backgroundInnerRect.getY() +
-                        InventoryPositioning.backgroundInnerRect.getHeight() -
-                        (InventoryPositioning.INVENTORY_HEIGHT + 35)
+                    InventoryConsts.backgroundInnerRect.getX() + InventoryConsts.MARGIN,
+                    InventoryConsts.backgroundInnerRect.getY() + InventoryConsts.backgroundInnerRect.getHeight() -
+                        (InventoryConsts.INVENTORY_HEIGHT + 35)
                 ),
                 Color.DARK_GRAY
             );

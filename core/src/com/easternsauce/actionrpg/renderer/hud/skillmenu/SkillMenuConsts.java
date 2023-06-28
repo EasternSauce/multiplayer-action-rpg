@@ -6,7 +6,7 @@ import com.easternsauce.actionrpg.renderer.util.Rect;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SkillMenuPositioning {
+public class SkillMenuConsts {
     public static final float SLOT_SIZE = 40f;
     public static final int MARGIN = 20;
     public static final int SPACE_BETWEEN_SLOTS = 12;
@@ -23,14 +23,14 @@ public class SkillMenuPositioning {
     private static final float SKILL_PICKER_MENU_HEIGHT = 20f;
 
     static {
-        for (int i = 0; i < SkillMenuPositioning.TOTAL_SKILL_SLOTS; i++) {
+        for (int i = 0; i < SkillMenuConsts.TOTAL_SKILL_SLOTS; i++) {
             skillRectangles.put(
                 i,
                 Rect.of(
                     getSkillSlotPositionX(i),
                     getSkillSlotPositionY(i),
-                    SkillMenuPositioning.SLOT_SIZE,
-                    SkillMenuPositioning.SLOT_SIZE
+                    SkillMenuConsts.SLOT_SIZE,
+                    SkillMenuConsts.SLOT_SIZE
                 )
             );
         }
@@ -38,21 +38,21 @@ public class SkillMenuPositioning {
 
     public static float getSkillSlotPositionX(Integer index) {
         int currentColumn = index;
-        return SkillMenuPositioning.SKILL_MENU_POS_X +
-            SkillMenuPositioning.MARGIN +
-            (SkillMenuPositioning.SLOT_SIZE + SkillMenuPositioning.SPACE_BETWEEN_SLOTS) * currentColumn;
+        return SkillMenuConsts.SKILL_MENU_POS_X +
+            SkillMenuConsts.MARGIN +
+            (SkillMenuConsts.SLOT_SIZE + SkillMenuConsts.SPACE_BETWEEN_SLOTS) * currentColumn;
     }
 
     public static float getSkillSlotPositionY(@SuppressWarnings("unused") Integer index) {
-        return SkillMenuPositioning.SKILL_MENU_POS_Y - (SkillMenuPositioning.SLOT_SIZE + SkillMenuPositioning.MARGIN);
+        return SkillMenuConsts.SKILL_MENU_POS_Y - (SkillMenuConsts.SLOT_SIZE + SkillMenuConsts.MARGIN);
     }
 
     public static Rect getSkillPickerRect(int index) {
         return Rect.of(
-            SkillMenuPositioning.SKILL_PICKER_MENU_POS_X,
-            SkillMenuPositioning.SKILL_PICKER_MENU_POS_Y + 25f * index,
-            SkillMenuPositioning.SKILL_PICKER_MENU_WIDTH,
-            SkillMenuPositioning.SKILL_PICKER_MENU_HEIGHT
+            SkillMenuConsts.SKILL_PICKER_MENU_POS_X,
+            SkillMenuConsts.SKILL_PICKER_MENU_POS_Y + 25f * index,
+            SkillMenuConsts.SKILL_PICKER_MENU_WIDTH,
+            SkillMenuConsts.SKILL_PICKER_MENU_HEIGHT
         );
     }
 }

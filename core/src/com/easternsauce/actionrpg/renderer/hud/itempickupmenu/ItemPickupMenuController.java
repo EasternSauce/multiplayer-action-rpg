@@ -33,7 +33,7 @@ public class ItemPickupMenuController {
             .getParams()
             .getItems()
             .stream()).forEach(item -> {
-            Rect rect = ItemPickupMenuPositioning.getMenuOptionRect(i.get());
+            Rect rect = ItemPickupMenuConsts.getMenuOptionRect(i.get());
 
             if (rect.contains(
                 x,
