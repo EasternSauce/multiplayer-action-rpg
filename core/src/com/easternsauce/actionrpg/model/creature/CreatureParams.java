@@ -71,6 +71,8 @@ public class CreatureParams implements EntityParams {
     private Map<Integer, Item> equipmentItems = new ConcurrentSkipListMap<>();
     @NonNull
     private Map<Integer, Item> inventoryItems = new ConcurrentSkipListMap<>();
+    @NonNull
+    private Map<Integer, Item> potionMenuItems = new ConcurrentSkipListMap<>();
 
     @NonNull
     private Float dropRngSeed = (float) Math.random();

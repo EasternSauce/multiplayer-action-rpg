@@ -15,11 +15,11 @@ public class PotionMenuConsts {
 
     public static final int TOTAL_SKILL_SLOTS = 3;
 
-    public static final Map<Integer, Rect> skillRectangles = new HashMap<>();
+    public static final Map<Integer, Rect> slotRectangles = new HashMap<>();
 
     static {
         for (int i = 0; i < PotionMenuConsts.TOTAL_SKILL_SLOTS; i++) {
-            skillRectangles.put(
+            slotRectangles.put(
                 i,
                 Rect.of(
                     getSlotPositionX(i),

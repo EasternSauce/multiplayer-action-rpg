@@ -42,7 +42,7 @@ public class SkillMenuRenderer {
         );
 
         AtomicInteger i = new AtomicInteger();
-        SkillMenuConsts.skillRectangles.values().forEach(rect -> {
+        SkillMenuConsts.slotRectangles.values().forEach(rect -> {
             renderingLayer.getShapeDrawer().filledRectangle(
                 rect.getX() - 3,
                 rect.getY() - 3,

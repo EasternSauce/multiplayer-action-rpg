@@ -3,6 +3,8 @@ package com.easternsauce.actionrpg.renderer.hud.potionmenu;
 import com.badlogic.gdx.graphics.Color;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.assets.Assets;
+import com.easternsauce.actionrpg.model.creature.Creature;
+import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.skill.SkillType;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;
 import com.easternsauce.actionrpg.model.util.Vector2;
@@ -18,11 +20,18 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Data
 public class PotionMenuRenderer {
     public void renderMenu(RenderingLayer renderingLayer, CoreGame game) {
+
+        Creature player = game.getGameState().accessCreatures().getCreature(game
+            .getGameState()
+            .getThisClientPlayerId());
+
         PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
 
-        if (playerConfig == null) {
+        if (player == null || playerConfig == null) {
             return;
         }
+
+        Map<Integer, Item> potionMenuItems = player.getParams().getPotionMenuItems(); // TODO
 
         Map<Integer, String> keys = new HashMap<>();
         keys.put(
@@ -39,7 +48,7 @@ public class PotionMenuRenderer {
         );
 
         AtomicInteger i = new AtomicInteger();
-        PotionMenuConsts.skillRectangles.values().forEach(rect -> {
+        PotionMenuConsts.slotRectangles.values().forEach(rect -> {
             renderingLayer.getShapeDrawer().filledRectangle(
                 rect.getX() - 3,
                 rect.getY() - 3,

@@ -18,7 +18,7 @@ public class PotionMenuController {
 
         AtomicBoolean isSuccessful = new AtomicBoolean(false);
 
-        PotionMenuConsts.skillRectangles.forEach((slotNum, rect) -> {
+        PotionMenuConsts.slotRectangles.forEach((slotNum, rect) -> {
             if (rect.contains(
                 x,
                 y

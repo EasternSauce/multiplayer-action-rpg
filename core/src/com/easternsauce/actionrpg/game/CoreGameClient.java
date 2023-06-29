@@ -21,7 +21,7 @@ import com.easternsauce.actionrpg.model.util.PlayerConfig;
 import com.easternsauce.actionrpg.model.util.TeleportEvent;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
-import com.easternsauce.actionrpg.renderer.hud.inventory.InventoryController;
+import com.easternsauce.actionrpg.renderer.hud.inventorywindow.InventoryWindowController;
 import com.easternsauce.actionrpg.renderer.hud.itempickupmenu.ItemPickupMenuController;
 import com.easternsauce.actionrpg.renderer.hud.potionmenu.PotionMenuController;
 import com.easternsauce.actionrpg.renderer.hud.skillmenu.SkillMenuController;
@@ -46,7 +46,7 @@ public class CoreGameClient extends CoreGame {
     private final ClientGameState gameState = ClientGameState.of();
 
     private final SkillMenuController skillMenuController = SkillMenuController.of();
-    private final InventoryController inventoryController = InventoryController.of();
+    private final InventoryWindowController inventoryWindowController = InventoryWindowController.of();
     private final ItemPickupMenuController pickupMenuController = ItemPickupMenuController.of();
     private final PotionMenuController potionMenuController = PotionMenuController.of();
 
@@ -205,7 +205,7 @@ public class CoreGameClient extends CoreGame {
 
     private void handleAttackButtonInput(PlayerConfig playerConfig) {
         if (playerConfig.getIsInventoryVisible()) {
-            inventoryController.performUseItemClick(
+            inventoryWindowController.performUseItemClick(
                 getEndPoint(),
                 this
             );
@@ -282,7 +282,7 @@ public class CoreGameClient extends CoreGame {
             }
 
             if (playerConfig.getIsInventoryVisible()) {
-                inventoryController.performMoveItemClick(
+                inventoryWindowController.performMoveItemClick(
                     getEndPoint(),
                     this
                 );

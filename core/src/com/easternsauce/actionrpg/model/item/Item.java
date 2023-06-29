@@ -19,7 +19,7 @@ public class Item implements Comparable<Item> {
     LootPileId lootPileId;
 
     @SuppressWarnings("StringConcatenationInsideStringBufferAppend")
-    public String getItemInformation() {
+    public String getDescription() {
         StringBuilder builder = new StringBuilder();
         if (template.getDamage() != null) {
             builder.append("Damage: " + getDamage() + "\n");

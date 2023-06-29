@@ -296,12 +296,14 @@ public class GameEntityRenderer {
     public void showDamageNumber(float actualDamageTaken, Vector2 pos, AreaId areaId, CoreGame game) {
         Float currentTime = game.getGameState().getTime();
 
-        damageNumbers.add(DamageNumber.of(
-            pos,
-            areaId,
-            actualDamageTaken,
-            currentTime
-        ));
+        if (damageNumbers.stream().anyMatch(damageNumber -> damageNumber.getDamageTime() + 0.1f < currentTime))
+
+            damageNumbers.add(DamageNumber.of(
+                pos,
+                areaId,
+                actualDamageTaken,
+                currentTime
+            ));
     }
 
     public void startCreatureHitAnimation(CreatureId creatureId,

@@ -18,13 +18,13 @@ public class SkillMenuConsts {
 
     public static final float SKILL_PICKER_MENU_POS_X = 110f;
     public static final float SKILL_PICKER_MENU_POS_Y = 69f;
-    public static final Map<Integer, Rect> skillRectangles = new HashMap<>();
+    public static final Map<Integer, Rect> slotRectangles = new HashMap<>();
     private static final float SKILL_PICKER_MENU_WIDTH = Gdx.graphics.getWidth() / 6f;
     private static final float SKILL_PICKER_MENU_HEIGHT = 20f;
 
     static {
         for (int i = 0; i < SkillMenuConsts.TOTAL_SKILL_SLOTS; i++) {
-            skillRectangles.put(
+            slotRectangles.put(
                 i,
                 Rect.of(
                     getSkillSlotPositionX(i),

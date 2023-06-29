@@ -1,4 +1,4 @@
-package com.easternsauce.actionrpg.renderer.hud.inventory;
+package com.easternsauce.actionrpg.renderer.hud.inventorywindow;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.command.ActionPerformCommand;
@@ -11,30 +11,30 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @Data
-public class InventoryController {
+public class InventoryWindowController {
     public void performMoveItemClick(Client client, CoreGame game) {
         Creature player = game.getGameState().accessCreatures().getCreature(game
             .getGameState()
             .getThisClientPlayerId());
         PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
 
-        float x = game.hudMousePos().getX();
-        float y = game.hudMousePos().getY();
+        float mouseX = game.hudMousePos().getX();
+        float mouseY = game.hudMousePos().getY();
 
         GameStateAction action = null;
 
-        if (InventoryConsts.backgroundOuterRect.contains(
-            x,
-            y
+        if (InventoryWindowConsts.backgroundOuterRect.contains(
+            mouseX,
+            mouseY
         )) {
-            InventoryData inventoryData = InventoryData.of(
-                InventoryConsts.getInventorySlotClicked(
-                    x,
-                    y
+            InventoryWindowState inventoryWindowState = InventoryWindowState.of(
+                InventoryWindowConsts.getInventorySlotClicked(
+                    mouseX,
+                    mouseY
                 ),
-                InventoryConsts.getEquipmentSlotClicked(
-                    x,
-                    y
+                InventoryWindowConsts.getEquipmentSlotClicked(
+                    mouseX,
+                    mouseY
                 ),
                 playerConfig.getInventoryItemBeingMoved(),
                 playerConfig.getEquipmentItemBeingMoved()
@@ -44,7 +44,7 @@ public class InventoryController {
                 game,
                 player,
                 playerConfig,
-                inventoryData
+                inventoryWindowState
             );
         } else if (playerConfig.getInventoryItemBeingMoved() != null ||
             playerConfig.getEquipmentItemBeingMoved() != null) {
@@ -59,45 +59,46 @@ public class InventoryController {
     private GameStateAction determineInventoryAction(CoreGame game,
                                                      Creature player,
                                                      PlayerConfig playerConfig,
-                                                     InventoryData inventoryData) {
+                                                     InventoryWindowState inventoryWindowState) {
         GameStateAction action = null;
-        if (inventoryData.getInventoryItemBeingMoved() != null && inventoryData.getInventorySlotClicked() != null) {
+        if (inventoryWindowState.getInventoryItemBeingMoved() != null &&
+            inventoryWindowState.getInventorySlotClicked() != null) {
             action = InventorySwapSlotItemsAction.of(
                 game.getGameState().getThisClientPlayerId(),
-                inventoryData.getInventoryItemBeingMoved(),
-                inventoryData.getInventorySlotClicked()
+                inventoryWindowState.getInventoryItemBeingMoved(),
+                inventoryWindowState.getInventorySlotClicked()
             );
-        } else if (inventoryData.getInventoryItemBeingMoved() != null &&
-            inventoryData.getEquipmentSlotClicked() != null) {
+        } else if (inventoryWindowState.getInventoryItemBeingMoved() != null &&
+            inventoryWindowState.getEquipmentSlotClicked() != null) {
             action = InventoryAndEquipmentSwapSlotItemsAction.of(
                 game.getGameState().getThisClientPlayerId(),
-                inventoryData.getInventoryItemBeingMoved(),
-                inventoryData.getEquipmentSlotClicked()
+                inventoryWindowState.getInventoryItemBeingMoved(),
+                inventoryWindowState.getEquipmentSlotClicked()
             );
-        } else if (inventoryData.getEquipmentItemBeingMoved() != null &&
-            inventoryData.getInventorySlotClicked() != null) {
+        } else if (inventoryWindowState.getEquipmentItemBeingMoved() != null &&
+            inventoryWindowState.getInventorySlotClicked() != null) {
             action = InventoryAndEquipmentSwapSlotItemsAction.of(
                 game.getGameState().getThisClientPlayerId(),
-                inventoryData.getInventorySlotClicked(),
-                inventoryData.getEquipmentItemBeingMoved()
+                inventoryWindowState.getInventorySlotClicked(),
+                inventoryWindowState.getEquipmentItemBeingMoved()
             );
-        } else if (inventoryData.getEquipmentItemBeingMoved() != null &&
-            inventoryData.getEquipmentSlotClicked() != null) {
+        } else if (inventoryWindowState.getEquipmentItemBeingMoved() != null &&
+            inventoryWindowState.getEquipmentSlotClicked() != null) {
             action = InventoryPutOnCursorCancelAction.of(game.getGameState().getThisClientPlayerId());
-        } else if (inventoryData.getInventorySlotClicked() != null) {
-            if (player.getParams().getInventoryItems().containsKey(inventoryData.getInventorySlotClicked())) {
+        } else if (inventoryWindowState.getInventorySlotClicked() != null) {
+            if (player.getParams().getInventoryItems().containsKey(inventoryWindowState.getInventorySlotClicked())) {
                 action = InventoryItemPutOnCursorAction.of(
                     game.getGameState().getThisClientPlayerId(),
-                    inventoryData.getInventorySlotClicked()
+                    inventoryWindowState.getInventorySlotClicked()
                 );
             }
-        } else if (inventoryData.getEquipmentSlotClicked() != null) {
-            if (player.getParams().getEquipmentItems().containsKey(inventoryData.getEquipmentSlotClicked())) {
-                playerConfig.setEquipmentItemBeingMoved(inventoryData.getEquipmentSlotClicked());
+        } else if (inventoryWindowState.getEquipmentSlotClicked() != null) {
+            if (player.getParams().getEquipmentItems().containsKey(inventoryWindowState.getEquipmentSlotClicked())) {
+                playerConfig.setEquipmentItemBeingMoved(inventoryWindowState.getEquipmentSlotClicked());
 
                 action = EquipmentItemPutOnCursorAction.of(
                     game.getGameState().getThisClientPlayerId(),
-                    inventoryData.getEquipmentSlotClicked()
+                    inventoryWindowState.getEquipmentSlotClicked()
                 );
             }
         } else {
@@ -114,16 +115,16 @@ public class InventoryController {
 
         GameStateAction action = null;
 
-        if (InventoryConsts.backgroundOuterRect.contains(
+        if (InventoryWindowConsts.backgroundOuterRect.contains(
             x,
             y
         )) {
-            InventoryData inventoryData = InventoryData.of(
-                InventoryConsts.getInventorySlotClicked(
+            InventoryWindowState inventoryWindowState = InventoryWindowState.of(
+                InventoryWindowConsts.getInventorySlotClicked(
                     x,
                     y
                 ),
-                InventoryConsts.getEquipmentSlotClicked(
+                InventoryWindowConsts.getEquipmentSlotClicked(
                     x,
                     y
                 ),
@@ -133,7 +134,7 @@ public class InventoryController {
 
             action = InventoryItemUseAction.of(
                 game.getGameState().getThisClientPlayerId(),
-                inventoryData.getInventorySlotClicked()
+                inventoryWindowState.getInventorySlotClicked()
             );
         }
 

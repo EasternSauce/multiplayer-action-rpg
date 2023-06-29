@@ -62,7 +62,7 @@ public class SkillMenuController {
 
         AtomicBoolean isSuccessful = new AtomicBoolean(false);
 
-        SkillMenuConsts.skillRectangles.forEach((slotNum, rect) -> {
+        SkillMenuConsts.slotRectangles.forEach((slotNum, rect) -> {
             if (rect.contains(
                 x,
                 y

@@ -5,7 +5,7 @@ import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.area.LootPile;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.item.Item;
-import com.easternsauce.actionrpg.renderer.hud.inventory.InventoryConsts;
+import com.easternsauce.actionrpg.renderer.hud.inventorywindow.InventoryWindowConsts;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -41,7 +41,7 @@ public class LootPileItemTryPickUpAction extends GameStateAction {
 
         if (item.getTemplate().getIsStackable()) {
 
-            for (int i = 0; i < InventoryConsts.INVENTORY_TOTAL_SLOTS; i++) {
+            for (int i = 0; i < InventoryWindowConsts.INVENTORY_TOTAL_SLOTS; i++) {
                 if (inventoryItems.containsKey(i) && inventoryItems.get(i).getTemplate().getId().equals(item
                     .getTemplate()
                     .getId())) {
@@ -66,7 +66,7 @@ public class LootPileItemTryPickUpAction extends GameStateAction {
             }
         } else {
             Integer freeSlot = null;
-            for (int i = 0; i < InventoryConsts.INVENTORY_TOTAL_SLOTS; i++) {
+            for (int i = 0; i < InventoryWindowConsts.INVENTORY_TOTAL_SLOTS; i++) {
                 if (!inventoryItems.containsKey(i)) {
                     freeSlot = i;
                     break;

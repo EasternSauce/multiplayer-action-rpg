@@ -1,4 +1,4 @@
-package com.easternsauce.actionrpg.renderer.hud.inventory;
+package com.easternsauce.actionrpg.renderer.hud.inventorywindow;
 
 import com.badlogic.gdx.Gdx;
 import com.easternsauce.actionrpg.renderer.util.Rect;
@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class InventoryConsts {
+public class InventoryWindowConsts {
     public static final Rect backgroundInnerRect;
     public static final Rect backgroundOuterRect;
 
@@ -90,7 +90,7 @@ public class InventoryConsts {
     public static Integer getEquipmentSlotClicked(float x, float y) {
         AtomicReference<Integer> atomicEquipmentSlotClicked = new AtomicReference<>(null);
 
-        InventoryConsts.equipmentRectangles.entrySet().stream().filter(entry -> entry.getValue().contains(
+        InventoryWindowConsts.equipmentRectangles.entrySet().stream().filter(entry -> entry.getValue().contains(
             x,
             y
         )).forEach(entry -> atomicEquipmentSlotClicked.set(entry.getKey()));
@@ -101,7 +101,7 @@ public class InventoryConsts {
     public static Integer getInventorySlotClicked(float x, float y) {
         AtomicReference<Integer> atomicInventorySlotClicked = new AtomicReference<>(null);
 
-        InventoryConsts.inventoryRectangles.entrySet().stream().filter(entry -> entry.getValue().contains(
+        InventoryWindowConsts.inventoryRectangles.entrySet().stream().filter(entry -> entry.getValue().contains(
             x,
             y
         )).forEach(entry -> atomicInventorySlotClicked.set(entry.getKey()));

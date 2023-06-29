@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
-import com.easternsauce.actionrpg.renderer.hud.inventory.InventoryRenderer;
+import com.easternsauce.actionrpg.renderer.hud.inventorywindow.InventoryWindowRenderer;
 import com.easternsauce.actionrpg.renderer.hud.itempickupmenu.ItemPickupMenuRenderer;
 import com.easternsauce.actionrpg.renderer.hud.potionmenu.PotionMenuRenderer;
 import com.easternsauce.actionrpg.renderer.hud.skillmenu.SkillMenuRenderer;
@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class HudRenderer {
     FpsCounterRenderer fpsCounterRenderer = FpsCounterRenderer.of();
-    InventoryRenderer inventoryRenderer = InventoryRenderer.of();
+    InventoryWindowRenderer inventoryWindowRenderer = InventoryWindowRenderer.of();
     PlayerStatBarsRenderer playerStatBarsRenderer = PlayerStatBarsRenderer.of();
     RespawnMessageRenderer respawnMessageRenderer = RespawnMessageRenderer.of();
     SkillMenuRenderer skillMenuRenderer = SkillMenuRenderer.of();
@@ -23,7 +23,7 @@ public class HudRenderer {
     PotionMenuRenderer potionMenuRenderer = PotionMenuRenderer.of();
 
     public void init(TextureAtlas atlas) {
-        inventoryRenderer.init(atlas);
+        inventoryWindowRenderer.init(atlas);
     }
 
     public void render(CoreGame game) {
@@ -63,7 +63,7 @@ public class HudRenderer {
 
         }
 
-        inventoryRenderer.render(
+        inventoryWindowRenderer.render(
             renderingLayer,
             game
         );
