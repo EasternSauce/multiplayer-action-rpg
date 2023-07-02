@@ -7,7 +7,7 @@ public enum EquipmentSlotType {
     PRIMARY_WEAPON(0), SECONDARY_WEAPON(1), HELMET(2), BODY(3), GLOVES(4), RING(5), BOOTS(6);
 
     public static final Map<Integer, String> equipmentSlotNames = new ConcurrentSkipListMap<>();
-    public static final Map<Integer, EquipmentSlotType> equipmentSlotSequenceNumbers = new ConcurrentSkipListMap<>();
+    public static final Map<Integer, EquipmentSlotType> equipmentSlotTypes = new ConcurrentSkipListMap<>();
 
     static {
         equipmentSlotNames.put(
@@ -42,31 +42,31 @@ public enum EquipmentSlotType {
     }
 
     static {
-        equipmentSlotSequenceNumbers.put(
+        equipmentSlotTypes.put(
             0,
             PRIMARY_WEAPON
         );
-        equipmentSlotSequenceNumbers.put(
+        equipmentSlotTypes.put(
             1,
             SECONDARY_WEAPON
         );
-        equipmentSlotSequenceNumbers.put(
+        equipmentSlotTypes.put(
             2,
             HELMET
         );
-        equipmentSlotSequenceNumbers.put(
+        equipmentSlotTypes.put(
             3,
             BODY
         );
-        equipmentSlotSequenceNumbers.put(
+        equipmentSlotTypes.put(
             4,
             GLOVES
         );
-        equipmentSlotSequenceNumbers.put(
+        equipmentSlotTypes.put(
             5,
             RING
         );
-        equipmentSlotSequenceNumbers.put(
+        equipmentSlotTypes.put(
             6,
             BOOTS
         );

@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 public class Item implements Comparable<Item> {
     ItemTemplate template;
     Integer quantity = 1;
-    Float qualityModifier;
+    Float qualityModifier = 1f;
     Map<SkillType, Integer> grantedSkills = new ConcurrentSkipListMap<>();
 
     LootPileId lootPileId;

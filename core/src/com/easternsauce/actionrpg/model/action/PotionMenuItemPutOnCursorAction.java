@@ -11,12 +11,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class InventoryPutOnCursorCancelAction extends GameStateAction {
+public class PotionMenuItemPutOnCursorAction extends GameStateAction {
     private CreatureId playerId;
 
-    public static InventoryPutOnCursorCancelAction of(CreatureId creatureId) {
-        InventoryPutOnCursorCancelAction action = InventoryPutOnCursorCancelAction.of();
+    private Integer slotIndex;
+
+    public static PotionMenuItemPutOnCursorAction of(CreatureId creatureId, Integer slotIndex) {
+        PotionMenuItemPutOnCursorAction action = PotionMenuItemPutOnCursorAction.of();
         action.playerId = creatureId;
+        action.slotIndex = slotIndex;
         return action;
     }
 
@@ -25,9 +28,7 @@ public class InventoryPutOnCursorCancelAction extends GameStateAction {
         PlayerConfig playerConfig = game.getGameState().getPlayerConfig(playerId);
 
         if (playerConfig != null) {
-            playerConfig.setInventoryItemBeingMoved(null);
-            playerConfig.setEquipmentItemBeingMoved(null);
-            playerConfig.setPotionMenuItemBeingMoved(null);
+            playerConfig.setPotionMenuItemBeingMoved(slotIndex);
         }
     }
 

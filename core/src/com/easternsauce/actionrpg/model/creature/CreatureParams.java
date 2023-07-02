@@ -3,6 +3,7 @@ package com.easternsauce.actionrpg.model.creature;
 import com.easternsauce.actionrpg.game.entity.EntityParams;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.item.Item;
+import com.easternsauce.actionrpg.model.item.ItemTemplate;
 import com.easternsauce.actionrpg.model.skill.Skill;
 import com.easternsauce.actionrpg.model.skill.SkillType;
 import com.easternsauce.actionrpg.model.util.SimpleTimer;
@@ -125,11 +126,28 @@ public class CreatureParams implements EntityParams {
     }
 
     public static CreatureParams of(CreatureId creatureId, AreaId areaId, Vector2 pos, String textureName) {
+
+        Map<Integer, Item> potionMenuItems = new ConcurrentSkipListMap<>();
+        potionMenuItems.put(
+            0,
+            Item.of().setTemplate(ItemTemplate.templates.get("lifePotion"))
+        );
+        potionMenuItems.put(
+            1,
+            Item.of().setTemplate(ItemTemplate.templates.get("lifePotion"))
+        );
+
+        Map<Integer, Item> inventoryItems = new ConcurrentSkipListMap<>();
+        inventoryItems.put(
+            2,
+            Item.of().setTemplate(ItemTemplate.templates.get("lifePotion"))
+        );
+
         return produceCreatureParams(
             creatureId,
             areaId,
             pos,
             textureName
-        );
+        ).setPotionMenuItems(potionMenuItems).setInventoryItems(inventoryItems);
     }
 }

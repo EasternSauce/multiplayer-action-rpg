@@ -37,6 +37,7 @@ public class ItemDropOnGroundAction extends GameStateAction {
 
         Map<Integer, Item> inventoryItems = player.getParams().getInventoryItems();
         Map<Integer, Item> equipmentItems = player.getParams().getEquipmentItems();
+        Map<Integer, Item> potionMenuItems = player.getParams().getPotionMenuItems();
 
         Item item;
         if (playerConfig.getInventoryItemBeingMoved() != null) {
@@ -47,6 +48,10 @@ public class ItemDropOnGroundAction extends GameStateAction {
             item = equipmentItems.get(playerConfig.getEquipmentItemBeingMoved());
             equipmentItems.remove(playerConfig.getEquipmentItemBeingMoved());
             playerConfig.setEquipmentItemBeingMoved(null);
+        } else if (playerConfig.getPotionMenuItemBeingMoved() != null) {
+            item = potionMenuItems.get(playerConfig.getPotionMenuItemBeingMoved());
+            potionMenuItems.remove(playerConfig.getPotionMenuItemBeingMoved());
+            playerConfig.setPotionMenuItemBeingMoved(null);
         } else {
             throw new RuntimeException("impossible state");
         }

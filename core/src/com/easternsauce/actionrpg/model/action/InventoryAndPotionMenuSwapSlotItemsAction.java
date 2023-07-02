@@ -4,7 +4,6 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
-import com.easternsauce.actionrpg.model.item.EquipmentSlotType;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;
 import lombok.Data;
@@ -17,19 +16,19 @@ import java.util.concurrent.ConcurrentSkipListSet;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class InventoryAndEquipmentSwapSlotItemsAction extends GameStateAction {
+public class InventoryAndPotionMenuSwapSlotItemsAction extends GameStateAction {
     private CreatureId playerId;
 
     private Integer inventoryIndex;
-    private Integer equipmentIndex;
+    private Integer potionMenuIndex;
 
-    public static InventoryAndEquipmentSwapSlotItemsAction of(CreatureId creatureId,
-                                                              Integer inventoryIndex,
-                                                              Integer equipmentIndex) {
-        InventoryAndEquipmentSwapSlotItemsAction action = InventoryAndEquipmentSwapSlotItemsAction.of();
+    public static InventoryAndPotionMenuSwapSlotItemsAction of(CreatureId creatureId,
+                                                               Integer inventoryIndex,
+                                                               Integer potionMenuIndex) {
+        InventoryAndPotionMenuSwapSlotItemsAction action = InventoryAndPotionMenuSwapSlotItemsAction.of();
         action.playerId = creatureId;
         action.inventoryIndex = inventoryIndex;
-        action.equipmentIndex = equipmentIndex;
+        action.potionMenuIndex = potionMenuIndex;
         return action;
     }
 
@@ -39,23 +38,14 @@ public class InventoryAndEquipmentSwapSlotItemsAction extends GameStateAction {
         PlayerConfig playerConfig = game.getGameState().getPlayerConfig(playerId);
 
         Item inventoryItem = player.getParams().getInventoryItems().get(inventoryIndex);
-        Item equipmentItem = player.getParams().getEquipmentItems().get(equipmentIndex);
+        Item potionMenuItem = player.getParams().getPotionMenuItems().get(potionMenuIndex);
 
-        if (checkInventoryItemSlotTypeMatchesEquipmentSlot(inventoryItem)) {
-            handleSwapInInventory(
-                player,
-                equipmentItem
-            );
-            handleSwapInEquipment(
-                player,
-                inventoryItem
-            );
+        if (checkPotionMenuSlotAcceptsItemType(inventoryItem)) {
+            handleSwapInInventory(player, potionMenuItem);
+            handleSwapInPotionMenu(player, inventoryItem);
         }
 
-        finalizeItemSwap(
-            player,
-            playerConfig
-        );
+        finalizeItemSwap(player, playerConfig);
     }
 
     @Override
@@ -63,31 +53,23 @@ public class InventoryAndEquipmentSwapSlotItemsAction extends GameStateAction {
         return game.getGameState().accessCreatures().getCreature(playerId);
     }
 
-    private boolean checkInventoryItemSlotTypeMatchesEquipmentSlot(Item inventoryItem) {
-        return inventoryItem == null ||
-            inventoryItem.getTemplate().getEquipmentSlotType() ==
-                EquipmentSlotType.equipmentSlotTypes.get(equipmentIndex);
+    private boolean checkPotionMenuSlotAcceptsItemType(Item inventoryItem) {
+        return inventoryItem == null || inventoryItem.getTemplate().getIsConsumable();
     }
 
-    private void handleSwapInInventory(Creature player, Item equipmentItem) {
-        if (equipmentItem != null) {
-            player.getParams().getInventoryItems().put(
-                inventoryIndex,
-                equipmentItem
-            );
+    private void handleSwapInInventory(Creature player, Item potionMenuItem) {
+        if (potionMenuItem != null) {
+            player.getParams().getInventoryItems().put(inventoryIndex, potionMenuItem);
         } else {
             player.getParams().getInventoryItems().remove(inventoryIndex);
         }
     }
 
-    private void handleSwapInEquipment(Creature player, Item inventoryItem) {
+    private void handleSwapInPotionMenu(Creature player, Item inventoryItem) {
         if (inventoryItem != null) {
-            player.getParams().getEquipmentItems().put(
-                equipmentIndex,
-                inventoryItem
-            );
+            player.getParams().getPotionMenuItems().put(potionMenuIndex, inventoryItem);
         } else {
-            player.getParams().getEquipmentItems().remove(equipmentIndex);
+            player.getParams().getPotionMenuItems().remove(potionMenuIndex);
         }
     }
 
@@ -98,10 +80,7 @@ public class InventoryAndEquipmentSwapSlotItemsAction extends GameStateAction {
 
         playerConfig.setIsSkillMenuPickerSlotBeingChanged(null);
 
-        removeSkillFromSkillMenuOnItemUnequip(
-            player,
-            playerConfig
-        );
+        removeSkillFromSkillMenuOnItemUnequip(player, playerConfig);
     }
 
     @SuppressWarnings("SpellCheckingInspection")

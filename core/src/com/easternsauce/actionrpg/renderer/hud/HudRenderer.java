@@ -63,17 +63,17 @@ public class HudRenderer {
 
         }
 
-        inventoryWindowRenderer.render(
-            renderingLayer,
-            game
-        );
-
         pickUpMenuRenderer.render(
             renderingLayer,
             game
         );
 
         potionMenuRenderer.renderMenu(
+            renderingLayer,
+            game
+        );
+
+        inventoryWindowRenderer.render(
             renderingLayer,
             game
         );

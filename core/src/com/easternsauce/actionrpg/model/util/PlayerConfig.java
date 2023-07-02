@@ -18,6 +18,7 @@ public class PlayerConfig {
     Boolean isInventoryVisible = false;
     Integer inventoryItemBeingMoved;
     Integer equipmentItemBeingMoved;
+    Integer potionMenuItemBeingMoved;
     Set<LootPileId> itemPickupMenuLootPiles = new ConcurrentSkipListSet<>();
     Integer isSkillMenuPickerSlotBeingChanged;
     Map<Integer, SkillType> skillMenuSlots = new ConcurrentSkipListMap<>();

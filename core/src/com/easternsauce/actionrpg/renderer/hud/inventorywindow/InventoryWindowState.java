@@ -10,7 +10,9 @@ import lombok.NoArgsConstructor;
 public class InventoryWindowState {
     Integer inventorySlotClicked;
     Integer equipmentSlotClicked;
+    Integer potionMenuSlotClicked;
 
     Integer inventoryItemBeingMoved;
     Integer equipmentItemBeingMoved;
+    Integer potionMenuItemBeingMoved;
 }

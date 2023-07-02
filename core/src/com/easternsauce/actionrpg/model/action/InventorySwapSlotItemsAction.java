@@ -70,6 +70,7 @@ public class InventorySwapSlotItemsAction extends GameStateAction {
 
         playerConfig.setInventoryItemBeingMoved(null);
         playerConfig.setEquipmentItemBeingMoved(null);
+        playerConfig.setPotionMenuItemBeingMoved(null);
     }
 
     @Override
