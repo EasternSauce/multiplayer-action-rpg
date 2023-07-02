@@ -21,34 +21,34 @@ public class ItemTemplate {
     public static Map<String, ItemTemplate> templates;
 
     static {
-        List<ItemTemplate> templates = Arrays.asList(ItemTemplate.of(
-            "leatherArmor",
-            "Leather Armor",
-            "-",
-            Vector2Int.of(8, 7)
-        ).setWorth(150).setIsEquipable(true).setEquipmentSlotType(EquipmentSlotType.BODY).setArmor(13), ItemTemplate.of(
-            "ringmailGreaves",
-            "Ringmail Greaves",
-            "-",
-            Vector2Int.of(3, 8)
-        ).setWorth(50).setIsEquipable(true).setEquipmentSlotType(EquipmentSlotType.BOOTS).setArmor(7), ItemTemplate.of(
-            "hideGloves",
-            "Hide Gloves",
-            "-",
-            Vector2Int.of(0, 8)
-        ).setWorth(70).setIsEquipable(true).setEquipmentSlotType(EquipmentSlotType.GLOVES).setArmor(5), ItemTemplate
-            .of(
-                "boomerang",
-                "Boomerang",
-                "-",
-                Vector2Int.of(6, 6)
-            )
+        List<ItemTemplate> templates = Arrays.asList(ItemTemplate
+            .of("leatherArmor", "Leather Armor", "-", Vector2Int.of(8, 7))
+            .setWorth(150)
+            .setIsEquipable(true)
+            .setEquipmentSlotType(EquipmentSlotType.BODY)
+            .setArmor(13), ItemTemplate
+            .of("ringmailGreaves", "Ringmail Greaves", "-", Vector2Int.of(3, 8))
+            .setWorth(50)
+            .setIsEquipable(true)
+            .setEquipmentSlotType(EquipmentSlotType.BOOTS)
+            .setArmor(7), ItemTemplate
+            .of("hideGloves", "Hide Gloves", "-", Vector2Int.of(0, 8))
+            .setWorth(70)
+            .setIsEquipable(true)
+            .setEquipmentSlotType(EquipmentSlotType.GLOVES)
+            .setArmor(5), ItemTemplate
+            .of("boomerang", "Boomerang", "-", Vector2Int.of(6, 6))
             .setWorth(350)
             .setIsEquipable(true)
             .setEquipmentSlotType(EquipmentSlotType.PRIMARY_WEAPON)
             .setAttackSkill(SkillType.BOOMERANG)
             .setDamage(21f), ItemTemplate
-            .of("woodenSword", "Wooden Sword", "-", Vector2Int.of(0, 5))
+            .of(
+                "woodenSword",
+                "Wooden Sword",
+                "-",
+                Vector2Int.of(0, 5)
+            )
             .setWorth(75)
             .setIsEquipable(true)
             .setEquipmentSlotType(EquipmentSlotType.PRIMARY_WEAPON)
@@ -73,17 +73,17 @@ public class ItemTemplate {
             .setIsEquipable(true)
             .setEquipmentSlotType(EquipmentSlotType.PRIMARY_WEAPON)
             .setAttackSkill(SkillType.CROSSBOW_SHOT)
-            .setDamage(10f), ItemTemplate.of(
-            "lifePotion",
-            "Life Potion",
-            "-",
-            Vector2Int.of(0, 9)
-        ).setWorth(300).setIsConsumable(true).setIsStackable(true).setIsQualityNonApplicable(true), ItemTemplate.of(
-            "manaPotion",
-            "Mana Potion",
-            "-",
-            Vector2Int.of(1, 9)
-        ).setWorth(600).setIsConsumable(true).setIsStackable(true).setIsQualityNonApplicable(true));
+            .setDamage(10f), ItemTemplate
+            .of("lifePotion", "Life Potion", "-", Vector2Int.of(0, 9))
+            .setWorth(300)
+            .setIsConsumable(true)
+            .setIsStackable(true)
+            .setIsQualityNonApplicable(true), ItemTemplate
+            .of("manaPotion", "Mana Potion", "-", Vector2Int.of(1, 9))
+            .setWorth(600)
+            .setIsConsumable(true)
+            .setIsStackable(true)
+            .setIsQualityNonApplicable(true));
 
         List<ItemTemplate> list = new ArrayList<>(templates);
         ItemTemplate.templates = new ConcurrentSkipListMap<>(list
