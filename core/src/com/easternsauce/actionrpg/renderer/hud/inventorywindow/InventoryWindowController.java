@@ -183,11 +183,11 @@ public class InventoryWindowController {
         Item itemFrom = null;
         Item itemTo = null;
 
-        if (inventoryWindowState.getPotionMenuSlotClicked() != null) {
-            itemFrom = player.getParams().getPotionMenuItems().get(inventoryWindowState.getPotionMenuSlotClicked());
+        if (inventoryWindowState.getPotionMenuItemBeingMoved() != null) {
+            itemFrom = player.getParams().getPotionMenuItems().get(inventoryWindowState.getPotionMenuItemBeingMoved());
         }
-        if (inventoryWindowState.getInventoryItemBeingMoved() != null) {
-            itemTo = player.getParams().getInventoryItems().get(inventoryWindowState.getInventoryItemBeingMoved());
+        if (inventoryWindowState.getInventorySlotClicked() != null) {
+            itemTo = player.getParams().getInventoryItems().get(inventoryWindowState.getInventorySlotClicked());
         }
 
         if (areItemStackable(itemFrom, itemTo)) {

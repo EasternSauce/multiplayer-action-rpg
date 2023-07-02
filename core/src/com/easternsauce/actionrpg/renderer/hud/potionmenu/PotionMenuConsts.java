@@ -10,15 +10,15 @@ public class PotionMenuConsts {
     public static final float SLOT_SIZE = 40f;
     public static final int SPACE_BETWEEN_SLOTS = 12;
 
-    public static final float SKILL_MENU_POS_X = 130f;
-    public static final float SKILL_MENU_POS_Y = 60f;
+    public static final float MENU_POS_X = 130f;
+    public static final float MENU_POS_Y = 60f;
 
-    public static final int TOTAL_SKILL_SLOTS = 3;
+    public static final int TOTAL_POTION_MENU_SLOTS = 5;
 
     public static final Map<Integer, Rect> slotRectangles = new HashMap<>();
 
     static {
-        for (int i = 0; i < PotionMenuConsts.TOTAL_SKILL_SLOTS; i++) {
+        for (int i = 0; i < PotionMenuConsts.TOTAL_POTION_MENU_SLOTS; i++) {
             slotRectangles.put(i,
                 Rect.of(getSlotPositionX(i),
                     getSlotPositionY(i),
@@ -31,18 +31,18 @@ public class PotionMenuConsts {
 
     public static float getSlotPositionX(Integer index) {
         int currentColumn = index;
-        return PotionMenuConsts.SKILL_MENU_POS_X +
+        return PotionMenuConsts.MENU_POS_X +
             (PotionMenuConsts.SLOT_SIZE + PotionMenuConsts.SPACE_BETWEEN_SLOTS) * currentColumn;
     }
 
     public static float getSlotPositionY(@SuppressWarnings("unused") Integer index) {
-        return PotionMenuConsts.SKILL_MENU_POS_Y;
+        return PotionMenuConsts.MENU_POS_Y;
     }
 
     public static boolean isMenuContainsPos(float x, float y) {
-        Rect rect = Rect.of(SKILL_MENU_POS_X,
-            SKILL_MENU_POS_Y,
-            (PotionMenuConsts.SLOT_SIZE + PotionMenuConsts.SPACE_BETWEEN_SLOTS) * TOTAL_SKILL_SLOTS,
+        Rect rect = Rect.of(MENU_POS_X,
+            MENU_POS_Y,
+            (PotionMenuConsts.SLOT_SIZE + PotionMenuConsts.SPACE_BETWEEN_SLOTS) * TOTAL_POTION_MENU_SLOTS,
             PotionMenuConsts.SLOT_SIZE
         );
         return rect.contains(x, y);

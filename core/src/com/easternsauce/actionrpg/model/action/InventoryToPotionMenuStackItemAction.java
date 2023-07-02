@@ -5,6 +5,7 @@ import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.item.Item;
+import com.easternsauce.actionrpg.model.util.PlayerConfig;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -32,12 +33,13 @@ public class InventoryToPotionMenuStackItemAction extends GameStateAction {
 
     @Override
     public void applyToGame(CoreGame game) {
+        PlayerConfig playerConfig = game.getGameState().getPlayerConfig(playerId);
+
         if (!Objects.equals(inventoryIndex, potionMenuIndex)) {
             Creature player = game.getGameState().accessCreatures().getCreature(playerId);
 
             Item itemFrom = player.getParams().getInventoryItems().get(inventoryIndex);
-            Item itemTo = player.getParams().getPotionMenuItems().get(
-                potionMenuIndex);
+            Item itemTo = player.getParams().getPotionMenuItems().get(potionMenuIndex);
 
             boolean isCanStackItems = itemFrom != null &&
                 itemTo != null &&
@@ -50,6 +52,10 @@ public class InventoryToPotionMenuStackItemAction extends GameStateAction {
                 itemTo.setQuantity(itemTo.getQuantity() + itemFrom.getQuantity());
             }
         }
+
+        playerConfig.setInventoryItemBeingMoved(null);
+        playerConfig.setEquipmentItemBeingMoved(null);
+        playerConfig.setPotionMenuItemBeingMoved(null);
     }
 
     @Override

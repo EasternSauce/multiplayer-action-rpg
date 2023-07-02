@@ -243,14 +243,18 @@ public class InventoryWindowRenderer {
                                                        IconRetriever iconRetriever,
                                                        PlayerConfig playerConfig,
                                                        RenderingLayer renderingLayer) {
-        Vector2Int iconPos = inventoryItems.get(playerConfig.getInventoryItemBeingMoved()).getTemplate().getIconPos();
+        if (inventoryItems.containsKey(playerConfig.getInventoryItemBeingMoved())) {
+            Item item = inventoryItems.get(playerConfig.getInventoryItemBeingMoved());
 
-        renderingLayer.getSpriteBatch().draw(iconRetriever.getIcon(iconPos.getX(), iconPos.getY()),
-            mouseX - InventoryWindowConsts.SLOT_SIZE / 2f,
-            mouseY - InventoryWindowConsts.SLOT_SIZE / 2f,
-            InventoryWindowConsts.SLOT_SIZE,
-            InventoryWindowConsts.SLOT_SIZE
-        );
+            Vector2Int iconPos = item.getTemplate().getIconPos();
+
+            renderingLayer.getSpriteBatch().draw(iconRetriever.getIcon(iconPos.getX(), iconPos.getY()),
+                mouseX - InventoryWindowConsts.SLOT_SIZE / 2f,
+                mouseY - InventoryWindowConsts.SLOT_SIZE / 2f,
+                InventoryWindowConsts.SLOT_SIZE,
+                InventoryWindowConsts.SLOT_SIZE
+            );
+        }
     }
 
     private void renderEquipmentItemBeingMovedOnCursor(float mouseX,

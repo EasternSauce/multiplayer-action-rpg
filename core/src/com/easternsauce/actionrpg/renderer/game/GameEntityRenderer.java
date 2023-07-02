@@ -213,9 +213,15 @@ public class GameEntityRenderer {
     public void showDamageNumber(float actualDamageTaken, Vector2 pos, AreaId areaId, CoreGame game) {
         Float currentTime = game.getGameState().getTime();
 
-        if (damageNumbers.stream().anyMatch(damageNumber -> damageNumber.getDamageTime() + 0.1f < currentTime)) {
-            damageNumbers.add(DamageNumber.of(pos, areaId, actualDamageTaken, currentTime));
-        }
+        float xNoise = ((float) Math.random() * 2f - 1f) * 0.7f;
+        float yNoise = ((float) Math.random() * 2f - 1f) * 0.7f;
+
+        damageNumbers.add(DamageNumber.of(Vector2.of(pos.getX() + xNoise, pos.getY() + yNoise),
+            areaId,
+            actualDamageTaken,
+            currentTime
+        ));
+
     }
 
     public void startCreatureHitAnimation(CreatureId creatureId,

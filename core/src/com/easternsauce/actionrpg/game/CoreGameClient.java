@@ -23,6 +23,7 @@ import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
 import com.easternsauce.actionrpg.renderer.hud.inventorywindow.InventoryWindowController;
 import com.easternsauce.actionrpg.renderer.hud.itempickupmenu.ItemPickupMenuController;
+import com.easternsauce.actionrpg.renderer.hud.potionmenu.PotionMenuController;
 import com.easternsauce.actionrpg.renderer.hud.skillmenu.SkillMenuController;
 import com.easternsauce.actionrpg.util.Constants;
 import com.esotericsoftware.kryonet.Client;
@@ -47,6 +48,7 @@ public class CoreGameClient extends CoreGame {
     private final SkillMenuController skillMenuController = SkillMenuController.of();
     private final InventoryWindowController inventoryWindowController = InventoryWindowController.of();
     private final ItemPickupMenuController pickupMenuController = ItemPickupMenuController.of();
+    private final PotionMenuController potionMenuController = PotionMenuController.of();
 
     @Getter
     @Setter
@@ -145,6 +147,27 @@ public class CoreGameClient extends CoreGame {
             if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
                 handlePerformAbilityInput(playerConfig, 2);
             }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
+                handlePerformAbilityInput(playerConfig, 3);
+            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.T)) {
+                handlePerformAbilityInput(playerConfig, 4);
+            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
+                handleUsePotionMenuItemInput(0);
+            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)) {
+                handleUsePotionMenuItemInput(1);
+            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)) {
+                handleUsePotionMenuItemInput(2);
+            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_4)) {
+                handleUsePotionMenuItemInput(3);
+            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_5)) {
+                handleUsePotionMenuItemInput(4);
+            }
             if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
                 handleInventoryWindowActionInput();
             }
@@ -189,7 +212,16 @@ public class CoreGameClient extends CoreGame {
         }
     }
 
+    private void handleUsePotionMenuItemInput(int potionMenuItemIndex) {
+        getEndPoint().sendTCP(ActionPerformCommand.of(PotionMenuItemUseAction.of(getGameState().getThisClientPlayerId(),
+            potionMenuItemIndex
+        )));
+
+    }
+
     private void handleAttackButtonInput(PlayerConfig playerConfig) {
+        potionMenuController.performUseItemClick(getEndPoint(), this);
+
         if (playerConfig.getIsInventoryVisible()) {
             inventoryWindowController.performUseItemClick(getEndPoint(), this);
         }
@@ -253,12 +285,6 @@ public class CoreGameClient extends CoreGame {
 
     private void handleActionButtonInput(PlayerConfig playerConfig) {
         if (playerConfig != null) {
-
-            //            boolean isSuccessful = potionMenuController.performPotionMenuClick(getEndPoint(), this);
-            //            if (isSuccessful) {
-            //                menuClickTime = gameState.getTime();
-            //            }
-
             if (playerConfig.getIsInventoryVisible()) {
                 inventoryWindowController.performMoveItemClick(getEndPoint(), this);
             } else if (!playerConfig.getIsInventoryVisible() && !playerConfig.getItemPickupMenuLootPiles().isEmpty()) {

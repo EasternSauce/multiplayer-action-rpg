@@ -15,6 +15,8 @@ import lombok.NoArgsConstructor;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @NoArgsConstructor(staticName = "of")
 @Data
@@ -31,6 +33,8 @@ public class SkillMenuRenderer {
         keys.put(0, "Q");
         keys.put(1, "W");
         keys.put(2, "E");
+        keys.put(3, "R");
+        keys.put(4, "T");
 
         AtomicInteger i = new AtomicInteger();
         SkillMenuConsts.slotRectangles.values().forEach(rect -> {
@@ -51,8 +55,8 @@ public class SkillMenuRenderer {
 
             if (skillType != null) {
                 Assets.renderMediumFont(renderingLayer,
-                    skillType.getPrettyName().substring(0, 2),
-                    Vector2.of(rect.getX() + 5f, rect.getY() + SkillMenuConsts.SLOT_SIZE - 7f),
+                    getInitials(skillType.getPrettyName()),
+                    Vector2.of(rect.getX() + 5f, rect.getY() + 24f),
                     Color.GOLD
                 );
             }
@@ -64,6 +68,16 @@ public class SkillMenuRenderer {
 
             i.getAndIncrement();
         });
+    }
+
+    private String getInitials(String input) {
+        Pattern p = Pattern.compile("((^| )[A-Za-z])");
+        Matcher m = p.matcher(input);
+        StringBuilder initials = new StringBuilder();
+        while (m.find()) {
+            initials.append(m.group().trim());
+        }
+        return initials.toString().toUpperCase();
     }
 
     public void renderPicker(Creature player, RenderingLayer renderingLayer, CoreGame game) {

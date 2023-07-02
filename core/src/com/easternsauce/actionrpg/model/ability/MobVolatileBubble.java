@@ -26,7 +26,7 @@ public class MobVolatileBubble extends Projectile {
             .setIsChannelAnimationLooping(false)
             .setIsActiveAnimationLooping(true)
             .setDelayedActionTime(0.001f)
-            .setSpeed(12f);
+            .setSpeed(18f);
 
         return ability;
     }

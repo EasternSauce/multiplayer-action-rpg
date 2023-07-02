@@ -41,6 +41,8 @@ public class PotionMenuRenderer {
         keys.put(0, "1");
         keys.put(1, "2");
         keys.put(2, "3");
+        keys.put(3, "4");
+        keys.put(4, "5");
 
         IconRetriever iconRetriever = game.getEntityManager().getGameEntityRenderer().getIconRetriever();
 

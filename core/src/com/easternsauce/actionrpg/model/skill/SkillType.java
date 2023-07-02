@@ -12,21 +12,21 @@ public enum SkillType {
         0.6f,
         20f,
         0f
-    ), FIREBALL(
-        "Fireball",
+    ), FIREBALL("Fireball", true, AbilityType.FIREBALL, 1.5f, 30f, 20f), LIGHTNING(
+        "Lightning",
         true,
-        AbilityType.FIREBALL,
-        1.5f,
-        30f,
-        20f
-    ), LIGHTNING("Lightning", true, AbilityType.LIGHTNING_SPARK, 2f, 20f, 26f), CROSSBOW_SHOT(
-        "Crossbow Shot",
+        AbilityType.LIGHTNING_SPARK,
+        2f,
+        20f,
+        26f
+    ), CROSSBOW_SHOT("Crossbow Shot", true, AbilityType.CROSSBOW_SHOT, 2f, 25f, 0f), MOB_CROSSBOW_SHOT(
+        "Crossbow Shot (mob only)",
         true,
-        AbilityType.CROSSBOW_SHOT,
+        AbilityType.MOB_CROSSBOW_SHOT,
         2f,
         25f,
         0f
-    ), MOB_CROSSBOW_SHOT("Crossbow Shot (mob only)", true, AbilityType.MOB_CROSSBOW_SHOT, 2f, 25f, 0f),
+    ),
 
     MAGIC_ORB("Magic Orb", true, AbilityType.MAGIC_ORB, 0.8f, 15f, 10f),
 

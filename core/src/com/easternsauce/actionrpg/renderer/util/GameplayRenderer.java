@@ -98,6 +98,10 @@ public class GameplayRenderer {
                                      CoreGame game) {
         worldTextRenderingLayer.begin();
 
+        if (!renderer.getDamageNumbers().isEmpty()) {
+            System.out.println("stuff");
+        }
+
         renderer.getDamageNumbers().stream().filter(damageNumber -> damageNumber
             .getAreaId()
             .getValue()

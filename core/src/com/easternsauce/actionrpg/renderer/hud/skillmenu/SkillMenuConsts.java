@@ -13,7 +13,7 @@ public class SkillMenuConsts {
     public static final float SKILL_MENU_POS_X = 130f;
     public static final float SKILL_MENU_POS_Y = 10f;
 
-    public static final int TOTAL_SKILL_SLOTS = 3;
+    public static final int TOTAL_SKILL_SLOTS = 5;
 
     public static final float SKILL_PICKER_MENU_POS_X = 110f;
     public static final float SKILL_PICKER_MENU_POS_Y = 110f;
