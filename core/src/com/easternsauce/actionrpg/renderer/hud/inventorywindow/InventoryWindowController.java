@@ -4,6 +4,7 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.command.ActionPerformCommand;
 import com.easternsauce.actionrpg.model.action.*;
 import com.easternsauce.actionrpg.model.creature.Creature;
+import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;
 import com.easternsauce.actionrpg.renderer.hud.potionmenu.PotionMenuConsts;
 import com.esotericsoftware.kryonet.Client;
@@ -14,9 +15,6 @@ import lombok.NoArgsConstructor;
 @Data
 public class InventoryWindowController {
     public void performMoveItemClick(Client client, CoreGame game) {
-        Creature player = game.getGameState().accessCreatures().getCreature(game
-            .getGameState()
-            .getThisClientPlayerId());
         PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
 
         float mouseX = game.hudMousePos().getX();
@@ -37,7 +35,7 @@ public class InventoryWindowController {
                 playerConfig.getPotionMenuItemBeingMoved()
             );
 
-            action = determineInventoryAction(game, player, inventoryWindowState);
+            action = determineInventoryAction(inventoryWindowState, game);
         } else if (playerConfig.getInventoryItemBeingMoved() != null ||
             playerConfig.getEquipmentItemBeingMoved() != null ||
             playerConfig.getPotionMenuItemBeingMoved() != null) {
@@ -49,38 +47,36 @@ public class InventoryWindowController {
         }
     }
 
-    private GameStateAction determineInventoryAction(CoreGame game,
-                                                     Creature player,
-                                                     InventoryWindowState inventoryWindowState) {
+    private GameStateAction determineInventoryAction(InventoryWindowState inventoryWindowState, CoreGame game) {
         if (isMovingItemFromInventoryToInventory(inventoryWindowState)) {
-            return getMoveItemFromInventoryToInventoryAction(game, inventoryWindowState);
+            return getMoveItemFromInventoryToInventoryAction(inventoryWindowState, game);
+        } else if (isMovingItemFromPotionMenuToPotionMenu(inventoryWindowState)) {
+            return getMoveItemFromPotionMenuToPotionMenuAction(inventoryWindowState, game);
         } else if (isMovingItemFromInventoryToEquipment(inventoryWindowState)) {
-            return getMoveItemFromInventoryToEquipmentAction(game, inventoryWindowState);
+            return getMoveItemFromInventoryToEquipmentAction(inventoryWindowState, game);
         } else if (isMovingItemFromEquipmentToInventory(inventoryWindowState)) {
-            return getMoveItemFromEquipmentToInventoryAction(game, inventoryWindowState);
+            return getMoveItemFromEquipmentToInventoryAction(inventoryWindowState, game);
         } else if (isMovingItemFromInventoryToPotionMenu(inventoryWindowState)) {
-            //            if (isClickedNonEmptyPotionMenuSlot(player, inventoryWindowState)) {
-            return getMoveItemFromInventoryToPotionMenuAction(game, inventoryWindowState);
-            //            } else {
-            //                return getEmptyAction();
-            //            }
+            return getMoveItemFromInventoryToPotionMenuAction(inventoryWindowState, game);
         } else if (isMovingItemFromPotionMenuToInventory(inventoryWindowState)) {
-            //            if (isClickedNonEmptyInventorySlot(player, inventoryWindowState)) {
-            return getMoveItemFromPotionMenuToInventoryAction(game, inventoryWindowState);
-            //            } else {
-            //                return getEmptyAction();
-            //            }
+            return getMoveItemFromPotionMenuToInventoryAction(inventoryWindowState, game);
         } else if (isMovingItemFromEquipmentToEquipment(inventoryWindowState)) {
             return getMoveCancelAction(game);
         } else if (isPickingUpItemInsideInventory(inventoryWindowState)) {
-            if (isClickedNonEmptyInventorySlot(player, inventoryWindowState)) {
-                return getInventoryItemPutOnCursorAction(game, inventoryWindowState);
+            if (isClickedNonEmptyInventorySlot(inventoryWindowState, game)) {
+                return getInventoryItemPutOnCursorAction(inventoryWindowState, game);
             } else {
                 return getEmptyAction();
             }
         } else if (isPickingUpItemInsideEquipment(inventoryWindowState)) {
-            if (isClickedNonEmptyEquipmentSlot(player, inventoryWindowState)) {
-                return getEquipmentItemPutOnCursorAction(game, inventoryWindowState);
+            if (isClickedNonEmptyEquipmentSlot(inventoryWindowState, game)) {
+                return getEquipmentItemPutOnCursorAction(inventoryWindowState, game);
+            } else {
+                return getEmptyAction();
+            }
+        } else if (isPickingUpItemInsidePotionMenu(inventoryWindowState)) {
+            if (isClickedNonEmptyPotionMenuSlot(inventoryWindowState, game)) {
+                return getPotionMenuItemPutOnCursorAction(inventoryWindowState, game);
             } else {
                 return getEmptyAction();
             }
@@ -93,16 +89,29 @@ public class InventoryWindowController {
         return inventoryWindowState.getInventoryItemBeingMoved() != null &&
             inventoryWindowState.getInventorySlotClicked() != null;
     }
+
+    private InventorySwapSlotItemsAction getMoveItemFromInventoryToInventoryAction(InventoryWindowState inventoryWindowState,
+                                                                                   CoreGame game) {
+        return InventorySwapSlotItemsAction.of(game.getGameState().getThisClientPlayerId(),
+            inventoryWindowState.getInventoryItemBeingMoved(),
+            inventoryWindowState.getInventorySlotClicked()
+        );
+    }
     //
     //    private boolean isClickedNonEmptyPotionMenuSlot(Creature player, InventoryWindowState inventoryWindowState) {
     //        return player.getParams().getPotionMenuItems().containsKey(inventoryWindowState.getPotionMenuSlotClicked());
     //    }
 
-    private InventorySwapSlotItemsAction getMoveItemFromInventoryToInventoryAction(CoreGame game,
-                                                                                   InventoryWindowState inventoryWindowState) {
-        return InventorySwapSlotItemsAction.of(game.getGameState().getThisClientPlayerId(),
-            inventoryWindowState.getInventoryItemBeingMoved(),
-            inventoryWindowState.getInventorySlotClicked()
+    private boolean isMovingItemFromPotionMenuToPotionMenu(InventoryWindowState inventoryWindowState) {
+        return inventoryWindowState.getPotionMenuItemBeingMoved() != null &&
+            inventoryWindowState.getPotionMenuSlotClicked() != null;
+    }
+
+    private PotionMenuSwapSlotItemsAction getMoveItemFromPotionMenuToPotionMenuAction(InventoryWindowState inventoryWindowState,
+                                                                                      CoreGame game) {
+        return PotionMenuSwapSlotItemsAction.of(game.getGameState().getThisClientPlayerId(),
+            inventoryWindowState.getPotionMenuItemBeingMoved(),
+            inventoryWindowState.getPotionMenuSlotClicked()
         );
     }
 
@@ -111,8 +120,8 @@ public class InventoryWindowController {
             inventoryWindowState.getEquipmentSlotClicked() != null;
     }
 
-    private InventoryAndEquipmentSwapSlotItemsAction getMoveItemFromInventoryToEquipmentAction(CoreGame game,
-                                                                                               InventoryWindowState inventoryWindowState) {
+    private InventoryAndEquipmentSwapSlotItemsAction getMoveItemFromInventoryToEquipmentAction(InventoryWindowState inventoryWindowState,
+                                                                                               CoreGame game) {
         return InventoryAndEquipmentSwapSlotItemsAction.of(game.getGameState().getThisClientPlayerId(),
             inventoryWindowState.getInventoryItemBeingMoved(),
             inventoryWindowState.getEquipmentSlotClicked()
@@ -124,8 +133,8 @@ public class InventoryWindowController {
             inventoryWindowState.getInventorySlotClicked() != null;
     }
 
-    private InventoryAndEquipmentSwapSlotItemsAction getMoveItemFromEquipmentToInventoryAction(CoreGame game,
-                                                                                               InventoryWindowState inventoryWindowState) {
+    private InventoryAndEquipmentSwapSlotItemsAction getMoveItemFromEquipmentToInventoryAction(InventoryWindowState inventoryWindowState,
+                                                                                               CoreGame game) {
         return InventoryAndEquipmentSwapSlotItemsAction.of(game.getGameState().getThisClientPlayerId(),
             inventoryWindowState.getInventorySlotClicked(),
             inventoryWindowState.getEquipmentItemBeingMoved()
@@ -137,13 +146,26 @@ public class InventoryWindowController {
             inventoryWindowState.getPotionMenuSlotClicked() != null;
     }
 
-    private InventoryAndPotionMenuSwapSlotItemsAction getMoveItemFromInventoryToPotionMenuAction(CoreGame game,
-                                                                                                 InventoryWindowState inventoryWindowState) {
+    private GameStateAction getMoveItemFromInventoryToPotionMenuAction(InventoryWindowState inventoryWindowState,
+                                                                       CoreGame game) {
+        Creature player = game.getGameState().accessCreatures().getCreature(game
+            .getGameState()
+            .getThisClientPlayerId());
 
-        return InventoryAndPotionMenuSwapSlotItemsAction.of(game.getGameState().getThisClientPlayerId(),
-            inventoryWindowState.getInventoryItemBeingMoved(),
-            inventoryWindowState.getPotionMenuSlotClicked()
-        );
+        Item itemFrom = player.getParams().getInventoryItems().get(inventoryWindowState.getInventoryItemBeingMoved());
+        Item itemTo = player.getParams().getPotionMenuItems().get(inventoryWindowState.getPotionMenuSlotClicked());
+
+        if (areItemStackable(itemFrom, itemTo)) {
+            return InventoryToPotionMenuStackItemAction.of(game.getGameState().getThisClientPlayerId(),
+                inventoryWindowState.getInventoryItemBeingMoved(),
+                inventoryWindowState.getPotionMenuSlotClicked()
+            );
+        } else {
+            return InventoryAndPotionMenuSwapSlotItemsAction.of(game.getGameState().getThisClientPlayerId(),
+                inventoryWindowState.getInventoryItemBeingMoved(),
+                inventoryWindowState.getPotionMenuSlotClicked()
+            );
+        }
     }
 
     private boolean isMovingItemFromPotionMenuToInventory(InventoryWindowState inventoryWindowState) {
@@ -151,12 +173,35 @@ public class InventoryWindowController {
             inventoryWindowState.getInventorySlotClicked() != null;
     }
 
-    private InventoryAndPotionMenuSwapSlotItemsAction getMoveItemFromPotionMenuToInventoryAction(CoreGame game,
-                                                                                                 InventoryWindowState inventoryWindowState) {
-        return InventoryAndPotionMenuSwapSlotItemsAction.of(game.getGameState().getThisClientPlayerId(),
-            inventoryWindowState.getInventorySlotClicked(),
-            inventoryWindowState.getPotionMenuItemBeingMoved()
-        );
+    private GameStateAction getMoveItemFromPotionMenuToInventoryAction(InventoryWindowState inventoryWindowState,
+                                                                       CoreGame game) {
+
+        Creature player = game.getGameState().accessCreatures().getCreature(game
+            .getGameState()
+            .getThisClientPlayerId());
+
+        Item itemFrom = null;
+        Item itemTo = null;
+
+        if (inventoryWindowState.getPotionMenuSlotClicked() != null) {
+            itemFrom = player.getParams().getPotionMenuItems().get(inventoryWindowState.getPotionMenuSlotClicked());
+        }
+        if (inventoryWindowState.getInventoryItemBeingMoved() != null) {
+            itemTo = player.getParams().getInventoryItems().get(inventoryWindowState.getInventoryItemBeingMoved());
+        }
+
+        if (areItemStackable(itemFrom, itemTo)) {
+            return PotionMenuToInventoryStackItemAction.of(game.getGameState().getThisClientPlayerId(),
+                inventoryWindowState.getInventorySlotClicked(),
+                inventoryWindowState.getPotionMenuItemBeingMoved()
+            );
+        } else {
+            return InventoryAndPotionMenuSwapSlotItemsAction.of(game.getGameState().getThisClientPlayerId(),
+                inventoryWindowState.getInventorySlotClicked(),
+                inventoryWindowState.getPotionMenuItemBeingMoved()
+            );
+        }
+
     }
 
     private boolean isMovingItemFromEquipmentToEquipment(InventoryWindowState inventoryWindowState) {
@@ -172,12 +217,16 @@ public class InventoryWindowController {
         return inventoryWindowState.getInventorySlotClicked() != null;
     }
 
-    private boolean isClickedNonEmptyInventorySlot(Creature player, InventoryWindowState inventoryWindowState) {
+    private boolean isClickedNonEmptyInventorySlot(InventoryWindowState inventoryWindowState, CoreGame game) {
+        Creature player = game.getGameState().accessCreatures().getCreature(game
+            .getGameState()
+            .getThisClientPlayerId());
+
         return player.getParams().getInventoryItems().containsKey(inventoryWindowState.getInventorySlotClicked());
     }
 
-    private InventoryItemPutOnCursorAction getInventoryItemPutOnCursorAction(CoreGame game,
-                                                                             InventoryWindowState inventoryWindowState) {
+    private InventoryItemPutOnCursorAction getInventoryItemPutOnCursorAction(InventoryWindowState inventoryWindowState,
+                                                                             CoreGame game) {
         return InventoryItemPutOnCursorAction.of(game.getGameState().getThisClientPlayerId(),
             inventoryWindowState.getInventorySlotClicked()
         );
@@ -191,15 +240,46 @@ public class InventoryWindowController {
         return inventoryWindowState.getEquipmentSlotClicked() != null;
     }
 
-    private boolean isClickedNonEmptyEquipmentSlot(Creature player, InventoryWindowState inventoryWindowState) {
+    private boolean isClickedNonEmptyEquipmentSlot(InventoryWindowState inventoryWindowState, CoreGame game) {
+        Creature player = game.getGameState().accessCreatures().getCreature(game
+            .getGameState()
+            .getThisClientPlayerId());
+
         return player.getParams().getEquipmentItems().containsKey(inventoryWindowState.getEquipmentSlotClicked());
     }
 
-    private EquipmentItemPutOnCursorAction getEquipmentItemPutOnCursorAction(CoreGame game,
-                                                                             InventoryWindowState inventoryWindowState) {
+    private EquipmentItemPutOnCursorAction getEquipmentItemPutOnCursorAction(InventoryWindowState inventoryWindowState,
+                                                                             CoreGame game) {
         return EquipmentItemPutOnCursorAction.of(game.getGameState().getThisClientPlayerId(),
             inventoryWindowState.getEquipmentSlotClicked()
         );
+    }
+
+    private boolean isPickingUpItemInsidePotionMenu(InventoryWindowState inventoryWindowState) {
+        return inventoryWindowState.getPotionMenuSlotClicked() != null;
+    }
+
+    private boolean isClickedNonEmptyPotionMenuSlot(InventoryWindowState inventoryWindowState, CoreGame game) {
+        Creature player = game.getGameState().accessCreatures().getCreature(game
+            .getGameState()
+            .getThisClientPlayerId());
+
+        return player.getParams().getPotionMenuItems().containsKey(inventoryWindowState.getPotionMenuSlotClicked());
+    }
+
+    private PotionMenuItemPutOnCursorAction getPotionMenuItemPutOnCursorAction(InventoryWindowState inventoryWindowState,
+                                                                               CoreGame game) {
+        return PotionMenuItemPutOnCursorAction.of(game.getGameState().getThisClientPlayerId(),
+            inventoryWindowState.getPotionMenuSlotClicked()
+        );
+    }
+
+    private boolean areItemStackable(Item itemFrom, Item itemTo) {
+        return itemFrom != null &&
+            itemTo != null &&
+            itemFrom.getTemplate().getIsStackable() &&
+            itemTo.getTemplate().getIsStackable() &&
+            itemFrom.getTemplate().getId().equals(itemTo.getTemplate().getId());
     }
 
     public void performUseItemClick(Client client, CoreGame game) {

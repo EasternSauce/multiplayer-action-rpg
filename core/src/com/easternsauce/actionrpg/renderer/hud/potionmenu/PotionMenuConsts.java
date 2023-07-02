@@ -8,11 +8,10 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class PotionMenuConsts {
     public static final float SLOT_SIZE = 40f;
-    public static final int MARGIN = 20;
     public static final int SPACE_BETWEEN_SLOTS = 12;
 
-    public static final float SKILL_MENU_POS_X = 110f;
-    public static final float SKILL_MENU_POS_Y = 40f;
+    public static final float SKILL_MENU_POS_X = 130f;
+    public static final float SKILL_MENU_POS_Y = 60f;
 
     public static final int TOTAL_SKILL_SLOTS = 3;
 
@@ -33,19 +32,18 @@ public class PotionMenuConsts {
     public static float getSlotPositionX(Integer index) {
         int currentColumn = index;
         return PotionMenuConsts.SKILL_MENU_POS_X +
-            PotionMenuConsts.MARGIN +
             (PotionMenuConsts.SLOT_SIZE + PotionMenuConsts.SPACE_BETWEEN_SLOTS) * currentColumn;
     }
 
     public static float getSlotPositionY(@SuppressWarnings("unused") Integer index) {
-        return PotionMenuConsts.SKILL_MENU_POS_Y + PotionMenuConsts.MARGIN;
+        return PotionMenuConsts.SKILL_MENU_POS_Y;
     }
 
     public static boolean isMenuContainsPos(float x, float y) {
         Rect rect = Rect.of(SKILL_MENU_POS_X,
             SKILL_MENU_POS_Y,
             (PotionMenuConsts.SLOT_SIZE + PotionMenuConsts.SPACE_BETWEEN_SLOTS) * TOTAL_SKILL_SLOTS,
-            PotionMenuConsts.MARGIN * 2 + PotionMenuConsts.SLOT_SIZE
+            PotionMenuConsts.SLOT_SIZE
         );
         return rect.contains(x, y);
     }

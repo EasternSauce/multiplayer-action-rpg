@@ -84,8 +84,8 @@ public class PotionMenuRenderer {
                                         Rect rect) {
         Assets.renderVerySmallFont(renderingLayer,
             keys.get(i.get()),
-            Vector2.of(rect.getX() + 2f, rect.getY() + PotionMenuConsts.SLOT_SIZE - 27f),
-            Color.WHITE
+            Vector2.of(rect.getX() + PotionMenuConsts.SLOT_SIZE - 14f, rect.getY() + PotionMenuConsts.SLOT_SIZE - 5f),
+            Color.CYAN
         );
     }
 

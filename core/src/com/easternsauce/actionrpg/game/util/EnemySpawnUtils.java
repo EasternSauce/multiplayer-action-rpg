@@ -9,7 +9,8 @@ import java.util.List;
 
 public class EnemySpawnUtils {
     public static List<EnemySpawn> area1EnemySpawns() {
-        return Arrays.asList(EnemySpawn.of(Vector2.of(46.081165f, 15.265114f), EnemyTemplate.archer),
+        return Arrays.asList(
+            EnemySpawn.of(Vector2.of(46.081165f, 15.265114f), EnemyTemplate.archer),
             EnemySpawn.of(Vector2.of(72.060196f, 31.417873f), EnemyTemplate.archer),
             EnemySpawn.of(Vector2.of(77.200066f, 31.255192f), EnemyTemplate.skeleton),
             EnemySpawn.of(Vector2.of(74.47733f, 25.755476f), EnemyTemplate.mage),
@@ -147,7 +148,8 @@ public class EnemySpawnUtils {
     }
 
     public static List<EnemySpawn> area3EnemySpawns() {
-        return Arrays.asList(EnemySpawn.of(Vector2.of(33.971928f, 21.07241f), EnemyTemplate.archer),
+        return Arrays.asList(
+            EnemySpawn.of(Vector2.of(33.971928f, 21.07241f), EnemyTemplate.archer),
             EnemySpawn.of(Vector2.of(36.3834f, 28.55842f), EnemyTemplate.skeleton),
             EnemySpawn.of(Vector2.of(49.971405f, 33.947628f), EnemyTemplate.skeleton),
             EnemySpawn.of(Vector2.of(52.668243f, 45.00484f), EnemyTemplate.mage),

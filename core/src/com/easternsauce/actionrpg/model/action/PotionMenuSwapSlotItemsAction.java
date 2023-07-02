@@ -15,14 +15,14 @@ import java.util.Objects;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class InventorySwapSlotItemsAction extends GameStateAction {
+public class PotionMenuSwapSlotItemsAction extends GameStateAction {
     private CreatureId playerId;
 
     private Integer fromSlotIndex;
     private Integer toSlotIndex;
 
-    public static InventorySwapSlotItemsAction of(CreatureId creatureId, Integer fromSlotIndex, Integer toSlotIndex) {
-        InventorySwapSlotItemsAction action = InventorySwapSlotItemsAction.of();
+    public static PotionMenuSwapSlotItemsAction of(CreatureId creatureId, Integer fromSlotIndex, Integer toSlotIndex) {
+        PotionMenuSwapSlotItemsAction action = PotionMenuSwapSlotItemsAction.of();
         action.playerId = creatureId;
         action.fromSlotIndex = fromSlotIndex;
         action.toSlotIndex = toSlotIndex;
@@ -36,8 +36,8 @@ public class InventorySwapSlotItemsAction extends GameStateAction {
         if (!Objects.equals(fromSlotIndex, toSlotIndex)) {
             Creature player = game.getGameState().accessCreatures().getCreature(playerId);
 
-            Item itemFrom = player.getParams().getInventoryItems().get(fromSlotIndex);
-            @SuppressWarnings("UnnecessaryLocalVariable") Item itemTo = player.getParams().getInventoryItems().get(
+            Item itemFrom = player.getParams().getPotionMenuItems().get(fromSlotIndex);
+            @SuppressWarnings("UnnecessaryLocalVariable") Item itemTo = player.getParams().getPotionMenuItems().get(
                 toSlotIndex);
 
             @SuppressWarnings("UnnecessaryLocalVariable") Item temp = itemTo;
@@ -49,18 +49,18 @@ public class InventorySwapSlotItemsAction extends GameStateAction {
                 itemFrom.getTemplate().getId().equals(temp.getTemplate().getId());
 
             if (isCanStackItems) {
-                player.getParams().getInventoryItems().remove(fromSlotIndex);
+                player.getParams().getPotionMenuItems().remove(fromSlotIndex);
                 temp.setQuantity(temp.getQuantity() + itemFrom.getQuantity());
             } else {
                 if (itemFrom != null) {
-                    player.getParams().getInventoryItems().put(toSlotIndex, itemFrom);
+                    player.getParams().getPotionMenuItems().put(toSlotIndex, itemFrom);
                 } else {
-                    player.getParams().getInventoryItems().remove(toSlotIndex);
+                    player.getParams().getPotionMenuItems().remove(toSlotIndex);
                 }
                 if (temp != null) {
-                    player.getParams().getInventoryItems().put(fromSlotIndex, temp);
+                    player.getParams().getPotionMenuItems().put(fromSlotIndex, temp);
                 } else {
-                    player.getParams().getInventoryItems().remove(fromSlotIndex);
+                    player.getParams().getPotionMenuItems().remove(fromSlotIndex);
                 }
             }
         }

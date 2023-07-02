@@ -24,7 +24,8 @@ public class AnimationRenderer {
 
         TextureRegion[] frames = new TextureRegion[animationSpec.getFrameCount()];
         for (int i = 0; i < animationSpec.getFrameCount(); i++) {
-            frames[i] = new TextureRegion(stunnedAnimationTextureRegion,
+            frames[i] = new TextureRegion(
+                stunnedAnimationTextureRegion,
                 i * animationSpec.getFrameWidth(),
                 0,
                 animationSpec.getFrameWidth(),
@@ -36,7 +37,8 @@ public class AnimationRenderer {
     }
 
     public void render(Vector2 pos, float animationTime, RenderingLayer renderingLayer) {
-        renderingLayer.getSpriteBatch().draw(getFrame(animationTime),
+        renderingLayer.getSpriteBatch().draw(
+            getFrame(animationTime),
             pos.getX(),
             pos.getY(),
             animationSpec.getRealWidth(),

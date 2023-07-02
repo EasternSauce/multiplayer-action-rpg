@@ -23,7 +23,6 @@ import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
 import com.easternsauce.actionrpg.renderer.hud.inventorywindow.InventoryWindowController;
 import com.easternsauce.actionrpg.renderer.hud.itempickupmenu.ItemPickupMenuController;
-import com.easternsauce.actionrpg.renderer.hud.potionmenu.PotionMenuController;
 import com.easternsauce.actionrpg.renderer.hud.skillmenu.SkillMenuController;
 import com.easternsauce.actionrpg.util.Constants;
 import com.esotericsoftware.kryonet.Client;
@@ -48,7 +47,6 @@ public class CoreGameClient extends CoreGame {
     private final SkillMenuController skillMenuController = SkillMenuController.of();
     private final InventoryWindowController inventoryWindowController = InventoryWindowController.of();
     private final ItemPickupMenuController pickupMenuController = ItemPickupMenuController.of();
-    private final PotionMenuController potionMenuController = PotionMenuController.of();
 
     @Getter
     @Setter
@@ -256,28 +254,28 @@ public class CoreGameClient extends CoreGame {
     private void handleActionButtonInput(PlayerConfig playerConfig) {
         if (playerConfig != null) {
 
-            boolean isSuccessful = potionMenuController.performPotionMenuClick(getEndPoint(), this);
-            if (isSuccessful) {
-                menuClickTime = gameState.getTime();
-            }
+            //            boolean isSuccessful = potionMenuController.performPotionMenuClick(getEndPoint(), this);
+            //            if (isSuccessful) {
+            //                menuClickTime = gameState.getTime();
+            //            }
 
             if (playerConfig.getIsInventoryVisible()) {
                 inventoryWindowController.performMoveItemClick(getEndPoint(), this);
             } else if (!playerConfig.getIsInventoryVisible() && !playerConfig.getItemPickupMenuLootPiles().isEmpty()) {
-                isSuccessful = pickupMenuController.performItemPickupMenuClick(getEndPoint(), this);
+                boolean isSuccessful = pickupMenuController.performItemPickupMenuClick(getEndPoint(), this);
                 if (isSuccessful) {
                     menuClickTime = gameState.getTime();
                 }
 
             } else if (!playerConfig.getIsInventoryVisible() &&
                 playerConfig.getIsSkillMenuPickerSlotBeingChanged() != null) {
-                isSuccessful = skillMenuController.performSkillMenuPickerClick(getEndPoint(), this);
+                boolean isSuccessful = skillMenuController.performSkillMenuPickerClick(getEndPoint(), this);
                 if (isSuccessful) {
                     menuClickTime = gameState.getTime();
                 }
 
             } else {
-                isSuccessful = skillMenuController.performSkillMenuClick(getEndPoint(), this);
+                boolean isSuccessful = skillMenuController.performSkillMenuClick(getEndPoint(), this);
                 if (isSuccessful) {
                     menuClickTime = gameState.getTime();
                 }

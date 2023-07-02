@@ -19,10 +19,8 @@ public class TeleportDestination extends Ability {
     public static TeleportDestination of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(abilityParams.getCreatureId());
 
-        Vector2 teleportPos = TeleportDestination.calculatePos(creature
-                .getParams()
-                .getPos()
-                .add(abilityParams.getDirVector()),
+        Vector2 teleportPos = TeleportDestination.calculatePos(
+            creature.getParams().getPos().add(abilityParams.getDirVector()),
             creature.getParams().getPos(),
             creature.getParams().getAreaId(),
             game
@@ -76,7 +74,8 @@ public class TeleportDestination extends Ability {
     public void onStarted(CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
         creature.applyEffect(CreatureEffect.SELF_STUN, 0.3f, game);
-        game.addTeleportEvent(TeleportEvent.of(getParams().getCreatureId(),
+        game.addTeleportEvent(TeleportEvent.of(
+            getParams().getCreatureId(),
             getParams().getPos(),
             getParams().getAreaId(),
             getParams().getAreaId(),

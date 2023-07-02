@@ -82,7 +82,8 @@ public class GameplayRenderer {
             .getValue()
             .equals(game.getGameState().getCurrentAreaId().getValue())).forEach(creatureHitAnimation -> renderer
             .getCreatureHitAnimationRenderer()
-            .render(creatureHitAnimation.getCreatureId(),
+            .render(
+                creatureHitAnimation.getCreatureId(),
                 game.getGameState().getTime() - creatureHitAnimation.getHitTime(),
                 creatureHitAnimation.getVectorTowardsContactPoint(),
                 worldElementsRenderingLayer,
@@ -109,7 +110,8 @@ public class GameplayRenderer {
 
             Vector2 rescaledPos = Vector2.of(posX * Constants.PPM, posY * Constants.PPM);
 
-            Assets.renderLargeFont(worldTextRenderingLayer,
+            Assets.renderLargeFont(
+                worldTextRenderingLayer,
                 Integer.toString(damageNumber.getDamageValue().intValue()),
                 rescaledPos,
                 new Color(1f, 0f, 0f, 1f - timeElapsed / Constants.DAMAGE_NUMBER_SHOW_DURATION)
