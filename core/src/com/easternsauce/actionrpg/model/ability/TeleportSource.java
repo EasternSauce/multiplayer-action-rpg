@@ -45,11 +45,7 @@ public class TeleportSource extends Ability {
     @Override
     public void onStarted(CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
-        creature.applyEffect(
-            CreatureEffect.SELF_STUN,
-            0.5f,
-            game
-        );
+        creature.applyEffect(CreatureEffect.SELF_STUN, 0.5f, game);
         creature.stopMoving();
     }
 
@@ -60,8 +56,7 @@ public class TeleportSource extends Ability {
 
     @Override
     public void onDelayedAction(CoreGame game) {
-        game.getGameState().accessAbilities().chainAnotherAbility(
-            this,
+        game.getGameState().accessAbilities().chainAnotherAbility(this,
             AbilityType.TELEPORT_DESTINATION,
             getParams().getPos(),
             getParams().getDirVector(),

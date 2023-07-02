@@ -42,8 +42,7 @@ public class PotionMenuConsts {
     }
 
     public static boolean isMenuContainsPos(float x, float y) {
-        Rect rect = Rect.of(
-            SKILL_MENU_POS_X,
+        Rect rect = Rect.of(SKILL_MENU_POS_X,
             SKILL_MENU_POS_Y,
             (PotionMenuConsts.SLOT_SIZE + PotionMenuConsts.SPACE_BETWEEN_SLOTS) * TOTAL_SKILL_SLOTS,
             PotionMenuConsts.MARGIN * 2 + PotionMenuConsts.SLOT_SIZE

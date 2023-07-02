@@ -28,11 +28,7 @@ public class Enemy extends Creature {
     private CreatureParams params;
 
     public static Enemy of(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn) {
-        CreatureParams params = CreatureParams.of(
-            creatureId,
-            areaId,
-            enemySpawn
-        );
+        CreatureParams params = CreatureParams.of(creatureId, areaId, enemySpawn);
 
         params.setDropTable(enemySpawn.getEnemyTemplate().getDropTable());
         params.getStats().setBaseSpeed(11f);
@@ -65,8 +61,7 @@ public class Enemy extends Creature {
                     .getValue()) &&
                 creature instanceof Player &&
                 creature.getParams().getPos().distance(getParams().getPos()) < Constants.ENEMY_SEARCH_DISTANCE &&
-                game.isLineBetweenPointsUnobstructedByTerrain(
-                    this.getParams().getAreaId(),
+                game.isLineBetweenPointsUnobstructedByTerrain(this.getParams().getAreaId(),
                     this.getParams().getPos(),
                     creature.getParams().getPos()
                 );
@@ -100,8 +95,8 @@ public class Enemy extends Creature {
                     .normalized()
                     .multiplyBy(Constants.DEFENSIVE_POS_DISTANCE));
 
-                getParams().getEnemyParams().setCurrentDefensivePos(Vector2.of(
-                    defensivePos.getX() + 4f * nextAutoControlStateRngNegativeOrPositiveValue(),
+                getParams().getEnemyParams().setCurrentDefensivePos(Vector2.of(defensivePos.getX() +
+                        4f * nextAutoControlStateRngNegativeOrPositiveValue(),
                     defensivePos.getY() + 4f * nextAutoControlStateRngNegativeOrPositiveValue()
                 ));
             }
@@ -126,8 +121,8 @@ public class Enemy extends Creature {
                     .normalized()
                     .multiplyBy(getParams().getEnemyParams().getAttackDistance() + Constants.BACK_UP_DISTANCE));
 
-                getParams().getEnemyParams().setCurrentDefensivePos(Vector2.of(
-                    backUpPos.getX() + nextAutoControlStateRngNegativeOrPositiveValue(),
+                getParams().getEnemyParams().setCurrentDefensivePos(Vector2.of(backUpPos.getX() +
+                        nextAutoControlStateRngNegativeOrPositiveValue(),
                     backUpPos.getY() + nextAutoControlStateRngNegativeOrPositiveValue()
                 ));
 
@@ -170,15 +165,13 @@ public class Enemy extends Creature {
                 .getEnemyParams()
                 .getTargetCreatureId());
 
-            if (target != null && !game.isLineBetweenPointsUnobstructedByTerrain(
-                getParams().getAreaId(),
+            if (target != null && !game.isLineBetweenPointsUnobstructedByTerrain(getParams().getAreaId(),
                 getParams().getPos(),
                 target.getParams().getPos()
             )) {
-                List<Vector2> mirroredPath = mirrorPathFromNearbyCreature(
-                    getParams().getEnemyParams().getTargetCreatureId(),
-                    game
-                );
+                List<Vector2> mirroredPath = mirrorPathFromNearbyCreature(getParams()
+                    .getEnemyParams()
+                    .getTargetCreatureId(), game);
 
                 List<Vector2> path;
 
@@ -186,8 +179,7 @@ public class Enemy extends Creature {
                     path = mirroredPath;
                     this.getParams().getEnemyParams().setIsPathMirrored(true);
                 } else {
-                    AstarResult result = Astar.findPath(
-                        game.getPhysicsWorld(getParams().getAreaId()),
+                    AstarResult result = Astar.findPath(game.getPhysicsWorld(getParams().getAreaId()),
                         getParams().getPos(),
                         target.getParams().getPos(),
                         this.capability()
@@ -255,10 +247,7 @@ public class Enemy extends Creature {
                 moveTowards(nextNodeOnPath);
             }
         } else {
-            processAutoControlStateMovementLogic(
-                potentialTarget,
-                distance
-            );
+            processAutoControlStateMovementLogic(potentialTarget, distance);
         }
 
     }
@@ -290,8 +279,7 @@ public class Enemy extends Creature {
         if (getParams().getEnemyParams().getAttackCooldownTimer().getTime() > Constants.ENEMY_ATTACK_COOLDOWN_TIMER) {
             if (potentialTarget.getParams().getPos().distance(getParams().getPos()) <
                 getParams().getEnemyParams().getAttackDistance()) {
-                game.getGameState().accessCreatures().handleCreatureUseRandomSkillAtTarget(
-                    getParams().getId(),
+                game.getGameState().accessCreatures().handleCreatureUseRandomSkillAtTarget(getParams().getId(),
                     vectorTowardsTarget
                 );
                 getParams().getEnemyParams().getAttackCooldownTimer().restart();
@@ -303,8 +291,7 @@ public class Enemy extends Creature {
                 .collect(Collectors.toSet())
                 .contains(SkillType.SUMMON_GUARD) &&
                 potentialTarget.getParams().getPos().distance(getParams().getPos()) > 10f) {
-                game.getGameState().accessCreatures().handleCreatureUseSkillAtTarget(
-                    getParams().getId(),
+                game.getGameState().accessCreatures().handleCreatureUseSkillAtTarget(getParams().getId(),
                     vectorTowardsTarget,
                     SkillType.SUMMON_GUARD
                 );
@@ -440,11 +427,7 @@ public class Enemy extends Creature {
                 handleNewTarget(potentialTarget.getParams().getId()); // logic for when target changed
                 handleMovement(potentialTarget); // set movement command, causing creature to walk towards target
                 handleAimDirectionAdjustment(vectorTowardsTarget);
-                handleUseAbilityAtTarget(
-                    potentialTarget,
-                    vectorTowardsTarget,
-                    game
-                ); // attack target if within range
+                handleUseAbilityAtTarget(potentialTarget, vectorTowardsTarget, game); // attack target if within range
             } else { // if aggro timed out and out of range
                 if (potentialTarget != null) {
                     handleTargetLost();

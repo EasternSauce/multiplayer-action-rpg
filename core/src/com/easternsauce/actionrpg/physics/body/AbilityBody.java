@@ -35,19 +35,12 @@ public class AbilityBody {
     }
 
     public Vector2 getBodyPos() {
-        return Vector2.of(
-            b2body.getWorldCenter().x,
-            b2body.getWorldCenter().y
-        );
+        return Vector2.of(b2body.getWorldCenter().x, b2body.getWorldCenter().y);
     }
 
     public void trySetTransform(Vector2 vector) {
         if (!world.getB2world().isLocked()) {
-            b2body.setTransform(
-                vector.getX(),
-                vector.getY(),
-                b2body.getAngle()
-            );
+            b2body.setTransform(vector.getX(), vector.getY(), b2body.getAngle());
         }
 
     }
@@ -60,8 +53,7 @@ public class AbilityBody {
 
             creatureId = ability.getParams().getCreatureId();
 
-            b2body = B2BodyFactory.createAbilityB2Body(
-                world,
+            b2body = B2BodyFactory.createAbilityB2Body(world,
                 this,
                 ability.getParams().getPos(),
                 hitboxVertices(ability)
@@ -74,20 +66,11 @@ public class AbilityBody {
 
     private float[] hitboxVertices(Ability ability) {
         if (ability.getParams().getOverrideSize() != null) {
-            sprite.setSize(
-                ability.getParams().getOverrideSize(),
-                ability.getParams().getOverrideSize()
-            );
+            sprite.setSize(ability.getParams().getOverrideSize(), ability.getParams().getOverrideSize());
         } else {
-            sprite.setSize(
-                ability.getParams().getWidth(),
-                ability.getParams().getHeight()
-            );
+            sprite.setSize(ability.getParams().getWidth(), ability.getParams().getHeight());
         }
-        sprite.setCenter(
-            0,
-            0
-        );
+        sprite.setCenter(0, 0);
         sprite.setOriginCenter();
         sprite.setRotation(ability.getParams().getRotationAngle());
 
@@ -101,17 +84,10 @@ public class AbilityBody {
 
         if (getIsBodyInitialized() && ability != null && !ability.getParams().getIsSkipCreatingBody()) {
             if (ability.isPositionChangedOnUpdate()) {
-                b2body.setTransform(
-                    ability.getParams().getPos().getX(),
-                    ability.getParams().getPos().getY(),
-                    0f
-                );
+                b2body.setTransform(ability.getParams().getPos().getX(), ability.getParams().getPos().getY(), 0f);
             }
 
-            if (ability.getParams().getVelocity() != Vector2.of(
-                0f,
-                0f
-            )) {
+            if (ability.getParams().getVelocity() != Vector2.of(0f, 0f)) {
                 setVelocity(ability.getParams().getVelocity());
             }
 
@@ -119,10 +95,7 @@ public class AbilityBody {
     }
 
     public void setVelocity(Vector2 velocity) {
-        b2body.setLinearVelocity(new com.badlogic.gdx.math.Vector2(
-            velocity.getX(),
-            velocity.getY()
-        ));
+        b2body.setLinearVelocity(new com.badlogic.gdx.math.Vector2(velocity.getX(), velocity.getY()));
     }
 
     public void onRemove() {

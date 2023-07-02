@@ -27,10 +27,7 @@ public class PhysicsEventQueueProcessor {
                         Ability ability = game.getGameState().accessAbilities().getAbility(event.getAbilityId());
                         ability.onSelfCreatureHit(game);
                     } else {
-                        handleCreatureAttacked(
-                            event,
-                            game
-                        );
+                        handleCreatureAttacked(event, game);
                     }
 
                 }
@@ -40,10 +37,7 @@ public class PhysicsEventQueueProcessor {
                 Ability ability = game.getGameState().accessAbilities().getAbility(event.getAbilityId());
 
                 if (ability != null && ability.getParams().getState() == AbilityState.ACTIVE) {
-                    ability.onTerrainHit(
-                        event.getAbilityPos(),
-                        event.getTilePos()
-                    );
+                    ability.onTerrainHit(event.getAbilityPos(), event.getTilePos());
                 }
 
             } else if (physicsEvent instanceof AbilityHitsAbilityEvent) {
@@ -53,16 +47,10 @@ public class PhysicsEventQueueProcessor {
                 Ability abilityB = game.getGameState().accessAbilities().getAbility(event.getAbilityB_Id());
 
                 if (abilityA != null && abilityA.getParams().getState() == AbilityState.ACTIVE) {
-                    abilityA.onOtherAbilityHit(
-                        event.getAbilityB_Id(),
-                        game
-                    );
+                    abilityA.onOtherAbilityHit(event.getAbilityB_Id(), game);
                 }
                 if (abilityB != null && abilityB.getParams().getState() == AbilityState.ACTIVE) {
-                    abilityB.onOtherAbilityHit(
-                        event.getAbilityA_Id(),
-                        game
-                    );
+                    abilityB.onOtherAbilityHit(event.getAbilityA_Id(), game);
                 }
             } else if (physicsEvent instanceof CreatureHitsAreaGateEvent) {
                 CreatureHitsAreaGateEvent event = (CreatureHitsAreaGateEvent) physicsEvent;
@@ -80,13 +68,7 @@ public class PhysicsEventQueueProcessor {
                     AreaId toAreaId = leadingToAreaGate.getAreaId();
                     Vector2 pos = leadingToAreaGate.getPos();
 
-                    game.addTeleportEvent(TeleportEvent.of(
-                        event.getCreatureId(),
-                        pos,
-                        fromAreaId,
-                        toAreaId,
-                        true
-                    ));
+                    game.addTeleportEvent(TeleportEvent.of(event.getCreatureId(), pos, fromAreaId, toAreaId, true));
 
                 }
             } else if (physicsEvent instanceof CreatureLeavesAreaGateEvent) {
@@ -137,16 +119,12 @@ public class PhysicsEventQueueProcessor {
         Ability ability = game.getGameState().accessAbilities().getAbility(event.getAbilityId());
 
         if (ability != null && destinationCreature.isAlive()) {
-            Vector2 contactPoint = calculateContactPoint(
-                destinationCreature,
-                ability
-            );
+            Vector2 contactPoint = calculateContactPoint(destinationCreature, ability);
 
             if ((sourceCreature instanceof Player || destinationCreature instanceof Player) &&
                 !ability.getParams().getCreaturesAlreadyHit().containsKey(event.getDestinationCreatureId())) {
 
-                game.getGameState().accessAbilities().onAbilityHitsCreature(
-                    event.getSourceCreatureId(),
+                game.getGameState().accessAbilities().onAbilityHitsCreature(event.getSourceCreatureId(),
                     event.getDestinationCreatureId(),
                     ability.getParams().getId(),
                     contactPoint,

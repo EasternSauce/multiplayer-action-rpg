@@ -18,10 +18,7 @@ public class CreatureModelAnimation {
     public void prepareFacingTextures(CreatureAnimationConfig animationConfig, TextureAtlas atlas) {
         TextureRegion runningAnimationTextureRegion = atlas.findRegion(animationConfig.getTextureName());
 
-        facingTextures = createFacingTextures(
-            animationConfig,
-            runningAnimationTextureRegion
-        );
+        facingTextures = createFacingTextures(animationConfig, runningAnimationTextureRegion);
     }
 
     private List<TextureRegion> createFacingTextures(CreatureAnimationConfig animationConfig,
@@ -29,8 +26,7 @@ public class CreatureModelAnimation {
         List<TextureRegion> facingTextures = new ArrayList<>();
 
         for (int i = 0; i < 4; i++) {
-            facingTextures.add(new TextureRegion(
-                runningAnimationTextureRegion,
+            facingTextures.add(new TextureRegion(runningAnimationTextureRegion,
                 animationConfig.getNeutralStanceFrame() * animationConfig.getTextureWidth(),
                 i * animationConfig.getTextureHeight(),
                 animationConfig.getTextureWidth(),
@@ -44,10 +40,7 @@ public class CreatureModelAnimation {
     public void prepareRunningAnimations(CreatureAnimationConfig animationConfig, TextureAtlas atlas) {
         TextureRegion runningAnimationTextureRegion = atlas.findRegion(animationConfig.getTextureName());
 
-        runningAnimations = createRunningAnimations(
-            animationConfig,
-            runningAnimationTextureRegion
-        );
+        runningAnimations = createRunningAnimations(animationConfig, runningAnimationTextureRegion);
     }
 
     private List<Animation<TextureRegion>> createRunningAnimations(CreatureAnimationConfig animationConfig,
@@ -57,8 +50,7 @@ public class CreatureModelAnimation {
         for (int i = 0; i < 4; i++) {
             TextureRegion[] frames = new TextureRegion[animationConfig.getFrameCount()];
             for (int j = 0; j < animationConfig.getFrameCount(); j++) {
-                frames[j] = new TextureRegion(
-                    runningAnimationTextureRegion,
+                frames[j] = new TextureRegion(runningAnimationTextureRegion,
                     j * animationConfig.getTextureWidth(),
                     i * animationConfig.getTextureHeight(),
                     animationConfig.getTextureWidth(),
@@ -66,13 +58,7 @@ public class CreatureModelAnimation {
                 );
             }
 
-            runningAnimations.add(
-                i,
-                new Animation<>(
-                    animationConfig.getFrameDuration(),
-                    frames
-                )
-            );
+            runningAnimations.add(i, new Animation<>(animationConfig.getFrameDuration(), frames));
         }
         return runningAnimations;
     }
@@ -87,9 +73,6 @@ public class CreatureModelAnimation {
                                                   float animationTime) {
         CreatureAnimationConfig animationConfig = CreatureAnimationConfig.configs.get(textureName);
 
-        return runningAnimations.get(animationConfig.getDirMap().get(facingDirection)).getKeyFrame(
-            animationTime,
-            true
-        );
+        return runningAnimations.get(animationConfig.getDirMap().get(facingDirection)).getKeyFrame(animationTime, true);
     }
 }

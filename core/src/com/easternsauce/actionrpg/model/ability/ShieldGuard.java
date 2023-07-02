@@ -86,16 +86,10 @@ public class ShieldGuard extends DirectionalAttachedAbility {
                 }
 
                 if (otherAbility instanceof RicochetBullet) {
-                    otherAbility.onTerrainHit(
-                        otherAbility.getParams().getPos(),
-                        getParams().getPos()
-                    );
+                    otherAbility.onTerrainHit(otherAbility.getParams().getPos(), getParams().getPos());
 
                 } else if (otherAbility instanceof Boomerang) {
-                    otherAbility.onCreatureHit(
-                        getParams().getCreatureId(),
-                        game
-                    );
+                    otherAbility.onCreatureHit(getParams().getCreatureId(), game);
                 } else {
                     otherAbility.deactivate();
                 }

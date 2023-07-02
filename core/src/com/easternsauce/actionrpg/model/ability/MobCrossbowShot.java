@@ -52,8 +52,7 @@ public class MobCrossbowShot extends Ability {
             getParams().getStateTimer().getTime() > boltFireTimes[currentBoltToFire]) {
             Vector2 aimDirection = creature.getParams().getMovementParams().getAimDirection();
 
-            float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(
-                currentDirVector.angleDeg(),
+            float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(currentDirVector.angleDeg(),
                 aimDirection.angleDeg()
             );
 
@@ -69,16 +68,14 @@ public class MobCrossbowShot extends Ability {
             }
             float increment = baseIncrement * delta;
 
-            Vector2 chainedDirVector = calculateShootingVectorForNextBolt(
-                currentDirVector,
+            Vector2 chainedDirVector = calculateShootingVectorForNextBolt(currentDirVector,
                 aimDirection,
                 shortestAngleRotation,
                 increment,
                 game
             );
 
-            game.getGameState().accessAbilities().chainAnotherAbility(
-                this,
+            game.getGameState().accessAbilities().chainAnotherAbility(this,
                 AbilityType.CROSSBOW_BOLT,
                 null,
                 chainedDirVector,

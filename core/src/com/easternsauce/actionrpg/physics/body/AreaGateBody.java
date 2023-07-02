@@ -29,8 +29,7 @@ public class AreaGateBody {
 
         world = game.getPhysicsWorld(areaGate.getAreaId());
 
-        b2body = B2BodyFactory.createAreaGateB2body(
-            world,
+        b2body = B2BodyFactory.createAreaGateB2body(world,
             this,
             areaGate.getPos(),
             areaGate.getWidth(),

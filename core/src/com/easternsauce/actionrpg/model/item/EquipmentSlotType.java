@@ -10,66 +10,24 @@ public enum EquipmentSlotType {
     public static final Map<Integer, EquipmentSlotType> equipmentSlotTypes = new ConcurrentSkipListMap<>();
 
     static {
-        equipmentSlotNames.put(
-            0,
-            "Primary Weapon"
-        );
-        equipmentSlotNames.put(
-            1,
-            "Secondary Weapon"
-        );
-        equipmentSlotNames.put(
-            2,
-            "Helmet"
-        );
-        equipmentSlotNames.put(
-            3,
-            "Body"
-        );
-        equipmentSlotNames.put(
-            4,
-            "Gloves"
-        );
-        equipmentSlotNames.put(
-            5,
-            "Ring"
-        );
-        equipmentSlotNames.put(
-            6,
-            "Boots"
-        );
+        equipmentSlotNames.put(0, "Primary Weapon");
+        equipmentSlotNames.put(1, "Secondary Weapon");
+        equipmentSlotNames.put(2, "Helmet");
+        equipmentSlotNames.put(3, "Body");
+        equipmentSlotNames.put(4, "Gloves");
+        equipmentSlotNames.put(5, "Ring");
+        equipmentSlotNames.put(6, "Boots");
         //        equipmentSlotNames.put(7, "Consumable");
     }
 
     static {
-        equipmentSlotTypes.put(
-            0,
-            PRIMARY_WEAPON
-        );
-        equipmentSlotTypes.put(
-            1,
-            SECONDARY_WEAPON
-        );
-        equipmentSlotTypes.put(
-            2,
-            HELMET
-        );
-        equipmentSlotTypes.put(
-            3,
-            BODY
-        );
-        equipmentSlotTypes.put(
-            4,
-            GLOVES
-        );
-        equipmentSlotTypes.put(
-            5,
-            RING
-        );
-        equipmentSlotTypes.put(
-            6,
-            BOOTS
-        );
+        equipmentSlotTypes.put(0, PRIMARY_WEAPON);
+        equipmentSlotTypes.put(1, SECONDARY_WEAPON);
+        equipmentSlotTypes.put(2, HELMET);
+        equipmentSlotTypes.put(3, BODY);
+        equipmentSlotTypes.put(4, GLOVES);
+        equipmentSlotTypes.put(5, RING);
+        equipmentSlotTypes.put(6, BOOTS);
         //        equipmentSlotSequenceNumbers.put(7, CONSUMABLE);
     }
 

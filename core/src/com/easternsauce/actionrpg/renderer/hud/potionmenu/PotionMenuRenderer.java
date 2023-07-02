@@ -63,14 +63,6 @@ public class PotionMenuRenderer {
         });
     }
 
-    private boolean isPotionMenuItemBeingMoved(PlayerConfig playerConfig, Integer index) {
-        boolean isPotionMenuItemBeingMoved = false;
-        if (playerConfig.getPotionMenuItemBeingMoved() != null) {
-            isPotionMenuItemBeingMoved = Objects.equals(playerConfig.getPotionMenuItemBeingMoved(), index);
-        }
-        return isPotionMenuItemBeingMoved;
-    }
-
     private static void renderSlot(RenderingLayer renderingLayer, Rect rect) {
         renderingLayer.getShapeDrawer().filledRectangle(rect.getX() - 3,
             rect.getY() - 3,
@@ -95,6 +87,14 @@ public class PotionMenuRenderer {
             Vector2.of(rect.getX() + 2f, rect.getY() + PotionMenuConsts.SLOT_SIZE - 27f),
             Color.WHITE
         );
+    }
+
+    private boolean isPotionMenuItemBeingMoved(PlayerConfig playerConfig, Integer index) {
+        boolean isPotionMenuItemBeingMoved = false;
+        if (playerConfig.getPotionMenuItemBeingMoved() != null) {
+            isPotionMenuItemBeingMoved = Objects.equals(playerConfig.getPotionMenuItemBeingMoved(), index);
+        }
+        return isPotionMenuItemBeingMoved;
     }
 
     private void renderSlotItem(RenderingLayer renderingLayer, IconRetriever iconRetriever, Item item, Rect rect) {

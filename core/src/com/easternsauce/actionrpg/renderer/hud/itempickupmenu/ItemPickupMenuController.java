@@ -35,14 +35,10 @@ public class ItemPickupMenuController {
             .stream()).forEach(item -> {
             Rect rect = ItemPickupMenuConsts.getMenuOptionRect(i.get());
 
-            if (rect.contains(
-                x,
-                y
-            )) {
-                client.sendTCP(ActionPerformCommand.of(LootPileItemTryPickUpAction.of(
-                    game.getGameState().getThisClientPlayerId(),
-                    item
-                )));
+            if (rect.contains(x, y)) {
+                client.sendTCP(ActionPerformCommand.of(LootPileItemTryPickUpAction.of(game
+                    .getGameState()
+                    .getThisClientPlayerId(), item)));
                 isSuccessful.set(true);
             }
 

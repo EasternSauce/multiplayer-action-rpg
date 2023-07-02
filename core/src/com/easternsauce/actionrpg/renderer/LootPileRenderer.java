@@ -28,14 +28,8 @@ public class LootPileRenderer {
 
         sprite = new Sprite();
         sprite.setRegion(atlas.findRegion("bag"));
-        sprite.setSize(
-            lootPile.getWidth(),
-            lootPile.getHeight()
-        );
-        sprite.setCenter(
-            lootPile.getParams().getPos().getX(),
-            lootPile.getParams().getPos().getY()
-        );
+        sprite.setSize(lootPile.getWidth(), lootPile.getHeight());
+        sprite.setCenter(lootPile.getParams().getPos().getX(), lootPile.getParams().getPos().getY());
 
     }
 

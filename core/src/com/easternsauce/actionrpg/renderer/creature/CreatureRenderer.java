@@ -31,10 +31,7 @@ public class CreatureRenderer {
         creatureSprite.updateSize(creature);
 
         if (creature.isAlive()) {
-            creatureSprite.updateForAliveCreature(
-                creature,
-                game
-            );
+            creatureSprite.updateForAliveCreature(creature, game);
         } else {
             creatureSprite.updateForDeadCreature(game);
         }
@@ -51,25 +48,10 @@ public class CreatureRenderer {
             float currentLifeBarWidth = LifeBarUtils.LIFE_BAR_WIDTH * creature.getParams().getStats().getLife() /
                 creature.getParams().getStats().getMaxLife();
             float barPosX = LifeBarUtils.getLifeBarPosX(creature);
-            float barPosY = LifeBarUtils.getLifeBarPosY(
-                creature,
-                creatureSprite.getWidth()
-            );
+            float barPosY = LifeBarUtils.getLifeBarPosY(creature, creatureSprite.getWidth());
 
-            LifeBarUtils.renderBar(
-                renderingLayer,
-                barPosX,
-                barPosY,
-                LifeBarUtils.LIFE_BAR_WIDTH,
-                Color.ORANGE
-            );
-            LifeBarUtils.renderBar(
-                renderingLayer,
-                barPosX,
-                barPosY,
-                currentLifeBarWidth,
-                Color.RED
-            );
+            LifeBarUtils.renderBar(renderingLayer, barPosX, barPosY, LifeBarUtils.LIFE_BAR_WIDTH, Color.ORANGE);
+            LifeBarUtils.renderBar(renderingLayer, barPosX, barPosY, currentLifeBarWidth, Color.RED);
         }
     }
 
@@ -79,19 +61,12 @@ public class CreatureRenderer {
         String name = creature.getId().getValue();
 
         float namePosX = creature.getParams().getPos().getX() - name.length() * 0.16f;
-        float namePosY = LifeBarUtils.getLifeBarPosY(
-            creature,
-            creatureSprite.getWidth()
-        ) + 1f;
+        float namePosY = LifeBarUtils.getLifeBarPosY(creature, creatureSprite.getWidth()) + 1f;
 
         // world text viewport is not scaled down! so we scale the values every time
-        Assets.renderMediumFont(
-            renderingLayer,
+        Assets.renderMediumFont(renderingLayer,
             name,
-            Vector2.of(
-                namePosX * Constants.PPM,
-                namePosY * Constants.PPM
-            ),
+            Vector2.of(namePosX * Constants.PPM, namePosY * Constants.PPM),
             Color.RED
         );
     }

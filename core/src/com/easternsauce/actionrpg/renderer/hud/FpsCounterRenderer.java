@@ -14,15 +14,7 @@ import lombok.NoArgsConstructor;
 public class FpsCounterRenderer {
     public void render(RenderingLayer renderingLayer) {
         float fps = Gdx.graphics.getFramesPerSecond();
-        Assets.renderSmallFont(
-            renderingLayer,
-            fps + " fps",
-            Vector2.of(
-                3,
-                Constants.WINDOW_HEIGHT - 3
-            ),
-            Color.WHITE
-        );
+        Assets.renderSmallFont(renderingLayer, fps + " fps", Vector2.of(3, Constants.WINDOW_HEIGHT - 3), Color.WHITE);
 
     }
 }

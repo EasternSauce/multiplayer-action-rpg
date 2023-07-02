@@ -25,12 +25,8 @@ public class LightningChain extends Ability {
             .setBaseDamage(0f)
             .setIsActiveAnimationLooping(true)
             .setAttackWithoutMoving(true)
-            .setPos(LightningChain.calculatePos(
-                abilityParams.getChainToPos(),
-                abilityParams.getChainFromPos()
-            ))
-            .setRotationAngle(LightningChain.calculateRotationAngle(
-                abilityParams.getChainToPos(),
+            .setPos(LightningChain.calculatePos(abilityParams.getChainToPos(), abilityParams.getChainFromPos()))
+            .setRotationAngle(LightningChain.calculateRotationAngle(abilityParams.getChainToPos(),
                 abilityParams.getChainFromPos()
             ))
             .setIsSkipCreatingBody(true)
@@ -45,10 +41,7 @@ public class LightningChain extends Ability {
         float attackShiftX = chainDirVector.normalized().getX() * chainFromPos.distance(pos) / 2;
         float attackShiftY = chainDirVector.normalized().getY() * chainFromPos.distance(pos) / 2;
 
-        return Vector2.of(
-            pos.getX() + attackShiftX,
-            pos.getY() + attackShiftY
-        );
+        return Vector2.of(pos.getX() + attackShiftX, pos.getY() + attackShiftY);
 
     }
 

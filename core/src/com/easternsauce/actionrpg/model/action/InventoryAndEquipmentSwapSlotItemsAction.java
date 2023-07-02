@@ -42,20 +42,11 @@ public class InventoryAndEquipmentSwapSlotItemsAction extends GameStateAction {
         Item equipmentItem = player.getParams().getEquipmentItems().get(equipmentIndex);
 
         if (checkInventoryItemSlotTypeMatchesEquipmentSlot(inventoryItem)) {
-            handleSwapInInventory(
-                player,
-                equipmentItem
-            );
-            handleSwapInEquipment(
-                player,
-                inventoryItem
-            );
+            handleSwapInInventory(player, equipmentItem);
+            handleSwapInEquipment(player, inventoryItem);
         }
 
-        finalizeItemSwap(
-            player,
-            playerConfig
-        );
+        finalizeItemSwap(player, playerConfig);
     }
 
     @Override
@@ -65,16 +56,13 @@ public class InventoryAndEquipmentSwapSlotItemsAction extends GameStateAction {
 
     private boolean checkInventoryItemSlotTypeMatchesEquipmentSlot(Item inventoryItem) {
         return inventoryItem == null ||
-            inventoryItem.getTemplate().getEquipmentSlotType() ==
-                EquipmentSlotType.equipmentSlotTypes.get(equipmentIndex);
+            inventoryItem.getTemplate().getEquipmentSlotType() == EquipmentSlotType.equipmentSlotTypes.get(
+                equipmentIndex);
     }
 
     private void handleSwapInInventory(Creature player, Item equipmentItem) {
         if (equipmentItem != null) {
-            player.getParams().getInventoryItems().put(
-                inventoryIndex,
-                equipmentItem
-            );
+            player.getParams().getInventoryItems().put(inventoryIndex, equipmentItem);
         } else {
             player.getParams().getInventoryItems().remove(inventoryIndex);
         }
@@ -82,10 +70,7 @@ public class InventoryAndEquipmentSwapSlotItemsAction extends GameStateAction {
 
     private void handleSwapInEquipment(Creature player, Item inventoryItem) {
         if (inventoryItem != null) {
-            player.getParams().getEquipmentItems().put(
-                equipmentIndex,
-                inventoryItem
-            );
+            player.getParams().getEquipmentItems().put(equipmentIndex, inventoryItem);
         } else {
             player.getParams().getEquipmentItems().remove(equipmentIndex);
         }
@@ -98,10 +83,7 @@ public class InventoryAndEquipmentSwapSlotItemsAction extends GameStateAction {
 
         playerConfig.setIsSkillMenuPickerSlotBeingChanged(null);
 
-        removeSkillFromSkillMenuOnItemUnequip(
-            player,
-            playerConfig
-        );
+        removeSkillFromSkillMenuOnItemUnequip(player, playerConfig);
     }
 
     @SuppressWarnings("SpellCheckingInspection")

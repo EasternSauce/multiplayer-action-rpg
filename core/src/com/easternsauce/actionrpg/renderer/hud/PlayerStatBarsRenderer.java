@@ -15,61 +15,25 @@ public class PlayerStatBarsRenderer {
         ShapeDrawer shapeDrawer = renderingLayer.getShapeDrawer();
 
         if (creature != null) {
-            shapeDrawer.filledRectangle(
-                new Rectangle(
-                    10,
-                    40,
-                    100,
-                    10
-                ),
-                Color.ORANGE
-            );
-            shapeDrawer.filledRectangle(
-                new Rectangle(
-                    10,
-                    40,
-                    100 * creature.getParams().getStats().getLife() / creature.getParams().getStats().getMaxLife(),
-                    10
-                ),
-                Color.RED
-            );
-            shapeDrawer.filledRectangle(
-                new Rectangle(
-                    10,
-                    25,
-                    100,
-                    10
-                ),
-                Color.ORANGE
-            );
-            shapeDrawer.filledRectangle(
-                new Rectangle(
-                    10,
-                    25,
-                    100 * creature.getParams().getStats().getStamina() /
-                        creature.getParams().getStats().getMaxStamina(),
-                    10
-                ),
-                Color.GREEN
-            );
-            shapeDrawer.filledRectangle(
-                new Rectangle(
-                    10,
-                    10,
-                    100,
-                    10
-                ),
-                Color.ORANGE
-            );
-            shapeDrawer.filledRectangle(
-                new Rectangle(
-                    10,
-                    10,
-                    100 * creature.getParams().getStats().getMana() / creature.getParams().getStats().getMaxMana(),
-                    10
-                ),
-                Color.BLUE
-            );
+            shapeDrawer.filledRectangle(new Rectangle(10, 40, 100, 10), Color.ORANGE);
+            shapeDrawer.filledRectangle(new Rectangle(10,
+                40,
+                100 * creature.getParams().getStats().getLife() / creature.getParams().getStats().getMaxLife(),
+                10
+            ), Color.RED);
+            shapeDrawer.filledRectangle(new Rectangle(10, 25, 100, 10), Color.ORANGE);
+            shapeDrawer.filledRectangle(new Rectangle(10,
+                25,
+                100 * creature.getParams().getStats().getStamina() /
+                    creature.getParams().getStats().getMaxStamina(),
+                10
+            ), Color.GREEN);
+            shapeDrawer.filledRectangle(new Rectangle(10, 10, 100, 10), Color.ORANGE);
+            shapeDrawer.filledRectangle(new Rectangle(10,
+                10,
+                100 * creature.getParams().getStats().getMana() / creature.getParams().getStats().getMaxMana(),
+                10
+            ), Color.BLUE);
         }
     }
 }

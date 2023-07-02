@@ -39,10 +39,7 @@ public abstract class Ability implements Entity {
                 getParams().getStateTimer().restart();
             }
         } else if (state == AbilityState.ACTIVE) {
-            onActiveUpdate(
-                delta,
-                game
-            );
+            onActiveUpdate(delta, game);
 
             if (!getParams().getDelayedActionCompleted() &&
                 getParams().getDelayedActionTime() != null &&

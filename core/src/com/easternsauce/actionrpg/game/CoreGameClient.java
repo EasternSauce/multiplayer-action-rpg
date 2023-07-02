@@ -76,12 +76,13 @@ public class CoreGameClient extends CoreGame {
 
     private void correctPlayerBodyArea() {
         Creature player = gameState.accessCreatures().getCreature(gameState.getThisClientPlayerId());
-        if (getCreatureBodies().containsKey(gameState.getThisClientPlayerId()) && !Objects.equals(
-            getCreatureBodies().get(gameState.getThisClientPlayerId()).getAreaId().getValue(),
+        if (getCreatureBodies().containsKey(gameState.getThisClientPlayerId()) && !Objects.equals(getCreatureBodies()
+                .get(gameState.getThisClientPlayerId())
+                .getAreaId()
+                .getValue(),
             player.getParams().getAreaId().getValue()
         )) {
-            addTeleportEvent(TeleportEvent.of(
-                gameState.getThisClientPlayerId(),
+            addTeleportEvent(TeleportEvent.of(gameState.getThisClientPlayerId(),
                 player.getParams().getPos(),
                 getCreatureBodies().get(gameState.getThisClientPlayerId()).getAreaId(),
                 player.getParams().getAreaId(),
@@ -98,8 +99,7 @@ public class CoreGameClient extends CoreGame {
         if (player != null &&
             player.getParams().getMovementParams().getChangeAimDirectionActionsPerSecondLimiterTimer().getTime() >
                 Constants.CHANGE_AIM_DIRECTION_COMMAND_COOLDOWN) {
-            getEndPoint().sendTCP(ActionPerformCommand.of(CreatureChangeAimDirectionAction.of(
-                getGameState().getThisClientPlayerId(),
+            getEndPoint().sendTCP(ActionPerformCommand.of(CreatureChangeAimDirectionAction.of(getGameState().getThisClientPlayerId(),
                 mousePos
             )));
         }
@@ -139,22 +139,13 @@ public class CoreGameClient extends CoreGame {
                 handleAttackButtonHoldInput(playerConfig);
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
-                handlePerformAbilityInput(
-                    playerConfig,
-                    0
-                );
+                handlePerformAbilityInput(playerConfig, 0);
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
-                handlePerformAbilityInput(
-                    playerConfig,
-                    1
-                );
+                handlePerformAbilityInput(playerConfig, 1);
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
-                handlePerformAbilityInput(
-                    playerConfig,
-                    2
-                );
+                handlePerformAbilityInput(playerConfig, 2);
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
                 handleInventoryWindowActionInput();
@@ -172,11 +163,9 @@ public class CoreGameClient extends CoreGame {
 
         enemySpawns.forEach(enemySpawn -> {
             CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 10000000));
-            getEndPoint().sendTCP(EnemySpawnCommand.of(
-                enemyId,
+            getEndPoint().sendTCP(EnemySpawnCommand.of(enemyId,
                 areaId,
-                enemySpawn.setPos(Vector2.of(
-                    enemySpawn.getPos().getX() + (float) Math.random(),
+                enemySpawn.setPos(Vector2.of(enemySpawn.getPos().getX() + (float) Math.random(),
                     enemySpawn.getPos().getY() + (float) Math.random()
                 ))
             ));
@@ -194,8 +183,7 @@ public class CoreGameClient extends CoreGame {
 
         if (playerConfig.getSkillMenuSlots().containsKey(abilitySequenceNumber)) {
 
-            getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(
-                getGameState().getThisClientPlayerId(),
+            getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(getGameState().getThisClientPlayerId(),
                 playerConfig.getSkillMenuSlots().get(abilitySequenceNumber),
                 player.getParams().getPos(),
                 dirVector
@@ -205,10 +193,7 @@ public class CoreGameClient extends CoreGame {
 
     private void handleAttackButtonInput(PlayerConfig playerConfig) {
         if (playerConfig.getIsInventoryVisible()) {
-            inventoryWindowController.performUseItemClick(
-                getEndPoint(),
-                this
-            );
+            inventoryWindowController.performUseItemClick(getEndPoint(), this);
         }
     }
 
@@ -234,8 +219,7 @@ public class CoreGameClient extends CoreGame {
                 attackSkill = SkillType.PUNCH;
                 weaponDamage = 0f; // weapon damage doesn't apply
             }
-            getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(
-                getGameState().getThisClientPlayerId(),
+            getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(getGameState().getThisClientPlayerId(),
                 attackSkill,
                 player.getParams().getPos(),
                 dirVector,
@@ -261,8 +245,7 @@ public class CoreGameClient extends CoreGame {
             if (player != null) {
                 if (player.getParams().getMovementParams().getMovementActionsPerSecondLimiterTimer().getTime() >
                     Constants.MOVEMENT_COMMAND_COOLDOWN && gameState.getTime() > menuClickTime + 0.1f) {
-                    getEndPoint().sendTCP(ActionPerformCommand.of(CreatureMoveTowardsTargetAction.of(
-                        getGameState().getThisClientPlayerId(),
+                    getEndPoint().sendTCP(ActionPerformCommand.of(CreatureMoveTowardsTargetAction.of(getGameState().getThisClientPlayerId(),
                         mousePos
                     )));
                 }
@@ -273,43 +256,28 @@ public class CoreGameClient extends CoreGame {
     private void handleActionButtonInput(PlayerConfig playerConfig) {
         if (playerConfig != null) {
 
-            boolean isSuccessful = potionMenuController.performPotionMenuClick(
-                getEndPoint(),
-                this
-            );
+            boolean isSuccessful = potionMenuController.performPotionMenuClick(getEndPoint(), this);
             if (isSuccessful) {
                 menuClickTime = gameState.getTime();
             }
 
             if (playerConfig.getIsInventoryVisible()) {
-                inventoryWindowController.performMoveItemClick(
-                    getEndPoint(),
-                    this
-                );
+                inventoryWindowController.performMoveItemClick(getEndPoint(), this);
             } else if (!playerConfig.getIsInventoryVisible() && !playerConfig.getItemPickupMenuLootPiles().isEmpty()) {
-                isSuccessful = pickupMenuController.performItemPickupMenuClick(
-                    getEndPoint(),
-                    this
-                );
+                isSuccessful = pickupMenuController.performItemPickupMenuClick(getEndPoint(), this);
                 if (isSuccessful) {
                     menuClickTime = gameState.getTime();
                 }
 
             } else if (!playerConfig.getIsInventoryVisible() &&
                 playerConfig.getIsSkillMenuPickerSlotBeingChanged() != null) {
-                isSuccessful = skillMenuController.performSkillMenuPickerClick(
-                    getEndPoint(),
-                    this
-                );
+                isSuccessful = skillMenuController.performSkillMenuPickerClick(getEndPoint(), this);
                 if (isSuccessful) {
                     menuClickTime = gameState.getTime();
                 }
 
             } else {
-                isSuccessful = skillMenuController.performSkillMenuClick(
-                    getEndPoint(),
-                    this
-                );
+                isSuccessful = skillMenuController.performSkillMenuClick(getEndPoint(), this);
                 if (isSuccessful) {
                     menuClickTime = gameState.getTime();
                 }
@@ -341,19 +309,17 @@ public class CoreGameClient extends CoreGame {
             if (getChat().getIsHoldingBackspace()) {
                 if (!getChat().getCurrentMessage().isEmpty() &&
                     gameState.getTime() > getChat().getHoldBackspaceTime() + 0.3f) {
-                    getChat().setCurrentMessage(getChat().getCurrentMessage().substring(
-                        0,
-                        getChat().getCurrentMessage().length() - 1
-                    ));
+                    getChat().setCurrentMessage(getChat()
+                        .getCurrentMessage()
+                        .substring(0, getChat().getCurrentMessage().length() - 1));
                 }
             } else {
                 getChat().setIsHoldingBackspace(true);
                 getChat().setHoldBackspaceTime(gameState.getTime());
                 if (!getChat().getCurrentMessage().isEmpty()) {
-                    getChat().setCurrentMessage(getChat().getCurrentMessage().substring(
-                        0,
-                        getChat().getCurrentMessage().length() - 1
-                    ));
+                    getChat().setCurrentMessage(getChat()
+                        .getCurrentMessage()
+                        .substring(0, getChat().getCurrentMessage().length() - 1));
                 }
             }
 
@@ -366,13 +332,11 @@ public class CoreGameClient extends CoreGame {
         } else {
             getChat().setIsTyping(false);
             if (!getChat().getCurrentMessage().isEmpty()) {
-                getEndPoint().sendTCP(ChatMessageSendCommand.of(
-                    getGameState().getThisClientPlayerId().getValue(),
+                getEndPoint().sendTCP(ChatMessageSendCommand.of(getGameState().getThisClientPlayerId().getValue(),
                     getChat().getCurrentMessage()
                 ));
 
-                getChat().sendMessage(
-                    getGameState().getThisClientPlayerId().getValue(),
+                getChat().sendMessage(getGameState().getThisClientPlayerId().getValue(),
                     getChat().getCurrentMessage(),
                     this
                 );
@@ -389,18 +353,10 @@ public class CoreGameClient extends CoreGame {
 
     @Override
     public void establishConnection() throws IOException {
-        setEndPoint(new Client(
-            6400000,
-            6400000
-        ));
+        setEndPoint(new Client(6400000, 6400000));
         getEndPoint().getKryo().setRegistrationRequired(false);
         getEndPoint().start();
-        getEndPoint().connect(
-            12000 * 99999,
-            "127.0.0.1",
-            20445,
-            20445
-        );
+        getEndPoint().connect(12000 * 99999, "127.0.0.1", 20445, 20445);
 
         getEndPoint().addListener(new Listener() {
             @Override
@@ -421,10 +377,7 @@ public class CoreGameClient extends CoreGame {
                 } else if (object instanceof GameStateBroadcast) {
                     GameStateBroadcast action = (GameStateBroadcast) object;
 
-                    gameState.createEventsFromReceivedGameStateData(
-                        action.getGameStateData(),
-                        getEventProcessor()
-                    );
+                    gameState.createEventsFromReceivedGameStateData(action.getGameStateData(), getEventProcessor());
                     gameState.setNewGameState(action.getGameStateData());
 
                     getEntityManager().getGameEntityPhysics().setIsForceUpdateBodyPositions(true);
@@ -433,22 +386,14 @@ public class CoreGameClient extends CoreGame {
                 } else if (object instanceof ChatMessageSendCommand) {
                     ChatMessageSendCommand action = (ChatMessageSendCommand) object;
 
-                    if (!Objects.equals(
-                        action.getPoster(),
-                        getGameState().getThisClientPlayerId().getValue()
-                    )) {
-                        getChat().sendMessage(
-                            action.getPoster(),
-                            action.getText(),
-                            CoreGameClient.this
-                        );
+                    if (!Objects.equals(action.getPoster(), getGameState().getThisClientPlayerId().getValue())) {
+                        getChat().sendMessage(action.getPoster(), action.getText(), CoreGameClient.this);
                     }
 
                 } else if (object instanceof EnemySpawnCommand) {
                     EnemySpawnCommand command = (EnemySpawnCommand) object;
 
-                    getEntityManager().spawnEnemy(
-                        command.getCreatureId(),
+                    getEntityManager().spawnEnemy(command.getCreatureId(),
                         command.getAreaId(),
                         command.getEnemySpawn(),
                         CoreGameClient.this
@@ -499,8 +444,7 @@ public class CoreGameClient extends CoreGame {
     @Override
     public void renderB2BodyDebug() {
         if (isDebugEnabled()) {
-            getEntityManager().getGameEntityPhysics().getDebugRenderer().render(
-                getEntityManager()
+            getEntityManager().getGameEntityPhysics().getDebugRenderer().render(getEntityManager()
                     .getGameEntityPhysics()
                     .getPhysicsWorlds()
                     .get(gameState.getCurrentAreaId())

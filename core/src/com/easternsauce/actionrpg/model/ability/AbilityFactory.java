@@ -8,10 +8,7 @@ public class AbilityFactory {
 
     public static Ability produceAbility(AbilityType abilityType, AbilityParams abilityParams, CoreGame game) {
 
-        return getAbilityByType(abilityType).apply(
-            abilityParams,
-            game
-        );
+        return getAbilityByType(abilityType).apply(abilityParams, game);
     }
 
     public static BiFunction<AbilityParams, CoreGame, Ability> getAbilityByType(AbilityType abilityType) {

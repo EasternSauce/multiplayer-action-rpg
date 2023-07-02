@@ -15,18 +15,14 @@ import com.easternsauce.actionrpg.physics.world.PhysicsWorld;
 
 public class B2BodyFactory {
     public static Body createTerrainTileB2body(PhysicsWorld world, TerrainTileBody terrainTileBody) {
-        return createB2Body(
-            world,
+        return createB2Body(world,
             Vector2.of(
                 terrainTileBody.getPos().getX() * terrainTileBody.getTileWidth() + terrainTileBody.getTileWidth() / 2,
                 terrainTileBody.getPos().getY() * terrainTileBody.getTileHeight() + terrainTileBody.getTileHeight() / 2
             ),
             BodyType.StaticBody,
             terrainTileBody,
-            Rectangle.of(
-                terrainTileBody.getTileWidth(),
-                terrainTileBody.getTileHeight()
-            ),
+            Rectangle.of(terrainTileBody.getTileWidth(), terrainTileBody.getTileHeight()),
             false,
             false,
             null,
@@ -46,10 +42,7 @@ public class B2BodyFactory {
                                     Float mass) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = bodyType;
-        bodyDef.position.set(
-            pos.getX(),
-            pos.getY()
-        );
+        bodyDef.position.set(pos.getX(), pos.getY());
 
         Body b2body = world.getB2world().createBody(bodyDef);
 
@@ -79,8 +72,7 @@ public class B2BodyFactory {
     }
 
     public static Body createCreatureB2Body(PhysicsWorld world, CreatureBody creatureBody, Creature creature) {
-        return createB2Body(
-            world,
+        return createB2Body(world,
             creature.getParams().getPos(),
             BodyType.DynamicBody,
             creatureBody,
@@ -93,8 +85,7 @@ public class B2BodyFactory {
     }
 
     public static Body createAbilityB2Body(PhysicsWorld world, AbilityBody abilityBody, Vector2 pos, float[] vertices) {
-        return createB2Body(
-            world,
+        return createB2Body(world,
             pos,
             BodyType.DynamicBody,
             abilityBody,
@@ -111,15 +102,11 @@ public class B2BodyFactory {
                                             Vector2 pos,
                                             float width,
                                             float height) {
-        return createB2Body(
-            world,
+        return createB2Body(world,
             pos,
             BodyType.StaticBody,
             areaGateBody,
-            Rectangle.of(
-                width,
-                height
-            ),
+            Rectangle.of(width, height),
             true,
             false,
             null,
@@ -132,15 +119,11 @@ public class B2BodyFactory {
                                             Vector2 pos,
                                             float width,
                                             float height) {
-        return createB2Body(
-            world,
+        return createB2Body(world,
             pos,
             BodyType.StaticBody,
             areaGateBody,
-            Rectangle.of(
-                width,
-                height
-            ),
+            Rectangle.of(width, height),
             true,
             false,
             null,

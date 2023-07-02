@@ -31,14 +31,8 @@ public class AreaGateRenderer {
 
         AreaGate areaGate = game.getGameState().getAreaGate(areaGateId);
 
-        sprite.setSize(
-            areaGate.getWidth(),
-            areaGate.getHeight()
-        );
-        sprite.setCenter(
-            areaGate.getPos().getX(),
-            areaGate.getPos().getY()
-        );
+        sprite.setSize(areaGate.getWidth(), areaGate.getHeight());
+        sprite.setCenter(areaGate.getPos().getX(), areaGate.getPos().getY());
 
     }
 

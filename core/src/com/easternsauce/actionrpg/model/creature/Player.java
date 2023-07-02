@@ -13,12 +13,7 @@ public class Player extends Creature {
     CreatureParams params;
 
     public static Player of(CreatureId playerId, AreaId areaId, Vector2 pos, String textureName) {
-        CreatureParams params = CreatureParams.of(
-            playerId,
-            areaId,
-            pos,
-            textureName
-        );
+        CreatureParams params = CreatureParams.of(playerId, areaId, pos, textureName);
         params.getStats().setLife(35000f);
         params.getStats().setMaxLife(35000f);
         params.getStats().setMana(350f);

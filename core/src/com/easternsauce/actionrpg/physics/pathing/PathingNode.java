@@ -24,20 +24,10 @@ public class PathingNode {
     }
 
     public PathingNode withEdge(Float weight, PathingNode node) {
-        PathingEdge newEdge = PathingEdge.of(
-            weight,
-            node.getPos()
-        );
+        PathingEdge newEdge = PathingEdge.of(weight, node.getPos());
         ArrayList<PathingEdge> newOutgoingEdges = new ArrayList<>(outgoingEdges);
-        newOutgoingEdges.add(
-            0,
-            newEdge
-        );
-        return PathingNode.of(
-            pos,
-            clearance,
-            newOutgoingEdges
-        );
+        newOutgoingEdges.add(0, newEdge);
+        return PathingNode.of(pos, clearance, newOutgoingEdges);
     }
 }
 

@@ -33,14 +33,10 @@ public class SkillMenuController {
         player.availableSkills().forEach((skillType, level) -> {
             Rect rect = SkillMenuConsts.getSkillPickerRect(i.get());
 
-            if (rect.contains(
-                x,
-                y
-            )) {
-                client.sendTCP(ActionPerformCommand.of(SkillPickerMenuSlotChangeAction.of(
-                    game.getGameState().getThisClientPlayerId(),
-                    skillType
-                )));
+            if (rect.contains(x, y)) {
+                client.sendTCP(ActionPerformCommand.of(SkillPickerMenuSlotChangeAction.of(game
+                    .getGameState()
+                    .getThisClientPlayerId(), skillType)));
                 isSuccessful.set(true);
             }
 
@@ -63,14 +59,10 @@ public class SkillMenuController {
         AtomicBoolean isSuccessful = new AtomicBoolean(false);
 
         SkillMenuConsts.slotRectangles.forEach((slotNum, rect) -> {
-            if (rect.contains(
-                x,
-                y
-            )) {
-                client.sendTCP(ActionPerformCommand.of(SkillPickerMenuActivateAction.of(
-                    game.getGameState().getThisClientPlayerId(),
-                    slotNum
-                )));
+            if (rect.contains(x, y)) {
+                client.sendTCP(ActionPerformCommand.of(SkillPickerMenuActivateAction.of(game
+                    .getGameState()
+                    .getThisClientPlayerId(), slotNum)));
                 isSuccessful.set(true);
             }
         });

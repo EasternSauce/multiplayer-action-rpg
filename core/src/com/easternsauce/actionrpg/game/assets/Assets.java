@@ -21,26 +21,11 @@ public class Assets { // TODO: make separate font class
     final static BitmapFont veryLargeFont;
 
     static {
-        smallFont = loadFont(
-            Assets.youngSerifFontPath,
-            16
-        );
-        verySmallFont = loadFont(
-            Assets.youngSerifFontPath,
-            12
-        );
-        mediumFont = loadFont(
-            Assets.youngSerifFontPath,
-            20
-        );
-        largeFont = loadFont(
-            Assets.youngSerifFontPath,
-            32
-        );
-        veryLargeFont = loadFont(
-            Assets.youngSerifFontPath,
-            64
-        );
+        smallFont = loadFont(Assets.youngSerifFontPath, 16);
+        verySmallFont = loadFont(Assets.youngSerifFontPath, 12);
+        mediumFont = loadFont(Assets.youngSerifFontPath, 20);
+        largeFont = loadFont(Assets.youngSerifFontPath, 32);
+        veryLargeFont = loadFont(Assets.youngSerifFontPath, 64);
     }
 
     public static BitmapFont loadFont(String fontPath, int size) {
@@ -48,10 +33,7 @@ public class Assets { // TODO: make separate font class
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = size;
         BitmapFont font = generator.generateFont(parameter);
-        font.getRegion().getTexture().setFilter(
-            TextureFilter.Linear,
-            TextureFilter.Linear
-        );
+        font.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
         generator.dispose();
         return font;
@@ -59,51 +41,26 @@ public class Assets { // TODO: make separate font class
 
     public static void renderSmallFont(RenderingLayer renderingLayer, String text, Vector2 pos, Color color) {
         smallFont.setColor(color);
-        smallFont.draw(
-            renderingLayer.getSpriteBatch(),
-            text,
-            pos.getX(),
-            pos.getY()
-        );
+        smallFont.draw(renderingLayer.getSpriteBatch(), text, pos.getX(), pos.getY());
     }
 
     public static void renderVerySmallFont(RenderingLayer renderingLayer, String text, Vector2 pos, Color color) {
         verySmallFont.setColor(color);
-        verySmallFont.draw(
-            renderingLayer.getSpriteBatch(),
-            text,
-            pos.getX(),
-            pos.getY()
-        );
+        verySmallFont.draw(renderingLayer.getSpriteBatch(), text, pos.getX(), pos.getY());
     }
 
     public static void renderMediumFont(RenderingLayer renderingLayer, String text, Vector2 pos, Color color) {
         mediumFont.setColor(color);
-        mediumFont.draw(
-            renderingLayer.getSpriteBatch(),
-            text,
-            pos.getX(),
-            pos.getY()
-        );
+        mediumFont.draw(renderingLayer.getSpriteBatch(), text, pos.getX(), pos.getY());
     }
 
     public static void renderLargeFont(RenderingLayer renderingLayer, String text, Vector2 pos, Color color) {
         largeFont.setColor(color);
-        largeFont.draw(
-            renderingLayer.getSpriteBatch(),
-            text,
-            pos.getX(),
-            pos.getY()
-        );
+        largeFont.draw(renderingLayer.getSpriteBatch(), text, pos.getX(), pos.getY());
     }
 
     public static void renderVeryLargeFont(RenderingLayer renderingLayer, String text, Vector2 pos, Color color) {
         veryLargeFont.setColor(color);
-        veryLargeFont.draw(
-            renderingLayer.getSpriteBatch(),
-            text,
-            pos.getX(),
-            pos.getY()
-        );
+        veryLargeFont.draw(renderingLayer.getSpriteBatch(), text, pos.getX(), pos.getY());
     }
 }

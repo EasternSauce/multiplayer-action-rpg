@@ -36,8 +36,7 @@ public class SummonGhosts extends Ability {
     @Override
     protected void onCompleted(CoreGame game) {
         float baseAngle = getParams().getDirVector().angleDeg();
-        game.getGameState().accessAbilities().chainAnotherAbility(
-            this,
+        game.getGameState().accessAbilities().chainAnotherAbility(this,
             AbilityType.PLAYFUL_GHOST,
             getParams().getPos(),
             params.getDirVector(),
@@ -45,8 +44,7 @@ public class SummonGhosts extends Ability {
             null,
             game
         );
-        game.getGameState().accessAbilities().chainAnotherAbility(
-            this,
+        game.getGameState().accessAbilities().chainAnotherAbility(this,
             AbilityType.PLAYFUL_GHOST,
             getParams().getPos(),
             params.getDirVector().withSetDegAngle(baseAngle - 30f),
@@ -54,8 +52,7 @@ public class SummonGhosts extends Ability {
             null,
             game
         );
-        game.getGameState().accessAbilities().chainAnotherAbility(
-            this,
+        game.getGameState().accessAbilities().chainAnotherAbility(this,
             AbilityType.PLAYFUL_GHOST,
             getParams().getPos(),
             params.getDirVector().withSetDegAngle(baseAngle + 30f),

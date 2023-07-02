@@ -40,21 +40,12 @@ public class GameEntityManager {
         if (creature != null) {
             if (!gameEntityRenderer.getCreatureRenderers().containsKey(creatureId)) {
                 CreatureRenderer creatureRenderer = CreatureRenderer.of(creatureId);
-                gameEntityRenderer.getCreatureRenderers().put(
-                    creatureId,
-                    creatureRenderer
-                );
+                gameEntityRenderer.getCreatureRenderers().put(creatureId, creatureRenderer);
             }
             if (!gameEntityPhysics.getCreatureBodies().containsKey(creatureId)) {
                 CreatureBody creatureBody = CreatureBody.of(creatureId);
-                creatureBody.init(
-                    creature.getParams().getAreaId(),
-                    game
-                );
-                gameEntityPhysics.getCreatureBodies().put(
-                    creatureId,
-                    creatureBody
-                );
+                creatureBody.init(creature.getParams().getAreaId(), game);
+                gameEntityPhysics.getCreatureBodies().put(creatureId, creatureBody);
             }
         }
     }
@@ -65,27 +56,15 @@ public class GameEntityManager {
         if (ability != null && ability.usesEntityModel()) {
             if (!gameEntityRenderer.getAbilityRenderers().containsKey(abilityId)) {
                 AbilityRenderer abilityRenderer = AbilityRenderer.of(abilityId);
-                abilityRenderer.init(
-                    atlas,
-                    game
-                );
-                gameEntityRenderer.getAbilityRenderers().put(
-                    abilityId,
-                    abilityRenderer
-                );
+                abilityRenderer.init(atlas, game);
+                gameEntityRenderer.getAbilityRenderers().put(abilityId, abilityRenderer);
             }
             if (!gameEntityPhysics.getAbilityBodies().containsKey(abilityId)) {
                 AbilityBody abilityBody = AbilityBody.of(abilityId);
                 if (ability.getParams().getState() == AbilityState.ACTIVE) {
-                    abilityBody.activate(
-                        ability.getParams().getIsSkipCreatingBody(),
-                        game
-                    );
+                    abilityBody.activate(ability.getParams().getIsSkipCreatingBody(), game);
                 }
-                gameEntityPhysics.getAbilityBodies().put(
-                    abilityId,
-                    abilityBody
-                );
+                gameEntityPhysics.getAbilityBodies().put(abilityId, abilityBody);
             }
         }
 
@@ -97,10 +76,9 @@ public class GameEntityManager {
         if (ability != null &&
             gameEntityPhysics.getAbilityBodies().containsKey(ability.getParams().getId()) &&
             !gameEntityPhysics.getAbilityBodies().get(ability.getParams().getId()).getIsBodyInitialized()) {
-            gameEntityPhysics.getAbilityBodies().get(ability.getParams().getId()).activate(
-                ability.getParams().getIsSkipCreatingBody(),
-                game
-            );
+            gameEntityPhysics.getAbilityBodies().get(ability.getParams().getId()).activate(ability
+                .getParams()
+                .getIsSkipCreatingBody(), game);
         }
     }
 
@@ -110,22 +88,13 @@ public class GameEntityManager {
         if (lootPile != null) {
             if (!gameEntityRenderer.getLootPileRenderers().containsKey(lootPileId)) {
                 LootPileRenderer lootPileRenderer = LootPileRenderer.of(lootPileId);
-                lootPileRenderer.init(
-                    atlas,
-                    game
-                );
-                gameEntityRenderer.getLootPileRenderers().put(
-                    lootPileId,
-                    lootPileRenderer
-                );
+                lootPileRenderer.init(atlas, game);
+                gameEntityRenderer.getLootPileRenderers().put(lootPileId, lootPileRenderer);
             }
             if (!gameEntityPhysics.getLootPileBodies().containsKey(lootPileId)) {
                 LootPileBody lootPileBody = LootPileBody.of(lootPileId);
                 lootPileBody.init(game);
-                gameEntityPhysics.getLootPileBodies().put(
-                    lootPileId,
-                    lootPileBody
-                );
+                gameEntityPhysics.getLootPileBodies().put(lootPileId, lootPileBody);
             }
         }
     }
@@ -171,16 +140,9 @@ public class GameEntityManager {
     }
 
     public void spawnEnemy(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn, CoreGame game) {
-        Enemy enemy = Enemy.of(
-            creatureId,
-            areaId,
-            enemySpawn
-        );
+        Enemy enemy = Enemy.of(creatureId, areaId, enemySpawn);
 
-        game.getGameState().accessCreatures().getCreatures().put(
-            creatureId,
-            enemy
-        );
+        game.getGameState().accessCreatures().getCreatures().put(creatureId, enemy);
 
         game.getEventProcessor().getCreatureModelsToBeCreated().add(creatureId);
     }
@@ -199,13 +161,8 @@ public class GameEntityManager {
             if (game.getGameState().accessCreatures().getCreatures().containsKey(creatureId) &&
                 getGameEntityPhysics().getCreatureBodies().containsKey(creatureId)) {
 
-                game
-                    .getGameState()
-                    .accessCreatures()
-                    .getCreatures()
-                    .get(creatureId)
-                    .getParams()
-                    .setPos(getGameEntityPhysics().getCreatureBodies().get(creatureId).getBodyPos());
+                game.getGameState().accessCreatures().getCreatures().get(creatureId).getParams().setPos(
+                    getGameEntityPhysics().getCreatureBodies().get(creatureId).getBodyPos());
 
             }
         });
@@ -225,10 +182,7 @@ public class GameEntityManager {
 
         creaturesToUpdate.forEach(creatureId -> {
             if (game.getGameState().accessCreatures().getCreatures().containsKey(creatureId)) {
-                game.getGameState().accessCreatures().getCreatures().get(creatureId).update(
-                    delta,
-                    game
-                );
+                game.getGameState().accessCreatures().getCreatures().get(creatureId).update(delta, game);
             }
         });
 
@@ -240,10 +194,7 @@ public class GameEntityManager {
         abilitiesToUpdate.forEach(abilityId -> {
             if (game.getGameState().accessAbilities().getAbilities().containsKey(abilityId) &&
                 game.getGameState().accessAbilities().getAbilities().get(abilityId) != null) {
-                game.getGameState().accessAbilities().getAbilities().get(abilityId).update(
-                    delta,
-                    game
-                );
+                game.getGameState().accessAbilities().getAbilities().get(abilityId).update(delta, game);
             }
         });
 
@@ -289,10 +240,8 @@ public class GameEntityManager {
             .get(teleportEvent.getCreatureId())
             .getAreaId()
             .getValue())) {
-            getGameEntityPhysics()
-                .getCreatureBodies()
-                .get(teleportEvent.getCreatureId())
-                .forceSetTransform(teleportEvent.getPos());
+            getGameEntityPhysics().getCreatureBodies().get(teleportEvent.getCreatureId()).forceSetTransform(
+                teleportEvent.getPos());
         } else {
             if (teleportEvent.getCreatureId() != null) {
                 creature.getParams().setAreaId(teleportEvent.getToAreaId());
@@ -301,20 +250,13 @@ public class GameEntityManager {
                 creature.getParams().getMovementParams().setMovementCommandTargetPos(teleportEvent.getPos());
 
                 if (getGameEntityPhysics().getCreatureBodies().containsKey(teleportEvent.getCreatureId())) {
-                    getGameEntityPhysics().getCreatureBodies().get(teleportEvent.getCreatureId()).moveBodyToNewArea(
-                        teleportEvent.getToAreaId(),
+                    getGameEntityPhysics().getCreatureBodies().get(teleportEvent.getCreatureId()).moveBodyToNewArea(teleportEvent.getToAreaId(),
                         game
                     );
                 } else {
                     CreatureBody creatureBody = CreatureBody.of(teleportEvent.getCreatureId());
-                    creatureBody.init(
-                        teleportEvent.getToAreaId(),
-                        game
-                    );
-                    getGameEntityPhysics().getCreatureBodies().put(
-                        teleportEvent.getCreatureId(),
-                        creatureBody
-                    );
+                    creatureBody.init(teleportEvent.getToAreaId(), game);
+                    getGameEntityPhysics().getCreatureBodies().put(teleportEvent.getCreatureId(), creatureBody);
                 }
 
                 if (teleportEvent.isUsedGate()) {
@@ -331,22 +273,13 @@ public class GameEntityManager {
         if (areaGate != null) {
             if (!gameEntityRenderer.getAreaGateRenderers().containsKey(areaGateId)) {
                 AreaGateRenderer areaGateRenderer = AreaGateRenderer.of(areaGateId);
-                areaGateRenderer.init(
-                    atlas,
-                    game
-                );
-                gameEntityRenderer.getAreaGateRenderers().put(
-                    areaGateId,
-                    areaGateRenderer
-                );
+                areaGateRenderer.init(atlas, game);
+                gameEntityRenderer.getAreaGateRenderers().put(areaGateId, areaGateRenderer);
             }
             if (!gameEntityPhysics.getAreaGateBodies().containsKey(areaGateId)) {
                 AreaGateBody areaGateBody = AreaGateBody.of(areaGateId);
                 areaGateBody.init(game);
-                gameEntityPhysics.getAreaGateBodies().put(
-                    areaGateId,
-                    areaGateBody
-                );
+                gameEntityPhysics.getAreaGateBodies().put(areaGateId, areaGateBody);
             }
         }
     }

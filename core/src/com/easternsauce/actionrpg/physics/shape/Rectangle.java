@@ -16,10 +16,7 @@ public class Rectangle implements BodyShape {
     @Override
     public Shape b2Shape() {
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(
-            width / 2,
-            height / 2
-        );
+        shape.setAsBox(width / 2, height / 2);
         return shape;
     }
 }

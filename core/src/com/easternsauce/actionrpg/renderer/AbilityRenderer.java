@@ -38,8 +38,9 @@ public class AbilityRenderer {
 
         Ability ability = game.getGameState().accessAbilities().getAbilities().get(abilityId);
 
-        if (ability == null)
+        if (ability == null) {
             return;
+        }
 
         AbilityAnimationConfig animationConfig = ability.animationConfig();
 
@@ -62,8 +63,7 @@ public class AbilityRenderer {
 
         TextureRegion[] channelFrames = new TextureRegion[animationConfig.getChannelFrameCount()];
         for (int i = 0; i < animationConfig.getChannelFrameCount(); i++) {
-            channelFrames[i] = new TextureRegion(
-                channelTextureRegion,
+            channelFrames[i] = new TextureRegion(channelTextureRegion,
                 i * animationConfig.getTextureWidth(),
                 0,
                 animationConfig.getTextureWidth(),
@@ -71,15 +71,11 @@ public class AbilityRenderer {
             );
         }
 
-        channelAnimation = new Animation<>(
-            animationConfig.getChannelFrameDuration(),
-            channelFrames
-        );
+        channelAnimation = new Animation<>(animationConfig.getChannelFrameDuration(), channelFrames);
 
         TextureRegion[] activeFrames = new TextureRegion[animationConfig.getActiveFrameCount()];
         for (int i = 0; i < animationConfig.getActiveFrameCount(); i++) {
-            activeFrames[i] = new TextureRegion(
-                activeTextureRegion,
+            activeFrames[i] = new TextureRegion(activeTextureRegion,
                 i * animationConfig.getTextureWidth(),
                 0,
                 animationConfig.getTextureWidth(),
@@ -87,10 +83,7 @@ public class AbilityRenderer {
             );
         }
 
-        activeAnimation = new Animation<>(
-            animationConfig.getActiveFrameDuration(),
-            activeFrames
-        );
+        activeAnimation = new Animation<>(animationConfig.getActiveFrameDuration(), activeFrames);
 
     }
 
@@ -100,24 +93,16 @@ public class AbilityRenderer {
 
         if (ability != null) {
             if (ability.getParams().getChannelTime() > 0f && ability.getParams().getState() == AbilityState.CHANNEL) {
-                TextureRegion texture = getChannelAnimation().getKeyFrame(
-                    ability.getParams().getStateTimer().getTime(),
+                TextureRegion texture = getChannelAnimation().getKeyFrame(ability.getParams().getStateTimer().getTime(),
                     ability.getParams().getIsChannelAnimationLooping()
                 );
-                updateSprite(
-                    texture,
-                    game
-                );
+                updateSprite(texture, game);
             } else if (ability.getParams().getActiveTime() > 0f &&
                 ability.getParams().getState() == AbilityState.ACTIVE) {
-                TextureRegion texture = getActiveAnimation().getKeyFrame(
-                    ability.getParams().getStateTimer().getTime(),
+                TextureRegion texture = getActiveAnimation().getKeyFrame(ability.getParams().getStateTimer().getTime(),
                     ability.getParams().getIsActiveAnimationLooping()
                 );
-                updateSprite(
-                    texture,
-                    game
-                );
+                updateSprite(texture, game);
             }
         }
 
@@ -132,26 +117,14 @@ public class AbilityRenderer {
 
         sprite.setRegion(texture);
         if (ability.getParams().getOverrideSize() != null) {
-            sprite.setSize(
-                ability.getParams().getOverrideSize(),
-                ability.getParams().getOverrideSize()
-            );
+            sprite.setSize(ability.getParams().getOverrideSize(), ability.getParams().getOverrideSize());
         } else {
-            sprite.setSize(
-                ability.getParams().getWidth(),
-                ability.getParams().getHeight()
-            );
+            sprite.setSize(ability.getParams().getWidth(), ability.getParams().getHeight());
         }
-        sprite.setCenter(
-            ability.getParams().getPos().getX(),
-            ability.getParams().getPos().getY()
-        );
+        sprite.setCenter(ability.getParams().getPos().getX(), ability.getParams().getPos().getY());
         sprite.setOriginCenter();
         sprite.setRotation(ability.getParams().getRotationAngle() + ability.getParams().getRotationShift());
-        sprite.setFlip(
-            false,
-            ability.getParams().getIsFlip()
-        );
+        sprite.setFlip(false, ability.getParams().getIsFlip());
 
     }
 

@@ -36,8 +36,7 @@ public class GameEntityPhysics {
     Boolean isForceUpdateBodyPositions = false;
 
     public void init(Map<AreaId, TiledMap> maps, CoreGame game) {
-        physicsWorlds = maps.entrySet().stream().collect(Collectors.toMap(
-            Map.Entry::getKey,
+        physicsWorlds = maps.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
             entry -> PhysicsWorld.of(entry.getValue())
         ));
 
@@ -47,10 +46,11 @@ public class GameEntityPhysics {
         });
 
         this.areaGateBodies = game // TODO: do this dynamically
-                                   .getGameState().getAreaGates().keySet().stream().collect(Collectors.toMap(
-                areaGateId -> areaGateId,
-                AreaGateBody::of
-            ));
+                                   .getGameState()
+                                   .getAreaGates()
+                                   .keySet()
+                                   .stream()
+                                   .collect(Collectors.toMap(areaGateId -> areaGateId, AreaGateBody::of));
 
         this.areaGateBodies.values().forEach(areaGateBody -> areaGateBody.init(game));
 
@@ -65,14 +65,8 @@ public class GameEntityPhysics {
                 Object objA = contact.getFixtureA().getBody().getUserData();
                 Object objB = contact.getFixtureB().getBody().getUserData();
 
-                onContactStart(
-                    objA,
-                    objB
-                );
-                onContactStart(
-                    objB,
-                    objA
-                );
+                onContactStart(objA, objB);
+                onContactStart(objB, objA);
             }
 
             @Override
@@ -81,14 +75,8 @@ public class GameEntityPhysics {
                     Object objA = contact.getFixtureA().getBody().getUserData();
                     Object objB = contact.getFixtureB().getBody().getUserData();
 
-                    onContactEnd(
-                        objA,
-                        objB
-                    );
-                    onContactEnd(
-                        objB,
-                        objA
-                    );
+                    onContactEnd(objA, objB);
+                    onContactEnd(objB, objA);
                 }
             }
 
@@ -109,8 +97,7 @@ public class GameEntityPhysics {
             CreatureBody creatureBody = (CreatureBody) objA;
             AbilityBody abilityBody = (AbilityBody) objB;
 
-            physicsEventQueue.add(AbilityHitsCreatureEvent.of(
-                abilityBody.getCreatureId(),
+            physicsEventQueue.add(AbilityHitsCreatureEvent.of(abilityBody.getCreatureId(),
                 creatureBody.getCreatureId(),
                 abilityBody.getAbilityId()
             ));
@@ -119,38 +106,28 @@ public class GameEntityPhysics {
             TerrainTileBody terrainTileBody = (TerrainTileBody) objA;
             if (!terrainTileBody.getIsFlyover()) {
                 AbilityBody abilityBody = (AbilityBody) objB;
-                Vector2 tilePos = Vector2.of(
-                    terrainTileBody.getB2body().getWorldCenter().x,
+                Vector2 tilePos = Vector2.of(terrainTileBody.getB2body().getWorldCenter().x,
                     terrainTileBody.getB2body().getWorldCenter().y
                 );
 
-                Vector2 abilityPos = Vector2.of(
-                    abilityBody.getB2body().getWorldCenter().x,
+                Vector2 abilityPos = Vector2.of(abilityBody.getB2body().getWorldCenter().x,
                     abilityBody.getB2body().getWorldCenter().y
                 );
 
-                physicsEventQueue.add(AbilityHitsTerrainEvent.of(
-                    abilityBody.getAbilityId(),
-                    abilityPos,
-                    tilePos
-                ));
+                physicsEventQueue.add(AbilityHitsTerrainEvent.of(abilityBody.getAbilityId(), abilityPos, tilePos));
             }
 
         } else if (objA instanceof AbilityBody && objB instanceof AbilityBody) {
             AbilityBody abilityBodyA = (AbilityBody) objA;
             AbilityBody abilityBodyB = (AbilityBody) objB;
 
-            physicsEventQueue.add(AbilityHitsAbilityEvent.of(
-                abilityBodyA.getAbilityId(),
-                abilityBodyB.getAbilityId()
-            ));
+            physicsEventQueue.add(AbilityHitsAbilityEvent.of(abilityBodyA.getAbilityId(), abilityBodyB.getAbilityId()));
 
         } else if (objA instanceof CreatureBody && objB instanceof AreaGateBody) {
             CreatureBody creatureBody = (CreatureBody) objA;
             AreaGateBody areaGateBody = (AreaGateBody) objB;
 
-            physicsEventQueue.add(CreatureHitsAreaGateEvent.of(
-                creatureBody.getCreatureId(),
+            physicsEventQueue.add(CreatureHitsAreaGateEvent.of(creatureBody.getCreatureId(),
                 areaGateBody.getAreaGateId()
             ));
 
@@ -158,8 +135,7 @@ public class GameEntityPhysics {
             CreatureBody creatureBody = (CreatureBody) objA;
             LootPileBody lootPileBody = (LootPileBody) objB;
 
-            physicsEventQueue.add(CreatureHitsLootPileEvent.of(
-                creatureBody.getCreatureId(),
+            physicsEventQueue.add(CreatureHitsLootPileEvent.of(creatureBody.getCreatureId(),
                 lootPileBody.getLootPileId()
             ));
 
@@ -170,15 +146,13 @@ public class GameEntityPhysics {
         if (objA instanceof CreatureBody && objB instanceof AreaGateBody) {
             CreatureBody creatureBody = (CreatureBody) objA;
             AreaGateBody areaGateBody = (AreaGateBody) objB;
-            physicsEventQueue.add(CreatureLeavesAreaGateEvent.of(
-                creatureBody.getCreatureId(),
+            physicsEventQueue.add(CreatureLeavesAreaGateEvent.of(creatureBody.getCreatureId(),
                 areaGateBody.getAreaGateId()
             ));
         } else if (objA instanceof CreatureBody && objB instanceof LootPileBody) {
             CreatureBody creatureBody = (CreatureBody) objA;
             LootPileBody lootPileBody = (LootPileBody) objB;
-            physicsEventQueue.add(CreatureLeavesLootPileEvent.of(
-                creatureBody.getCreatureId(),
+            physicsEventQueue.add(CreatureLeavesLootPileEvent.of(creatureBody.getCreatureId(),
                 lootPileBody.getLootPileId()
             ));
         }

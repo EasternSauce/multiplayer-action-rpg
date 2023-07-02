@@ -40,43 +40,21 @@ public class HudRenderer {
                 .getGameState()
                 .getThisClientPlayerId());
 
-            skillMenuRenderer.renderMenu(
-                renderingLayer,
-                game
-            );
+            skillMenuRenderer.renderMenu(renderingLayer, game);
 
-            skillMenuRenderer.renderPicker(
-                player,
-                renderingLayer,
-                game
-            );
+            skillMenuRenderer.renderPicker(player, renderingLayer, game);
 
-            respawnMessageRenderer.render(
-                player,
-                renderingLayer
-            );
+            respawnMessageRenderer.render(player, renderingLayer);
 
-            playerStatBarsRenderer.render(
-                player,
-                renderingLayer
-            );
+            playerStatBarsRenderer.render(player, renderingLayer);
 
         }
 
-        pickUpMenuRenderer.render(
-            renderingLayer,
-            game
-        );
+        pickUpMenuRenderer.render(renderingLayer, game);
 
-        potionMenuRenderer.renderMenu(
-            renderingLayer,
-            game
-        );
+        potionMenuRenderer.renderMenu(renderingLayer, game);
 
-        inventoryWindowRenderer.render(
-            renderingLayer,
-            game
-        );
+        inventoryWindowRenderer.render(renderingLayer, game);
 
         renderingLayer.end();
     }

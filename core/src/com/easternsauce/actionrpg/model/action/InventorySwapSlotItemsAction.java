@@ -33,10 +33,8 @@ public class InventorySwapSlotItemsAction extends GameStateAction {
         PlayerConfig playerConfig = game.getGameState().getPlayerConfig(playerId);
 
         Item itemFrom = player.getParams().getInventoryItems().get(fromSlotIndex);
-        @SuppressWarnings("UnnecessaryLocalVariable") Item itemTo = player
-            .getParams()
-            .getInventoryItems()
-            .get(toSlotIndex);
+        @SuppressWarnings("UnnecessaryLocalVariable") Item itemTo = player.getParams().getInventoryItems().get(
+            toSlotIndex);
 
         @SuppressWarnings("UnnecessaryLocalVariable") Item temp = itemTo;
 
@@ -51,18 +49,12 @@ public class InventorySwapSlotItemsAction extends GameStateAction {
             temp.setQuantity(temp.getQuantity() + itemFrom.getQuantity());
         } else {
             if (itemFrom != null) {
-                player.getParams().getInventoryItems().put(
-                    toSlotIndex,
-                    itemFrom
-                );
+                player.getParams().getInventoryItems().put(toSlotIndex, itemFrom);
             } else {
                 player.getParams().getInventoryItems().remove(toSlotIndex);
             }
             if (temp != null) {
-                player.getParams().getInventoryItems().put(
-                    fromSlotIndex,
-                    temp
-                );
+                player.getParams().getInventoryItems().put(fromSlotIndex, temp);
             } else {
                 player.getParams().getInventoryItems().remove(fromSlotIndex);
             }

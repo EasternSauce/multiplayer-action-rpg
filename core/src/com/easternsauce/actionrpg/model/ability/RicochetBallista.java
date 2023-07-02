@@ -47,8 +47,7 @@ public class RicochetBallista extends Ability {
             .multiplyBy(1.5f)
             .withRotatedDegAngle(-90));
 
-        game.getGameState().accessAbilities().chainAnotherAbility(
-            this,
+        game.getGameState().accessAbilities().chainAnotherAbility(this,
             AbilityType.RICOCHET_BULLET,
             getParams().getPos(),
             params.getDirVector(),
@@ -56,8 +55,7 @@ public class RicochetBallista extends Ability {
             null,
             game
         );
-        game.getGameState().accessAbilities().chainAnotherAbility(
-            this,
+        game.getGameState().accessAbilities().chainAnotherAbility(this,
             AbilityType.RICOCHET_BULLET,
             leftSidePos,
             params.getDirVector(),
@@ -65,8 +63,7 @@ public class RicochetBallista extends Ability {
             null,
             game
         );
-        game.getGameState().accessAbilities().chainAnotherAbility(
-            this,
+        game.getGameState().accessAbilities().chainAnotherAbility(this,
             AbilityType.RICOCHET_BULLET,
             rightSidePos,
             params.getDirVector(),

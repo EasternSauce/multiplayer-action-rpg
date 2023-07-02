@@ -35,8 +35,7 @@ public class LightningSpark extends Ability {
             .setAttackWithoutMoving(true)
             .setIsSkipCreatingBody(true)
             .setDelayedActionTime(0.001f)
-            .setPos(LightningSpark.calculatePos(
-                creature.getParams().getPos().add(abilityParams.getDirVector()),
+            .setPos(LightningSpark.calculatePos(creature.getParams().getPos().add(abilityParams.getDirVector()),
                 creature.getParams().getPos()
             ));
 
@@ -77,33 +76,23 @@ public class LightningSpark extends Ability {
         Creature targetCreature = game.getGameState().accessCreatures().getCreature(game
             .getGameState()
             .accessCreatures()
-            .getAliveCreatureIdClosestTo(
-                getParams().getPos(),
-                13f,
-                excluded
-            ));
+            .getAliveCreatureIdClosestTo(getParams().getPos(), 13f, excluded));
 
-        if (targetCreature != null && game.isLineBetweenPointsUnobstructedByTerrain(
-            getParams().getAreaId(),
+        if (targetCreature != null && game.isLineBetweenPointsUnobstructedByTerrain(getParams().getAreaId(),
             getParams().getPos(),
             targetCreature.getParams().getPos()
         )) {
 
-            game.getGameState().accessAbilities().onAbilityHitsCreature(
-                getParams().getCreatureId(),
+            game.getGameState().accessAbilities().onAbilityHitsCreature(getParams().getCreatureId(),
                 targetCreature.getId(),
                 getParams().getId(),
                 targetCreature.getParams().getPos(),
                 game
             );
 
-            getParams().getCreaturesAlreadyHit().put(
-                targetCreature.getId(),
-                getParams().getStateTimer().getTime()
-            );
+            getParams().getCreaturesAlreadyHit().put(targetCreature.getId(), getParams().getStateTimer().getTime());
 
-            game.getGameState().accessAbilities().chainAnotherAbility(
-                this,
+            game.getGameState().accessAbilities().chainAnotherAbility(this,
                 AbilityType.LIGHTNING_CHAIN,
                 targetCreature.getParams().getPos(),
                 // this pos is later changed, TODO: move it to other param?
@@ -113,8 +102,7 @@ public class LightningSpark extends Ability {
                 game
             );
 
-            game.getGameState().accessAbilities().chainAnotherAbility(
-                this,
+            game.getGameState().accessAbilities().chainAnotherAbility(this,
                 AbilityType.LIGHTNING_NODE,
                 targetCreature.getParams().getPos(),
                 params.getDirVector(),
@@ -133,18 +121,9 @@ public class LightningSpark extends Ability {
     @Override
     public Map<Integer, Float> levelScalings() {
         ConcurrentSkipListMap<Integer, Float> scalings = new ConcurrentSkipListMap<>();
-        scalings.put(
-            1,
-            1.0f
-        );
-        scalings.put(
-            2,
-            1.1f
-        );
-        scalings.put(
-            3,
-            1.2f
-        );
+        scalings.put(1, 1.0f);
+        scalings.put(2, 1.1f);
+        scalings.put(3, 1.2f);
         return scalings;
     }
 }

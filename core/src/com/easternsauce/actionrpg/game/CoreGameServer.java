@@ -53,18 +53,12 @@ public class CoreGameServer extends CoreGame {
 
     @Override
     public void establishConnection() {
-        setEndPoint(new Server(
-            6400000,
-            6400000
-        ));
+        setEndPoint(new Server(6400000, 6400000));
         getEndPoint().getKryo().setRegistrationRequired(false);
         getEndPoint().start();
 
         try {
-            getEndPoint().bind(
-                20445,
-                20445
-            );
+            getEndPoint().bind(20445, 20445);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -125,16 +119,13 @@ public class CoreGameServer extends CoreGame {
             }
 
             Map<CreatureId, Creature> creatures = getGameState().accessCreatures().getCreatures();
-            if (getClientPlayers().containsKey(connection.getID()) &&
-                creatures.containsKey(getClientPlayers().get(connection.getID()))) {
+            if (getClientPlayers().containsKey(connection.getID()) && creatures.containsKey(getClientPlayers().get(
+                connection.getID()))) {
                 Creature player = creatures.get(getClientPlayers().get(connection.getID()));
 
                 List<GameStateAction> personalizedTickActions = onTickActions
                     .stream()
-                    .filter(action -> isActionRelevantForPlayer(
-                        player,
-                        action
-                    ))
+                    .filter(action -> isActionRelevantForPlayer(player, action))
                     .collect(Collectors.toList());
                 connection.sendTCP(ActionsHolder.of(personalizedTickActions));
             }
@@ -154,10 +145,7 @@ public class CoreGameServer extends CoreGame {
 
     @Override
     public void initState() {
-        initialStateLoader.setupInitialState(
-            this,
-            endPoint
-        );
+        initialStateLoader.setupInitialState(this, endPoint);
     }
 
     @Override
@@ -196,28 +184,9 @@ public class CoreGameServer extends CoreGame {
         float x = Constants.WINDOW_WIDTH / 2f - 250;
         float y = Constants.WINDOW_HEIGHT / 2f + Constants.WINDOW_HEIGHT * 0.45f;
 
-        renderingLayer.getShapeDrawer().filledRectangle(
-            x - 50f,
-            y - 90f,
-            650f,
-            110f,
-            new Color(
-                0f,
-                0f,
-                0f,
-                0.6f
-            )
-        );
+        renderingLayer.getShapeDrawer().filledRectangle(x - 50f, y - 90f, 650f, 110f, new Color(0f, 0f, 0f, 0.6f));
 
-        Assets.renderVeryLargeFont(
-            renderingLayer,
-            "Server is running...",
-            Vector2.of(
-                x,
-                y
-            ),
-            Color.WHITE
-        );
+        Assets.renderVeryLargeFont(renderingLayer, "Server is running...", Vector2.of(x, y), Color.WHITE);
     }
 
     @Override

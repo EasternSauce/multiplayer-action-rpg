@@ -52,13 +52,8 @@ public class CreatureBody {
                 if (creature.getParams().getMovementParams().getIsMoving()) {
                     Vector2 normalizedMovingVector;
 
-                    if (creature.isEffectActive(
-                        CreatureEffect.SLOW,
-                        game
-                    ) || creature.isEffectActive(
-                        CreatureEffect.SELF_SLOW,
-                        game
-                    )) {
+                    if (creature.isEffectActive(CreatureEffect.SLOW, game) ||
+                        creature.isEffectActive(CreatureEffect.SELF_SLOW, game)) {
                         normalizedMovingVector = creature
                             .getParams()
                             .getMovementParams()
@@ -80,15 +75,9 @@ public class CreatureBody {
                     float vectorX = normalizedMovingVector.getX() * v;
                     float vectorY = normalizedMovingVector.getY() * v;
 
-                    setVelocity(Vector2.of(
-                        vectorX,
-                        vectorY
-                    ));
+                    setVelocity(Vector2.of(vectorX, vectorY));
                 } else {
-                    setVelocity(Vector2.of(
-                        0,
-                        0
-                    ));
+                    setVelocity(Vector2.of(0, 0));
                 }
             } else {
                 Vector2 normalizedDashingVector = creature
@@ -102,10 +91,7 @@ public class CreatureBody {
                 float vectorY = normalizedDashingVector.getY() *
                     creature.getParams().getMovementParams().getDashingVelocity();
 
-                setVelocity(Vector2.of(
-                    vectorX,
-                    vectorY
-                ));
+                setVelocity(Vector2.of(vectorX, vectorY));
             }
         }
     }
@@ -115,17 +101,11 @@ public class CreatureBody {
     }
 
     public void setVelocity(Vector2 velocity) {
-        b2body.setLinearVelocity(new com.badlogic.gdx.math.Vector2(
-            velocity.getX(),
-            velocity.getY()
-        ));
+        b2body.setLinearVelocity(new com.badlogic.gdx.math.Vector2(velocity.getX(), velocity.getY()));
     }
 
     public Vector2 getBodyPos() {
-        return Vector2.of(
-            b2body.getWorldCenter().x,
-            b2body.getWorldCenter().y
-        );
+        return Vector2.of(b2body.getWorldCenter().x, b2body.getWorldCenter().y);
     }
 
     public void trySetTransform(Vector2 vector) {
@@ -136,11 +116,7 @@ public class CreatureBody {
     }
 
     public void forceSetTransform(Vector2 vector) {
-        b2body.setTransform(
-            vector.getX(),
-            vector.getY(),
-            b2body.getAngle()
-        );
+        b2body.setTransform(vector.getX(), vector.getY(), b2body.getAngle());
     }
 
     public void setActive(boolean isActive) {
@@ -156,10 +132,7 @@ public class CreatureBody {
 
     public void moveBodyToNewArea(AreaId areaId, CoreGame game) {
         onRemove();
-        init(
-            areaId,
-            game
-        );
+        init(areaId, game);
     }
 
     public void onRemove() {
@@ -173,11 +146,7 @@ public class CreatureBody {
 
         this.areaId = areaId;
 
-        this.b2body = B2BodyFactory.createCreatureB2Body(
-            world,
-            this,
-            creature
-        );
+        this.b2body = B2BodyFactory.createCreatureB2Body(world, this, creature);
 
         if (!creature.isAlive()) {
             this.b2body.getFixtureList().get(0).setSensor(true);

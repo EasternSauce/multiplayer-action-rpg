@@ -27,10 +27,7 @@ public class InitialStateLoader {
         AreaId areaId = AreaId.of("area1");
 
         Map<SkillType, Integer> grantedSkills = new ConcurrentSkipListMap<>();
-        grantedSkills.put(
-            SkillType.DASH,
-            1
-        );
+        grantedSkills.put(SkillType.DASH, 1);
         Item leatherArmor = Item
             .of()
             .setTemplate(ItemTemplate.templates.get("leatherArmor"))
@@ -38,16 +35,9 @@ public class InitialStateLoader {
             .setGrantedSkills(grantedSkills);
         Item crossbow = Item.of().setTemplate(ItemTemplate.templates.get("crossbow")).setQualityModifier(0.8f);
 
-        game.getGameState().scheduleServerSideAction(LootPileSpawnAction.of(
-            AreaId.of("area3"),
-            Vector2.of(
-                12,
-                12
-            ),
-            new ConcurrentSkipListSet<>(Arrays.asList(
-                leatherArmor,
-                crossbow
-            ))
+        game.getGameState().scheduleServerSideAction(LootPileSpawnAction.of(AreaId.of("area3"),
+            Vector2.of(12, 12),
+            new ConcurrentSkipListSet<>(Arrays.asList(leatherArmor, crossbow))
         ));
 
         AreaGateId area1ToArea3 = AreaGateId.of("area1ToArea3_" + (int) (Math.random() * 10000000));
@@ -57,94 +47,32 @@ public class InitialStateLoader {
 
         game.getGameState().getAreaGates().clear();
 
-        game.getGameState().getAreaGates().put(
-            area1ToArea3,
-            AreaGate.of(
-                area1ToArea3,
-                1.5f,
-                1.5f,
-                Vector2.of(
-                    199.5f,
-                    15f
-                ),
-                AreaId.of("area1"),
-                area3ToArea1
-            )
+        game.getGameState().getAreaGates().put(area1ToArea3,
+            AreaGate.of(area1ToArea3, 1.5f, 1.5f, Vector2.of(199.5f, 15f), AreaId.of("area1"), area3ToArea1)
         );
-        game.getGameState().getAreaGates().put(
-            area3ToArea1,
-            AreaGate.of(
-                area3ToArea1,
-                1.5f,
-                1.5f,
-                Vector2.of(
-                    17f,
-                    2.5f
-                ),
-                AreaId.of("area3"),
-                area1ToArea3
-            )
+        game.getGameState().getAreaGates().put(area3ToArea1,
+            AreaGate.of(area3ToArea1, 1.5f, 1.5f, Vector2.of(17f, 2.5f), AreaId.of("area3"), area1ToArea3)
         );
-        game.getGameState().getAreaGates().put(
-            area1ToArea2,
-            AreaGate.of(
-                area1ToArea2,
-                1.5f,
-                1.5f,
-                Vector2.of(
-                    2f,
-                    63f
-                ),
-                AreaId.of("area1"),
-                area2ToArea1
-            )
+        game.getGameState().getAreaGates().put(area1ToArea2,
+            AreaGate.of(area1ToArea2, 1.5f, 1.5f, Vector2.of(2f, 63f), AreaId.of("area1"), area2ToArea1)
         );
-        game.getGameState().getAreaGates().put(
-            area2ToArea1,
-            AreaGate.of(
-                area2ToArea1,
-                1.5f,
-                1.5f,
-                Vector2.of(
-                    58f,
-                    9f
-                ),
-                AreaId.of("area2"),
-                area1ToArea2
-            )
+        game.getGameState().getAreaGates().put(area2ToArea1,
+            AreaGate.of(area2ToArea1, 1.5f, 1.5f, Vector2.of(58f, 9f), AreaId.of("area2"), area1ToArea2)
         );
 
         List<EnemySpawn> enemySpawns1 = EnemySpawnUtils.area1EnemySpawns();
 
         enemySpawns1.forEach(enemySpawn -> {
             CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 10000000));
-            game.getEntityManager().spawnEnemy(
-                enemyId,
-                areaId,
-                enemySpawn,
-                game
-            );
-            server.sendToAllTCP(EnemySpawnCommand.of(
-                enemyId,
-                areaId,
-                enemySpawn
-            )); // TODO: use actions instead
+            game.getEntityManager().spawnEnemy(enemyId, areaId, enemySpawn, game);
+            server.sendToAllTCP(EnemySpawnCommand.of(enemyId, areaId, enemySpawn)); // TODO: use actions instead
         });
 
         List<EnemySpawn> enemySpawns3 = EnemySpawnUtils.area3EnemySpawns();
         enemySpawns3.forEach(enemySpawn -> {
             CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 10000000));
-            game.getEntityManager().spawnEnemy(
-                enemyId,
-                AreaId.of("area3"),
-                enemySpawn,
-                game
-            );
-            server.sendToAllTCP(EnemySpawnCommand.of(
-                enemyId,
-                AreaId.of("area3"),
-                enemySpawn
-            ));
+            game.getEntityManager().spawnEnemy(enemyId, AreaId.of("area3"), enemySpawn, game);
+            server.sendToAllTCP(EnemySpawnCommand.of(enemyId, AreaId.of("area3"), enemySpawn));
         });
     }
 }

@@ -42,10 +42,7 @@ public class Skill {
         Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
         if (creature != null &&
-            creature.canPerformSkill(
-                this,
-                game
-            ) &&
+            creature.canPerformSkill(this, game) &&
             performTimer.getTime() > cooldown &&
             (!skillType.getIsDamaging() ||
                 creature.getParams().getGeneralSkillPerformCooldownTimer().getTime() >
@@ -65,11 +62,7 @@ public class Skill {
                 .setSkillStartPos(startingPos)
                 .setSkillType(skillType);
 
-            game.getGameState().accessAbilities().spawnAbility(
-                startingAbilityType,
-                abilityParams,
-                game
-            );
+            game.getGameState().accessAbilities().spawnAbility(startingAbilityType, abilityParams, game);
 
             creature.onPerformSkill(this);
             performTimer.restart();

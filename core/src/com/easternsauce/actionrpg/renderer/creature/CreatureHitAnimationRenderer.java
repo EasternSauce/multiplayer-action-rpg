@@ -18,8 +18,7 @@ public class CreatureHitAnimationRenderer {
 
     {
         int frameCount = 10;
-        animationRenderer = AnimationRenderer.of(AnimationSpec.of(
-            256,
+        animationRenderer = AnimationRenderer.of(AnimationSpec.of(256,
             256,
             1.8f,
             1.8f,
@@ -42,13 +41,6 @@ public class CreatureHitAnimationRenderer {
         float posY = creature.getParams().getPos().getY() - animationRenderer.getAnimationSpec().getRealHeight() / 2f +
             vectorTowardsContactPoint.getY();
 
-        animationRenderer.render(
-            Vector2.of(
-                posX,
-                posY
-            ),
-            timeSinceStarted,
-            renderingLayer
-        );
+        animationRenderer.render(Vector2.of(posX, posY), timeSinceStarted, renderingLayer);
     }
 }

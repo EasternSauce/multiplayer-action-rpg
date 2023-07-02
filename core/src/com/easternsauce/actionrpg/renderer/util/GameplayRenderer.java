@@ -19,51 +19,17 @@ public class GameplayRenderer {
         RenderingLayer worldElementsRenderingLayer = renderer.getWorldElementsRenderingLayer();
         RenderingLayer worldTextRenderingLayer = renderer.getWorldTextRenderingLayer();
 
-        renderAreaLayers(
-            renderer,
-            Arrays.asList(
-                0,
-                1
-            ),
-            game
-        );
+        renderAreaLayers(renderer, Arrays.asList(0, 1), game);
 
-        renderWorldElements(
-            renderer,
-            worldElementsRenderingLayer,
-            game
-        );
-        renderWorldText(
-            renderer,
-            worldTextRenderingLayer,
-            game
-        );
+        renderWorldElements(renderer, worldElementsRenderingLayer, game);
+        renderWorldText(renderer, worldTextRenderingLayer, game);
 
-        renderAreaLayers(
-            renderer,
-            Arrays.asList(
-                2,
-                3
-            ),
-            game
-        );
+        renderAreaLayers(renderer, Arrays.asList(2, 3), game);
 
-        renderAbilities(
-            renderer,
-            worldElementsRenderingLayer,
-            game
-        );
+        renderAbilities(renderer, worldElementsRenderingLayer, game);
 
-        renderCreatureHitAnimations(
-            renderer,
-            worldElementsRenderingLayer,
-            game
-        );
-        renderDamageNumbers(
-            renderer,
-            worldTextRenderingLayer,
-            game
-        );
+        renderCreatureHitAnimations(renderer, worldElementsRenderingLayer, game);
+        renderDamageNumbers(renderer, worldTextRenderingLayer, game);
 
         game.renderB2BodyDebug();
     }
@@ -80,22 +46,10 @@ public class GameplayRenderer {
                                      CoreGame game) {
         worldElementsRenderingLayer.getSpriteBatch().begin();
 
-        renderer.renderAreaGates(
-            worldElementsRenderingLayer,
-            game
-        );
-        renderer.renderDeadCreatures(
-            worldElementsRenderingLayer,
-            game
-        );
-        renderer.renderLootPiles(
-            worldElementsRenderingLayer,
-            game
-        );
-        renderer.renderAliveCreatures(
-            worldElementsRenderingLayer,
-            game
-        );
+        renderer.renderAreaGates(worldElementsRenderingLayer, game);
+        renderer.renderDeadCreatures(worldElementsRenderingLayer, game);
+        renderer.renderLootPiles(worldElementsRenderingLayer, game);
+        renderer.renderAliveCreatures(worldElementsRenderingLayer, game);
 
         worldElementsRenderingLayer.end();
     }
@@ -103,10 +57,7 @@ public class GameplayRenderer {
     private void renderWorldText(GameEntityRenderer renderer, RenderingLayer worldTextRenderingLayer, CoreGame game) {
         worldTextRenderingLayer.begin();
 
-        renderer.renderPlayerNames(
-            worldTextRenderingLayer,
-            game
-        );
+        renderer.renderPlayerNames(worldTextRenderingLayer, game);
 
         worldTextRenderingLayer.end();
     }
@@ -116,10 +67,7 @@ public class GameplayRenderer {
                                  CoreGame game) {
         worldElementsRenderingLayer.begin();
 
-        renderer.renderAbilities(
-            worldElementsRenderingLayer,
-            game
-        );
+        renderer.renderAbilities(worldElementsRenderingLayer, game);
 
         worldElementsRenderingLayer.end();
     }
@@ -134,8 +82,7 @@ public class GameplayRenderer {
             .getValue()
             .equals(game.getGameState().getCurrentAreaId().getValue())).forEach(creatureHitAnimation -> renderer
             .getCreatureHitAnimationRenderer()
-            .render(
-                creatureHitAnimation.getCreatureId(),
+            .render(creatureHitAnimation.getCreatureId(),
                 game.getGameState().getTime() - creatureHitAnimation.getHitTime(),
                 creatureHitAnimation.getVectorTowardsContactPoint(),
                 worldElementsRenderingLayer,
@@ -157,26 +104,15 @@ public class GameplayRenderer {
             float timeElapsed = game.getGameState().getTime() - damageNumber.getDamageTime();
 
             float posX = damageNumber.getPos().getX() - 8f / Constants.PPM;
-            float posY = damageNumber.getPos().getY() + 12f * (float) Math.pow(
-                timeElapsed / Constants.DAMAGE_NUMBER_SHOW_DURATION,
-                2f
-            ) + 12f / Constants.PPM;
+            float posY = damageNumber.getPos().getY() + 12f * (float) Math.pow(timeElapsed /
+                Constants.DAMAGE_NUMBER_SHOW_DURATION, 2f) + 12f / Constants.PPM;
 
-            Vector2 rescaledPos = Vector2.of(
-                posX * Constants.PPM,
-                posY * Constants.PPM
-            );
+            Vector2 rescaledPos = Vector2.of(posX * Constants.PPM, posY * Constants.PPM);
 
-            Assets.renderLargeFont(
-                worldTextRenderingLayer,
+            Assets.renderLargeFont(worldTextRenderingLayer,
                 Integer.toString(damageNumber.getDamageValue().intValue()),
                 rescaledPos,
-                new Color(
-                    1f,
-                    0f,
-                    0f,
-                    1f - timeElapsed / Constants.DAMAGE_NUMBER_SHOW_DURATION
-                )
+                new Color(1f, 0f, 0f, 1f - timeElapsed / Constants.DAMAGE_NUMBER_SHOW_DURATION)
             );
         });
 

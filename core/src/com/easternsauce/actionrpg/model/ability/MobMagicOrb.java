@@ -56,24 +56,14 @@ public class MobMagicOrb extends Projectile {
 
         Creature thisCreature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
 
-        for (Creature creature : game
-            .getGameState()
-            .accessCreatures()
-            .getCreatures()
-            .values()
-            .stream()
-            .filter(targetCreature -> Objects.equals(
-                targetCreature.getParams().getAreaId().getValue(),
+        for (Creature creature : game.getGameState().accessCreatures().getCreatures().values().stream().filter(
+            targetCreature -> Objects.equals(targetCreature.getParams().getAreaId().getValue(),
                 getParams().getAreaId().getValue()
             ) &&
                 !targetCreature.getId().equals(getParams().getCreatureId()) &&
                 targetCreature.isAlive() &&
-                isTargetingAllowed(
-                    thisCreature,
-                    targetCreature
-                ) &&
-                targetCreature.getParams().getPos().distance(getParams().getPos()) < 20f)
-            .collect(Collectors.toSet())) {
+                isTargetingAllowed(thisCreature, targetCreature) &&
+                targetCreature.getParams().getPos().distance(getParams().getPos()) < 20f).collect(Collectors.toSet())) {
             if (creature.getParams().getPos().distance(getParams().getPos()) < minimumDistance) {
                 minimumDistanceCreature = creature;
                 minimumDistance = creature.getParams().getPos().distance(getParams().getPos());
@@ -85,10 +75,7 @@ public class MobMagicOrb extends Projectile {
             float targetAngleDeg = vectorTowards.angleDeg();
             float currentAngleDeg = getParams().getDirVector().angleDeg();
 
-            float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(
-                currentAngleDeg,
-                targetAngleDeg
-            );
+            float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(currentAngleDeg, targetAngleDeg);
 
             float incrementFactor = 65f;
             float baseIncrement = incrementFactor;

@@ -65,16 +65,12 @@ public class PlayfulGhost extends Projectile {
             .getCreatures()
             .values()
             .stream()
-            .filter(targetCreature -> Objects.equals(
-                targetCreature.getParams().getAreaId().getValue(),
+            .filter(targetCreature -> Objects.equals(targetCreature.getParams().getAreaId().getValue(),
                 getParams().getAreaId().getValue()
             ) &&
                 !targetCreature.getId().equals(getParams().getCreatureId()) &&
                 targetCreature.isAlive() &&
-                isTargetingAllowed(
-                    thisCreature,
-                    targetCreature
-                ) &&
+                isTargetingAllowed(thisCreature, targetCreature) &&
                 targetCreature.getParams().getPos().distance(getParams().getPos()) < 10f &&
                 !getParams().getCreaturesAlreadyHit().containsKey(targetCreature.getId()))
             .collect(Collectors.toSet())) {
@@ -90,10 +86,7 @@ public class PlayfulGhost extends Projectile {
             float targetAngleDeg = vectorTowards.angleDeg();
             float currentAngleDeg = getParams().getDirVector().angleDeg();
 
-            float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(
-                currentAngleDeg,
-                targetAngleDeg
-            );
+            float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(currentAngleDeg, targetAngleDeg);
 
             float incrementFactor = 50f;
             float increment = incrementFactor * delta;

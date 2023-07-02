@@ -91,11 +91,7 @@ public class AbilityAccessor {
                 .setSkillType(chainFromAbility.getParams().getSkillType())
                 .setSkillStartPos(chainFromPos);
 
-            spawnAbility(
-                abilityType,
-                abilityParams,
-                game
-            );
+            spawnAbility(abilityType, abilityParams, game);
         }
     }
 
@@ -103,25 +99,14 @@ public class AbilityAccessor {
         Creature creature = gameState.accessCreatures().getCreature(abilityParams.getCreatureId());
 
         if (creature != null) {
-            Ability ability = AbilityFactory.produceAbility(
-                abilityType,
-                abilityParams,
-                game
-            );
+            Ability ability = AbilityFactory.produceAbility(abilityType, abilityParams, game);
 
-            initializeAbility(
-                creature,
-                ability,
-                game
-            );
+            initializeAbility(creature, ability, game);
         }
     }
 
     private void initializeAbility(Creature creature, Ability ability, CoreGame game) {
-        game.getGameState().accessAbilities().getAbilities().put(
-            ability.getParams().getId(),
-            ability
-        );
+        game.getGameState().accessAbilities().getAbilities().put(ability.getParams().getId(), ability);
 
         game.getEventProcessor().getAbilityModelsToBeCreated().add(ability.getParams().getId());
 
@@ -137,22 +122,11 @@ public class AbilityAccessor {
                                       CoreGame game) {
         Ability ability = game.getGameState().accessAbilities().getAbility(abilityId);
 
-        ability.onCreatureHit(
-            targetId,
-            game
-        );
+        ability.onCreatureHit(targetId, game);
 
-        ability.getParams().getCreaturesAlreadyHit().put(
-            targetId,
-            ability.getParams().getStateTimer().getTime()
-        );
+        ability.getParams().getCreaturesAlreadyHit().put(targetId, ability.getParams().getStateTimer().getTime());
 
-        CreatureHitByAbilityAction action = CreatureHitByAbilityAction.of(
-            attackerId,
-            targetId,
-            ability,
-            contactPoint
-        );
+        CreatureHitByAbilityAction action = CreatureHitByAbilityAction.of(attackerId, targetId, ability, contactPoint);
         gameState.scheduleServerSideAction(action);
     }
 

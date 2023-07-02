@@ -24,14 +24,8 @@ public class AbilityParams implements EntityParams {
     @NonNull Float height;
     @NonNull CreatureId creatureId;
     @NonNull SimpleTimer stateTimer = SimpleTimer.getExpiredTimer();
-    @NonNull Vector2 dirVector = Vector2.of(
-        0f,
-        0f
-    );
-    @NonNull Vector2 vectorTowardsTarget = Vector2.of(
-        0f,
-        0f
-    );
+    @NonNull Vector2 dirVector = Vector2.of(0f, 0f);
+    @NonNull Vector2 vectorTowardsTarget = Vector2.of(0f, 0f);
     @NonNull String textureName;
 
     @NonNull Float rotationAngle = 0f;
@@ -43,10 +37,7 @@ public class AbilityParams implements EntityParams {
 
     @NonNull Map<CreatureId, Float> creaturesAlreadyHit = new ConcurrentSkipListMap<>();
 
-    @NonNull Vector2 velocity = Vector2.of(
-        0f,
-        0f
-    );
+    @NonNull Vector2 velocity = Vector2.of(0f, 0f);
     @NonNull Float speed = 0f;
 
     @NonNull Float baseDamage;

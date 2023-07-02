@@ -89,64 +89,52 @@ public class InventoryWindowController {
         }
     }
 
-    private GameStateAction getEmptyAction() {
-        return null;
+    private boolean isMovingItemFromInventoryToInventory(InventoryWindowState inventoryWindowState) {
+        return inventoryWindowState.getInventoryItemBeingMoved() != null &&
+            inventoryWindowState.getInventorySlotClicked() != null;
     }
     //
     //    private boolean isClickedNonEmptyPotionMenuSlot(Creature player, InventoryWindowState inventoryWindowState) {
     //        return player.getParams().getPotionMenuItems().containsKey(inventoryWindowState.getPotionMenuSlotClicked());
     //    }
 
-    private boolean isClickedNonEmptyInventorySlot(Creature player, InventoryWindowState inventoryWindowState) {
-        return player.getParams().getInventoryItems().containsKey(inventoryWindowState.getInventorySlotClicked());
-    }
-
-    private boolean isClickedNonEmptyEquipmentSlot(Creature player, InventoryWindowState inventoryWindowState) {
-        return player.getParams().getEquipmentItems().containsKey(inventoryWindowState.getEquipmentSlotClicked());
-    }
-
-    private EquipmentItemPutOnCursorAction getEquipmentItemPutOnCursorAction(CoreGame game,
-                                                                             InventoryWindowState inventoryWindowState) {
-        return EquipmentItemPutOnCursorAction.of(game.getGameState().getThisClientPlayerId(),
-            inventoryWindowState.getEquipmentSlotClicked()
-        );
-    }
-
-    private boolean isPickingUpItemInsideEquipment(InventoryWindowState inventoryWindowState) {
-        return inventoryWindowState.getEquipmentSlotClicked() != null;
-    }
-
-    private InventoryItemPutOnCursorAction getInventoryItemPutOnCursorAction(CoreGame game,
-                                                                             InventoryWindowState inventoryWindowState) {
-        return InventoryItemPutOnCursorAction.of(game.getGameState().getThisClientPlayerId(),
+    private InventorySwapSlotItemsAction getMoveItemFromInventoryToInventoryAction(CoreGame game,
+                                                                                   InventoryWindowState inventoryWindowState) {
+        return InventorySwapSlotItemsAction.of(game.getGameState().getThisClientPlayerId(),
+            inventoryWindowState.getInventoryItemBeingMoved(),
             inventoryWindowState.getInventorySlotClicked()
         );
     }
 
-    private boolean isPickingUpItemInsideInventory(InventoryWindowState inventoryWindowState) {
-        return inventoryWindowState.getInventorySlotClicked() != null;
-    }
-
-    private InventoryPutOnCursorCancelAction getMoveCancelAction(CoreGame game) {
-        return InventoryPutOnCursorCancelAction.of(game.getGameState().getThisClientPlayerId());
-    }
-
-    private boolean isMovingItemFromEquipmentToEquipment(InventoryWindowState inventoryWindowState) {
-        return inventoryWindowState.getEquipmentItemBeingMoved() != null &&
+    private boolean isMovingItemFromInventoryToEquipment(InventoryWindowState inventoryWindowState) {
+        return inventoryWindowState.getInventoryItemBeingMoved() != null &&
             inventoryWindowState.getEquipmentSlotClicked() != null;
     }
 
-    private InventoryAndPotionMenuSwapSlotItemsAction getMoveItemFromPotionMenuToInventoryAction(CoreGame game,
-                                                                                                 InventoryWindowState inventoryWindowState) {
-        return InventoryAndPotionMenuSwapSlotItemsAction.of(game.getGameState().getThisClientPlayerId(),
-            inventoryWindowState.getInventorySlotClicked(),
-            inventoryWindowState.getPotionMenuItemBeingMoved()
+    private InventoryAndEquipmentSwapSlotItemsAction getMoveItemFromInventoryToEquipmentAction(CoreGame game,
+                                                                                               InventoryWindowState inventoryWindowState) {
+        return InventoryAndEquipmentSwapSlotItemsAction.of(game.getGameState().getThisClientPlayerId(),
+            inventoryWindowState.getInventoryItemBeingMoved(),
+            inventoryWindowState.getEquipmentSlotClicked()
         );
     }
 
-    private boolean isMovingItemFromPotionMenuToInventory(InventoryWindowState inventoryWindowState) {
-        return inventoryWindowState.getPotionMenuItemBeingMoved() != null &&
+    private boolean isMovingItemFromEquipmentToInventory(InventoryWindowState inventoryWindowState) {
+        return inventoryWindowState.getEquipmentItemBeingMoved() != null &&
             inventoryWindowState.getInventorySlotClicked() != null;
+    }
+
+    private InventoryAndEquipmentSwapSlotItemsAction getMoveItemFromEquipmentToInventoryAction(CoreGame game,
+                                                                                               InventoryWindowState inventoryWindowState) {
+        return InventoryAndEquipmentSwapSlotItemsAction.of(game.getGameState().getThisClientPlayerId(),
+            inventoryWindowState.getInventorySlotClicked(),
+            inventoryWindowState.getEquipmentItemBeingMoved()
+        );
+    }
+
+    private boolean isMovingItemFromInventoryToPotionMenu(InventoryWindowState inventoryWindowState) {
+        return inventoryWindowState.getInventoryItemBeingMoved() != null &&
+            inventoryWindowState.getPotionMenuSlotClicked() != null;
     }
 
     private InventoryAndPotionMenuSwapSlotItemsAction getMoveItemFromInventoryToPotionMenuAction(CoreGame game,
@@ -158,48 +146,60 @@ public class InventoryWindowController {
         );
     }
 
-    private boolean isMovingItemFromInventoryToPotionMenu(InventoryWindowState inventoryWindowState) {
-        return inventoryWindowState.getInventoryItemBeingMoved() != null &&
-            inventoryWindowState.getPotionMenuSlotClicked() != null;
-    }
-
-    private InventoryAndEquipmentSwapSlotItemsAction getMoveItemFromEquipmentToInventoryAction(CoreGame game,
-                                                                                               InventoryWindowState inventoryWindowState) {
-        return InventoryAndEquipmentSwapSlotItemsAction.of(game.getGameState().getThisClientPlayerId(),
-            inventoryWindowState.getInventorySlotClicked(),
-            inventoryWindowState.getEquipmentItemBeingMoved()
-        );
-    }
-
-    private boolean isMovingItemFromEquipmentToInventory(InventoryWindowState inventoryWindowState) {
-        return inventoryWindowState.getEquipmentItemBeingMoved() != null &&
+    private boolean isMovingItemFromPotionMenuToInventory(InventoryWindowState inventoryWindowState) {
+        return inventoryWindowState.getPotionMenuItemBeingMoved() != null &&
             inventoryWindowState.getInventorySlotClicked() != null;
     }
 
-    private InventoryAndEquipmentSwapSlotItemsAction getMoveItemFromInventoryToEquipmentAction(CoreGame game,
-                                                                                               InventoryWindowState inventoryWindowState) {
-        return InventoryAndEquipmentSwapSlotItemsAction.of(game.getGameState().getThisClientPlayerId(),
-            inventoryWindowState.getInventoryItemBeingMoved(),
-            inventoryWindowState.getEquipmentSlotClicked()
+    private InventoryAndPotionMenuSwapSlotItemsAction getMoveItemFromPotionMenuToInventoryAction(CoreGame game,
+                                                                                                 InventoryWindowState inventoryWindowState) {
+        return InventoryAndPotionMenuSwapSlotItemsAction.of(game.getGameState().getThisClientPlayerId(),
+            inventoryWindowState.getInventorySlotClicked(),
+            inventoryWindowState.getPotionMenuItemBeingMoved()
         );
     }
 
-    private boolean isMovingItemFromInventoryToEquipment(InventoryWindowState inventoryWindowState) {
-        return inventoryWindowState.getInventoryItemBeingMoved() != null &&
+    private boolean isMovingItemFromEquipmentToEquipment(InventoryWindowState inventoryWindowState) {
+        return inventoryWindowState.getEquipmentItemBeingMoved() != null &&
             inventoryWindowState.getEquipmentSlotClicked() != null;
     }
 
-    private InventorySwapSlotItemsAction getMoveItemFromInventoryToInventoryAction(CoreGame game,
-                                                                                   InventoryWindowState inventoryWindowState) {
-        return InventorySwapSlotItemsAction.of(game.getGameState().getThisClientPlayerId(),
-            inventoryWindowState.getInventoryItemBeingMoved(),
+    private InventoryPutOnCursorCancelAction getMoveCancelAction(CoreGame game) {
+        return InventoryPutOnCursorCancelAction.of(game.getGameState().getThisClientPlayerId());
+    }
+
+    private boolean isPickingUpItemInsideInventory(InventoryWindowState inventoryWindowState) {
+        return inventoryWindowState.getInventorySlotClicked() != null;
+    }
+
+    private boolean isClickedNonEmptyInventorySlot(Creature player, InventoryWindowState inventoryWindowState) {
+        return player.getParams().getInventoryItems().containsKey(inventoryWindowState.getInventorySlotClicked());
+    }
+
+    private InventoryItemPutOnCursorAction getInventoryItemPutOnCursorAction(CoreGame game,
+                                                                             InventoryWindowState inventoryWindowState) {
+        return InventoryItemPutOnCursorAction.of(game.getGameState().getThisClientPlayerId(),
             inventoryWindowState.getInventorySlotClicked()
         );
     }
 
-    private boolean isMovingItemFromInventoryToInventory(InventoryWindowState inventoryWindowState) {
-        return inventoryWindowState.getInventoryItemBeingMoved() != null &&
-            inventoryWindowState.getInventorySlotClicked() != null;
+    private GameStateAction getEmptyAction() {
+        return null;
+    }
+
+    private boolean isPickingUpItemInsideEquipment(InventoryWindowState inventoryWindowState) {
+        return inventoryWindowState.getEquipmentSlotClicked() != null;
+    }
+
+    private boolean isClickedNonEmptyEquipmentSlot(Creature player, InventoryWindowState inventoryWindowState) {
+        return player.getParams().getEquipmentItems().containsKey(inventoryWindowState.getEquipmentSlotClicked());
+    }
+
+    private EquipmentItemPutOnCursorAction getEquipmentItemPutOnCursorAction(CoreGame game,
+                                                                             InventoryWindowState inventoryWindowState) {
+        return EquipmentItemPutOnCursorAction.of(game.getGameState().getThisClientPlayerId(),
+            inventoryWindowState.getEquipmentSlotClicked()
+        );
     }
 
     public void performUseItemClick(Client client, CoreGame game) {

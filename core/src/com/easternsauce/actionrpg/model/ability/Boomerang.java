@@ -59,10 +59,7 @@ public class Boomerang extends Projectile {
                 float targetAngleDeg = vectorTowards.angleDeg();
                 float currentAngleDeg = getParams().getDirVector().angleDeg();
 
-                float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(
-                    currentAngleDeg,
-                    targetAngleDeg
-                );
+                float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(currentAngleDeg, targetAngleDeg);
 
                 float incrementFactor = 330f;
                 float increment = incrementFactor * delta;

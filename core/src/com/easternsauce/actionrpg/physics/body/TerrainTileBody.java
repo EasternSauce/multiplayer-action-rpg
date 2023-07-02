@@ -32,10 +32,7 @@ public class TerrainTileBody {
     }
 
     public void init(PhysicsWorld world) {
-        b2body = B2BodyFactory.createTerrainTileB2body(
-            world,
-            this
-        );
+        b2body = B2BodyFactory.createTerrainTileB2body(world, this);
 
         polygon = new com.badlogic.gdx.math.Polygon(new float[]{pos.getX() * tileWidth, pos.getY() *
             tileWidth, pos.getX() * tileWidth + tileWidth, pos.getY() * tileHeight, pos.getX() * tileWidth + tileWidth,

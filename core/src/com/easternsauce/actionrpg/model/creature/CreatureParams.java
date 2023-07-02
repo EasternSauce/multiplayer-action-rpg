@@ -82,8 +82,7 @@ public class CreatureParams implements EntityParams {
     private SimpleTimer generalSkillPerformCooldownTimer = SimpleTimer.getExpiredTimer();
 
     public static CreatureParams of(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn) {
-        return produceCreatureParams(
-            creatureId,
+        return produceCreatureParams(creatureId,
             areaId,
             enemySpawn.getPos(),
             enemySpawn.getEnemyTemplate().getEnemyType().textureName
@@ -102,23 +101,15 @@ public class CreatureParams implements EntityParams {
         params.initialAreaId = areaId;
         params.textureName = textureName;
 
-        Map<SkillType, Skill> allPossibleSkills = Arrays.stream(SkillType.values()).collect(Collectors.toMap(
-            Function.identity(),
-            skillType -> Skill.of(
-                skillType,
-                creatureId
-            )
-        ));
+        Map<SkillType, Skill> allPossibleSkills = Arrays
+            .stream(SkillType.values())
+            .collect(Collectors.toMap(Function.identity(), skillType -> Skill.of(skillType, creatureId)));
 
         // TODO: should we restrict which creature can perform which skill?
         params.skills = new ConcurrentSkipListMap<>(allPossibleSkills);
 
-        Map<CreatureEffect, CreatureEffectState> allPossibleEffects = Arrays
-            .stream(CreatureEffect.values())
-            .collect(Collectors.toMap(
-                effect -> effect,
-                effect -> CreatureEffectState.of()
-            ));
+        Map<CreatureEffect, CreatureEffectState> allPossibleEffects = Arrays.stream(CreatureEffect.values()).collect(
+            Collectors.toMap(effect -> effect, effect -> CreatureEffectState.of()));
 
         params.getEffectParams().setEffects(new ConcurrentSkipListMap<>(allPossibleEffects));
 
@@ -128,26 +119,14 @@ public class CreatureParams implements EntityParams {
     public static CreatureParams of(CreatureId creatureId, AreaId areaId, Vector2 pos, String textureName) {
 
         Map<Integer, Item> potionMenuItems = new ConcurrentSkipListMap<>();
-        potionMenuItems.put(
-            0,
-            Item.of().setTemplate(ItemTemplate.templates.get("lifePotion"))
-        );
-        potionMenuItems.put(
-            1,
-            Item.of().setTemplate(ItemTemplate.templates.get("lifePotion"))
-        );
+        potionMenuItems.put(0, Item.of().setTemplate(ItemTemplate.templates.get("lifePotion")));
+        potionMenuItems.put(1, Item.of().setTemplate(ItemTemplate.templates.get("lifePotion")));
 
         Map<Integer, Item> inventoryItems = new ConcurrentSkipListMap<>();
-        inventoryItems.put(
-            2,
-            Item.of().setTemplate(ItemTemplate.templates.get("lifePotion"))
-        );
+        inventoryItems.put(2, Item.of().setTemplate(ItemTemplate.templates.get("lifePotion")));
 
-        return produceCreatureParams(
-            creatureId,
-            areaId,
-            pos,
-            textureName
-        ).setPotionMenuItems(potionMenuItems).setInventoryItems(inventoryItems);
+        return produceCreatureParams(creatureId, areaId, pos, textureName)
+            .setPotionMenuItems(potionMenuItems)
+            .setInventoryItems(inventoryItems);
     }
 }

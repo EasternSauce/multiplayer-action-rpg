@@ -41,36 +41,21 @@ public class CreatureHitByAbilityAction extends CreatureHitAction {
             return;
         }
 
-        boolean isShielded = targetCreature.isAbilityShielded(
-            ability,
-            game
-        );
+        boolean isShielded = targetCreature.isAbilityShielded(ability, game);
 
         Float damage = ability.getDamage(game);
 
         if (!isShielded && !ability.getParams().getIsHitShielded() && damage > 0f) {
-            targetCreature.takeLifeDamage(
-                damage,
-                contactPoint,
-                game
-            );
+            targetCreature.takeLifeDamage(damage, contactPoint, game);
 
             if (ability.isCanStun()) {
-                targetCreature.applyEffect(
-                    CreatureEffect.STUN,
-                    ability.getStunDuration(),
-                    game
-                );
+                targetCreature.applyEffect(CreatureEffect.STUN, ability.getStunDuration(), game);
             }
 
             targetCreature.onBeingHit(ability);
         }
 
-        handleCreatureDeath(
-            targetCreature,
-            attackerCreature,
-            game
-        );
+        handleCreatureDeath(targetCreature, attackerCreature, game);
     }
 
     @Override

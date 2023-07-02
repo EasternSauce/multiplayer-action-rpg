@@ -22,11 +22,7 @@ public abstract class CreatureHitAction extends GameStateAction {
     protected void handleCreatureDeath(Creature targetCreature, Creature attackerCreature, CoreGame game) {
         if (targetCreature.getParams().getStats().getPreviousTickLife() > 0f &&
             targetCreature.getParams().getStats().getLife() <= 0f) {
-            onCreatureDeath(
-                targetCreature,
-                attackerCreature,
-                game
-            );
+            onCreatureDeath(targetCreature, attackerCreature, game);
         }
     }
 
@@ -37,15 +33,9 @@ public abstract class CreatureHitAction extends GameStateAction {
         targetCreature.getParams().setIsAwaitingRespawn(true);
         attackerCreature.onKillEffect();
 
-        spawnDrops(
-            targetCreature.getId(),
-            game
-        );
+        spawnDrops(targetCreature.getId(), game);
 
-        deactivateCreatureAbilities(
-            targetCreature,
-            game
-        );
+        deactivateCreatureAbilities(targetCreature, game);
     }
 
     private void spawnDrops(CreatureId targetId, CoreGame game) {
@@ -91,10 +81,7 @@ public abstract class CreatureHitAction extends GameStateAction {
                         level = 3;
                     }
 
-                    grantedSkills.put(
-                        weightedSkillType.get(),
-                        level
-                    );
+                    grantedSkills.put(weightedSkillType.get(), level);
                 }
 
                 float quality;
@@ -104,11 +91,8 @@ public abstract class CreatureHitAction extends GameStateAction {
                     quality = 0.5f + creature.nextDropRngValue() / 2f;
                 }
 
-                Item item = Item
-                    .of()
-                    .setTemplate(entry.getTemplate())
-                    .setQualityModifier(quality)
-                    .setGrantedSkills(grantedSkills);
+                Item item = Item.of().setTemplate(entry.getTemplate()).setQualityModifier(quality).setGrantedSkills(
+                    grantedSkills);
 
                 items.add(item);
             }
@@ -128,17 +112,13 @@ public abstract class CreatureHitAction extends GameStateAction {
             .setGrantedSkills(item.getGrantedSkills())
             .setLootPileId(lootPileId)).collect(Collectors.toCollection(ConcurrentSkipListSet::new));
 
-        LootPile lootPile = LootPile.of(
-            lootPileId,
+        LootPile lootPile = LootPile.of(lootPileId,
             creature.getParams().getAreaId(),
             creature.getParams().getPos(),
             lootPileItems
         );
 
-        game.getGameState().getLootPiles().put(
-            lootPile.getParams().getId(),
-            lootPile
-        );
+        game.getGameState().getLootPiles().put(lootPile.getParams().getId(), lootPile);
 
         game.getEventProcessor().getLootPileModelsToBeCreated().add(lootPile.getParams().getId());
     }

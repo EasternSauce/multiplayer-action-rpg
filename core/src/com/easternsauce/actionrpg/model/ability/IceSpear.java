@@ -60,11 +60,7 @@ public class IceSpear extends Projectile {
     public void onCreatureHit(CreatureId creatureId, CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
 
-        creature.applyEffect(
-            CreatureEffect.SLOW,
-            2.5f,
-            game
-        );
+        creature.applyEffect(CreatureEffect.SLOW, 2.5f, game);
         creature.getParams().getEffectParams().setCurrentSlowMagnitude(0.5f);
     }
 

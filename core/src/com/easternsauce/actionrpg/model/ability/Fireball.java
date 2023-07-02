@@ -61,8 +61,7 @@ public class Fireball extends Projectile {
 
     @Override
     protected void onCompleted(CoreGame game) {
-        game.getGameState().accessAbilities().chainAnotherAbility(
-            this,
+        game.getGameState().accessAbilities().chainAnotherAbility(this,
             AbilityType.FIREBALL_EXPLOSION,
             getParams().getPos(),
             params.getDirVector(),
@@ -90,18 +89,9 @@ public class Fireball extends Projectile {
     @Override
     public Map<Integer, Float> levelScalings() {
         ConcurrentSkipListMap<Integer, Float> scalings = new ConcurrentSkipListMap<>();
-        scalings.put(
-            1,
-            1.0f
-        );
-        scalings.put(
-            2,
-            1.1f
-        );
-        scalings.put(
-            3,
-            1.2f
-        );
+        scalings.put(1, 1.0f);
+        scalings.put(2, 1.1f);
+        scalings.put(3, 1.2f);
         return scalings;
     }
 }

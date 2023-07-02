@@ -71,14 +71,8 @@ public abstract class CoreGame extends Game {
 
         TextureAtlas atlas = new TextureAtlas("assets/atlas/packed_atlas.atlas");
 
-        gameplayScreen.init(
-            atlas,
-            this
-        );
-        connectScreen.init(
-            atlas,
-            this
-        );
+        gameplayScreen.init(atlas, this);
+        connectScreen.init(atlas, this);
 
         setStartingScreen();
     }
@@ -104,10 +98,7 @@ public abstract class CoreGame extends Game {
             .getGameEntityPhysics()
             .getPhysicsWorlds()
             .get(areaId)
-            .isLineBetweenPointsUnobstructedByTerrain(
-                fromPos,
-                toPos
-            );
+            .isLineBetweenPointsUnobstructedByTerrain(fromPos, toPos);
     }
 
     public void updateCameraPositions() {
@@ -116,8 +107,7 @@ public abstract class CoreGame extends Game {
 
     public void renderB2BodyDebug() {
         if (isDebugEnabled()) {
-            entityManager.getGameEntityPhysics().getDebugRenderer().render(
-                entityManager
+            entityManager.getGameEntityPhysics().getDebugRenderer().render(entityManager
                     .getGameEntityPhysics()
                     .getPhysicsWorlds()
                     .get(getGameState().getCurrentAreaId())
@@ -155,38 +145,25 @@ public abstract class CoreGame extends Game {
 
     public Vector2 mousePosRelativeToCenter() { // relative to center of screen, in in-game length units
         //noinspection SpellCheckingInspection
-        Vector3 screenCoords = new Vector3(
-            (float) Gdx.input.getX(),
-            (float) Gdx.input.getY(),
-            0f
-        );
+        Vector3 screenCoords = new Vector3((float) Gdx.input.getX(), (float) Gdx.input.getY(), 0f);
         entityManager.getGameEntityRenderer().getViewportsHandler().unprojectHudCamera(screenCoords);
-        Vector2 mousePos = Vector2.of(
-            screenCoords.x - Constants.WINDOW_WIDTH / 2f,
+        Vector2 mousePos = Vector2.of(screenCoords.x - Constants.WINDOW_WIDTH / 2f,
             screenCoords.y - Constants.WINDOW_HEIGHT / 2f
         );
 
         float viewportRatioX = Constants.VIEWPOINT_WORLD_WIDTH / Constants.WINDOW_WIDTH;
         float viewportRatioY = Constants.VIEWPOINT_WORLD_HEIGHT / Constants.WINDOW_HEIGHT;
 
-        return Vector2.of(
-            mousePos.getX() * viewportRatioX / Constants.PPM,
+        return Vector2.of(mousePos.getX() * viewportRatioX / Constants.PPM,
             mousePos.getY() * viewportRatioY / Constants.PPM
         );
     }
 
     public Vector2 hudMousePos() {
         //noinspection SpellCheckingInspection
-        Vector3 screenCoords = new Vector3(
-            (float) Gdx.input.getX(),
-            (float) Gdx.input.getY(),
-            0f
-        );
+        Vector3 screenCoords = new Vector3((float) Gdx.input.getX(), (float) Gdx.input.getY(), 0f);
         entityManager.getGameEntityRenderer().getViewportsHandler().unprojectHudCamera(screenCoords);
-        return Vector2.of(
-            screenCoords.x,
-            screenCoords.y
-        );
+        return Vector2.of(screenCoords.x, screenCoords.y);
     }
 
     public void goToGamePlayScreen() {

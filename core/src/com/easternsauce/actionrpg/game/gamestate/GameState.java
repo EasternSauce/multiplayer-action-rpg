@@ -15,24 +15,15 @@ import java.util.Set;
 public abstract class GameState {
     protected final GameStateDataHolder dataHolder = GameStateDataHolder.of(GameStateData.of());
 
-    protected final AbilityAccessor abilityAccessor = AbilityAccessor.of(
-        this,
-        dataHolder
-    );
-    protected final CreatureAccessor creatureAccessor = CreatureAccessor.of(
-        this,
-        dataHolder
-    );
+    protected final AbilityAccessor abilityAccessor = AbilityAccessor.of(this, dataHolder);
+    protected final CreatureAccessor creatureAccessor = CreatureAccessor.of(this, dataHolder);
 
     public CreatureAccessor accessCreatures() {
         return creatureAccessor;
     }
 
     public void initPlayerConfig(CreatureId playerId) {
-        getData().getPlayerConfig().put(
-            playerId,
-            PlayerConfig.of()
-        );
+        getData().getPlayerConfig().put(playerId, PlayerConfig.of());
     }
 
     private GameStateData getData() {

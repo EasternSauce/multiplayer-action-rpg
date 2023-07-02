@@ -32,10 +32,7 @@ public class PlayerInitAction extends GameStateAction {
             player = createNewPlayer(game);
         }
 
-        game.getGameState().accessCreatures().getCreatures().put(
-            playerId,
-            player
-        );
+        game.getGameState().accessCreatures().getCreatures().put(playerId, player);
 
         game.getEventProcessor().getCreatureModelsToBeCreated().add(playerId);
 
@@ -58,18 +55,12 @@ public class PlayerInitAction extends GameStateAction {
     private Creature createNewPlayer(CoreGame game) {
         String[] textures = new String[]{"male1", "male2", "female1"};
 
-        Vector2 pos = Vector2.of(
-            ((game.getGameState().nextRandomValue() * (28 - 18)) + 18),
+        Vector2 pos = Vector2.of(((game.getGameState().nextRandomValue() * (28 - 18)) + 18),
             ((game.getGameState().nextRandomValue() * (12 - 6)) + 6)
         );
 
         String textureName = textures[((int) (Math.random() * 100) % 3)];
 
-        return Player.of(
-            playerId,
-            AreaId.of("area3"),
-            pos,
-            textureName
-        );
+        return Player.of(playerId, AreaId.of("area3"), pos, textureName);
     }
 }

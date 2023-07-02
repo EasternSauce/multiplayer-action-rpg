@@ -71,10 +71,7 @@ public class CreatureAccessor {
     }
 
     public void setCreatureMovingVector(CreatureId creatureId, Vector2 dirVector) {
-        CreatureMovingVectorSetAction action = CreatureMovingVectorSetAction.of(
-            creatureId,
-            dirVector
-        );
+        CreatureMovingVectorSetAction action = CreatureMovingVectorSetAction.of(creatureId, dirVector);
 
         gameState.scheduleServerSideAction(action);
     }
@@ -88,13 +85,8 @@ public class CreatureAccessor {
     }
 
     public void forEachDeadCreature(Consumer<Creature> creatureAction) {
-        gameState
-            .accessCreatures()
-            .getCreatures()
-            .values()
-            .stream()
-            .filter(creature -> !creature.isAlive())
-            .forEach(creatureAction);
+        gameState.accessCreatures().getCreatures().values().stream().filter(creature -> !creature.isAlive()).forEach(
+            creatureAction);
     }
 
     // TODO: move to enemy?
@@ -102,14 +94,10 @@ public class CreatureAccessor {
         Creature creature = gameState.accessCreatures().getCreatures().get(creatureId);
 
         if (creature.getParams().getEnemyParams().getSkillUseReadyToPick()) {
-            pickSkillUseSkillType(
-                creature.getParams().getEnemyParams().getSkillUses(),
-                creature
-            );
+            pickSkillUseSkillType(creature.getParams().getEnemyParams().getSkillUses(), creature);
         }
 
-        SkillTryPerformAction action = SkillTryPerformAction.of(
-            creatureId,
+        SkillTryPerformAction action = SkillTryPerformAction.of(creatureId,
             creature.getParams().getEnemyParams().getSkillUsePickedSkillType(),
             creature.getParams().getPos(),
             vectorTowardsTarget
@@ -156,8 +144,7 @@ public class CreatureAccessor {
             throw new RuntimeException("trying to use a skill that is not in enemy's skill uses!");
         }
 
-        SkillTryPerformAction action = SkillTryPerformAction.of(
-            creatureId,
+        SkillTryPerformAction action = SkillTryPerformAction.of(creatureId,
             skillType,
             creature.getParams().getPos(),
             vectorTowardsTarget
@@ -181,11 +168,7 @@ public class CreatureAccessor {
     }
 
     public void creatureTakeDamageOverTime(CreatureId attackerId, CreatureId targetId, Float damage) {
-        CreatureHitByDamageOverTimeAction action = CreatureHitByDamageOverTimeAction.of(
-            attackerId,
-            targetId,
-            damage
-        );
+        CreatureHitByDamageOverTimeAction action = CreatureHitByDamageOverTimeAction.of(attackerId, targetId, damage);
         gameState.scheduleServerSideAction(action);
     }
 }

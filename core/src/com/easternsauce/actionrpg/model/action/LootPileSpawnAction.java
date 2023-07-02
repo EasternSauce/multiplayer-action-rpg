@@ -44,17 +44,9 @@ public class LootPileSpawnAction extends GameStateAction {
             .setGrantedSkills(item.getGrantedSkills())
             .setLootPileId(lootPileId)).collect(Collectors.toCollection(ConcurrentSkipListSet::new));
 
-        LootPile lootPile = LootPile.of(
-            lootPileId,
-            areaId,
-            pos,
-            lootPileItems
-        );
+        LootPile lootPile = LootPile.of(lootPileId, areaId, pos, lootPileItems);
 
-        game.getGameState().getLootPiles().put(
-            lootPile.getParams().getId(),
-            lootPile
-        );
+        game.getGameState().getLootPiles().put(lootPile.getParams().getId(), lootPile);
 
         game.getEventProcessor().getLootPileModelsToBeCreated().add(lootPile.getParams().getId());
     }

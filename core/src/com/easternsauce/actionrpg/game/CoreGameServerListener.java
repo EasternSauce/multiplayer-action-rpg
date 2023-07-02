@@ -38,10 +38,7 @@ public class CoreGameServerListener extends Listener {
             PlayerInitAction playerInitAction = PlayerInitAction.of(command.getPlayerId());
 
             if (game.getClientIds().contains(connection.getID())) {
-                game.getClientPlayers().put(
-                    connection.getID(),
-                    playerInitAction.getPlayerId()
-                );
+                game.getClientPlayers().put(connection.getID(), playerInitAction.getPlayerId());
 
                 game.getGameState().scheduleServerSideAction(playerInitAction);
             }
@@ -52,8 +49,7 @@ public class CoreGameServerListener extends Listener {
             game.getEndPoint().sendToAllTCP(command);
         } else if (object instanceof EnemySpawnCommand) {
             EnemySpawnCommand command = (EnemySpawnCommand) object;
-            game.getEntityManager().spawnEnemy(
-                command.getCreatureId(),
+            game.getEntityManager().spawnEnemy(command.getCreatureId(),
                 command.getAreaId(),
                 command.getEnemySpawn(),
                 game

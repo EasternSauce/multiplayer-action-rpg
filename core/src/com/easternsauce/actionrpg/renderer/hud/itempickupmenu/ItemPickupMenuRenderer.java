@@ -38,14 +38,7 @@ public class ItemPickupMenuRenderer {
             .getLootPile(lootPileId)
             .getParams()
             .getItems()
-            .stream()).forEach(item -> renderMenuOption(
-            renderingLayer,
-            iconRetriever,
-            x,
-            y,
-            i,
-            item
-        ));
+            .stream()).forEach(item -> renderMenuOption(renderingLayer, iconRetriever, x, y, i, item));
     }
 
     private void renderMenuOption(RenderingLayer renderingLayer,
@@ -55,33 +48,21 @@ public class ItemPickupMenuRenderer {
                                   AtomicInteger i,
                                   Item item) {
         Rect rect = ItemPickupMenuConsts.getMenuOptionRect(i.get());
-        renderingLayer.getShapeDrawer().filledRectangle(
-            rect.getX(),
+        renderingLayer.getShapeDrawer().filledRectangle(rect.getX(),
             rect.getY(),
             rect.getWidth(),
             rect.getHeight(),
-            Color.DARK_GRAY.cpy().sub(
-                0,
-                0,
-                0,
-                0.3f
-            )
+            Color.DARK_GRAY.cpy().sub(0, 0, 0, 0.3f)
         );
-        if (rect.contains(
-            x,
-            y
-        )) {
-            renderingLayer.getShapeDrawer().rectangle(
-                rect.getX(),
+        if (rect.contains(x, y)) {
+            renderingLayer.getShapeDrawer().rectangle(rect.getX(),
                 rect.getY(),
                 rect.getWidth(),
                 rect.getHeight(),
                 Color.ORANGE
             );
         }
-        renderingLayer.getSpriteBatch().draw(
-            iconRetriever.getIcon(
-                item.getTemplate().getIconPos().getX(),
+        renderingLayer.getSpriteBatch().draw(iconRetriever.getIcon(item.getTemplate().getIconPos().getX(),
                 item.getTemplate().getIconPos().getY()
             ),
             rect.getX() + 10f,
@@ -89,13 +70,9 @@ public class ItemPickupMenuRenderer {
             20f,
             20f
         );
-        Assets.renderSmallFont(
-            renderingLayer,
+        Assets.renderSmallFont(renderingLayer,
             item.getTemplate().getName(),
-            Vector2.of(
-                rect.getX() + 40f,
-                rect.getY() + 17f
-            ),
+            Vector2.of(rect.getX() + 40f, rect.getY() + 17f),
             Color.CYAN
         );
         i.getAndIncrement();

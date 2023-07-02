@@ -33,21 +33,11 @@ public class GameplayScreen implements Screen {
         game.getEntityManager().getGameEntityPhysics().setDebugRenderer(new Box2DDebugRenderer());
 
         Map<AreaId, String> mapsToLoad = new ConcurrentSkipListMap<>();
-        mapsToLoad.put(
-            AreaId.of("area1"),
-            "assets/areas/area1"
-        );
-        mapsToLoad.put(
-            AreaId.of("area2"),
-            "assets/areas/area2"
-        );
-        mapsToLoad.put(
-            AreaId.of("area3"),
-            "assets/areas/area3"
-        );
+        mapsToLoad.put(AreaId.of("area1"), "assets/areas/area1");
+        mapsToLoad.put(AreaId.of("area2"), "assets/areas/area2");
+        mapsToLoad.put(AreaId.of("area3"), "assets/areas/area3");
 
-        maps = mapsToLoad.entrySet().stream().collect(Collectors.toMap(
-            Map.Entry::getKey,
+        maps = mapsToLoad.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
             entry -> game.getEntityManager().getGameEntityRenderer().loadMap(entry.getValue() + "/tile_map.tmx")
         ));
 
@@ -56,15 +46,15 @@ public class GameplayScreen implements Screen {
         game.getEntityManager().getGameEntityRenderer().init(atlas);
         game.getHudRenderer().init(atlas);
 
-        game.getEntityManager().getGameEntityPhysics().init(
-            maps,
+        game.getEntityManager().getGameEntityPhysics().init(maps,
             game
         ); // TODO: doesn't run if we receive state too late....
 
-        game.getEntityManager().getGameEntityRenderer().getViewportsHandler().setHudCameraPosition(
-            Constants.WINDOW_WIDTH / 2f,
-            Constants.WINDOW_HEIGHT / 2f
-        ); // TODO: move it inward?
+        game
+            .getEntityManager()
+            .getGameEntityRenderer()
+            .getViewportsHandler()
+            .setHudCameraPosition(Constants.WINDOW_WIDTH / 2f, Constants.WINDOW_HEIGHT / 2f); // TODO: move it inward?
 
     }
 
@@ -116,30 +106,17 @@ public class GameplayScreen implements Screen {
             game.onUpdate();
             game.getGameState().handleExpiredAbilities(game);
 
-            game.getEventProcessor().process(
-                game.getEntityManager(),
-                atlas,
-                game
-            );
+            game.getEventProcessor().process(game.getEntityManager(), atlas, game);
 
             game.getEventProcessor().getTeleportEvents().forEach(teleportInfo -> game
                 .getEntityManager()
-                .teleportCreature(
-                    teleportInfo,
-                    game
-                ));
+                .teleportCreature(teleportInfo, game));
             game.getEventProcessor().getTeleportEvents().clear();
 
             game.getGameState().updateGeneralTimer(delta);
 
-            game.getEntityManager().updateCreatures(
-                delta,
-                game
-            );
-            game.getEntityManager().updateAbilities(
-                delta,
-                game
-            );
+            game.getEntityManager().updateCreatures(delta, game);
+            game.getEntityManager().updateAbilities(delta, game);
 
             processPhysicsEventQueueProcessor.process(game);
 
@@ -152,21 +129,13 @@ public class GameplayScreen implements Screen {
 
             if (!game.getEntityManager().getGameEntityRenderer().getIsAreasLoaded() &&
                 game.getIsFirstBroadcastReceived()) {
-                game.getEntityManager().getGameEntityRenderer().loadAreaRenderers(
-                    maps,
-                    game
-                );
+                game.getEntityManager().getGameEntityRenderer().loadAreaRenderers(maps, game);
             }
         }
     }
 
     private static void clearScreen() {
-        Gdx.gl.glClearColor(
-            0,
-            0,
-            0,
-            1
-        );
+        Gdx.gl.glClearColor(0, 0, 0, 1);
 
         int coverageBuffer;
         if (Gdx.graphics.getBufferFormat().coverageSampling) {
@@ -216,10 +185,7 @@ public class GameplayScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        game.getEntityManager().getGameEntityRenderer().getViewportsHandler().updateViewportsOnResize(
-            width,
-            height
-        );
+        game.getEntityManager().getGameEntityRenderer().getViewportsHandler().updateViewportsOnResize(width, height);
     }
 
     @Override
