@@ -13,9 +13,11 @@ public class Astar {
         Map<Vector2Int, PathingNode> pathingNodes = new HashMap<>();
         for (int y = 0; y < world.heightInTiles(); y++) {
             for (int x = 0; x < world.widthInTiles(); x++) {
-                pathingNodes.put(Vector2Int.of(x, y), PathingNode.of(Vector2Int.of(x, y),
-                    world.getClearances().getOrDefault(Vector2Int.of(x, y), Integer.MAX_VALUE)
-                ));
+                pathingNodes.put(Vector2Int.of(x, y),
+                    PathingNode.of(Vector2Int.of(x, y),
+                        world.getClearances().getOrDefault(Vector2Int.of(x, y), Integer.MAX_VALUE)
+                    )
+                );
             }
         }
 

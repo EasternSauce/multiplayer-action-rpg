@@ -12,8 +12,6 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 public class InventoryWindowController {
-    private final InventoryWindowActionDecider inventoryWindowActionDecider = InventoryWindowActionDecider.of();
-
     public void performMoveItemClick(Client client, CoreGame game) {
         PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
 
@@ -35,7 +33,7 @@ public class InventoryWindowController {
                 playerConfig.getPotionMenuItemBeingMoved()
             );
 
-            action = inventoryWindowActionDecider.decide(inventoryWindowState, game);
+            action = InventoryWindowActionDecider.decide(inventoryWindowState, game);
         } else if (playerConfig.getInventoryItemBeingMoved() != null ||
             playerConfig.getEquipmentItemBeingMoved() != null ||
             playerConfig.getPotionMenuItemBeingMoved() != null) {

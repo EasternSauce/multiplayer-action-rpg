@@ -95,11 +95,11 @@ public class InventoryWindowRenderer {
         Creature player = game.getGameState().accessCreatures().getCreature(game
             .getGameState()
             .getThisClientPlayerId());
+
         PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
 
         Map<Integer, Item> inventoryItems = player.getParams().getInventoryItems();
         Map<Integer, Item> equipmentItems = player.getParams().getEquipmentItems();
-        Map<Integer, Item> potionMenuItems = player.getParams().getPotionMenuItems();
 
         IconRetriever iconRetriever = game.getEntityManager().getGameEntityRenderer().getIconRetriever();
 
@@ -108,42 +108,6 @@ public class InventoryWindowRenderer {
 
         equipmentItems.entrySet().stream().filter((entry -> !isEquipmentItemBeingMoved(playerConfig, entry))).forEach(
             entry -> renderEquipmentItem(renderingLayer, iconRetriever, entry.getKey(), entry.getValue()));
-
-        float mouseX = game.hudMousePos().getX();
-        float mouseY = game.hudMousePos().getY();
-
-        if (playerConfig.getInventoryItemBeingMoved() != null &&
-            inventoryItems.containsKey(playerConfig.getInventoryItemBeingMoved())) {
-
-            renderInventoryItemBeingMovedOnCursor(mouseX,
-                mouseY,
-                inventoryItems,
-                iconRetriever,
-                playerConfig,
-                renderingLayer
-            );
-        }
-        if (playerConfig.getEquipmentItemBeingMoved() != null &&
-            equipmentItems.containsKey(playerConfig.getEquipmentItemBeingMoved())) {
-            renderEquipmentItemBeingMovedOnCursor(mouseX,
-                mouseY,
-                equipmentItems,
-                iconRetriever,
-                playerConfig,
-                renderingLayer
-            );
-        }
-        if (playerConfig.getPotionMenuItemBeingMoved() != null &&
-            potionMenuItems.containsKey(playerConfig.getPotionMenuItemBeingMoved())) {
-            renderPotionMenuItemBeingMovedOnCursor(mouseX,
-                mouseY,
-                potionMenuItems,
-                iconRetriever,
-                playerConfig,
-                renderingLayer
-            );
-        }
-
     }
 
     public void renderDescription(RenderingLayer renderingLayer, CoreGame game) {
@@ -154,9 +118,9 @@ public class InventoryWindowRenderer {
         float mouseX = game.hudMousePos().getX();
         float mouseY = game.hudMousePos().getY();
 
-        Integer inventorySlotMousedOver = getInventorySlotMousedOver(mouseX, mouseY);
+        Integer inventorySlotMousedOver = getInventoryMousedOverSlotIndex(mouseX, mouseY);
 
-        Integer equipmentSlotMousedOver = getEquipmentSlotMousedOver(mouseX, mouseY);
+        Integer equipmentSlotMousedOver = getEquipmentMousedOverSlotIndex(mouseX, mouseY);
 
         Item mouseOverItem = null;
 
@@ -237,59 +201,7 @@ public class InventoryWindowRenderer {
         }
     }
 
-    private void renderInventoryItemBeingMovedOnCursor(float mouseX,
-                                                       float mouseY,
-                                                       Map<Integer, Item> inventoryItems,
-                                                       IconRetriever iconRetriever,
-                                                       PlayerConfig playerConfig,
-                                                       RenderingLayer renderingLayer) {
-        if (inventoryItems.containsKey(playerConfig.getInventoryItemBeingMoved())) {
-            Item item = inventoryItems.get(playerConfig.getInventoryItemBeingMoved());
-
-            Vector2Int iconPos = item.getTemplate().getIconPos();
-
-            renderingLayer.getSpriteBatch().draw(iconRetriever.getIcon(iconPos.getX(), iconPos.getY()),
-                mouseX - InventoryWindowConsts.SLOT_SIZE / 2f,
-                mouseY - InventoryWindowConsts.SLOT_SIZE / 2f,
-                InventoryWindowConsts.SLOT_SIZE,
-                InventoryWindowConsts.SLOT_SIZE
-            );
-        }
-    }
-
-    private void renderEquipmentItemBeingMovedOnCursor(float mouseX,
-                                                       float mouseY,
-                                                       Map<Integer, Item> equipmentItems,
-                                                       IconRetriever iconRetriever,
-                                                       PlayerConfig playerConfig,
-                                                       RenderingLayer renderingLayer) {
-        Vector2Int iconPos = equipmentItems.get(playerConfig.getEquipmentItemBeingMoved()).getTemplate().getIconPos();
-
-        renderingLayer.getSpriteBatch().draw(iconRetriever.getIcon(iconPos.getX(), iconPos.getY()),
-            mouseX - InventoryWindowConsts.SLOT_SIZE / 2f,
-            mouseY - InventoryWindowConsts.SLOT_SIZE / 2f,
-            InventoryWindowConsts.SLOT_SIZE,
-            InventoryWindowConsts.SLOT_SIZE
-        );
-    }
-
-    private void renderPotionMenuItemBeingMovedOnCursor(float mouseX,
-                                                        float mouseY,
-                                                        Map<Integer, Item> potionMenuItems,
-                                                        IconRetriever iconRetriever,
-                                                        PlayerConfig playerConfig,
-                                                        RenderingLayer renderingLayer) {
-        Vector2Int iconPos = potionMenuItems.get(playerConfig.getPotionMenuItemBeingMoved()).getTemplate().getIconPos();
-
-        renderingLayer.getSpriteBatch().draw(iconRetriever.getIcon(iconPos.getX(), iconPos.getY()),
-            mouseX - InventoryWindowConsts.SLOT_SIZE / 2f,
-            mouseY - InventoryWindowConsts.SLOT_SIZE / 2f,
-            InventoryWindowConsts.SLOT_SIZE,
-            InventoryWindowConsts.SLOT_SIZE
-        );
-    }
-
-    private Integer getInventorySlotMousedOver(float mouseX, float mouseY) {
+    private Integer getInventoryMousedOverSlotIndex(float mouseX, float mouseY) {
         AtomicReference<Integer> inventorySlotMousedOver = new AtomicReference<>(null);
 
         InventoryWindowConsts.inventoryRectangles.entrySet().stream().filter(entry -> entry
@@ -299,7 +211,7 @@ public class InventoryWindowRenderer {
         return inventorySlotMousedOver.get();
     }
 
-    private Integer getEquipmentSlotMousedOver(float mouseX, float mouseY) {
+    private Integer getEquipmentMousedOverSlotIndex(float mouseX, float mouseY) {
         AtomicReference<Integer> equipmentSlotMousedOver = new AtomicReference<>(null);
 
         InventoryWindowConsts.equipmentRectangles.entrySet().stream().filter(entry -> entry

@@ -5,6 +5,7 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
 import com.easternsauce.actionrpg.renderer.hud.inventorywindow.InventoryWindowRenderer;
+import com.easternsauce.actionrpg.renderer.hud.inventorywindow.ItemOnCursorRenderer;
 import com.easternsauce.actionrpg.renderer.hud.itempickupmenu.ItemPickupMenuRenderer;
 import com.easternsauce.actionrpg.renderer.hud.potionmenu.PotionMenuRenderer;
 import com.easternsauce.actionrpg.renderer.hud.skillmenu.SkillMenuRenderer;
@@ -55,6 +56,8 @@ public class HudRenderer {
         potionMenuRenderer.renderMenu(renderingLayer, game);
 
         inventoryWindowRenderer.render(renderingLayer, game);
+
+        ItemOnCursorRenderer.render(renderingLayer, game);
 
         renderingLayer.end();
     }
