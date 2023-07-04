@@ -1,4 +1,4 @@
-package com.easternsauce.actionrpg.renderer.hud.potionmenu;
+package com.easternsauce.actionrpg.renderer.hud.inventorywindow;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.command.ActionPerformCommand;

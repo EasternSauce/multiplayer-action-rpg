@@ -6,39 +6,19 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 public enum SkillType {
-    SWORD_SLASH("Sword Slash", true, AbilityType.SWORD_SLASH, 0.6f, 20f, 0f), MOB_SWORD_SLASH("Sword Slash (mob only)",
-        true,
-        AbilityType.MOB_SWORD_SLASH,
-        0.6f,
-        20f,
-        0f
-    ), FIREBALL("Fireball", true, AbilityType.FIREBALL, 1.5f, 30f, 20f), LIGHTNING(
-        "Lightning",
-        true,
-        AbilityType.LIGHTNING_SPARK,
-        2f,
-        20f,
-        26f
-    ), CROSSBOW_SHOT("Crossbow Shot", true, AbilityType.CROSSBOW_SHOT, 2f, 25f, 0f), MOB_CROSSBOW_SHOT(
-        "Crossbow Shot (mob only)",
-        true,
-        AbilityType.MOB_CROSSBOW_SHOT,
-        2f,
-        25f,
-        0f
-    ),
+    SWORD_SLASH("Sword Slash", true, AbilityType.SWORD_SLASH, 0.6f, 20f, 0f),
+    MOB_SWORD_SLASH("Sword Slash (mob only)", true, AbilityType.MOB_SWORD_SLASH, 0.6f, 20f, 0f),
+    FIREBALL("Fireball", true, AbilityType.FIREBALL, 1.5f, 30f, 20f),
+    LIGHTNING("Lightning", true, AbilityType.LIGHTNING_SPARK, 2f, 20f, 26f),
+    CROSSBOW_SHOT("Crossbow Shot", true, AbilityType.CROSSBOW_SHOT, 2f, 25f, 0f),
+    MOB_CROSSBOW_SHOT("Crossbow Shot (mob only)", true, AbilityType.MOB_CROSSBOW_SHOT, 2f, 25f, 0f),
 
     MAGIC_ORB("Magic Orb", true, AbilityType.MAGIC_ORB, 0.8f, 15f, 10f),
 
     MOB_MAGIC_ORB("Magic Orb (mob only)", true, AbilityType.MAGIC_ORB, 1.3f, 15f, 10f),
 
-    VOLATILE_BUBBLE("Volatile Bubble", true, AbilityType.VOLATILE_BUBBLE, 1.3f, 15f, 22f), MOB_VOLATILE_BUBBLE("Volatile Bubble (mob only)",
-        true,
-        AbilityType.MOB_VOLATILE_BUBBLE,
-        1.3f,
-        15f,
-        22f
-    ),
+    VOLATILE_BUBBLE("Volatile Bubble", true, AbilityType.VOLATILE_BUBBLE, 1.3f, 15f, 22f),
+    MOB_VOLATILE_BUBBLE("Volatile Bubble (mob only)", true, AbilityType.MOB_VOLATILE_BUBBLE, 1.3f, 15f, 22f),
 
     SUMMON_GHOSTS("Summon Ghosts", true, AbilityType.SUMMON_GHOSTS, 1.3f, 15f, 20f),
 

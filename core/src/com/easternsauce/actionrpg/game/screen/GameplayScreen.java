@@ -104,7 +104,6 @@ public class GameplayScreen implements Screen {
             handleForceUpdateBodyPositions(game);
 
             game.onUpdate();
-            game.getGameState().handleExpiredAbilities(game);
 
             game.getEventProcessor().process(game.getEntityManager(), atlas, game);
 

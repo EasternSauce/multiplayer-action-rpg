@@ -4,7 +4,10 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 public enum WorldDirection {
-    LEFT, RIGHT, UP, DOWN;
+    LEFT,
+    RIGHT,
+    UP,
+    DOWN;
 
     @SuppressWarnings("unused")
     public static boolean isHorizontal(WorldDirection value) {

@@ -1,4 +1,4 @@
-package com.easternsauce.actionrpg.renderer.hud.potionmenu;
+package com.easternsauce.actionrpg.renderer.hud.inventorywindow;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;

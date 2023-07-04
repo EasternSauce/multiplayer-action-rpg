@@ -4,6 +4,8 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 public enum AbilityState {
-    INACTIVE, CHANNEL, ACTIVE
+    INACTIVE,
+    CHANNEL,
+    ACTIVE
 }
 

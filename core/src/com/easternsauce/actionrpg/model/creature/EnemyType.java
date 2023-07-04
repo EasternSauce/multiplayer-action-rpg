@@ -4,9 +4,11 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 public enum EnemyType {
-    SKELETON("skeleton"), ARCHER("undead_adventurer"),
+    SKELETON("skeleton"),
+    ARCHER("undead_adventurer"),
 
-    MAGE("black_mage"), MINOS("minos");
+    MAGE("black_mage"),
+    MINOS("minos");
 
     public String textureName;
 

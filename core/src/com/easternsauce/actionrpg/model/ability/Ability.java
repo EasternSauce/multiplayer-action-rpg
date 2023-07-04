@@ -60,6 +60,8 @@ public abstract class Ability implements Entity {
                 getParams().getStateTimer().restart();
                 onCompleted(game);
             }
+        } else if (state == AbilityState.INACTIVE) {
+            game.getEventProcessor().getAbilityModelsToBeRemoved().add(getParams().getId());
         }
 
         updateTimers(delta);

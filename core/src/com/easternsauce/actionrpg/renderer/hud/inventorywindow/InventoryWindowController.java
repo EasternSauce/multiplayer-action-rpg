@@ -6,7 +6,6 @@ import com.easternsauce.actionrpg.model.action.GameStateAction;
 import com.easternsauce.actionrpg.model.action.InventoryItemUseAction;
 import com.easternsauce.actionrpg.model.action.ItemDropOnGroundAction;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;
-import com.easternsauce.actionrpg.renderer.hud.potionmenu.PotionMenuConsts;
 import com.esotericsoftware.kryonet.Client;
 import lombok.NoArgsConstructor;
 
