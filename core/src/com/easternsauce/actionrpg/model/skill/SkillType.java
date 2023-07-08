@@ -26,7 +26,7 @@ public enum SkillType {
 
     BOOMERANG("Boomerang", true, AbilityType.BOOMERANG, 6f, 30f, 0f),
 
-    SUMMON_GUARD("Shield Guard", false, AbilityType.SHIELD_GUARD, 6f, 25f, 0f),
+    SHIELD_GUARD("Shield Guard", false, AbilityType.SHIELD_GUARD, 6f, 25f, 0f),
 
     SWORD_SPIN("Sword Spin", true, AbilityType.SWORD_SPIN, 4f, 30f, 0f),
 

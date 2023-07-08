@@ -95,7 +95,7 @@ public class DropTableEntry implements Comparable<DropTableEntry> {
         rangedGrantedSkillDrops.put(SkillType.RICOCHET_BALLISTA, 100);
         rangedGrantedSkillDrops.put(SkillType.SUMMON_GHOSTS, 80);
 
-        shieldGrantedSkillDrops.put(SkillType.SUMMON_GUARD, 100);
+        shieldGrantedSkillDrops.put(SkillType.SHIELD_GUARD, 100);
 
         ironSwordGrantedSkillDrops.put(SkillType.SWORD_SPIN, 100);
 

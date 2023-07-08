@@ -110,11 +110,6 @@ public class GameEntityRenderer {
         });
         game.getGameState().accessCreatures().forEachAliveCreature(creature -> {
             if (canCreatureBeRendered(creature, game)) {
-                renderCreatureLifeBar(renderingLayer, creature, game);
-            }
-        });
-        game.getGameState().accessCreatures().forEachAliveCreature(creature -> {
-            if (canCreatureBeRendered(creature, game)) {
                 renderCreatureStunnedAnimation(creature.getId(), renderingLayer, game);
                 renderCreaturePoisonedIcon(renderingLayer, creature, game);
             }
@@ -128,11 +123,6 @@ public class GameEntityRenderer {
     @SuppressWarnings("unused")
     private void renderCreature(RenderingLayer renderingLayer, Creature creature, CoreGame game) {
         creatureRenderers.get(creature.getId()).render(renderingLayer);
-    }
-
-    private void renderCreatureLifeBar(RenderingLayer renderingLayer, Creature creature, CoreGame game) {
-        creatureRenderers.get(creature.getId()).renderLifeBar(renderingLayer, game);
-
     }
 
     private void renderCreatureStunnedAnimation(CreatureId creatureId, RenderingLayer renderingLayer, CoreGame game) {
@@ -155,6 +145,19 @@ public class GameEntityRenderer {
 
     private boolean isCreatureInCurrentlyVisibleArea(Creature creature, CoreGame game) {
         return creature.getParams().getAreaId().equals(game.getGameState().getCurrentAreaId());
+    }
+
+    public void renderCreatureLifeBars(RenderingLayer renderingLayer, CoreGame game) {
+        game.getGameState().accessCreatures().forEachAliveCreature(creature -> {
+            if (canCreatureBeRendered(creature, game)) {
+                renderCreatureLifeBar(renderingLayer, creature, game);
+            }
+        });
+    }
+
+    private void renderCreatureLifeBar(RenderingLayer renderingLayer, Creature creature, CoreGame game) {
+        creatureRenderers.get(creature.getId()).renderLifeBar(renderingLayer, game);
+
     }
 
     public void renderDeadCreatures(RenderingLayer renderingLayer, CoreGame game) {
@@ -219,7 +222,10 @@ public class GameEntityRenderer {
         damageNumbers.add(DamageNumber.of(Vector2.of(pos.getX() + xNoise, pos.getY() + yNoise),
             areaId,
             actualDamageTaken,
-            currentTime
+            currentTime,
+            Math.abs((float) Math.random()) * 0.3f + 0.7f,
+            Math.abs((float) Math.random()) * 0.6f,
+            Math.abs((float) Math.random()) * 0.6f
         ));
 
     }

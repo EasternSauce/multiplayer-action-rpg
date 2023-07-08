@@ -14,4 +14,7 @@ public class DamageNumber {
     AreaId areaId;
     Float damageValue;
     Float damageTime;
+    Float colorR;
+    Float colorG;
+    Float colorB;
 }

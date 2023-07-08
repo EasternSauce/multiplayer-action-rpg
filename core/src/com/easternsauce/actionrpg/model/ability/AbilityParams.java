@@ -79,7 +79,7 @@ public class AbilityParams implements EntityParams {
 
     @NonNull SkillType skillType;
 
-    @NonNull Boolean isHitShielded = false;
+    @NonNull Boolean isMarkedAsShielded = false;
 
     Float directionalAttachedAbilityRotationShift = null;
 

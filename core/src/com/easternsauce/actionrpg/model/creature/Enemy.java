@@ -318,11 +318,11 @@ public class Enemy extends Creature {
                 .stream()
                 .map(EnemySkillUseEntry::getSkillType)
                 .collect(Collectors.toSet())
-                .contains(SkillType.SUMMON_GUARD) &&
+                .contains(SkillType.SHIELD_GUARD) &&
                 potentialTarget.getParams().getPos().distance(getParams().getPos()) > 10f) {
                 game.getGameState().accessCreatures().handleCreatureUseSkillAtTarget(getParams().getId(),
                     vectorTowardsTarget,
-                    SkillType.SUMMON_GUARD
+                    SkillType.SHIELD_GUARD
                 );
                 getParams().getEnemyParams().getAttackCooldownTimer().restart();
             }

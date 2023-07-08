@@ -28,6 +28,8 @@ public class GameplayRenderer {
 
         renderAbilities(renderer, worldElementsRenderingLayer, game);
 
+        renderCreatureLifeBars(renderer, worldElementsRenderingLayer, game);
+
         renderCreatureHitAnimations(renderer, worldElementsRenderingLayer, game);
         renderDamageNumbers(renderer, worldTextRenderingLayer, game);
 
@@ -72,6 +74,16 @@ public class GameplayRenderer {
         worldElementsRenderingLayer.end();
     }
 
+    private void renderCreatureLifeBars(GameEntityRenderer renderer,
+                                        RenderingLayer worldElementsRenderingLayer,
+                                        CoreGame game) {
+        worldElementsRenderingLayer.begin();
+
+        renderer.renderCreatureLifeBars(worldElementsRenderingLayer, game);
+
+        worldElementsRenderingLayer.end();
+    }
+
     private void renderCreatureHitAnimations(GameEntityRenderer renderer,
                                              RenderingLayer worldElementsRenderingLayer,
                                              CoreGame game) {
@@ -82,8 +94,7 @@ public class GameplayRenderer {
             .getValue()
             .equals(game.getGameState().getCurrentAreaId().getValue())).forEach(creatureHitAnimation -> renderer
             .getCreatureHitAnimationRenderer()
-            .render(
-                creatureHitAnimation.getCreatureId(),
+            .render(creatureHitAnimation.getCreatureId(),
                 game.getGameState().getTime() - creatureHitAnimation.getHitTime(),
                 creatureHitAnimation.getVectorTowardsContactPoint(),
                 worldElementsRenderingLayer,
@@ -110,11 +121,18 @@ public class GameplayRenderer {
 
             Vector2 rescaledPos = Vector2.of(posX * Constants.PPM, posY * Constants.PPM);
 
-            Assets.renderLargeFont(
-                worldTextRenderingLayer,
+            float alpha;
+
+            if (timeElapsed < Constants.DAMAGE_NUMBER_SHOW_DURATION / 2f) {
+                alpha = 1f;
+            } else {
+                alpha = 1f - (timeElapsed / 2f) / Constants.DAMAGE_NUMBER_SHOW_DURATION;
+            }
+
+            Assets.renderLargeFont(worldTextRenderingLayer,
                 Integer.toString(damageNumber.getDamageValue().intValue()),
                 rescaledPos,
-                new Color(1f, 0f, 0f, 1f - timeElapsed / Constants.DAMAGE_NUMBER_SHOW_DURATION)
+                new Color(damageNumber.getColorR(), damageNumber.getColorG(), damageNumber.getColorB(), alpha)
             );
         });
 

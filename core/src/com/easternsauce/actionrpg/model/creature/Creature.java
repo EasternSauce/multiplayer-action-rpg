@@ -234,12 +234,13 @@ public abstract class Creature implements Entity {
         return skills;
     }
 
-    public boolean isAbilityShielded(Ability ability, CoreGame game) {
+    public boolean isMeleeAbilityShielded(Ability ability, CoreGame game) {
         if (!ability.isRanged() && ability.isBlockable()) { // check if target is pointing shield at the attack
             // TODO: if don't have shield ability return false
             Ability shieldAbility = game.getGameState().accessAbilities().getAbilityBySkillType(getParams().getId(),
-                SkillType.SUMMON_GUARD
+                SkillType.SHIELD_GUARD
             );
+
             if (shieldAbility != null && shieldAbility.getParams().getState() == AbilityState.ACTIVE) {
                 float angleDiff = (ability.getParams().getDirVector().angleDeg() -
                     shieldAbility.getParams().getDirVector().multiplyBy(-1).angleDeg() + 180 + 360) % 360 - 180;

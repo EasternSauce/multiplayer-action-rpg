@@ -17,18 +17,20 @@ public class RandomGenerator {
     }
 
     public int nextInt() {
-        RandomHolder.getRandom().setSeed(smear(startingSeed - counter));
+        RandomHolder.getRandom().setSeed(hash(startingSeed - counter));
         counter = counter + 1;
         return RandomHolder.getRandom().nextInt();
     }
 
-    static int smear(int hashCode) {
-        hashCode ^= (hashCode >>> 20) ^ (hashCode >>> 12);
-        return hashCode ^ (hashCode >>> 7) ^ (hashCode >>> 4);
+    public static int hash(int a) {
+        a ^= (a << 13);
+        a ^= (a >>> 17);
+        a ^= (a << 5);
+        return a;
     }
 
     public float nextFloat() {
-        RandomHolder.getRandom().setSeed(smear(startingSeed - counter));
+        RandomHolder.getRandom().setSeed(hash(startingSeed - counter));
         counter = counter + 1;
         return RandomHolder.getRandom().nextFloat();
     }

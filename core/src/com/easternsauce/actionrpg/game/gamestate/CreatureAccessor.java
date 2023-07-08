@@ -118,10 +118,8 @@ public class CreatureAccessor {
         // TODO: pick subset of skill use entries based on distance to enemy
         skillUseEntries.forEach(skillUseEntry -> totalWeight.set(totalWeight.get() + skillUseEntry.getWeight()));
 
-        AtomicReference<Float> randValue = new AtomicReference<>(Math.abs(game
-            .getGameState()
-            .getRandomGenerator()
-            .nextFloat()) * totalWeight.get());
+        float randFloat = Math.abs(game.getGameState().getRandomGenerator().nextFloat());
+        AtomicReference<Float> randValue = new AtomicReference<>(randFloat * totalWeight.get());
 
         AtomicReference<SkillType> pickedSkillType = new AtomicReference<>(null);
 

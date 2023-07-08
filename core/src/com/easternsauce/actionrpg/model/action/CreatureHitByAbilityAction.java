@@ -6,6 +6,7 @@ import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
+import com.easternsauce.actionrpg.model.creature.Player;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -41,12 +42,22 @@ public class CreatureHitByAbilityAction extends CreatureHitAction {
             return;
         }
 
-        boolean isShielded = targetCreature.isAbilityShielded(ability, game);
-
         Float damage = ability.getDamage(game);
 
-        if (!isShielded && !ability.getParams().getIsHitShielded() && damage > 0f) {
-            targetCreature.takeLifeDamage(damage, contactPoint, game);
+        boolean isMeleeAbilityShielded = targetCreature.isMeleeAbilityShielded(ability, game);
+        boolean isMarkedAsShielded = ability.getParams().getIsMarkedAsShielded();
+        boolean isShielded = isMarkedAsShielded || isMeleeAbilityShielded;
+
+        if (!(isShielded && targetCreature instanceof Player) && damage > 0f) {
+            float realDamage;
+
+            if (isShielded) {
+                realDamage = damage / 4f;
+            } else {
+                realDamage = damage;
+            }
+
+            targetCreature.takeLifeDamage(realDamage, contactPoint, game);
 
             if (ability.isCanStun()) {
                 targetCreature.applyEffect(CreatureEffect.STUN, ability.getStunDuration(), game);

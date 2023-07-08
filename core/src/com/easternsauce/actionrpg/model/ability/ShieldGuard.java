@@ -82,7 +82,7 @@ public class ShieldGuard extends DirectionalAttachedAbility {
             if ((creature instanceof Player && abilityOwner instanceof Enemy ||
                 creature instanceof Enemy && abilityOwner instanceof Player) && otherAbility.isRanged()) {
                 if (otherAbility.isBlockable()) {
-                    otherAbility.getParams().setIsHitShielded(true);
+                    otherAbility.getParams().setIsMarkedAsShielded(true);
                 }
 
                 if (otherAbility instanceof RicochetBullet) {
@@ -91,7 +91,9 @@ public class ShieldGuard extends DirectionalAttachedAbility {
                 } else if (otherAbility instanceof Boomerang) {
                     otherAbility.onCreatureHit(getParams().getCreatureId(), game);
                 } else {
-                    otherAbility.deactivate();
+                    if (!(abilityOwner instanceof Player)) {
+                        otherAbility.deactivate();
+                    }
                 }
 
             }
