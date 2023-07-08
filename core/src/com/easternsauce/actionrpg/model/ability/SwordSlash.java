@@ -13,6 +13,7 @@ public class SwordSlash extends DirectionalAttachedAbility {
 
     public static SwordSlash of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         SwordSlash ability = SwordSlash.of();
+
         ability.params = abilityParams
             .setWidth(2.5f)
             .setHeight(2.5f)

@@ -5,7 +5,7 @@ import com.easternsauce.actionrpg.model.action.GameStateAction;
 import com.easternsauce.actionrpg.model.area.*;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;
-import com.easternsauce.actionrpg.util.RandomHelper;
+import com.easternsauce.actionrpg.model.util.RandomGenerator;
 
 import java.util.Map;
 import java.util.Set;
@@ -51,14 +51,6 @@ public abstract class GameState {
         return getData().getAreaGates();
     }
 
-    public Float nextRandomValue() {
-        float result = RandomHelper.seededRandomFloat(getData().getLastRandomValue());
-
-        getData().setLastRandomValue(result);
-
-        return result;
-    }
-
     public AbilityAccessor accessAbilities() {
         return abilityAccessor;
     }
@@ -83,4 +75,12 @@ public abstract class GameState {
     public abstract CreatureId getThisClientPlayerId();
 
     public abstract AreaId getCurrentAreaId();
+
+    public RandomGenerator getRandomGenerator() {
+        return getData().getRandomGenerator();
+    }
+
+    public void setRandomGenerator(RandomGenerator randomGenerator) {
+        getData().setRandomGenerator(randomGenerator);
+    }
 }

@@ -64,15 +64,22 @@ public class InitialStateLoader {
 
         enemySpawns1.forEach(enemySpawn -> {
             CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 10000000));
-            game.getEntityManager().spawnEnemy(enemyId, areaId, enemySpawn, game);
-            server.sendToAllTCP(EnemySpawnCommand.of(enemyId, areaId, enemySpawn)); // TODO: use actions instead
+            int rngSeed = game.getGameState().getRandomGenerator().nextInt();
+            game.getEntityManager().spawnEnemy(enemyId, areaId, enemySpawn, rngSeed, game);
+            server.sendToAllTCP(EnemySpawnCommand.of(enemyId,
+                areaId,
+                enemySpawn,
+                rngSeed
+            )); // TODO: use actions instead
         });
 
         List<EnemySpawn> enemySpawns3 = EnemySpawnUtils.area3EnemySpawns();
         enemySpawns3.forEach(enemySpawn -> {
             CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 10000000));
-            game.getEntityManager().spawnEnemy(enemyId, AreaId.of("area3"), enemySpawn, game);
-            server.sendToAllTCP(EnemySpawnCommand.of(enemyId, AreaId.of("area3"), enemySpawn));
+            int rngSeed = game.getGameState().getRandomGenerator().nextInt();
+            game.getEntityManager().spawnEnemy(enemyId, AreaId.of("area3"), enemySpawn, rngSeed, game);
+            server.sendToAllTCP(EnemySpawnCommand.of(enemyId, AreaId.of("area3"), enemySpawn, rngSeed));
         });
+
     }
 }

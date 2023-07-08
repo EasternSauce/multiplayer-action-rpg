@@ -14,5 +14,6 @@ public class EnemySpawnCommand implements GameCommand {
     CreatureId creatureId;
     AreaId areaId;
     EnemySpawn enemySpawn;
+    Integer rngSeed;
 
 }

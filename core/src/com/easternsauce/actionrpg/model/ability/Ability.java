@@ -5,6 +5,7 @@ import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.creature.Player;
+import com.easternsauce.actionrpg.model.util.RandomGenerator;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.renderer.animationconfig.AbilityAnimationConfig;
 import lombok.Data;
@@ -112,6 +113,8 @@ public abstract class Ability implements Entity {
             if (creature instanceof Player) {
                 getParams().setIsPlayerAbility(true);
             }
+
+            getParams().setRandomGenerator(RandomGenerator.of(creature.getParams().getRandomGenerator().nextInt()));
         }
     }
 

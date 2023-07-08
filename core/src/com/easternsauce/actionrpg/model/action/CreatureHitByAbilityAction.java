@@ -52,7 +52,7 @@ public class CreatureHitByAbilityAction extends CreatureHitAction {
                 targetCreature.applyEffect(CreatureEffect.STUN, ability.getStunDuration(), game);
             }
 
-            targetCreature.onBeingHit(ability);
+            targetCreature.onBeingHit(ability, game);
         }
 
         handleCreatureDeath(targetCreature, attackerCreature, game);

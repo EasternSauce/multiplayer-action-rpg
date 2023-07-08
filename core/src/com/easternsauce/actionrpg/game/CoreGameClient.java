@@ -26,6 +26,7 @@ import com.easternsauce.actionrpg.renderer.hud.inventorywindow.PotionMenuControl
 import com.easternsauce.actionrpg.renderer.hud.itempickupmenu.ItemPickupMenuController;
 import com.easternsauce.actionrpg.renderer.hud.skillmenu.SkillMenuController;
 import com.easternsauce.actionrpg.util.Constants;
+import com.easternsauce.actionrpg.util.RandomHolder;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -188,7 +189,8 @@ public class CoreGameClient extends CoreGame {
                 areaId,
                 enemySpawn.setPos(Vector2.of(enemySpawn.getPos().getX() + (float) Math.random(),
                     enemySpawn.getPos().getY() + (float) Math.random()
-                ))
+                )),
+                RandomHolder.getRandom().nextInt()
             ));
         });
     }
@@ -420,6 +422,7 @@ public class CoreGameClient extends CoreGame {
                     getEntityManager().spawnEnemy(command.getCreatureId(),
                         command.getAreaId(),
                         command.getEnemySpawn(),
+                        command.getRngSeed(),
                         CoreGameClient.this
                     );
                 }

@@ -10,7 +10,6 @@ import com.easternsauce.actionrpg.model.util.WorldDirection;
 import com.easternsauce.actionrpg.physics.pathing.Astar;
 import com.easternsauce.actionrpg.physics.pathing.AstarResult;
 import com.easternsauce.actionrpg.util.Constants;
-import com.easternsauce.actionrpg.util.RandomHelper;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -27,8 +26,8 @@ import java.util.stream.Collectors;
 public class Enemy extends Creature {
     private CreatureParams params;
 
-    public static Enemy of(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn) {
-        CreatureParams params = CreatureParams.of(creatureId, areaId, enemySpawn);
+    public static Enemy of(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn, int rngSeed) {
+        CreatureParams params = CreatureParams.of(creatureId, areaId, enemySpawn, rngSeed);
 
         params.setDropTable(enemySpawn.getEnemyTemplate().getDropTable());
         params.getStats().setBaseSpeed(11f);
@@ -36,9 +35,8 @@ public class Enemy extends Creature {
         params.getStats().setLife(enemySpawn.getEnemyTemplate().getMaxLife());
 
         params.setEnemyParams(EnemyParams.of());
-        params.getEnemyParams().setFindTargetCooldown(0.5f + (float) Math.random());
-        params.getEnemyParams().setPathCalculationCooldown(4f + 2f * (float) Math.random());
-        params.getEnemyParams().setAutoControlStateRngSeed((float) Math.random());
+        params.getEnemyParams().setFindTargetCooldown(0.5f + Math.abs(params.getRandomGenerator().nextFloat()));
+        params.getEnemyParams().setPathCalculationCooldown(4f + 2f * Math.abs(params.getRandomGenerator().nextFloat()));
         params.getEnemyParams().setAutoControlStateTime(0f);
 
         params.setRespawnTime(120f);
@@ -49,272 +47,6 @@ public class Enemy extends Creature {
         Enemy enemy = Enemy.of();
         enemy.params = params;
         return enemy;
-    }
-
-    public CreatureId findTarget(CoreGame game) {
-        Float minDistance = Float.MAX_VALUE;
-        CreatureId minCreatureId = null;
-        for (Creature creature : game.getGameState().accessCreatures().getCreatures().values()) {
-            boolean condition = creature.isAlive() &&
-                creature.getParams().getAreaId().getValue().equals(getParams()
-                    .getAreaId()
-                    .getValue()) &&
-                creature instanceof Player &&
-                creature.getParams().getPos().distance(getParams().getPos()) < Constants.ENEMY_SEARCH_DISTANCE &&
-                game.isLineBetweenPointsUnobstructedByTerrain(this.getParams().getAreaId(),
-                    this.getParams().getPos(),
-                    creature.getParams().getPos()
-                );
-
-            if (condition && getParams().getPos().distance(creature.getParams().getPos()) < minDistance) {
-                minCreatureId = creature.getId();
-                minDistance = getParams().getPos().distance(creature.getParams().getPos());
-            }
-        }
-        return minCreatureId;
-
-    }
-
-    private void handleAimDirectionAdjustment(Vector2 vectorTowardsTarget) {
-        getParams().getMovementParams().setAimDirection(vectorTowardsTarget.normalized());
-    }
-
-    private void processAutoControlStateChangeLogic(CoreGame game) {
-        if (getParams().getEnemyParams().getTargetCreatureId() == null) {
-            return;
-        }
-        if (getParams().getEnemyParams().getAutoControlState() == EnemyAutoControlState.ALERTED) {
-            Vector2 targetPos = game.getGameState().accessCreatures().getCreaturePos(getParams()
-                .getEnemyParams()
-                .getTargetCreatureId());
-
-            if (targetPos != null) {
-                Vector2 vectorTowards = targetPos.vectorTowards(this.getParams().getPos());
-
-                Vector2 defensivePos = targetPos.add(vectorTowards
-                    .normalized()
-                    .multiplyBy(Constants.DEFENSIVE_POS_DISTANCE));
-
-                getParams().getEnemyParams().setCurrentDefensivePos(Vector2.of(defensivePos.getX() +
-                        4f * nextAutoControlStateRngNegativeOrPositiveValue(),
-                    defensivePos.getY() + 4f * nextAutoControlStateRngNegativeOrPositiveValue()
-                ));
-            }
-
-            if (nextAutoControlStateRngValue() < 0.3f) {
-                getParams().getEnemyParams().setAutoControlState(EnemyAutoControlState.AGGRESSIVE);
-            }
-        } else if (getParams().getEnemyParams().getAutoControlState() == EnemyAutoControlState.AGGRESSIVE) {
-            if (nextAutoControlStateRngValue() < 0.5f) {
-                getParams().getEnemyParams().setAutoControlState(EnemyAutoControlState.KEEPING_DISTANCE);
-
-            }
-        } else if (getParams().getEnemyParams().getAutoControlState() == EnemyAutoControlState.KEEPING_DISTANCE) {
-            Vector2 targetPos = game.getGameState().accessCreatures().getCreaturePos(getParams()
-                .getEnemyParams()
-                .getTargetCreatureId());
-
-            if (targetPos != null) {
-                Vector2 vectorTowards = targetPos.vectorTowards(this.getParams().getPos());
-
-                Vector2 backUpPos = targetPos.add(vectorTowards
-                    .normalized()
-                    .multiplyBy(getParams().getEnemyParams().getAttackDistance() + Constants.BACK_UP_DISTANCE));
-
-                getParams().getEnemyParams().setCurrentDefensivePos(Vector2.of(backUpPos.getX() +
-                        nextAutoControlStateRngNegativeOrPositiveValue(),
-                    backUpPos.getY() + nextAutoControlStateRngNegativeOrPositiveValue()
-                ));
-
-                if (nextAutoControlStateRngValue() < 0.5f) {
-                    getParams().getEnemyParams().setAutoControlState(EnemyAutoControlState.AGGRESSIVE);
-                }
-            }
-        }
-
-    }
-
-    private void handleAutoControlStateTargetDistanceLogic(Creature potentialTarget) {
-        Float distanceToTarget = getParams().getPos().distance(potentialTarget.getParams().getPos());
-
-        if (getParams().getEnemyParams().getJustAttackedFromRangeTimer().getTime() >=
-            Constants.JUST_ATTACKED_FROM_RANGE_AGGRESSION_TIME) {
-            if ((getParams().getEnemyParams().getAutoControlState() == EnemyAutoControlState.AGGRESSIVE ||
-                getParams().getEnemyParams().getAutoControlState() == EnemyAutoControlState.KEEPING_DISTANCE) &&
-                distanceToTarget > Constants.TURN_ALERTED_DISTANCE) {
-                getParams().getEnemyParams().setAutoControlState(EnemyAutoControlState.ALERTED);
-
-            } else if (getParams().getEnemyParams().getAutoControlState() == EnemyAutoControlState.ALERTED &&
-                distanceToTarget < Constants.TURN_AGGRESSIVE_DISTANCE) {
-                getParams().getEnemyParams().setAutoControlState(EnemyAutoControlState.AGGRESSIVE);
-            }
-
-        }
-
-    }
-
-    private void processPathfinding(CoreGame game) {
-        boolean isPathfindingAllowed = game.isPathfindingCalculatedForCreature(this) &&
-            getParams().getEnemyParams().getTargetCreatureId() != null &&
-            (getParams().getEnemyParams().getForcePathCalculation() ||
-                getParams().getEnemyParams().getPathCalculationCooldownTimer().getTime() >
-                    getParams().getEnemyParams().getPathCalculationCooldown());
-
-        if (isPathfindingAllowed) {
-            Creature target = game.getGameState().accessCreatures().getCreature(getParams()
-                .getEnemyParams()
-                .getTargetCreatureId());
-
-            if (target != null && !game.isLineBetweenPointsUnobstructedByTerrain(getParams().getAreaId(),
-                getParams().getPos(),
-                target.getParams().getPos()
-            )) {
-                List<Vector2> mirroredPath = mirrorPathFromNearbyCreature(getParams()
-                    .getEnemyParams()
-                    .getTargetCreatureId(), game);
-
-                List<Vector2> path;
-
-                if (mirroredPath != null) {
-                    path = mirroredPath;
-                    this.getParams().getEnemyParams().setIsPathMirrored(true);
-                } else {
-                    AstarResult result = Astar.findPath(game.getPhysicsWorld(getParams().getAreaId()),
-                        getParams().getPos(),
-                        target.getParams().getPos(),
-                        this.capability()
-                    );
-                    path = result.getPath();
-
-                    this.getParams().getEnemyParams().setIsPathMirrored(false);
-                }
-
-                getParams().getEnemyParams().setPathTowardsTarget(path);
-
-                getParams().getEnemyParams().getPathCalculationCooldownTimer().restart();
-                getParams().getEnemyParams().setForcePathCalculation(false);
-            } else {
-                getParams().getEnemyParams().setPathTowardsTarget(null);
-            }
-        }
-    }
-
-    private List<Vector2> mirrorPathFromNearbyCreature(CreatureId targetId, CoreGame game) {
-
-        Predicate<Creature> creaturePredicate = creature -> creature instanceof Enemy &&
-            creature.getParams().getPos().distance(this.getParams().getPos()) < 4f &&
-            !creature.getId().equals(this.getParams().getId()) &&
-            creature.getParams().getEnemyParams().getPathTowardsTarget() != null &&
-            !creature.getParams().getEnemyParams().getIsPathMirrored() &&
-            creature.getParams().getEnemyParams().getTargetCreatureId() != null &&
-            creature.getParams().getEnemyParams().getTargetCreatureId().equals(targetId) &&
-            creature.getParams().getEnemyParams().getPathCalculationCooldownTimer().getTime() < 0.5f;
-
-        Optional<Creature> otherCreature = game
-            .getGameState()
-            .accessCreatures()
-            .getCreatures()
-            .values()
-            .stream()
-            .filter(creaturePredicate)
-            .findFirst();
-
-        return otherCreature.map(creature -> creature.getParams().getEnemyParams().getPathTowardsTarget()).orElse(null);
-
-    }
-
-    public void handleNewTarget(CreatureId potentialTargetId) {
-        if (getParams().getEnemyParams().getTargetCreatureId() == null ||
-            !getParams().getEnemyParams().getTargetCreatureId().equals(potentialTargetId)) {
-            getParams().getEnemyParams().setForcePathCalculation(true);
-            getParams().getEnemyParams().setTargetCreatureId(potentialTargetId);
-            getParams().getEnemyParams().setPathTowardsTarget(null);
-        }
-    }
-
-    public void handleMovement(Creature potentialTarget) {
-        Float distance = getParams().getPos().distance(potentialTarget.getParams().getPos());
-
-        if (getParams().getEnemyParams().getPathTowardsTarget() != null &&
-            !getParams().getEnemyParams().getPathTowardsTarget().isEmpty()) { // path is available
-            List<Vector2> path = getParams().getEnemyParams().getPathTowardsTarget();
-            Vector2 nextNodeOnPath = path.get(0);
-            if (getParams().getPos().distance(nextNodeOnPath) < 1f) {
-                List<Vector2> changedPath = new LinkedList<>(path);
-                changedPath.remove(0);
-                getParams().getEnemyParams().setPathTowardsTarget(changedPath);
-            } else {
-                moveTowards(nextNodeOnPath);
-            }
-        } else {
-            processAutoControlStateMovementLogic(potentialTarget, distance);
-        }
-
-    }
-
-    private void processAutoControlStateMovementLogic(Creature potentialTarget, Float distance) {
-        if (getParams().getEnemyParams().getAutoControlState() == EnemyAutoControlState.AGGRESSIVE) {
-            if (distance > getParams().getEnemyParams().getAttackDistance() - 1f) {
-                getParams().getStats().setSpeed(getParams().getStats().getBaseSpeed());
-                moveTowards(potentialTarget.getParams().getPos());
-            } else { // if no path or distance is small, then stop moving
-                stopMoving();
-            }
-        } else if (getParams().getEnemyParams().getAutoControlState() == EnemyAutoControlState.ALERTED) {
-            getParams().getStats().setSpeed(getParams().getStats().getBaseSpeed() / 3);
-            if (getParams().getEnemyParams().getCurrentDefensivePos() != null) {
-                moveTowards(getParams().getEnemyParams().getCurrentDefensivePos());
-            }
-        } else if (getParams().getEnemyParams().getAutoControlState() == EnemyAutoControlState.KEEPING_DISTANCE) {
-            getParams().getStats().setSpeed(getParams().getStats().getBaseSpeed() / 2);
-            if (getParams().getEnemyParams().getCurrentDefensivePos() != null) {
-                moveTowards(getParams().getEnemyParams().getCurrentDefensivePos());
-            }
-        } else {
-            stopMoving();
-        }
-    }
-
-    public void handleUseAbilityAtTarget(Creature potentialTarget, Vector2 vectorTowardsTarget, CoreGame game) {
-        if (getParams().getEnemyParams().getAttackCooldownTimer().getTime() > Constants.ENEMY_ATTACK_COOLDOWN_TIMER) {
-            if (potentialTarget.getParams().getPos().distance(getParams().getPos()) <
-                getParams().getEnemyParams().getAttackDistance()) {
-                game.getGameState().accessCreatures().handleCreatureUseRandomSkillAtTarget(getParams().getId(),
-                    vectorTowardsTarget
-                );
-                getParams().getEnemyParams().getAttackCooldownTimer().restart();
-            } else if (getParams()
-                .getEnemyParams()
-                .getSkillUses()
-                .stream()
-                .map(EnemySkillUseEntry::getSkillType)
-                .collect(Collectors.toSet())
-                .contains(SkillType.SUMMON_GUARD) &&
-                potentialTarget.getParams().getPos().distance(getParams().getPos()) > 10f) {
-                game.getGameState().accessCreatures().handleCreatureUseSkillAtTarget(getParams().getId(),
-                    vectorTowardsTarget,
-                    SkillType.SUMMON_GUARD
-                );
-                getParams().getEnemyParams().getAttackCooldownTimer().restart();
-            }
-        }
-    }
-
-    public void handleTargetLost() {
-        getParams().getEnemyParams().setAggroedCreatureId(null);
-        getParams().getEnemyParams().setTargetCreatureId(null);
-        getParams().getEnemyParams().setJustAttackedByCreatureId(null);
-        getParams().getEnemyParams().setLastFoundTargetId(null);
-        getParams().getEnemyParams().setAutoControlState(EnemyAutoControlState.RESTING);
-
-        stopMoving();
-    }
-
-    public Float nextAutoControlStateRngNegativeOrPositiveValue() {
-        getParams().getEnemyParams().setAutoControlStateRngSeed(RandomHelper.seededRandomFloat(getParams()
-            .getEnemyParams()
-            .getAutoControlStateRngSeed()));
-        return (getParams().getEnemyParams().getAutoControlStateRngSeed() - 0.5f) * 2;
     }
 
     @Override
@@ -367,7 +99,8 @@ public class Enemy extends Creature {
 
                 processAutoControlStateChangeLogic(game);
 
-                getParams().getEnemyParams().setAutoControlStateTime(1f + 1f * nextAutoControlStateRngValue());
+                getParams().getEnemyParams().setAutoControlStateTime(1f +
+                    Math.abs(game.getGameState().getRandomGenerator().nextFloat()));
             }
 
             if (getParams().getEnemyParams().getJustAttackedByCreatureId() != null &&
@@ -439,6 +172,266 @@ public class Enemy extends Creature {
         }
     }
 
+    private void processAutoControlStateChangeLogic(CoreGame game) {
+        if (getParams().getEnemyParams().getTargetCreatureId() == null) {
+            return;
+        }
+        if (getParams().getEnemyParams().getAutoControlState() == EnemyAutoControlState.ALERTED) {
+            Vector2 targetPos = game.getGameState().accessCreatures().getCreaturePos(getParams()
+                .getEnemyParams()
+                .getTargetCreatureId());
+
+            if (targetPos != null) {
+                Vector2 vectorTowards = targetPos.vectorTowards(this.getParams().getPos());
+
+                Vector2 defensivePos = targetPos.add(vectorTowards
+                    .normalized()
+                    .multiplyBy(Constants.DEFENSIVE_POS_DISTANCE));
+
+                getParams().getEnemyParams().setCurrentDefensivePos(Vector2.of(defensivePos.getX() +
+                        4f * game.getGameState().getRandomGenerator().nextFloat(),
+                    defensivePos.getY() + 4f * game.getGameState().getRandomGenerator().nextFloat()
+                ));
+            }
+
+            if (Math.abs(game.getGameState().getRandomGenerator().nextFloat()) < 0.3f) {
+                getParams().getEnemyParams().setAutoControlState(EnemyAutoControlState.AGGRESSIVE);
+            }
+        } else if (getParams().getEnemyParams().getAutoControlState() == EnemyAutoControlState.AGGRESSIVE) {
+            if (Math.abs(game.getGameState().getRandomGenerator().nextFloat()) < 0.5f) {
+                getParams().getEnemyParams().setAutoControlState(EnemyAutoControlState.KEEPING_DISTANCE);
+
+            }
+        } else if (getParams().getEnemyParams().getAutoControlState() == EnemyAutoControlState.KEEPING_DISTANCE) {
+            Vector2 targetPos = game.getGameState().accessCreatures().getCreaturePos(getParams()
+                .getEnemyParams()
+                .getTargetCreatureId());
+
+            if (targetPos != null) {
+                Vector2 vectorTowards = targetPos.vectorTowards(this.getParams().getPos());
+
+                Vector2 backUpPos = targetPos.add(vectorTowards
+                    .normalized()
+                    .multiplyBy(getParams().getEnemyParams().getAttackDistance() + Constants.BACK_UP_DISTANCE));
+
+                getParams().getEnemyParams().setCurrentDefensivePos(Vector2.of(backUpPos.getX() +
+                        game.getGameState().getRandomGenerator().nextFloat(),
+                    backUpPos.getY() + game.getGameState().getRandomGenerator().nextFloat()
+                ));
+
+                if (Math.abs(game.getGameState().getRandomGenerator().nextFloat()) < 0.5f) {
+                    getParams().getEnemyParams().setAutoControlState(EnemyAutoControlState.AGGRESSIVE);
+                }
+            }
+        }
+
+    }
+
+    public CreatureId findTarget(CoreGame game) {
+        Float minDistance = Float.MAX_VALUE;
+        CreatureId minCreatureId = null;
+        for (Creature creature : game.getGameState().accessCreatures().getCreatures().values()) {
+            boolean condition = creature.isAlive() &&
+                creature.getParams().getAreaId().getValue().equals(getParams()
+                    .getAreaId()
+                    .getValue()) &&
+                creature instanceof Player &&
+                creature.getParams().getPos().distance(getParams().getPos()) < Constants.ENEMY_SEARCH_DISTANCE &&
+                game.isLineBetweenPointsUnobstructedByTerrain(this.getParams().getAreaId(),
+                    this.getParams().getPos(),
+                    creature.getParams().getPos()
+                );
+
+            if (condition && getParams().getPos().distance(creature.getParams().getPos()) < minDistance) {
+                minCreatureId = creature.getId();
+                minDistance = getParams().getPos().distance(creature.getParams().getPos());
+            }
+        }
+        return minCreatureId;
+
+    }
+
+    private void handleAutoControlStateTargetDistanceLogic(Creature potentialTarget) {
+        Float distanceToTarget = getParams().getPos().distance(potentialTarget.getParams().getPos());
+
+        if (getParams().getEnemyParams().getJustAttackedFromRangeTimer().getTime() >=
+            Constants.JUST_ATTACKED_FROM_RANGE_AGGRESSION_TIME) {
+            if ((getParams().getEnemyParams().getAutoControlState() == EnemyAutoControlState.AGGRESSIVE ||
+                getParams().getEnemyParams().getAutoControlState() == EnemyAutoControlState.KEEPING_DISTANCE) &&
+                distanceToTarget > Constants.TURN_ALERTED_DISTANCE) {
+                getParams().getEnemyParams().setAutoControlState(EnemyAutoControlState.ALERTED);
+
+            } else if (getParams().getEnemyParams().getAutoControlState() == EnemyAutoControlState.ALERTED &&
+                distanceToTarget < Constants.TURN_AGGRESSIVE_DISTANCE) {
+                getParams().getEnemyParams().setAutoControlState(EnemyAutoControlState.AGGRESSIVE);
+            }
+
+        }
+
+    }
+
+    public void handleNewTarget(CreatureId potentialTargetId) {
+        if (getParams().getEnemyParams().getTargetCreatureId() == null ||
+            !getParams().getEnemyParams().getTargetCreatureId().equals(potentialTargetId)) {
+            getParams().getEnemyParams().setForcePathCalculation(true);
+            getParams().getEnemyParams().setTargetCreatureId(potentialTargetId);
+            getParams().getEnemyParams().setPathTowardsTarget(null);
+        }
+    }
+
+    public void handleMovement(Creature potentialTarget) {
+        Float distance = getParams().getPos().distance(potentialTarget.getParams().getPos());
+
+        if (getParams().getEnemyParams().getPathTowardsTarget() != null &&
+            !getParams().getEnemyParams().getPathTowardsTarget().isEmpty()) { // path is available
+            List<Vector2> path = getParams().getEnemyParams().getPathTowardsTarget();
+            Vector2 nextNodeOnPath = path.get(0);
+            if (getParams().getPos().distance(nextNodeOnPath) < 1f) {
+                List<Vector2> changedPath = new LinkedList<>(path);
+                changedPath.remove(0);
+                getParams().getEnemyParams().setPathTowardsTarget(changedPath);
+            } else {
+                moveTowards(nextNodeOnPath);
+            }
+        } else {
+            processAutoControlStateMovementLogic(potentialTarget, distance);
+        }
+
+    }
+
+    private void handleAimDirectionAdjustment(Vector2 vectorTowardsTarget) {
+        getParams().getMovementParams().setAimDirection(vectorTowardsTarget.normalized());
+    }
+
+    public void handleUseAbilityAtTarget(Creature potentialTarget, Vector2 vectorTowardsTarget, CoreGame game) {
+        if (getParams().getEnemyParams().getAttackCooldownTimer().getTime() > Constants.ENEMY_ATTACK_COOLDOWN_TIMER) {
+            if (potentialTarget.getParams().getPos().distance(getParams().getPos()) <
+                getParams().getEnemyParams().getAttackDistance()) {
+                game.getGameState().accessCreatures().handleCreatureUseRandomSkillAtTarget(getParams().getId(),
+                    vectorTowardsTarget,
+                    game
+                );
+                getParams().getEnemyParams().getAttackCooldownTimer().restart();
+            } else if (getParams()
+                .getEnemyParams()
+                .getSkillUses()
+                .stream()
+                .map(EnemySkillUseEntry::getSkillType)
+                .collect(Collectors.toSet())
+                .contains(SkillType.SUMMON_GUARD) &&
+                potentialTarget.getParams().getPos().distance(getParams().getPos()) > 10f) {
+                game.getGameState().accessCreatures().handleCreatureUseSkillAtTarget(getParams().getId(),
+                    vectorTowardsTarget,
+                    SkillType.SUMMON_GUARD
+                );
+                getParams().getEnemyParams().getAttackCooldownTimer().restart();
+            }
+        }
+    }
+
+    public void handleTargetLost() {
+        getParams().getEnemyParams().setAggroedCreatureId(null);
+        getParams().getEnemyParams().setTargetCreatureId(null);
+        getParams().getEnemyParams().setJustAttackedByCreatureId(null);
+        getParams().getEnemyParams().setLastFoundTargetId(null);
+        getParams().getEnemyParams().setAutoControlState(EnemyAutoControlState.RESTING);
+
+        stopMoving();
+    }
+
+    private void processPathfinding(CoreGame game) {
+        boolean isPathfindingAllowed = game.isPathfindingCalculatedForCreature(this) &&
+            getParams().getEnemyParams().getTargetCreatureId() != null &&
+            (getParams().getEnemyParams().getForcePathCalculation() ||
+                getParams().getEnemyParams().getPathCalculationCooldownTimer().getTime() >
+                    getParams().getEnemyParams().getPathCalculationCooldown());
+
+        if (isPathfindingAllowed) {
+            Creature target = game.getGameState().accessCreatures().getCreature(getParams()
+                .getEnemyParams()
+                .getTargetCreatureId());
+
+            if (target != null && !game.isLineBetweenPointsUnobstructedByTerrain(getParams().getAreaId(),
+                getParams().getPos(),
+                target.getParams().getPos()
+            )) {
+                List<Vector2> mirroredPath = mirrorPathFromNearbyCreature(getParams()
+                    .getEnemyParams()
+                    .getTargetCreatureId(), game);
+
+                List<Vector2> path;
+
+                if (mirroredPath != null) {
+                    path = mirroredPath;
+                    this.getParams().getEnemyParams().setIsPathMirrored(true);
+                } else {
+                    AstarResult result = Astar.findPath(game.getPhysicsWorld(getParams().getAreaId()),
+                        getParams().getPos(),
+                        target.getParams().getPos(),
+                        this.capability()
+                    );
+                    path = result.getPath();
+
+                    this.getParams().getEnemyParams().setIsPathMirrored(false);
+                }
+
+                getParams().getEnemyParams().setPathTowardsTarget(path);
+
+                getParams().getEnemyParams().getPathCalculationCooldownTimer().restart();
+                getParams().getEnemyParams().setForcePathCalculation(false);
+            } else {
+                getParams().getEnemyParams().setPathTowardsTarget(null);
+            }
+        }
+    }
+
+    private void processAutoControlStateMovementLogic(Creature potentialTarget, Float distance) {
+        if (getParams().getEnemyParams().getAutoControlState() == EnemyAutoControlState.AGGRESSIVE) {
+            if (distance > getParams().getEnemyParams().getAttackDistance() - 1f) {
+                getParams().getStats().setSpeed(getParams().getStats().getBaseSpeed());
+                moveTowards(potentialTarget.getParams().getPos());
+            } else { // if no path or distance is small, then stop moving
+                stopMoving();
+            }
+        } else if (getParams().getEnemyParams().getAutoControlState() == EnemyAutoControlState.ALERTED) {
+            getParams().getStats().setSpeed(getParams().getStats().getBaseSpeed() / 3);
+            if (getParams().getEnemyParams().getCurrentDefensivePos() != null) {
+                moveTowards(getParams().getEnemyParams().getCurrentDefensivePos());
+            }
+        } else if (getParams().getEnemyParams().getAutoControlState() == EnemyAutoControlState.KEEPING_DISTANCE) {
+            getParams().getStats().setSpeed(getParams().getStats().getBaseSpeed() / 2);
+            if (getParams().getEnemyParams().getCurrentDefensivePos() != null) {
+                moveTowards(getParams().getEnemyParams().getCurrentDefensivePos());
+            }
+        } else {
+            stopMoving();
+        }
+    }
+
+    private List<Vector2> mirrorPathFromNearbyCreature(CreatureId targetId, CoreGame game) {
+
+        Predicate<Creature> creaturePredicate = creature -> creature instanceof Enemy &&
+            creature.getParams().getPos().distance(this.getParams().getPos()) < 4f &&
+            !creature.getId().equals(this.getParams().getId()) &&
+            creature.getParams().getEnemyParams().getPathTowardsTarget() != null &&
+            !creature.getParams().getEnemyParams().getIsPathMirrored() &&
+            creature.getParams().getEnemyParams().getTargetCreatureId() != null &&
+            creature.getParams().getEnemyParams().getTargetCreatureId().equals(targetId) &&
+            creature.getParams().getEnemyParams().getPathCalculationCooldownTimer().getTime() < 0.5f;
+
+        Optional<Creature> otherCreature = game
+            .getGameState()
+            .accessCreatures()
+            .getCreatures()
+            .values()
+            .stream()
+            .filter(creaturePredicate)
+            .findFirst();
+
+        return otherCreature.map(creature -> creature.getParams().getEnemyParams().getPathTowardsTarget()).orElse(null);
+
+    }
+
     @Override
     public boolean canPerformSkill(Skill skill, CoreGame game) {
         return isAlive() && getParams().getStats().getStamina() >= skill.getStaminaCost();
@@ -450,13 +443,13 @@ public class Enemy extends Creature {
     }
 
     @Override
-    public void onBeingHit(Ability ability) {
+    public void onBeingHit(Ability ability, CoreGame game) {
         if (getParams().getEnemyParams() != null) {
             getParams().getEnemyParams().setJustAttackedByCreatureId(ability.getParams().getCreatureId());
 
             if (getParams().getEnemyParams().getAggroedCreatureId() == null ||
                 !getParams().getEnemyParams().getAggroedCreatureId().equals(ability.getParams().getCreatureId())) {
-                makeAggressiveAfterHitByAbility(ability);
+                makeAggressiveAfterHitByAbility(ability, game);
 
                 if (ability.isRanged()) {
                     getParams().getEnemyParams().getJustAttackedFromRangeTimer().restart();
@@ -465,18 +458,13 @@ public class Enemy extends Creature {
         }
     }
 
-    private void makeAggressiveAfterHitByAbility(Ability ability) {
-        getParams().getEnemyParams().setAutoControlStateTime(1f + 1f * nextAutoControlStateRngValue());
+    private void makeAggressiveAfterHitByAbility(Ability ability, CoreGame game) {
+        getParams().getEnemyParams().setAutoControlStateTime(1f +
+            Math.abs(game.getGameState().getRandomGenerator().nextFloat()));
         getParams().getEnemyParams().getAutoControlStateTimer().restart();
         getParams().getEnemyParams().setAutoControlState(EnemyAutoControlState.AGGRESSIVE);
         getParams().getStats().setSpeed(getParams().getStats().getBaseSpeed());
         getParams().getEnemyParams().setAggroedCreatureId(ability.getParams().getCreatureId());
     }
 
-    public Float nextAutoControlStateRngValue() {
-        getParams().getEnemyParams().setAutoControlStateRngSeed(RandomHelper.seededRandomFloat(getParams()
-            .getEnemyParams()
-            .getAutoControlStateRngSeed()));
-        return getParams().getEnemyParams().getAutoControlStateRngSeed();
-    }
 }

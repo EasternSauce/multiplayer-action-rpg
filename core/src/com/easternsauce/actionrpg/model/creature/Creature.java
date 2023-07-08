@@ -11,7 +11,6 @@ import com.easternsauce.actionrpg.model.skill.SkillType;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.model.util.WorldDirection;
 import com.easternsauce.actionrpg.renderer.animationconfig.CreatureAnimationConfig;
-import com.easternsauce.actionrpg.util.RandomHelper;
 
 import java.util.Map;
 import java.util.Set;
@@ -323,18 +322,6 @@ public abstract class Creature implements Entity {
 
     }
 
-    public Float nextDropRngValue() {
-        Float rngValue = RandomHelper.seededRandomFloat(getParams().getDropRngSeed());
-        getParams().setDropRngSeed(rngValue);
-        return rngValue;
-    }
-
-    public Float nextSkillUseRngValue() {
-        Float rngValue = RandomHelper.seededRandomFloat(getParams().getEnemyParams().getSkillUseRngSeed());
-        getParams().getEnemyParams().setSkillUseRngSeed(rngValue);
-        return rngValue;
-    }
-
     public float getTimeSinceStarted(CreatureEffect effect, CoreGame game) {
         CreatureEffectState effectState = getParams().getEffectParams().getEffects().get(effect);
         return game.getGameState().getTime() - effectState.getStartTime();
@@ -386,7 +373,7 @@ public abstract class Creature implements Entity {
             game.getGameState().getTime() < effectState.getStartTime() + effectState.getDuration();
     }
 
-    public void onBeingHit(Ability ability) {
+    public void onBeingHit(Ability ability, CoreGame game) {
 
     }
 }

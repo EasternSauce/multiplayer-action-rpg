@@ -6,6 +6,7 @@ import com.easternsauce.actionrpg.model.area.*;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;
+import com.easternsauce.actionrpg.model.util.RandomGenerator;
 import com.easternsauce.actionrpg.model.util.SimpleTimer;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,7 +33,7 @@ public class GameStateData {
 
     Map<AreaGateId, AreaGate> areaGates = new ConcurrentSkipListMap<>();
 
-    Float lastRandomValue = (float) Math.random();
+    RandomGenerator randomGenerator;
 
     public static GameStateData of(GameStateData gameStateData,
                                    Map<CreatureId, Creature> creatures,
@@ -49,7 +50,7 @@ public class GameStateData {
         newGameStateData.setDefaultAreaId(gameStateData.getDefaultAreaId());
         newGameStateData.setGeneralTimer(gameStateData.getGeneralTimer());
         newGameStateData.setPlayerConfig(new ConcurrentSkipListMap<>(gameStateData.getPlayerConfig()));
-        newGameStateData.setLastRandomValue(gameStateData.getLastRandomValue());
+        newGameStateData.setRandomGenerator(gameStateData.getRandomGenerator());
 
         return newGameStateData;
     }
@@ -65,7 +66,7 @@ public class GameStateData {
         newGameStateData.setDefaultAreaId(gameStateData.getDefaultAreaId());
         newGameStateData.setGeneralTimer(gameStateData.getGeneralTimer());
         newGameStateData.setPlayerConfig(new ConcurrentSkipListMap<>(gameStateData.getPlayerConfig()));
-        newGameStateData.setLastRandomValue(gameStateData.getLastRandomValue());
+        newGameStateData.setRandomGenerator(gameStateData.getRandomGenerator());
 
         return newGameStateData;
     }

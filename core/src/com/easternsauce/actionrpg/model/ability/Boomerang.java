@@ -27,7 +27,7 @@ public class Boomerang extends Projectile {
             .setBaseDamage(22f)
             .setIsChannelAnimationLooping(true)
             .setIsActiveAnimationLooping(true)
-            .setSpeed(15f);
+            .setSpeed(22f);
 
         return ability;
     }
@@ -78,7 +78,7 @@ public class Boomerang extends Projectile {
     @Override
     public void onCreatureHit(CreatureId creatureId, CoreGame game) {
         getParams().setIsComingBack(true);
-        getParams().setSpeed(20f);
+        getParams().setSpeed(30f);
     }
 
     @Override
@@ -96,7 +96,7 @@ public class Boomerang extends Projectile {
     @Override
     public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
         getParams().setIsComingBack(true);
-        getParams().setSpeed(20f);
+        getParams().setSpeed(30f);
     }
 
     @Override

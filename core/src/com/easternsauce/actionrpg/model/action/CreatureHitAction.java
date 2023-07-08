@@ -46,17 +46,19 @@ public abstract class CreatureHitAction extends GameStateAction {
         Set<DropTableEntry> dropTable = creature.getParams().getDropTable();
 
         dropTable.forEach(entry -> {
-            if (creature.nextDropRngValue() < entry.getDropChance()) {
+            if (Math.abs(game.getGameState().getRandomGenerator().nextFloat()) < entry.getDropChance()) {
                 AtomicReference<SkillType> weightedSkillType = new AtomicReference<>(null);
 
-                if (creature.nextDropRngValue() < entry.getGrantedSkillChance()) {
+                if (Math.abs(game.getGameState().getRandomGenerator().nextFloat()) < entry.getGrantedSkillChance()) {
                     AtomicReference<Float> totalWeight = new AtomicReference<>((float) 0);
 
                     entry.getGrantedSkillWeights().forEach((skillType, weight) -> totalWeight.set(totalWeight.get() +
                         weight));
 
-                    AtomicReference<Float> randValue = new AtomicReference<>(creature.nextDropRngValue() *
-                        totalWeight.get());
+                    AtomicReference<Float> randValue = new AtomicReference<>(Math.abs(game
+                        .getGameState()
+                        .getRandomGenerator()
+                        .nextFloat()) * totalWeight.get());
 
                     entry.getGrantedSkillWeights().forEach((skillType, weight) -> {
                         if (weightedSkillType.get() == null && randValue.get() < weight) {
@@ -70,7 +72,7 @@ public abstract class CreatureHitAction extends GameStateAction {
                 Map<SkillType, Integer> grantedSkills = new ConcurrentSkipListMap<>();
 
                 if (weightedSkillType.get() != null) {
-                    float randValue = creature.nextDropRngValue();
+                    float randValue = Math.abs(game.getGameState().getRandomGenerator().nextFloat());
 
                     int level;
                     if (randValue < 0.5f) {
@@ -88,7 +90,7 @@ public abstract class CreatureHitAction extends GameStateAction {
                 if (entry.getTemplate().getIsQualityNonApplicable()) {
                     quality = 1f;
                 } else {
-                    quality = 0.5f + creature.nextDropRngValue() / 2f;
+                    quality = 0.5f + Math.abs(game.getGameState().getRandomGenerator().nextFloat()) / 2f;
                 }
 
                 Item item = Item.of().setTemplate(entry.getTemplate()).setQualityModifier(quality).setGrantedSkills(

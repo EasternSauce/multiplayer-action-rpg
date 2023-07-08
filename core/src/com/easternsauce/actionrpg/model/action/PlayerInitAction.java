@@ -56,12 +56,15 @@ public class PlayerInitAction extends GameStateAction {
         String[] textures = new String[]{"male1", "male2", "female1"};
 
         Vector2 pos = Vector2.of(
-            ((game.getGameState().nextRandomValue() * (28 - 18)) + 18),
-            ((game.getGameState().nextRandomValue() * (12 - 6)) + 6)
+            (Math.abs(game.getGameState().getRandomGenerator().nextFloat()) * (28 - 18)) + 18,
+            (Math.abs(game.getGameState().getRandomGenerator().nextFloat() * (12 - 6)) + 6)
         );
 
-        String textureName = textures[((int) (Math.random() * 100) % 3)];
+        String textureName = textures[((int) (Math.abs(game.getGameState().getRandomGenerator().nextFloat()) * 100) %
+            3)];
 
-        return Player.of(playerId, AreaId.of("area3"), pos, textureName);
+        int rngSeed = game.getGameState().getRandomGenerator().nextInt();
+
+        return Player.of(playerId, AreaId.of("area3"), pos, textureName, rngSeed);
     }
 }

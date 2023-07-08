@@ -4,6 +4,7 @@ import com.easternsauce.actionrpg.game.entity.EntityParams;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.skill.SkillType;
+import com.easternsauce.actionrpg.model.util.RandomGenerator;
 import com.easternsauce.actionrpg.model.util.SimpleTimer;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Data;
@@ -63,8 +64,6 @@ public class AbilityParams implements EntityParams {
 
     @NonNull Boolean isFlip = false;
 
-    @NonNull Float abilityRngSeed;
-
     @NonNull SimpleTimer changeDirectionTimer = SimpleTimer.getStartedTimer();
 
     @NonNull Boolean foundTarget = false;
@@ -86,5 +85,7 @@ public class AbilityParams implements EntityParams {
 
     Float overrideSize;
     Float overrideDuration;
+
+    RandomGenerator randomGenerator;
 
 }

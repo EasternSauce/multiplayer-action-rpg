@@ -125,7 +125,8 @@ public class ServerGameState extends GameState {
                 // handle respawns server side
                 creature.getParams().getRespawnTimer().getTime() > creature.getParams().getRespawnTime()) {
                 if (creature instanceof Player) {
-                    Vector2 pos = Vector2.of((float) ((Math.random() * (28 - 18)) + 18),
+                    Vector2 pos = Vector2.of(
+                        (float) ((Math.random() * (28 - 18)) + 18), // TODO: use random generator
                         (float) ((Math.random() * (12 - 6)) + 6)
                     );
                     CreatureRespawnAction action = CreatureRespawnAction.of(creatureId,

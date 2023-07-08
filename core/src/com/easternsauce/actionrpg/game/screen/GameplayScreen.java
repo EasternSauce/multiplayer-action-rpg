@@ -9,11 +9,13 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
+import com.easternsauce.actionrpg.model.util.RandomGenerator;
 import com.easternsauce.actionrpg.physics.util.PhysicsEventQueueProcessor;
 import com.easternsauce.actionrpg.renderer.util.GameplayRenderer;
 import com.easternsauce.actionrpg.util.Constants;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
 import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.stream.Collectors;
@@ -40,6 +42,8 @@ public class GameplayScreen implements Screen {
         maps = mapsToLoad.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
             entry -> game.getEntityManager().getGameEntityRenderer().loadMap(entry.getValue() + "/tile_map.tmx")
         ));
+
+        game.getGameState().setRandomGenerator(RandomGenerator.of(Instant.now().getNano()));
 
         game.initState();
 

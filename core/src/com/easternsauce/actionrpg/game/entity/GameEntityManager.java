@@ -139,8 +139,8 @@ public class GameEntityManager {
         }
     }
 
-    public void spawnEnemy(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn, CoreGame game) {
-        Enemy enemy = Enemy.of(creatureId, areaId, enemySpawn);
+    public void spawnEnemy(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn, int rngSeed, CoreGame game) {
+        Enemy enemy = Enemy.of(creatureId, areaId, enemySpawn, rngSeed);
 
         game.getGameState().accessCreatures().getCreatures().put(creatureId, enemy);
 

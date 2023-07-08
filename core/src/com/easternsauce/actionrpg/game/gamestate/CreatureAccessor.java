@@ -1,5 +1,6 @@
 package com.easternsauce.actionrpg.game.gamestate;
 
+import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.GameStateData;
 import com.easternsauce.actionrpg.model.action.CreatureHitByDamageOverTimeAction;
 import com.easternsauce.actionrpg.model.action.CreatureMovingVectorSetAction;
@@ -90,11 +91,13 @@ public class CreatureAccessor {
     }
 
     // TODO: move to enemy?
-    public void handleCreatureUseRandomSkillAtTarget(CreatureId creatureId, Vector2 vectorTowardsTarget) {
+    public void handleCreatureUseRandomSkillAtTarget(CreatureId creatureId,
+                                                     Vector2 vectorTowardsTarget,
+                                                     CoreGame game) {
         Creature creature = gameState.accessCreatures().getCreatures().get(creatureId);
 
         if (creature.getParams().getEnemyParams().getSkillUseReadyToPick()) {
-            pickSkillUseSkillType(creature.getParams().getEnemyParams().getSkillUses(), creature);
+            pickSkillUseSkillType(creature.getParams().getEnemyParams().getSkillUses(), creature, game);
         }
 
         SkillTryPerformAction action = SkillTryPerformAction.of(creatureId,
@@ -107,13 +110,18 @@ public class CreatureAccessor {
     }
 
     // TODO: move to enemy?
-    private static void pickSkillUseSkillType(Set<EnemySkillUseEntry> skillUseEntries, Creature creature) {
+    private static void pickSkillUseSkillType(Set<EnemySkillUseEntry> skillUseEntries,
+                                              Creature creature,
+                                              CoreGame game) {
         AtomicReference<Float> totalWeight = new AtomicReference<>((float) 0);
 
         // TODO: pick subset of skill use entries based on distance to enemy
         skillUseEntries.forEach(skillUseEntry -> totalWeight.set(totalWeight.get() + skillUseEntry.getWeight()));
 
-        AtomicReference<Float> randValue = new AtomicReference<>(creature.nextSkillUseRngValue() * totalWeight.get());
+        AtomicReference<Float> randValue = new AtomicReference<>(Math.abs(game
+            .getGameState()
+            .getRandomGenerator()
+            .nextFloat()) * totalWeight.get());
 
         AtomicReference<SkillType> pickedSkillType = new AtomicReference<>(null);
 

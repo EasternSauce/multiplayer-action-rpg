@@ -6,7 +6,6 @@ import com.easternsauce.actionrpg.model.creature.Enemy;
 import com.easternsauce.actionrpg.model.creature.Player;
 import com.easternsauce.actionrpg.model.util.MathHelper;
 import com.easternsauce.actionrpg.model.util.Vector2;
-import com.easternsauce.actionrpg.util.RandomHelper;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -33,8 +32,7 @@ public class PlayfulGhost extends Projectile {
             .setIsChannelAnimationLooping(false)
             .setIsActiveAnimationLooping(true)
             .setDelayedActionTime(0.001f)
-            .setSpeed(5f)
-            .setAbilityRngSeed((float) Math.random());
+            .setSpeed(5f);
 
         return ability;
     }
@@ -102,7 +100,9 @@ public class PlayfulGhost extends Projectile {
         } else {
             if (getParams().getChangeDirectionTimer().getTime() > 1f) {
                 getParams().getChangeDirectionTimer().restart();
-                getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(nextFloat() * 20f));
+                getParams().setDirVector(getParams()
+                    .getDirVector()
+                    .withRotatedDegAngle(game.getGameState().getRandomGenerator().nextFloat() * 20f));
             }
         }
     }
@@ -127,17 +127,5 @@ public class PlayfulGhost extends Projectile {
             return true;
         }
         return false;
-    }
-
-    @SuppressWarnings("unused")
-    public Float nextFloat() {
-        getParams().setAbilityRngSeed(RandomHelper.seededRandomFloat(getParams().getAbilityRngSeed()));
-        return (getParams().getAbilityRngSeed() - 0.5f) * 2;
-    }
-
-    @SuppressWarnings("unused")
-    public Float nextPositiveFloat() {
-        getParams().setAbilityRngSeed(RandomHelper.seededRandomFloat(getParams().getAbilityRngSeed()));
-        return getParams().getAbilityRngSeed();
     }
 }

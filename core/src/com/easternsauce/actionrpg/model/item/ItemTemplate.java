@@ -43,7 +43,7 @@ public class ItemTemplate {
             .setIsEquipable(true)
             .setEquipmentSlotType(EquipmentSlotType.PRIMARY_WEAPON)
             .setAttackSkill(SkillType.BOOMERANG)
-            .setDamage(21f);
+            .setDamage(32f);
 
         ItemTemplate woodenSword = ItemTemplate
             .of("woodenSword", "Wooden Sword", "-", Vector2Int.of(0, 5))

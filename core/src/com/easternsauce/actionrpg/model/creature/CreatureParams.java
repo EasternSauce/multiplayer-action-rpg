@@ -6,6 +6,7 @@ import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.item.ItemTemplate;
 import com.easternsauce.actionrpg.model.skill.Skill;
 import com.easternsauce.actionrpg.model.skill.SkillType;
+import com.easternsauce.actionrpg.model.util.RandomGenerator;
 import com.easternsauce.actionrpg.model.util.SimpleTimer;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Data;
@@ -76,23 +77,27 @@ public class CreatureParams implements EntityParams {
     private Map<Integer, Item> potionMenuItems = new ConcurrentSkipListMap<>();
 
     @NonNull
-    private Float dropRngSeed = (float) Math.random();
+    private Float dropRngSeed = (float) Math.random(); // TODO: use random generator
 
     @NonNull
     private SimpleTimer generalSkillPerformCooldownTimer = SimpleTimer.getExpiredTimer();
 
-    public static CreatureParams of(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn) {
+    private RandomGenerator randomGenerator;
+
+    public static CreatureParams of(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn, int rngSeed) {
         return produceCreatureParams(creatureId,
             areaId,
             enemySpawn.getPos(),
-            enemySpawn.getEnemyTemplate().getEnemyType().textureName
+            enemySpawn.getEnemyTemplate().getEnemyType().textureName,
+            rngSeed
         );
     }
 
     private static CreatureParams produceCreatureParams(CreatureId creatureId,
                                                         AreaId areaId,
                                                         Vector2 enemySpawn,
-                                                        String textureName) {
+                                                        String textureName,
+                                                        int rngSeed) {
         CreatureParams params = CreatureParams.of();
         params.id = creatureId;
         params.areaId = areaId;
@@ -113,19 +118,27 @@ public class CreatureParams implements EntityParams {
 
         params.getEffectParams().setEffects(new ConcurrentSkipListMap<>(allPossibleEffects));
 
+        params.setRandomGenerator(RandomGenerator.of(rngSeed));
+
         return params;
     }
 
-    public static CreatureParams of(CreatureId creatureId, AreaId areaId, Vector2 pos, String textureName) {
+    public static CreatureParams of(CreatureId creatureId,
+                                    AreaId areaId,
+                                    Vector2 pos,
+                                    String textureName,
+                                    int rngSeed) {
 
+        // TODO remove later
         Map<Integer, Item> potionMenuItems = new ConcurrentSkipListMap<>();
         potionMenuItems.put(0, Item.of().setTemplate(ItemTemplate.templates.get("lifePotion")));
         potionMenuItems.put(1, Item.of().setTemplate(ItemTemplate.templates.get("lifePotion")));
 
         Map<Integer, Item> inventoryItems = new ConcurrentSkipListMap<>();
         inventoryItems.put(2, Item.of().setTemplate(ItemTemplate.templates.get("lifePotion")));
+        // TODO
 
-        return produceCreatureParams(creatureId, areaId, pos, textureName)
+        return produceCreatureParams(creatureId, areaId, pos, textureName, rngSeed)
             .setPotionMenuItems(potionMenuItems)
             .setInventoryItems(inventoryItems);
     }

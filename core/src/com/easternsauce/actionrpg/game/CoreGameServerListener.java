@@ -49,9 +49,11 @@ public class CoreGameServerListener extends Listener {
             game.getEndPoint().sendToAllTCP(command);
         } else if (object instanceof EnemySpawnCommand) {
             EnemySpawnCommand command = (EnemySpawnCommand) object;
-            game.getEntityManager().spawnEnemy(command.getCreatureId(),
+            game.getEntityManager().spawnEnemy(
+                command.getCreatureId(),
                 command.getAreaId(),
                 command.getEnemySpawn(),
+                game.getGameState().getRandomGenerator().nextInt(),
                 game
             );
 

@@ -37,8 +37,6 @@ public class EnemyParams {
     private SimpleTimer autoControlStateTimer = SimpleTimer.getExpiredTimer();
     @NonNull
     private Float autoControlStateTime;
-    @NonNull
-    private Float autoControlStateRngSeed;
     private Vector2 currentDefensivePos;
     @NonNull
     private SimpleTimer justAttackedFromRangeTimer = SimpleTimer.getExpiredTimer();
