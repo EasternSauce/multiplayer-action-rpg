@@ -27,17 +27,24 @@ public class InitialStateLoader {
         AreaId areaId = AreaId.of("area1");
 
         Map<SkillType, Integer> grantedSkills = new ConcurrentSkipListMap<>();
-        grantedSkills.put(SkillType.DASH, 1);
+        Map<SkillType, Integer> grantedSkills2 = new ConcurrentSkipListMap<>();
+        grantedSkills.put(SkillType.MAGE_TELEPORT_COMBO, 1);
+        grantedSkills2.put(SkillType.VOLATILE_BUBBLE, 1);
         Item leatherArmor = Item
             .of()
             .setTemplate(ItemTemplate.templates.get("leatherArmor"))
             .setQualityModifier(0.9f)
             .setGrantedSkills(grantedSkills);
+        Item hideGloves = Item
+            .of()
+            .setTemplate(ItemTemplate.templates.get("hideGloves"))
+            .setQualityModifier(0.9f)
+            .setGrantedSkills(grantedSkills2);
         Item crossbow = Item.of().setTemplate(ItemTemplate.templates.get("crossbow")).setQualityModifier(0.8f);
 
         game.getGameState().scheduleServerSideAction(LootPileSpawnAction.of(AreaId.of("area3"),
             Vector2.of(12, 12),
-            new ConcurrentSkipListSet<>(Arrays.asList(leatherArmor, crossbow))
+            new ConcurrentSkipListSet<>(Arrays.asList(leatherArmor, hideGloves, crossbow))
         ));
 
         AreaGateId area1ToArea3 = AreaGateId.of("area1ToArea3_" + (int) (Math.random() * 10000000));

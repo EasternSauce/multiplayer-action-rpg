@@ -158,7 +158,7 @@ public class Enemy extends Creature {
 
                 handleAutoControlStateTargetDistanceLogic(potentialTarget);
                 handleNewTarget(potentialTarget.getParams().getId()); // logic for when target changed
-                handleMovement(potentialTarget); // set movement command, causing creature to walk towards target
+                handleMovement(potentialTarget, game); // set movement command, causing creature to walk towards target
                 handleAimDirectionAdjustment(vectorTowardsTarget);
                 handleUseAbilityAtTarget(potentialTarget, vectorTowardsTarget, game); // attack target if within range
             } else { // if aggro timed out and out of range
@@ -279,7 +279,7 @@ public class Enemy extends Creature {
         }
     }
 
-    public void handleMovement(Creature potentialTarget) {
+    public void handleMovement(Creature potentialTarget, CoreGame game) {
         Float distance = getParams().getPos().distance(potentialTarget.getParams().getPos());
 
         if (getParams().getEnemyParams().getPathTowardsTarget() != null &&
@@ -291,10 +291,10 @@ public class Enemy extends Creature {
                 changedPath.remove(0);
                 getParams().getEnemyParams().setPathTowardsTarget(changedPath);
             } else {
-                moveTowards(nextNodeOnPath);
+                goToPos(nextNodeOnPath, game);
             }
         } else {
-            processAutoControlStateMovementLogic(potentialTarget, distance);
+            processAutoControlStateMovementLogic(potentialTarget, distance, game);
         }
 
     }
@@ -385,23 +385,29 @@ public class Enemy extends Creature {
         }
     }
 
-    private void processAutoControlStateMovementLogic(Creature potentialTarget, Float distance) {
+    public void goToPos(Vector2 pos, CoreGame game) {
+        if (!isStunned(game)) {
+            moveTowards(pos);
+        }
+    }
+
+    private void processAutoControlStateMovementLogic(Creature potentialTarget, Float distance, CoreGame game) {
         if (getParams().getEnemyParams().getAutoControlState() == EnemyAutoControlState.AGGRESSIVE) {
             if (distance > getParams().getEnemyParams().getAttackDistance() - 1f) {
                 getParams().getStats().setSpeed(getParams().getStats().getBaseSpeed());
-                moveTowards(potentialTarget.getParams().getPos());
+                goToPos(potentialTarget.getParams().getPos(), game);
             } else { // if no path or distance is small, then stop moving
                 stopMoving();
             }
         } else if (getParams().getEnemyParams().getAutoControlState() == EnemyAutoControlState.ALERTED) {
             getParams().getStats().setSpeed(getParams().getStats().getBaseSpeed() / 3);
             if (getParams().getEnemyParams().getCurrentDefensivePos() != null) {
-                moveTowards(getParams().getEnemyParams().getCurrentDefensivePos());
+                goToPos(getParams().getEnemyParams().getCurrentDefensivePos(), game);
             }
         } else if (getParams().getEnemyParams().getAutoControlState() == EnemyAutoControlState.KEEPING_DISTANCE) {
             getParams().getStats().setSpeed(getParams().getStats().getBaseSpeed() / 2);
             if (getParams().getEnemyParams().getCurrentDefensivePos() != null) {
-                moveTowards(getParams().getEnemyParams().getCurrentDefensivePos());
+                goToPos(getParams().getEnemyParams().getCurrentDefensivePos(), game);
             }
         } else {
             stopMoving();

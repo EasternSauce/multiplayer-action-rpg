@@ -1,5 +1,6 @@
 package com.easternsauce.actionrpg.model.creature;
 
+import com.easternsauce.actionrpg.game.CoreGame;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,4 +11,13 @@ import lombok.NoArgsConstructor;
 public class CreatureEffectState {
     Float startTime = 0f;
     Float duration = 0f;
+
+    public Float getRemaining(CoreGame game) {
+        float currentTime = game.getGameState().getTime();
+        float remainingTime = (startTime + duration) - currentTime;
+        if (remainingTime > 0) {
+            return remainingTime;
+        }
+        return 0f;
+    }
 }

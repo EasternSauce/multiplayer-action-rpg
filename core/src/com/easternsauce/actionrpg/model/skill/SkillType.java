@@ -34,6 +34,8 @@ public enum SkillType {
 
     TELEPORT("Teleport", false, AbilityType.TELEPORT_SOURCE, 1.5f, 10f, 9f),
 
+    MAGE_TELEPORT_COMBO("Mage Teleport Combo (mob only)", true, AbilityType.MAGE_TELEPORT_COMBO, 1.5f, 10f, 9f),
+
     POISONOUS_MIXTURE("Poisonous Mixture", false, AbilityType.POISONOUS_MIXTURE, 2f, 10f, 35f),
 
     PUNCH("Punch", true, AbilityType.PUNCH, 0.4f, 14f, 0f),

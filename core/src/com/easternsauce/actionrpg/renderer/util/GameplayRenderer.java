@@ -94,7 +94,8 @@ public class GameplayRenderer {
             .getValue()
             .equals(game.getGameState().getCurrentAreaId().getValue())).forEach(creatureHitAnimation -> renderer
             .getCreatureHitAnimationRenderer()
-            .render(creatureHitAnimation.getCreatureId(),
+            .render(
+                creatureHitAnimation.getCreatureId(),
                 game.getGameState().getTime() - creatureHitAnimation.getHitTime(),
                 creatureHitAnimation.getVectorTowardsContactPoint(),
                 worldElementsRenderingLayer,
@@ -129,7 +130,8 @@ public class GameplayRenderer {
                 alpha = 1f - (timeElapsed / 2f) / Constants.DAMAGE_NUMBER_SHOW_DURATION;
             }
 
-            Assets.renderLargeFont(worldTextRenderingLayer,
+            Assets.renderLargeFont(
+                worldTextRenderingLayer,
                 Integer.toString(damageNumber.getDamageValue().intValue()),
                 rescaledPos,
                 new Color(damageNumber.getColorR(), damageNumber.getColorG(), damageNumber.getColorB(), alpha)
