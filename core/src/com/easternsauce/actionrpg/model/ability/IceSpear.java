@@ -26,7 +26,7 @@ public class IceSpear extends Projectile {
             .setChannelTime(0f)
             .setActiveTime(3f)
             .setTextureName("ice_shard")
-            .setBaseDamage(12f)
+            .setBaseDamage(6f)
             .setIsChannelAnimationLooping(false)
             .setIsActiveAnimationLooping(true)
             .setDelayedActionTime(0.001f)
