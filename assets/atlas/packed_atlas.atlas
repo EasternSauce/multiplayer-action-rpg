@@ -375,6 +375,13 @@ slash_windup3
   orig: 240, 40
   offset: 0, 0
   index: -1
+slowed
+  rotate: false
+  xy: 5580, 750
+  size: 31, 31
+  orig: 31, 31
+  offset: 0, 0
+  index: -1
 smoke
   rotate: false
   xy: 5386, 857

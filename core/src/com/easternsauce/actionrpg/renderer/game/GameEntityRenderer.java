@@ -16,10 +16,7 @@ import com.easternsauce.actionrpg.model.creature.Player;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.renderer.*;
 import com.easternsauce.actionrpg.renderer.animationconfig.CreatureAnimationConfig;
-import com.easternsauce.actionrpg.renderer.creature.CreatureHitAnimationRenderer;
-import com.easternsauce.actionrpg.renderer.creature.CreatureRenderer;
-import com.easternsauce.actionrpg.renderer.creature.CreatureStunnedAnimationRenderer;
-import com.easternsauce.actionrpg.renderer.creature.LifeBarUtils;
+import com.easternsauce.actionrpg.renderer.creature.*;
 import com.easternsauce.actionrpg.renderer.icons.IconRetriever;
 import com.easternsauce.actionrpg.util.Constants;
 import lombok.Getter;
@@ -50,6 +47,8 @@ public class GameEntityRenderer {
     private final IconRetriever iconRetriever = IconRetriever.of();
     @Getter
     private final CreatureStunnedAnimationRenderer creatureStunnedAnimationRenderer = CreatureStunnedAnimationRenderer.of();
+    @Getter
+    private final CreatureSlowedAnimationRenderer creatureSlowedAnimationRenderer = CreatureSlowedAnimationRenderer.of();
     @Getter
     private final CreatureHitAnimationRenderer creatureHitAnimationRenderer = CreatureHitAnimationRenderer.of();
     @Getter
@@ -85,6 +84,7 @@ public class GameEntityRenderer {
         poisonedIcon = atlas.findRegion("poisoned");
 
         creatureStunnedAnimationRenderer.getAnimationRenderer().loadAnimation(atlas);
+        creatureSlowedAnimationRenderer.getAnimationRenderer().loadAnimation(atlas);
         creatureHitAnimationRenderer.getAnimationRenderer().loadAnimation(atlas);
 
         CreatureAnimationConfig.configs.forEach((name, config) -> {
@@ -111,6 +111,7 @@ public class GameEntityRenderer {
         game.getGameState().accessCreatures().forEachAliveCreature(creature -> {
             if (canCreatureBeRendered(creature, game)) {
                 renderCreatureStunnedAnimation(creature.getId(), renderingLayer, game);
+                renderCreatureSlowedAnimation(creature.getId(), renderingLayer, game);
                 renderCreaturePoisonedIcon(renderingLayer, creature, game);
             }
         });
@@ -130,6 +131,12 @@ public class GameEntityRenderer {
         float spriteWidth = creatureRenderer.getCreatureSprite().getWidth();
         getCreatureStunnedAnimationRenderer().render(creatureId, spriteWidth, renderingLayer, game);
 
+    }
+
+    private void renderCreatureSlowedAnimation(CreatureId creatureId, RenderingLayer renderingLayer, CoreGame game) {
+        CreatureRenderer creatureRenderer = creatureRenderers.get(creatureId);
+        float spriteWidth = creatureRenderer.getCreatureSprite().getWidth();
+        getCreatureSlowedAnimationRenderer().render(creatureId, spriteWidth, renderingLayer, game);
     }
 
     private void renderCreaturePoisonedIcon(RenderingLayer renderingLayer, Creature creature, CoreGame game) {
