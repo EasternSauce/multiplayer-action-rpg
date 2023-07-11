@@ -38,10 +38,12 @@ public class MageTeleportCombo extends Ability {
         creature.applyEffect(CreatureEffect.SELF_STUN, 3.5f, game);
         creature.stopMoving();
 
-        game.getGameState().accessAbilities().chainAnotherAbility(this,
+        game.getGameState().accessAbilities().chainAnotherAbility(
+            this,
             AbilityType.TELEPORT_SOURCE,
             getParams().getPos(),
             getParams().getDirVector(),
+            null,
             null,
             null,
             game
@@ -58,12 +60,14 @@ public class MageTeleportCombo extends Ability {
         if (creature != null &&
             currentFireRingToProc < fireRingProcTimes.length &&
             getParams().getStateTimer().getTime() > fireRingProcTimes[currentFireRingToProc]) {
-            game.getGameState().accessAbilities().chainAnotherAbility(this,
+            game.getGameState().accessAbilities().chainAnotherAbility(
+                this,
                 AbilityType.RING_OF_FIRE,
                 null,
                 getParams().getDirVector(),
                 fireRingSizes[currentFireRingToProc],
                 null,
+                999f,
                 game
             );
 

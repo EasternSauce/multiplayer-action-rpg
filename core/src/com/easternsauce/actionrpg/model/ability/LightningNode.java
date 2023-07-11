@@ -85,6 +85,7 @@ public class LightningNode extends Ability {
                 params.getDirVector(),
                 null,
                 null,
+                null,
                 game
             );
 
@@ -92,6 +93,7 @@ public class LightningNode extends Ability {
                 AbilityType.LIGHTNING_NODE,
                 targetCreature.getParams().getPos(),
                 params.getDirVector(),
+                null,
                 null,
                 null,
                 game

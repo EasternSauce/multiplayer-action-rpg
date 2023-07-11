@@ -53,6 +53,7 @@ public class SpreadingPoisonousCloud extends Ability {
                 getParams().getDirVector(),
                 cloudRadiuses[currentCloud],
                 cloudDurations[currentCloud],
+                null,
                 game
             );
 

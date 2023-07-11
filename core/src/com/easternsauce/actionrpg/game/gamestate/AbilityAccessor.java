@@ -60,6 +60,7 @@ public class AbilityAccessor {
                                     Vector2 dirVector,
                                     Float overrideSize,
                                     Float overrideDuration,
+                                    Float overrideDamage,
                                     CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(chainFromAbility
             .getParams()
@@ -88,6 +89,7 @@ public class AbilityAccessor {
                 .setVectorTowardsTarget(dirVector)
                 .setOverrideSize(overrideSize)
                 .setOverrideDuration(overrideDuration)
+                .setOverrideDamage(overrideDamage)
                 .setSkillType(chainFromAbility.getParams().getSkillType())
                 .setSkillStartPos(chainFromPos);
 

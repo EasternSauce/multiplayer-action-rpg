@@ -42,6 +42,7 @@ public class SummonGhosts extends Ability {
             params.getDirVector(),
             null,
             null,
+            null,
             game
         );
         game.getGameState().accessAbilities().chainAnotherAbility(this,
@@ -50,12 +51,14 @@ public class SummonGhosts extends Ability {
             params.getDirVector().withSetDegAngle(baseAngle - 30f),
             null,
             null,
+            null,
             game
         );
         game.getGameState().accessAbilities().chainAnotherAbility(this,
             AbilityType.PLAYFUL_GHOST,
             getParams().getPos(),
             params.getDirVector().withSetDegAngle(baseAngle + 30f),
+            null,
             null,
             null,
             game

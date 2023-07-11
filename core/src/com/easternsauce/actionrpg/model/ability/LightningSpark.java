@@ -99,6 +99,7 @@ public class LightningSpark extends Ability {
                 params.getDirVector(),
                 null,
                 null,
+                null,
                 game
             );
 
@@ -106,6 +107,7 @@ public class LightningSpark extends Ability {
                 AbilityType.LIGHTNING_NODE,
                 targetCreature.getParams().getPos(),
                 params.getDirVector(),
+                null,
                 null,
                 null,
                 game

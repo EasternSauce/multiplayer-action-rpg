@@ -67,6 +67,7 @@ public class Fireball extends Projectile {
             params.getDirVector(),
             null,
             null,
+            null,
             game
         );
     }

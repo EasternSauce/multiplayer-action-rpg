@@ -81,6 +81,7 @@ public class MobCrossbowShot extends Ability {
                 chainedDirVector,
                 null,
                 null,
+                null,
                 game
             );
 

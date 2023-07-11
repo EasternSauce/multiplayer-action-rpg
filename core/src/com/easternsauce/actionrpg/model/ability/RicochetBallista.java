@@ -53,6 +53,7 @@ public class RicochetBallista extends Ability {
             params.getDirVector(),
             null,
             null,
+            null,
             game
         );
         game.getGameState().accessAbilities().chainAnotherAbility(this,
@@ -61,12 +62,14 @@ public class RicochetBallista extends Ability {
             params.getDirVector(),
             null,
             null,
+            null,
             game
         );
         game.getGameState().accessAbilities().chainAnotherAbility(this,
             AbilityType.RICOCHET_BULLET,
             rightSidePos,
             params.getDirVector(),
+            null,
             null,
             null,
             game

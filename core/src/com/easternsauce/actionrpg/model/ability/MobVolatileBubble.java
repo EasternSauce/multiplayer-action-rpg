@@ -64,6 +64,7 @@ public class MobVolatileBubble extends Projectile {
                 params.getDirVector().withSetDegAngle(baseAngle + angle),
                 null,
                 null,
+                null,
                 game
             );
 

@@ -85,6 +85,7 @@ public class AbilityParams implements EntityParams {
 
     Float overrideSize;
     Float overrideDuration;
+    Float overrideDamage;
 
     RandomGenerator randomGenerator;
 

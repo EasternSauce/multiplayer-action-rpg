@@ -149,10 +149,16 @@ public abstract class Ability implements Entity {
     }
 
     public Float getDamage(CoreGame game) {
+        float damage = getParams().getBaseDamage();
+
+        if (getParams().getOverrideDamage() != null) {
+            damage = getParams().getOverrideDamage();
+        }
+
         if (getParams().getIsPlayerAbility() && isWeaponAttack()) {
             return getParams().getWeaponDamage() * getParams().getDamageMultiplier();
         } else {
-            return getParams().getBaseDamage() * getParams().getDamageMultiplier() * getLevelScaling(game);
+            return damage * getParams().getDamageMultiplier() * getLevelScaling(game);
         }
     }
 

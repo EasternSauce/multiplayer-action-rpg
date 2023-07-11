@@ -47,6 +47,7 @@ public class CrossbowShot extends Ability {
                 getParams().getDirVector(),
                 null,
                 null,
+                null,
                 game
             );
 
