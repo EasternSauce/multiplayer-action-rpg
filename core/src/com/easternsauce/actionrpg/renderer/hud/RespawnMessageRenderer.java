@@ -16,9 +16,9 @@ import java.util.Locale;
 public class RespawnMessageRenderer {
     public void render(Creature creature, RenderingLayer renderingLayer) {
         if (creature != null && !creature.isAlive()) {
-            if (creature.getParams().getRespawnTimer().getTime() < creature.getParams().getRespawnTime()) {
+            if (creature.getParams().getTimeSinceDeathTimer().getTime() < creature.getParams().getRespawnTime()) {
                 float timeRemainingBeforeRespawn = creature.getParams().getRespawnTime() -
-                    creature.getParams().getRespawnTimer().getTime();
+                    creature.getParams().getTimeSinceDeathTimer().getTime();
                 String timeRemainingBeforeRespawnText = String.format(Locale.US, "%.2f", timeRemainingBeforeRespawn);
 
                 Assets.renderVeryLargeFont(renderingLayer,

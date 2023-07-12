@@ -8,6 +8,10 @@ import com.easternsauce.actionrpg.model.area.AreaGateId;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.creature.EnemySpawn;
+import com.easternsauce.actionrpg.model.creature.EnemyTemplate;
+import com.easternsauce.actionrpg.model.enemyrallypoint.EnemyRallyPoint;
+import com.easternsauce.actionrpg.model.enemyrallypoint.EnemyRallyPointId;
+import com.easternsauce.actionrpg.model.enemyrallypoint.EnemyRallyPointInfo;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.item.ItemTemplate;
 import com.easternsauce.actionrpg.model.skill.SkillType;
@@ -15,11 +19,14 @@ import com.easternsauce.actionrpg.model.util.Vector2;
 import com.esotericsoftware.kryonet.Server;
 import lombok.NoArgsConstructor;
 
+import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @NoArgsConstructor(staticName = "of")
 public class InitialStateLoader {
@@ -72,10 +79,17 @@ public class InitialStateLoader {
         enemySpawns1.forEach(enemySpawn -> {
             CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 10000000));
             int rngSeed = game.getGameState().getRandomGenerator().nextInt();
-            game.getEntityManager().spawnEnemy(enemyId, areaId, enemySpawn, rngSeed, game);
+            game.getEntityManager().spawnEnemy(enemyId,
+                areaId,
+                enemySpawn.getPos(),
+                enemySpawn.getEnemyTemplate(),
+                rngSeed,
+                game
+            );
             server.sendToAllTCP(EnemySpawnCommand.of(enemyId,
                 areaId,
-                enemySpawn,
+                enemySpawn.getPos(),
+                enemySpawn.getEnemyTemplate(),
                 rngSeed
             )); // TODO: use actions instead
         });
@@ -84,9 +98,36 @@ public class InitialStateLoader {
         enemySpawns3.forEach(enemySpawn -> {
             CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 10000000));
             int rngSeed = game.getGameState().getRandomGenerator().nextInt();
-            game.getEntityManager().spawnEnemy(enemyId, AreaId.of("area3"), enemySpawn, rngSeed, game);
-            server.sendToAllTCP(EnemySpawnCommand.of(enemyId, AreaId.of("area3"), enemySpawn, rngSeed));
+            game.getEntityManager().spawnEnemy(
+                enemyId,
+                AreaId.of("area3"),
+                enemySpawn.getPos(),
+                enemySpawn.getEnemyTemplate(),
+                rngSeed,
+                game
+            );
+            server.sendToAllTCP(EnemySpawnCommand.of(
+                enemyId,
+                AreaId.of("area3"),
+                enemySpawn.getPos(),
+                enemySpawn.getEnemyTemplate(),
+                rngSeed
+            ));
         });
+
+        Map<EnemyRallyPointId, EnemyRallyPoint> enemyRallyPoints = game.getGameState().getEnemyRallyPoints();
+        enemyRallyPoints.put(EnemyRallyPointId.of("enemyrallypoint1"),
+            EnemyRallyPoint.of(EnemyRallyPointId.of("enemyrallypoint1"),
+                AreaId.of("area3"),
+                EnemyRallyPointInfo.of(Vector2.of(40.88874f, 38.543716f),
+                    Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.mage, 100),
+                        new AbstractMap.SimpleEntry<>(EnemyTemplate.archer, 100),
+                        new AbstractMap.SimpleEntry<>(EnemyTemplate.skeleton, 100)
+                    ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)),
+                    5
+                )
+            )
+        );
 
     }
 }

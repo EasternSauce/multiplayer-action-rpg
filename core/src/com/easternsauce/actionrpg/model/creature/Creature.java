@@ -134,7 +134,7 @@ public abstract class Creature implements Entity {
         getParams().getMovementParams().getMovementActionsPerSecondLimiterTimer().update(delta);
         getParams().getMovementParams().getChangeAimDirectionActionsPerSecondLimiterTimer().update(delta);
         getParams().getMovementParams().getIsStillMovingCheckTimer().update(delta);
-        getParams().getRespawnTimer().update(delta);
+        getParams().getTimeSinceDeathTimer().update(delta);
         getParams().getEffectParams().getStaminaRegenerationTimer().update(delta);
         getParams().getMovementParams().getGateTeleportCooldownTimer().update(delta);
         getParams().getGeneralSkillPerformCooldownTimer().update(delta);

@@ -3,6 +3,7 @@ package com.easternsauce.actionrpg.model.creature;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.area.AreaId;
+import com.easternsauce.actionrpg.model.enemyrallypoint.EnemyRallyPointId;
 import com.easternsauce.actionrpg.model.skill.Skill;
 import com.easternsauce.actionrpg.model.skill.SkillType;
 import com.easternsauce.actionrpg.model.util.Vector2;
@@ -26,13 +27,18 @@ import java.util.stream.Collectors;
 public class Enemy extends Creature {
     private CreatureParams params;
 
-    public static Enemy of(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn, int rngSeed) {
-        CreatureParams params = CreatureParams.of(creatureId, areaId, enemySpawn, rngSeed);
+    public static Enemy of(CreatureId creatureId,
+                           AreaId areaId,
+                           Vector2 pos,
+                           EnemyTemplate enemyTemplate,
+                           EnemyRallyPointId enemyRallyPointId,
+                           int rngSeed) {
+        CreatureParams params = CreatureParams.of(creatureId, areaId, pos, enemyTemplate, rngSeed);
 
-        params.setDropTable(enemySpawn.getEnemyTemplate().getDropTable());
+        params.setDropTable(enemyTemplate.getDropTable());
         params.getStats().setBaseSpeed(11f);
-        params.getStats().setMaxLife(enemySpawn.getEnemyTemplate().getMaxLife());
-        params.getStats().setLife(enemySpawn.getEnemyTemplate().getMaxLife());
+        params.getStats().setMaxLife(enemyTemplate.getMaxLife());
+        params.getStats().setLife(enemyTemplate.getMaxLife());
 
         params.setEnemyParams(EnemyParams.of());
         params.getEnemyParams().setFindTargetCooldown(0.5f + Math.abs(params.getRandomGenerator().nextFloat()));
@@ -41,8 +47,10 @@ public class Enemy extends Creature {
 
         params.setRespawnTime(120f);
 
-        params.getEnemyParams().setAttackDistance(enemySpawn.getEnemyTemplate().getAttackDistance());
-        params.getEnemyParams().setSkillUses(enemySpawn.getEnemyTemplate().getEnemySkillUseEntries());
+        params.getEnemyParams().setAttackDistance(enemyTemplate.getAttackDistance());
+        params.getEnemyParams().setSkillUses(enemyTemplate.getEnemySkillUseEntries());
+
+        params.setEnemyRallyPointId(enemyRallyPointId);
 
         Enemy enemy = Enemy.of();
         enemy.params = params;

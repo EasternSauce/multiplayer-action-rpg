@@ -123,7 +123,7 @@ public class ServerGameState extends GameState {
         accessCreatures().getCreatures().forEach((creatureId, creature) -> { // handle deaths server side
             if (creature.getParams().getIsAwaitingRespawn() &&
                 // handle respawns server side
-                creature.getParams().getRespawnTimer().getTime() > creature.getParams().getRespawnTime()) {
+                creature.getParams().getTimeSinceDeathTimer().getTime() > creature.getParams().getRespawnTime()) {
                 if (creature instanceof Player) {
                     Vector2 pos = Vector2.of(
                         (float) ((Math.random() * (28 - 18)) + 18), // TODO: use random generator

@@ -4,6 +4,8 @@ import com.easternsauce.actionrpg.model.GameStateData;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
 import com.easternsauce.actionrpg.model.area.*;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
+import com.easternsauce.actionrpg.model.enemyrallypoint.EnemyRallyPoint;
+import com.easternsauce.actionrpg.model.enemyrallypoint.EnemyRallyPointId;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;
 import com.easternsauce.actionrpg.model.util.RandomGenerator;
 
@@ -82,5 +84,16 @@ public abstract class GameState {
 
     public void setRandomGenerator(RandomGenerator randomGenerator) {
         getData().setRandomGenerator(randomGenerator);
+    }
+
+    public Map<EnemyRallyPointId, EnemyRallyPoint> getEnemyRallyPoints() {
+        return getData().getEnemyRallyPoints();
+    }
+
+    public EnemyRallyPoint getEnemyRallyPoint(EnemyRallyPointId enemyRallyPointId) {
+        if (enemyRallyPointId == null || !getData().getEnemyRallyPoints().containsKey(enemyRallyPointId)) {
+            return null;
+        }
+        return getData().getEnemyRallyPoints().get(enemyRallyPointId);
     }
 }

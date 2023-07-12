@@ -29,7 +29,7 @@ public abstract class CreatureHitAction extends GameStateAction {
     private void onCreatureDeath(Creature targetCreature, Creature attackerCreature, CoreGame game) {
         targetCreature.getParams().getStats().setLife(0f); // just to make sure its dead on client side
         targetCreature.getParams().setIsDead(true);
-        targetCreature.getParams().getRespawnTimer().restart();
+        targetCreature.getParams().getTimeSinceDeathTimer().restart();
         targetCreature.getParams().setIsAwaitingRespawn(true);
         attackerCreature.onKillEffect();
 
@@ -47,7 +47,7 @@ public abstract class CreatureHitAction extends GameStateAction {
 
         dropTable.forEach(entry -> {
             if (Math.abs(game.getGameState().getRandomGenerator().nextFloat()) < entry.getDropChance()) {
-                AtomicReference<SkillType> weightedSkillType = new AtomicReference<>(null);
+                AtomicReference<SkillType> randomSkillType = new AtomicReference<>(null);
 
                 if (Math.abs(game.getGameState().getRandomGenerator().nextFloat()) < entry.getGrantedSkillChance()) {
                     AtomicReference<Float> totalWeight = new AtomicReference<>((float) 0);
@@ -61,8 +61,8 @@ public abstract class CreatureHitAction extends GameStateAction {
                         .nextFloat()) * totalWeight.get());
 
                     entry.getGrantedSkillWeights().forEach((skillType, weight) -> {
-                        if (weightedSkillType.get() == null && randValue.get() < weight) {
-                            weightedSkillType.set(skillType);
+                        if (randomSkillType.get() == null && randValue.get() < weight) {
+                            randomSkillType.set(skillType);
                         }
                         randValue.updateAndGet(value -> value - weight);
                     });
@@ -71,7 +71,7 @@ public abstract class CreatureHitAction extends GameStateAction {
 
                 Map<SkillType, Integer> grantedSkills = new ConcurrentSkipListMap<>();
 
-                if (weightedSkillType.get() != null) {
+                if (randomSkillType.get() != null) {
                     float randValue = Math.abs(game.getGameState().getRandomGenerator().nextFloat());
 
                     int level;
@@ -83,7 +83,7 @@ public abstract class CreatureHitAction extends GameStateAction {
                         level = 3;
                     }
 
-                    grantedSkills.put(weightedSkillType.get(), level);
+                    grantedSkills.put(randomSkillType.get(), level);
                 }
 
                 float quality;

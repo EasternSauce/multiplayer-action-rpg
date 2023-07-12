@@ -57,7 +57,7 @@ public class PlayerInitAction extends GameStateAction {
 
         Vector2 pos = Vector2.of(
             (Math.abs(game.getGameState().getRandomGenerator().nextFloat()) * (28 - 18)) + 18,
-            (Math.abs(game.getGameState().getRandomGenerator().nextFloat() * (12 - 6)) + 6)
+            (Math.abs(game.getGameState().getRandomGenerator().nextFloat()) * (12 - 6)) + 6
         );
 
         String textureName = textures[((int) (Math.abs(game.getGameState().getRandomGenerator().nextFloat()) * 100) %

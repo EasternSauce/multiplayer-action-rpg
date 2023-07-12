@@ -5,6 +5,8 @@ import com.easternsauce.actionrpg.model.ability.AbilityId;
 import com.easternsauce.actionrpg.model.area.*;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
+import com.easternsauce.actionrpg.model.enemyrallypoint.EnemyRallyPoint;
+import com.easternsauce.actionrpg.model.enemyrallypoint.EnemyRallyPointId;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;
 import com.easternsauce.actionrpg.model.util.RandomGenerator;
 import com.easternsauce.actionrpg.model.util.SimpleTimer;
@@ -33,6 +35,8 @@ public class GameStateData {
 
     Map<AreaGateId, AreaGate> areaGates = new ConcurrentSkipListMap<>();
 
+    Map<EnemyRallyPointId, EnemyRallyPoint> enemyRallyPoints = new ConcurrentSkipListMap<>();
+
     RandomGenerator randomGenerator;
 
     public static GameStateData of(GameStateData gameStateData,
@@ -51,6 +55,7 @@ public class GameStateData {
         newGameStateData.setGeneralTimer(gameStateData.getGeneralTimer());
         newGameStateData.setPlayerConfig(new ConcurrentSkipListMap<>(gameStateData.getPlayerConfig()));
         newGameStateData.setRandomGenerator(gameStateData.getRandomGenerator());
+        newGameStateData.setEnemyRallyPoints(gameStateData.getEnemyRallyPoints());
 
         return newGameStateData;
     }
@@ -67,6 +72,7 @@ public class GameStateData {
         newGameStateData.setGeneralTimer(gameStateData.getGeneralTimer());
         newGameStateData.setPlayerConfig(new ConcurrentSkipListMap<>(gameStateData.getPlayerConfig()));
         newGameStateData.setRandomGenerator(gameStateData.getRandomGenerator());
+        newGameStateData.setEnemyRallyPoints(gameStateData.getEnemyRallyPoints());
 
         return newGameStateData;
     }

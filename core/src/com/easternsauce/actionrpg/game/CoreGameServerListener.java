@@ -52,7 +52,8 @@ public class CoreGameServerListener extends Listener {
             game.getEntityManager().spawnEnemy(
                 command.getCreatureId(),
                 command.getAreaId(),
-                command.getEnemySpawn(),
+                command.getPos(),
+                command.getEnemyTemplate(),
                 game.getGameState().getRandomGenerator().nextInt(),
                 game
             );

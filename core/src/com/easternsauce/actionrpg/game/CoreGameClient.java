@@ -187,9 +187,10 @@ public class CoreGameClient extends CoreGame {
             CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 10000000));
             getEndPoint().sendTCP(EnemySpawnCommand.of(enemyId,
                 areaId,
-                enemySpawn.setPos(Vector2.of(enemySpawn.getPos().getX() + (float) Math.random(),
+                Vector2.of(enemySpawn.getPos().getX() + (float) Math.random(),
                     enemySpawn.getPos().getY() + (float) Math.random()
-                )),
+                ),
+                enemySpawn.getEnemyTemplate(),
                 RandomHolder.getRandom().nextInt()
             ));
         });
@@ -421,7 +422,8 @@ public class CoreGameClient extends CoreGame {
 
                     getEntityManager().spawnEnemy(command.getCreatureId(),
                         command.getAreaId(),
-                        command.getEnemySpawn(),
+                        command.getPos(),
+                        command.getEnemyTemplate(),
                         command.getRngSeed(),
                         CoreGameClient.this
                     );

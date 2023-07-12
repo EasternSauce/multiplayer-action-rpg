@@ -2,6 +2,7 @@ package com.easternsauce.actionrpg.model.creature;
 
 import com.easternsauce.actionrpg.game.entity.EntityParams;
 import com.easternsauce.actionrpg.model.area.AreaId;
+import com.easternsauce.actionrpg.model.enemyrallypoint.EnemyRallyPointId;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.item.ItemTemplate;
 import com.easternsauce.actionrpg.model.skill.Skill;
@@ -51,7 +52,7 @@ public class CreatureParams implements EntityParams {
     private String textureName;
 
     @NonNull
-    private SimpleTimer respawnTimer = SimpleTimer.getExpiredTimer();
+    private SimpleTimer timeSinceDeathTimer = SimpleTimer.getExpiredTimer();
     @NonNull
     private Float respawnTime = 5f;
 
@@ -82,15 +83,16 @@ public class CreatureParams implements EntityParams {
     @NonNull
     private SimpleTimer generalSkillPerformCooldownTimer = SimpleTimer.getExpiredTimer();
 
+    private EnemyRallyPointId enemyRallyPointId; // TODO: move to enemy params?
+
     private RandomGenerator randomGenerator;
 
-    public static CreatureParams of(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn, int rngSeed) {
-        return produceCreatureParams(creatureId,
-            areaId,
-            enemySpawn.getPos(),
-            enemySpawn.getEnemyTemplate().getEnemyType().textureName,
-            rngSeed
-        );
+    public static CreatureParams of(CreatureId creatureId,
+                                    AreaId areaId,
+                                    Vector2 pos,
+                                    EnemyTemplate enemyTemplate,
+                                    int rngSeed) {
+        return produceCreatureParams(creatureId, areaId, pos, enemyTemplate.getEnemyType().textureName, rngSeed);
     }
 
     private static CreatureParams produceCreatureParams(CreatureId creatureId,

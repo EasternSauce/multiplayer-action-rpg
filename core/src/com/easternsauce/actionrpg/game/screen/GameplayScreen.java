@@ -120,6 +120,7 @@ public class GameplayScreen implements Screen {
 
             game.getEntityManager().updateCreatures(delta, game);
             game.getEntityManager().updateAbilities(delta, game);
+            game.getEntityManager().updateEnemyRallyPoints(game);
 
             processPhysicsEventQueueProcessor.process(game);
 

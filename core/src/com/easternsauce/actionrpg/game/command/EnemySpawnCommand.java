@@ -2,7 +2,8 @@ package com.easternsauce.actionrpg.game.command;
 
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
-import com.easternsauce.actionrpg.model.creature.EnemySpawn;
+import com.easternsauce.actionrpg.model.creature.EnemyTemplate;
+import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,8 @@ import lombok.NoArgsConstructor;
 public class EnemySpawnCommand implements GameCommand {
     CreatureId creatureId;
     AreaId areaId;
-    EnemySpawn enemySpawn;
+    Vector2 pos;
+    EnemyTemplate enemyTemplate;
     Integer rngSeed;
 
 }

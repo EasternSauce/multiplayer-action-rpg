@@ -9,8 +9,9 @@ import com.easternsauce.actionrpg.model.area.*;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.creature.Enemy;
-import com.easternsauce.actionrpg.model.creature.EnemySpawn;
+import com.easternsauce.actionrpg.model.creature.EnemyTemplate;
 import com.easternsauce.actionrpg.model.util.TeleportEvent;
+import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.physics.GameEntityPhysics;
 import com.easternsauce.actionrpg.physics.body.AbilityBody;
 import com.easternsauce.actionrpg.physics.body.AreaGateBody;
@@ -139,8 +140,13 @@ public class GameEntityManager {
         }
     }
 
-    public void spawnEnemy(CreatureId creatureId, AreaId areaId, EnemySpawn enemySpawn, int rngSeed, CoreGame game) {
-        Enemy enemy = Enemy.of(creatureId, areaId, enemySpawn, rngSeed);
+    public void spawnEnemy(CreatureId creatureId,
+                           AreaId areaId,
+                           Vector2 pos,
+                           EnemyTemplate enemyTemplate,
+                           int rngSeed,
+                           CoreGame game) {
+        Enemy enemy = Enemy.of(creatureId, areaId, pos, enemyTemplate, null, rngSeed);
 
         game.getGameState().accessCreatures().getCreatures().put(creatureId, enemy);
 
@@ -186,6 +192,10 @@ public class GameEntityManager {
             }
         });
 
+    }
+
+    public void updateEnemyRallyPoints(CoreGame game) {
+        game.getGameState().getEnemyRallyPoints().forEach((enemyRallyPointId, enemyRallyPoint) -> enemyRallyPoint.update(game));
     }
 
     public void updateAbilities(float delta, CoreGame game) {
