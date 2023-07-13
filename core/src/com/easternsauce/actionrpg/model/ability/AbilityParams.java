@@ -35,7 +35,7 @@ public class AbilityParams implements EntityParams {
     @NonNull Boolean isChannelAnimationLooping;
     @NonNull Boolean isActiveAnimationLooping;
 
-    @NonNull Float range;
+    @NonNull Float startingRange = 0f;
 
     @NonNull Map<CreatureId, Float> creaturesAlreadyHit = new ConcurrentSkipListMap<>();
     @NonNull CreaturesHitCounter damagingHitCreaturesHitCounter = CreaturesHitCounter.of();

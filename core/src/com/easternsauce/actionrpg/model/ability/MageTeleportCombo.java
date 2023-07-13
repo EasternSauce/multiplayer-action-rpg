@@ -40,7 +40,7 @@ public class MageTeleportCombo extends Ability {
 
         game.getGameState().accessAbilities().chainAnotherAbility(
             this,
-            AbilityType.TELEPORT_SOURCE,
+            AbilityType.MOB_TELEPORT_SOURCE,
             getParams().getPos(),
             getParams().getDirVector(),
             null,
@@ -67,7 +67,7 @@ public class MageTeleportCombo extends Ability {
                 getParams().getDirVector(),
                 fireRingSizes[currentFireRingToProc],
                 null,
-                999f,
+                40f,
                 game
             );
 

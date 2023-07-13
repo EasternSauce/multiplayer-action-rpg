@@ -38,7 +38,6 @@ public class CreatureHitByAbilityAction extends CreatureHitAction {
 
     @Override
     public void applyToGame(CoreGame game) {
-        System.out.println("hit count " + hitCount);
         Creature targetCreature = game.getGameState().accessCreatures().getCreature(targetId);
         Creature attackerCreature = game.getGameState().accessCreatures().getCreature(attackerId);
 

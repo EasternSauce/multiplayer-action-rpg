@@ -14,7 +14,7 @@ import java.util.Set;
 @NoArgsConstructor(staticName = "of")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class SwordSpin extends DirectionalAttachedAbility {
+public class SwordSpin extends AttachedAbility {
     AbilityParams params;
 
     public static SwordSpin of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
@@ -24,7 +24,7 @@ public class SwordSpin extends DirectionalAttachedAbility {
             .setHeight(2.8f)
             .setChannelTime(0f)
             .setActiveTime(3f)
-            .setRange(2f)
+            .setStartingRange(2f)
             .setTextureName("sword")
             .setBaseDamage(10f)
             .setIsChannelAnimationLooping(false)
@@ -45,12 +45,12 @@ public class SwordSpin extends DirectionalAttachedAbility {
 
     @Override
     protected void onChannelUpdate(CoreGame game) {
-        updateDirectionalAttachedAbilityPosition(game);
+        updateAttachedAbilityPosition(game);
     }
 
     @Override
     protected void onActiveUpdate(float delta, CoreGame game) {
-        updateDirectionalAttachedAbilityPosition(game);
+        updateAttachedAbilityPosition(game);
 
         getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(-10));
 
@@ -74,7 +74,7 @@ public class SwordSpin extends DirectionalAttachedAbility {
         getParams().setState(AbilityState.CHANNEL);
         getParams().getStateTimer().restart();
 
-        updateDirectionalAttachedAbilityPosition(game);
+        updateAttachedAbilityPosition(game);
 
     }
 

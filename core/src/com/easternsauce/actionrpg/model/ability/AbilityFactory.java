@@ -63,6 +63,10 @@ public class AbilityFactory {
                 return TeleportSource::of;
             case TELEPORT_DESTINATION:
                 return TeleportDestination::of;
+            case MOB_TELEPORT_SOURCE:
+                return MobTeleportSource::of;
+            case MOB_TELEPORT_DESTINATION:
+                return MobTeleportDestination::of;
             case MAGE_TELEPORT_COMBO:
                 return MageTeleportCombo::of;
             case POISONOUS_MIXTURE:

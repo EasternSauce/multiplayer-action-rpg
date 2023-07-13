@@ -21,6 +21,7 @@ public class VolatileBubble extends Projectile {
             .setHeight(2f)
             .setChannelTime(0f)
             .setActiveTime(30f)
+            .setStartingRange(1.5f)
             .setTextureName("bubble")
             .setBaseDamage(0f)
             .setIsChannelAnimationLooping(false)

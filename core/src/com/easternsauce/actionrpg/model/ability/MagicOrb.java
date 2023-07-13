@@ -27,6 +27,7 @@ public class MagicOrb extends Projectile {
             .setHeight(1.5f)
             .setChannelTime(0f)
             .setActiveTime(30f)
+            .setStartingRange(0.5f)
             .setTextureName("magic_orb")
             .setBaseDamage(40f)
             .setIsChannelAnimationLooping(false)

@@ -11,7 +11,6 @@ public class CreaturesHitCounter {
     private final Map<CreatureId, Integer> creatureCounts = new ConcurrentSkipListMap<>();
 
     public void incrementForCreature(CreatureId creatureId) {
-        System.out.println("increment for " + creatureId);
         if (!creatureCounts.containsKey(creatureId)) {
             creatureCounts.put(creatureId, 1);
         } else {

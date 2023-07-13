@@ -23,6 +23,7 @@ public class Boomerang extends Projectile {
             .setHeight(1.3f)
             .setChannelTime(0f)
             .setActiveTime(10f)
+            .setStartingRange(0.5f)
             .setTextureName("boomerang")
             .setBaseDamage(22f)
             .setIsChannelAnimationLooping(true)

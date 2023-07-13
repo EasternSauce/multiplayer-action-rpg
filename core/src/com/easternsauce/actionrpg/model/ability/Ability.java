@@ -9,6 +9,7 @@ import com.easternsauce.actionrpg.model.util.RandomGenerator;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.renderer.animationconfig.AbilityAnimationConfig;
 import lombok.Data;
+import lombok.NonNull;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
@@ -104,7 +105,10 @@ public abstract class Ability implements Entity {
             if (getParams().getChainToPos() != null) {
                 getParams().setPos(getParams().getChainToPos());
             } else {
-                getParams().setPos(creature.getParams().getPos());
+                getParams().setPos(Ability.calculatePosition(creature.getParams().getPos(),
+                    getParams().getDirVector(),
+                    getParams().getStartingRange()
+                ));
             }
 
             if (creature.getCurrentWeapon() != null) {
@@ -116,6 +120,18 @@ public abstract class Ability implements Entity {
 
             getParams().setRandomGenerator(RandomGenerator.of(creature.getParams().getRandomGenerator().nextInt()));
         }
+    }
+
+    public static Vector2 calculatePosition(@NonNull Vector2 creaturePos,
+                                            @NonNull Vector2 dirVector,
+                                            float startingRange) {
+        float shiftPosX = dirVector.normalized().getX() * startingRange;
+        float shiftPosY = dirVector.normalized().getY() * startingRange;
+
+        float attackRectX = creaturePos.getX() + shiftPosX;
+        float attackRectY = creaturePos.getY() + shiftPosY;
+
+        return Vector2.of(attackRectX, attackRectY);
     }
 
     public AbilityAnimationConfig animationConfig() {

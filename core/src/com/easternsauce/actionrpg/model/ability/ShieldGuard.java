@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ShieldGuard extends DirectionalAttachedAbility {
+public class ShieldGuard extends AttachedAbility {
 
     AbilityParams params;
 
@@ -24,7 +24,7 @@ public class ShieldGuard extends DirectionalAttachedAbility {
             .setHeight(2f)
             .setChannelTime(0f)
             .setActiveTime(3f)
-            .setRange(1.2f)
+            .setStartingRange(1.2f)
             .setTextureName("shield")
             .setBaseDamage(0f)
             .setIsChannelAnimationLooping(false)
@@ -49,13 +49,13 @@ public class ShieldGuard extends DirectionalAttachedAbility {
 
     @Override
     protected void onChannelUpdate(CoreGame game) {
-        updateDirectionalAttachedAbilityPosition(game);
+        updateAttachedAbilityPosition(game);
 
     }
 
     @Override
     protected void onActiveUpdate(float delta, CoreGame game) {
-        updateDirectionalAttachedAbilityPosition(game);
+        updateAttachedAbilityPosition(game);
 
     }
 
@@ -65,7 +65,7 @@ public class ShieldGuard extends DirectionalAttachedAbility {
         getParams().setState(AbilityState.CHANNEL);
         getParams().getStateTimer().restart();
 
-        updateDirectionalAttachedAbilityPosition(game);
+        updateAttachedAbilityPosition(game);
 
     }
 

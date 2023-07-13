@@ -56,15 +56,12 @@ public class EnemyRallyPoint {
 
             if (playersNearby.isEmpty()) {
                 if (enemiesToSpawn > 0) {
-                    System.out.println("spawning enemy");
-
                     for (int i = 0; i < enemiesToSpawn; i++) {
                         CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 10000000));
 
                         EnemyTemplate randomEnemyTemplate = getRandomEnemyTemplate(game);
 
-                        EnemySpawnAction action = EnemySpawnAction.of(
-                            enemyId,
+                        EnemySpawnAction action = EnemySpawnAction.of(enemyId,
                             rallyPointInfo.getAreaId(),
                             id,
                             randomEnemyTemplate

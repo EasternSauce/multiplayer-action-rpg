@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Dash extends DirectionalAttachedAbility {
+public class Dash extends AttachedAbility {
     AbilityParams params;
 
     public static Dash of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
@@ -28,7 +28,7 @@ public class Dash extends DirectionalAttachedAbility {
             .setIsChannelAnimationLooping(false)
             .setIsActiveAnimationLooping(false)
             .setPos(creature.getParams().getPos())
-            .setRange(0.8f)
+            .setStartingRange(0.8f)
             .setDirectionalAttachedAbilityRotationShift(180f)
             .setIsFlip(Dash.calculateFlip(flipValue))
             .setRotationShift(180f);
@@ -52,7 +52,7 @@ public class Dash extends DirectionalAttachedAbility {
 
     @Override
     protected void onChannelUpdate(CoreGame game) {
-        updateDirectionalAttachedAbilityPosition(game);
+        updateAttachedAbilityPosition(game);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class Dash extends DirectionalAttachedAbility {
 
     @Override
     protected void onActiveUpdate(float delta, CoreGame game) {
-        updateDirectionalAttachedAbilityPosition(game);
+        updateAttachedAbilityPosition(game);
     }
 
     @Override
@@ -81,7 +81,7 @@ public class Dash extends DirectionalAttachedAbility {
         getParams().setState(AbilityState.CHANNEL);
         getParams().getStateTimer().restart();
 
-        updateDirectionalAttachedAbilityPosition(game);
+        updateAttachedAbilityPosition(game);
     }
 
     @Override

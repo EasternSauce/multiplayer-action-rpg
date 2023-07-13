@@ -27,6 +27,7 @@ public class Fireball extends Projectile {
             .setHeight(2.5f)
             .setChannelTime(0f)
             .setActiveTime(30f)
+            .setStartingRange(2.5f)
             .setTextureName("fireball")
             .setBaseDamage(20f)
             .setIsChannelAnimationLooping(false)

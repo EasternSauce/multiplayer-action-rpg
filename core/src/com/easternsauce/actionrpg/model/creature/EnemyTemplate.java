@@ -49,7 +49,7 @@ public class EnemyTemplate {
         new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.MOB_MAGIC_ORB, 100f),
             EnemySkillUseEntry.of(SkillType.MOB_VOLATILE_BUBBLE, 60f),
             EnemySkillUseEntry.of(SkillType.FIREBALL, 60f),
-            EnemySkillUseEntry.of(SkillType.MAGE_TELEPORT_COMBO, 60f)
+            EnemySkillUseEntry.of(SkillType.MAGE_TELEPORT_COMBO, 25f)
 
         ))
     );

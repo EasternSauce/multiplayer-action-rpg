@@ -145,7 +145,7 @@ public class CoreGameServer extends CoreGame {
 
     @Override
     public void initState() {
-        initialStateLoader.setupInitialState(this, endPoint);
+        initialStateLoader.setupInitialState(this);
     }
 
     @Override

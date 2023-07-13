@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class MobSwordSlash extends DirectionalAttachedAbility {
+public class MobSwordSlash extends AttachedAbility {
 
     AbilityParams params;
 
@@ -19,7 +19,7 @@ public class MobSwordSlash extends DirectionalAttachedAbility {
             .setHeight(2f)
             .setChannelTime(0.15f)
             .setActiveTime(0.3f)
-            .setRange(1.8f)
+            .setStartingRange(1.8f)
             .setTextureName("slash")
             .setBaseDamage(30f)
             .setIsChannelAnimationLooping(false)
@@ -39,14 +39,14 @@ public class MobSwordSlash extends DirectionalAttachedAbility {
 
     @Override
     protected void onChannelUpdate(CoreGame game) {
-        updateDirectionalAttachedAbilityPosition(game);
+        updateAttachedAbilityPosition(game);
 
     }
 
     @Override
     protected void onActiveUpdate(float delta, CoreGame game) {
 
-        updateDirectionalAttachedAbilityPosition(game);
+        updateAttachedAbilityPosition(game);
 
     }
 
@@ -56,7 +56,7 @@ public class MobSwordSlash extends DirectionalAttachedAbility {
         getParams().setState(AbilityState.CHANNEL);
         getParams().getStateTimer().restart();
 
-        updateDirectionalAttachedAbilityPosition(game);
+        updateAttachedAbilityPosition(game);
 
     }
 
