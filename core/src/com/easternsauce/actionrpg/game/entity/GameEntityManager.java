@@ -194,8 +194,11 @@ public class GameEntityManager {
 
     }
 
-    public void updateEnemyRallyPoints(CoreGame game) {
-        game.getGameState().getEnemyRallyPoints().forEach((enemyRallyPointId, enemyRallyPoint) -> enemyRallyPoint.update(game));
+    public void updateEnemyRallyPoints(float delta, CoreGame game) {
+        game
+            .getGameState()
+            .getEnemyRallyPoints()
+            .forEach((enemyRallyPointId, enemyRallyPoint) -> enemyRallyPoint.update(delta, game));
     }
 
     public void updateAbilities(float delta, CoreGame game) {

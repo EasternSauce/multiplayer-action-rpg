@@ -91,7 +91,8 @@ public class AbilityAccessor {
                 .setOverrideDuration(overrideDuration)
                 .setOverrideDamage(overrideDamage)
                 .setSkillType(chainFromAbility.getParams().getSkillType())
-                .setSkillStartPos(chainFromPos);
+                .setSkillStartPos(chainFromPos)
+                .setDamagingHitCreaturesHitCounter(chainFromAbility.getParams().getDamagingHitCreaturesHitCounter());
 
             spawnAbility(abilityType, abilityParams, game);
         }
@@ -128,7 +129,15 @@ public class AbilityAccessor {
 
         ability.getParams().getCreaturesAlreadyHit().put(targetId, ability.getParams().getStateTimer().getTime());
 
-        CreatureHitByAbilityAction action = CreatureHitByAbilityAction.of(attackerId, targetId, ability, contactPoint);
+        ability.getParams().getDamagingHitCreaturesHitCounter().incrementForCreature(targetId);
+
+        CreatureHitByAbilityAction action = CreatureHitByAbilityAction.of(
+            attackerId,
+            targetId,
+            ability,
+            ability.getParams().getDamagingHitCreaturesHitCounter().getCount(targetId),
+            contactPoint
+        );
         gameState.scheduleServerSideAction(action);
     }
 

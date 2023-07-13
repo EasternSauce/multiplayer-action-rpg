@@ -44,9 +44,11 @@ public class EnemySpawnAction extends GameStateAction {
         Vector2 rallyPointPos = enemyRallyPoint.getRallyPointInfo().getPos();
 
         Vector2 pos = Vector2.of(
-            rallyPointPos.getX() + 5 * game.getGameState().getRandomGenerator().nextFloat(),
-            rallyPointPos.getY() + 5 * game.getGameState().getRandomGenerator().nextFloat()
+            rallyPointPos.getX() + 10 * game.getGameState().getRandomGenerator().nextFloat(),
+            rallyPointPos.getY() + 10 * game.getGameState().getRandomGenerator().nextFloat()
         );
+
+        System.out.println("pos: " + pos);
 
         int rngSeed = game.getGameState().getRandomGenerator().nextInt();
 

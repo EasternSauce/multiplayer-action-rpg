@@ -6,13 +6,10 @@ import com.badlogic.gdx.InputAdapter;
 import com.easternsauce.actionrpg.game.command.*;
 import com.easternsauce.actionrpg.game.gamestate.ClientGameState;
 import com.easternsauce.actionrpg.game.gamestate.GameState;
-import com.easternsauce.actionrpg.game.util.EnemySpawnUtils;
 import com.easternsauce.actionrpg.model.ability.AbilityId;
 import com.easternsauce.actionrpg.model.action.*;
-import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
-import com.easternsauce.actionrpg.model.creature.EnemySpawn;
 import com.easternsauce.actionrpg.model.item.EquipmentSlotType;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.skill.SkillType;
@@ -26,7 +23,6 @@ import com.easternsauce.actionrpg.renderer.hud.inventorywindow.PotionMenuControl
 import com.easternsauce.actionrpg.renderer.hud.itempickupmenu.ItemPickupMenuController;
 import com.easternsauce.actionrpg.renderer.hud.skillmenu.SkillMenuController;
 import com.easternsauce.actionrpg.util.Constants;
-import com.easternsauce.actionrpg.util.RandomHolder;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -172,28 +168,11 @@ public class CoreGameClient extends CoreGame {
             if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
                 handleInventoryWindowActionInput();
             }
+            //noinspection StatementWithEmptyBody
             if (Gdx.input.isKeyJustPressed(Input.Keys.F11)) {
-                handleDebugCommandInput();
+                // TODO: make debug command that spawns enemy in front of player
             }
         }
-    }
-
-    private void handleDebugCommandInput() {
-        List<EnemySpawn> enemySpawns = EnemySpawnUtils.area1EnemySpawns();
-
-        AreaId areaId = gameState.getCurrentAreaId();
-
-        enemySpawns.forEach(enemySpawn -> {
-            CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 10000000));
-            getEndPoint().sendTCP(EnemySpawnCommand.of(enemyId,
-                areaId,
-                Vector2.of(enemySpawn.getPos().getX() + (float) Math.random(),
-                    enemySpawn.getPos().getY() + (float) Math.random()
-                ),
-                enemySpawn.getEnemyTemplate(),
-                RandomHolder.getRandom().nextInt()
-            ));
-        });
     }
 
     private void handleInventoryWindowActionInput() {

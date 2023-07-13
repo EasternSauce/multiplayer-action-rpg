@@ -26,13 +26,12 @@ public class IceSpear extends Projectile {
             .setChannelTime(0f)
             .setActiveTime(3f)
             .setTextureName("ice_shard")
-            .setBaseDamage(6f)
+            .setBaseDamage(15f)
             .setIsChannelAnimationLooping(false)
             .setIsActiveAnimationLooping(true)
             .setDelayedActionTime(0.001f)
             .setSpeed(18f)
             .setCreaturesAlreadyHit(new ConcurrentSkipListMap<>());
-        // setting
 
         return ability;
     }
@@ -74,6 +73,11 @@ public class IceSpear extends Projectile {
     @Override
     protected boolean isWeaponAttack() {
         return false;
+    }
+
+    @Override
+    public int maximumCreatureHitCount(CreatureId creatureId, CoreGame game) {
+        return 4;
     }
 }
 

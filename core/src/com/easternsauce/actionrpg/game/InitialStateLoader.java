@@ -1,13 +1,9 @@
 package com.easternsauce.actionrpg.game;
 
-import com.easternsauce.actionrpg.game.command.EnemySpawnCommand;
-import com.easternsauce.actionrpg.game.util.EnemySpawnUtils;
 import com.easternsauce.actionrpg.model.action.LootPileSpawnAction;
 import com.easternsauce.actionrpg.model.area.AreaGate;
 import com.easternsauce.actionrpg.model.area.AreaGateId;
 import com.easternsauce.actionrpg.model.area.AreaId;
-import com.easternsauce.actionrpg.model.creature.CreatureId;
-import com.easternsauce.actionrpg.model.creature.EnemySpawn;
 import com.easternsauce.actionrpg.model.creature.EnemyTemplate;
 import com.easternsauce.actionrpg.model.enemyrallypoint.EnemyRallyPoint;
 import com.easternsauce.actionrpg.model.enemyrallypoint.EnemyRallyPointId;
@@ -16,12 +12,10 @@ import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.item.ItemTemplate;
 import com.easternsauce.actionrpg.model.skill.SkillType;
 import com.easternsauce.actionrpg.model.util.Vector2;
-import com.esotericsoftware.kryonet.Server;
 import lombok.NoArgsConstructor;
 
 import java.util.AbstractMap;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ConcurrentSkipListSet;
@@ -30,9 +24,7 @@ import java.util.stream.Stream;
 
 @NoArgsConstructor(staticName = "of")
 public class InitialStateLoader {
-    public void setupInitialState(CoreGame game, Server server) {
-        AreaId areaId = AreaId.of("area1");
-
+    public void setupInitialState(CoreGame game) {
         Map<SkillType, Integer> grantedSkills = new ConcurrentSkipListMap<>();
         Map<SkillType, Integer> grantedSkills2 = new ConcurrentSkipListMap<>();
         grantedSkills.put(SkillType.MAGE_TELEPORT_COMBO, 1);
@@ -74,60 +66,19 @@ public class InitialStateLoader {
             AreaGate.of(area2ToArea1, 1.5f, 1.5f, Vector2.of(58f, 9f), AreaId.of("area2"), area1ToArea2)
         );
 
-        List<EnemySpawn> enemySpawns1 = EnemySpawnUtils.area1EnemySpawns();
-
-        enemySpawns1.forEach(enemySpawn -> {
-            CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 10000000));
-            int rngSeed = game.getGameState().getRandomGenerator().nextInt();
-            game.getEntityManager().spawnEnemy(enemyId,
-                areaId,
-                enemySpawn.getPos(),
-                enemySpawn.getEnemyTemplate(),
-                rngSeed,
-                game
-            );
-            server.sendToAllTCP(EnemySpawnCommand.of(enemyId,
-                areaId,
-                enemySpawn.getPos(),
-                enemySpawn.getEnemyTemplate(),
-                rngSeed
-            )); // TODO: use actions instead
-        });
-
-        List<EnemySpawn> enemySpawns3 = EnemySpawnUtils.area3EnemySpawns();
-        enemySpawns3.forEach(enemySpawn -> {
-            CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 10000000));
-            int rngSeed = game.getGameState().getRandomGenerator().nextInt();
-            game.getEntityManager().spawnEnemy(
-                enemyId,
-                AreaId.of("area3"),
-                enemySpawn.getPos(),
-                enemySpawn.getEnemyTemplate(),
-                rngSeed,
-                game
-            );
-            server.sendToAllTCP(EnemySpawnCommand.of(
-                enemyId,
-                AreaId.of("area3"),
-                enemySpawn.getPos(),
-                enemySpawn.getEnemyTemplate(),
-                rngSeed
-            ));
-        });
-
         Map<EnemyRallyPointId, EnemyRallyPoint> enemyRallyPoints = game.getGameState().getEnemyRallyPoints();
-        enemyRallyPoints.put(EnemyRallyPointId.of("enemyrallypoint1"),
-            EnemyRallyPoint.of(EnemyRallyPointId.of("enemyrallypoint1"),
-                AreaId.of("area3"),
-                EnemyRallyPointInfo.of(Vector2.of(40.88874f, 38.543716f),
-                    Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.mage, 100),
-                        new AbstractMap.SimpleEntry<>(EnemyTemplate.archer, 100),
-                        new AbstractMap.SimpleEntry<>(EnemyTemplate.skeleton, 100)
-                    ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)),
-                    5
-                )
-            )
+
+        EnemyRallyPointInfo rallyPointInfo = EnemyRallyPointInfo.of(Vector2.of(40.88874f, 38.543716f),
+            AreaId.of("area3"),
+            Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.mage, 400),
+                new AbstractMap.SimpleEntry<>(EnemyTemplate.archer, 100),
+                new AbstractMap.SimpleEntry<>(EnemyTemplate.skeleton, 100)
+            ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)),
+            8
         );
 
+        EnemyRallyPointId rallyPointId = EnemyRallyPointId.of("enemyrallypoint1"); // TODO: generate this id
+
+        enemyRallyPoints.put(rallyPointId, EnemyRallyPoint.of(rallyPointId, rallyPointInfo));
     }
 }

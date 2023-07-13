@@ -11,7 +11,6 @@ import com.easternsauce.actionrpg.model.area.LootPile;
 import com.easternsauce.actionrpg.model.area.LootPileId;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
-import com.easternsauce.actionrpg.model.creature.Enemy;
 import com.easternsauce.actionrpg.model.creature.Player;
 import com.easternsauce.actionrpg.model.util.GameStateBroadcast;
 import com.easternsauce.actionrpg.model.util.Vector2;
@@ -135,29 +134,8 @@ public class ServerGameState extends GameState {
                     ); // TODO: respawns
 
                     scheduleServerSideAction(action);
-                } else if (creature instanceof Enemy) {
-                    Vector2 respawnPos = creature.getParams().getInitialPos();
-
-                    Set<Creature> playersNearby = accessCreatures().getCreatures().values().stream().filter(
-                        otherCreature -> otherCreature instanceof Player &&
-                            otherCreature
-                                .getParams()
-                                .getAreaId()
-                                .getValue()
-                                .equals(creature.getParams().getAreaId().getValue()) &&
-                            otherCreature.getParams().getPos().distance(respawnPos) <
-                                Constants.PREVENT_ENEMY_RESPAWN_DISTANCE).collect(Collectors.toSet());
-
-                    if (playersNearby.isEmpty()) {
-                        AreaId initialAreaId = creature.getParams().getInitialAreaId();
-                        CreatureRespawnAction action = CreatureRespawnAction.of(creatureId, respawnPos, initialAreaId);
-
-                        scheduleServerSideAction(action);
-                    }
                 }
-
             }
-
         });
     }
 

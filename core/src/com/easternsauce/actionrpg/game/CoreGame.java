@@ -44,7 +44,7 @@ public abstract class CoreGame extends Game {
     @SuppressWarnings("unused")
     final MenuScreen menuScreen = MenuScreen.of();
     @SuppressWarnings("FieldCanBeLocal")
-    private final boolean isDebugEnabled = true;
+    private final boolean isDebugEnabled = Constants.IS_DEBUG_ENABLED;
 
     @Getter
     private final Chat chat = Chat.of();

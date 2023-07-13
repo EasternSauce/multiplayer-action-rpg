@@ -8,6 +8,7 @@ import com.easternsauce.actionrpg.model.area.LootPileId;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.creature.DropTableEntry;
+import com.easternsauce.actionrpg.model.enemyrallypoint.EnemyRallyPoint;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.skill.SkillType;
 
@@ -32,6 +33,14 @@ public abstract class CreatureHitAction extends GameStateAction {
         targetCreature.getParams().getTimeSinceDeathTimer().restart();
         targetCreature.getParams().setIsAwaitingRespawn(true);
         attackerCreature.onKillEffect();
+
+        if (targetCreature.getParams().getEnemyRallyPointId() != null) {
+            EnemyRallyPoint enemyRallyPoint = game.getGameState().getEnemyRallyPoint(targetCreature
+                .getParams()
+                .getEnemyRallyPointId());
+
+            enemyRallyPoint.getRespawnTimer().restart();
+        }
 
         spawnDrops(targetCreature.getId(), game);
 

@@ -1,5 +1,6 @@
 package com.easternsauce.actionrpg.model.enemyrallypoint;
 
+import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.creature.EnemyTemplate;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.AllArgsConstructor;
@@ -13,6 +14,7 @@ import java.util.Map;
 @Data
 public class EnemyRallyPointInfo {
     Vector2 pos;
+    AreaId areaId;
     Map<EnemyTemplate, Integer> enemyTemplateWeights;
     Integer enemiesTotal;
 }

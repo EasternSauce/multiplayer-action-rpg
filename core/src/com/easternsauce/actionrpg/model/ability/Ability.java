@@ -211,4 +211,8 @@ public abstract class Ability implements Entity {
     public boolean isBlockable() {
         return true;
     }
+
+    public int maximumCreatureHitCount(CreatureId creatureId, CoreGame game) {
+        return Integer.MAX_VALUE;
+    }
 }

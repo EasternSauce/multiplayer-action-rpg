@@ -22,10 +22,13 @@ public class Constants {
     public static final float JUST_ATTACKED_FROM_RANGE_AGGRESSION_TIME = 1f;
     public static final float FORCE_UPDATE_MINIMUM_DISTANCE = 0.05f;
 
-    public static final float ENEMY_SEARCH_DISTANCE = 18f;
+    public static final float ENEMY_SEARCH_DISTANCE = 0f;
     public static final float PREVENT_ENEMY_RESPAWN_DISTANCE = 32f;
     public static final float ENEMY_ATTACK_COOLDOWN_TIMER = 2.5f;
     public static final float GENERAL_PLAYER_SKILL_PERFORM_COOLDOWN = 0.3f;
     public static final float DAMAGE_NUMBER_SHOW_DURATION = 1.5f;
     public static final float DAMAGE_ANIMATION_DURATION = 0.35f;
+    public static final float ENEMY_RESPAWN_TIME = 20f;
+
+    public static final boolean IS_DEBUG_ENABLED = false;
 }

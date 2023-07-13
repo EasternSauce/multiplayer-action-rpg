@@ -4,6 +4,7 @@ import com.easternsauce.actionrpg.game.entity.EntityParams;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.skill.SkillType;
+import com.easternsauce.actionrpg.model.util.CreaturesHitCounter;
 import com.easternsauce.actionrpg.model.util.RandomGenerator;
 import com.easternsauce.actionrpg.model.util.SimpleTimer;
 import com.easternsauce.actionrpg.model.util.Vector2;
@@ -37,6 +38,7 @@ public class AbilityParams implements EntityParams {
     @NonNull Float range;
 
     @NonNull Map<CreatureId, Float> creaturesAlreadyHit = new ConcurrentSkipListMap<>();
+    @NonNull CreaturesHitCounter damagingHitCreaturesHitCounter = CreaturesHitCounter.of();
 
     @NonNull Vector2 velocity = Vector2.of(0f, 0f);
     @NonNull Float speed = 0f;

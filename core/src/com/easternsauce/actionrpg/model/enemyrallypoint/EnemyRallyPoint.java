@@ -2,24 +2,38 @@ package com.easternsauce.actionrpg.model.enemyrallypoint;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.action.EnemySpawnAction;
-import com.easternsauce.actionrpg.model.area.AreaId;
+import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.creature.EnemyTemplate;
-import lombok.AllArgsConstructor;
+import com.easternsauce.actionrpg.model.creature.Player;
+import com.easternsauce.actionrpg.model.util.SimpleTimer;
+import com.easternsauce.actionrpg.util.Constants;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
-@AllArgsConstructor(staticName = "of")
 @Data
 public class EnemyRallyPoint {
     EnemyRallyPointId id;
-    AreaId areaId;
     EnemyRallyPointInfo rallyPointInfo;
+    SimpleTimer respawnTimer = SimpleTimer.getExpiredTimer();
 
-    public void update(CoreGame game) {
+    public static EnemyRallyPoint of(EnemyRallyPointId id, EnemyRallyPointInfo rallyPointInfo) {
+        EnemyRallyPoint enemyRallyPoint = EnemyRallyPoint.of();
+
+        enemyRallyPoint.id = id;
+        enemyRallyPoint.rallyPointInfo = rallyPointInfo;
+
+        return enemyRallyPoint;
+    }
+
+    public void update(float delta, CoreGame game) {
+        getRespawnTimer().update(delta);
+
         long enemiesAliveCount = game
             .getGameState()
             .accessCreatures()
@@ -31,6 +45,40 @@ public class EnemyRallyPoint {
                 creature.isAlive())
             .count();
 
+        if (respawnTimer.getTime() > Constants.ENEMY_RESPAWN_TIME) {
+            long enemiesToSpawn = rallyPointInfo.getEnemiesTotal() - enemiesAliveCount;
+
+            Set<Creature> playersNearby = game.getGameState().accessCreatures().getCreatures().values().stream().filter(
+                otherCreature -> otherCreature instanceof Player &&
+                    otherCreature.getParams().getAreaId().getValue().equals(rallyPointInfo.getAreaId().getValue()) &&
+                    otherCreature.getParams().getPos().distance(rallyPointInfo.getPos()) <
+                        Constants.PREVENT_ENEMY_RESPAWN_DISTANCE).collect(Collectors.toSet());
+
+            if (playersNearby.isEmpty()) {
+                if (enemiesToSpawn > 0) {
+                    System.out.println("spawning enemy");
+
+                    for (int i = 0; i < enemiesToSpawn; i++) {
+                        CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 10000000));
+
+                        EnemyTemplate randomEnemyTemplate = getRandomEnemyTemplate(game);
+
+                        EnemySpawnAction action = EnemySpawnAction.of(
+                            enemyId,
+                            rallyPointInfo.getAreaId(),
+                            id,
+                            randomEnemyTemplate
+                        );
+
+                        game.getGameState().scheduleServerSideAction(action);
+                    }
+                }
+            }
+            respawnTimer.restart();
+        }
+    }
+
+    private EnemyTemplate getRandomEnemyTemplate(CoreGame game) {
         AtomicReference<EnemyTemplate> randomEnemyTemplate = new AtomicReference<>(null);
 
         AtomicReference<Float> totalWeight = new AtomicReference<>((float) 0);
@@ -49,15 +97,6 @@ public class EnemyRallyPoint {
             }
             randValue.updateAndGet(value -> value - weight);
         });
-
-        System.out.println(rallyPointInfo.getEnemiesTotal() + " " + enemiesAliveCount);
-        if (rallyPointInfo.getEnemiesTotal() - enemiesAliveCount > 0) {
-            System.out.println("spawning enemy");
-            CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 10000000));
-
-            EnemySpawnAction action = EnemySpawnAction.of(enemyId, areaId, id, randomEnemyTemplate.get());
-
-            game.getGameState().scheduleServerSideAction(action);
-        }
+        return randomEnemyTemplate.get();
     }
 }
