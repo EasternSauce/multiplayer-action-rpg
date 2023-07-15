@@ -20,7 +20,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -32,6 +31,7 @@ public class CoreGameServer extends CoreGame {
     private final List<Integer> clientIds = Collections.synchronizedList(new ArrayList<>());
     private final InitialStateLoader initialStateLoader = InitialStateLoader.of();
     private final CoreGameServerListener serverListener = CoreGameServerListener.of(this);
+    private final ServerConnectionEstablisher serverConnectionEstablisher = ServerConnectionEstablisher.of();
     @Getter
     @Setter
     private Server endPoint;
@@ -43,22 +43,15 @@ public class CoreGameServer extends CoreGame {
     }
 
     @Override
-    public void establishConnection() {
-        setEndPoint(new Server(6400000, 6400000));
-        getEndPoint().getKryo().setRegistrationRequired(false);
-        getEndPoint().start();
+    public void onStartup() {
+        serverConnectionEstablisher.establish(serverListener, this);
 
-        try {
-            getEndPoint().bind(20445, 20445);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        initializeBroadcastThread();
+    }
 
-        getEndPoint().addListener(serverListener);
-
+    private void initializeBroadcastThread() {
         broadcastThread = createBroadcastThread();
         broadcastThread.start();
-
     }
 
     private Thread createBroadcastThread() {

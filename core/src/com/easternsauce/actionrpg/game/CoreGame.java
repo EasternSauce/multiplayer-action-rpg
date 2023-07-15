@@ -30,7 +30,6 @@ import com.easternsauce.actionrpg.util.Constants;
 import com.esotericsoftware.kryonet.EndPoint;
 import lombok.Getter;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -66,11 +65,8 @@ public abstract class CoreGame extends Game {
 
     @Override
     public void create() {
-        try {
-            establishConnection();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+
+        onStartup();
 
         TextureAtlas atlas = new TextureAtlas("assets/atlas/packed_atlas.atlas");
 
@@ -80,7 +76,7 @@ public abstract class CoreGame extends Game {
         setStartingScreen();
     }
 
-    abstract public void establishConnection() throws IOException;
+    abstract public void onStartup();
 
     public abstract void setStartingScreen();
 

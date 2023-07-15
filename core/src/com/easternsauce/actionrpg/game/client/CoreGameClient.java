@@ -29,7 +29,6 @@ import com.esotericsoftware.kryonet.Client;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.IOException;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
@@ -47,19 +46,16 @@ public class CoreGameClient extends CoreGame {
     private final PotionMenuController potionMenuController = PotionMenuController.of();
 
     private final CoreGameClientListener clientListener = CoreGameClientListener.of(this);
-
+    private final ClientConnectionEstablisher clientConnectionEstablisher = ClientConnectionEstablisher.of();
     @Getter
     @Setter
     private Client endPoint;
-
     @Getter
     @Setter
     private Boolean isAreaRenderersLoaded = false;
-
     @Getter
     @Setter
     private Boolean isFirstBroadcastReceived = false;
-
     private Float menuClickTime = 0f; // TODO: should do it differently
 
     private CoreGameClient() {
@@ -359,13 +355,8 @@ public class CoreGameClient extends CoreGame {
     }
 
     @Override
-    public void establishConnection() throws IOException {
-        setEndPoint(new Client(6400000, 6400000));
-        getEndPoint().getKryo().setRegistrationRequired(false);
-        getEndPoint().start();
-        getEndPoint().connect(12000 * 99999, "127.0.0.1", 20445, 20445);
-
-        getEndPoint().addListener(clientListener);
+    public void onStartup() {
+        clientConnectionEstablisher.establish(clientListener, this);
 
         getEndPoint().sendTCP(ConnectionInitCommand.of());
     }
