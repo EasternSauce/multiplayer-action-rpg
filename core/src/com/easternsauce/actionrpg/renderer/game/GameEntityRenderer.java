@@ -151,7 +151,7 @@ public class GameEntityRenderer {
     }
 
     private boolean isCreatureInCurrentlyVisibleArea(Creature creature, CoreGame game) {
-        return creature.getParams().getAreaId().equals(game.getGameState().getCurrentAreaId());
+        return creature.getParams().getAreaId().equals(game.getCurrentAreaId());
     }
 
     public void renderCreatureLifeBars(RenderingLayer renderingLayer, CoreGame game) {

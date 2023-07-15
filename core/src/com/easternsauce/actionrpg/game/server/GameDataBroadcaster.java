@@ -13,10 +13,6 @@ public class GameDataBroadcaster {
         broadcastThread.start();
     }
 
-    public void stop() {
-        broadcastThread.interrupt();
-    }
-
     private Thread createBroadcastThread(Server endPoint, CoreGameServer game) {
         return new Thread(() -> {
             try {
@@ -43,5 +39,9 @@ public class GameDataBroadcaster {
         } else {
             game.getGameState().sendGameDataPersonalizedForPlayer(connection);
         }
+    }
+
+    public void stop() {
+        broadcastThread.interrupt();
     }
 }

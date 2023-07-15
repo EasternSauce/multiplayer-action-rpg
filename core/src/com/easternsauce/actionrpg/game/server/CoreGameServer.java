@@ -32,11 +32,10 @@ public class CoreGameServer extends CoreGame {
     private final InitialStateLoader initialStateLoader = InitialStateLoader.of();
     private final CoreGameServerListener serverListener = CoreGameServerListener.of(this);
     private final ServerConnectionEstablisher serverConnectionEstablisher = ServerConnectionEstablisher.of();
+    private final GameDataBroadcaster gameDataBroadcaster = GameDataBroadcaster.of();
     @Getter
     @Setter
     private Server endPoint;
-
-    private final GameDataBroadcaster gameDataBroadcaster = GameDataBroadcaster.of();
 
     @Override
     public boolean isGameplayRunning() {
@@ -48,10 +47,6 @@ public class CoreGameServer extends CoreGame {
         serverConnectionEstablisher.establish(serverListener, this);
 
         gameDataBroadcaster.start(endPoint, this);
-    }
-
-    public Map<Integer, CreatureId> getClientPlayers() {
-        return getGameState().getClientPlayers();
     }
 
     @Override
@@ -90,6 +85,10 @@ public class CoreGameServer extends CoreGame {
         }
 
         gameState.getOnTickActions().clear();
+    }
+
+    public Map<Integer, CreatureId> getClientPlayers() {
+        return getGameState().getClientPlayers();
     }
 
     private boolean isActionRelevantForPlayer(Creature player, GameStateAction action) {

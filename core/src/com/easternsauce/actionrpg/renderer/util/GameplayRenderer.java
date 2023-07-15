@@ -6,6 +6,7 @@ import com.easternsauce.actionrpg.game.assets.Assets;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
 import com.easternsauce.actionrpg.renderer.game.GameEntityRenderer;
+import com.easternsauce.actionrpg.renderer.physics.PhysicsDebugRenderer;
 import com.easternsauce.actionrpg.util.Constants;
 import lombok.NoArgsConstructor;
 
@@ -16,6 +17,7 @@ import java.util.List;
 public class GameplayRenderer {
     public void renderGameplay(CoreGame game) {
         GameEntityRenderer renderer = game.getEntityManager().getGameEntityRenderer();
+        PhysicsDebugRenderer physicsDebugRenderer = game.getPhysicsDebugRenderer();
         RenderingLayer worldElementsRenderingLayer = renderer.getWorldElementsRenderingLayer();
         RenderingLayer worldTextRenderingLayer = renderer.getWorldTextRenderingLayer();
 
@@ -33,13 +35,13 @@ public class GameplayRenderer {
         renderCreatureHitAnimations(renderer, worldElementsRenderingLayer, game);
         renderDamageNumbers(renderer, worldTextRenderingLayer, game);
 
-        game.renderB2BodyDebug();
+        physicsDebugRenderer.render(game);
     }
 
     private void renderAreaLayers(GameEntityRenderer renderer, List<Integer> layers, CoreGame game) {
         int[] layersArray = layers.stream().mapToInt(Integer::intValue).toArray();
-        if (renderer.getAreaRenderers().containsKey(game.getGameState().getCurrentAreaId())) {
-            renderer.getAreaRenderers().get(game.getGameState().getCurrentAreaId()).render(layersArray);
+        if (renderer.getAreaRenderers().containsKey(game.getCurrentAreaId())) {
+            renderer.getAreaRenderers().get(game.getCurrentAreaId()).render(layersArray);
         }
     }
 
@@ -92,7 +94,7 @@ public class GameplayRenderer {
         renderer.getCreatureHitAnimations().stream().filter(creatureHitAnimation -> creatureHitAnimation
             .getAreaId()
             .getValue()
-            .equals(game.getGameState().getCurrentAreaId().getValue())).forEach(creatureHitAnimation -> renderer
+            .equals(game.getCurrentAreaId().getValue())).forEach(creatureHitAnimation -> renderer
             .getCreatureHitAnimationRenderer()
             .render(
                 creatureHitAnimation.getCreatureId(),
@@ -113,7 +115,7 @@ public class GameplayRenderer {
         renderer.getDamageNumbers().stream().filter(damageNumber -> damageNumber
             .getAreaId()
             .getValue()
-            .equals(game.getGameState().getCurrentAreaId().getValue())).forEach(damageNumber -> {
+            .equals(game.getCurrentAreaId().getValue())).forEach(damageNumber -> {
             float timeElapsed = game.getGameState().getTime() - damageNumber.getDamageTime();
 
             float posX = damageNumber.getPos().getX() - 8f / Constants.PPM;

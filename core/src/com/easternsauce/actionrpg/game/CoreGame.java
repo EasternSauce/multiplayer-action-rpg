@@ -26,6 +26,7 @@ import com.easternsauce.actionrpg.physics.event.PhysicsEvent;
 import com.easternsauce.actionrpg.physics.world.PhysicsWorld;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
 import com.easternsauce.actionrpg.renderer.hud.HudRenderer;
+import com.easternsauce.actionrpg.renderer.physics.PhysicsDebugRenderer;
 import com.easternsauce.actionrpg.util.Constants;
 import com.esotericsoftware.kryonet.EndPoint;
 import lombok.Getter;
@@ -45,14 +46,15 @@ public abstract class CoreGame extends Game {
 
     @SuppressWarnings("unused")
     final MenuScreen menuScreen = MenuScreen.of();
-    @SuppressWarnings("FieldCanBeLocal")
-    private final boolean isDebugEnabled = Constants.IS_DEBUG_ENABLED;
 
     @Getter
     private final Chat chat = Chat.of();
 
     @Getter
     private final HudRenderer hudRenderer = HudRenderer.of();
+
+    @Getter
+    private final PhysicsDebugRenderer physicsDebugRenderer = PhysicsDebugRenderer.of();
 
     public void addTeleportEvent(TeleportEvent teleportEvent) {
         eventProcessor.getTeleportEvents().add(teleportEvent);
@@ -65,18 +67,19 @@ public abstract class CoreGame extends Game {
 
     @Override
     public void create() {
-
         onStartup();
-
-        TextureAtlas atlas = new TextureAtlas("assets/atlas/packed_atlas.atlas");
-
-        gameplayScreen.init(atlas, this);
-        connectScreen.init(atlas, this);
-
+        initializeScreens();
         setStartingScreen();
     }
 
     abstract public void onStartup();
+
+    private void initializeScreens() {
+        TextureAtlas atlas = new TextureAtlas("assets/atlas/packed_atlas.atlas");
+
+        gameplayScreen.init(atlas, this);
+        connectScreen.init(atlas, this);
+    }
 
     public abstract void setStartingScreen();
 
@@ -104,23 +107,9 @@ public abstract class CoreGame extends Game {
         entityManager.getGameEntityRenderer().getViewportsHandler().updateCameraPositions(this);
     }
 
-    public void renderB2BodyDebug() {
-        if (isDebugEnabled()) {
-            entityManager.getGameEntityPhysics().getDebugRenderer().render(entityManager
-                    .getGameEntityPhysics()
-                    .getPhysicsWorlds()
-                    .get(getGameState().getCurrentAreaId())
-                    .getB2world(),
-                entityManager.getGameEntityRenderer().getViewportsHandler().getWorldCameraCombinedProjectionMatrix()
-            );
-        }
-    }
-
     public Boolean isDebugEnabled() {
-        return isDebugEnabled;
+        return Constants.IS_DEBUG_ENABLED;
     }
-
-    public abstract GameState getGameState();
 
     public List<PhysicsEvent> getPhysicsEventQueue() {
         return entityManager.getGameEntityPhysics().getPhysicsEventQueue();
@@ -195,6 +184,8 @@ public abstract class CoreGame extends Game {
         );
     }
 
+    public abstract GameState getGameState();
+
     public Map<AbilityId, Ability> getAbilities() {
         return getGameState().accessAbilities().getAbilities();
     }
@@ -213,5 +204,9 @@ public abstract class CoreGame extends Game {
 
     public Vector2 getCreaturePos(CreatureId creatureId) {
         return getGameState().accessCreatures().getCreaturePos(creatureId);
+    }
+
+    public AreaId getCurrentAreaId() {
+        return getGameState().getCurrentAreaId();
     }
 }

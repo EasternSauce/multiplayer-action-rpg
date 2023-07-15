@@ -396,22 +396,6 @@ public class CoreGameClient extends CoreGame {
     }
 
     @Override
-    public void renderB2BodyDebug() {
-        if (isDebugEnabled()) {
-            getEntityManager().getGameEntityPhysics().getDebugRenderer().render(getEntityManager()
-                    .getGameEntityPhysics()
-                    .getPhysicsWorlds()
-                    .get(gameState.getCurrentAreaId())
-                    .getB2world(),
-                getEntityManager()
-                    .getGameEntityRenderer()
-                    .getViewportsHandler()
-                    .getWorldCameraCombinedProjectionMatrix()
-            );
-        }
-    }
-
-    @Override
     public ClientGameState getGameState() {
         return gameState;
     }
@@ -452,7 +436,7 @@ public class CoreGameClient extends CoreGame {
 
     @Override
     public boolean isPathfindingCalculatedForCreature(Creature creature) {
-        return creature.getParams().getAreaId().equals(getGameState().getCurrentAreaId());
+        return creature.getParams().getAreaId().equals(getCurrentAreaId());
     }
 
     @Override

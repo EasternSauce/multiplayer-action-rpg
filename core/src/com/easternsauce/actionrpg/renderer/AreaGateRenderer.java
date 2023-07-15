@@ -37,7 +37,7 @@ public class AreaGateRenderer {
     }
 
     public void render(RenderingLayer renderingLayer, CoreGame game) {
-        AreaId currentAreaId = game.getGameState().getCurrentAreaId();
+        AreaId currentAreaId = game.getCurrentAreaId();
 
         AreaGate areaGate = game.getGameState().getAreaGate(areaGateId);
 
