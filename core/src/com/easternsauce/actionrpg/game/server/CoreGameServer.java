@@ -126,11 +126,6 @@ public class CoreGameServer extends CoreGame {
     }
 
     @Override
-    public ServerGameState getGameState() {
-        return gameState;
-    }
-
-    @Override
     public void initializePlayer(String playerName) {
 
     }
@@ -164,6 +159,11 @@ public class CoreGameServer extends CoreGame {
     @Override
     public CoreGame setIsFirstBroadcastReceived(Boolean isFirstBroadcastReceived) {
         return this;
+    }
+
+    @Override
+    public ServerGameState getGameState() {
+        return gameState;
     }
 
     @Override

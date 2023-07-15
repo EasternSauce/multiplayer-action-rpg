@@ -86,7 +86,7 @@ public class CoreGameClient extends CoreGame {
     }
 
     private void updateClientCreatureAimDirection() {
-        Vector2 mousePos = mousePosRelativeToCenter();
+        Vector2 mousePos = getMousePositionRetriever().mousePosRelativeToCenter(this);
 
         Creature player = gameState.accessCreatures().getCreatures().get(getGameState().getThisClientPlayerId());
 
@@ -179,7 +179,7 @@ public class CoreGameClient extends CoreGame {
     private void handlePerformAbilityInput(PlayerConfig playerConfig, int abilitySequenceNumber) {
         Creature player = gameState.accessCreatures().getCreatures().get(getGameState().getThisClientPlayerId());
 
-        Vector2 dirVector = mousePosRelativeToCenter();
+        Vector2 dirVector = getMousePositionRetriever().mousePosRelativeToCenter(this);
 
         if (playerConfig.getSkillMenuSlots().containsKey(abilitySequenceNumber)) {
 
@@ -211,7 +211,7 @@ public class CoreGameClient extends CoreGame {
 
             Creature player = gameState.accessCreatures().getCreatures().get(getGameState().getThisClientPlayerId());
 
-            Vector2 dirVector = mousePosRelativeToCenter();
+            Vector2 dirVector = getMousePositionRetriever().mousePosRelativeToCenter(this);
 
             float weaponDamage;
             SkillType attackSkill;
@@ -247,7 +247,7 @@ public class CoreGameClient extends CoreGame {
 
     private void handleActionButtonHoldInput(PlayerConfig playerConfig) {
         if (!playerConfig.getIsInventoryVisible()) {
-            Vector2 mousePos = mousePosRelativeToCenter();
+            Vector2 mousePos = getMousePositionRetriever().mousePosRelativeToCenter(this);
 
             Creature player = gameState.accessCreatures().getCreatures().get(getGameState().getThisClientPlayerId());
 
@@ -396,11 +396,6 @@ public class CoreGameClient extends CoreGame {
     }
 
     @Override
-    public ClientGameState getGameState() {
-        return gameState;
-    }
-
-    @Override
     public void initializePlayer(String playerName) {
         gameState.setThisClientPlayerId(CreatureId.of(playerName));
         getEndPoint().sendTCP(PlayerInitCommand.of(getGameState().getThisClientPlayerId()));
@@ -437,6 +432,11 @@ public class CoreGameClient extends CoreGame {
     @Override
     public boolean isPathfindingCalculatedForCreature(Creature creature) {
         return creature.getParams().getAreaId().equals(getCurrentAreaId());
+    }
+
+    @Override
+    public ClientGameState getGameState() {
+        return gameState;
     }
 
     @Override

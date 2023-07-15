@@ -1,13 +1,12 @@
 package com.easternsauce.actionrpg.game;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.math.Vector3;
 import com.easternsauce.actionrpg.game.chat.Chat;
 import com.easternsauce.actionrpg.game.entity.EntityEventProcessor;
 import com.easternsauce.actionrpg.game.entity.GameEntityManager;
 import com.easternsauce.actionrpg.game.gamestate.GameState;
+import com.easternsauce.actionrpg.game.mousepos.MousePositionRetriever;
 import com.easternsauce.actionrpg.game.screen.ConnectScreen;
 import com.easternsauce.actionrpg.game.screen.GameplayScreen;
 import com.easternsauce.actionrpg.game.screen.MenuScreen;
@@ -36,7 +35,6 @@ import java.util.Map;
 import java.util.Set;
 
 public abstract class CoreGame extends Game {
-
     final protected GameplayScreen gameplayScreen = GameplayScreen.of();
     final protected ConnectScreen connectScreen = ConnectScreen.of();
     @Getter
@@ -55,6 +53,9 @@ public abstract class CoreGame extends Game {
 
     @Getter
     private final PhysicsDebugRenderer physicsDebugRenderer = PhysicsDebugRenderer.of();
+
+    @Getter
+    private final MousePositionRetriever mousePositionRetriever = MousePositionRetriever.of();
 
     public void addTeleportEvent(TeleportEvent teleportEvent) {
         eventProcessor.getTeleportEvents().add(teleportEvent);
@@ -131,29 +132,6 @@ public abstract class CoreGame extends Game {
         entityManager.getGameEntityPhysics().setIsForceUpdateBodyPositions(value);
     }
 
-    public Vector2 mousePosRelativeToCenter() { // relative to center of screen, in in-game length units
-        //noinspection SpellCheckingInspection
-        Vector3 screenCoords = new Vector3((float) Gdx.input.getX(), (float) Gdx.input.getY(), 0f);
-        entityManager.getGameEntityRenderer().getViewportsHandler().unprojectHudCamera(screenCoords);
-        Vector2 mousePos = Vector2.of(screenCoords.x - Constants.WINDOW_WIDTH / 2f,
-            screenCoords.y - Constants.WINDOW_HEIGHT / 2f
-        );
-
-        float viewportRatioX = Constants.VIEWPOINT_WORLD_WIDTH / Constants.WINDOW_WIDTH;
-        float viewportRatioY = Constants.VIEWPOINT_WORLD_HEIGHT / Constants.WINDOW_HEIGHT;
-
-        return Vector2.of(mousePos.getX() * viewportRatioX / Constants.PPM,
-            mousePos.getY() * viewportRatioY / Constants.PPM
-        );
-    }
-
-    public Vector2 hudMousePos() {
-        //noinspection SpellCheckingInspection
-        Vector3 screenCoords = new Vector3((float) Gdx.input.getX(), (float) Gdx.input.getY(), 0f);
-        entityManager.getGameEntityRenderer().getViewportsHandler().unprojectHudCamera(screenCoords);
-        return Vector2.of(screenCoords.x, screenCoords.y);
-    }
-
     public void goToGamePlayScreen() {
         setScreen(gameplayScreen);
     }
@@ -208,5 +186,9 @@ public abstract class CoreGame extends Game {
 
     public AreaId getCurrentAreaId() {
         return getGameState().getCurrentAreaId();
+    }
+
+    public Vector2 hudMousePos() {
+        return getMousePositionRetriever().hudMousePos(this);
     }
 }
