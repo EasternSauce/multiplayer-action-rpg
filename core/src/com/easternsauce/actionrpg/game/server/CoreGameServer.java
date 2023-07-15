@@ -1,6 +1,8 @@
-package com.easternsauce.actionrpg.game;
+package com.easternsauce.actionrpg.game.server;
 
 import com.badlogic.gdx.graphics.Color;
+import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.game.InitialStateLoader;
 import com.easternsauce.actionrpg.game.assets.Assets;
 import com.easternsauce.actionrpg.game.gamestate.ServerGameState;
 import com.easternsauce.actionrpg.model.ability.AbilityId;
@@ -15,16 +17,15 @@ import com.easternsauce.actionrpg.util.Constants;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@NoArgsConstructor(staticName = "of")
 public class CoreGameServer extends CoreGame {
-    private static CoreGameServer instance;
-
-    @Getter
     private final ServerGameState gameState = ServerGameState.of();
 
     @Getter
@@ -35,16 +36,6 @@ public class CoreGameServer extends CoreGame {
     @Setter
     private Server endPoint;
     private Thread broadcastThread;
-
-    private CoreGameServer() {
-    }
-
-    public static CoreGameServer getInstance() {
-        if (instance == null) {
-            instance = new CoreGameServer();
-        }
-        return instance;
-    }
 
     @Override
     public boolean isGameplayRunning() {
@@ -65,7 +56,13 @@ public class CoreGameServer extends CoreGame {
 
         getEndPoint().addListener(serverListener);
 
-        broadcastThread = new Thread(() -> {
+        broadcastThread = createBroadcastThread();
+        broadcastThread.start();
+
+    }
+
+    private Thread createBroadcastThread() {
+        return new Thread(() -> {
             try {
                 while (true) {
                     //noinspection BusyWait
@@ -80,8 +77,6 @@ public class CoreGameServer extends CoreGame {
                 // do nothing
             }
         });
-        broadcastThread.start();
-
     }
 
     private void broadcastToConnection(Connection connection) {
@@ -170,6 +165,11 @@ public class CoreGameServer extends CoreGame {
     }
 
     @Override
+    public ServerGameState getGameState() {
+        return gameState;
+    }
+
+    @Override
     public void initializePlayer(String playerName) {
 
     }
@@ -210,5 +210,4 @@ public class CoreGameServer extends CoreGame {
         getEndPoint().stop();
         broadcastThread.interrupt();
     }
-
 }

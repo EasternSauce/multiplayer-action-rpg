@@ -1,11 +1,14 @@
-package com.easternsauce.actionrpg.game;
+package com.easternsauce.actionrpg.game.client;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
-import com.easternsauce.actionrpg.game.command.*;
+import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.game.command.ActionPerformCommand;
+import com.easternsauce.actionrpg.game.command.ChatMessageSendCommand;
+import com.easternsauce.actionrpg.game.command.ConnectionInitCommand;
+import com.easternsauce.actionrpg.game.command.PlayerInitCommand;
 import com.easternsauce.actionrpg.game.gamestate.ClientGameState;
-import com.easternsauce.actionrpg.game.gamestate.GameState;
 import com.easternsauce.actionrpg.model.ability.AbilityId;
 import com.easternsauce.actionrpg.model.action.*;
 import com.easternsauce.actionrpg.model.creature.Creature;
@@ -13,7 +16,6 @@ import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.item.EquipmentSlotType;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.skill.SkillType;
-import com.easternsauce.actionrpg.model.util.GameStateBroadcast;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;
 import com.easternsauce.actionrpg.model.util.TeleportEvent;
 import com.easternsauce.actionrpg.model.util.Vector2;
@@ -24,13 +26,10 @@ import com.easternsauce.actionrpg.renderer.hud.itempickupmenu.ItemPickupMenuCont
 import com.easternsauce.actionrpg.renderer.hud.skillmenu.SkillMenuController;
 import com.easternsauce.actionrpg.util.Constants;
 import com.esotericsoftware.kryonet.Client;
-import com.esotericsoftware.kryonet.Connection;
-import com.esotericsoftware.kryonet.Listener;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
@@ -46,6 +45,8 @@ public class CoreGameClient extends CoreGame {
     private final InventoryWindowController inventoryWindowController = InventoryWindowController.of();
     private final ItemPickupMenuController pickupMenuController = ItemPickupMenuController.of();
     private final PotionMenuController potionMenuController = PotionMenuController.of();
+
+    private final CoreGameClientListener clientListener = CoreGameClientListener.of(this);
 
     @Getter
     @Setter
@@ -364,55 +365,9 @@ public class CoreGameClient extends CoreGame {
         getEndPoint().start();
         getEndPoint().connect(12000 * 99999, "127.0.0.1", 20445, 20445);
 
-        getEndPoint().addListener(new Listener() {
-            @Override
-            public void disconnected(Connection connection) {
-                System.out.println("Disconnecting...");
-                System.exit(0);
-            }
-
-            @Override
-            public void received(Connection connection, Object object) {
-                if (object instanceof ActionsHolder) {
-                    ActionsHolder actionsHolder = (ActionsHolder) object;
-
-                    List<GameStateAction> actions = actionsHolder.getActions();
-
-                    actions.forEach(gameStateAction -> gameStateAction.applyToGame(CoreGameClient.this));
-
-                } else if (object instanceof GameStateBroadcast) {
-                    GameStateBroadcast action = (GameStateBroadcast) object;
-
-                    gameState.createEventsFromReceivedGameStateData(action.getGameStateData(), getEventProcessor());
-                    gameState.setNewGameState(action.getGameStateData());
-
-                    getEntityManager().getGameEntityPhysics().setIsForceUpdateBodyPositions(true);
-
-                    setIsFirstBroadcastReceived(true);
-                } else if (object instanceof ChatMessageSendCommand) {
-                    ChatMessageSendCommand action = (ChatMessageSendCommand) object;
-
-                    if (!Objects.equals(action.getPoster(), getGameState().getThisClientPlayerId().getValue())) {
-                        getChat().sendMessage(action.getPoster(), action.getText(), CoreGameClient.this);
-                    }
-
-                } else if (object instanceof EnemySpawnCommand) {
-                    EnemySpawnCommand command = (EnemySpawnCommand) object;
-
-                    getEntityManager().spawnEnemy(command.getCreatureId(),
-                        command.getAreaId(),
-                        command.getPos(),
-                        command.getEnemyTemplate(),
-                        command.getRngSeed(),
-                        CoreGameClient.this
-                    );
-                }
-
-            }
-        });
+        getEndPoint().addListener(clientListener);
 
         getEndPoint().sendTCP(ConnectionInitCommand.of());
-
     }
 
     @Override
@@ -466,7 +421,7 @@ public class CoreGameClient extends CoreGame {
     }
 
     @Override
-    public GameState getGameState() {
+    public ClientGameState getGameState() {
         return gameState;
     }
 
@@ -513,5 +468,4 @@ public class CoreGameClient extends CoreGame {
     public void dispose() {
         getEndPoint().stop();
     }
-
 }

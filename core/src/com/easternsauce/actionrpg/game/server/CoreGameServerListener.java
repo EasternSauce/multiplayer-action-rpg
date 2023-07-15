@@ -1,4 +1,4 @@
-package com.easternsauce.actionrpg.game;
+package com.easternsauce.actionrpg.game.server;
 
 import com.easternsauce.actionrpg.game.command.*;
 import com.easternsauce.actionrpg.model.action.PlayerInitAction;
