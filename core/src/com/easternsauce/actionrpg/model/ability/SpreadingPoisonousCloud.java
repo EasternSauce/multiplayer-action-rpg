@@ -46,16 +46,11 @@ public class SpreadingPoisonousCloud extends Ability {
             currentCloud < cloudSpreadTimes.length &&
             getParams().getStateTimer().getTime() > cloudSpreadTimes[currentCloud]) {
 
-            game.getGameState().accessAbilities().chainAnotherAbility(
-                this,
-                AbilityType.POISONOUS_CLOUD,
-                getParams().getPos(),
-                getParams().getDirVector(),
-                cloudRadiuses[currentCloud],
-                cloudDurations[currentCloud],
-                null,
-                game
-            );
+            game.chainAnotherAbility(this, AbilityType.POISONOUS_CLOUD, getParams().getDirVector(), ChainAbilityParams
+                .of()
+                .setChainToPos(getParams().getPos())
+                .setOverrideSize(cloudRadiuses[currentCloud])
+                .setOverrideDuration(cloudDurations[currentCloud]));
 
             currentCloud += 1;
         }

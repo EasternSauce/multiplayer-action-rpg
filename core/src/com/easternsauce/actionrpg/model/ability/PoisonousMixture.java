@@ -64,15 +64,11 @@ public class PoisonousMixture extends Projectile {
 
     @Override
     protected void onCompleted(CoreGame game) {
-        game.getGameState().accessAbilities().chainAnotherAbility(
+        game.chainAnotherAbility(
             this,
             AbilityType.SPREADING_POISONOUS_CLOUD,
-            getParams().getPos(),
             params.getDirVector(),
-            null,
-            null,
-            null,
-            game
+            ChainAbilityParams.of().setChainToPos(getParams().getPos())
         );
     }
 

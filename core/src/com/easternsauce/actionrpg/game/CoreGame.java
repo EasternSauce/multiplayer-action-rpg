@@ -11,7 +11,10 @@ import com.easternsauce.actionrpg.game.gamestate.GameState;
 import com.easternsauce.actionrpg.game.screen.ConnectScreen;
 import com.easternsauce.actionrpg.game.screen.GameplayScreen;
 import com.easternsauce.actionrpg.game.screen.MenuScreen;
+import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.ability.AbilityId;
+import com.easternsauce.actionrpg.model.ability.AbilityType;
+import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
@@ -183,4 +186,16 @@ public abstract class CoreGame extends Game {
 
     @SuppressWarnings({"UnusedReturnValue", "unused"})
     public abstract CoreGame setIsFirstBroadcastReceived(@SuppressWarnings("unused") Boolean isFirstBroadcastReceived);
+
+    public void chainAnotherAbility(Ability chainFromAbility,
+                                    AbilityType abilityType,
+                                    Vector2 dirVector,
+                                    ChainAbilityParams chainAbilityParams) {
+        getGameState().accessAbilities().chainAnotherAbility(chainFromAbility,
+            abilityType,
+            dirVector,
+            chainAbilityParams,
+            this
+        );
+    }
 }

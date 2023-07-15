@@ -58,15 +58,11 @@ public class MobVolatileBubble extends Projectile {
         float[] angles = {0f, 22.5f, 45f, 67.5f, 90f, 112.5f, 135f, 157.5f, 180f, 202.5f, 225f, 247.5f, 270f, 292.5f, 315f, 337.5f};
 
         for (float angle : angles) {
-            game.getGameState().accessAbilities().chainAnotherAbility(
+            game.chainAnotherAbility(
                 this,
                 AbilityType.ICE_SPEAR,
-                getParams().getPos(),
                 params.getDirVector().withSetDegAngle(baseAngle + angle),
-                null,
-                null,
-                null,
-                game
+                ChainAbilityParams.of().setChainToPos(getParams().getPos())
             );
 
         }

@@ -92,25 +92,17 @@ public class LightningSpark extends Ability {
 
             getParams().getCreaturesAlreadyHit().put(targetCreature.getId(), getParams().getStateTimer().getTime());
 
-            game.getGameState().accessAbilities().chainAnotherAbility(this,
+            game.chainAnotherAbility(this,
                 AbilityType.LIGHTNING_CHAIN,
-                targetCreature.getParams().getPos(),
-                // this pos is later changed, TODO: move it to other param?
                 params.getDirVector(),
-                null,
-                null,
-                null,
-                game
+                ChainAbilityParams.of().setChainToPos(targetCreature.getParams().getPos())
+                // this pos is later changed, TODO: move it to other param?
             );
 
-            game.getGameState().accessAbilities().chainAnotherAbility(this,
+            game.chainAnotherAbility(this,
                 AbilityType.LIGHTNING_NODE,
-                targetCreature.getParams().getPos(),
                 params.getDirVector(),
-                null,
-                null,
-                null,
-                game
+                ChainAbilityParams.of().setChainToPos(targetCreature.getParams().getPos())
             );
         }
     }

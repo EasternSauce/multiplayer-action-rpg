@@ -41,14 +41,10 @@ public class CrossbowShot extends Ability {
             currentBoltToFire < boltFireTimes.length &&
             getParams().getStateTimer().getTime() > boltFireTimes[currentBoltToFire]) {
 
-            game.getGameState().accessAbilities().chainAnotherAbility(this,
+            game.chainAnotherAbility(this,
                 AbilityType.CROSSBOW_BOLT,
-                null,
                 getParams().getDirVector(),
-                null,
-                null,
-                null,
-                game
+                ChainAbilityParams.of()
             );
 
             currentBoltToFire += 1;

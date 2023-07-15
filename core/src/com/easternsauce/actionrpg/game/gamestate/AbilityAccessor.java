@@ -2,10 +2,7 @@ package com.easternsauce.actionrpg.game.gamestate;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.GameStateData;
-import com.easternsauce.actionrpg.model.ability.Ability;
-import com.easternsauce.actionrpg.model.ability.AbilityId;
-import com.easternsauce.actionrpg.model.ability.AbilityParams;
-import com.easternsauce.actionrpg.model.ability.AbilityType;
+import com.easternsauce.actionrpg.model.ability.*;
 import com.easternsauce.actionrpg.model.action.CreatureHitByAbilityAction;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
@@ -59,11 +56,8 @@ public class AbilityAccessor {
 
     public void chainAnotherAbility(Ability chainFromAbility,
                                     AbilityType abilityType,
-                                    Vector2 chainToPos,
                                     Vector2 dirVector,
-                                    Float overrideSize,
-                                    Float overrideDuration,
-                                    Float overrideDamage,
+                                    ChainAbilityParams chainAbilityParams,
                                     CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(chainFromAbility
             .getParams()
@@ -87,12 +81,12 @@ public class AbilityAccessor {
                 .setCreatureId(chainFromAbility.getParams().getCreatureId())
                 .setCreaturesAlreadyHit(creaturesAlreadyHit)
                 .setChainFromPos(chainFromPos)
-                .setChainToPos(chainToPos)
+                .setChainToPos(chainAbilityParams.getChainToPos())
                 .setDirVector(dirVector)
                 .setVectorTowardsTarget(dirVector)
-                .setOverrideSize(overrideSize)
-                .setOverrideDuration(overrideDuration)
-                .setOverrideDamage(overrideDamage)
+                .setOverrideSize(chainAbilityParams.getOverrideSize())
+                .setOverrideDuration(chainAbilityParams.getOverrideDuration())
+                .setOverrideDamage(chainAbilityParams.getOverrideDamage())
                 .setSkillType(chainFromAbility.getParams().getSkillType())
                 .setSkillStartPos(chainFromPos)
                 .setDamagingHitCreaturesHitCounter(chainFromAbility.getParams().getDamagingHitCreaturesHitCounter());

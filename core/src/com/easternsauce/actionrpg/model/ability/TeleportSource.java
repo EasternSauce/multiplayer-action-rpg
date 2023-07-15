@@ -56,15 +56,11 @@ public class TeleportSource extends Ability {
 
     @Override
     public void onDelayedAction(CoreGame game) {
-        game.getGameState().accessAbilities().chainAnotherAbility(
+        game.chainAnotherAbility(
             this,
             AbilityType.TELEPORT_DESTINATION,
-            getParams().getPos(),
             getParams().getDirVector(),
-            null,
-            null,
-            null,
-            game
+            ChainAbilityParams.of().setChainToPos(getParams().getPos())
         );
     }
 

@@ -75,15 +75,7 @@ public class MobCrossbowShot extends Ability {
                 game
             );
 
-            game.getGameState().accessAbilities().chainAnotherAbility(this,
-                AbilityType.CROSSBOW_BOLT,
-                null,
-                chainedDirVector,
-                null,
-                null,
-                null,
-                game
-            );
+            game.chainAnotherAbility(this, AbilityType.CROSSBOW_BOLT, chainedDirVector, ChainAbilityParams.of());
 
             currentBoltToFire += 1;
             previousDirVector = chainedDirVector.copy();
