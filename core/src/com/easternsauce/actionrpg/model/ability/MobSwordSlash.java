@@ -21,7 +21,7 @@ public class MobSwordSlash extends AttachedAbility {
             .setActiveTime(0.3f)
             .setStartingRange(1.8f)
             .setTextureName("slash")
-            .setBaseDamage(30f)
+            .setBaseDamage(35f)
             .setIsChannelAnimationLooping(false)
             .setIsActiveAnimationLooping(false);
         return ability;

@@ -28,7 +28,7 @@ public class Constants {
     public static final float GENERAL_PLAYER_SKILL_PERFORM_COOLDOWN = 0.3f;
     public static final float DAMAGE_NUMBER_SHOW_DURATION = 1.5f;
     public static final float DAMAGE_ANIMATION_DURATION = 0.35f;
-    public static final float ENEMY_RESPAWN_TIME = 20f;
+    public static final float ENEMY_RESPAWN_TIME = 120f;
 
     public static final boolean IS_DEBUG_ENABLED = false;
 }

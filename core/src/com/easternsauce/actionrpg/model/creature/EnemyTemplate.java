@@ -35,7 +35,7 @@ public class EnemyTemplate {
         ))
     );
     public static EnemyTemplate skeleton = EnemyTemplate.of(EnemyType.SKELETON,
-        150f,
+        200f,
         4f,
         randomDropSet,
         new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.MOB_SWORD_SLASH, 100f),
@@ -43,7 +43,7 @@ public class EnemyTemplate {
         ))
     );
     public static EnemyTemplate mage = EnemyTemplate.of(EnemyType.MAGE,
-        150f,
+        120f,
         20f,
         randomDropSet,
         new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.MOB_MAGIC_ORB, 100f),
