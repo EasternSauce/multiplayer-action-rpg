@@ -1,61 +1,72 @@
 package com.easternsauce.actionrpg.model.ability;
 
+import com.easternsauce.actionrpg.game.CoreGame;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.function.BiFunction;
 
 @NoArgsConstructor
 public enum AbilityType {
-    SWORD_SLASH,
-    MOB_SWORD_SLASH,
-    FIREBALL,
-    FIREBALL_EXPLOSION,
-    LIGHTNING_SPARK,
-    LIGHTNING_NODE,
-    LIGHTNING_CHAIN,
+    SWORD_SLASH(SwordSlash::of),
+    MOB_SWORD_SLASH(MobSwordSlash::of),
+    FIREBALL(Fireball::of),
+    FIREBALL_EXPLOSION(FireballExplosion::of),
+    LIGHTNING_SPARK(LightningSpark::of),
+    LIGHTNING_NODE(LightningNode::of),
+    LIGHTNING_CHAIN(LightningChain::of),
 
-    CROSSBOW_BOLT,
-    CROSSBOW_SHOT,
-    MOB_CROSSBOW_SHOT,
+    CROSSBOW_BOLT(CrossbowBolt::of),
+    CROSSBOW_SHOT(CrossbowShot::of),
+    MOB_CROSSBOW_SHOT(MobCrossbowShot::of),
 
-    MAGIC_ORB,
-    MOB_MAGIC_ORB,
+    MAGIC_ORB(MagicOrb::of),
+    MOB_MAGIC_ORB(MobMagicOrb::of),
 
-    VOLATILE_BUBBLE,
-    MOB_VOLATILE_BUBBLE,
+    VOLATILE_BUBBLE(VolatileBubble::of),
+    MOB_VOLATILE_BUBBLE(MobVolatileBubble::of),
 
-    ICE_SPEAR,
+    ICE_SPEAR(IceSpear::of),
 
-    SUMMON_GHOSTS,
+    SUMMON_GHOSTS(SummonGhosts::of),
 
-    PLAYFUL_GHOST,
+    PLAYFUL_GHOST(PlayfulGhost::of),
 
-    RICOCHET_BALLISTA,
+    RICOCHET_BALLISTA(RicochetBallista::of),
 
-    RICOCHET_BULLET,
+    RICOCHET_BULLET(RicochetBullet::of),
 
-    BOOMERANG,
+    BOOMERANG(Boomerang::of),
 
-    SHIELD_GUARD,
+    SHIELD_GUARD(ShieldGuard::of),
 
-    SWORD_SPIN,
+    SWORD_SPIN(SwordSpin::of),
 
-    BOSS_SWORD_SPIN,
+    BOSS_SWORD_SPIN(BossSwordSpin::of),
 
-    TELEPORT_SOURCE,
+    TELEPORT_SOURCE(TeleportSource::of),
 
-    TELEPORT_DESTINATION,
+    TELEPORT_DESTINATION(TeleportDestination::of),
 
-    MOB_TELEPORT_SOURCE,
+    MOB_TELEPORT_SOURCE(MobTeleportSource::of),
 
-    MOB_TELEPORT_DESTINATION,
+    MOB_TELEPORT_DESTINATION(MobTeleportDestination::of),
 
-    MAGE_TELEPORT_COMBO,
+    MAGE_TELEPORT_COMBO(MageTeleportCombo::of),
 
-    POISONOUS_MIXTURE,
-    POISONOUS_CLOUD,
-    SPREADING_POISONOUS_CLOUD,
+    POISONOUS_MIXTURE(PoisonousMixture::of),
+    POISONOUS_CLOUD(PoisonousCloud::of),
+    SPREADING_POISONOUS_CLOUD(SpreadingPoisonousCloud::of),
 
-    PUNCH,
+    PUNCH(Punch::of),
 
-    RING_OF_FIRE,
-    DASH,
+    RING_OF_FIRE(RingOfFire::of),
+    DASH(Dash::of);
+
+    @Getter
+    private BiFunction<AbilityParams, CoreGame, Ability> factoryMapping;
+
+    AbilityType(BiFunction<AbilityParams, CoreGame, Ability> factoryMapping) {
+        this.factoryMapping = factoryMapping;
+    }
 }
