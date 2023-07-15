@@ -1,14 +1,15 @@
 package com.easternsauce.actionrpg.game.command;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
-@Data
 public class ChatMessageSendCommand implements GameCommand {
+    @Getter
     String poster;
+    @Getter
     String text;
 }
 

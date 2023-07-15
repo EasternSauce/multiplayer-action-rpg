@@ -1,18 +1,14 @@
 package com.easternsauce.actionrpg.game.server;
 
-import com.badlogic.gdx.graphics.Color;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.InitialStateLoader;
-import com.easternsauce.actionrpg.game.assets.Assets;
 import com.easternsauce.actionrpg.game.gamestate.ServerGameState;
 import com.easternsauce.actionrpg.model.ability.AbilityId;
 import com.easternsauce.actionrpg.model.action.ActionsHolder;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
-import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.physics.world.PhysicsWorld;
-import com.easternsauce.actionrpg.renderer.RenderingLayer;
 import com.easternsauce.actionrpg.util.Constants;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
@@ -56,7 +52,7 @@ public class CoreGameServer extends CoreGame {
 
     @Override
     public void onUpdate() {
-        gameState.handleCreatureDeaths();
+        gameState.handlePlayerDeaths();
 
         gameState.handleExpiredLootPiles();
 
@@ -136,13 +132,8 @@ public class CoreGameServer extends CoreGame {
     }
 
     @Override
-    public void renderServerRunningMessage(RenderingLayer renderingLayer) {
-        float x = Constants.WINDOW_WIDTH / 2f - 250;
-        float y = Constants.WINDOW_HEIGHT / 2f + Constants.WINDOW_HEIGHT * 0.45f;
-
-        renderingLayer.getShapeDrawer().filledRectangle(x - 50f, y - 90f, 650f, 110f, new Color(0f, 0f, 0f, 0.6f));
-
-        Assets.renderVeryLargeFont(renderingLayer, "Server is running...", Vector2.of(x, y), Color.WHITE);
+    public void renderServerRunningMessage() {
+        getHudRenderer().getServerRunningMessageRenderer().render(getHudRenderingLayer());
     }
 
     @Override

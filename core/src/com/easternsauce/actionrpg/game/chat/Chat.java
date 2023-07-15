@@ -6,8 +6,9 @@ import com.easternsauce.actionrpg.game.assets.Assets;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -15,15 +16,23 @@ import java.util.List;
 
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
-@Data
 public class Chat {
-    List<ChatMessage> messages = new LinkedList<>();
+    @Getter
+    private List<ChatMessage> messages = new LinkedList<>();
 
-    Boolean isTyping = false;
-    String currentMessage = "";
+    @Getter
+    @Setter
+    private Boolean isTyping = false;
+    @Getter
+    @Setter
+    private String currentMessage = "";
 
-    Float holdBackspaceTime;
-    Boolean isHoldingBackspace = false;
+    @Getter
+    @Setter
+    private Float holdBackspaceTime;
+    @Getter
+    @Setter
+    private Boolean isHoldingBackspace = false;
 
     public void sendMessage(String posterId, String message, CoreGame game) {
         if (getMessages().size() < 6) {
@@ -33,7 +42,7 @@ public class Chat {
             for (int i = 0; i < 5; i++) {
                 newMessages.add(getMessages().get(i + 1));
             }
-            setMessages(newMessages);
+            messages = newMessages;
             getMessages().add(ChatMessage.of(game.getGameState().getTime(), posterId, message));
         }
     }

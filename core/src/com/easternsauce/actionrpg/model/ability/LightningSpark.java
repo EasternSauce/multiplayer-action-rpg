@@ -4,8 +4,8 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.util.Vector2;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
@@ -15,9 +15,9 @@ import java.util.concurrent.ConcurrentSkipListMap;
 
 @SuppressWarnings("SpellCheckingInspection")
 @NoArgsConstructor(staticName = "of")
-@Data
 @EqualsAndHashCode(callSuper = true)
 public class LightningSpark extends Ability {
+    @Getter
     AbilityParams params;
 
     public static LightningSpark of(AbilityParams abilityParams, CoreGame game) {

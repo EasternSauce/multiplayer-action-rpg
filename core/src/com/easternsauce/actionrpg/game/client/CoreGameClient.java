@@ -19,7 +19,6 @@ import com.easternsauce.actionrpg.model.skill.SkillType;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;
 import com.easternsauce.actionrpg.model.util.TeleportEvent;
 import com.easternsauce.actionrpg.model.util.Vector2;
-import com.easternsauce.actionrpg.renderer.RenderingLayer;
 import com.easternsauce.actionrpg.renderer.hud.inventorywindow.InventoryWindowController;
 import com.easternsauce.actionrpg.renderer.hud.inventorywindow.PotionMenuController;
 import com.easternsauce.actionrpg.renderer.hud.itempickupmenu.ItemPickupMenuController;
@@ -425,7 +424,7 @@ public class CoreGameClient extends CoreGame {
     }
 
     @Override
-    public void renderServerRunningMessage(RenderingLayer renderingLayer) {
+    public void renderServerRunningMessage() {
 
     }
 

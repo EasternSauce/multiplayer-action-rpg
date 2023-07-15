@@ -8,16 +8,13 @@ import com.easternsauce.actionrpg.model.creature.Player;
 import com.easternsauce.actionrpg.model.util.RandomGenerator;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.renderer.animationconfig.AbilityAnimationConfig;
-import lombok.Data;
 import lombok.NonNull;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 @SuppressWarnings("SpellCheckingInspection")
-@Data
 public abstract class Ability implements Entity {
-    AbilityParams params;
 
     public Boolean isPositionChangedOnUpdate() {
         return false;
@@ -68,6 +65,8 @@ public abstract class Ability implements Entity {
 
         updateTimers(delta);
     }
+
+    public abstract AbilityParams getParams();
 
     abstract protected void onChannelUpdate(CoreGame game);
 

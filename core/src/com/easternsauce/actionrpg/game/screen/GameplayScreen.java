@@ -11,6 +11,7 @@ import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.util.RandomGenerator;
 import com.easternsauce.actionrpg.physics.util.PhysicsEventQueueProcessor;
+import com.easternsauce.actionrpg.renderer.RenderingLayer;
 import com.easternsauce.actionrpg.renderer.util.GameplayRenderer;
 import com.easternsauce.actionrpg.util.Constants;
 import lombok.NoArgsConstructor;
@@ -54,12 +55,21 @@ public class GameplayScreen implements Screen {
             game
         ); // TODO: doesn't run if we receive state too late....
 
-        game
-            .getEntityManager()
-            .getGameEntityRenderer()
-            .getViewportsHandler()
-            .setHudCameraPosition(Constants.WINDOW_WIDTH / 2f, Constants.WINDOW_HEIGHT / 2f); // TODO: move it inward?
+        initializeRenderingLayers(game);
 
+        game.getViewportsHandler().initViewports();
+
+        game.getViewportsHandler().setHudCameraPosition(
+            Constants.WINDOW_WIDTH / 2f,
+            Constants.WINDOW_HEIGHT / 2f
+        ); // TODO: move it inward?
+
+    }
+
+    private void initializeRenderingLayers(CoreGame game) {
+        game.setWorldElementsRenderingLayer(RenderingLayer.of());
+        game.setHudRenderingLayer(RenderingLayer.of());
+        game.setWorldTextRenderingLayer(RenderingLayer.of());
     }
 
     @Override
@@ -75,28 +85,24 @@ public class GameplayScreen implements Screen {
 
         if (game.isGameplayRunning()) {
             if (game.getGameState().getThisClientPlayerId() == null) {
-                renderServerRunningMessage();
+                game.renderServerRunningMessage();
             } else {
                 if (game.getEntityManager().getGameEntityRenderer().getAreaRenderers().containsKey(game
                     .getGameState()
                     .getCurrentAreaId())) {
                     game.getEntityManager().getGameEntityRenderer().getAreaRenderers().get(game
                         .getGameState()
-                        .getCurrentAreaId()).setView(game
-                        .getEntityManager()
-                        .getGameEntityRenderer()
-                        .getViewportsHandler()
-                        .getWorldCamera());
+                        .getCurrentAreaId()).setView(game.getViewportsHandler().getWorldCamera());
                 }
 
-                game.getEntityManager().getGameEntityRenderer().setProjectionMatrices();
+                setProjectionMatrices(game);
 
                 gameplayRenderer.updateRenderer(game);
                 gameplayRenderer.renderGameplay(game);
 
                 game.getHudRenderer().render(game);
 
-                renderServerRunningMessage();
+                game.renderServerRunningMessage();
             }
         }
     }
@@ -150,10 +156,12 @@ public class GameplayScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | coverageBuffer);
     }
 
-    private void renderServerRunningMessage() {
-        game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer().begin();
-        game.renderServerRunningMessage(game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer());
-        game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer().end();
+    public void setProjectionMatrices(CoreGame game) {
+        game.getWorldElementsRenderingLayer().setProjectionMatrix(game.getViewportsHandler().getWorldCamera().combined);
+
+        game.getHudRenderingLayer().setProjectionMatrix(game.getViewportsHandler().getHudCamera().combined);
+
+        game.getWorldTextRenderingLayer().setProjectionMatrix(game.getViewportsHandler().getWorldTextCamera().combined);
     }
 
     private void handleForceUpdateBodyPositions(CoreGame game) {
@@ -188,7 +196,7 @@ public class GameplayScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        game.getEntityManager().getGameEntityRenderer().getViewportsHandler().updateViewportsOnResize(width, height);
+        game.getViewportsHandler().updateViewportsOnResize(width, height);
     }
 
     @Override

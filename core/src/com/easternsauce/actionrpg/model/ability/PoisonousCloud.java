@@ -4,16 +4,16 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.concurrent.ConcurrentSkipListMap;
 
 @NoArgsConstructor(staticName = "of")
-@Data
 @EqualsAndHashCode(callSuper = true)
 public class PoisonousCloud extends Ability {
+    @Getter
     AbilityParams params;
 
     public static PoisonousCloud of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {

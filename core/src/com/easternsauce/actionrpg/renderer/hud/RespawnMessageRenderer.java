@@ -6,13 +6,11 @@ import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
 import com.easternsauce.actionrpg.util.Constants;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Locale;
 
 @NoArgsConstructor(staticName = "of")
-@Data
 public class RespawnMessageRenderer {
     public void render(Creature creature, RenderingLayer renderingLayer) {
         if (creature != null && !creature.isAlive()) {

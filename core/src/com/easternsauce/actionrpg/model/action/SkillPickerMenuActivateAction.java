@@ -4,13 +4,11 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-@Data
 public class SkillPickerMenuActivateAction extends GameStateAction {
     private CreatureId playerId;
 

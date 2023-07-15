@@ -6,14 +6,14 @@ import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.skill.Skill;
 import com.easternsauce.actionrpg.model.util.MathHelper;
 import com.easternsauce.actionrpg.model.util.Vector2;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-@Data
 @EqualsAndHashCode(callSuper = true)
 public class Boomerang extends Projectile {
+    @Getter
     AbilityParams params;
 
     public static Boomerang of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {

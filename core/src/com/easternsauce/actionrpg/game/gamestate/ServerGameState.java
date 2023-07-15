@@ -118,7 +118,7 @@ public class ServerGameState extends GameState {
         connection.sendTCP(GameStateBroadcast.of(gameStateDataWithoutEntities));
     }
 
-    public void handleCreatureDeaths() {
+    public void handlePlayerDeaths() {
         accessCreatures().getCreatures().forEach((creatureId, creature) -> { // handle deaths server side
             if (creature.getParams().getIsAwaitingRespawn() &&
                 // handle respawns server side

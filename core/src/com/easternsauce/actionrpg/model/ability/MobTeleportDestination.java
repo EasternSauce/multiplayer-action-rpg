@@ -6,14 +6,14 @@ import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
 import com.easternsauce.actionrpg.model.util.TeleportEvent;
 import com.easternsauce.actionrpg.model.util.Vector2;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-@Data
 @EqualsAndHashCode(callSuper = true)
 public class MobTeleportDestination extends Ability {
+    @Getter
     AbilityParams params;
 
     public static MobTeleportDestination of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {

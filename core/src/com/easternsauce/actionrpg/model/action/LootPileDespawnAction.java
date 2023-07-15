@@ -3,14 +3,12 @@ package com.easternsauce.actionrpg.model.action;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.area.LootPileId;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @SuppressWarnings("SpellCheckingInspection")
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-@Data
 public class LootPileDespawnAction extends GameStateAction {
     private LootPileId lootPileId;
 

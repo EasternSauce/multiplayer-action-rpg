@@ -3,15 +3,14 @@ package com.easternsauce.actionrpg.model.ability;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.util.Vector2;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-@Data
 @EqualsAndHashCode(callSuper = true)
 public class MobVolatileBubble extends Projectile {
-
+    @Getter
     AbilityParams params;
 
     public static MobVolatileBubble of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {

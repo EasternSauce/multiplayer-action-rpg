@@ -8,7 +8,6 @@ import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
@@ -18,7 +17,6 @@ import java.util.concurrent.ConcurrentSkipListSet;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-@Data
 public class ItemDropOnGroundAction extends GameStateAction {
     private CreatureId playerId;
 

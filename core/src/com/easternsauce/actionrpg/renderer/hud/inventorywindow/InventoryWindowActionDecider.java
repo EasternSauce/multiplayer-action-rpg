@@ -4,7 +4,6 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.action.*;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.item.Item;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Arrays;
@@ -12,7 +11,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 @NoArgsConstructor(staticName = "of")
-@Data
 public class InventoryWindowActionDecider {
     static List<InventoryWindowItemMoveStrategy> strategies = new LinkedList<>();
 

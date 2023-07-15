@@ -4,18 +4,19 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.area.AreaGate;
 import com.easternsauce.actionrpg.model.area.AreaGateId;
+import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.physics.world.PhysicsWorld;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-@Data
 public class AreaGateBody {
-    Body b2body;
+    private Body b2body;
 
-    PhysicsWorld world;
+    private PhysicsWorld world;
 
-    AreaGateId areaGateId;
+    @Getter
+    private AreaGateId areaGateId;
 
     public static AreaGateBody of(AreaGateId areaGateId) {
         AreaGateBody areaGateBody = AreaGateBody.of();
@@ -27,7 +28,12 @@ public class AreaGateBody {
     public void init(CoreGame game) {
         AreaGate areaGate = game.getGameState().getAreaGates().get(areaGateId);
 
-        world = game.getPhysicsWorld(areaGate.getAreaId());
+        AreaId areaId = areaGate.getAreaId();
+        world = game.getEntityManager().getGameEntityPhysics().getPhysicsWorlds().get(areaId);
+
+        if (world == null) {
+            System.out.println("hihi");
+        }
 
         b2body = B2BodyFactory.createAreaGateB2body(world,
             this,

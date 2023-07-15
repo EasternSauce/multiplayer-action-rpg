@@ -11,21 +11,19 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.assets.Assets;
 import com.easternsauce.actionrpg.model.util.SimpleTimer;
 import com.easternsauce.actionrpg.model.util.Vector2;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-@Data
 public class ConnectScreen implements Screen {
     private CoreGame game;
 
-    private ConnectScreenMessageHolder messageHolder = ConnectScreenMessageHolder.of();
+    private final ConnectScreenMessageHolder messageHolder = ConnectScreenMessageHolder.of();
 
     private Boolean isHoldingBackspace = false;
 
     private Float holdBackspaceTime = 0f;
 
-    private SimpleTimer timer = SimpleTimer.of();
+    private final SimpleTimer timer = SimpleTimer.of();
 
     private TextureAtlas.AtlasRegion background;
 
@@ -90,25 +88,21 @@ public class ConnectScreen implements Screen {
             }
         }
 
-        SpriteBatch spriteBatch = game
-            .getEntityManager()
-            .getGameEntityRenderer()
-            .getHudRenderingLayer()
-            .getSpriteBatch();
+        SpriteBatch spriteBatch = game.getHudRenderingLayer().getSpriteBatch();
 
         spriteBatch.begin();
 
         spriteBatch.draw(background, ConnectScreenConsts.BACKGROUND_POS_X, ConnectScreenConsts.BACKGROUND_POS_Y);
 
         Assets.renderMediumFont(
-            game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer(),
+            game.getHudRenderingLayer(),
             "Your character name:",
             Vector2.of(ConnectScreenConsts.PROMPT_POS_X, ConnectScreenConsts.PROMPT_POS_Y),
             Color.BLACK
         );
 
         Assets.renderMediumFont(
-            game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer(),
+            game.getHudRenderingLayer(),
             messageHolder.getCurrentMessage(),
             Vector2.of(ConnectScreenConsts.INPUT_POS_X, ConnectScreenConsts.INPUT_POS_Y),
             Color.BLACK

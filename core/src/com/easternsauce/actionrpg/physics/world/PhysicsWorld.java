@@ -11,36 +11,42 @@ import com.easternsauce.actionrpg.physics.body.TerrainTileBody;
 import com.easternsauce.actionrpg.physics.pathing.Astar;
 import com.easternsauce.actionrpg.physics.pathing.PathingNode;
 import com.easternsauce.actionrpg.util.Constants;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
-@Data
 public class PhysicsWorld {
-    TiledMap map;
+    private TiledMap map;
 
-    TiledMapTileLayer layer;
+    private TiledMapTileLayer layer;
 
-    World b2world;
+    @Getter
+    private World b2world;
 
-    Map<Vector2Int, Boolean> traversables = new HashMap<>();
+    @Getter
+    private final Map<Vector2Int, Boolean> traversables = new HashMap<>();
 
-    Map<Vector2Int, Boolean> traversablesWithMargins = new HashMap<>();
+    @Getter
+    private final Map<Vector2Int, Boolean> traversablesWithMargins = new HashMap<>();
 
-    Map<Vector2Int, Boolean> flyover = new HashMap<>();
+    @Getter
+    private final Map<Vector2Int, Boolean> flyover = new HashMap<>();
 
-    Map<Vector2Int, Integer> clearances = new HashMap<>();
+    @Getter
+    private Map<Vector2Int, Integer> clearances = new HashMap<>();
 
-    Float tileWidth;
-    Float tileHeight;
+    private Float tileWidth;
+    private Float tileHeight;
 
-    List<TerrainTileBody> terrainTiles = new LinkedList<>();
-    List<TerrainTileBody> terrainBorders = new LinkedList<>();
+    @Getter
+    private final List<TerrainTileBody> terrainTiles = new LinkedList<>();
+    @Getter
+    private final List<TerrainTileBody> terrainBorders = new LinkedList<>();
 
-    Map<Vector2Int, PathingNode> pathingGraph;
+    private Map<Vector2Int, PathingNode> pathingGraph;
 
     public static PhysicsWorld of(TiledMap map) {
         PhysicsWorld world = PhysicsWorld.of();

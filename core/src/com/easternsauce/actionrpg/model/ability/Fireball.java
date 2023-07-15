@@ -4,8 +4,8 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.util.Vector2;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.Map;
@@ -13,9 +13,9 @@ import java.util.concurrent.ConcurrentSkipListMap;
 
 @SuppressWarnings("SpellCheckingInspection")
 @NoArgsConstructor(staticName = "of")
-@Data
 @EqualsAndHashCode(callSuper = true)
 public class Fireball extends Projectile {
+    @Getter
     AbilityParams params;
 
     public static Fireball of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {

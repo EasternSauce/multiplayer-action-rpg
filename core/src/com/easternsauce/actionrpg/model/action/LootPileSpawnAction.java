@@ -7,7 +7,6 @@ import com.easternsauce.actionrpg.model.area.LootPile;
 import com.easternsauce.actionrpg.model.area.LootPileId;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.util.Vector2;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
@@ -17,7 +16,6 @@ import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-@Data
 public class LootPileSpawnAction extends GameStateAction {
     private AreaId areaId;
 
@@ -36,7 +34,7 @@ public class LootPileSpawnAction extends GameStateAction {
     public void applyToGame(CoreGame game) {
         LootPileId lootPileId = LootPileId.of("LootPile_" + (int) (Math.random() * 10000000)); // TODO: use seeded rng
 
-        Set<Item> lootPileItems = this.getItems().stream().map(item -> Item
+        Set<Item> lootPileItems = items.stream().map(item -> Item
             .of()
             .setTemplate(item.getTemplate())
             .setQuantity(item.getQuantity())

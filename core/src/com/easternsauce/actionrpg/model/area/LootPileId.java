@@ -1,14 +1,16 @@
 package com.easternsauce.actionrpg.model.area;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
-@Data
+@EqualsAndHashCode
 public class LootPileId implements Comparable<LootPileId> {
-    String value;
+    @Getter
+    private String value;
 
     @Override
     public int compareTo(LootPileId o) {

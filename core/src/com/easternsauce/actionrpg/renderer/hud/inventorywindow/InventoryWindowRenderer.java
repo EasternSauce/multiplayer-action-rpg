@@ -16,7 +16,6 @@ import com.easternsauce.actionrpg.model.util.Vector2Int;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
 import com.easternsauce.actionrpg.renderer.icons.IconRetriever;
 import com.easternsauce.actionrpg.renderer.util.Rect;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Map;
@@ -24,7 +23,6 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 @NoArgsConstructor(staticName = "of")
-@Data
 public class InventoryWindowRenderer {
     private Image backgroundImage;
 

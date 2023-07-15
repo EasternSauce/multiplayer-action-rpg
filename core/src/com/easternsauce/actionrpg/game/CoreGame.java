@@ -24,11 +24,13 @@ import com.easternsauce.actionrpg.physics.body.CreatureBody;
 import com.easternsauce.actionrpg.physics.event.PhysicsEvent;
 import com.easternsauce.actionrpg.physics.world.PhysicsWorld;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
+import com.easternsauce.actionrpg.renderer.game.ViewportsHandler;
 import com.easternsauce.actionrpg.renderer.hud.HudRenderer;
 import com.easternsauce.actionrpg.renderer.physics.PhysicsDebugRenderer;
 import com.easternsauce.actionrpg.util.Constants;
 import com.esotericsoftware.kryonet.EndPoint;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.Map;
@@ -56,6 +58,17 @@ public abstract class CoreGame extends Game {
 
     @Getter
     private final MousePositionRetriever mousePositionRetriever = MousePositionRetriever.of();
+    @Getter
+    private final ViewportsHandler viewportsHandler = ViewportsHandler.of();
+    @Getter
+    @Setter
+    private RenderingLayer worldElementsRenderingLayer;
+    @Getter
+    @Setter
+    private RenderingLayer hudRenderingLayer;
+    @Getter
+    @Setter
+    private RenderingLayer worldTextRenderingLayer;
 
     public void addTeleportEvent(TeleportEvent teleportEvent) {
         eventProcessor.getTeleportEvents().add(teleportEvent);
@@ -105,7 +118,7 @@ public abstract class CoreGame extends Game {
     }
 
     public void updateCameraPositions() {
-        entityManager.getGameEntityRenderer().getViewportsHandler().updateCameraPositions(this);
+        viewportsHandler.updateCameraPositions(this);
     }
 
     public Boolean isDebugEnabled() {
@@ -140,7 +153,7 @@ public abstract class CoreGame extends Game {
 
     public abstract void setChatInputProcessor();
 
-    public abstract void renderServerRunningMessage(RenderingLayer renderingLayer);
+    public abstract void renderServerRunningMessage();
 
     public abstract boolean isPathfindingCalculatedForCreature(Creature creature);
 

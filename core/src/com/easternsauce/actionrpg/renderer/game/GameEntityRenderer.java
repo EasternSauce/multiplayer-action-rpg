@@ -53,14 +53,7 @@ public class GameEntityRenderer {
     private final CreatureHitAnimationRenderer creatureHitAnimationRenderer = CreatureHitAnimationRenderer.of();
     @Getter
     private final Map<String, CreatureModelAnimation> creatureModelAnimations = new HashMap<>();
-    @Getter
-    private ViewportsHandler viewportsHandler;
-    @Getter
-    private RenderingLayer worldElementsRenderingLayer;
-    @Getter
-    private RenderingLayer hudRenderingLayer;
-    @Getter
-    private RenderingLayer worldTextRenderingLayer;
+
     private float mapScale;
     @Getter
     private Map<AreaId, AreaRenderer> areaRenderers = new HashMap<>();
@@ -71,15 +64,7 @@ public class GameEntityRenderer {
     public void init(TextureAtlas atlas) {
         mapScale = 4.0f;
 
-        worldElementsRenderingLayer = RenderingLayer.of();
-        hudRenderingLayer = RenderingLayer.of();
-        worldTextRenderingLayer = RenderingLayer.of();
-
         iconRetriever.init(atlas);
-
-        viewportsHandler = ViewportsHandler.of();
-
-        viewportsHandler.initViewports();
 
         poisonedIcon = atlas.findRegion("poisoned");
 
@@ -197,14 +182,6 @@ public class GameEntityRenderer {
 
     public TiledMap loadMap(String filePath) {
         return mapLoader.load(filePath);
-    }
-
-    public void setProjectionMatrices() {
-        getWorldElementsRenderingLayer().setProjectionMatrix(getViewportsHandler().getWorldCamera().combined);
-
-        getHudRenderingLayer().setProjectionMatrix(getViewportsHandler().getHudCamera().combined);
-
-        getWorldTextRenderingLayer().setProjectionMatrix(getViewportsHandler().getWorldTextCamera().combined);
     }
 
     public void updateDamageNumbers(CoreGame game) {

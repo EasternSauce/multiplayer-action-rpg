@@ -18,8 +18,8 @@ public class GameplayRenderer {
     public void renderGameplay(CoreGame game) {
         GameEntityRenderer renderer = game.getEntityManager().getGameEntityRenderer();
         PhysicsDebugRenderer physicsDebugRenderer = game.getPhysicsDebugRenderer();
-        RenderingLayer worldElementsRenderingLayer = renderer.getWorldElementsRenderingLayer();
-        RenderingLayer worldTextRenderingLayer = renderer.getWorldTextRenderingLayer();
+        RenderingLayer worldElementsRenderingLayer = game.getWorldElementsRenderingLayer();
+        RenderingLayer worldTextRenderingLayer = game.getWorldTextRenderingLayer();
 
         renderAreaLayers(renderer, Arrays.asList(0, 1), game);
 

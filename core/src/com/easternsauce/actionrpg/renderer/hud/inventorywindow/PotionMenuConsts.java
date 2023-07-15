@@ -13,7 +13,7 @@ public class PotionMenuConsts {
     public static final float MENU_POS_X = 130f;
     public static final float MENU_POS_Y = 60f;
 
-    public static final int TOTAL_POTION_MENU_SLOTS = 5;
+    public static final int TOTAL_POTION_MENU_SLOTS = 4;
 
     public static final Map<Integer, Rect> slotRectangles = new HashMap<>();
 

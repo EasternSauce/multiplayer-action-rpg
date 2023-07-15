@@ -1,14 +1,15 @@
 package com.easternsauce.actionrpg.model.ability;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-@Data
 @EqualsAndHashCode(callSuper = true)
 public class Punch extends AttachedAbility {
+    @Getter
+    AbilityParams params;
 
     public static Punch of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         Punch ability = Punch.of();

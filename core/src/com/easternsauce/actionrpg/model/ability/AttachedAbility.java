@@ -4,8 +4,6 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.util.Vector2;
 
 public abstract class AttachedAbility extends Ability {
-    protected AbilityParams params;
-
     public void updateAttachedAbilityPosition(CoreGame game) {
         Vector2 dirVector;
         if (getParams().getDirVector().len() <= 0) {
@@ -30,9 +28,5 @@ public abstract class AttachedAbility extends Ability {
 
         getParams().setRotationAngle(theta);
 
-    }
-
-    public AbilityParams getParams() {
-        return this.params;
     }
 }

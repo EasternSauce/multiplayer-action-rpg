@@ -7,13 +7,11 @@ import com.easternsauce.actionrpg.model.util.PlayerConfig;
 import com.easternsauce.actionrpg.model.util.Vector2Int;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
 import com.easternsauce.actionrpg.renderer.icons.IconRetriever;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Map;
 
 @NoArgsConstructor(staticName = "of")
-@Data
 public class ItemOnCursorRenderer {
     public static void render(RenderingLayer renderingLayer, CoreGame game) {
         IconRetriever iconRetriever = game.getEntityManager().getGameEntityRenderer().getIconRetriever();

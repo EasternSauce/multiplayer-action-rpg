@@ -19,7 +19,6 @@ import java.util.concurrent.ConcurrentSkipListMap;
 @NoArgsConstructor(staticName = "of")
 @Data
 public class GameStateData {
-
     Map<CreatureId, Creature> creatures = new ConcurrentSkipListMap<>();
 
     Map<CreatureId, Creature> removedCreatures = new ConcurrentSkipListMap<>();

@@ -1,11 +1,9 @@
 package com.easternsauce.actionrpg.game.screen;
 
 import com.badlogic.gdx.Screen;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-@Data
 public class MenuScreen implements Screen {
     @Override
     public void show() {

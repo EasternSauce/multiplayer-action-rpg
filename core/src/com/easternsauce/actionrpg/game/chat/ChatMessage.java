@@ -1,15 +1,17 @@
 package com.easternsauce.actionrpg.game.chat;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
-@Data
 public class ChatMessage implements Comparable<ChatMessage> {
-    Float time;
-    String poster;
+    @Getter
+    private Float time;
+    @Getter
+    private String poster;
+    @Getter
     String text;
 
     @Override

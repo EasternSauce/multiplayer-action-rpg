@@ -2,15 +2,15 @@ package com.easternsauce.actionrpg.model.ability;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.util.Vector2;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @SuppressWarnings("SpellCheckingInspection")
 @NoArgsConstructor(staticName = "of")
-@Data
 @EqualsAndHashCode(callSuper = true)
 public class RingOfFire extends Ability {
+    @Getter
     AbilityParams params;
 
     public static RingOfFire of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {

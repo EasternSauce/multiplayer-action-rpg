@@ -34,7 +34,6 @@ public class SkillMenuRenderer {
         keys.put(1, "W");
         keys.put(2, "E");
         keys.put(3, "R");
-        keys.put(4, "T");
 
         AtomicInteger i = new AtomicInteger();
         SkillMenuConsts.slotRectangles.values().forEach(rect -> {

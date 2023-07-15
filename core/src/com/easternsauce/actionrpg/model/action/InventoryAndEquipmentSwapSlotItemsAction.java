@@ -7,7 +7,6 @@ import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.item.EquipmentSlotType;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
@@ -16,7 +15,6 @@ import java.util.concurrent.ConcurrentSkipListSet;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-@Data
 public class InventoryAndEquipmentSwapSlotItemsAction extends GameStateAction {
     private CreatureId playerId;
 

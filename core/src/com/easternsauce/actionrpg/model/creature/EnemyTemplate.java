@@ -2,7 +2,7 @@ package com.easternsauce.actionrpg.model.creature;
 
 import com.easternsauce.actionrpg.model.skill.SkillType;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.Arrays;
@@ -11,9 +11,8 @@ import java.util.concurrent.ConcurrentSkipListSet;
 
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
-@Data
 public class EnemyTemplate {
-    private static Set<DropTableEntry> randomDropSet = new ConcurrentSkipListSet<>(Arrays.asList(DropTableEntry.leatherArmorDrop,
+    private static final Set<DropTableEntry> randomDropSet = new ConcurrentSkipListSet<>(Arrays.asList(DropTableEntry.leatherArmorDrop,
         DropTableEntry.specialLeatherArmorDrop,
         DropTableEntry.hideGlovesDrop,
         DropTableEntry.specialHideGlovesDrop,
@@ -63,9 +62,15 @@ public class EnemyTemplate {
             EnemySkillUseEntry.of(SkillType.FIREBALL, 60f)
         ))
     );
+
+    @Getter
     private EnemyType enemyType;
+    @Getter
     private Float maxLife;
+    @Getter
     private Float attackDistance;
+    @Getter
     private Set<DropTableEntry> dropTable;
+    @Getter
     private Set<EnemySkillUseEntry> enemySkillUseEntries;
 }

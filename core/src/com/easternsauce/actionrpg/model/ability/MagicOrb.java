@@ -7,17 +7,17 @@ import com.easternsauce.actionrpg.model.creature.Enemy;
 import com.easternsauce.actionrpg.model.creature.Player;
 import com.easternsauce.actionrpg.model.util.MathHelper;
 import com.easternsauce.actionrpg.model.util.Vector2;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
-@Data
 @EqualsAndHashCode(callSuper = true)
 public class MagicOrb extends Projectile {
+    @Getter
     AbilityParams params;
 
     public static MagicOrb of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {

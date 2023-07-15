@@ -1,14 +1,14 @@
 package com.easternsauce.actionrpg.model.action;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
-@Data
 public class ActionsHolder {
+    @Getter
     List<GameStateAction> actions;
 }

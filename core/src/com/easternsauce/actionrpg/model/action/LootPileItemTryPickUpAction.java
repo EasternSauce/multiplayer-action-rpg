@@ -6,7 +6,6 @@ import com.easternsauce.actionrpg.model.area.LootPile;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.renderer.hud.inventorywindow.InventoryWindowConsts;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
@@ -14,7 +13,6 @@ import java.util.Map;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-@Data
 public class LootPileItemTryPickUpAction extends GameStateAction {
     private CreatureId playerId;
 

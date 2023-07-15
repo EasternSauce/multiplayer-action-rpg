@@ -1,13 +1,15 @@
 package com.easternsauce.actionrpg.model.creature;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
-@Data
+@EqualsAndHashCode
 public class CreatureId implements Comparable<CreatureId> {
+    @Getter
     String value;
 
     @Override

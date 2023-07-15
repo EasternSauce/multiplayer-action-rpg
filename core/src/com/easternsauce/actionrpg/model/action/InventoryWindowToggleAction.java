@@ -3,13 +3,11 @@ package com.easternsauce.actionrpg.model.action;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-@Data
 public class InventoryWindowToggleAction extends GameStateAction {
     private CreatureId playerId;
 

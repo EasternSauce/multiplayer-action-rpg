@@ -12,7 +12,6 @@ import com.easternsauce.actionrpg.model.util.Vector2Int;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
 import com.easternsauce.actionrpg.renderer.icons.IconRetriever;
 import com.easternsauce.actionrpg.renderer.util.Rect;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.HashMap;
@@ -21,7 +20,6 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @NoArgsConstructor(staticName = "of")
-@Data
 public class PotionMenuRenderer {
     public void renderMenu(RenderingLayer renderingLayer, CoreGame game) {
 
@@ -40,7 +38,6 @@ public class PotionMenuRenderer {
         keys.put(1, "2");
         keys.put(2, "3");
         keys.put(3, "4");
-        keys.put(4, "5");
 
         IconRetriever iconRetriever = game.getEntityManager().getGameEntityRenderer().getIconRetriever();
 

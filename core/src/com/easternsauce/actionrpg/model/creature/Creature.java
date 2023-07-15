@@ -163,9 +163,6 @@ public abstract class Creature implements Entity {
 
     public abstract CreatureParams getParams();
 
-    @SuppressWarnings("unused")
-    public abstract Creature setParams(CreatureParams params);
-
     public Integer capability() {
         Float width = animationConfig().getSpriteWidth();
         if (width >= 0 && width < 2) {

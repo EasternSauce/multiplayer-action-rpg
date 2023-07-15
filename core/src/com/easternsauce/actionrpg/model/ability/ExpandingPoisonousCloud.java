@@ -2,14 +2,14 @@ package com.easternsauce.actionrpg.model.ability;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-@Data
 @EqualsAndHashCode(callSuper = true)
 public class ExpandingPoisonousCloud extends Ability {
+    @Getter
     AbilityParams params;
 
     int currentCloud = 0;
@@ -46,16 +46,11 @@ public class ExpandingPoisonousCloud extends Ability {
             currentCloud < cloudSpreadTimes.length &&
             getParams().getStateTimer().getTime() > cloudSpreadTimes[currentCloud]) {
 
-            game.chainAnotherAbility(
-                this,
-                AbilityType.POISONOUS_CLOUD,
-                getParams().getDirVector(),
-                ChainAbilityParams
-                    .of()
-                    .setChainToPos(getParams().getPos())
-                    .setOverrideSize(cloudRadiuses[currentCloud])
-                    .setOverrideDuration(cloudDurations[currentCloud])
-            );
+            game.chainAnotherAbility(this, AbilityType.POISONOUS_CLOUD, getParams().getDirVector(), ChainAbilityParams
+                .of()
+                .setChainToPos(getParams().getPos())
+                .setOverrideSize(cloudRadiuses[currentCloud])
+                .setOverrideDuration(cloudDurations[currentCloud]));
 
             currentCloud += 1;
         }

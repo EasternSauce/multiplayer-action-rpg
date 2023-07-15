@@ -10,7 +10,7 @@ import com.easternsauce.actionrpg.model.skill.SkillType;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.util.Constants;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.Map;
@@ -21,9 +21,10 @@ import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
-@Data
 public class AbilityAccessor {
+    @Getter
     private GameState gameState;
+    @Getter
     private GameStateDataHolder dataHolder;
 
     public Ability getAbilityBySkillType(CreatureId creatureId, SkillType skillType) {

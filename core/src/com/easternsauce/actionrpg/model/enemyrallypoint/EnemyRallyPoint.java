@@ -8,7 +8,7 @@ import com.easternsauce.actionrpg.model.creature.EnemyTemplate;
 import com.easternsauce.actionrpg.model.creature.Player;
 import com.easternsauce.actionrpg.model.util.SimpleTimer;
 import com.easternsauce.actionrpg.util.Constants;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.Set;
@@ -16,11 +16,13 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
-@Data
 public class EnemyRallyPoint {
-    EnemyRallyPointId id;
-    EnemyRallyPointInfo rallyPointInfo;
-    SimpleTimer respawnTimer = SimpleTimer.getExpiredTimer();
+    @Getter
+    private final SimpleTimer respawnTimer = SimpleTimer.getExpiredTimer();
+    @Getter
+    private EnemyRallyPointId id;
+    @Getter
+    private EnemyRallyPointInfo rallyPointInfo;
 
     public static EnemyRallyPoint of(EnemyRallyPointId id, EnemyRallyPointInfo rallyPointInfo) {
         EnemyRallyPoint enemyRallyPoint = EnemyRallyPoint.of();
@@ -32,7 +34,7 @@ public class EnemyRallyPoint {
     }
 
     public void update(float delta, CoreGame game) {
-        getRespawnTimer().update(delta);
+        respawnTimer.update(delta);
 
         long enemiesAliveCount = game
             .getGameState()

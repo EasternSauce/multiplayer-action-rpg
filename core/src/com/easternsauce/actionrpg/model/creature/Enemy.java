@@ -11,8 +11,8 @@ import com.easternsauce.actionrpg.model.util.WorldDirection;
 import com.easternsauce.actionrpg.physics.pathing.Astar;
 import com.easternsauce.actionrpg.physics.pathing.AstarResult;
 import com.easternsauce.actionrpg.util.Constants;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.LinkedList;
@@ -22,9 +22,9 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
-@Data
 @EqualsAndHashCode(callSuper = true)
 public class Enemy extends Creature {
+    @Getter
     private CreatureParams params;
 
     public static Enemy of(CreatureId creatureId,

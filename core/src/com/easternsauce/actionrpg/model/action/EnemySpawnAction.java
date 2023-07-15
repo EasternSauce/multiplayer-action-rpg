@@ -11,14 +11,12 @@ import com.easternsauce.actionrpg.model.enemyrallypoint.EnemyRallyPoint;
 import com.easternsauce.actionrpg.model.enemyrallypoint.EnemyRallyPointId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-@Data
 public class EnemySpawnAction extends GameStateAction {
     private CreatureId creatureId;
     private AreaId areaId;

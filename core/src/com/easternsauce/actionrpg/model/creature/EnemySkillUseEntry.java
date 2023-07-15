@@ -2,14 +2,15 @@ package com.easternsauce.actionrpg.model.creature;
 
 import com.easternsauce.actionrpg.model.skill.SkillType;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
-@Data
 public class EnemySkillUseEntry implements Comparable<EnemySkillUseEntry> {
+    @Getter
     SkillType skillType;
+    @Getter
     Float weight;
 
     @Override

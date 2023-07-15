@@ -1,13 +1,15 @@
 package com.easternsauce.actionrpg.model.area;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
-@Data
+@EqualsAndHashCode
 public class AreaGateId implements Comparable<AreaGateId> {
+    @Getter
     String value;
 
     @Override

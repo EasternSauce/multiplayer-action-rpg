@@ -19,6 +19,7 @@ public class HudRenderer {
     InventoryWindowRenderer inventoryWindowRenderer = InventoryWindowRenderer.of();
     PlayerStatBarsRenderer playerStatBarsRenderer = PlayerStatBarsRenderer.of();
     RespawnMessageRenderer respawnMessageRenderer = RespawnMessageRenderer.of();
+    ServerRunningMessageRenderer serverRunningMessageRenderer = ServerRunningMessageRenderer.of();
     SkillMenuRenderer skillMenuRenderer = SkillMenuRenderer.of();
     ItemPickupMenuRenderer pickUpMenuRenderer = ItemPickupMenuRenderer.of();
     PotionMenuRenderer potionMenuRenderer = PotionMenuRenderer.of();
@@ -28,7 +29,7 @@ public class HudRenderer {
     }
 
     public void render(CoreGame game) {
-        RenderingLayer renderingLayer = game.getEntityManager().getGameEntityRenderer().getHudRenderingLayer();
+        RenderingLayer renderingLayer = game.getHudRenderingLayer();
 
         renderingLayer.begin();
 

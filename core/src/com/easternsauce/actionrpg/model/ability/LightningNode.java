@@ -3,8 +3,8 @@ package com.easternsauce.actionrpg.model.ability;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
@@ -14,9 +14,9 @@ import java.util.concurrent.ConcurrentSkipListMap;
 
 @SuppressWarnings("SpellCheckingInspection")
 @NoArgsConstructor(staticName = "of")
-@Data
 @EqualsAndHashCode(callSuper = true)
 public class LightningNode extends Ability {
+    @Getter
     AbilityParams params;
 
     public static LightningNode of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
