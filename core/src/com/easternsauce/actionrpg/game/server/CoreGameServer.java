@@ -35,7 +35,8 @@ public class CoreGameServer extends CoreGame {
     @Getter
     @Setter
     private Server endPoint;
-    private Thread broadcastThread;
+
+    private final GameDataBroadcaster gameDataBroadcaster = GameDataBroadcaster.of();
 
     @Override
     public boolean isGameplayRunning() {
@@ -46,39 +47,7 @@ public class CoreGameServer extends CoreGame {
     public void onStartup() {
         serverConnectionEstablisher.establish(serverListener, this);
 
-        initializeBroadcastThread();
-    }
-
-    private void initializeBroadcastThread() {
-        broadcastThread = createBroadcastThread();
-        broadcastThread.start();
-    }
-
-    private Thread createBroadcastThread() {
-        return new Thread(() -> {
-            try {
-                while (true) {
-                    //noinspection BusyWait
-                    Thread.sleep(2000);
-
-                    Connection[] connections = getEndPoint().getConnections();
-                    for (Connection connection : connections) {
-                        broadcastToConnection(connection);
-                    }
-                }
-            } catch (InterruptedException e) {
-                // do nothing
-            }
-        });
-    }
-
-    private void broadcastToConnection(Connection connection) {
-        if (!getClientPlayers().containsKey(connection.getID()) || !getCreatures().containsKey(getClientPlayers().get(
-            connection.getID()))) {
-            gameState.sendGameDataWithEntitiesEmpty(connection);
-        } else {
-            gameState.sendGameDataPersonalizedForPlayer(connection);
-        }
+        gameDataBroadcaster.start(endPoint, this);
     }
 
     public Map<Integer, CreatureId> getClientPlayers() {
@@ -201,6 +170,7 @@ public class CoreGameServer extends CoreGame {
     @Override
     public void dispose() {
         getEndPoint().stop();
-        broadcastThread.interrupt();
+
+        gameDataBroadcaster.stop();
     }
 }
