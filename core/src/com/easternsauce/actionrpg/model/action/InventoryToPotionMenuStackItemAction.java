@@ -36,7 +36,7 @@ public class InventoryToPotionMenuStackItemAction extends GameStateAction {
         PlayerConfig playerConfig = game.getGameState().getPlayerConfig(playerId);
 
         if (!Objects.equals(inventoryIndex, potionMenuIndex)) {
-            Creature player = game.getGameState().accessCreatures().getCreature(playerId);
+            Creature player = game.getCreature(playerId);
 
             Item itemFrom = player.getParams().getInventoryItems().get(inventoryIndex);
             Item itemTo = player.getParams().getPotionMenuItems().get(potionMenuIndex);
@@ -60,6 +60,6 @@ public class InventoryToPotionMenuStackItemAction extends GameStateAction {
 
     @Override
     public Entity getEntity(CoreGame game) {
-        return game.getGameState().accessCreatures().getCreature(playerId);
+        return game.getCreature(playerId);
     }
 }

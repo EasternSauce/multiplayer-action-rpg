@@ -198,4 +198,24 @@ public abstract class CoreGame extends Game {
             this
         );
     }
+
+    public Map<AbilityId, Ability> getAbilities() {
+        return getGameState().accessAbilities().getAbilities();
+    }
+
+    public Ability getAbility(AbilityId abilityId) {
+        return getGameState().accessAbilities().getAbility(abilityId);
+    }
+
+    public Map<CreatureId, Creature> getCreatures() {
+        return getGameState().accessCreatures().getCreatures();
+    }
+
+    public Creature getCreature(CreatureId creatureId) {
+        return getGameState().accessCreatures().getCreature(creatureId);
+    }
+
+    public Vector2 getCreaturePos(CreatureId creatureId) {
+        return getGameState().accessCreatures().getCreaturePos(creatureId);
+    }
 }

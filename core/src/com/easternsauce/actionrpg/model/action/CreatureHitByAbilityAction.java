@@ -38,8 +38,8 @@ public class CreatureHitByAbilityAction extends CreatureHitAction {
 
     @Override
     public void applyToGame(CoreGame game) {
-        Creature targetCreature = game.getGameState().accessCreatures().getCreature(targetId);
-        Creature attackerCreature = game.getGameState().accessCreatures().getCreature(attackerId);
+        Creature targetCreature = game.getCreature(targetId);
+        Creature attackerCreature = game.getCreature(attackerId);
 
         if (targetCreature == null || attackerCreature == null) {
             return;
@@ -78,7 +78,7 @@ public class CreatureHitByAbilityAction extends CreatureHitAction {
 
     @Override
     public Entity getEntity(CoreGame game) {
-        return game.getGameState().accessCreatures().getCreature(targetId);
+        return game.getCreature(targetId);
     }
 
     @Override

@@ -99,7 +99,7 @@ public abstract class Ability implements Entity {
         getParams().setState(AbilityState.CHANNEL);
         getParams().getStateTimer().restart();
 
-        Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
+        Creature creature = game.getCreature(getParams().getCreatureId());
 
         if (creature != null) {
             if (getParams().getChainToPos() != null) {
@@ -192,7 +192,7 @@ public abstract class Ability implements Entity {
     }
 
     public Integer getSkillLevel(CoreGame game) {
-        Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
+        Creature creature = game.getCreature(getParams().getCreatureId());
 
         if (creature == null || !creature.availableSkills().containsKey(getParams().getSkillType())) {
             return 1;

@@ -18,7 +18,7 @@ public class PoisonousMixture extends Projectile {
     AbilityParams params;
 
     public static PoisonousMixture of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        Creature creature = game.getGameState().accessCreatures().getCreature(abilityParams.getCreatureId());
+        Creature creature = game.getCreature(abilityParams.getCreatureId());
 
         PoisonousMixture ability = PoisonousMixture.of();
         ability.params = abilityParams
@@ -66,7 +66,7 @@ public class PoisonousMixture extends Projectile {
     protected void onCompleted(CoreGame game) {
         game.chainAnotherAbility(
             this,
-            AbilityType.SPREADING_POISONOUS_CLOUD,
+            AbilityType.EXPANDING_POISONOUS_CLOUD,
             params.getDirVector(),
             ChainAbilityParams.of().setChainToPos(getParams().getPos())
         );

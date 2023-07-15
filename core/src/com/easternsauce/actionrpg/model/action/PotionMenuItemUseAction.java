@@ -31,7 +31,7 @@ public class PotionMenuItemUseAction extends GameStateAction {
         PlayerConfig playerConfig = game.getGameState().getPlayerConfig(playerId);
 
         if (playerConfig != null && slotIndex != null) {
-            Creature creature = game.getGameState().accessCreatures().getCreature(playerId);
+            Creature creature = game.getCreature(playerId);
             Item item = creature.getParams().getPotionMenuItems().get(slotIndex);
 
             if (item != null && item.getTemplate().getIsConsumable()) {
@@ -48,7 +48,7 @@ public class PotionMenuItemUseAction extends GameStateAction {
 
     @Override
     public Entity getEntity(CoreGame game) {
-        return game.getGameState().accessCreatures().getCreature(playerId);
+        return game.getCreature(playerId);
     }
 
     // TODO: make common method

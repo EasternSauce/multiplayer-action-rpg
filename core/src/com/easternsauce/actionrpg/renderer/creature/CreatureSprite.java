@@ -55,7 +55,7 @@ public class CreatureSprite {
     }
 
     public void updateForDeadCreature(CoreGame game) {
-        Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
+        Creature creature = game.getCreature(creatureId);
 
         CreatureModelAnimation creatureModelAnimation = game
             .getEntityManager()

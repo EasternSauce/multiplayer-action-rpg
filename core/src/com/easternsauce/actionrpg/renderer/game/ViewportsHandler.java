@@ -41,9 +41,7 @@ public class ViewportsHandler {
     }
 
     public void updateCameraPositions(CoreGame game) {
-        Creature player = game.getGameState().accessCreatures().getCreature(game
-            .getGameState()
-            .getThisClientPlayerId());
+        Creature player = game.getCreature(game.getGameState().getThisClientPlayerId());
 
         float cameraX = player.getParams().getPos().getX();
         float cameraY = player.getParams().getPos().getY();

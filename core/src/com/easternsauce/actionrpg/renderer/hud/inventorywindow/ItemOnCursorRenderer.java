@@ -18,9 +18,7 @@ public class ItemOnCursorRenderer {
     public static void render(RenderingLayer renderingLayer, CoreGame game) {
         IconRetriever iconRetriever = game.getEntityManager().getGameEntityRenderer().getIconRetriever();
 
-        Creature player = game.getGameState().accessCreatures().getCreature(game
-            .getGameState()
-            .getThisClientPlayerId());
+        Creature player = game.getCreature(game.getGameState().getThisClientPlayerId());
 
         PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
 

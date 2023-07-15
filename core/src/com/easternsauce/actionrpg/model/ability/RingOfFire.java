@@ -45,7 +45,7 @@ public class RingOfFire extends Ability {
     }
 
     public void updatePosition(CoreGame game) {
-        Vector2 pos = game.getGameState().accessCreatures().getCreaturePos(getParams().getCreatureId());
+        Vector2 pos = game.getCreaturePos(getParams().getCreatureId());
 
         if (pos != null) {
             getParams().setPos(pos.copy());

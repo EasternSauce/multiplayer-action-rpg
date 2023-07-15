@@ -34,7 +34,7 @@ public class MageTeleportCombo extends Ability {
 
     @Override
     public void onStarted(CoreGame game) {
-        Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
+        Creature creature = game.getCreature(getParams().getCreatureId());
         creature.applyEffect(CreatureEffect.SELF_STUN, 3.5f, game);
         creature.stopMoving();
 
@@ -51,7 +51,7 @@ public class MageTeleportCombo extends Ability {
         float[] fireRingProcTimes = {0.25f, 1.25f, 2f, 2.6f, 3.2f};
         float[] fireRingSizes = {6f, 8f, 15f, 20f, 27f};
 
-        Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
+        Creature creature = game.getCreature(getParams().getCreatureId());
 
         if (creature != null &&
             currentFireRingToProc < fireRingProcTimes.length &&

@@ -52,7 +52,7 @@ public class SkillTryPerformAction extends GameStateAction {
 
     @Override
     public void applyToGame(CoreGame game) {
-        Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
+        Creature creature = game.getCreature(creatureId);
 
         if (creature != null) {
             Skill skill = creature.getParams().getSkills().get(skillType);
@@ -65,6 +65,6 @@ public class SkillTryPerformAction extends GameStateAction {
 
     @Override
     public Entity getEntity(CoreGame game) {
-        return game.getGameState().accessCreatures().getCreature(creatureId);
+        return game.getCreature(creatureId);
     }
 }

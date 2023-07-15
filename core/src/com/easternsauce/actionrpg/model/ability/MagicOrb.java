@@ -55,16 +55,15 @@ public class MagicOrb extends Projectile {
         Creature minimumDistanceCreature = null;
         float minimumDistance = Float.MAX_VALUE;
 
-        Creature thisCreature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
+        Creature thisCreature = game.getCreature(getParams().getCreatureId());
 
-        for (Creature creature : game.getGameState().accessCreatures().getCreatures().values().stream().filter(
-            targetCreature -> Objects.equals(targetCreature.getParams().getAreaId().getValue(),
-                getParams().getAreaId().getValue()
-            ) &&
-                !targetCreature.getId().equals(getParams().getCreatureId()) &&
-                targetCreature.isAlive() &&
-                isTargetingAllowed(thisCreature, targetCreature) &&
-                targetCreature.getParams().getPos().distance(getParams().getPos()) < 20f).collect(Collectors.toSet())) {
+        for (Creature creature : game.getCreatures().values().stream().filter(targetCreature -> Objects.equals(targetCreature.getParams().getAreaId().getValue(),
+            getParams().getAreaId().getValue()
+        ) &&
+            !targetCreature.getId().equals(getParams().getCreatureId()) &&
+            targetCreature.isAlive() &&
+            isTargetingAllowed(thisCreature, targetCreature) &&
+            targetCreature.getParams().getPos().distance(getParams().getPos()) < 20f).collect(Collectors.toSet())) {
             if (creature.getParams().getPos().distance(getParams().getPos()) < minimumDistance) {
                 minimumDistanceCreature = creature;
                 minimumDistance = creature.getParams().getPos().distance(getParams().getPos());

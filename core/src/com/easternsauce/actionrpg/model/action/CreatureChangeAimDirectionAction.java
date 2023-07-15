@@ -26,7 +26,7 @@ public class CreatureChangeAimDirectionAction extends GameStateAction {
 
     @Override
     public void applyToGame(CoreGame game) {
-        Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
+        Creature creature = game.getCreature(creatureId);
 
         if (creature != null && creature.isAlive() && !creature.isStunned(game)) {
             creature.getParams().getMovementParams().setAimDirection(mousePos.normalized());
@@ -37,6 +37,6 @@ public class CreatureChangeAimDirectionAction extends GameStateAction {
 
     @Override
     public Entity getEntity(CoreGame game) {
-        return game.getGameState().accessCreatures().getCreature(creatureId);
+        return game.getCreature(creatureId);
     }
 }

@@ -33,11 +33,11 @@ public class CreatureBody {
     }
 
     public void update(CoreGame game) {
-        if (!game.getGameState().accessCreatures().getCreatures().containsKey(creatureId)) {
+        if (!game.getCreatures().containsKey(creatureId)) {
             return;
         }
 
-        Creature creature = game.getGameState().accessCreatures().getCreatures().get(creatureId);
+        Creature creature = game.getCreatures().get(creatureId);
 
         if (creature == null) {
             return;
@@ -140,7 +140,7 @@ public class CreatureBody {
     }
 
     public void init(AreaId areaId, CoreGame game) {
-        Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
+        Creature creature = game.getCreature(creatureId);
 
         this.world = game.getPhysicsWorld(areaId);
 

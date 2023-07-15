@@ -32,7 +32,7 @@ public class PlayerInitAction extends GameStateAction {
             player = createNewPlayer(game);
         }
 
-        game.getGameState().accessCreatures().getCreatures().put(playerId, player);
+        game.getCreatures().put(playerId, player);
 
         game.getEventProcessor().getCreatureModelsToBeCreated().add(playerId);
 
@@ -42,7 +42,7 @@ public class PlayerInitAction extends GameStateAction {
 
     @Override
     public Entity getEntity(CoreGame game) {
-        return game.getGameState().accessCreatures().getCreature(playerId);
+        return game.getCreature(playerId);
     }
 
     private Creature loadExistingPlayerData(CoreGame game) {

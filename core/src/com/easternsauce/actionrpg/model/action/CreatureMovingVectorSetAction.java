@@ -25,7 +25,7 @@ public class CreatureMovingVectorSetAction extends GameStateAction {
 
     @Override
     public void applyToGame(CoreGame game) {
-        Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
+        Creature creature = game.getCreature(creatureId);
 
         if (creature != null) {
             creature.getParams().getMovementParams().setMovingVector(movingVector);
@@ -35,6 +35,6 @@ public class CreatureMovingVectorSetAction extends GameStateAction {
 
     @Override
     public Entity getEntity(CoreGame game) {
-        return game.getGameState().accessCreatures().getCreature(creatureId);
+        return game.getCreature(creatureId);
     }
 }

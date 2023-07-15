@@ -21,7 +21,7 @@ public class LightningSpark extends Ability {
     AbilityParams params;
 
     public static LightningSpark of(AbilityParams abilityParams, CoreGame game) {
-        Creature creature = game.getGameState().accessCreatures().getCreature(abilityParams.getCreatureId());
+        Creature creature = game.getCreature(abilityParams.getCreatureId());
 
         LightningSpark ability = LightningSpark.of();
         ability.params = abilityParams
@@ -73,7 +73,7 @@ public class LightningSpark extends Ability {
         Set<CreatureId> excluded = new HashSet<>(getParams().getCreaturesAlreadyHit().keySet());
         excluded.add(getParams().getCreatureId());
 
-        Creature targetCreature = game.getGameState().accessCreatures().getCreature(game
+        Creature targetCreature = game.getCreature(game
             .getGameState()
             .accessCreatures()
             .getAliveCreatureIdClosestTo(getParams().getPos(), 13f, excluded));

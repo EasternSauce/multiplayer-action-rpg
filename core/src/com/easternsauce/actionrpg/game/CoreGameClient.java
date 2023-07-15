@@ -434,7 +434,7 @@ public class CoreGameClient extends CoreGame {
 
     @Override
     public Set<AbilityId> getAbilitiesToUpdate() {
-        Creature player = getGameState().accessCreatures().getCreatures().get(getGameState().getThisClientPlayerId());
+        Creature player = getCreatures().get(getGameState().getThisClientPlayerId());
 
         if (player == null) {
             return new ConcurrentSkipListSet<>();

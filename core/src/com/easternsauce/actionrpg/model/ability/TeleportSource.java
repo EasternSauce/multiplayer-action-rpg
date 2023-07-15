@@ -14,7 +14,7 @@ public class TeleportSource extends Ability {
     AbilityParams params;
 
     public static TeleportSource of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        Creature creature = game.getGameState().accessCreatures().getCreature(abilityParams.getCreatureId());
+        Creature creature = game.getCreature(abilityParams.getCreatureId());
 
         TeleportSource ability = TeleportSource.of();
         ability.params = abilityParams
@@ -44,7 +44,7 @@ public class TeleportSource extends Ability {
 
     @Override
     public void onStarted(CoreGame game) {
-        Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
+        Creature creature = game.getCreature(getParams().getCreatureId());
         creature.applyEffect(CreatureEffect.SELF_STUN, 0.5f, game);
         creature.stopMoving();
     }

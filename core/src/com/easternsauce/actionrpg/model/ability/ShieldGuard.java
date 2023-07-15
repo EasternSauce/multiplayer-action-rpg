@@ -71,13 +71,11 @@ public class ShieldGuard extends AttachedAbility {
 
     @Override
     public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
-        Ability otherAbility = game.getGameState().accessAbilities().getAbility(otherAbilityId);
+        Ability otherAbility = game.getAbility(otherAbilityId);
 
         if (otherAbility != null) {
-            Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
-            Creature abilityOwner = game.getGameState().accessCreatures().getCreature(otherAbility
-                .getParams()
-                .getCreatureId());
+            Creature creature = game.getCreature(getParams().getCreatureId());
+            Creature abilityOwner = game.getCreature(otherAbility.getParams().getCreatureId());
 
             if ((creature instanceof Player && abilityOwner instanceof Enemy ||
                 creature instanceof Enemy && abilityOwner instanceof Player) && otherAbility.isRanged()) {

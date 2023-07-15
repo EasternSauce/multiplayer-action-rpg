@@ -35,7 +35,7 @@ public class CreatureHitAnimationRenderer {
                        Vector2 vectorTowardsContactPoint,
                        RenderingLayer renderingLayer,
                        CoreGame game) {
-        Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
+        Creature creature = game.getCreature(creatureId);
 
         if (creature != null) {
             float posX = creature.getParams().getPos().getX() -

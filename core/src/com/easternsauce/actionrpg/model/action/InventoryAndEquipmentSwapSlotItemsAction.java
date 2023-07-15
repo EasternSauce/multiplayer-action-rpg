@@ -35,7 +35,7 @@ public class InventoryAndEquipmentSwapSlotItemsAction extends GameStateAction {
 
     @Override
     public void applyToGame(CoreGame game) {
-        Creature player = game.getGameState().accessCreatures().getCreature(playerId);
+        Creature player = game.getCreature(playerId);
         PlayerConfig playerConfig = game.getGameState().getPlayerConfig(playerId);
 
         Item inventoryItem = player.getParams().getInventoryItems().get(inventoryIndex);
@@ -51,7 +51,7 @@ public class InventoryAndEquipmentSwapSlotItemsAction extends GameStateAction {
 
     @Override
     public Entity getEntity(CoreGame game) {
-        return game.getGameState().accessCreatures().getCreature(playerId);
+        return game.getCreature(playerId);
     }
 
     private boolean checkInventoryItemSlotTypeMatchesEquipmentSlot(Item inventoryItem) {

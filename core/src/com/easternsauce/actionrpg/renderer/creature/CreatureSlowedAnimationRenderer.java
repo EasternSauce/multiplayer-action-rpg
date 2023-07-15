@@ -25,7 +25,7 @@ public class CreatureSlowedAnimationRenderer {
     ));
 
     public void render(CreatureId creatureId, float spriteWidth, RenderingLayer renderingLayer, CoreGame game) {
-        Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
+        Creature creature = game.getCreature(creatureId);
 
         if (creature != null && creature.isEffectActive(CreatureEffect.SLOW, game)) {
             float posX = creature.getParams().getPos().getX() - 0.5f;

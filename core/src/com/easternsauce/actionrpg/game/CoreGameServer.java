@@ -85,8 +85,8 @@ public class CoreGameServer extends CoreGame {
     }
 
     private void broadcastToConnection(Connection connection) {
-        if (!getClientPlayers().containsKey(connection.getID()) ||
-            !getGameState().accessCreatures().getCreatures().containsKey(getClientPlayers().get(connection.getID()))) {
+        if (!getClientPlayers().containsKey(connection.getID()) || !getCreatures().containsKey(getClientPlayers().get(
+            connection.getID()))) {
             gameState.sendGameDataWithEntitiesEmpty(connection);
         } else {
             gameState.sendGameDataPersonalizedForPlayer(connection);
@@ -118,7 +118,7 @@ public class CoreGameServer extends CoreGame {
                 continue;// don't update until player is initialized
             }
 
-            Map<CreatureId, Creature> creatures = getGameState().accessCreatures().getCreatures();
+            Map<CreatureId, Creature> creatures = getCreatures();
             if (getClientPlayers().containsKey(connection.getID()) && creatures.containsKey(getClientPlayers().get(
                 connection.getID()))) {
                 Creature player = creatures.get(getClientPlayers().get(connection.getID()));
@@ -153,7 +153,7 @@ public class CoreGameServer extends CoreGame {
         Set<AbilityId> abilitiesToUpdate = new HashSet<>();
 
         for (CreatureId clientCreatureId : getClientPlayers().values()) {
-            Creature player = getGameState().accessCreatures().getCreatures().get(clientCreatureId);
+            Creature player = getCreatures().get(clientCreatureId);
             if (player == null) {
                 continue;
             }

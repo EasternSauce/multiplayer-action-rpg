@@ -13,7 +13,7 @@ public class Dash extends AttachedAbility {
     AbilityParams params;
 
     public static Dash of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        Creature creature = game.getGameState().accessCreatures().getCreature(abilityParams.getCreatureId());
+        Creature creature = game.getCreature(abilityParams.getCreatureId());
 
         float flipValue = abilityParams.getDirVector().angleDeg();
 
@@ -57,7 +57,7 @@ public class Dash extends AttachedAbility {
 
     @Override
     public void onStarted(CoreGame game) {
-        Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
+        Creature creature = game.getCreature(getParams().getCreatureId());
 
         creature.getParams().getMovementParams().setIsDashing(true);
         creature.getParams().getMovementParams().setDashingVector(getParams().getDirVector());
@@ -71,7 +71,7 @@ public class Dash extends AttachedAbility {
 
     @Override
     protected void onCompleted(CoreGame game) {
-        Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
+        Creature creature = game.getCreature(getParams().getCreatureId());
 
         creature.getParams().getMovementParams().setIsDashing(false);
     }

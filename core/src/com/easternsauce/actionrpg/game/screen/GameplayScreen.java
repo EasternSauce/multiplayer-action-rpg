@@ -126,8 +126,7 @@ public class GameplayScreen implements Screen {
 
             CreatureId thisClientPlayerId = game.getGameState().getThisClientPlayerId();
 
-            if (thisClientPlayerId != null &&
-                game.getGameState().accessCreatures().getCreature(thisClientPlayerId) != null) {
+            if (thisClientPlayerId != null && game.getCreature(thisClientPlayerId) != null) {
                 game.updateCameraPositions();
             }
 
@@ -161,7 +160,7 @@ public class GameplayScreen implements Screen {
         if (game.isForceUpdateBodyPositions()) { // only runs after receiving gameState state update
             game.setForceUpdateBodyPositions(false);
 
-            game.getGameState().accessCreatures().getCreatures().forEach((creatureId, creature) -> {
+            game.getCreatures().forEach((creatureId, creature) -> {
                 if (game.getCreatureBodies().containsKey(creatureId) &&
                     game.getCreatureBodies().get(creatureId).getBodyPos().distance(creature.getParams().getPos()) >
                         Constants.FORCE_UPDATE_MINIMUM_DISTANCE // only setTransform if positions
@@ -171,7 +170,7 @@ public class GameplayScreen implements Screen {
                 }
             });
 
-            game.getGameState().accessAbilities().getAbilities().forEach((abilityId, ability) -> {
+            game.getAbilities().forEach((abilityId, ability) -> {
                 //noinspection SpellCheckingInspection
                 if (game.getAbilityBodies().containsKey(abilityId) &&
                     game.getAbilityBodies().get(abilityId).getIsBodyInitialized() &&

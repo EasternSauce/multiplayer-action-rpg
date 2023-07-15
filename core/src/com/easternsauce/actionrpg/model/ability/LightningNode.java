@@ -57,7 +57,7 @@ public class LightningNode extends Ability {
         Set<CreatureId> excluded = new HashSet<>(getParams().getCreaturesAlreadyHit().keySet());
         excluded.add(getParams().getCreatureId());
 
-        Creature targetCreature = game.getGameState().accessCreatures().getCreature(game
+        Creature targetCreature = game.getCreature(game
             .getGameState()
             .accessCreatures()
             .getAliveCreatureIdClosestTo(getParams().getPos(), 13f, excluded));

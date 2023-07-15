@@ -24,7 +24,7 @@ public class PhysicsEventQueueProcessor {
                     game.getAbilitiesToUpdate().contains(event.getAbilityId())) {
 
                     if (event.getSourceCreatureId().equals(event.getDestinationCreatureId())) {
-                        Ability ability = game.getGameState().accessAbilities().getAbility(event.getAbilityId());
+                        Ability ability = game.getAbility(event.getAbilityId());
                         ability.onSelfCreatureHit(game);
                     } else {
                         handleCreatureAttacked(event, game);
@@ -34,7 +34,7 @@ public class PhysicsEventQueueProcessor {
             } else if (physicsEvent instanceof AbilityHitsTerrainEvent) {
                 AbilityHitsTerrainEvent event = (AbilityHitsTerrainEvent) physicsEvent;
 
-                Ability ability = game.getGameState().accessAbilities().getAbility(event.getAbilityId());
+                Ability ability = game.getAbility(event.getAbilityId());
 
                 if (ability != null && ability.getParams().getState() == AbilityState.ACTIVE) {
                     ability.onTerrainHit(event.getAbilityPos(), event.getTilePos());
@@ -43,8 +43,8 @@ public class PhysicsEventQueueProcessor {
             } else if (physicsEvent instanceof AbilityHitsAbilityEvent) {
                 AbilityHitsAbilityEvent event = (AbilityHitsAbilityEvent) physicsEvent;
 
-                Ability abilityA = game.getGameState().accessAbilities().getAbility(event.getAbilityA_Id());
-                Ability abilityB = game.getGameState().accessAbilities().getAbility(event.getAbilityB_Id());
+                Ability abilityA = game.getAbility(event.getAbilityA_Id());
+                Ability abilityB = game.getAbility(event.getAbilityB_Id());
 
                 if (abilityA != null && abilityA.getParams().getState() == AbilityState.ACTIVE) {
                     abilityA.onOtherAbilityHit(event.getAbilityB_Id(), game);
@@ -55,7 +55,7 @@ public class PhysicsEventQueueProcessor {
             } else if (physicsEvent instanceof CreatureHitsAreaGateEvent) {
                 CreatureHitsAreaGateEvent event = (CreatureHitsAreaGateEvent) physicsEvent;
 
-                Creature creature = game.getGameState().accessCreatures().getCreature(event.getCreatureId());
+                Creature creature = game.getCreature(event.getCreatureId());
 
                 creature.getParams().getMovementParams().setAreaWhenEnteredGate(creature.getParams().getAreaId());
 
@@ -75,7 +75,7 @@ public class PhysicsEventQueueProcessor {
 
                 CreatureLeavesAreaGateEvent event = (CreatureLeavesAreaGateEvent) physicsEvent;
 
-                Creature creature = game.getGameState().accessCreatures().getCreature(event.getCreatureId());
+                Creature creature = game.getCreature(event.getCreatureId());
 
                 if (creature instanceof Player &&
                     creature.getParams().getMovementParams().getIsStillInsideGateAfterTeleport() &&
@@ -111,12 +111,12 @@ public class PhysicsEventQueueProcessor {
     }
 
     private void handleCreatureAttacked(AbilityHitsCreatureEvent event, CoreGame game) {
-        Creature sourceCreature = game.getGameState().accessCreatures().getCreature(event.getSourceCreatureId());
+        Creature sourceCreature = game.getCreature(event.getSourceCreatureId());
         Creature destinationCreature = game
             .getGameState()
             .accessCreatures()
             .getCreature(event.getDestinationCreatureId());
-        Ability ability = game.getGameState().accessAbilities().getAbility(event.getAbilityId());
+        Ability ability = game.getAbility(event.getAbilityId());
 
         if (ability != null && destinationCreature.isAlive()) {
             Vector2 contactPoint = calculateContactPoint(destinationCreature, ability);

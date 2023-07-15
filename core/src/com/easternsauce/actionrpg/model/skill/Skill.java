@@ -39,7 +39,7 @@ public class Skill {
     }
 
     public void tryPerform(Vector2 startingPos, Vector2 dirVector, CoreGame game) {
-        Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
+        Creature creature = game.getCreature(creatureId);
 
         if (creature != null &&
             creature.canPerformSkill(this, game) &&

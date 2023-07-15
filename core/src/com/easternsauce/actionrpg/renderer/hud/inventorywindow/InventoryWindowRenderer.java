@@ -92,9 +92,7 @@ public class InventoryWindowRenderer {
     }
 
     public void renderItems(RenderingLayer renderingLayer, CoreGame game) {
-        Creature player = game.getGameState().accessCreatures().getCreature(game
-            .getGameState()
-            .getThisClientPlayerId());
+        Creature player = game.getCreature(game.getGameState().getThisClientPlayerId());
 
         PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
 
@@ -112,7 +110,7 @@ public class InventoryWindowRenderer {
 
     public void renderDescription(RenderingLayer renderingLayer, CoreGame game) {
         CreatureId thisClientPlayerId = game.getGameState().getThisClientPlayerId();
-        Creature player = game.getGameState().accessCreatures().getCreature(thisClientPlayerId);
+        Creature player = game.getCreature(thisClientPlayerId);
         PlayerConfig playerConfig = game.getGameState().getPlayerConfig(thisClientPlayerId);
 
         float mouseX = game.hudMousePos().getX();

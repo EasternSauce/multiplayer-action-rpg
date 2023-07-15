@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class SpreadingPoisonousCloud extends Ability {
+public class ExpandingPoisonousCloud extends Ability {
     AbilityParams params;
 
     int currentCloud = 0;
 
-    public static SpreadingPoisonousCloud of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        SpreadingPoisonousCloud ability = SpreadingPoisonousCloud.of();
+    public static ExpandingPoisonousCloud of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+        ExpandingPoisonousCloud ability = ExpandingPoisonousCloud.of();
         ability.params = abilityParams.setChannelTime(0f).setActiveTime(10f);
 
         return ability;
@@ -40,17 +40,22 @@ public class SpreadingPoisonousCloud extends Ability {
 
         float[] cloudDurations = {0.2f, 0.2f, 0.2f, 0.2f, 0.4f, 0.4f, 0.4f, 0.4f, 0.4f, 0.4f};
 
-        Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
+        Creature creature = game.getCreature(getParams().getCreatureId());
 
         if (creature != null &&
             currentCloud < cloudSpreadTimes.length &&
             getParams().getStateTimer().getTime() > cloudSpreadTimes[currentCloud]) {
 
-            game.chainAnotherAbility(this, AbilityType.POISONOUS_CLOUD, getParams().getDirVector(), ChainAbilityParams
-                .of()
-                .setChainToPos(getParams().getPos())
-                .setOverrideSize(cloudRadiuses[currentCloud])
-                .setOverrideDuration(cloudDurations[currentCloud]));
+            game.chainAnotherAbility(
+                this,
+                AbilityType.POISONOUS_CLOUD,
+                getParams().getDirVector(),
+                ChainAbilityParams
+                    .of()
+                    .setChainToPos(getParams().getPos())
+                    .setOverrideSize(cloudRadiuses[currentCloud])
+                    .setOverrideDuration(cloudDurations[currentCloud])
+            );
 
             currentCloud += 1;
         }

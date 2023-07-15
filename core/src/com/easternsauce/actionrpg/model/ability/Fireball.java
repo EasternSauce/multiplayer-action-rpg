@@ -19,7 +19,7 @@ public class Fireball extends Projectile {
     AbilityParams params;
 
     public static Fireball of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        Creature creature = game.getGameState().accessCreatures().getCreature(abilityParams.getCreatureId());
+        Creature creature = game.getCreature(abilityParams.getCreatureId());
 
         Fireball ability = Fireball.of();
         ability.params = abilityParams

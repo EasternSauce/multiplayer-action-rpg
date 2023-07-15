@@ -48,11 +48,15 @@ public class EnemyRallyPoint {
         if (respawnTimer.getTime() > Constants.ENEMY_RESPAWN_TIME) {
             long enemiesToSpawn = rallyPointInfo.getEnemiesTotal() - enemiesAliveCount;
 
-            Set<Creature> playersNearby = game.getGameState().accessCreatures().getCreatures().values().stream().filter(
-                otherCreature -> otherCreature instanceof Player &&
+            Set<Creature> playersNearby = game
+                .getCreatures()
+                .values()
+                .stream()
+                .filter(otherCreature -> otherCreature instanceof Player &&
                     otherCreature.getParams().getAreaId().getValue().equals(rallyPointInfo.getAreaId().getValue()) &&
                     otherCreature.getParams().getPos().distance(rallyPointInfo.getPos()) <
-                        Constants.PREVENT_ENEMY_RESPAWN_DISTANCE).collect(Collectors.toSet());
+                        Constants.PREVENT_ENEMY_RESPAWN_DISTANCE)
+                .collect(Collectors.toSet());
 
             if (playersNearby.isEmpty()) {
                 if (enemiesToSpawn > 0) {

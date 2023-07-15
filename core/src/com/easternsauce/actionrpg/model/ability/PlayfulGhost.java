@@ -55,7 +55,7 @@ public class PlayfulGhost extends Projectile {
         Creature minCreature = null;
         float minDistance = Float.MAX_VALUE;
 
-        Creature thisCreature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
+        Creature thisCreature = game.getCreature(getParams().getCreatureId());
 
         for (Creature creature : game
             .getGameState()

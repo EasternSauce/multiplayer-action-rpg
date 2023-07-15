@@ -22,7 +22,7 @@ public class PlayerRemoveAction extends GameStateAction {
 
     @Override
     public void applyToGame(CoreGame game) {
-        Creature creature = game.getGameState().accessCreatures().getCreature(playerId);
+        Creature creature = game.getCreature(playerId);
         if (creature != null) {
             game.getGameState().accessCreatures().getRemovedCreatures().put(playerId, creature);
 
@@ -32,6 +32,6 @@ public class PlayerRemoveAction extends GameStateAction {
 
     @Override
     public Entity getEntity(CoreGame game) {
-        return game.getGameState().accessCreatures().getCreature(playerId);
+        return game.getCreature(playerId);
     }
 }

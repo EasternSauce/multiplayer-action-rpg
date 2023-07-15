@@ -155,9 +155,7 @@ public class InventoryWindowActionDecider {
 
     private static GameStateAction getMoveItemFromInventoryToPotionMenuAction(InventoryWindowState inventoryWindowState,
                                                                               CoreGame game) {
-        Creature player = game.getGameState().accessCreatures().getCreature(game
-            .getGameState()
-            .getThisClientPlayerId());
+        Creature player = game.getCreature(game.getGameState().getThisClientPlayerId());
 
         Item itemFrom = player.getParams().getInventoryItems().get(inventoryWindowState.getInventoryItemBeingMoved());
         Item itemTo = player.getParams().getPotionMenuItems().get(inventoryWindowState.getPotionMenuSlotClicked());
@@ -191,9 +189,7 @@ public class InventoryWindowActionDecider {
     private static GameStateAction getMoveItemFromPotionMenuToInventoryAction(InventoryWindowState inventoryWindowState,
                                                                               CoreGame game) {
 
-        Creature player = game.getGameState().accessCreatures().getCreature(game
-            .getGameState()
-            .getThisClientPlayerId());
+        Creature player = game.getCreature(game.getGameState().getThisClientPlayerId());
 
         Item itemFrom = null;
         Item itemTo = null;
@@ -240,9 +236,7 @@ public class InventoryWindowActionDecider {
     }
 
     private static boolean isClickedNonEmptyInventorySlot(InventoryWindowState inventoryWindowState, CoreGame game) {
-        Creature player = game.getGameState().accessCreatures().getCreature(game
-            .getGameState()
-            .getThisClientPlayerId());
+        Creature player = game.getCreature(game.getGameState().getThisClientPlayerId());
 
         return player.getParams().getInventoryItems().containsKey(inventoryWindowState.getInventorySlotClicked());
     }
@@ -263,9 +257,7 @@ public class InventoryWindowActionDecider {
     }
 
     private static boolean isClickedNonEmptyEquipmentSlot(InventoryWindowState inventoryWindowState, CoreGame game) {
-        Creature player = game.getGameState().accessCreatures().getCreature(game
-            .getGameState()
-            .getThisClientPlayerId());
+        Creature player = game.getCreature(game.getGameState().getThisClientPlayerId());
 
         return player.getParams().getEquipmentItems().containsKey(inventoryWindowState.getEquipmentSlotClicked());
     }
@@ -286,9 +278,7 @@ public class InventoryWindowActionDecider {
     }
 
     private static boolean isClickedNonEmptyPotionMenuSlot(InventoryWindowState inventoryWindowState, CoreGame game) {
-        Creature player = game.getGameState().accessCreatures().getCreature(game
-            .getGameState()
-            .getThisClientPlayerId());
+        Creature player = game.getCreature(game.getGameState().getThisClientPlayerId());
 
         return player.getParams().getPotionMenuItems().containsKey(inventoryWindowState.getPotionMenuSlotClicked());
     }

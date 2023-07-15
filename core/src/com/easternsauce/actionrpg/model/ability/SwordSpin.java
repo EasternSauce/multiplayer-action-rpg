@@ -64,7 +64,7 @@ public class SwordSpin extends AttachedAbility {
 
         creaturesHitRemove.forEach(creatureId -> getParams().getCreaturesAlreadyHit().remove(creatureId));
 
-        Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
+        Creature creature = game.getCreature(getParams().getCreatureId());
         creature.applyEffect(CreatureEffect.SELF_SLOW, 0.1f, game);
         creature.getParams().getEffectParams().setCurrentSlowMagnitude(0.3f);
     }

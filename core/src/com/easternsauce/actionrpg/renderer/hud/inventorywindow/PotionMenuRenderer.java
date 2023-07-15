@@ -25,9 +25,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class PotionMenuRenderer {
     public void renderMenu(RenderingLayer renderingLayer, CoreGame game) {
 
-        Creature player = game.getGameState().accessCreatures().getCreature(game
-            .getGameState()
-            .getThisClientPlayerId());
+        Creature player = game.getCreature(game.getGameState().getThisClientPlayerId());
 
         PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
 

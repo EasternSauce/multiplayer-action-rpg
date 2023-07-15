@@ -45,7 +45,7 @@ public class MobCrossbowShot extends Ability {
             currentDirVector = getParams().getDirVector();
         }
 
-        Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
+        Creature creature = game.getCreature(getParams().getCreatureId());
 
         if (creature != null &&
             currentBoltToFire < boltFireTimes.length &&

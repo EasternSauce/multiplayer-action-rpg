@@ -46,7 +46,7 @@ public class AbilityBody {
     }
 
     public void activate(boolean skipCreatingBody, CoreGame game) {
-        Ability ability = game.getGameState().accessAbilities().getAbility(abilityId);
+        Ability ability = game.getAbility(abilityId);
 
         if (!skipCreatingBody && ability != null) {
             world = game.getPhysicsWorld(ability.getParams().getAreaId());
@@ -80,7 +80,7 @@ public class AbilityBody {
     }
 
     public void update(CoreGame game) {
-        Ability ability = game.getGameState().accessAbilities().getAbilities().get(abilityId);
+        Ability ability = game.getAbilities().get(abilityId);
 
         if (getIsBodyInitialized() && ability != null && !ability.getParams().getIsSkipCreatingBody()) {
             if (ability.isPositionChangedOnUpdate()) {

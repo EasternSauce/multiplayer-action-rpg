@@ -50,7 +50,7 @@ public class PoisonousCloud extends Ability {
 
     @Override
     public void onCreatureHit(CreatureId creatureId, CoreGame game) {
-        Creature creature = game.getGameState().accessCreatures().getCreature(creatureId);
+        Creature creature = game.getCreature(creatureId);
 
         creature.applyEffect(CreatureEffect.SLOW, 1f, game);
         creature.getParams().getEffectParams().setCurrentSlowMagnitude(0.65f);

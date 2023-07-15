@@ -59,9 +59,7 @@ public class AbilityAccessor {
                                     Vector2 dirVector,
                                     ChainAbilityParams chainAbilityParams,
                                     CoreGame game) {
-        Creature creature = game.getGameState().accessCreatures().getCreature(chainFromAbility
-            .getParams()
-            .getCreatureId());
+        Creature creature = game.getCreature(chainFromAbility.getParams().getCreatureId());
 
         if (creature != null && (creature.isAlive() || chainFromAbility.isAbleToChainAfterCreatureDeath())) {
             AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
@@ -106,7 +104,7 @@ public class AbilityAccessor {
     }
 
     private void initializeAbility(Creature creature, Ability ability, CoreGame game) {
-        game.getGameState().accessAbilities().getAbilities().put(ability.getParams().getId(), ability);
+        game.getAbilities().put(ability.getParams().getId(), ability);
 
         game.getEventProcessor().getAbilityModelsToBeCreated().add(ability.getParams().getId());
 
@@ -120,7 +118,7 @@ public class AbilityAccessor {
                                       AbilityId abilityId,
                                       Vector2 contactPoint,
                                       CoreGame game) {
-        Ability ability = game.getGameState().accessAbilities().getAbility(abilityId);
+        Ability ability = game.getAbility(abilityId);
 
         ability.onCreatureHit(targetId, game);
 

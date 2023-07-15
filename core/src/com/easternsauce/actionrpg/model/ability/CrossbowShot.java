@@ -35,7 +35,7 @@ public class CrossbowShot extends Ability {
     protected void onActiveUpdate(float delta, CoreGame game) {
         float[] boltFireTimes = {0f, 0.4f, 1f, 1.2f, 1.4f};
 
-        Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
+        Creature creature = game.getCreature(getParams().getCreatureId());
 
         if (creature != null &&
             currentBoltToFire < boltFireTimes.length &&

@@ -33,7 +33,7 @@ public class ItemDropOnGroundAction extends GameStateAction {
 
         PlayerConfig playerConfig = game.getGameState().getPlayerConfig(playerId);
 
-        Creature player = game.getGameState().accessCreatures().getCreature(playerId);
+        Creature player = game.getCreature(playerId);
 
         Map<Integer, Item> inventoryItems = player.getParams().getInventoryItems();
         Map<Integer, Item> equipmentItems = player.getParams().getEquipmentItems();
@@ -75,6 +75,6 @@ public class ItemDropOnGroundAction extends GameStateAction {
 
     @Override
     public Entity getEntity(CoreGame game) {
-        return game.getGameState().accessCreatures().getCreature(playerId);
+        return game.getCreature(playerId);
     }
 }
