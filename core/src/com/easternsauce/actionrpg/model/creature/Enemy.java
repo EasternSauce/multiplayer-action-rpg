@@ -66,6 +66,7 @@ public class Enemy extends Creature {
         getParams().getEnemyParams().getAutoControlStateTimer().update(delta);
         getParams().getEnemyParams().getAttackCooldownTimer().update(delta);
         getParams().getEnemyParams().getJustAttackedFromRangeTimer().update(delta);
+        getParams().getEnemyParams().getMovementCommandCooldownTimer().update(delta);
     }
 
     @Override
@@ -392,11 +393,14 @@ public class Enemy extends Creature {
 
     private void processAutoControlStateMovementLogic(Creature potentialTarget, Float distance, CoreGame game) {
         if (getParams().getEnemyParams().getAutoControlState() == EnemyAutoControlState.AGGRESSIVE) {
-            if (distance > getParams().getEnemyParams().getAttackDistance() - 1f) {
-                getParams().getStats().setSpeed(getParams().getStats().getBaseSpeed());
-                goToPos(potentialTarget.getParams().getPos(), game);
-            } else { // if no path or distance is small, then stop moving
-                stopMoving();
+            if (getParams().getEnemyParams().getMovementCommandCooldownTimer().getTime() > 0.35f) {
+                if (distance > getParams().getEnemyParams().getAttackDistance() - 1f) {
+                    getParams().getStats().setSpeed(getParams().getStats().getBaseSpeed());
+                    goToPos(potentialTarget.getParams().getPos(), game);
+                } else { // if no path or distance is small, then stop moving
+                    stopMoving();
+                    getParams().getEnemyParams().getMovementCommandCooldownTimer().restart();
+                }
             }
         } else if (getParams().getEnemyParams().getAutoControlState() == EnemyAutoControlState.ALERTED) {
             getParams().getStats().setSpeed(getParams().getStats().getBaseSpeed() / 3);

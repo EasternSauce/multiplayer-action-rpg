@@ -2,6 +2,7 @@ package com.easternsauce.actionrpg.model.ability;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.creature.Creature;
+import com.easternsauce.actionrpg.model.creature.CreatureEffect;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -38,10 +39,15 @@ public class IceSpearRampage extends Projectile {
 
     @Override
     public void onStarted(CoreGame game) {
-        for (int i = 0; i < 36; i++) {
+        for (int i = 0; i < 60; i++) {
             angles.add(i * 30f);
             times.add(i * 0.04f);
         }
+
+        Creature creature = game.getCreature(getParams().getCreatureId());
+        creature.applyEffect(CreatureEffect.SELF_STUN, 3.5f, game);
+        creature.stopMoving();
+
     }
 
     @Override
@@ -53,13 +59,15 @@ public class IceSpearRampage extends Projectile {
             game.chainAnotherAbility(
                 this,
                 AbilityType.ICE_SPEAR,
-                facingVector.withSetDegAngle(facingVector.angleDeg() + angles.get(currentAbility)),
+                facingVector.withSetDegAngle(getParams().getDirVector().angleDeg() + angles.get(currentAbility)),
                 ChainAbilityParams
                     .of()
                     .setChainToPos(creature.getParams().getPos())
                     .setOverrideMaximumRange(30f)
-                    .setOverrideScale(0.75f)
-                    .setOverrideSpeed(12f)
+                    .setOverrideScale(0.8f)
+                    .setOverrideSpeed(13f)
+                    .setOverrideStunDuration(0.25f)
+                    .setOverrideDamage(38f)
             );
 
             currentAbility += 1;

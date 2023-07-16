@@ -54,4 +54,7 @@ public class EnemyParams {
     @NonNull
     private Boolean pathMirrored = false;
     private List<Vector2> pathTowardsTarget = null;
+
+    @NonNull
+    private SimpleTimer movementCommandCooldownTimer = SimpleTimer.getExpiredTimer();
 }

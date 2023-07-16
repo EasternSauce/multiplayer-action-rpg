@@ -13,4 +13,5 @@ public class ChainAbilityParams {
     private Float overrideDamage;
     private Float overrideMaximumRange;
     private Float overrideSpeed;
+    private Float overrideStunDuration;
 }

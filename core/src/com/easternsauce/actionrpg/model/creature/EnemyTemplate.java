@@ -56,7 +56,7 @@ public class EnemyTemplate {
         ))
     );
     public static EnemyTemplate minos = EnemyTemplate.of(EnemyType.MINOS,
-        1000f,
+        1800f,
         8f,
         11f,
         randomDropSet,
@@ -67,13 +67,13 @@ public class EnemyTemplate {
         ))
     );
     public static EnemyTemplate serpent = EnemyTemplate.of(EnemyType.SERPENT,
-        1000f,
+        1500f,
         8f,
-        20f,
+        18f,
         randomDropSet,
-        new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.RICOCHET_BALLISTA, 100f),
-            EnemySkillUseEntry.of(SkillType.ICE_SPEAR_RAMPAGE, 100f),
+        new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.ICE_SPEAR_RAMPAGE, 50f),
             EnemySkillUseEntry.of(SkillType.VOLATILE_BUBBLE, 60f),
+            EnemySkillUseEntry.of(SkillType.RING_OF_FIRE, 100f),
             EnemySkillUseEntry.of(SkillType.FIREBALL, 60f)
         ))
     );

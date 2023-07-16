@@ -88,6 +88,7 @@ public class AbilityAccessor {
                 .setOverrideDamage(chainAbilityParams.getOverrideDamage())
                 .setOverrideMaximumRange(chainAbilityParams.getOverrideMaximumRange())
                 .setOverrideSpeed(chainAbilityParams.getOverrideSpeed())
+                .setOverrideStunDuration(chainAbilityParams.getOverrideStunDuration())
                 .setSkillType(chainFromAbility.getParams().getSkillType())
                 .setSkillStartPos(chainFromPos)
                 .setDamagingHitCreaturesHitCounter(chainFromAbility.getParams().getDamagingHitCreaturesHitCounter());

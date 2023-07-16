@@ -14,6 +14,7 @@ public class RicochetBallista extends Ability {
 
     public static RicochetBallista of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         RicochetBallista ability = RicochetBallista.of();
+
         ability.params = abilityParams.setChannelTime(0f).setActiveTime(0f);
 
         return ability;

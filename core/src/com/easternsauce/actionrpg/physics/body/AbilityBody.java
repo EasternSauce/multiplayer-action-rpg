@@ -64,8 +64,7 @@ public class AbilityBody {
 
     private float[] hitboxVertices(Ability ability) {
         if (ability.getParams().getOverrideScale() != null) {
-            sprite.setSize(
-                ability.getParams().getOverrideScale() * ability.getParams().getWidth(),
+            sprite.setSize(ability.getParams().getOverrideScale() * ability.getParams().getWidth(),
                 ability.getParams().getOverrideScale() * ability.getParams().getOverrideScale()
             );
         } else {

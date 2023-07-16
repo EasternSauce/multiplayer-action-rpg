@@ -75,7 +75,7 @@ public class InitialStateLoader {
                 new AbstractMap.SimpleEntry<>(EnemyTemplate.skeleton, 100),
                 new AbstractMap.SimpleEntry<>(EnemyTemplate.serpent, 100)
             ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)),
-            8
+            4
         );
 
         EnemyRallyPointId rallyPointId = EnemyRallyPointId.of("enemyrallypoint1"); // TODO: generate this id
