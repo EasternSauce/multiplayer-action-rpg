@@ -30,8 +30,8 @@ public class Fireball extends Projectile {
             .setStartingRange(2.5f)
             .setTextureName("fireball")
             .setBaseDamage(20f)
-            .setIsChannelAnimationLooping(false)
-            .setIsActiveAnimationLooping(true)
+            .setChannelAnimationLooping(false)
+            .setActiveAnimationLooping(true)
             .setDelayedActionTime(0.001f)
             .setPos(creature.getParams().getPos());
 

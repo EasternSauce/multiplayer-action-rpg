@@ -37,7 +37,7 @@ public class CreatureSprite {
             .get(creature.getParams().getTextureName());
 
         TextureRegion texture;
-        if (!creature.getParams().getMovementParams().getIsMoving() || creature.isStunned(game)) {
+        if (!creature.getParams().getMovementParams().getMoving() || creature.isStunned(game)) {
             texture = creatureModelAnimation.getFacingTexture(creature.getParams().getTextureName(),
                 creature.facingDirection(game)
             );

@@ -52,6 +52,6 @@ public class EnemyParams {
     @NonNull
     private Set<EnemySkillUseEntry> skillUses;
     @NonNull
-    private Boolean isPathMirrored = false;
+    private Boolean pathMirrored = false;
     private List<Vector2> pathTowardsTarget = null;
 }

@@ -21,8 +21,8 @@ public class MobSwordSlash extends AttachedAbility {
             .setStartingRange(1.8f)
             .setTextureName("slash")
             .setBaseDamage(35f)
-            .setIsChannelAnimationLooping(false)
-            .setIsActiveAnimationLooping(false);
+            .setChannelAnimationLooping(false)
+            .setActiveAnimationLooping(false);
         return ability;
     }
 
@@ -70,7 +70,7 @@ public class MobSwordSlash extends AttachedAbility {
     }
 
     @Override
-    public boolean isCanBeDeactivated() {
+    public boolean canBeDeactivated() {
         return true;
     }
 }

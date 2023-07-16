@@ -26,9 +26,9 @@ public class ShieldGuard extends AttachedAbility {
             .setStartingRange(1.2f)
             .setTextureName("shield")
             .setBaseDamage(0f)
-            .setIsChannelAnimationLooping(false)
-            .setIsActiveAnimationLooping(false)
-            .setIsFlip(ShieldGuard.calculateFlip(flipValue));
+            .setChannelAnimationLooping(false)
+            .setActiveAnimationLooping(false)
+            .setFlip(ShieldGuard.calculateFlip(flipValue));
         return ability;
     }
 
@@ -79,7 +79,7 @@ public class ShieldGuard extends AttachedAbility {
             if ((creature instanceof Player && abilityOwner instanceof Enemy ||
                 creature instanceof Enemy && abilityOwner instanceof Player) && otherAbility.isRanged()) {
                 if (otherAbility.isBlockable()) {
-                    otherAbility.getParams().setIsMarkedAsShielded(true);
+                    otherAbility.getParams().setMarkedAsShielded(true);
                 }
 
                 if (otherAbility instanceof RicochetBullet) {
@@ -103,7 +103,7 @@ public class ShieldGuard extends AttachedAbility {
     }
 
     @Override
-    public boolean isCanBeDeactivated() {
+    public boolean canBeDeactivated() {
         return true;
     }
 

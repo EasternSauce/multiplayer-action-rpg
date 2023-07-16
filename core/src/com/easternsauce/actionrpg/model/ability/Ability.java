@@ -114,7 +114,7 @@ public abstract class Ability implements Entity {
                 getParams().setWeaponDamage((float) creature.getCurrentWeapon().getDamage());
             }
             if (creature instanceof Player) {
-                getParams().setIsPlayerAbility(true);
+                getParams().setPlayerAbility(true);
             }
 
             getParams().setRandomGenerator(RandomGenerator.of(creature.getParams().getRandomGenerator().nextInt()));
@@ -170,7 +170,7 @@ public abstract class Ability implements Entity {
             damage = getParams().getOverrideDamage();
         }
 
-        if (getParams().getIsPlayerAbility() && isWeaponAttack()) {
+        if (getParams().getPlayerAbility() && isWeaponAttack()) {
             return getParams().getWeaponDamage() * getParams().getDamageMultiplier();
         } else {
             return damage * getParams().getDamageMultiplier() * getLevelScaling(game);
@@ -207,7 +207,7 @@ public abstract class Ability implements Entity {
         return true;
     }
 
-    public boolean isCanBeDeactivated() {
+    public boolean canBeDeactivated() {
         return false;
     }
 

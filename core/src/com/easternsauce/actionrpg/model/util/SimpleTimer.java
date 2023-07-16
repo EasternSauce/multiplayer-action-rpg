@@ -10,40 +10,40 @@ public class SimpleTimer {
     @Setter
     private float time = 0f;
     @Getter
-    private boolean isRunning = false;
+    private boolean running = false;
 
     public static SimpleTimer getExpiredTimer() {
         SimpleTimer simpleTimer = SimpleTimer.of();
         simpleTimer.time = Float.MAX_VALUE;
-        simpleTimer.isRunning = false;
+        simpleTimer.running = false;
         return simpleTimer;
     }
 
     public static SimpleTimer getStartedTimer() {
         SimpleTimer simpleTimer = SimpleTimer.of();
         simpleTimer.time = 0;
-        simpleTimer.isRunning = true;
+        simpleTimer.running = true;
         return simpleTimer;
     }
 
     @SuppressWarnings("unused")
     public void start() {
-        isRunning = true;
+        running = true;
     }
 
     @SuppressWarnings("unused")
     public void stop() {
         time = 0f;
-        isRunning = false;
+        running = false;
     }
 
     public void restart() {
         time = 0f;
-        isRunning = true;
+        running = true;
     }
 
     public void update(float delta) {
-        if (isRunning) {
+        if (running) {
             time = time + delta;
         }
     }

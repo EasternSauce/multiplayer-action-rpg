@@ -120,7 +120,7 @@ public class ServerGameState extends GameState {
 
     public void handlePlayerDeaths() {
         accessCreatures().getCreatures().forEach((creatureId, creature) -> { // handle deaths server side
-            if (creature.getParams().getIsAwaitingRespawn() &&
+            if (creature.getParams().getAwaitingRespawn() &&
                 // handle respawns server side
                 creature.getParams().getTimeSinceDeathTimer().getTime() > creature.getParams().getRespawnTime()) {
                 if (creature instanceof Player) {
@@ -140,7 +140,10 @@ public class ServerGameState extends GameState {
     }
 
     public void handleExpiredLootPiles() {
-        getLootPiles().entrySet().stream().filter(entry -> entry.getValue().getParams().getIsFullyLooted()).forEach(
-            entry -> scheduleServerSideAction(LootPileDespawnAction.of(entry.getKey())));
+        getLootPiles()
+            .entrySet()
+            .stream()
+            .filter(entry -> entry.getValue().getParams().getFullyLooted())
+            .forEach(entry -> scheduleServerSideAction(LootPileDespawnAction.of(entry.getKey())));
     }
 }

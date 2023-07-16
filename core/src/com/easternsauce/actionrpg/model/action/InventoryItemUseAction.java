@@ -32,7 +32,7 @@ public class InventoryItemUseAction extends GameStateAction {
             Creature creature = game.getCreature(playerId);
             Item item = creature.getParams().getInventoryItems().get(slotIndex);
 
-            if (item != null && item.getTemplate().getIsConsumable()) {
+            if (item != null && item.getTemplate().getConsumable()) {
                 processUseItem(creature, item, game);
 
                 if (item.getQuantity() == 1) {

@@ -34,8 +34,8 @@ public class TeleportDestination extends Ability {
             .setActiveTime(1f)
             .setTextureName("warp")
             .setBaseDamage(0f)
-            .setIsChannelAnimationLooping(false)
-            .setIsActiveAnimationLooping(false)
+            .setChannelAnimationLooping(false)
+            .setActiveAnimationLooping(false)
             .setPos(teleportPos)
             .setChainToPos(teleportPos);
 
@@ -94,7 +94,7 @@ public class TeleportDestination extends Ability {
     }
 
     @Override
-    public boolean isCanBeDeactivated() {
+    public boolean canBeDeactivated() {
         return true;
     }
 

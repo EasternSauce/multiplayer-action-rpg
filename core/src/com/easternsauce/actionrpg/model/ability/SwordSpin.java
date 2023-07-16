@@ -27,8 +27,8 @@ public class SwordSpin extends AttachedAbility {
             .setStartingRange(2f)
             .setTextureName("sword")
             .setBaseDamage(10f)
-            .setIsChannelAnimationLooping(false)
-            .setIsActiveAnimationLooping(false)
+            .setChannelAnimationLooping(false)
+            .setActiveAnimationLooping(false)
             .setDirVector(abilityParams.getDirVector().withRotatedDegAngle(90));
         return ability;
     }
@@ -89,7 +89,7 @@ public class SwordSpin extends AttachedAbility {
     }
 
     @Override
-    public boolean isCanBeDeactivated() {
+    public boolean canBeDeactivated() {
         return true;
     }
 

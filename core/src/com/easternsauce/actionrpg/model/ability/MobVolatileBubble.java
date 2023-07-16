@@ -23,8 +23,8 @@ public class MobVolatileBubble extends Projectile {
             .setStartingRange(1.5f)
             .setTextureName("bubble")
             .setBaseDamage(0f)
-            .setIsChannelAnimationLooping(false)
-            .setIsActiveAnimationLooping(true)
+            .setChannelAnimationLooping(false)
+            .setActiveAnimationLooping(true)
             .setDelayedActionTime(0.001f)
             .setSpeed(18f);
 

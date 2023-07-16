@@ -80,8 +80,8 @@ public class SkillMenuRenderer {
         PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
 
         if (playerConfig == null ||
-            playerConfig.getIsInventoryVisible() ||
-            playerConfig.getIsSkillMenuPickerSlotBeingChanged() == null) {
+            playerConfig.getInventoryVisible() ||
+            playerConfig.getSkillMenuPickerSlotBeingChanged() == null) {
             return;
         }
 

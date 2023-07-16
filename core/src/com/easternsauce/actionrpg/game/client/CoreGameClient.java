@@ -34,7 +34,6 @@ import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.stream.Collectors;
 
 public class CoreGameClient extends CoreGame {
-
     private static CoreGameClient instance;
 
     private final ClientGameState gameState = ClientGameState.of();
@@ -51,10 +50,10 @@ public class CoreGameClient extends CoreGame {
     private Client endPoint;
     @Getter
     @Setter
-    private Boolean isAreaRenderersLoaded = false;
+    private Boolean areaRenderersLoaded = false;
     @Getter
     @Setter
-    private Boolean isFirstBroadcastReceived = false;
+    private Boolean firstBroadcastReceived = false;
     private Float menuClickTime = 0f; // TODO: should do it differently
 
     private CoreGameClient() {
@@ -115,7 +114,7 @@ public class CoreGameClient extends CoreGame {
             handleExitWindowInput(playerConfig);
         }
 
-        if (!getChat().getIsTyping()) {
+        if (!getChat().getTyping()) {
             if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
                 handleActionButtonInput(playerConfig);
             }
@@ -200,13 +199,13 @@ public class CoreGameClient extends CoreGame {
     private void handleAttackButtonInput(PlayerConfig playerConfig) {
         potionMenuController.performUseItemClick(getEndPoint(), this);
 
-        if (playerConfig.getIsInventoryVisible()) {
+        if (playerConfig.getInventoryVisible()) {
             inventoryWindowController.performUseItemClick(getEndPoint(), this);
         }
     }
 
     private void handleAttackButtonHoldInput(PlayerConfig playerConfig) {
-        if (!playerConfig.getIsInventoryVisible()) {
+        if (!playerConfig.getInventoryVisible()) {
 
             Creature player = gameState.accessCreatures().getCreatures().get(getGameState().getThisClientPlayerId());
 
@@ -245,7 +244,7 @@ public class CoreGameClient extends CoreGame {
     }
 
     private void handleActionButtonHoldInput(PlayerConfig playerConfig) {
-        if (!playerConfig.getIsInventoryVisible()) {
+        if (!playerConfig.getInventoryVisible()) {
             Vector2 mousePos = getMousePositionRetriever().mousePosRelativeToCenter(this);
 
             Creature player = gameState.accessCreatures().getCreatures().get(getGameState().getThisClientPlayerId());
@@ -263,24 +262,24 @@ public class CoreGameClient extends CoreGame {
 
     private void handleActionButtonInput(PlayerConfig playerConfig) {
         if (playerConfig != null) {
-            if (playerConfig.getIsInventoryVisible()) {
+            if (playerConfig.getInventoryVisible()) {
                 inventoryWindowController.performMoveItemClick(getEndPoint(), this);
-            } else if (!playerConfig.getIsInventoryVisible() && !playerConfig.getItemPickupMenuLootPiles().isEmpty()) {
-                boolean isSuccessful = pickupMenuController.performItemPickupMenuClick(getEndPoint(), this);
-                if (isSuccessful) {
+            } else if (!playerConfig.getInventoryVisible() && !playerConfig.getItemPickupMenuLootPiles().isEmpty()) {
+                boolean successful = pickupMenuController.performItemPickupMenuClick(getEndPoint(), this);
+                if (successful) {
                     menuClickTime = gameState.getTime();
                 }
 
-            } else if (!playerConfig.getIsInventoryVisible() &&
-                playerConfig.getIsSkillMenuPickerSlotBeingChanged() != null) {
-                boolean isSuccessful = skillMenuController.performSkillMenuPickerClick(getEndPoint(), this);
-                if (isSuccessful) {
+            } else if (!playerConfig.getInventoryVisible() &&
+                playerConfig.getSkillMenuPickerSlotBeingChanged() != null) {
+                boolean successful = skillMenuController.performSkillMenuPickerClick(getEndPoint(), this);
+                if (successful) {
                     menuClickTime = gameState.getTime();
                 }
 
             } else {
-                boolean isSuccessful = skillMenuController.performSkillMenuClick(getEndPoint(), this);
-                if (isSuccessful) {
+                boolean successful = skillMenuController.performSkillMenuClick(getEndPoint(), this);
+                if (successful) {
                     menuClickTime = gameState.getTime();
                 }
 
@@ -289,26 +288,26 @@ public class CoreGameClient extends CoreGame {
     }
 
     private void handleExitWindowInput(PlayerConfig playerConfig) {
-        if (getChat().getIsTyping()) {
+        if (getChat().getTyping()) {
             if (!getChat().getCurrentMessage().isEmpty()) {
                 getChat().setCurrentMessage("");
-                getChat().setIsTyping(false);
+                getChat().setTyping(false);
             }
-        } else if (playerConfig.getIsInventoryVisible()) {
+        } else if (playerConfig.getInventoryVisible()) {
             handleInventoryWindowActionInput();
 
         }
     }
 
     private void handleDeleteChatMessageCharacterNoInput() {
-        if (getChat().getIsHoldingBackspace() && getChat().getIsTyping()) {
-            getChat().setIsHoldingBackspace(false);
+        if (getChat().getHoldingBackspace() && getChat().getTyping()) {
+            getChat().setHoldingBackspace(false);
         }
     }
 
     private void handleDeleteChatMessageCharacterInput() {
-        if (getChat().getIsTyping()) {
-            if (getChat().getIsHoldingBackspace()) {
+        if (getChat().getTyping()) {
+            if (getChat().getHoldingBackspace()) {
                 if (!getChat().getCurrentMessage().isEmpty() &&
                     gameState.getTime() > getChat().getHoldBackspaceTime() + 0.3f) {
                     getChat().setCurrentMessage(getChat()
@@ -316,7 +315,7 @@ public class CoreGameClient extends CoreGame {
                         .substring(0, getChat().getCurrentMessage().length() - 1));
                 }
             } else {
-                getChat().setIsHoldingBackspace(true);
+                getChat().setHoldingBackspace(true);
                 getChat().setHoldBackspaceTime(gameState.getTime());
                 if (!getChat().getCurrentMessage().isEmpty()) {
                     getChat().setCurrentMessage(getChat()
@@ -329,10 +328,10 @@ public class CoreGameClient extends CoreGame {
     }
 
     private void handleChatMessageActionInput() {
-        if (!getChat().getIsTyping()) {
-            getChat().setIsTyping(true);
+        if (!getChat().getTyping()) {
+            getChat().setTyping(true);
         } else {
-            getChat().setIsTyping(false);
+            getChat().setTyping(false);
             if (!getChat().getCurrentMessage().isEmpty()) {
                 getEndPoint().sendTCP(ChatMessageSendCommand.of(getGameState().getThisClientPlayerId().getValue(),
                     getChat().getCurrentMessage()
@@ -350,7 +349,7 @@ public class CoreGameClient extends CoreGame {
 
     @Override
     public boolean isGameplayRunning() {
-        return getIsFirstBroadcastReceived();
+        return getFirstBroadcastReceived();
     }
 
     @Override
@@ -407,9 +406,8 @@ public class CoreGameClient extends CoreGame {
             @Override
             public boolean keyTyped(char character) {
                 char backspaceCharacter = '\b';
-                if (getChat().getIsTyping() &&
-                    character != backspaceCharacter &&
-                    isCharacterNonWhitespaceExcludingSpace(character)) {
+                if (getChat().getTyping() && character != backspaceCharacter && isCharacterNonWhitespaceExcludingSpace(
+                    character)) {
                     getChat().setCurrentMessage(getChat().getCurrentMessage() + character);
                 }
 

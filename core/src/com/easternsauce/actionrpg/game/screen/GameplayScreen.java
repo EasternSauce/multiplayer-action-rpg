@@ -135,8 +135,7 @@ public class GameplayScreen implements Screen {
                 game.updateCameraPositions();
             }
 
-            if (!game.getEntityManager().getGameEntityRenderer().getIsAreasLoaded() &&
-                game.getIsFirstBroadcastReceived()) {
+            if (!game.getEntityManager().getGameEntityRenderer().getAreasLoaded() && game.getFirstBroadcastReceived()) {
                 game.getEntityManager().getGameEntityRenderer().loadAreaRenderers(maps, game);
             }
         }
@@ -180,9 +179,9 @@ public class GameplayScreen implements Screen {
             game.getAbilities().forEach((abilityId, ability) -> {
                 //noinspection SpellCheckingInspection
                 if (game.getAbilityBodies().containsKey(abilityId) &&
-                    game.getAbilityBodies().get(abilityId).getIsBodyInitialized() &&
+                    game.getAbilityBodies().get(abilityId).getBodyInitialized() &&
                     // this is needed to fix body created client/server desync
-                    !ability.getParams().getIsSkipCreatingBody() &&
+                    !ability.getParams().getSkipCreatingBody() &&
                     game.getAbilityBodies().get(abilityId).getBodyPos().distance(ability.getParams().getPos()) >
                         Constants.FORCE_UPDATE_MINIMUM_DISTANCE
                     // only setTransform if positions are far apart

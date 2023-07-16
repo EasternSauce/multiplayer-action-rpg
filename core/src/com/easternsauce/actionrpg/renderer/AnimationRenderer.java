@@ -47,7 +47,7 @@ public class AnimationRenderer {
     }
 
     private TextureRegion getFrame(float animationTime) {
-        return animation.getKeyFrame(animationTime, animationSpec.getIsLooping());
+        return animation.getKeyFrame(animationTime, animationSpec.getLooping());
     }
 
 }

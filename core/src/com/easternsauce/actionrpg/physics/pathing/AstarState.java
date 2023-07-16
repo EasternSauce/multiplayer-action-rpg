@@ -18,5 +18,5 @@ public class AstarState {
     private Set<Vector2Int> closedSet;
     private Vector2Int finishPos;
     private Boolean foundPath;
-    private Boolean isGaveUp;
+    private Boolean gaveUp;
 }

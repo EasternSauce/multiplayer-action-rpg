@@ -30,8 +30,8 @@ public class MobMagicOrb extends Projectile {
             .setStartingRange(0.5f)
             .setTextureName("magic_orb")
             .setBaseDamage(40f)
-            .setIsChannelAnimationLooping(false)
-            .setIsActiveAnimationLooping(true)
+            .setChannelAnimationLooping(false)
+            .setActiveAnimationLooping(true)
             .setDelayedActionTime(0.001f)
             .setSpeed(13f);
 

@@ -45,9 +45,9 @@ public class CreatureHitByAbilityAction extends CreatureHitAction {
 
         Float damage = ability.getDamage(game);
 
-        boolean isMeleeAbilityShielded = targetCreature.isMeleeAbilityShielded(ability, game);
-        boolean isMarkedAsShielded = ability.getParams().getIsMarkedAsShielded();
-        boolean isShielded = isMarkedAsShielded || isMeleeAbilityShielded;
+        boolean meleeAbilityShielded = targetCreature.isMeleeAbilityShielded(ability, game);
+        boolean markedAsShielded = ability.getParams().getMarkedAsShielded();
+        boolean isShielded = markedAsShielded || meleeAbilityShielded;
 
         if (hitCount <= ability.maximumCreatureHitCount(targetId, game) &&
             !(isShielded && targetCreature instanceof Player) &&

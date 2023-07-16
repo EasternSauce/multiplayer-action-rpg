@@ -338,13 +338,13 @@ public class Enemy extends Creature {
     }
 
     private void processPathfinding(CoreGame game) {
-        boolean isPathfindingAllowed = game.isPathfindingCalculatedForCreature(this) &&
+        boolean pathfindingAllowed = game.isPathfindingCalculatedForCreature(this) &&
             getParams().getEnemyParams().getTargetCreatureId() != null &&
             (getParams().getEnemyParams().getForcePathCalculation() ||
                 getParams().getEnemyParams().getPathCalculationCooldownTimer().getTime() >
                     getParams().getEnemyParams().getPathCalculationCooldown());
 
-        if (isPathfindingAllowed) {
+        if (pathfindingAllowed) {
             Creature target = game.getGameState().accessCreatures().getCreature(getParams()
                 .getEnemyParams()
                 .getTargetCreatureId());
@@ -361,7 +361,7 @@ public class Enemy extends Creature {
 
                 if (mirroredPath != null) {
                     path = mirroredPath;
-                    this.getParams().getEnemyParams().setIsPathMirrored(true);
+                    this.getParams().getEnemyParams().setPathMirrored(true);
                 } else {
                     AstarResult result = Astar.findPath(game.getPhysicsWorld(getParams().getAreaId()),
                         getParams().getPos(),
@@ -370,7 +370,7 @@ public class Enemy extends Creature {
                     );
                     path = result.getPath();
 
-                    this.getParams().getEnemyParams().setIsPathMirrored(false);
+                    this.getParams().getEnemyParams().setPathMirrored(false);
                 }
 
                 getParams().getEnemyParams().setPathTowardsTarget(path);
@@ -418,7 +418,7 @@ public class Enemy extends Creature {
             creature.getParams().getPos().distance(this.getParams().getPos()) < 4f &&
             !creature.getId().equals(this.getParams().getId()) &&
             creature.getParams().getEnemyParams().getPathTowardsTarget() != null &&
-            !creature.getParams().getEnemyParams().getIsPathMirrored() &&
+            !creature.getParams().getEnemyParams().getPathMirrored() &&
             creature.getParams().getEnemyParams().getTargetCreatureId() != null &&
             creature.getParams().getEnemyParams().getTargetCreatureId().equals(targetId) &&
             creature.getParams().getEnemyParams().getPathCalculationCooldownTimer().getTime() < 0.5f;

@@ -18,7 +18,7 @@ public class ItemPickupMenuRenderer {
     public void render(RenderingLayer renderingLayer, CoreGame game) {
         PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
 
-        if (playerConfig == null || playerConfig.getIsInventoryVisible()) {
+        if (playerConfig == null || playerConfig.getInventoryVisible()) {
             return;
         }
 

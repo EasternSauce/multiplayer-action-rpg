@@ -37,7 +37,7 @@ public class LootPileItemTryPickUpAction extends GameStateAction {
 
         Integer existingStackableSlot = null;
 
-        if (item.getTemplate().getIsStackable()) {
+        if (item.getTemplate().getStackable()) {
 
             for (int i = 0; i < InventoryWindowConsts.INVENTORY_TOTAL_SLOTS; i++) {
                 if (inventoryItems.containsKey(i) && inventoryItems.get(i).getTemplate().getId().equals(item
@@ -59,7 +59,7 @@ public class LootPileItemTryPickUpAction extends GameStateAction {
 
                 lootPile.getParams().getItems().remove(item);
                 if (lootPile.getParams().getItems().isEmpty()) {
-                    lootPile.getParams().setIsFullyLooted(true);
+                    lootPile.getParams().setFullyLooted(true);
                 }
             }
         } else {
@@ -87,7 +87,7 @@ public class LootPileItemTryPickUpAction extends GameStateAction {
 
                 lootPile.getParams().getItems().remove(item);
                 if (lootPile.getParams().getItems().isEmpty()) {
-                    lootPile.getParams().setIsFullyLooted(true);
+                    lootPile.getParams().setFullyLooted(true);
                 }
             }
         }

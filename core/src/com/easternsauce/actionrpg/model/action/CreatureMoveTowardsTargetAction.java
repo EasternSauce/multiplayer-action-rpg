@@ -32,7 +32,7 @@ public class CreatureMoveTowardsTargetAction extends GameStateAction {
             creature.moveTowards(pos.add(mousePos));
 
             creature.getParams().getMovementParams().setPreviousPos(creature.getParams().getPos());
-            creature.getParams().getMovementParams().getIsStillMovingCheckTimer().restart();
+            creature.getParams().getMovementParams().getStillMovingCheckTimer().restart();
         }
     }
 

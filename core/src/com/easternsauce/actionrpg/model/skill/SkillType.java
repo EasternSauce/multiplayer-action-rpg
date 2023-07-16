@@ -49,7 +49,7 @@ public enum SkillType {
     @Getter
     private String prettyName;
     @Getter
-    private Boolean isDamaging;
+    private Boolean damaging;
     @Getter
     private AbilityType startingAbilityType;
     @Getter
@@ -60,13 +60,13 @@ public enum SkillType {
     Float manaCost;
 
     SkillType(String prettyName,
-              Boolean isDamaging,
+              Boolean damaging,
               AbilityType startingAbilityType,
               Float cooldown,
               Float staminaCost,
               Float manaCost) {
         this.prettyName = prettyName;
-        this.isDamaging = isDamaging;
+        this.damaging = damaging;
         this.startingAbilityType = startingAbilityType;
         this.cooldown = cooldown;
         this.staminaCost = staminaCost;

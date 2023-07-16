@@ -22,8 +22,8 @@ public class RicochetBullet extends Projectile {
             .setActiveTime(10f)
             .setTextureName("fireball")
             .setBaseDamage(30f)
-            .setIsChannelAnimationLooping(false)
-            .setIsActiveAnimationLooping(true)
+            .setChannelAnimationLooping(false)
+            .setActiveAnimationLooping(true)
             .setDelayedActionTime(0.001f)
             .setSpeed(25f);
 
@@ -52,7 +52,6 @@ public class RicochetBullet extends Projectile {
 
     @Override
     public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
-
         if (getParams().getDirVector().normalized().dot(abilityPos.vectorTowards(tilePos).normalized()) <
             0.6f) { // check if it is facing the tile
             return;

@@ -18,7 +18,7 @@ public class ConnectScreen implements Screen {
     private final ConnectScreenMessageHolder messageHolder = ConnectScreenMessageHolder.of();
     private final SimpleTimer timer = SimpleTimer.of();
     private CoreGame game;
-    private Boolean isHoldingBackspace = false;
+    private Boolean holdingBackspace = false;
     private Float holdBackspaceTime = 0f;
     private TextureAtlas.AtlasRegion background;
 
@@ -62,14 +62,14 @@ public class ConnectScreen implements Screen {
 
         if (Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)) {
 
-            if (isHoldingBackspace) {
+            if (holdingBackspace) {
                 if (!messageHolder.getCurrentMessage().isEmpty() && timer.getTime() > holdBackspaceTime + 0.3f) {
                     messageHolder.setCurrentMessage(messageHolder
                         .getCurrentMessage()
                         .substring(0, messageHolder.getCurrentMessage().length() - 1));
                 }
             } else {
-                isHoldingBackspace = true;
+                holdingBackspace = true;
                 holdBackspaceTime = timer.getTime();
                 if (!messageHolder.getCurrentMessage().isEmpty()) {
                     messageHolder.setCurrentMessage(messageHolder
@@ -78,8 +78,8 @@ public class ConnectScreen implements Screen {
                 }
             }
         } else {
-            if (isHoldingBackspace) {
-                isHoldingBackspace = false;
+            if (holdingBackspace) {
+                holdingBackspace = false;
             }
         }
 

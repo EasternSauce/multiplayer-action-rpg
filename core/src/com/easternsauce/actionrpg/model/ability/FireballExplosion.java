@@ -22,8 +22,8 @@ public class FireballExplosion extends Ability {
             .setActiveTime(0.35f)
             .setTextureName("explosion")
             .setBaseDamage(25f)
-            .setIsChannelAnimationLooping(false)
-            .setIsActiveAnimationLooping(false)
+            .setChannelAnimationLooping(false)
+            .setActiveAnimationLooping(false)
             .setAttackWithoutMoving(true)
             .setCreaturesAlreadyHit(new ConcurrentSkipListMap<>());
 

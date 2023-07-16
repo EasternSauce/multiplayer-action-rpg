@@ -21,5 +21,5 @@ public class LootPileParams implements EntityParams {
     private Vector2 pos;
     private Set<Item> items = new ConcurrentSkipListSet<>();
 
-    private Boolean isFullyLooted = false;
+    private Boolean fullyLooted = false;
 }

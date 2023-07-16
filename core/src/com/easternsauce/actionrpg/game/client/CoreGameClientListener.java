@@ -41,9 +41,9 @@ public class CoreGameClientListener extends Listener {
             );
             game.getGameState().setNewGameState(action.getGameStateData());
 
-            game.getEntityManager().getGameEntityPhysics().setIsForceUpdateBodyPositions(true);
+            game.getEntityManager().getGameEntityPhysics().setForceUpdateBodyPositions(true);
 
-            game.setIsFirstBroadcastReceived(true);
+            game.setFirstBroadcastReceived(true);
         } else if (object instanceof ChatMessageSendCommand) {
             ChatMessageSendCommand action = (ChatMessageSendCommand) object;
 

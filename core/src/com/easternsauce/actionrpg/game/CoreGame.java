@@ -138,11 +138,11 @@ public abstract class CoreGame extends Game {
     }
 
     public boolean isForceUpdateBodyPositions() {
-        return entityManager.getGameEntityPhysics().getIsForceUpdateBodyPositions();
+        return entityManager.getGameEntityPhysics().getForceUpdateBodyPositions();
     }
 
     public void setForceUpdateBodyPositions(boolean value) {
-        entityManager.getGameEntityPhysics().setIsForceUpdateBodyPositions(value);
+        entityManager.getGameEntityPhysics().setForceUpdateBodyPositions(value);
     }
 
     public void goToGamePlayScreen() {
@@ -158,10 +158,10 @@ public abstract class CoreGame extends Game {
     public abstract boolean isPathfindingCalculatedForCreature(Creature creature);
 
     @SuppressWarnings("SameReturnValue")
-    public abstract Boolean getIsFirstBroadcastReceived();
+    public abstract Boolean getFirstBroadcastReceived();
 
     @SuppressWarnings({"UnusedReturnValue", "unused"})
-    public abstract CoreGame setIsFirstBroadcastReceived(@SuppressWarnings("unused") Boolean isFirstBroadcastReceived);
+    public abstract CoreGame setFirstBroadcastReceived(@SuppressWarnings("unused") Boolean firstBroadcastReceived);
 
     public void chainAnotherAbility(Ability chainFromAbility,
                                     AbilityType abilityType,

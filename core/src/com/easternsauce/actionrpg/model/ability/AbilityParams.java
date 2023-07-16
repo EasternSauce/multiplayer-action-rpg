@@ -44,9 +44,9 @@ public class AbilityParams implements EntityParams {
     private Float rotationAngle = 0f;
 
     @NonNull
-    private Boolean isChannelAnimationLooping;
+    private Boolean channelAnimationLooping;
     @NonNull
-    private Boolean isActiveAnimationLooping;
+    private Boolean activeAnimationLooping;
 
     @NonNull
     private Float startingRange = 0f;
@@ -69,7 +69,7 @@ public class AbilityParams implements EntityParams {
     private Float damageMultiplier = 1.0f;
 
     @NonNull
-    private Boolean isPlayerAbility = false;
+    private Boolean playerAbility = false;
 
     @NonNull
     private Float channelTime;
@@ -88,13 +88,13 @@ public class AbilityParams implements EntityParams {
     private Float maxPlacementRange;
 
     @NonNull
-    private Boolean isSkipCreatingBody = false;
+    private Boolean skipCreatingBody = false;
 
     @NonNull
     private Float rotationShift = 0f;
 
     @NonNull
-    private Boolean isFlip = false;
+    private Boolean flip = false;
 
     @NonNull
     private SimpleTimer changeDirectionTimer = SimpleTimer.getStartedTimer();
@@ -113,13 +113,13 @@ public class AbilityParams implements EntityParams {
     private Float wallBounceCount = 0f;
 
     @NonNull
-    private Boolean isComingBack = false;
+    private Boolean comingBack = false;
 
     @NonNull
     private SkillType skillType;
 
     @NonNull
-    private Boolean isMarkedAsShielded = false;
+    private Boolean markedAsShielded = false;
 
     private Float directionalAttachedAbilityRotationShift = null;
 

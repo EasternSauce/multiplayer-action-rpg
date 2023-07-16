@@ -30,15 +30,15 @@ public abstract class Creature implements Entity {
         }
 
         if (!isEffectActive(CreatureEffect.STUN, game) &&
-            getParams().getMovementParams().getIsStillMovingCheckTimer().getTime() > 0.02f) {
+            getParams().getMovementParams().getStillMovingCheckTimer().getTime() > 0.02f) {
             //on stopped moving before reaching target (e.g. hit a wall)
-            if (getParams().getMovementParams().getIsMoving() && getParams().getPos().distance(getParams()
+            if (getParams().getMovementParams().getMoving() && getParams().getPos().distance(getParams()
                 .getMovementParams()
                 .getPreviousPos()) < 0.005f) {
                 stopMoving();
             }
             getParams().getMovementParams().setPreviousPos(getParams().getPos());
-            getParams().getMovementParams().getIsStillMovingCheckTimer().restart();
+            getParams().getMovementParams().getStillMovingCheckTimer().restart();
         }
 
         updateAutoControl(game);
@@ -110,7 +110,7 @@ public abstract class Creature implements Entity {
 
         Vector2 vectorBetween = Vector2.of(targetPos.getX() - currentPos.getX(), targetPos.getY() - currentPos.getY());
 
-        getParams().getMovementParams().setIsMoving(false);
+        getParams().getMovementParams().setMoving(false);
 
         if (!isAlive() || vectorBetween.len() < 0.2f) {
             getParams().getMovementParams().setReachedTargetPos(true);
@@ -123,7 +123,7 @@ public abstract class Creature implements Entity {
                 game.getGameState().accessCreatures().setCreatureMovingVector(getParams().getId(), dirVector);
             }
 
-            getParams().getMovementParams().setIsMoving(true);
+            getParams().getMovementParams().setMoving(true);
 
         }
 
@@ -133,7 +133,7 @@ public abstract class Creature implements Entity {
         getParams().getAnimationTimer().update(delta);
         getParams().getMovementParams().getMovementActionsPerSecondLimiterTimer().update(delta);
         getParams().getMovementParams().getChangeAimDirectionActionsPerSecondLimiterTimer().update(delta);
-        getParams().getMovementParams().getIsStillMovingCheckTimer().update(delta);
+        getParams().getMovementParams().getStillMovingCheckTimer().update(delta);
         getParams().getTimeSinceDeathTimer().update(delta);
         getParams().getEffectParams().getStaminaRegenerationTimer().update(delta);
         getParams().getMovementParams().getGateTeleportCooldownTimer().update(delta);
@@ -252,7 +252,7 @@ public abstract class Creature implements Entity {
     }
 
     public void onAbilityPerformed(Ability ability) {
-        if (!ability.getParams().getAttackWithoutMoving() && getParams().getMovementParams().getIsMoving()) {
+        if (!ability.getParams().getAttackWithoutMoving() && getParams().getMovementParams().getMoving()) {
             Vector2 movementVector = getParams().getPos().vectorTowards(getParams()
                 .getMovementParams()
                 .getMovementCommandTargetPos()).normalized().multiplyBy(0.15f);
@@ -262,7 +262,7 @@ public abstract class Creature implements Entity {
     }
 
     public boolean canPerformSkill(Skill skill, CoreGame game) {
-        if (skill.getSkillType().getIsDamaging()) {
+        if (skill.getSkillType().getDamaging()) {
             Set<Ability> damagingSKillNotAllowedAbilities = game
                 .getAbilities()
                 .values()
@@ -284,14 +284,14 @@ public abstract class Creature implements Entity {
     }
 
     public boolean isAlive() {
-        return !getParams().getIsDead();
+        return !getParams().getDead();
     }
 
     public void onPerformSkill(Skill skill) {
         takeStaminaDamage(skill.getStaminaCost());
         takeManaDamage(skill.getManaCost());
 
-        if (skill.getSkillType().getIsDamaging()) {
+        if (skill.getSkillType().getDamaging()) {
             getParams().getGeneralSkillPerformCooldownTimer().restart();
         }
 

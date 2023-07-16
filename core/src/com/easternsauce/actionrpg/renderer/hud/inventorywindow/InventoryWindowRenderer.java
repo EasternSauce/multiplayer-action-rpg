@@ -44,7 +44,7 @@ public class InventoryWindowRenderer {
             return;
         }
 
-        if (playerConfig.getIsInventoryVisible()) {
+        if (playerConfig.getInventoryVisible()) {
             renderInventoryWindowBackground(renderingLayer);
 
             InventoryWindowConsts.inventoryRectangles.values().forEach(rect -> renderItemSlot(renderingLayer, rect));

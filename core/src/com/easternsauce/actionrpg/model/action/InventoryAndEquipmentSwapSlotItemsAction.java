@@ -79,7 +79,7 @@ public class InventoryAndEquipmentSwapSlotItemsAction extends GameStateAction {
         playerConfig.setEquipmentItemBeingMoved(null);
         playerConfig.setPotionMenuItemBeingMoved(null);
 
-        playerConfig.setIsSkillMenuPickerSlotBeingChanged(null);
+        playerConfig.setSkillMenuPickerSlotBeingChanged(null);
 
         removeSkillFromSkillMenuOnItemUnequip(player, playerConfig);
     }

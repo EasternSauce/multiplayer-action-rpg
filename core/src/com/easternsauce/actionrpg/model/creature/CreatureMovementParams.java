@@ -19,15 +19,15 @@ public class CreatureMovementParams {
     @NonNull
     private Boolean reachedTargetPos = true;
     @NonNull
-    private Boolean isMoving = false;
+    private Boolean moving = false;
     @NonNull
-    private Boolean isDashing = false;
+    private Boolean dashing = false;
     @NonNull
     private SimpleTimer movementActionsPerSecondLimiterTimer = SimpleTimer.getExpiredTimer();
     @NonNull
     private SimpleTimer changeAimDirectionActionsPerSecondLimiterTimer = SimpleTimer.getExpiredTimer(); // 10/10 field name
     @NonNull
-    private SimpleTimer isStillMovingCheckTimer = SimpleTimer.getExpiredTimer();
+    private SimpleTimer stillMovingCheckTimer = SimpleTimer.getExpiredTimer();
     @NonNull
     private Vector2 facingVector = Vector2.of(0f, 0f);
     @NonNull
@@ -35,7 +35,7 @@ public class CreatureMovementParams {
     @NonNull
     private Vector2 previousPos;
     @NonNull
-    private Boolean isStillInsideGateAfterTeleport = false;
+    private Boolean stillInsideGateAfterTeleport = false;
     @NonNull
     private AreaId areaWhenEnteredGate;
     @NonNull

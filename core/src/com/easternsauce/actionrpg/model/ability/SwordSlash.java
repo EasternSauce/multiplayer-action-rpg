@@ -22,8 +22,8 @@ public class SwordSlash extends AttachedAbility {
             .setStartingRange(1.8f)
             .setTextureName("slash")
             .setBaseDamage(22f)
-            .setIsChannelAnimationLooping(false)
-            .setIsActiveAnimationLooping(false);
+            .setChannelAnimationLooping(false)
+            .setActiveAnimationLooping(false);
         return ability;
     }
 
@@ -66,7 +66,7 @@ public class SwordSlash extends AttachedAbility {
     }
 
     @Override
-    public boolean isCanBeDeactivated() {
+    public boolean canBeDeactivated() {
         return true;
     }
 }

@@ -60,9 +60,9 @@ public class CreatureParams implements EntityParams {
     private Float actionCooldown = 0.7f;
 
     @NonNull
-    private Boolean isDead = false;
+    private Boolean dead = false;
     @NonNull
-    private Boolean isAwaitingRespawn = false;
+    private Boolean awaitingRespawn = false;
 
     @NonNull
     private Map<SkillType, Skill> skills = new ConcurrentSkipListMap<>();

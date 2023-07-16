@@ -25,7 +25,7 @@ public class SkillPickerMenuActivateAction extends GameStateAction {
     public void applyToGame(CoreGame game) {
         PlayerConfig playerConfig = game.getGameState().getPlayerConfig(playerId);
 
-        playerConfig.setIsSkillMenuPickerSlotBeingChanged(slotNum);
+        playerConfig.setSkillMenuPickerSlotBeingChanged(slotNum);
     }
 
     @Override

@@ -23,8 +23,8 @@ public class CrossbowBolt extends Projectile {
             .setStartingRange(1.5f)
             .setTextureName("arrow")
             .setBaseDamage(10f)
-            .setIsChannelAnimationLooping(true)
-            .setIsActiveAnimationLooping(true)
+            .setChannelAnimationLooping(true)
+            .setActiveAnimationLooping(true)
             .setSpeed(30f);
 
         return ability;

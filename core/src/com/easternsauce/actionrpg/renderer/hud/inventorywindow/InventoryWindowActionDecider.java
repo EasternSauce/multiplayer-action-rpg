@@ -174,8 +174,8 @@ public class InventoryWindowActionDecider {
     private static boolean areItemStackable(Item itemFrom, Item itemTo) {
         return itemFrom != null &&
             itemTo != null &&
-            itemFrom.getTemplate().getIsStackable() &&
-            itemTo.getTemplate().getIsStackable() &&
+            itemFrom.getTemplate().getStackable() &&
+            itemTo.getTemplate().getStackable() &&
             itemFrom.getTemplate().getId().equals(itemTo.getTemplate().getId());
     }
 

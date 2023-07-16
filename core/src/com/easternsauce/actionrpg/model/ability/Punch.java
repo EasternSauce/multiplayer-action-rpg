@@ -21,8 +21,8 @@ public class Punch extends AttachedAbility {
             .setStartingRange(1.2f)
             .setTextureName("punch")
             .setBaseDamage(10f)
-            .setIsChannelAnimationLooping(false)
-            .setIsActiveAnimationLooping(false);
+            .setChannelAnimationLooping(false)
+            .setActiveAnimationLooping(false);
         return ability;
     }
 
@@ -68,7 +68,7 @@ public class Punch extends AttachedAbility {
     }
 
     @Override
-    public boolean isCanBeDeactivated() {
+    public boolean canBeDeactivated() {
         return true;
     }
 }

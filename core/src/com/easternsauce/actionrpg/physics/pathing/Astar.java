@@ -79,7 +79,7 @@ public class Astar {
                                       Vector2Int finishTilePos,
                                       PhysicsWorld world,
                                       Integer capability) {
-        while (!astarState.getIsGaveUp() && !astarState.getOpenSet().isEmpty() && !astarState.getFoundPath()) {
+        while (!astarState.getGaveUp() && !astarState.getOpenSet().isEmpty() && !astarState.getFoundPath()) {
             AstarState finalAstarState = astarState;
             Vector2Int minimumTile = Collections.min(astarState.getOpenSet(), (o1, o2) -> {
                 if (Objects.equals(finalAstarState.getAstarGraph().get(o1).getF(),
@@ -103,7 +103,7 @@ public class Astar {
             );
 
             if (astarState.getClosedSet().size() > 80) { // give up once you process enough tiles [PERFORMANCE SAVER]
-                resultingAstarState.setIsGaveUp(true);
+                resultingAstarState.setGaveUp(true);
             }
 
             if (currentNode.getPos().equals(finishTilePos)) {
@@ -185,7 +185,7 @@ public class Astar {
                 astarState.getClosedSet(),
                 astarState.getFinishPos(),
                 astarState.getFoundPath(),
-                astarState.getIsGaveUp()
+                astarState.getGaveUp()
             );
 
             Map<Vector2Int, AstarNode> updatedAstarGraph = new HashMap<>(astarState.getAstarGraph());
@@ -209,7 +209,7 @@ public class Astar {
                 astarState.getClosedSet(),
                 astarState.getFinishPos(),
                 astarState.getFoundPath(),
-                astarState.getIsGaveUp()
+                astarState.getGaveUp()
             );
 
             Map<Vector2Int, AstarNode> updatedAstarGraph = new HashMap<>(astarState.getAstarGraph());
@@ -248,7 +248,7 @@ public class Astar {
 
         List<Vector2> resultPath = path.stream().map(world::getTileCenter).collect(Collectors.toList());
 
-        return AstarResult.of(resultPath, result.getIsGaveUp());
+        return AstarResult.of(resultPath, result.getGaveUp());
     }
 
     public static Map<Vector2Int, AstarNode> getAstarGraph(Map<Vector2Int, PathingNode> pathingGraph) {

@@ -15,5 +15,5 @@ public class AnimationSpec {
     private Float frameDuration;
     private Integer frameCount;
     private String atlasRegionName;
-    private Boolean isLooping;
+    private Boolean looping;
 }

@@ -24,7 +24,7 @@ public class AbilityBody {
     private PhysicsWorld world;
 
     @Getter
-    private Boolean isBodyInitialized = false;
+    private Boolean bodyInitialized = false;
 
     public static AbilityBody of(AbilityId abilityId) {
         AbilityBody abilityBody = new AbilityBody();
@@ -57,7 +57,7 @@ public class AbilityBody {
                 hitboxVertices(ability)
             );
 
-            isBodyInitialized = true;
+            bodyInitialized = true;
         }
 
     }
@@ -80,7 +80,7 @@ public class AbilityBody {
     public void update(CoreGame game) {
         Ability ability = game.getAbilities().get(abilityId);
 
-        if (getIsBodyInitialized() && ability != null && !ability.getParams().getIsSkipCreatingBody()) {
+        if (getBodyInitialized() && ability != null && !ability.getParams().getSkipCreatingBody()) {
             if (ability.isPositionChangedOnUpdate()) {
                 b2body.setTransform(ability.getParams().getPos().getX(), ability.getParams().getPos().getY(), 0f);
             }
@@ -97,7 +97,7 @@ public class AbilityBody {
     }
 
     public void onRemove() {
-        if (getIsBodyInitialized()) {
+        if (getBodyInitialized()) {
             world.getB2world().destroyBody(b2body);
 
         }

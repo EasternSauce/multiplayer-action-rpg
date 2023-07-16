@@ -42,7 +42,7 @@ public class GameEntityPhysics {
     private Box2DDebugRenderer debugRenderer;
     @Getter
     @Setter
-    private Boolean isForceUpdateBodyPositions = false;
+    private Boolean forceUpdateBodyPositions = false;
 
     public void init(Map<AreaId, TiledMap> maps, CoreGame game) {
         physicsWorlds = maps.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
@@ -113,7 +113,7 @@ public class GameEntityPhysics {
 
         } else if (objA instanceof TerrainTileBody && objB instanceof AbilityBody) {
             TerrainTileBody terrainTileBody = (TerrainTileBody) objA;
-            if (!terrainTileBody.getIsFlyover()) {
+            if (!terrainTileBody.getFlyover()) {
                 AbilityBody abilityBody = (AbilityBody) objB;
                 Vector2 tilePos = Vector2.of(terrainTileBody.getB2body().getWorldCenter().x,
                     terrainTileBody.getB2body().getWorldCenter().y

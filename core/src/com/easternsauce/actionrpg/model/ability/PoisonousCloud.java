@@ -25,8 +25,8 @@ public class PoisonousCloud extends Ability {
             .setActiveTime(5f)
             .setTextureName("poison_cloud")
             .setBaseDamage(0f)
-            .setIsChannelAnimationLooping(false)
-            .setIsActiveAnimationLooping(true)
+            .setChannelAnimationLooping(false)
+            .setActiveAnimationLooping(true)
             .setAttackWithoutMoving(true)
             .setCreaturesAlreadyHit(new ConcurrentSkipListMap<>());
 

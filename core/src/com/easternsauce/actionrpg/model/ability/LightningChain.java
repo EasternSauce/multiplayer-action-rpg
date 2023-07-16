@@ -23,13 +23,13 @@ public class LightningChain extends Ability {
             .setActiveTime(0.4f)
             .setTextureName("lightning_chain")
             .setBaseDamage(0f)
-            .setIsActiveAnimationLooping(true)
+            .setActiveAnimationLooping(true)
             .setAttackWithoutMoving(true)
             .setPos(LightningChain.calculatePos(abilityParams.getChainToPos(), abilityParams.getChainFromPos()))
             .setRotationAngle(LightningChain.calculateRotationAngle(abilityParams.getChainToPos(),
                 abilityParams.getChainFromPos()
             ))
-            .setIsSkipCreatingBody(true)
+            .setSkipCreatingBody(true)
             .setRotationShift(90f);
 
         return ability;

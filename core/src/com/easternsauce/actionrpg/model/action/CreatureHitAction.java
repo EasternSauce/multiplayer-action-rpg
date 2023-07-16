@@ -29,9 +29,9 @@ public abstract class CreatureHitAction extends GameStateAction {
 
     private void onCreatureDeath(Creature targetCreature, Creature attackerCreature, CoreGame game) {
         targetCreature.getParams().getStats().setLife(0f); // just to make sure its dead on client side
-        targetCreature.getParams().setIsDead(true);
+        targetCreature.getParams().setDead(true);
         targetCreature.getParams().getTimeSinceDeathTimer().restart();
-        targetCreature.getParams().setIsAwaitingRespawn(true);
+        targetCreature.getParams().setAwaitingRespawn(true);
         attackerCreature.onKillEffect();
 
         if (targetCreature.getParams().getEnemyRallyPointId() != null) {
@@ -96,7 +96,7 @@ public abstract class CreatureHitAction extends GameStateAction {
                 }
 
                 float quality;
-                if (entry.getTemplate().getIsQualityNonApplicable()) {
+                if (entry.getTemplate().getQualityNonApplicable()) {
                     quality = 1f;
                 } else {
                     quality = 0.5f + Math.abs(game.getGameState().getRandomGenerator().nextFloat()) / 2f;
@@ -141,7 +141,7 @@ public abstract class CreatureHitAction extends GameStateAction {
             .getAbilities()
             .values()
             .stream()
-            .filter(ability -> ability.isCanBeDeactivated() &&
+            .filter(ability -> ability.canBeDeactivated() &&
                 ability.getParams().getCreatureId().equals(targetCreature.getId()) &&
                 (ability.getParams().getState() == AbilityState.CHANNEL ||
                     ability.getParams().getState() == AbilityState.ACTIVE))

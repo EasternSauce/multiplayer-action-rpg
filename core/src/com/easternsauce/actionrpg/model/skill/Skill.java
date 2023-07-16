@@ -47,7 +47,7 @@ public class Skill {
         if (creature != null &&
             creature.canPerformSkill(this, game) &&
             performTimer.getTime() > cooldown &&
-            (!skillType.getIsDamaging() ||
+            (!skillType.getDamaging() ||
                 creature.getParams().getGeneralSkillPerformCooldownTimer().getTime() >
                     Constants.GENERAL_PLAYER_SKILL_PERFORM_COOLDOWN) &&
             !creature.isStunned(game)) {

@@ -22,8 +22,8 @@ public class InventoryWindowToggleAction extends GameStateAction {
         if (game.getGameState().getPlayerConfig(playerId) == null) {
             return;
         }
-        boolean isInventoryVisible = game.getGameState().getPlayerConfig(playerId).getIsInventoryVisible();
-        game.getGameState().getPlayerConfig(playerId).setIsInventoryVisible(!isInventoryVisible);
+        boolean inventoryVisible = game.getGameState().getPlayerConfig(playerId).getInventoryVisible();
+        game.getGameState().getPlayerConfig(playerId).setInventoryVisible(!inventoryVisible);
 
     }
 

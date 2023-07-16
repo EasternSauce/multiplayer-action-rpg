@@ -30,8 +30,8 @@ public class CreatureRespawnAction extends GameStateAction {
         Creature creature = game.getCreature(creatureId);
 
         if (creature != null) {
-            creature.getParams().setIsAwaitingRespawn(false);
-            creature.getParams().setIsDead(false);
+            creature.getParams().setAwaitingRespawn(false);
+            creature.getParams().setDead(false);
             creature.getParams().getStats().setLife(creature.getParams().getStats().getMaxLife());
             creature.getParams().getStats().setStamina(creature.getParams().getStats().getMaxStamina());
             creature.getParams().getStats().setMana(creature.getParams().getStats().getMaxMana());

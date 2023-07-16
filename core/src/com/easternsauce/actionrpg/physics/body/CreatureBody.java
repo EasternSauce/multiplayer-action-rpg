@@ -48,8 +48,8 @@ public class CreatureBody {
         float v = creature.getParams().getStats().getSpeed();
 
         if (bodyCreated) {
-            if (!creature.getParams().getMovementParams().getIsDashing()) {
-                if (creature.getParams().getMovementParams().getIsMoving()) {
+            if (!creature.getParams().getMovementParams().getDashing()) {
+                if (creature.getParams().getMovementParams().getMoving()) {
                     Vector2 normalizedMovingVector;
 
                     if (creature.isEffectActive(CreatureEffect.SLOW, game) ||

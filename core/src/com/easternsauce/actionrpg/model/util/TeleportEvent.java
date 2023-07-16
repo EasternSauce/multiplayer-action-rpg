@@ -14,5 +14,5 @@ public class TeleportEvent {
     private Vector2 pos;
     private AreaId fromAreaId;
     private AreaId toAreaId;
-    private Boolean isUsedGate;
+    private Boolean usedGate;
 }

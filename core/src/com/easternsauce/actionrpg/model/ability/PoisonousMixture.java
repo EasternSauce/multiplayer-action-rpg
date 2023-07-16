@@ -28,8 +28,8 @@ public class PoisonousMixture extends Projectile {
             .setActiveTime(30f)
             .setTextureName("green_potion_throw")
             .setBaseDamage(0f)
-            .setIsChannelAnimationLooping(false)
-            .setIsActiveAnimationLooping(true)
+            .setChannelAnimationLooping(false)
+            .setActiveAnimationLooping(true)
             .setDelayedActionTime(0.001f)
             .setPos(creature.getParams().getPos());
 

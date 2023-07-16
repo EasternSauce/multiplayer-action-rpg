@@ -17,7 +17,7 @@ public class TerrainTileBody {
     @Getter
     private Integer layer;
     @Getter
-    private Boolean isFlyover;
+    private Boolean flyover;
     @Getter
     private Body b2body;
     @Getter
@@ -33,7 +33,7 @@ public class TerrainTileBody {
         body.tileWidth = tileWidth;
         body.tileHeight = tileHeight;
         body.layer = layer;
-        body.isFlyover = isFlyover;
+        body.flyover = isFlyover;
         return body;
     }
 

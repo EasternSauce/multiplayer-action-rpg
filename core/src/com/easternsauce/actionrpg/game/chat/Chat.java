@@ -22,7 +22,7 @@ public class Chat {
 
     @Getter
     @Setter
-    private Boolean isTyping = false;
+    private Boolean typing = false;
     @Getter
     @Setter
     private String currentMessage = "";
@@ -32,7 +32,7 @@ public class Chat {
     private Float holdBackspaceTime;
     @Getter
     @Setter
-    private Boolean isHoldingBackspace = false;
+    private Boolean holdingBackspace = false;
 
     public void sendMessage(String posterId, String message, CoreGame game) {
         if (getMessages().size() < 6) {
@@ -57,7 +57,7 @@ public class Chat {
         }
 
         Assets.renderSmallFont(renderingLayer,
-            (getIsTyping() ? "> " : "") + getCurrentMessage(),
+            (getTyping() ? "> " : "") + getCurrentMessage(),
             Vector2.of(30, 70),
             Color.PURPLE
         );

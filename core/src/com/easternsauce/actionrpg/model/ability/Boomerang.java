@@ -26,8 +26,8 @@ public class Boomerang extends Projectile {
             .setStartingRange(0.5f)
             .setTextureName("boomerang")
             .setBaseDamage(22f)
-            .setIsChannelAnimationLooping(true)
-            .setIsActiveAnimationLooping(true)
+            .setChannelAnimationLooping(true)
+            .setActiveAnimationLooping(true)
             .setSpeed(22f);
 
         return ability;
@@ -50,12 +50,12 @@ public class Boomerang extends Projectile {
         Creature creature = game.getCreature(getParams().getCreatureId());
 
         if (creature != null) {
-            if (!getParams().getIsComingBack() && getParams().getStateTimer().getTime() > 1f) {
-                getParams().setIsComingBack(true);
+            if (!getParams().getComingBack() && getParams().getStateTimer().getTime() > 1f) {
+                getParams().setComingBack(true);
                 getParams().setSpeed(20f);
             }
 
-            if (getParams().getIsComingBack()) {
+            if (getParams().getComingBack()) {
                 Vector2 vectorTowards = getParams().getPos().vectorTowards(creature.getParams().getPos());
                 float targetAngleDeg = vectorTowards.angleDeg();
                 float currentAngleDeg = getParams().getDirVector().angleDeg();
@@ -78,13 +78,13 @@ public class Boomerang extends Projectile {
 
     @Override
     public void onCreatureHit(CreatureId creatureId, CoreGame game) {
-        getParams().setIsComingBack(true);
+        getParams().setComingBack(true);
         getParams().setSpeed(30f);
     }
 
     @Override
     public void onSelfCreatureHit(CoreGame game) {
-        if (getParams().getIsComingBack()) {
+        if (getParams().getComingBack()) {
             Creature creature = game.getCreature(getParams().getCreatureId());
             Skill skill = creature.getParams().getSkills().get(getParams().getSkillType());
 
@@ -96,7 +96,7 @@ public class Boomerang extends Projectile {
 
     @Override
     public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
-        getParams().setIsComingBack(true);
+        getParams().setComingBack(true);
         getParams().setSpeed(30f);
     }
 

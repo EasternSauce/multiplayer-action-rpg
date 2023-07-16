@@ -52,7 +52,7 @@ public class InventoryAndPotionMenuSwapSlotItemsAction extends GameStateAction {
     }
 
     private boolean checkPotionMenuSlotAcceptsItemType(Item inventoryItem) {
-        return inventoryItem == null || inventoryItem.getTemplate().getIsConsumable();
+        return inventoryItem == null || inventoryItem.getTemplate().getConsumable();
     }
 
     private void handleSwapInInventory(Creature player, Item potionMenuItem) {
@@ -76,7 +76,7 @@ public class InventoryAndPotionMenuSwapSlotItemsAction extends GameStateAction {
         playerConfig.setEquipmentItemBeingMoved(null);
         playerConfig.setPotionMenuItemBeingMoved(null);
 
-        playerConfig.setIsSkillMenuPickerSlotBeingChanged(null);
+        playerConfig.setSkillMenuPickerSlotBeingChanged(null);
 
         removeSkillFromSkillMenuOnItemUnequip(player, playerConfig);
     }

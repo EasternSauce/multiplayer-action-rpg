@@ -99,13 +99,13 @@ public class AbilityRenderer {
         if (ability != null) {
             if (ability.getParams().getChannelTime() > 0f && ability.getParams().getState() == AbilityState.CHANNEL) {
                 TextureRegion texture = getChannelAnimation().getKeyFrame(ability.getParams().getStateTimer().getTime(),
-                    ability.getParams().getIsChannelAnimationLooping()
+                    ability.getParams().getChannelAnimationLooping()
                 );
                 updateSprite(texture, game);
             } else if (ability.getParams().getActiveTime() > 0f &&
                 ability.getParams().getState() == AbilityState.ACTIVE) {
                 TextureRegion texture = getActiveAnimation().getKeyFrame(ability.getParams().getStateTimer().getTime(),
-                    ability.getParams().getIsActiveAnimationLooping()
+                    ability.getParams().getActiveAnimationLooping()
                 );
                 updateSprite(texture, game);
             }
@@ -129,7 +129,7 @@ public class AbilityRenderer {
         sprite.setCenter(ability.getParams().getPos().getX(), ability.getParams().getPos().getY());
         sprite.setOriginCenter();
         sprite.setRotation(ability.getParams().getRotationAngle() + ability.getParams().getRotationShift());
-        sprite.setFlip(false, ability.getParams().getIsFlip());
+        sprite.setFlip(false, ability.getParams().getFlip());
 
     }
 

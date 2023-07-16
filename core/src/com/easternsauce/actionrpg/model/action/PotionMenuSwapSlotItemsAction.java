@@ -40,13 +40,13 @@ public class PotionMenuSwapSlotItemsAction extends GameStateAction {
 
             @SuppressWarnings("UnnecessaryLocalVariable") Item temp = itemTo;
 
-            boolean isCanStackItems = itemFrom != null &&
+            boolean canStackItems = itemFrom != null &&
                 temp != null &&
-                itemFrom.getTemplate().getIsStackable() &&
-                temp.getTemplate().getIsStackable() &&
+                itemFrom.getTemplate().getStackable() &&
+                temp.getTemplate().getStackable() &&
                 itemFrom.getTemplate().getId().equals(temp.getTemplate().getId());
 
-            if (isCanStackItems) {
+            if (canStackItems) {
                 player.getParams().getPotionMenuItems().remove(fromSlotIndex);
                 temp.setQuantity(temp.getQuantity() + itemFrom.getQuantity());
             } else {

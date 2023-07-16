@@ -28,8 +28,8 @@ public class PlayfulGhost extends Projectile {
             .setActiveTime(10f)
             .setTextureName("ghost")
             .setBaseDamage(15f)
-            .setIsChannelAnimationLooping(false)
-            .setIsActiveAnimationLooping(true)
+            .setChannelAnimationLooping(false)
+            .setActiveAnimationLooping(true)
             .setDelayedActionTime(0.001f)
             .setSpeed(5f);
 
@@ -49,7 +49,7 @@ public class PlayfulGhost extends Projectile {
     @Override
     protected void onActiveUpdate(float delta, CoreGame game) {
         onProjectileTravelUpdate();
-        getParams().setIsFlip(getParams().getRotationAngle() >= 90 && getParams().getRotationAngle() < 270);
+        getParams().setFlip(getParams().getRotationAngle() >= 90 && getParams().getRotationAngle() < 270);
 
         Creature minCreature = null;
         float minDistance = Float.MAX_VALUE;

@@ -17,17 +17,9 @@ public class BossSwordSpin extends AttachedAbility {
 
     public static BossSwordSpin of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         BossSwordSpin ability = BossSwordSpin.of();
-        ability.params = abilityParams
-            .setWidth(4f)
-            .setHeight(4f)
-            .setChannelTime(0f)
-            .setActiveTime(3f)
-            .setStartingRange(4f)
-            .setTextureName("sword")
-            .setBaseDamage(42f)
-            .setIsChannelAnimationLooping(false)
-            .setIsActiveAnimationLooping(false)
-            .setDirVector(abilityParams.getDirVector().withRotatedDegAngle(90));
+        ability.params = abilityParams.setWidth(4f).setHeight(4f).setChannelTime(0f).setActiveTime(3f).setStartingRange(
+            4f).setTextureName("sword").setBaseDamage(42f).setChannelAnimationLooping(false).setActiveAnimationLooping(
+            false).setDirVector(abilityParams.getDirVector().withRotatedDegAngle(90));
         return ability;
     }
 
@@ -82,7 +74,7 @@ public class BossSwordSpin extends AttachedAbility {
     }
 
     @Override
-    public boolean isCanBeDeactivated() {
+    public boolean canBeDeactivated() {
         return true;
     }
 

@@ -25,12 +25,12 @@ public class Dash extends AttachedAbility {
             .setActiveTime(0.14f)
             .setTextureName("smoke")
             .setBaseDamage(0f)
-            .setIsChannelAnimationLooping(false)
-            .setIsActiveAnimationLooping(false)
+            .setChannelAnimationLooping(false)
+            .setActiveAnimationLooping(false)
             .setPos(creature.getParams().getPos())
             .setStartingRange(0.8f)
             .setDirectionalAttachedAbilityRotationShift(180f)
-            .setIsFlip(Dash.calculateFlip(flipValue))
+            .setFlip(Dash.calculateFlip(flipValue))
             .setRotationShift(180f);
 
         return ability;
@@ -59,7 +59,7 @@ public class Dash extends AttachedAbility {
     public void onStarted(CoreGame game) {
         Creature creature = game.getCreature(getParams().getCreatureId());
 
-        creature.getParams().getMovementParams().setIsDashing(true);
+        creature.getParams().getMovementParams().setDashing(true);
         creature.getParams().getMovementParams().setDashingVector(getParams().getDirVector());
         creature.getParams().getMovementParams().setDashingVelocity(30f);
     }
@@ -73,7 +73,7 @@ public class Dash extends AttachedAbility {
     protected void onCompleted(CoreGame game) {
         Creature creature = game.getCreature(getParams().getCreatureId());
 
-        creature.getParams().getMovementParams().setIsDashing(false);
+        creature.getParams().getMovementParams().setDashing(false);
     }
 
     @Override
@@ -90,7 +90,7 @@ public class Dash extends AttachedAbility {
     }
 
     @Override
-    public boolean isCanBeDeactivated() {
+    public boolean canBeDeactivated() {
         return true;
     }
 

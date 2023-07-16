@@ -62,20 +62,18 @@ public class CoreGameServer extends CoreGame {
 
         Connection[] connections = getEndPoint().getConnections();
         for (Connection connection : connections) {
-            if (!clientIds.contains(connection.getID())) {
-                continue;// don't update until player is initialized
-            }
+            if (clientIds.contains(connection.getID())) { // don't update until player is initialized
+                Map<CreatureId, Creature> creatures = getCreatures();
+                if (getClientPlayers().containsKey(connection.getID()) && creatures.containsKey(getClientPlayers().get(
+                    connection.getID()))) {
+                    Creature player = creatures.get(getClientPlayers().get(connection.getID()));
 
-            Map<CreatureId, Creature> creatures = getCreatures();
-            if (getClientPlayers().containsKey(connection.getID()) && creatures.containsKey(getClientPlayers().get(
-                connection.getID()))) {
-                Creature player = creatures.get(getClientPlayers().get(connection.getID()));
-
-                List<GameStateAction> personalizedTickActions = onTickActions
-                    .stream()
-                    .filter(action -> isActionRelevantForPlayer(player, action))
-                    .collect(Collectors.toList());
-                connection.sendTCP(ActionsHolder.of(personalizedTickActions));
+                    List<GameStateAction> personalizedTickActions = onTickActions
+                        .stream()
+                        .filter(action -> isActionRelevantForPlayer(player, action))
+                        .collect(Collectors.toList());
+                    connection.sendTCP(ActionsHolder.of(personalizedTickActions));
+                }
             }
 
         }
@@ -142,13 +140,13 @@ public class CoreGameServer extends CoreGame {
     }
 
     @Override
-    public Boolean getIsFirstBroadcastReceived() {
+    public Boolean getFirstBroadcastReceived() {
         return true;
     }
 
     @SuppressWarnings("unused")
     @Override
-    public CoreGame setIsFirstBroadcastReceived(Boolean isFirstBroadcastReceived) {
+    public CoreGame setFirstBroadcastReceived(Boolean firstBroadcastReceived) {
         return this;
     }
 

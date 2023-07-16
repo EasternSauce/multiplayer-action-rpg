@@ -60,7 +60,7 @@ public class PhysicsEventQueueProcessor {
                 creature.getParams().getMovementParams().setAreaWhenEnteredGate(creature.getParams().getAreaId());
 
                 if (creature instanceof Player &&
-                    !creature.getParams().getMovementParams().getIsStillInsideGateAfterTeleport()) {
+                    !creature.getParams().getMovementParams().getStillInsideGateAfterTeleport()) {
                     AreaGate areaGate = game.getGameState().getAreaGate(event.getAreaGateId());
                     AreaGate leadingToAreaGate = game.getGameState().getAreaGate(areaGate.getLeadingToAreaGateId());
 
@@ -78,12 +78,12 @@ public class PhysicsEventQueueProcessor {
                 Creature creature = game.getCreature(event.getCreatureId());
 
                 if (creature instanceof Player &&
-                    creature.getParams().getMovementParams().getIsStillInsideGateAfterTeleport() &&
+                    creature.getParams().getMovementParams().getStillInsideGateAfterTeleport() &&
                     creature.getParams().getMovementParams().getAreaWhenEnteredGate().equals(creature
                         .getParams()
                         .getAreaId())) {
 
-                    creature.getParams().getMovementParams().setIsStillInsideGateAfterTeleport(false);
+                    creature.getParams().getMovementParams().setStillInsideGateAfterTeleport(false);
 
                 }
             } else if (physicsEvent instanceof CreatureHitsLootPileEvent) {
