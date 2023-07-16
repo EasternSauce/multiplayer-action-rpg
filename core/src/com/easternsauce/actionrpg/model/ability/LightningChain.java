@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class LightningChain extends Ability {
     @Getter
-    AbilityParams params;
+    private AbilityParams params;
 
     public static LightningChain of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         LightningChain ability = LightningChain.of();

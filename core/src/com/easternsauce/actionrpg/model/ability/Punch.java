@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class Punch extends AttachedAbility {
     @Getter
-    AbilityParams params;
+    private AbilityParams params;
 
     public static Punch of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         Punch ability = Punch.of();

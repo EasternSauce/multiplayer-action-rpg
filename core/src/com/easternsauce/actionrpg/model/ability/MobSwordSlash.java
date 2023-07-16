@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class MobSwordSlash extends AttachedAbility {
     @Getter
-    AbilityParams params;
+    private AbilityParams params;
 
     public static MobSwordSlash of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         MobSwordSlash ability = MobSwordSlash.of();

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class RingOfFire extends Ability {
     @Getter
-    AbilityParams params;
+    private AbilityParams params;
 
     public static RingOfFire of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         RingOfFire ability = RingOfFire.of();

@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class ExpandingPoisonousCloud extends Ability {
     @Getter
-    AbilityParams params;
+    private AbilityParams params;
 
     int currentCloud = 0;
 
@@ -35,8 +35,7 @@ public class ExpandingPoisonousCloud extends Ability {
     protected void onActiveUpdate(float delta, CoreGame game) {
         float[] cloudSpreadTimes = {0f, 0.2f, 0.4f, 0.6f, 0.8f, 1.2f, 1.6f, 2.0f, 2.4f, 2.8f};
 
-        //noinspection SpellCheckingInspection
-        float[] cloudRadiuses = {1f, 2f, 3f, 4f, 5f, 6f, 8f, 10f, 10f, 10f};
+        float[] cloudScales = {0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.8f, 1.0f, 1.0f, 1.0f};
 
         float[] cloudDurations = {0.2f, 0.2f, 0.2f, 0.2f, 0.4f, 0.4f, 0.4f, 0.4f, 0.4f, 0.4f};
 
@@ -46,16 +45,11 @@ public class ExpandingPoisonousCloud extends Ability {
             currentCloud < cloudSpreadTimes.length &&
             getParams().getStateTimer().getTime() > cloudSpreadTimes[currentCloud]) {
 
-            game.chainAnotherAbility(
-                this,
-                AbilityType.POISONOUS_CLOUD,
-                getParams().getDirVector(),
-                ChainAbilityParams
-                    .of()
-                    .setChainToPos(getParams().getPos())
-                    .setOverrideSize(cloudRadiuses[currentCloud])
-                    .setOverrideDuration(cloudDurations[currentCloud])
-            );
+            game.chainAnotherAbility(this, AbilityType.POISONOUS_CLOUD, getParams().getDirVector(), ChainAbilityParams
+                .of()
+                .setChainToPos(getParams().getPos())
+                .setOverrideScale(cloudScales[currentCloud])
+                .setOverrideDuration(cloudDurations[currentCloud]));
 
             currentCloud += 1;
         }

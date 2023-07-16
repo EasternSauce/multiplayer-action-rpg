@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class ShieldGuard extends AttachedAbility {
     @Getter
-    AbilityParams params;
+    private AbilityParams params;
 
     public static ShieldGuard of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         float flipValue = abilityParams.getDirVector().angleDeg();

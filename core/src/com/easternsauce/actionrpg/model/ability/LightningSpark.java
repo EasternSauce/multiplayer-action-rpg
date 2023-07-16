@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 @EqualsAndHashCode(callSuper = true)
 public class LightningSpark extends Ability {
     @Getter
-    AbilityParams params;
+    private AbilityParams params;
 
     public static LightningSpark of(AbilityParams abilityParams, CoreGame game) {
         Creature creature = game.getCreature(abilityParams.getCreatureId());

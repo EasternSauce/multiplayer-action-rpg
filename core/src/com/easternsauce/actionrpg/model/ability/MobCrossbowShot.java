@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class MobCrossbowShot extends Ability {
     @Getter
-    AbilityParams params;
+    private AbilityParams params;
 
     int currentBoltToFire = 0;
     Vector2 previousDirVector = null;

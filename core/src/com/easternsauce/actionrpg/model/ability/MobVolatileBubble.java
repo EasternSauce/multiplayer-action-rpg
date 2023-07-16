@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class MobVolatileBubble extends Projectile {
     @Getter
-    AbilityParams params;
+    private AbilityParams params;
 
     public static MobVolatileBubble of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         MobVolatileBubble ability = MobVolatileBubble.of();
@@ -26,7 +26,8 @@ public class MobVolatileBubble extends Projectile {
             .setChannelAnimationLooping(false)
             .setActiveAnimationLooping(true)
             .setDelayedActionTime(0.001f)
-            .setSpeed(18f);
+            .setSpeed(18f)
+            .setMaximumRange(17f);
 
         return ability;
     }
@@ -44,10 +45,6 @@ public class MobVolatileBubble extends Projectile {
     @Override
     protected void onActiveUpdate(float delta, CoreGame game) {
         onProjectileTravelUpdate();
-
-        if (getParams().getPos().distance(getParams().getSkillStartPos()) > 17f) {
-            deactivate();
-        }
     }
 
     @Override

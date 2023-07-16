@@ -121,8 +121,11 @@ public class AbilityRenderer {
         }
 
         sprite.setRegion(texture);
-        if (ability.getParams().getOverrideSize() != null) {
-            sprite.setSize(ability.getParams().getOverrideSize(), ability.getParams().getOverrideSize());
+        if (ability.getParams().getOverrideScale() != null) {
+            sprite.setSize(
+                ability.getParams().getWidth() * ability.getParams().getOverrideScale(),
+                ability.getParams().getHeight() * ability.getParams().getOverrideScale()
+            );
         } else {
             sprite.setSize(ability.getParams().getWidth(), ability.getParams().getHeight());
         }

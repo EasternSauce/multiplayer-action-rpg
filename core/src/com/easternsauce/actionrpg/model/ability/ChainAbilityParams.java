@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 @Data
 public class ChainAbilityParams {
     private Vector2 chainToPos;
-    private Float overrideSize;
+    private Float overrideScale;
     private Float overrideDuration;
     private Float overrideDamage;
+    private Float overrideMaximumRange;
+    private Float overrideSpeed;
 }

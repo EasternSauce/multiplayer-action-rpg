@@ -48,6 +48,7 @@ public class Enemy extends Creature {
         params.setRespawnTime(120f);
 
         params.getEnemyParams().setAttackDistance(enemyTemplate.getAttackDistance());
+        params.getStats().setBaseSpeed(enemyTemplate.getSpeed());
         params.getEnemyParams().setSkillUses(enemyTemplate.getEnemySkillUseEntries());
 
         params.setEnemyRallyPointId(enemyRallyPointId);
@@ -413,7 +414,6 @@ public class Enemy extends Creature {
     }
 
     private List<Vector2> mirrorPathFromNearbyCreature(CreatureId targetId, CoreGame game) {
-
         Predicate<Creature> creaturePredicate = creature -> creature instanceof Enemy &&
             creature.getParams().getPos().distance(this.getParams().getPos()) < 4f &&
             !creature.getId().equals(this.getParams().getId()) &&
@@ -433,7 +433,6 @@ public class Enemy extends Creature {
             .findFirst();
 
         return otherCreature.map(creature -> creature.getParams().getEnemyParams().getPathTowardsTarget()).orElse(null);
-
     }
 
     @Override

@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class Dash extends AttachedAbility {
     @Getter
-    AbilityParams params;
+    private AbilityParams params;
 
     public static Dash of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         Creature creature = game.getCreature(abilityParams.getCreatureId());

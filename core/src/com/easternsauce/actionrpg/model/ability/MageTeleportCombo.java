@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class MageTeleportCombo extends Ability {
     @Getter
-    AbilityParams params;
+    private AbilityParams params;
 
     int currentFireRingToProc = 0;
 
@@ -49,7 +49,7 @@ public class MageTeleportCombo extends Ability {
     @Override
     protected void onActiveUpdate(float delta, CoreGame game) {
         float[] fireRingProcTimes = {0.25f, 1.25f, 2f, 2.6f, 3.2f};
-        float[] fireRingSizes = {6f, 8f, 15f, 20f, 27f};
+        float[] fireRingScales = {1f, 1.2f, 1.5f, 2f, 3f};
 
         Creature creature = game.getCreature(getParams().getCreatureId());
 
@@ -60,7 +60,7 @@ public class MageTeleportCombo extends Ability {
                 this,
                 AbilityType.RING_OF_FIRE,
                 getParams().getDirVector(),
-                ChainAbilityParams.of().setOverrideSize(fireRingSizes[currentFireRingToProc]).setOverrideDamage(40f)
+                ChainAbilityParams.of().setOverrideScale(fireRingScales[currentFireRingToProc]).setOverrideDamage(40f)
             );
 
             currentFireRingToProc += 1;

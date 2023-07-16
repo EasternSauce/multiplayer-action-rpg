@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class CrossbowShot extends Ability {
     @Getter
-    AbilityParams params;
+    private AbilityParams params;
 
     int currentBoltToFire = 0;
 

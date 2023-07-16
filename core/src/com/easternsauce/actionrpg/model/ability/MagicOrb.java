@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @EqualsAndHashCode(callSuper = true)
 public class MagicOrb extends Projectile {
     @Getter
-    AbilityParams params;
+    private AbilityParams params;
 
     public static MagicOrb of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         MagicOrb ability = MagicOrb.of();

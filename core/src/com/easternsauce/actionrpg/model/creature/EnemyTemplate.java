@@ -28,6 +28,7 @@ public class EnemyTemplate {
     public static EnemyTemplate archer = EnemyTemplate.of(EnemyType.ARCHER,
         150f,
         20f,
+        11f,
         randomDropSet,
         new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.MOB_CROSSBOW_SHOT, 100f),
             EnemySkillUseEntry.of(SkillType.POISONOUS_MIXTURE, 40f)
@@ -36,6 +37,7 @@ public class EnemyTemplate {
     public static EnemyTemplate skeleton = EnemyTemplate.of(EnemyType.SKELETON,
         200f,
         4f,
+        11f,
         randomDropSet,
         new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.MOB_SWORD_SLASH, 100f),
             EnemySkillUseEntry.of(SkillType.SHIELD_GUARD, 20f)
@@ -44,6 +46,7 @@ public class EnemyTemplate {
     public static EnemyTemplate mage = EnemyTemplate.of(EnemyType.MAGE,
         120f,
         20f,
+        11f,
         randomDropSet,
         new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.MOB_MAGIC_ORB, 100f),
             EnemySkillUseEntry.of(SkillType.MOB_VOLATILE_BUBBLE, 60f),
@@ -55,9 +58,21 @@ public class EnemyTemplate {
     public static EnemyTemplate minos = EnemyTemplate.of(EnemyType.MINOS,
         1000f,
         8f,
+        11f,
         randomDropSet,
         new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.RICOCHET_BALLISTA, 100f),
             EnemySkillUseEntry.of(SkillType.BOSS_SWORD_SPIN, 100f),
+            EnemySkillUseEntry.of(SkillType.VOLATILE_BUBBLE, 60f),
+            EnemySkillUseEntry.of(SkillType.FIREBALL, 60f)
+        ))
+    );
+    public static EnemyTemplate serpent = EnemyTemplate.of(EnemyType.SERPENT,
+        1000f,
+        8f,
+        20f,
+        randomDropSet,
+        new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.RICOCHET_BALLISTA, 100f),
+            EnemySkillUseEntry.of(SkillType.ICE_SPEAR_RAMPAGE, 100f),
             EnemySkillUseEntry.of(SkillType.VOLATILE_BUBBLE, 60f),
             EnemySkillUseEntry.of(SkillType.FIREBALL, 60f)
         ))
@@ -69,6 +84,8 @@ public class EnemyTemplate {
     private Float maxLife;
     @Getter
     private Float attackDistance;
+    @Getter
+    private Float speed;
     @Getter
     private Set<DropTableEntry> dropTable;
     @Getter

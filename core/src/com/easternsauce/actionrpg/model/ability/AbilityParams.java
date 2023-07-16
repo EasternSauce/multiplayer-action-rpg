@@ -123,10 +123,14 @@ public class AbilityParams implements EntityParams {
 
     private Float directionalAttachedAbilityRotationShift = null;
 
-    private Float overrideSize;
+    private Float overrideScale;
     private Float overrideDuration;
     private Float overrideDamage;
+    private Float overrideMaximumRange;
+    private Float overrideSpeed;
 
     private RandomGenerator randomGenerator;
+
+    private Float maximumRange;
 
 }

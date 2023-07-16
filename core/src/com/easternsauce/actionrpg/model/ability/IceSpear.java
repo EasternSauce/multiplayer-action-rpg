@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 @EqualsAndHashCode(callSuper = true)
 public class IceSpear extends Projectile {
     @Getter
-    AbilityParams params;
+    private AbilityParams params;
 
     public static IceSpear of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         IceSpear ability = IceSpear.of();
@@ -24,13 +24,15 @@ public class IceSpear extends Projectile {
             .setHeight(0.75f)
             .setChannelTime(0f)
             .setActiveTime(3f)
+            .setStartingRange(3f)
             .setTextureName("ice_shard")
             .setBaseDamage(15f)
             .setChannelAnimationLooping(false)
             .setActiveAnimationLooping(true)
             .setDelayedActionTime(0.001f)
             .setSpeed(18f)
-            .setCreaturesAlreadyHit(new ConcurrentSkipListMap<>());
+            .setCreaturesAlreadyHit(new ConcurrentSkipListMap<>())
+            .setMaximumRange(6.5f);
 
         return ability;
     }
@@ -48,10 +50,6 @@ public class IceSpear extends Projectile {
     @Override
     protected void onActiveUpdate(float delta, CoreGame game) {
         onProjectileTravelUpdate();
-
-        if (getParams().getPos().distance(getParams().getSkillStartPos()) > 6.5f) {
-            deactivate();
-        }
     }
 
     @Override

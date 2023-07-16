@@ -83,9 +83,11 @@ public class AbilityAccessor {
                 .setChainToPos(chainAbilityParams.getChainToPos())
                 .setDirVector(dirVector)
                 .setVectorTowardsTarget(dirVector)
-                .setOverrideSize(chainAbilityParams.getOverrideSize())
+                .setOverrideScale(chainAbilityParams.getOverrideScale())
                 .setOverrideDuration(chainAbilityParams.getOverrideDuration())
                 .setOverrideDamage(chainAbilityParams.getOverrideDamage())
+                .setOverrideMaximumRange(chainAbilityParams.getOverrideMaximumRange())
+                .setOverrideSpeed(chainAbilityParams.getOverrideSpeed())
                 .setSkillType(chainFromAbility.getParams().getSkillType())
                 .setSkillStartPos(chainFromPos)
                 .setDamagingHitCreaturesHitCounter(chainFromAbility.getParams().getDamagingHitCreaturesHitCounter());

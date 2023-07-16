@@ -13,7 +13,7 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 public class BossSwordSpin extends AttachedAbility {
     @Getter
-    AbilityParams params;
+    private AbilityParams params;
 
     public static BossSwordSpin of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         BossSwordSpin ability = BossSwordSpin.of();

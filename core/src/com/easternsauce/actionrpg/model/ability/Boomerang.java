@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class Boomerang extends Projectile {
     @Getter
-    AbilityParams params;
+    private AbilityParams params;
 
     public static Boomerang of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         Boomerang ability = Boomerang.of();

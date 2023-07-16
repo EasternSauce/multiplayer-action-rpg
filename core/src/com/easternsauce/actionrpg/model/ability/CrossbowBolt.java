@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class CrossbowBolt extends Projectile {
     @Getter
-    AbilityParams params;
+    private AbilityParams params;
 
     public static CrossbowBolt of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         CrossbowBolt ability = CrossbowBolt.of();

@@ -61,7 +61,8 @@ public enum AbilityType {
     PUNCH(Punch::of),
 
     RING_OF_FIRE(RingOfFire::of),
-    DASH(Dash::of);
+    DASH(Dash::of),
+    ICE_SPEAR_RAMPAGE(IceSpearRampage::of);
 
     @Getter
     private BiFunction<AbilityParams, CoreGame, Ability> factoryMapping;

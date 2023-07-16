@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class SummonGhosts extends Ability {
     @Getter
-    AbilityParams params;
+    private AbilityParams params;
 
     public static SummonGhosts of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         SummonGhosts ability = SummonGhosts.of();

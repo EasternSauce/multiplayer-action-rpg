@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @EqualsAndHashCode(callSuper = true)
 public class PlayfulGhost extends Projectile {
     @Getter
-    AbilityParams params;
+    private AbilityParams params;
 
     public static PlayfulGhost of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         PlayfulGhost ability = PlayfulGhost.of();

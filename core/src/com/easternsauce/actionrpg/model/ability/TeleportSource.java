@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class TeleportSource extends Ability {
     @Getter
-    AbilityParams params;
+    private AbilityParams params;
 
     public static TeleportSource of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         Creature creature = game.getCreature(abilityParams.getCreatureId());

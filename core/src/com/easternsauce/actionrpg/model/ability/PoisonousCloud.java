@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 @EqualsAndHashCode(callSuper = true)
 public class PoisonousCloud extends Ability {
     @Getter
-    AbilityParams params;
+    private AbilityParams params;
 
     public static PoisonousCloud of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         PoisonousCloud ability = PoisonousCloud.of();
@@ -52,10 +52,10 @@ public class PoisonousCloud extends Ability {
     public void onCreatureHit(CreatureId creatureId, CoreGame game) {
         Creature creature = game.getCreature(creatureId);
 
-        creature.applyEffect(CreatureEffect.SLOW, 1f, game);
-        creature.getParams().getEffectParams().setCurrentSlowMagnitude(0.65f);
-        creature.applyEffect(CreatureEffect.POISON, 4f, game);
-        creature.getParams().getEffectParams().setCurrentDamageOverTimeTaken(16f);
+        creature.applyEffect(CreatureEffect.SLOW, 1.3f, game);
+        creature.getParams().getEffectParams().setCurrentSlowMagnitude(0.5f);
+        creature.applyEffect(CreatureEffect.POISON, 10f, game);
+        creature.getParams().getEffectParams().setCurrentDamageOverTimeTaken(13f);
         creature.getParams().getEffectParams().setCurrentDamageOverTimeDealerCreatureId(getParams().getCreatureId());
     }
 

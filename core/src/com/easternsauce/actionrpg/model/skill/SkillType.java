@@ -44,7 +44,9 @@ public enum SkillType {
 
     RING_OF_FIRE("Ring of Fire", true, AbilityType.RING_OF_FIRE, 1f, 10f, 13f),
 
-    DASH("Dash", false, AbilityType.DASH, 0.45f, 15f, 0f);
+    DASH("Dash", false, AbilityType.DASH, 0.45f, 15f, 0f),
+
+    ICE_SPEAR_RAMPAGE("Ice Spear Rampage", true, AbilityType.ICE_SPEAR_RAMPAGE, 2f, 15f, 20f);
 
     @Getter
     private String prettyName;

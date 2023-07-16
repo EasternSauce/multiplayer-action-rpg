@@ -36,6 +36,9 @@ public class CreatureAnimationConfig {
         configs.put("minos",
             CreatureAnimationConfig.of("minos", 0, 2.56f, 4.8f, 64, 120, 4, 0.1f, textureDirMap(3, 0, 1, 2))
         );
+        configs.put("serpent",
+            CreatureAnimationConfig.of("serpent", 0, 4.11f, 4.8f, 48, 56, 3, 0.3f, textureDirMap(3, 0, 1, 2))
+        );
 
     }
 

@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class MobTeleportDestination extends Ability {
     @Getter
-    AbilityParams params;
+    private AbilityParams params;
 
     public static MobTeleportDestination of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         Creature creature = game.getGameState().accessCreatures().getCreature(abilityParams.getCreatureId());

@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 @EqualsAndHashCode(callSuper = true)
 public class PoisonousMixture extends Projectile {
     @Getter
-    AbilityParams params;
+    private AbilityParams params;
 
     public static PoisonousMixture of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         Creature creature = game.getCreature(abilityParams.getCreatureId());
@@ -31,7 +31,8 @@ public class PoisonousMixture extends Projectile {
             .setChannelAnimationLooping(false)
             .setActiveAnimationLooping(true)
             .setDelayedActionTime(0.001f)
-            .setPos(creature.getParams().getPos());
+            .setPos(creature.getParams().getPos())
+            .setMaximumRange(16f);
 
         return ability;
     }
@@ -55,10 +56,6 @@ public class PoisonousMixture extends Projectile {
             getParams().setSpeed(2f + (getParams().getStateTimer().getTime() / 2f) * 28f);
         } else {
             getParams().setSpeed(30f);
-        }
-
-        if (getParams().getPos().distance(getParams().getSkillStartPos()) > 13f) {
-            deactivate();
         }
     }
 

@@ -15,7 +15,7 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 public class SwordSpin extends AttachedAbility {
     @Getter
-    AbilityParams params;
+    private AbilityParams params;
 
     public static SwordSpin of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         SwordSpin ability = SwordSpin.of();
