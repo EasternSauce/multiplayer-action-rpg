@@ -10,11 +10,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(staticName = "of")
 @Data
 public class DamageNumber {
-    Vector2 pos;
-    AreaId areaId;
-    Float damageValue;
-    Float damageTime;
-    Float colorR;
-    Float colorG;
-    Float colorB;
+    private Vector2 pos;
+    private AreaId areaId;
+    private Float damageValue;
+    private Float damageTime;
+    private Float colorR;
+    private Float colorG;
+    private Float colorB;
 }

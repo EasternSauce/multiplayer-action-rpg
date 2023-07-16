@@ -10,8 +10,8 @@ import static java.lang.Math.PI;
 @AllArgsConstructor(staticName = "of")
 @Data
 public class Vector2 {
-    float x;
-    float y;
+    private float x;
+    private float y;
 
     public Vector2 withRotatedDegAngle(float degrees) {
         return withSetDegAngle(angleDeg() + degrees);

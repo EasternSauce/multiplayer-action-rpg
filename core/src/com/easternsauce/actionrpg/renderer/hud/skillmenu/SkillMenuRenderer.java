@@ -9,7 +9,6 @@ import com.easternsauce.actionrpg.model.util.PlayerConfig;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
 import com.easternsauce.actionrpg.renderer.util.Rect;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.HashMap;
@@ -19,9 +18,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @NoArgsConstructor(staticName = "of")
-@Data
 public class SkillMenuRenderer {
-
     public void renderMenu(RenderingLayer renderingLayer, CoreGame game) {
         PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
 

@@ -6,14 +6,12 @@ import com.easternsauce.actionrpg.model.action.LootPileItemTryPickUpAction;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;
 import com.easternsauce.actionrpg.renderer.util.Rect;
 import com.esotericsoftware.kryonet.Client;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @NoArgsConstructor(staticName = "of")
-@Data
 public class ItemPickupMenuController {
     public boolean performItemPickupMenuClick(Client client, CoreGame game) {
         PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());

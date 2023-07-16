@@ -8,12 +8,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 public class AnimationSpec {
-    Integer frameWidth;
-    Integer frameHeight;
-    Float realWidth;
-    Float realHeight;
-    Float frameDuration;
-    Integer frameCount;
-    String atlasRegionName;
-    Boolean isLooping;
+    private Integer frameWidth;
+    private Integer frameHeight;
+    private Float realWidth;
+    private Float realHeight;
+    private Float frameDuration;
+    private Integer frameCount;
+    private String atlasRegionName;
+    private Boolean isLooping;
 }

@@ -15,16 +15,11 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 public class ConnectScreen implements Screen {
-    private CoreGame game;
-
     private final ConnectScreenMessageHolder messageHolder = ConnectScreenMessageHolder.of();
-
-    private Boolean isHoldingBackspace = false;
-
-    private Float holdBackspaceTime = 0f;
-
     private final SimpleTimer timer = SimpleTimer.of();
-
+    private CoreGame game;
+    private Boolean isHoldingBackspace = false;
+    private Float holdBackspaceTime = 0f;
     private TextureAtlas.AtlasRegion background;
 
     public void init(TextureAtlas atlas, CoreGame game) {

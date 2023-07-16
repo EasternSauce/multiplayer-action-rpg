@@ -8,25 +8,23 @@ import com.easternsauce.actionrpg.model.ability.AbilityId;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.physics.world.PhysicsWorld;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @SuppressWarnings("SpellCheckingInspection")
 @NoArgsConstructor(staticName = "of")
-@Data
 public class AbilityBody {
+    private final Sprite sprite = new Sprite(); // only used for calculating vertices
+    @Getter
+    private AbilityId abilityId;
+    @Getter
+    private CreatureId creatureId;
+    @Getter
+    private Body b2body = null;
+    private PhysicsWorld world;
 
-    final Sprite sprite = new Sprite(); // only used for calculating vertices
     @Getter
-    AbilityId abilityId;
-    @Getter
-    CreatureId creatureId;
-    Body b2body = null;
-    PhysicsWorld world;
-
-    @Getter
-    Boolean isBodyInitialized = false;
+    private Boolean isBodyInitialized = false;
 
     public static AbilityBody of(AbilityId abilityId) {
         AbilityBody abilityBody = new AbilityBody();

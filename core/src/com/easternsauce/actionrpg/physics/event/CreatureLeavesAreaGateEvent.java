@@ -3,13 +3,14 @@ package com.easternsauce.actionrpg.physics.event;
 import com.easternsauce.actionrpg.model.area.AreaGateId;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
-@Data
 public class CreatureLeavesAreaGateEvent implements PhysicsEvent {
-    CreatureId creatureId;
-    AreaGateId areaGateId;
+    @Getter
+    private CreatureId creatureId;
+    @Getter
+    private AreaGateId areaGateId;
 }

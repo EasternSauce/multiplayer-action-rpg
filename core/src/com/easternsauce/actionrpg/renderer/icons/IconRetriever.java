@@ -2,11 +2,9 @@ package com.easternsauce.actionrpg.renderer.icons;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-@Data
 public class IconRetriever {
     private TextureRegion[][] icons;
 

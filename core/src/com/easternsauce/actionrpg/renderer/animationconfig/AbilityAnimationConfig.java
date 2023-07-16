@@ -64,13 +64,13 @@ public class AbilityAnimationConfig {
 
     }
 
-    Integer textureWidth;
-    Integer textureHeight;
-    String channelSpriteType;
-    String activeSpriteType;
-    Integer channelFrameCount;
-    Integer activeFrameCount;
-    Float channelFrameDuration;
-    Float activeFrameDuration;
-    Float scale;
+    private Integer textureWidth;
+    private Integer textureHeight;
+    private String channelSpriteType;
+    private String activeSpriteType;
+    private Integer channelFrameCount;
+    private Integer activeFrameCount;
+    private Float channelFrameDuration;
+    private Float activeFrameDuration;
+    private Float scale;
 }

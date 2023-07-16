@@ -243,7 +243,7 @@ public class GameEntityManager {
 
         creature.getParams().getMovementParams().setIsDashing(false);
 
-        if (!teleportEvent.isUsedGate() && teleportEvent.getToAreaId().getValue().equals(game
+        if (!teleportEvent.getIsUsedGate() && teleportEvent.getToAreaId().getValue().equals(game
             .getGameState()
             .accessCreatures()
             .getCreature(teleportEvent.getCreatureId())
@@ -273,7 +273,7 @@ public class GameEntityManager {
                     getGameEntityPhysics().getCreatureBodies().put(teleportEvent.getCreatureId(), creatureBody);
                 }
 
-                if (teleportEvent.isUsedGate()) {
+                if (teleportEvent.getIsUsedGate()) {
                     creature.getParams().getMovementParams().setIsStillInsideGateAfterTeleport(true);
                     creature.getParams().getMovementParams().getGateTeleportCooldownTimer().restart();
                 }

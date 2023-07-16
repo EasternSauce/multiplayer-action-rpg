@@ -8,11 +8,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(staticName = "of")
 @Data
 public class InventoryWindowState {
-    Integer inventorySlotClicked;
-    Integer equipmentSlotClicked;
-    Integer potionMenuSlotClicked;
+    private Integer inventorySlotClicked;
+    private Integer equipmentSlotClicked;
+    private Integer potionMenuSlotClicked;
 
-    Integer inventoryItemBeingMoved;
-    Integer equipmentItemBeingMoved;
-    Integer potionMenuItemBeingMoved;
+    private Integer inventoryItemBeingMoved;
+    private Integer equipmentItemBeingMoved;
+    private Integer potionMenuItemBeingMoved;
 }

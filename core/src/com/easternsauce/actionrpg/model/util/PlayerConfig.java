@@ -15,12 +15,12 @@ import java.util.concurrent.ConcurrentSkipListSet;
 @AllArgsConstructor(staticName = "of")
 @Data
 public class PlayerConfig {
-    Boolean isInventoryVisible = false;
-    Integer inventoryItemBeingMoved;
-    Integer equipmentItemBeingMoved;
-    Integer potionMenuItemBeingMoved;
-    Set<LootPileId> itemPickupMenuLootPiles = new ConcurrentSkipListSet<>();
-    Integer isSkillMenuPickerSlotBeingChanged;
-    Map<Integer, SkillType> skillMenuSlots = new ConcurrentSkipListMap<>();
-    Boolean areAreasLoaded = false;
+    private Boolean isInventoryVisible = false;
+    private Integer inventoryItemBeingMoved;
+    private Integer equipmentItemBeingMoved;
+    private Integer potionMenuItemBeingMoved;
+    private Set<LootPileId> itemPickupMenuLootPiles = new ConcurrentSkipListSet<>();
+    private Integer isSkillMenuPickerSlotBeingChanged;
+    private Map<Integer, SkillType> skillMenuSlots = new ConcurrentSkipListMap<>();
+    private Boolean areAreasLoaded = false;
 }

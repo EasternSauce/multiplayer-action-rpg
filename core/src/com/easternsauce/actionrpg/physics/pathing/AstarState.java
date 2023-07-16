@@ -13,10 +13,10 @@ import java.util.Set;
 @AllArgsConstructor(staticName = "of")
 @Data
 public class AstarState {
-    Map<Vector2Int, AstarNode> astarGraph;
-    Set<Vector2Int> openSet;
-    Set<Vector2Int> closedSet;
-    Vector2Int finishPos;
-    Boolean foundPath;
-    Boolean isGaveUp;
+    private Map<Vector2Int, AstarNode> astarGraph;
+    private Set<Vector2Int> openSet;
+    private Set<Vector2Int> closedSet;
+    private Vector2Int finishPos;
+    private Boolean foundPath;
+    private Boolean isGaveUp;
 }

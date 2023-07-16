@@ -9,20 +9,27 @@ import com.easternsauce.actionrpg.renderer.hud.inventorywindow.ItemOnCursorRende
 import com.easternsauce.actionrpg.renderer.hud.inventorywindow.PotionMenuRenderer;
 import com.easternsauce.actionrpg.renderer.hud.itempickupmenu.ItemPickupMenuRenderer;
 import com.easternsauce.actionrpg.renderer.hud.skillmenu.SkillMenuRenderer;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-@Data
 public class HudRenderer {
-    FpsCounterRenderer fpsCounterRenderer = FpsCounterRenderer.of();
-    InventoryWindowRenderer inventoryWindowRenderer = InventoryWindowRenderer.of();
-    PlayerStatBarsRenderer playerStatBarsRenderer = PlayerStatBarsRenderer.of();
-    RespawnMessageRenderer respawnMessageRenderer = RespawnMessageRenderer.of();
-    ServerRunningMessageRenderer serverRunningMessageRenderer = ServerRunningMessageRenderer.of();
-    SkillMenuRenderer skillMenuRenderer = SkillMenuRenderer.of();
-    ItemPickupMenuRenderer pickUpMenuRenderer = ItemPickupMenuRenderer.of();
-    PotionMenuRenderer potionMenuRenderer = PotionMenuRenderer.of();
+    @Getter
+    private final FpsCounterRenderer fpsCounterRenderer = FpsCounterRenderer.of();
+    @Getter
+    private final InventoryWindowRenderer inventoryWindowRenderer = InventoryWindowRenderer.of();
+    @Getter
+    private final PlayerStatBarsRenderer playerStatBarsRenderer = PlayerStatBarsRenderer.of();
+    @Getter
+    private final RespawnMessageRenderer respawnMessageRenderer = RespawnMessageRenderer.of();
+    @Getter
+    private final ServerRunningMessageRenderer serverRunningMessageRenderer = ServerRunningMessageRenderer.of();
+    @Getter
+    private final SkillMenuRenderer skillMenuRenderer = SkillMenuRenderer.of();
+    @Getter
+    private final ItemPickupMenuRenderer pickUpMenuRenderer = ItemPickupMenuRenderer.of();
+    @Getter
+    private final PotionMenuRenderer potionMenuRenderer = PotionMenuRenderer.of();
 
     public void init(TextureAtlas atlas) {
         inventoryWindowRenderer.init(atlas);

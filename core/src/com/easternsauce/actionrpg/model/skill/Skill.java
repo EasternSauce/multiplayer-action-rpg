@@ -10,31 +10,34 @@ import com.easternsauce.actionrpg.model.util.SimpleTimer;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.util.Constants;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
-@Data
 public class Skill {
-    SkillType skillType;
-    CreatureId creatureId;
-    AbilityType startingAbilityType;
-    SimpleTimer performTimer;
-    Float cooldown;
+    @Getter
+    private SkillType skillType;
+    private CreatureId creatureId;
+    private AbilityType startingAbilityType;
+    @Getter
+    private SimpleTimer performTimer;
+    private Float cooldown;
 
-    Float staminaCost;
-    Float manaCost;
+    @Getter
+    private Float staminaCost;
+    @Getter
+    private Float manaCost;
 
     public static Skill of(SkillType skillType, CreatureId creatureId) {
         Skill skill = Skill.of();
-        skill.setSkillType(skillType);
-        skill.setCreatureId(creatureId);
-        skill.setStartingAbilityType(skillType.getStartingAbilityType());
-        skill.setPerformTimer(SimpleTimer.getExpiredTimer());
-        skill.setCooldown(skillType.getCooldown());
-        skill.setStaminaCost(skillType.getStaminaCost());
-        skill.setManaCost(skillType.getManaCost());
+        skill.skillType = skillType;
+        skill.creatureId = creatureId;
+        skill.startingAbilityType = skillType.getStartingAbilityType();
+        skill.performTimer = (SimpleTimer.getExpiredTimer());
+        skill.cooldown = skillType.getCooldown();
+        skill.staminaCost = skillType.getStaminaCost();
+        skill.manaCost = skillType.getManaCost();
         return skill;
     }
 
@@ -70,7 +73,7 @@ public class Skill {
     }
 
     public void resetCooldown() {
-        getPerformTimer().setTime(getCooldown());
+        performTimer.setTime(cooldown);
 
     }
 }

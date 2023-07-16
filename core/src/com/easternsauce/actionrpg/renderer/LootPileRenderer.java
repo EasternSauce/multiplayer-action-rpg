@@ -6,19 +6,19 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.area.LootPile;
 import com.easternsauce.actionrpg.model.area.LootPileId;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-@Data
 public class LootPileRenderer {
-
-    LootPileId lootPileId;
-    Sprite sprite;
+    @Getter
+    private LootPileId lootPileId;
+    @Getter
+    private Sprite sprite;
 
     public static LootPileRenderer of(LootPileId lootPileId) {
         LootPileRenderer lootPileRenderer = new LootPileRenderer();
-        lootPileRenderer.setLootPileId(lootPileId);
+        lootPileRenderer.lootPileId = lootPileId;
         return lootPileRenderer;
     }
 

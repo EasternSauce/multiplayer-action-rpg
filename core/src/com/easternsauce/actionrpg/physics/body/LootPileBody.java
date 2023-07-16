@@ -5,16 +5,16 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.area.LootPile;
 import com.easternsauce.actionrpg.model.area.LootPileId;
 import com.easternsauce.actionrpg.physics.world.PhysicsWorld;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-@Data
 public class LootPileBody {
-    LootPileId lootPileId;
-    Body b2body;
+    @Getter
+    private LootPileId lootPileId;
+    private Body b2body;
 
-    PhysicsWorld world;
+    private PhysicsWorld world;
 
     public static LootPileBody of(LootPileId lootPileId) {
         LootPileBody lootPileBody = LootPileBody.of();

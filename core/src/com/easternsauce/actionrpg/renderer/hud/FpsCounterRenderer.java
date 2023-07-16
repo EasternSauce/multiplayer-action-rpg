@@ -6,11 +6,9 @@ import com.easternsauce.actionrpg.game.assets.Assets;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
 import com.easternsauce.actionrpg.util.Constants;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-@Data
 public class FpsCounterRenderer {
     public void render(RenderingLayer renderingLayer) {
         float fps = Gdx.graphics.getFramesPerSecond();

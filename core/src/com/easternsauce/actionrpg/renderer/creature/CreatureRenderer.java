@@ -8,19 +8,20 @@ import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
 import com.easternsauce.actionrpg.util.Constants;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-@Data
 public class CreatureRenderer {
     private CreatureId creatureId;
+    @Getter
     private CreatureSprite creatureSprite;
 
     public static CreatureRenderer of(CreatureId creatureId) {
         CreatureRenderer creatureRenderer = new CreatureRenderer();
-        creatureRenderer.setCreatureId(creatureId);
-        creatureRenderer.setCreatureSprite(CreatureSprite.of(creatureId));
+
+        creatureRenderer.creatureId = creatureId;
+        creatureRenderer.creatureSprite = CreatureSprite.of(creatureId);
         return creatureRenderer;
     }
 

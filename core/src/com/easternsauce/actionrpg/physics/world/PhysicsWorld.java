@@ -19,33 +19,24 @@ import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
 public class PhysicsWorld {
-    private TiledMap map;
-
-    private TiledMapTileLayer layer;
-
-    @Getter
-    private World b2world;
-
     @Getter
     private final Map<Vector2Int, Boolean> traversables = new HashMap<>();
-
     @Getter
     private final Map<Vector2Int, Boolean> traversablesWithMargins = new HashMap<>();
-
     @Getter
     private final Map<Vector2Int, Boolean> flyover = new HashMap<>();
-
-    @Getter
-    private Map<Vector2Int, Integer> clearances = new HashMap<>();
-
-    private Float tileWidth;
-    private Float tileHeight;
-
     @Getter
     private final List<TerrainTileBody> terrainTiles = new LinkedList<>();
     @Getter
     private final List<TerrainTileBody> terrainBorders = new LinkedList<>();
-
+    private TiledMap map;
+    private TiledMapTileLayer layer;
+    @Getter
+    private World b2world;
+    @Getter
+    private Map<Vector2Int, Integer> clearances = new HashMap<>();
+    private Float tileWidth;
+    private Float tileHeight;
     private Map<Vector2Int, PathingNode> pathingGraph;
 
     public static PhysicsWorld of(TiledMap map) {

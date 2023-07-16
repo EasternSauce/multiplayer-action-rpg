@@ -9,27 +9,32 @@ import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.ability.AbilityId;
 import com.easternsauce.actionrpg.model.ability.AbilityState;
 import com.easternsauce.actionrpg.renderer.animationconfig.AbilityAnimationConfig;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-@Data
 public class AbilityRenderer {
-    AbilityId abilityId;
+    @Getter
+    private AbilityId abilityId;
 
-    Sprite sprite;
+    @Getter
+    private Sprite sprite;
 
-    Animation<TextureRegion> channelAnimation;
-    Animation<TextureRegion> activeAnimation;
+    @Getter
+    private Animation<TextureRegion> channelAnimation;
+    @Getter
+    private Animation<TextureRegion> activeAnimation;
 
-    TextureRegion channelTextureRegion;
-    TextureRegion activeTextureRegion;
-
-    String textureName;
+    @Getter
+    private TextureRegion channelTextureRegion;
+    @Getter
+    private TextureRegion activeTextureRegion;
 
     public static AbilityRenderer of(AbilityId abilityId) {
         AbilityRenderer abilityRenderer = new AbilityRenderer();
-        abilityRenderer.setAbilityId(abilityId);
+
+        abilityRenderer.abilityId = abilityId;
+
         return abilityRenderer;
     }
 

@@ -59,8 +59,7 @@ public class GameplayScreen implements Screen {
 
         game.getViewportsHandler().initViewports();
 
-        game.getViewportsHandler().setHudCameraPosition(
-            Constants.WINDOW_WIDTH / 2f,
+        game.getViewportsHandler().setHudCameraPosition(Constants.WINDOW_WIDTH / 2f,
             Constants.WINDOW_HEIGHT / 2f
         ); // TODO: move it inward?
 

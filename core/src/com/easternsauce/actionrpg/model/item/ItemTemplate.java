@@ -104,19 +104,19 @@ public class ItemTemplate {
             .collect(Collectors.toMap(ItemTemplate::getId, itemTemplate -> itemTemplate)));
     }
 
-    String id;
-    String name;
-    String description;
-    Vector2Int iconPos;
-    Boolean isStackable = false;
-    Boolean isConsumable = false;
-    Boolean isEquipable = false;
-    Boolean isQualityNonApplicable = false;
-    EquipmentSlotType equipmentSlotType;
-    Integer worth = 0;
-    Float damage;
-    Integer armor;
-    SkillType attackSkill;
+    private String id;
+    private String name;
+    private String description;
+    private Vector2Int iconPos;
+    private Boolean isStackable = false;
+    private Boolean isConsumable = false;
+    private Boolean isEquipable = false;
+    private Boolean isQualityNonApplicable = false;
+    private EquipmentSlotType equipmentSlotType;
+    private Integer worth = 0;
+    private Float damage;
+    private Integer armor;
+    private SkillType attackSkill;
 
     public static ItemTemplate of(String id, String name, String description, Vector2Int iconPos) {
         ItemTemplate itemTemplate = ItemTemplate.of();

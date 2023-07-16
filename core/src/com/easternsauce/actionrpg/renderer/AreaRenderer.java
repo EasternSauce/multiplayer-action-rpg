@@ -6,19 +6,20 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.util.Constants;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
-@Data
 public class AreaRenderer {
-    AreaId id;
-    OrthogonalTiledMapRenderer tiledMapRenderer;
+    @Getter
+    private AreaId id;
+    @Getter
+    private OrthogonalTiledMapRenderer tiledMapRenderer;
 
     public static AreaRenderer of(AreaId id) {
         AreaRenderer areaRenderer = AreaRenderer.of();
-        areaRenderer.setId(id);
+        areaRenderer.id = id;
         return areaRenderer;
     }
 

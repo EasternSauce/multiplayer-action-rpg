@@ -2,7 +2,7 @@ package com.easternsauce.actionrpg.physics.pathing;
 
 import com.easternsauce.actionrpg.model.util.Vector2Int;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
@@ -10,16 +10,19 @@ import java.util.List;
 
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
-@Data
 public class PathingNode {
-    Vector2Int pos;
-    Integer clearance;
-    List<PathingEdge> outgoingEdges = new ArrayList<>();
+    @Getter
+    private Vector2Int pos;
+    private Integer clearance;
+    @Getter
+    private List<PathingEdge> outgoingEdges = new ArrayList<>();
 
     public static PathingNode of(Vector2Int pos, Integer clearance) {
         PathingNode pathingNode = new PathingNode();
-        pathingNode.setPos(pos);
-        pathingNode.setClearance(clearance);
+
+        pathingNode.pos = pos;
+        pathingNode.clearance = clearance;
+
         return pathingNode;
     }
 

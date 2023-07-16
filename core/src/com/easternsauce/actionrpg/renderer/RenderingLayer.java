@@ -8,18 +8,19 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
-@Data
 public class RenderingLayer {
+    @Getter
+    private final SpriteBatch spriteBatch = new SpriteBatch();
 
-    final SpriteBatch spriteBatch = new SpriteBatch();
-    Texture texture;
-    final ShapeDrawer shapeDrawer = new ShapeDrawer(spriteBatch, createTextureAndRegion());
+    private Texture texture;
+    @Getter
+    private final ShapeDrawer shapeDrawer = new ShapeDrawer(spriteBatch, createTextureAndRegion());
 
     public void begin() {
         spriteBatch.begin();

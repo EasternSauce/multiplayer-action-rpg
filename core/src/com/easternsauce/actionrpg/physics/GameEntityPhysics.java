@@ -13,27 +13,36 @@ import com.easternsauce.actionrpg.physics.body.*;
 import com.easternsauce.actionrpg.physics.event.*;
 import com.easternsauce.actionrpg.physics.world.PhysicsWorld;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
-@Data
 public class GameEntityPhysics {
+    @Getter
+    private final List<PhysicsEvent> physicsEventQueue = Collections.synchronizedList(new ArrayList<>());
+    @Getter
+    private Map<AreaId, PhysicsWorld> physicsWorlds;
+    @Getter
+    private Map<CreatureId, CreatureBody> creatureBodies = new HashMap<>();
+    @Getter
+    private Map<AbilityId, AbilityBody> abilityBodies = new HashMap<>();
+    @Getter
+    private Map<AreaGateId, AreaGateBody> areaGateBodies = new HashMap<>();
 
-    final List<PhysicsEvent> physicsEventQueue = Collections.synchronizedList(new ArrayList<>());
-    Map<AreaId, PhysicsWorld> physicsWorlds;
-    Map<CreatureId, CreatureBody> creatureBodies = new HashMap<>();
-    Map<AbilityId, AbilityBody> abilityBodies = new HashMap<>();
-    Map<AreaGateId, AreaGateBody> areaGateBodies = new HashMap<>();
+    @Getter
+    private Map<LootPileId, LootPileBody> lootPileBodies = new HashMap<>();
 
-    Map<LootPileId, LootPileBody> lootPileBodies = new HashMap<>();
-
-    Box2DDebugRenderer debugRenderer;
-    Boolean isForceUpdateBodyPositions = false;
+    @Getter
+    @Setter
+    private Box2DDebugRenderer debugRenderer;
+    @Getter
+    @Setter
+    private Boolean isForceUpdateBodyPositions = false;
 
     public void init(Map<AreaId, TiledMap> maps, CoreGame game) {
         physicsWorlds = maps.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,

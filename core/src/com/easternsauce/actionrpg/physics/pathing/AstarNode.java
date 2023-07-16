@@ -10,11 +10,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(staticName = "of")
 @Data
 public class AstarNode {
-    PathingNode pathingNode;
-    Vector2Int parent = null;
-    Double f = Double.MAX_VALUE;
-    Double g = Double.MAX_VALUE;
-    Double h = Double.MAX_VALUE;
+    private PathingNode pathingNode;
+    private Vector2Int parent = null;
+    private Double f = Double.MAX_VALUE;
+    private Double g = Double.MAX_VALUE;
+    private Double h = Double.MAX_VALUE;
 
     public static AstarNode of(PathingNode pathingNode) {
         AstarNode astarNode = AstarNode.of();

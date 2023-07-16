@@ -1,13 +1,16 @@
 package com.easternsauce.actionrpg.model.util;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @NoArgsConstructor(staticName = "of")
-@Data
 public class SimpleTimer {
-    float time = 0f;
-    boolean isRunning = false;
+    @Getter
+    @Setter
+    private float time = 0f;
+    @Getter
+    private boolean isRunning = false;
 
     public static SimpleTimer getExpiredTimer() {
         SimpleTimer simpleTimer = SimpleTimer.of();

@@ -3,19 +3,25 @@ package com.easternsauce.actionrpg.physics.body;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.easternsauce.actionrpg.model.util.Vector2Int;
 import com.easternsauce.actionrpg.physics.world.PhysicsWorld;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-@Data
 public class TerrainTileBody {
-    Vector2Int pos;
-    Float tileWidth;
-    Float tileHeight;
-    Integer layer;
-    Boolean isFlyover;
-    Body b2body;
-    com.badlogic.gdx.math.Polygon polygon;
+    @Getter
+    private Vector2Int pos;
+    @Getter
+    private Float tileWidth;
+    @Getter
+    private Float tileHeight;
+    @Getter
+    private Integer layer;
+    @Getter
+    private Boolean isFlyover;
+    @Getter
+    private Body b2body;
+    @Getter
+    private com.badlogic.gdx.math.Polygon polygon;
 
     public static TerrainTileBody of(Vector2Int pos,
                                      Float tileWidth,

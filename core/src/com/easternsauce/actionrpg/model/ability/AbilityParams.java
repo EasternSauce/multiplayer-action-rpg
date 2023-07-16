@@ -18,77 +18,115 @@ import java.util.concurrent.ConcurrentSkipListMap;
 @NoArgsConstructor(staticName = "of")
 @Data
 public class AbilityParams implements EntityParams {
-    @NonNull AbilityId id;
-    @NonNull AreaId areaId;
-    @NonNull AbilityState state = AbilityState.INACTIVE;
-    Vector2 pos;
-    @NonNull Float width;
-    @NonNull Float height;
-    @NonNull CreatureId creatureId;
-    @NonNull SimpleTimer stateTimer = SimpleTimer.getExpiredTimer();
-    @NonNull Vector2 dirVector = Vector2.of(0f, 0f);
-    @NonNull Vector2 vectorTowardsTarget = Vector2.of(0f, 0f);
-    @NonNull String textureName;
+    @NonNull
+    private AbilityId id;
+    @NonNull
+    private AreaId areaId;
+    @NonNull
+    private AbilityState state = AbilityState.INACTIVE;
+    private Vector2 pos;
+    @NonNull
+    private Float width;
+    @NonNull
+    private Float height;
+    @NonNull
+    private CreatureId creatureId;
+    @NonNull
+    private SimpleTimer stateTimer = SimpleTimer.getExpiredTimer();
+    @NonNull
+    private Vector2 dirVector = Vector2.of(0f, 0f);
+    @NonNull
+    private Vector2 vectorTowardsTarget = Vector2.of(0f, 0f);
+    @NonNull
+    private String textureName;
 
-    @NonNull Float rotationAngle = 0f;
+    @NonNull
+    private Float rotationAngle = 0f;
 
-    @NonNull Boolean isChannelAnimationLooping;
-    @NonNull Boolean isActiveAnimationLooping;
+    @NonNull
+    private Boolean isChannelAnimationLooping;
+    @NonNull
+    private Boolean isActiveAnimationLooping;
 
-    @NonNull Float startingRange = 0f;
+    @NonNull
+    private Float startingRange = 0f;
 
-    @NonNull Map<CreatureId, Float> creaturesAlreadyHit = new ConcurrentSkipListMap<>();
-    @NonNull CreaturesHitCounter damagingHitCreaturesHitCounter = CreaturesHitCounter.of();
+    @NonNull
+    private Map<CreatureId, Float> creaturesAlreadyHit = new ConcurrentSkipListMap<>();
+    @NonNull
+    private CreaturesHitCounter damagingHitCreaturesHitCounter = CreaturesHitCounter.of();
 
-    @NonNull Vector2 velocity = Vector2.of(0f, 0f);
-    @NonNull Float speed = 0f;
+    @NonNull
+    private Vector2 velocity = Vector2.of(0f, 0f);
+    @NonNull
+    private Float speed = 0f;
 
-    @NonNull Float baseDamage;
-    @NonNull Float weaponDamage;
-    @NonNull Float damageMultiplier = 1.0f;
+    @NonNull
+    private Float baseDamage;
+    @NonNull
+    private Float weaponDamage;
+    @NonNull
+    private Float damageMultiplier = 1.0f;
 
-    @NonNull Boolean isPlayerAbility = false;
+    @NonNull
+    private Boolean isPlayerAbility = false;
 
-    @NonNull Float channelTime;
-    @NonNull Float activeTime;
+    @NonNull
+    private Float channelTime;
+    @NonNull
+    private Float activeTime;
 
-    @NonNull Boolean attackWithoutMoving = false;
+    @NonNull
+    private Boolean attackWithoutMoving = false;
 
-    Float delayedActionTime;
+    private Float delayedActionTime;
 
-    @NonNull Boolean delayedActionCompleted = false;
+    @NonNull
+    private Boolean delayedActionCompleted = false;
 
-    @NonNull Float maxPlacementRange;
+    @NonNull
+    private Float maxPlacementRange;
 
-    @NonNull Boolean isSkipCreatingBody = false;
+    @NonNull
+    private Boolean isSkipCreatingBody = false;
 
-    @NonNull Float rotationShift = 0f;
+    @NonNull
+    private Float rotationShift = 0f;
 
-    @NonNull Boolean isFlip = false;
+    @NonNull
+    private Boolean isFlip = false;
 
-    @NonNull SimpleTimer changeDirectionTimer = SimpleTimer.getStartedTimer();
+    @NonNull
+    private SimpleTimer changeDirectionTimer = SimpleTimer.getStartedTimer();
 
-    @NonNull Boolean foundTarget = false;
+    @NonNull
+    private Boolean foundTarget = false;
 
-    @NonNull Vector2 chainFromPos;
+    @NonNull
+    private Vector2 chainFromPos;
     Vector2 chainToPos;
 
-    @NonNull Vector2 skillStartPos;
+    @NonNull
+    private Vector2 skillStartPos;
 
-    @NonNull Float wallBounceCount = 0f;
+    @NonNull
+    private Float wallBounceCount = 0f;
 
-    @NonNull Boolean isComingBack = false;
+    @NonNull
+    private Boolean isComingBack = false;
 
-    @NonNull SkillType skillType;
+    @NonNull
+    private SkillType skillType;
 
-    @NonNull Boolean isMarkedAsShielded = false;
+    @NonNull
+    private Boolean isMarkedAsShielded = false;
 
-    Float directionalAttachedAbilityRotationShift = null;
+    private Float directionalAttachedAbilityRotationShift = null;
 
-    Float overrideSize;
-    Float overrideDuration;
-    Float overrideDamage;
+    private Float overrideSize;
+    private Float overrideDuration;
+    private Float overrideDamage;
 
-    RandomGenerator randomGenerator;
+    private RandomGenerator randomGenerator;
 
 }

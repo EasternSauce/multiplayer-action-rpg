@@ -1,14 +1,12 @@
 package com.easternsauce.actionrpg.model.util;
 
 import com.easternsauce.actionrpg.util.RandomHolder;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-@Data
 public class RandomGenerator {
-    Integer startingSeed;
-    Integer counter = 0;
+    private Integer startingSeed;
+    private Integer counter = 0;
 
     public static RandomGenerator of(Integer seed) {
         RandomGenerator randomGenerator = RandomGenerator.of();

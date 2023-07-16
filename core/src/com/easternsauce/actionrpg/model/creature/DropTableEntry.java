@@ -3,7 +3,7 @@ package com.easternsauce.actionrpg.model.creature;
 import com.easternsauce.actionrpg.model.item.ItemTemplate;
 import com.easternsauce.actionrpg.model.skill.SkillType;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.Map;
@@ -12,8 +12,13 @@ import java.util.concurrent.ConcurrentSkipListMap;
 @SuppressWarnings("SpellCheckingInspection")
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
-@Data
 public class DropTableEntry implements Comparable<DropTableEntry> {
+    private static final Map<SkillType, Integer> magicGrantedSkillDrops = new ConcurrentSkipListMap<>();
+    private static final Map<SkillType, Integer> specialMagicGrantedSkillDrops = new ConcurrentSkipListMap<>();
+    private static final Map<SkillType, Integer> movementGrantedSkillDrops = new ConcurrentSkipListMap<>();
+    private static final Map<SkillType, Integer> rangedGrantedSkillDrops = new ConcurrentSkipListMap<>();
+    private static final Map<SkillType, Integer> shieldGrantedSkillDrops = new ConcurrentSkipListMap<>();
+    private static final Map<SkillType, Integer> ironSwordGrantedSkillDrops = new ConcurrentSkipListMap<>();
     public static DropTableEntry hideGlovesDrop = DropTableEntry.of(0.05f,
         ItemTemplate.templates.get("hideGloves"),
         0f,
@@ -44,37 +49,31 @@ public class DropTableEntry implements Comparable<DropTableEntry> {
         0f,
         new ConcurrentSkipListMap<>()
     );
-    private static Map<SkillType, Integer> magicGrantedSkillDrops = new ConcurrentSkipListMap<>();
     public static DropTableEntry leatherArmorDrop = DropTableEntry.of(0.05f,
         ItemTemplate.templates.get("leatherArmor"),
         1f,
         magicGrantedSkillDrops
     );
-    private static Map<SkillType, Integer> specialMagicGrantedSkillDrops = new ConcurrentSkipListMap<>();
     public static DropTableEntry specialLeatherArmorDrop = DropTableEntry.of(1f,
         ItemTemplate.templates.get("leatherArmor"),
         1f,
         specialMagicGrantedSkillDrops
     );
-    private static Map<SkillType, Integer> movementGrantedSkillDrops = new ConcurrentSkipListMap<>();
     public static DropTableEntry specialRingmailGreavesDrop = DropTableEntry.of(1f,
         ItemTemplate.templates.get("ringmailGreaves"),
         1f,
         movementGrantedSkillDrops
     );
-    private static Map<SkillType, Integer> rangedGrantedSkillDrops = new ConcurrentSkipListMap<>();
     public static DropTableEntry specialHideGlovesDrop = DropTableEntry.of(1f,
         ItemTemplate.templates.get("hideGloves"),
         1f,
         rangedGrantedSkillDrops
     );
-    private static Map<SkillType, Integer> shieldGrantedSkillDrops = new ConcurrentSkipListMap<>();
     public static DropTableEntry shieldDrop = DropTableEntry.of(1f,
         ItemTemplate.templates.get("woodenShield"),
         1f,
         shieldGrantedSkillDrops
     );
-    private static Map<SkillType, Integer> ironSwordGrantedSkillDrops = new ConcurrentSkipListMap<>();
     public static DropTableEntry specialIronSwordDrop = DropTableEntry.of(1f,
         ItemTemplate.templates.get("ironSword"),
         1f,
@@ -101,9 +100,13 @@ public class DropTableEntry implements Comparable<DropTableEntry> {
 
     }
 
+    @Getter
     Float dropChance;
+    @Getter
     ItemTemplate template;
+    @Getter
     Float grantedSkillChance;
+    @Getter
     Map<SkillType, Integer> grantedSkillWeights;
 
     @Override

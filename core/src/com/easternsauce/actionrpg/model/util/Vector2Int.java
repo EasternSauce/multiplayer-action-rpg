@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(staticName = "of")
 @Data
 public class Vector2Int {
-    int x;
-    int y;
+    private int x;
+    private int y;
 }

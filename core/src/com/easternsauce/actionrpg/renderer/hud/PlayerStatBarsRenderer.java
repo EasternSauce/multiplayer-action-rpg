@@ -4,12 +4,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
 @NoArgsConstructor(staticName = "of")
-@Data
 public class PlayerStatBarsRenderer {
     public void render(Creature creature, RenderingLayer renderingLayer) {
         ShapeDrawer shapeDrawer = renderingLayer.getShapeDrawer();

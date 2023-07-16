@@ -11,12 +11,12 @@ import java.util.concurrent.ConcurrentSkipListMap;
 @NoArgsConstructor(staticName = "of")
 @Data
 public class Item implements Comparable<Item> {
-    ItemTemplate template;
-    Integer quantity = 1;
-    Float qualityModifier = 1f;
-    Map<SkillType, Integer> grantedSkills = new ConcurrentSkipListMap<>();
+    private ItemTemplate template;
+    private Integer quantity = 1;
+    private Float qualityModifier = 1f;
+    private Map<SkillType, Integer> grantedSkills = new ConcurrentSkipListMap<>();
 
-    LootPileId lootPileId;
+    private LootPileId lootPileId;
 
     @SuppressWarnings("StringConcatenationInsideStringBufferAppend")
     public String getDescription() {
@@ -27,7 +27,7 @@ public class Item implements Comparable<Item> {
         if (template.getArmor() != null) {
             builder.append("Armor: " + getArmor() + "\n");
         }
-        getGrantedSkills().forEach((skillType, level) -> builder.append("Grants Level " +
+        grantedSkills.forEach((skillType, level) -> builder.append("Grants Level " +
             level +
             " " +
             skillType.getPrettyName() +

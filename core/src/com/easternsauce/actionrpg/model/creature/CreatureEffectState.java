@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(staticName = "of")
 @Data
 public class CreatureEffectState {
-    Float startTime = 0f;
-    Float duration = 0f;
+    private Float startTime = 0f;
+    private Float duration = 0f;
 
     public Float getRemaining(CoreGame game) {
         float currentTime = game.getGameState().getTime();

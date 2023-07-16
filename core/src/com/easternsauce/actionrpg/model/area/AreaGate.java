@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(staticName = "of")
 @Data
 public class AreaGate {
-    AreaGateId areaGateId;
-    Float width;
-    Float height;
-    Vector2 pos;
-    AreaId areaId;
-    AreaGateId leadingToAreaGateId;
+    private AreaGateId areaGateId;
+    private Float width;
+    private Float height;
+    private Vector2 pos;
+    private AreaId areaId;
+    private AreaGateId leadingToAreaGateId;
 }

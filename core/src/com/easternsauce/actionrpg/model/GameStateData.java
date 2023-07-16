@@ -19,24 +19,24 @@ import java.util.concurrent.ConcurrentSkipListMap;
 @NoArgsConstructor(staticName = "of")
 @Data
 public class GameStateData {
-    Map<CreatureId, Creature> creatures = new ConcurrentSkipListMap<>();
+    private Map<CreatureId, Creature> creatures = new ConcurrentSkipListMap<>();
 
-    Map<CreatureId, Creature> removedCreatures = new ConcurrentSkipListMap<>();
-    Map<AbilityId, Ability> abilities = new ConcurrentSkipListMap<>();
-    Map<AreaId, Area> areas = new ConcurrentSkipListMap<>();
+    private Map<CreatureId, Creature> removedCreatures = new ConcurrentSkipListMap<>();
+    private Map<AbilityId, Ability> abilities = new ConcurrentSkipListMap<>();
+    private Map<AreaId, Area> areas = new ConcurrentSkipListMap<>();
 
-    AreaId defaultAreaId = AreaId.of("area1");
-    SimpleTimer generalTimer = SimpleTimer.getStartedTimer();
+    private AreaId defaultAreaId = AreaId.of("area1");
+    private SimpleTimer generalTimer = SimpleTimer.getStartedTimer();
 
-    Map<CreatureId, PlayerConfig> playerConfig = new ConcurrentSkipListMap<>();
+    private Map<CreatureId, PlayerConfig> playerConfig = new ConcurrentSkipListMap<>();
 
-    Map<LootPileId, LootPile> lootPiles = new ConcurrentSkipListMap<>();
+    private Map<LootPileId, LootPile> lootPiles = new ConcurrentSkipListMap<>();
 
-    Map<AreaGateId, AreaGate> areaGates = new ConcurrentSkipListMap<>();
+    private Map<AreaGateId, AreaGate> areaGates = new ConcurrentSkipListMap<>();
 
-    Map<EnemyRallyPointId, EnemyRallyPoint> enemyRallyPoints = new ConcurrentSkipListMap<>();
+    private Map<EnemyRallyPointId, EnemyRallyPoint> enemyRallyPoints = new ConcurrentSkipListMap<>();
 
-    RandomGenerator randomGenerator;
+    private RandomGenerator randomGenerator;
 
     public static GameStateData of(GameStateData gameStateData,
                                    Map<CreatureId, Creature> creatures,

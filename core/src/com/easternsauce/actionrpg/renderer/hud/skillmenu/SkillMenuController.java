@@ -8,14 +8,12 @@ import com.easternsauce.actionrpg.model.action.SkillPickerMenuSlotChangeAction;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.renderer.util.Rect;
 import com.esotericsoftware.kryonet.Client;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @NoArgsConstructor(staticName = "of")
-@Data
 public class SkillMenuController {
     @SuppressWarnings("UnusedReturnValue")
     public boolean performSkillMenuPickerClick(Client client, CoreGame game) {

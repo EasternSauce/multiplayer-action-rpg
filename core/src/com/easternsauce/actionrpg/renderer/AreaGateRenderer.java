@@ -6,16 +6,17 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.area.AreaGate;
 import com.easternsauce.actionrpg.model.area.AreaGateId;
 import com.easternsauce.actionrpg.model.area.AreaId;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @SuppressWarnings("SpellCheckingInspection")
 @NoArgsConstructor(staticName = "of")
-@Data
 public class AreaGateRenderer {
-    AreaGateId areaGateId;
+    @Getter
+    private AreaGateId areaGateId;
 
-    Sprite sprite;
+    @Getter
+    private Sprite sprite;
 
     public static AreaGateRenderer of(AreaGateId areaGateId) {
 

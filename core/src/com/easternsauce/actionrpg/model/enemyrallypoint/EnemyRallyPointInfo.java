@@ -13,8 +13,8 @@ import java.util.Map;
 @AllArgsConstructor(staticName = "of")
 @Data
 public class EnemyRallyPointInfo {
-    Vector2 pos;
-    AreaId areaId;
-    Map<EnemyTemplate, Integer> enemyTemplateWeights;
-    Integer enemiesTotal;
+    private Vector2 pos;
+    private AreaId areaId;
+    private Map<EnemyTemplate, Integer> enemyTemplateWeights;
+    private Integer enemiesTotal;
 }
