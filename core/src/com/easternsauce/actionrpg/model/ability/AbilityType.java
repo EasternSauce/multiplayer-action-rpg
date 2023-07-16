@@ -62,6 +62,7 @@ public enum AbilityType {
     PUNCH(Punch::of),
 
     RING_OF_FIRE(RingOfFire::of),
+    MOB_RING_OF_FIRE(MobRingOfFire::of),
     DASH(Dash::of),
     ICE_SPEAR_RAMPAGE(IceSpearRampage::of);
 

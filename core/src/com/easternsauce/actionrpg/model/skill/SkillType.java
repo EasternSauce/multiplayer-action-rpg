@@ -44,6 +44,7 @@ public enum SkillType {
     PUNCH("Punch", true, AbilityType.PUNCH, 0.4f, 14f, 0f),
 
     RING_OF_FIRE("Ring of Fire", true, AbilityType.RING_OF_FIRE, 1f, 10f, 13f),
+    MOB_RING_OF_FIRE("Ring of Fire (mob only)", true, AbilityType.MOB_RING_OF_FIRE, 1f, 10f, 13f),
 
     DASH("Dash", false, AbilityType.DASH, 0.45f, 15f, 0f),
 

@@ -9,16 +9,16 @@ import lombok.NoArgsConstructor;
 @SuppressWarnings("SpellCheckingInspection")
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-public class RingOfFire extends Ability {
+public class MobRingOfFire extends Ability {
     @Getter
     private AbilityParams params;
 
-    public static RingOfFire of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        RingOfFire ability = RingOfFire.of();
+    public static MobRingOfFire of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+        MobRingOfFire ability = MobRingOfFire.of();
 
         ability.params = abilityParams
-            .setWidth(8f)
-            .setHeight(8f)
+            .setWidth(20f)
+            .setHeight(20f)
             .setChannelTime(0.4f)
             .setActiveTime(0.16f)
             .setBaseDamage(28f)

@@ -71,7 +71,7 @@ public class EnemyTemplate {
         randomDropSet,
         new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.ICE_SPEAR_RAMPAGE, 50f),
             EnemySkillUseEntry.of(SkillType.VOLATILE_BUBBLE, 60f),
-            EnemySkillUseEntry.of(SkillType.RING_OF_FIRE, 100f)
+            EnemySkillUseEntry.of(SkillType.MOB_RING_OF_FIRE, 150f)
         ))
     );
 

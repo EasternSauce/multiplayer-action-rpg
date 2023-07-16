@@ -66,7 +66,7 @@ public class IceSpearRampage extends Projectile {
                     .setOverrideMaximumRange(30f)
                     .setOverrideScale(0.8f)
                     .setOverrideSpeed(13f)
-                    .setOverrideStunDuration(0.25f)
+                    .setOverrideStunDuration(0.3f)
                     .setOverrideDamage(38f)
             );
 
