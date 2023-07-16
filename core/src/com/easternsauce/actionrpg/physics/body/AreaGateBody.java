@@ -31,10 +31,6 @@ public class AreaGateBody {
         AreaId areaId = areaGate.getAreaId();
         world = game.getEntityManager().getGameEntityPhysics().getPhysicsWorlds().get(areaId);
 
-        if (world == null) {
-            System.out.println("hihi");
-        }
-
         b2body = B2BodyFactory.createAreaGateB2body(world,
             this,
             areaGate.getPos(),

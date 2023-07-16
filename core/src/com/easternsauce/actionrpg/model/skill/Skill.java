@@ -44,14 +44,7 @@ public class Skill {
     public void tryPerform(Vector2 startingPos, Vector2 dirVector, CoreGame game) {
         Creature creature = game.getCreature(creatureId);
 
-        if (creature != null &&
-            creature.canPerformSkill(this, game) &&
-            performTimer.getTime() > cooldown &&
-            (!skillType.getDamaging() ||
-                creature.getParams().getGeneralSkillPerformCooldownTimer().getTime() >
-                    Constants.GENERAL_PLAYER_SKILL_PERFORM_COOLDOWN) &&
-            !creature.isStunned(game)) {
-
+        if (canPerform(game, creature)) {
             AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
             AbilityParams abilityParams = AbilityParams
                 .of()
@@ -70,6 +63,16 @@ public class Skill {
             creature.onPerformSkill(this);
             performTimer.restart();
         }
+    }
+
+    private boolean canPerform(CoreGame game, Creature creature) {
+        return creature != null &&
+            creature.canPerformSkill(this, game) &&
+            performTimer.getTime() > cooldown &&
+            (!skillType.getDamaging() ||
+                creature.getParams().getGeneralSkillPerformCooldownTimer().getTime() >
+                    Constants.GENERAL_PLAYER_SKILL_PERFORM_COOLDOWN) &&
+            !creature.isStunned(game);
     }
 
     public void resetCooldown() {

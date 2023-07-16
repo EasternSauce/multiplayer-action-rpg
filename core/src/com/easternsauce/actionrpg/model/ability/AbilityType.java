@@ -10,6 +10,7 @@ import java.util.function.BiFunction;
 public enum AbilityType {
     SWORD_SLASH(SwordSlash::of),
     MOB_SWORD_SLASH(MobSwordSlash::of),
+    BOSS_SWORD_SLASH(BossSwordSlash::of),
     FIREBALL(Fireball::of),
     FIREBALL_EXPLOSION(FireballExplosion::of),
     LIGHTNING_SPARK(LightningSpark::of),

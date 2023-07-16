@@ -1,5 +1,6 @@
 package com.easternsauce.actionrpg.game.server;
 
+import com.easternsauce.actionrpg.util.Constants;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 import lombok.NoArgsConstructor;
@@ -18,7 +19,7 @@ public class GameDataBroadcaster {
             try {
                 while (true) {
                     //noinspection BusyWait
-                    Thread.sleep(2000);
+                    Thread.sleep(Constants.TIME_BETWEEN_GAMESTATE_BROADCASTS);
 
                     Connection[] connections = endPoint.getConnections();
                     for (Connection connection : connections) {

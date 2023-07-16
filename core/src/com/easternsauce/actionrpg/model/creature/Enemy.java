@@ -2,6 +2,7 @@ package com.easternsauce.actionrpg.model.creature;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.Ability;
+import com.easternsauce.actionrpg.model.ability.AbilityState;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.enemyrallypoint.EnemyRallyPointId;
 import com.easternsauce.actionrpg.model.skill.Skill;
@@ -18,6 +19,7 @@ import lombok.NoArgsConstructor;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -107,7 +109,7 @@ public class Enemy extends Creature {
                 processAutoControlStateChangeLogic(game);
 
                 getParams().getEnemyParams().setAutoControlStateTime(1f +
-                    Math.abs(game.getGameState().getRandomGenerator().nextFloat()));
+                    Math.abs(getParams().getRandomGenerator().nextFloat()));
             }
 
             if (getParams().getEnemyParams().getJustAttackedByCreatureId() != null && game.getCreature(getParams()
@@ -191,16 +193,16 @@ public class Enemy extends Creature {
                     .multiplyBy(Constants.DEFENSIVE_POS_DISTANCE));
 
                 getParams().getEnemyParams().setCurrentDefensivePos(Vector2.of(defensivePos.getX() +
-                        4f * game.getGameState().getRandomGenerator().nextFloat(),
-                    defensivePos.getY() + 4f * game.getGameState().getRandomGenerator().nextFloat()
+                        4f * getParams().getRandomGenerator().nextFloat(),
+                    defensivePos.getY() + 4f * getParams().getRandomGenerator().nextFloat()
                 ));
             }
 
-            if (Math.abs(game.getGameState().getRandomGenerator().nextFloat()) < 0.3f) {
+            if (Math.abs(getParams().getRandomGenerator().nextFloat()) < 0.5f) {
                 getParams().getEnemyParams().setAutoControlState(EnemyAutoControlState.AGGRESSIVE);
             }
         } else if (getParams().getEnemyParams().getAutoControlState() == EnemyAutoControlState.AGGRESSIVE) {
-            if (Math.abs(game.getGameState().getRandomGenerator().nextFloat()) < 0.5f) {
+            if (Math.abs(getParams().getRandomGenerator().nextFloat()) < 0.35f) {
                 getParams().getEnemyParams().setAutoControlState(EnemyAutoControlState.KEEPING_DISTANCE);
 
             }
@@ -215,11 +217,11 @@ public class Enemy extends Creature {
                     .multiplyBy(getParams().getEnemyParams().getAttackDistance() + Constants.BACK_UP_DISTANCE));
 
                 getParams().getEnemyParams().setCurrentDefensivePos(Vector2.of(backUpPos.getX() +
-                        game.getGameState().getRandomGenerator().nextFloat(),
-                    backUpPos.getY() + game.getGameState().getRandomGenerator().nextFloat()
+                        getParams().getRandomGenerator().nextFloat(),
+                    backUpPos.getY() + getParams().getRandomGenerator().nextFloat()
                 ));
 
-                if (Math.abs(game.getGameState().getRandomGenerator().nextFloat()) < 0.5f) {
+                if (Math.abs(getParams().getRandomGenerator().nextFloat()) < 0.7f) {
                     getParams().getEnemyParams().setAutoControlState(EnemyAutoControlState.AGGRESSIVE);
                 }
             }
@@ -441,6 +443,22 @@ public class Enemy extends Creature {
 
     @Override
     public boolean canPerformSkill(Skill skill, CoreGame game) {
+        if (skill.getSkillType().getDamaging()) {
+            Set<Ability> damagingSkillNotAllowedAbilities = game
+                .getAbilities()
+                .values()
+                .stream()
+                .filter(ability -> !ability.isDamagingSkillAllowedDuring() &&
+                    ability.getParams().getCreatureId().equals(this.getParams().getId()) &&
+
+                    ability.getParams().getState() == AbilityState.ACTIVE)
+                .collect(Collectors.toSet());
+
+            if (!damagingSkillNotAllowedAbilities.isEmpty()) {
+                return false;
+            }
+        }
+
         return isAlive() && getParams().getStats().getStamina() >= skill.getStaminaCost();
     }
 
@@ -456,7 +474,7 @@ public class Enemy extends Creature {
 
             if (getParams().getEnemyParams().getAggroedCreatureId() == null ||
                 !getParams().getEnemyParams().getAggroedCreatureId().equals(ability.getParams().getCreatureId())) {
-                makeAggressiveAfterHitByAbility(ability, game);
+                makeAggressiveAfterHitByAbility(ability);
 
                 if (ability.isRanged()) {
                     getParams().getEnemyParams().getJustAttackedFromRangeTimer().restart();
@@ -465,9 +483,9 @@ public class Enemy extends Creature {
         }
     }
 
-    private void makeAggressiveAfterHitByAbility(Ability ability, CoreGame game) {
+    private void makeAggressiveAfterHitByAbility(Ability ability) {
         getParams().getEnemyParams().setAutoControlStateTime(1f +
-            Math.abs(game.getGameState().getRandomGenerator().nextFloat()));
+            Math.abs(getParams().getRandomGenerator().nextFloat()));
         getParams().getEnemyParams().getAutoControlStateTimer().restart();
         getParams().getEnemyParams().setAutoControlState(EnemyAutoControlState.AGGRESSIVE);
         getParams().getStats().setSpeed(getParams().getStats().getBaseSpeed());

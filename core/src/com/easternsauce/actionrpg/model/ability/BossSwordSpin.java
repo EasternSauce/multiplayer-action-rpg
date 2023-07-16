@@ -17,7 +17,7 @@ public class BossSwordSpin extends AttachedAbility {
 
     public static BossSwordSpin of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         BossSwordSpin ability = BossSwordSpin.of();
-        ability.params = abilityParams.setWidth(4f).setHeight(4f).setChannelTime(0f).setActiveTime(3f).setStartingRange(
+        ability.params = abilityParams.setWidth(6f).setHeight(6f).setChannelTime(0f).setActiveTime(4f).setStartingRange(
             4f).setTextureName("sword").setBaseDamage(42f).setChannelAnimationLooping(false).setActiveAnimationLooping(
             false).setDirVector(abilityParams.getDirVector().withRotatedDegAngle(90));
         return ability;
@@ -70,7 +70,7 @@ public class BossSwordSpin extends AttachedAbility {
 
     @Override
     public Float getStunDuration() {
-        return 0.35f;
+        return 0.3f;
     }
 
     @Override

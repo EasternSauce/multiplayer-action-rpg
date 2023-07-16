@@ -263,7 +263,7 @@ public abstract class Creature implements Entity {
 
     public boolean canPerformSkill(Skill skill, CoreGame game) {
         if (skill.getSkillType().getDamaging()) {
-            Set<Ability> damagingSKillNotAllowedAbilities = game
+            Set<Ability> damagingSkillNotAllowedAbilities = game
                 .getAbilities()
                 .values()
                 .stream()
@@ -273,7 +273,7 @@ public abstract class Creature implements Entity {
                     ability.getParams().getState() == AbilityState.ACTIVE)
                 .collect(Collectors.toSet());
 
-            if (!damagingSKillNotAllowedAbilities.isEmpty()) {
+            if (!damagingSkillNotAllowedAbilities.isEmpty()) {
                 return false;
             }
         }
