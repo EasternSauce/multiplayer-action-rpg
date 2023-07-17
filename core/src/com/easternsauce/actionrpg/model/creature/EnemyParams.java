@@ -32,11 +32,11 @@ public class EnemyParams {
     @NonNull
     private Float findTargetCooldown;
     @NonNull
-    private EnemyAutoControlState autoControlState;
+    private EnemyAutoControlsState autoControlsState;
     @NonNull
-    private SimpleTimer autoControlStateTimer = SimpleTimer.getExpiredTimer();
+    private SimpleTimer autoControlsStateTimer = SimpleTimer.getExpiredTimer();
     @NonNull
-    private Float autoControlStateTime;
+    private Float autoControlsStateTime;
     private Vector2 currentDefensivePos;
     @NonNull
     private SimpleTimer justAttackedFromRangeTimer = SimpleTimer.getExpiredTimer();

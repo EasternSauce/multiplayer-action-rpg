@@ -41,38 +41,38 @@ public class Skill {
         return skill;
     }
 
-    public void tryPerform(Vector2 startingPos, Vector2 dirVector, CoreGame game) {
+    public void perform(Vector2 startingPos, Vector2 dirVector, CoreGame game) {
         Creature creature = game.getCreature(creatureId);
 
-        if (canPerform(game, creature)) {
-            AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
-            AbilityParams abilityParams = AbilityParams
-                .of()
-                .setId(abilityId)
-                .setAreaId(creature
-                    .getParams()
-                    .getAreaId())
-                .setCreatureId(creatureId)
-                .setDirVector(dirVector)
-                .setVectorTowardsTarget(dirVector)
-                .setSkillStartPos(startingPos)
-                .setSkillType(skillType);
+        AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
+        AbilityParams abilityParams = AbilityParams
+            .of()
+            .setId(abilityId)
+            .setAreaId(creature.getParams().getAreaId())
+            .setCreatureId(creatureId)
+            .setDirVector(dirVector)
+            .setVectorTowardsTarget(dirVector)
+            .setSkillStartPos(startingPos)
+            .setSkillType(skillType);
 
-            game.getGameState().accessAbilities().spawnAbility(startingAbilityType, abilityParams, game);
+        game.getGameState().accessAbilities().spawnAbility(startingAbilityType, abilityParams, game);
 
-            creature.onPerformSkill(this);
-            performTimer.restart();
-        }
+        creature.onPerformSkill(this);
+        performTimer.restart();
     }
 
-    private boolean canPerform(CoreGame game, Creature creature) {
-        return creature != null &&
-            creature.canPerformSkill(this, game) &&
-            performTimer.getTime() > cooldown &&
-            (!skillType.getDamaging() ||
-                creature.getParams().getGeneralSkillPerformCooldownTimer().getTime() >
-                    Constants.GENERAL_PLAYER_SKILL_PERFORM_COOLDOWN) &&
-            !creature.isStunned(game);
+    public boolean canPerform(CoreGame game) {
+        Creature creature = game.getCreature(creatureId);
+
+        boolean allowedToPerformSkill = creature != null && creature.canPerformSkill(this, game);
+        boolean skillNotOnLocalCooldown = performTimer.getTime() > cooldown;
+        boolean skillNotOnGlobalCooldown = !skillType.getDamaging() ||
+            creature != null &&
+                creature.getParams().getGlobalSkillPerformCooldownTimer().getTime() >
+                    Constants.GLOBAL_SKILL_PERFORM_COOLDOWN;
+        boolean creatureNotStunned = creature != null && !creature.isStunned(game);
+
+        return allowedToPerformSkill && skillNotOnLocalCooldown && skillNotOnGlobalCooldown && creatureNotStunned;
     }
 
     public void resetCooldown() {

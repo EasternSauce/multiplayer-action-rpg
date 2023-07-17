@@ -47,9 +47,11 @@ public class CreatureAnimationConfig {
             CreatureAnimationConfig.of("minos", 0, 2.56f, 4.8f, 64, 120, 4, 0.1f, textureDirMap(3, 0, 1, 2), false)
         );
         configs.put("serpent",
-            CreatureAnimationConfig.of("serpent", 0, 4.11f, 4.8f, 48, 56, 3, 0.3f, textureDirMap(3, 0, 1, 2), true)
+            CreatureAnimationConfig.of("serpent", 0, 4.11f, 4.8f, 48, 56, 3, 0.1f, textureDirMap(3, 0, 1, 2), true)
         );
-
+        configs.put("sludge",
+            CreatureAnimationConfig.of("sludge", 0, 2f, 2f, 64, 64, 4, 0.1f, textureDirMap(3, 0, 1, 2), false)
+        );
     }
 
     private String textureName;

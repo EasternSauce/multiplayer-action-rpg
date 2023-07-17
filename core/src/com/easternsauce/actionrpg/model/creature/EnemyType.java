@@ -9,7 +9,8 @@ public enum EnemyType {
 
     MAGE("black_mage"),
     MINOS("minos"),
-    SERPENT("serpent");
+    SERPENT("serpent"),
+    SLUDGE("sludge");
 
     public String textureName;
 
