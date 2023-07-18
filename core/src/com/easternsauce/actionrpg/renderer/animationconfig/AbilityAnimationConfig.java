@@ -62,6 +62,21 @@ public class AbilityAnimationConfig {
 
         configs.put("smoke", AbilityAnimationConfig.of(64, 64, "smoke", "smoke", 0, 6, 0f, 0.022f, 1f));
 
+        configs.put("dig", AbilityAnimationConfig.of(32, 32, "dig", "dig", 0, 4, 0f, 0.1f, 1f));
+
+        configs.put("holy_explosion",
+            AbilityAnimationConfig.of(96,
+                96,
+                "holy_explosion_channel",
+                "holy_explosion_active",
+                10,
+                18,
+                0.017f,
+                0.017f,
+                1f
+            )
+        );
+
     }
 
     private Integer textureWidth;

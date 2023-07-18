@@ -79,7 +79,7 @@ public class BossSwordSpin extends AttachedAbility {
     }
 
     @Override
-    public boolean isDamagingSkillAllowedDuring() {
-        return false;
+    public boolean isDamagingSkillNotAllowedWhenActive() {
+        return true;
     }
 }

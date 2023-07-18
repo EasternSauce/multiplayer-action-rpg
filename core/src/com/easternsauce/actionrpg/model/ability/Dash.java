@@ -95,7 +95,7 @@ public class Dash extends AttachedAbility {
     }
 
     @Override
-    public boolean isCanStun() {
+    public boolean canStun() {
         return false;
     }
 }

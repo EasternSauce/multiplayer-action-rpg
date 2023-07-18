@@ -6,6 +6,7 @@ import com.easternsauce.actionrpg.model.ability.AbilityState;
 import com.easternsauce.actionrpg.model.area.AreaGate;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.creature.Creature;
+import com.easternsauce.actionrpg.model.creature.CreatureEffect;
 import com.easternsauce.actionrpg.model.creature.Player;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;
 import com.easternsauce.actionrpg.model.util.TeleportEvent;
@@ -20,9 +21,11 @@ public class PhysicsEventQueueProcessor {
             if (physicsEvent instanceof AbilityHitsCreatureEvent) {
                 AbilityHitsCreatureEvent event = (AbilityHitsCreatureEvent) physicsEvent;
 
-                if (game.getGameState().getCreaturesToUpdate().contains(event.getDestinationCreatureId()) &&
-                    game.getAbilitiesToUpdate().contains(event.getAbilityId())) {
+                Creature destinationCreature = game.getCreature(event.getDestinationCreatureId());
 
+                if (game.getGameState().getCreaturesToUpdate().contains(event.getDestinationCreatureId()) &&
+                    game.getAbilitiesToUpdate().contains(event.getAbilityId()) &&
+                    !destinationCreature.isEffectActive(CreatureEffect.NO_COLLIDE, game)) {
                     if (event.getSourceCreatureId().equals(event.getDestinationCreatureId())) {
                         Ability ability = game.getAbility(event.getAbilityId());
                         ability.onSelfCreatureHit(game);

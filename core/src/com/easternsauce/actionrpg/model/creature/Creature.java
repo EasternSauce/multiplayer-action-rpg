@@ -267,9 +267,8 @@ public abstract class Creature implements Entity {
                 .getAbilities()
                 .values()
                 .stream()
-                .filter(ability -> !ability.isDamagingSkillAllowedDuring() &&
+                .filter(ability -> ability.isDamagingSkillNotAllowedWhenActive() &&
                     ability.getParams().getCreatureId().equals(this.getParams().getId()) &&
-
                     ability.getParams().getState() == AbilityState.ACTIVE)
                 .collect(Collectors.toSet());
 

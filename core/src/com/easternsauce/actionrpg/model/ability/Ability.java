@@ -211,11 +211,11 @@ public abstract class Ability implements Entity {
         return false;
     }
 
-    public boolean isDamagingSkillAllowedDuring() {
-        return true;
+    public boolean isDamagingSkillNotAllowedWhenActive() {
+        return false;
     }
 
-    public boolean isCanStun() {
+    public boolean canStun() {
         return true;
     }
 

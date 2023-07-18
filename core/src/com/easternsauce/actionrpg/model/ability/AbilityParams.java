@@ -134,4 +134,6 @@ public class AbilityParams implements EntityParams {
 
     private Float maximumRange;
 
+    private Boolean noTexture = false;
+
 }

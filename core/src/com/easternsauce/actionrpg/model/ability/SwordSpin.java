@@ -94,7 +94,7 @@ public class SwordSpin extends AttachedAbility {
     }
 
     @Override
-    public boolean isDamagingSkillAllowedDuring() {
-        return false;
+    public boolean isDamagingSkillNotAllowedWhenActive() {
+        return true;
     }
 }

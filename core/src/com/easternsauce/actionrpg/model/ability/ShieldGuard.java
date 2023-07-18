@@ -108,7 +108,7 @@ public class ShieldGuard extends AttachedAbility {
     }
 
     @Override
-    public boolean isCanStun() {
+    public boolean canStun() {
         return false;
     }
 }

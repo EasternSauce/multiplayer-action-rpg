@@ -10,5 +10,7 @@ public enum CreatureEffect {
     SELF_STUN,
     POISON,
     LIFE_REGENERATION,
-    MANA_REGENERATION
+    MANA_REGENERATION,
+    INVISIBILITY,
+    NO_COLLIDE
 }

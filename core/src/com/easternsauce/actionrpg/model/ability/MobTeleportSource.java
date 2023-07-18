@@ -75,7 +75,7 @@ public class MobTeleportSource extends Ability {
     }
 
     @Override
-    public boolean isCanStun() {
+    public boolean canStun() {
         return false;
     }
 }

@@ -64,7 +64,10 @@ public enum AbilityType {
     RING_OF_FIRE(RingOfFire::of),
     MOB_RING_OF_FIRE(MobRingOfFire::of),
     DASH(Dash::of),
-    ICE_SPEAR_RAMPAGE(IceSpearRampage::of);
+    ICE_SPEAR_RAMPAGE(IceSpearRampage::of),
+    DIG_TUNNEL(DigTunnel::of),
+    DIG_TUNNEL_SPLASH(DigTunnelSplash::of),
+    DIG_TUNNEL_EXPLOSION(DigTunnelExplosion::of);
 
     @Getter
     private BiFunction<AbilityParams, CoreGame, Ability> factoryMapping;

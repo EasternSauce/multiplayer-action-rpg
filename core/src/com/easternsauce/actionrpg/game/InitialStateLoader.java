@@ -27,7 +27,7 @@ public class InitialStateLoader {
     public void setupInitialState(CoreGame game) {
         Map<SkillType, Integer> grantedSkills = new ConcurrentSkipListMap<>();
         Map<SkillType, Integer> grantedSkills2 = new ConcurrentSkipListMap<>();
-        grantedSkills.put(SkillType.MAGE_TELEPORT_COMBO, 1);
+        grantedSkills.put(SkillType.DIG_TUNNEL, 1);
         grantedSkills2.put(SkillType.VOLATILE_BUBBLE, 1);
         Item leatherArmor = Item
             .of()

@@ -76,11 +76,11 @@ public class EnemyTemplate {
     );
     public static EnemyTemplate sludge = EnemyTemplate.of(EnemyType.SLUDGE,
         400f,
-        8f,
+        12f,
         6f,
         randomDropSet,
-        new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.ICE_SPEAR_RAMPAGE, 50f),
-            EnemySkillUseEntry.of(SkillType.VOLATILE_BUBBLE, 60f),
+        new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.DIG_TUNNEL, 100f),
+            EnemySkillUseEntry.of(SkillType.SUMMON_GHOSTS, 60f),
             EnemySkillUseEntry.of(SkillType.MOB_RING_OF_FIRE, 150f)
         ))
     );

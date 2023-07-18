@@ -110,7 +110,7 @@ public class Enemy extends Creature {
                 .getAbilities()
                 .values()
                 .stream()
-                .filter(ability -> !ability.isDamagingSkillAllowedDuring() &&
+                .filter(ability -> ability.isDamagingSkillNotAllowedWhenActive() &&
                     ability.getParams().getCreatureId().equals(this.getParams().getId()) &&
 
                     ability.getParams().getState() == AbilityState.ACTIVE)

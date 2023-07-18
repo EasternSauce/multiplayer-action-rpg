@@ -103,7 +103,9 @@ public class GameEntityRenderer {
     }
 
     private boolean canCreatureBeRendered(Creature creature, CoreGame game) {
-        return creatureRenderers.containsKey(creature.getId()) && isCreatureInCurrentlyVisibleArea(creature, game);
+        return creatureRenderers.containsKey(creature.getId()) &&
+            isCreatureInCurrentlyVisibleArea(creature, game) &&
+            !creature.isEffectActive(CreatureEffect.INVISIBILITY, game);
     }
 
     @SuppressWarnings("unused")

@@ -48,7 +48,9 @@ public enum SkillType {
 
     DASH("Dash", false, AbilityType.DASH, 0.45f, 15f, 0f),
 
-    ICE_SPEAR_RAMPAGE("Ice Spear Rampage", true, AbilityType.ICE_SPEAR_RAMPAGE, 2f, 15f, 20f);
+    ICE_SPEAR_RAMPAGE("Ice Spear Rampage", true, AbilityType.ICE_SPEAR_RAMPAGE, 2f, 15f, 20f),
+
+    DIG_TUNNEL("Dig Tunnel (mob only)", true, AbilityType.DIG_TUNNEL, 2f, 15f, 10f);
 
     @Getter
     private String prettyName;

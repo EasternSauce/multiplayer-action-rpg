@@ -99,7 +99,7 @@ public class MobTeleportDestination extends Ability {
     }
 
     @Override
-    public boolean isCanStun() {
+    public boolean canStun() {
         return false;
     }
 }

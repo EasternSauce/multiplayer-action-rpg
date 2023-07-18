@@ -55,7 +55,8 @@ public class GameEntityManager {
         Ability ability = game.getAbilities().get(abilityId);
 
         if (ability != null && ability.usesEntityModel()) {
-            if (!gameEntityRenderer.getAbilityRenderers().containsKey(abilityId)) {
+            if (!ability.getParams().getNoTexture() &&
+                !gameEntityRenderer.getAbilityRenderers().containsKey(abilityId)) {
                 AbilityRenderer abilityRenderer = AbilityRenderer.of(abilityId);
                 abilityRenderer.init(atlas, game);
                 gameEntityRenderer.getAbilityRenderers().put(abilityId, abilityRenderer);

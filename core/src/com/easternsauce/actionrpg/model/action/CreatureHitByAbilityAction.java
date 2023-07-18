@@ -63,7 +63,7 @@ public class CreatureHitByAbilityAction extends CreatureHitAction {
 
             targetCreature.takeLifeDamage(realDamage, contactPoint, game);
 
-            if (ability.isCanStun()) {
+            if (ability.canStun()) {
                 Float stunDuration;
                 if (ability.getParams().getOverrideStunDuration() != null) {
                     stunDuration = ability.getParams().getOverrideStunDuration();
