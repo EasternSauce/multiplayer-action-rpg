@@ -30,8 +30,8 @@ public class EnemyTemplate {
         20f,
         11f,
         randomDropSet,
-        new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.MOB_CROSSBOW_SHOT, 100f),
-            EnemySkillUseEntry.of(SkillType.POISONOUS_MIXTURE, 40f)
+        new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.MOB_CROSSBOW_SHOT, 20f, 100f),
+            EnemySkillUseEntry.of(SkillType.POISONOUS_MIXTURE, 20f, 40f)
         ))
     );
     public static EnemyTemplate skeleton = EnemyTemplate.of(EnemyType.SKELETON,
@@ -39,8 +39,8 @@ public class EnemyTemplate {
         4f,
         11f,
         randomDropSet,
-        new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.MOB_SWORD_SLASH, 100f),
-            EnemySkillUseEntry.of(SkillType.SHIELD_GUARD, 20f)
+        new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.MOB_SWORD_SLASH, 4f, 100f),
+            EnemySkillUseEntry.of(SkillType.SHIELD_GUARD, 4f, 20f)
         ))
     );
     public static EnemyTemplate mage = EnemyTemplate.of(EnemyType.MAGE,
@@ -48,10 +48,10 @@ public class EnemyTemplate {
         20f,
         11f,
         randomDropSet,
-        new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.MOB_MAGIC_ORB, 100f),
-            EnemySkillUseEntry.of(SkillType.MOB_VOLATILE_BUBBLE, 60f),
-            EnemySkillUseEntry.of(SkillType.FIREBALL, 60f),
-            EnemySkillUseEntry.of(SkillType.MAGE_TELEPORT_COMBO, 25f)
+        new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.MOB_MAGIC_ORB, 20f, 100f),
+            EnemySkillUseEntry.of(SkillType.MOB_VOLATILE_BUBBLE, 20f, 60f),
+            EnemySkillUseEntry.of(SkillType.FIREBALL, 20f, 60f),
+            EnemySkillUseEntry.of(SkillType.MAGE_TELEPORT_COMBO, 20f, 25f)
 
         ))
     );
@@ -60,8 +60,8 @@ public class EnemyTemplate {
         8f,
         16f,
         randomDropSet,
-        new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.BOSS_SWORD_SLASH, 200f),
-            EnemySkillUseEntry.of(SkillType.BOSS_SWORD_SPIN, 100f)
+        new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.BOSS_SWORD_SLASH, 8f, 200f),
+            EnemySkillUseEntry.of(SkillType.BOSS_SWORD_SPIN, 8f, 100f)
         ))
     );
     public static EnemyTemplate serpent = EnemyTemplate.of(EnemyType.SERPENT,
@@ -69,9 +69,9 @@ public class EnemyTemplate {
         8f,
         14f,
         randomDropSet,
-        new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.ICE_SPEAR_RAMPAGE, 50f),
-            EnemySkillUseEntry.of(SkillType.VOLATILE_BUBBLE, 60f),
-            EnemySkillUseEntry.of(SkillType.MOB_RING_OF_FIRE, 150f)
+        new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.ICE_SPEAR_RAMPAGE, 8f, 50f),
+            EnemySkillUseEntry.of(SkillType.VOLATILE_BUBBLE, 8f, 60f),
+            EnemySkillUseEntry.of(SkillType.MOB_RING_OF_FIRE, 8f, 150f)
         ))
     );
     public static EnemyTemplate sludge = EnemyTemplate.of(EnemyType.SLUDGE,
@@ -79,9 +79,9 @@ public class EnemyTemplate {
         12f,
         6f,
         randomDropSet,
-        new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.DIG_TUNNEL, 100f),
-            EnemySkillUseEntry.of(SkillType.SUMMON_GHOSTS, 60f),
-            EnemySkillUseEntry.of(SkillType.MOB_RING_OF_FIRE, 150f)
+        new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.DIG_TUNNEL, 99f, 100f),
+            EnemySkillUseEntry.of(SkillType.SUMMON_GHOSTS, 12f, 60f),
+            EnemySkillUseEntry.of(SkillType.MOB_RING_OF_FIRE, 12f, 150f)
         ))
     );
 

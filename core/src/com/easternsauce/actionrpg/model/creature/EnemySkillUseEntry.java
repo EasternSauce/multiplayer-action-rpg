@@ -11,6 +11,8 @@ public class EnemySkillUseEntry implements Comparable<EnemySkillUseEntry> {
     @Getter
     SkillType skillType;
     @Getter
+    Float skillUseRange;
+    @Getter
     Float weight;
 
     @Override

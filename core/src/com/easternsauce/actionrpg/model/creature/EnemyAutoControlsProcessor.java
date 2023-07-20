@@ -1,7 +1,6 @@
 package com.easternsauce.actionrpg.model.creature;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.skill.SkillType;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.physics.pathing.Astar;
 import com.easternsauce.actionrpg.physics.pathing.AstarResult;
@@ -12,7 +11,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
 public class EnemyAutoControlsProcessor {
@@ -95,8 +93,8 @@ public class EnemyAutoControlsProcessor {
                     game
                 ); // set movement command, causing creature to walk towards target
                 handleAimDirectionAdjustment(creatureId, vectorTowardsTarget, game);
-                handleUseAbilityAtTarget(creatureId,
-                    potentialTarget,
+                handleUseRandomSkillAtTarget(creatureId,
+                    potentialTarget.getParams().getPos(),
                     vectorTowardsTarget,
                     game
                 ); // attack target if within range
@@ -271,10 +269,10 @@ public class EnemyAutoControlsProcessor {
         creature.getParams().getMovementParams().setAimDirection(vectorTowardsTarget.normalized());
     }
 
-    public void handleUseAbilityAtTarget(CreatureId creatureId,
-                                         Creature potentialTarget,
-                                         Vector2 vectorTowardsTarget,
-                                         CoreGame game) {
+    public void handleUseRandomSkillAtTarget(CreatureId creatureId,
+                                             Vector2 potentialTargetPos,
+                                             Vector2 vectorTowardsTarget,
+                                             CoreGame game) {
         Creature creature = game.getCreature(creatureId);
         if (creature == null) {
             return;
@@ -282,29 +280,14 @@ public class EnemyAutoControlsProcessor {
 
         if (creature.getParams().getEnemyParams().getAttackCooldownTimer().getTime() >
             Constants.ENEMY_ATTACK_COOLDOWN_TIMER) {
-            if (potentialTarget.getParams().getPos().distance(creature.getParams().getPos()) <
-                creature.getParams().getEnemyParams().getAttackDistance()) {
-                game.getGameState().accessCreatures().handleCreatureUseRandomSkillAtTarget(creature.getParams().getId(),
-                    vectorTowardsTarget,
-                    game
-                );
-                creature.getParams().getEnemyParams().getAttackCooldownTimer().restart();
-            } else if (creature
-                .getParams()
-                .getEnemyParams()
-                .getSkillUses()
-                .stream()
-                .map(EnemySkillUseEntry::getSkillType)
-                .collect(Collectors.toSet())
-                .contains(SkillType.SHIELD_GUARD) && potentialTarget.getParams().getPos().distance(creature
-                .getParams()
-                .getPos()) > 10f) {
-                game.getGameState().accessCreatures().handleCreatureUseSkillAtTarget(creature.getParams().getId(),
-                    vectorTowardsTarget,
-                    SkillType.SHIELD_GUARD
-                );
-                creature.getParams().getEnemyParams().getAttackCooldownTimer().restart();
-            }
+            Float distanceToTarget = potentialTargetPos.distance(creature.getParams().getPos());
+
+            game.getGameState().accessCreatures().handleCreatureUseRandomSkillAtTarget(creature.getParams().getId(),
+                vectorTowardsTarget,
+                distanceToTarget,
+                game
+            );
+            creature.getParams().getEnemyParams().getAttackCooldownTimer().restart();
         }
     }
 

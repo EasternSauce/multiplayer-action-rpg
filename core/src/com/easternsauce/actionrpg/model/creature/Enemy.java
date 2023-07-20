@@ -106,15 +106,11 @@ public class Enemy extends Creature {
 
     private boolean isAbilityThatBlocksDamagingAbilitiesActive(Skill skill, CoreGame game) {
         if (skill.getSkillType().getDamaging()) {
-            Set<Ability> damagingSkillNotAllowedAbilities = game
-                .getAbilities()
-                .values()
-                .stream()
-                .filter(ability -> ability.isDamagingSkillNotAllowedWhenActive() &&
+            Set<Ability> damagingSkillNotAllowedAbilities = game.getAbilities().values().stream().filter(ability ->
+                ability.isDamagingSkillNotAllowedWhenActive() &&
                     ability.getParams().getCreatureId().equals(this.getParams().getId()) &&
 
-                    ability.getParams().getState() == AbilityState.ACTIVE)
-                .collect(Collectors.toSet());
+                    ability.getParams().getState() == AbilityState.ACTIVE).collect(Collectors.toSet());
 
             return !damagingSkillNotAllowedAbilities.isEmpty();
         } else {
