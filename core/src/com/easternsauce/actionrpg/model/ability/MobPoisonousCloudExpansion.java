@@ -8,14 +8,15 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-public class ExpandingPoisonousCloud extends Ability {
+public class MobPoisonousCloudExpansion extends Ability {
     @Getter
     private AbilityParams params;
 
     int currentCloud = 0;
 
-    public static ExpandingPoisonousCloud of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        ExpandingPoisonousCloud ability = ExpandingPoisonousCloud.of();
+    public static MobPoisonousCloudExpansion of(AbilityParams abilityParams,
+                                                @SuppressWarnings("unused") CoreGame game) {
+        MobPoisonousCloudExpansion ability = MobPoisonousCloudExpansion.of();
         ability.params = abilityParams.setChannelTime(0f).setActiveTime(10f);
 
         return ability;
@@ -35,7 +36,7 @@ public class ExpandingPoisonousCloud extends Ability {
     protected void onActiveUpdate(float delta, CoreGame game) {
         float[] cloudSpreadTimes = {0f, 0.2f, 0.4f, 0.6f, 0.8f, 1.2f, 1.6f, 2.0f, 2.4f, 2.8f};
 
-        float[] cloudScales = {0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.8f, 1.0f, 1.0f, 1.0f};
+        float[] cloudScales = {0.15f, 0.3f, 0.45f, 0.6f, 0.75f, 0.95f, 1.2f, 1.5f, 1.5f, 1.5f};
 
         float[] cloudDurations = {0.2f, 0.2f, 0.2f, 0.2f, 0.4f, 0.4f, 0.4f, 0.4f, 0.4f, 0.4f};
 

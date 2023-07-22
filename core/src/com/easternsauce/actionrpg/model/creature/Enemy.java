@@ -42,7 +42,7 @@ public class Enemy extends Creature {
 
         params.setRespawnTime(120f);
 
-        params.getEnemyParams().setAttackDistance(enemyTemplate.getAttackDistance());
+        params.getEnemyParams().setWalkUpRange(enemyTemplate.getWalkUpRange());
         params.getStats().setBaseSpeed(enemyTemplate.getSpeed());
         params.getEnemyParams().setSkillUses(enemyTemplate.getEnemySkillUseEntries());
 
@@ -116,11 +116,6 @@ public class Enemy extends Creature {
         } else {
             return false;
         }
-    }
-
-    @Override
-    public void onAfterPerformSkill() {
-        getParams().getEnemyParams().setSkillUseReadyToPick(true);
     }
 
     @Override

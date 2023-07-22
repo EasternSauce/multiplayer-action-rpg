@@ -151,8 +151,7 @@ public class EnemyAutoControlsProcessor {
 
                 Vector2 backUpPos = targetPos.add(vectorTowards
                     .normalized()
-                    .multiplyBy(creature.getParams().getEnemyParams().getAttackDistance() +
-                        Constants.BACK_UP_DISTANCE));
+                    .multiplyBy(creature.getParams().getEnemyParams().getWalkUpRange() + Constants.BACK_UP_DISTANCE));
 
                 creature.getParams().getEnemyParams().setCurrentDefensivePos(Vector2.of(backUpPos.getX() +
                         creature.getParams().getRandomGenerator().nextFloat(),
@@ -280,6 +279,8 @@ public class EnemyAutoControlsProcessor {
 
         if (creature.getParams().getEnemyParams().getAttackCooldownTimer().getTime() >
             Constants.ENEMY_ATTACK_COOLDOWN_TIMER) {
+            System.out.println("zzz2");
+
             Float distanceToTarget = potentialTargetPos.distance(creature.getParams().getPos());
 
             game.getGameState().accessCreatures().handleCreatureUseRandomSkillAtTarget(creature.getParams().getId(),
@@ -381,7 +382,7 @@ public class EnemyAutoControlsProcessor {
 
         if (creature.getParams().getEnemyParams().getAutoControlsState() == EnemyAutoControlsState.AGGRESSIVE) {
 
-            if (distance > creature.getParams().getEnemyParams().getAttackDistance() - 1f) {
+            if (distance > creature.getParams().getEnemyParams().getWalkUpRange() - 1f) {
                 creature.getParams().getStats().setSpeed(creature.getParams().getStats().getBaseSpeed());
                 goToPos(creatureId, potentialTarget.getParams().getPos(), game); // TODO: casting?
             } else { // if no path or distance is small, then stop moving

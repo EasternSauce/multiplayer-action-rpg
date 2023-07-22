@@ -40,6 +40,7 @@ public enum SkillType {
     MOB_TELEPORT("Teleport (mob only)", false, AbilityType.TELEPORT_SOURCE, 1.5f, 10f, 9f),
 
     POISONOUS_MIXTURE("Poisonous Mixture", false, AbilityType.POISONOUS_MIXTURE, 2f, 10f, 35f),
+    MOB_POISONOUS_MIXTURE("Poisonous Mixture (mob only)", false, AbilityType.MOB_POISONOUS_MIXTURE, 2f, 10f, 35f),
 
     PUNCH("Punch", true, AbilityType.PUNCH, 0.4f, 14f, 0f),
 

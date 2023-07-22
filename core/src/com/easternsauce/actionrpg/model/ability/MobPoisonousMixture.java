@@ -13,14 +13,14 @@ import java.util.concurrent.ConcurrentSkipListMap;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-public class PoisonousMixture extends Projectile {
+public class MobPoisonousMixture extends Projectile {
     @Getter
     private AbilityParams params;
 
-    public static PoisonousMixture of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+    public static MobPoisonousMixture of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         Creature creature = game.getCreature(abilityParams.getCreatureId());
 
-        PoisonousMixture ability = PoisonousMixture.of();
+        MobPoisonousMixture ability = MobPoisonousMixture.of();
         ability.params = abilityParams
             .setWidth(1.5f)
             .setHeight(1.5f)
@@ -32,7 +32,7 @@ public class PoisonousMixture extends Projectile {
             .setActiveAnimationLooping(true)
             .setDelayedActionTime(0.001f)
             .setPos(creature.getParams().getPos())
-            .setMaximumRange(16f);
+            .setMaximumRange(18f);
 
         return ability;
     }

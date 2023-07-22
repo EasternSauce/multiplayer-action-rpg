@@ -23,8 +23,8 @@ public class MagicOrb extends Projectile {
     public static MagicOrb of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         MagicOrb ability = MagicOrb.of();
         ability.params = abilityParams
-            .setWidth(1.5f)
-            .setHeight(1.5f)
+            .setWidth(2.5f)
+            .setHeight(2.5f)
             .setChannelTime(0f)
             .setActiveTime(30f)
             .setStartingRange(0.5f)
@@ -33,7 +33,7 @@ public class MagicOrb extends Projectile {
             .setChannelAnimationLooping(false)
             .setActiveAnimationLooping(true)
             .setDelayedActionTime(0.001f)
-            .setSpeed(14f);
+            .setSpeed(17f);
 
         return ability;
     }

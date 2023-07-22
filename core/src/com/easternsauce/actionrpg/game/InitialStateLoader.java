@@ -71,11 +71,11 @@ public class InitialStateLoader {
         EnemyRallyPointInfo rallyPointInfo = EnemyRallyPointInfo.of(Vector2.of(40.88874f, 38.543716f),
             AreaId.of("area3"),
             Stream.of(
-                //                new AbstractMap.SimpleEntry<>(EnemyTemplate.mage, 400),
-                //                new AbstractMap.SimpleEntry<>(EnemyTemplate.archer, 100),
-                //                new AbstractMap.SimpleEntry<>(EnemyTemplate.skeleton, 100),
-                new AbstractMap.SimpleEntry<>(EnemyTemplate.sludge, 100)
-                //                    new AbstractMap.SimpleEntry<>(EnemyTemplate.minos, 100)
+                //                                new AbstractMap.SimpleEntry<>(EnemyTemplate.mage, 400),
+                //                                new AbstractMap.SimpleEntry<>(EnemyTemplate.archer, 100),
+                new AbstractMap.SimpleEntry<>(EnemyTemplate.mage, 100)
+                //                new AbstractMap.SimpleEntry<>(EnemyTemplate.sludge, 100),
+                //                                    new AbstractMap.SimpleEntry<>(EnemyTemplate.minos, 100)
             ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)),
             1
         );

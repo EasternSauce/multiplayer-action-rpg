@@ -98,31 +98,24 @@ public class CreatureAccessor {
                                                      CoreGame game) {
         Creature creature = gameState.accessCreatures().getCreatures().get(creatureId);
 
-        if (creature.getParams().getEnemyParams().getSkillUseReadyToPick()) {
-            pickSkillToUse(creature.getParams().getEnemyParams().getSkillUses(), distanceToTarget, creature, game);
-        }
+        System.out.println("zzz3");
 
-        SkillTryPerformAction action = SkillTryPerformAction.of(creatureId,
-            creature.getParams().getEnemyParams().getSkillUsePickedSkillType(),
-            creature.getParams().getPos(),
-            vectorTowardsTarget
+        SkillType pickedSkillType;
+
+        pickedSkillType = pickRandomSkillToUse(creature.getParams().getEnemyParams().getSkillUses(),
+            distanceToTarget,
+            game
         );
 
-        gameState.scheduleServerSideAction(action);
-    }
+        if (pickedSkillType != null) {
+            SkillTryPerformAction action = SkillTryPerformAction.of(creatureId,
+                pickedSkillType,
+                creature.getParams().getPos(),
+                vectorTowardsTarget
+            );
 
-    // TODO: move to enemy?
-    private void pickSkillToUse(Set<EnemySkillUseEntry> skillUseEntries,
-                                Float distanceToTarget,
-                                Creature creature,
-                                CoreGame game) {
-        // TODO: filter skills based on distance to enemy
-        // TODO: if filtered set is empty then set picked skill to null
-
-        SkillType pickedSkill = pickRandomSkillToUse(skillUseEntries, distanceToTarget, game);
-
-        creature.getParams().getEnemyParams().setSkillUsePickedSkillType(pickedSkill);
-        creature.getParams().getEnemyParams().setSkillUseReadyToPick(false);
+            gameState.scheduleServerSideAction(action);
+        }
     }
 
     private static SkillType pickRandomSkillToUse(Set<EnemySkillUseEntry> skillUseEntries,
@@ -130,10 +123,12 @@ public class CreatureAccessor {
                                                   CoreGame game) {
         AtomicReference<Float> totalWeight = new AtomicReference<>((float) 0);
 
-        // TODO: pick subset of skill use entries based on distance to enemy
         Set<EnemySkillUseEntry> filteredSkillUseEntries = skillUseEntries.stream().filter(enemySkillUseEntry ->
             enemySkillUseEntry.getSkillUseRange() >
                 distanceToTarget).collect(Collectors.toSet());
+
+        System.out.println("picking random from set" +
+            filteredSkillUseEntries.stream().map(EnemySkillUseEntry::getSkillType).collect(Collectors.toSet()));
 
         filteredSkillUseEntries.forEach(skillUseEntry -> totalWeight.set(totalWeight.get() +
             skillUseEntry.getWeight()));
@@ -151,31 +146,6 @@ public class CreatureAccessor {
         });
 
         return pickedSkillType.get();
-    }
-
-    public void handleCreatureUseSkillAtTarget(CreatureId creatureId,
-                                               Vector2 vectorTowardsTarget,
-                                               SkillType skillType) {
-        Creature creature = gameState.accessCreatures().getCreatures().get(creatureId);
-
-        if (!creature
-            .getParams()
-            .getEnemyParams()
-            .getSkillUses()
-            .stream()
-            .map(EnemySkillUseEntry::getSkillType)
-            .collect(Collectors.toSet())
-            .contains(skillType)) {
-            throw new RuntimeException("trying to use a skill that is not in enemy's skill uses!");
-        }
-
-        SkillTryPerformAction action = SkillTryPerformAction.of(creatureId,
-            skillType,
-            creature.getParams().getPos(),
-            vectorTowardsTarget
-        );
-
-        gameState.scheduleServerSideAction(action);
     }
 
     public CreatureId getAliveCreatureIdClosestTo(Vector2 pos, float maxRange, Set<CreatureId> excluded) {

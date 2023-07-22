@@ -1,6 +1,5 @@
 package com.easternsauce.actionrpg.model.creature;
 
-import com.easternsauce.actionrpg.model.skill.SkillType;
 import com.easternsauce.actionrpg.model.util.SimpleTimer;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Data;
@@ -41,10 +40,8 @@ public class EnemyParams {
     @NonNull
     private SimpleTimer justAttackedFromRangeTimer = SimpleTimer.getExpiredTimer();
     @NonNull
-    private Float attackDistance;
-    @NonNull
-    private Boolean skillUseReadyToPick = true;
-    private SkillType skillUsePickedSkillType = null;
+    private Float walkUpRange;
+
     @NonNull
     private SimpleTimer attackCooldownTimer = SimpleTimer.getExpiredTimer();
     @NonNull

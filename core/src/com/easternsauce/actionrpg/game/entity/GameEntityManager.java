@@ -208,7 +208,9 @@ public class GameEntityManager {
         Set<AbilityId> abilitiesToUpdate = game.getAbilitiesToUpdate();
 
         abilitiesToUpdate.forEach(abilityId -> {
-            if (game.getAbilities().containsKey(abilityId) && game.getAbilities().get(abilityId) != null) {
+            if (abilityId != null &&
+                game.getAbilities().containsKey(abilityId) &&
+                game.getAbilities().get(abilityId) != null) {
                 game.getAbilities().get(abilityId).update(delta, game);
             }
         });
