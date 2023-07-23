@@ -73,7 +73,8 @@ public enum AbilityType {
     DIG_TUNNEL_SPLASH(DigTunnelSplash::of),
     DIG_TUNNEL_EXPLOSION(DigTunnelExplosion::of),
 
-    BITE(Bite::of);
+    BITE(Bite::of),
+    POISON_BITE(PoisonBite::of);
 
     @Getter
     private BiFunction<AbilityParams, CoreGame, Ability> factoryMapping;

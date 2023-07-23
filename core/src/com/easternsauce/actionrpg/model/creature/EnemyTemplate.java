@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 
@@ -81,13 +82,20 @@ public class EnemyTemplate {
         ))
     );
     public static EnemyTemplate wolf = EnemyTemplate.of(EnemyType.WOLF,
-        400f,
+        350f,
         4f,
         10f,
         randomDropSet,
         new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.DASH, 22f, 10f),
             EnemySkillUseEntry.of(SkillType.BITE, 6f, 300f)
         ))
+    );
+    public static EnemyTemplate rat = EnemyTemplate.of(EnemyType.RAT,
+        450f,
+        4f,
+        10f,
+        randomDropSet,
+        new ConcurrentSkipListSet<>(Collections.singletonList(EnemySkillUseEntry.of(SkillType.POISON_BITE, 6f, 300f)))
     );
 
     @Getter

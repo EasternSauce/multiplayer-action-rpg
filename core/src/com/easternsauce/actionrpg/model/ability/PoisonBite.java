@@ -10,14 +10,14 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-public class Bite extends AttachedAbility {
+public class PoisonBite extends AttachedAbility {
     @Getter
     private AbilityParams params;
 
-    public static Bite of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+    public static PoisonBite of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         float flipValue = abilityParams.getDirVector().angleDeg();
 
-        Bite ability = Bite.of();
+        PoisonBite ability = PoisonBite.of();
 
         ability.params = abilityParams
             .setWidth(1.8f)
@@ -26,10 +26,10 @@ public class Bite extends AttachedAbility {
             .setActiveTime(0.18f)
             .setStartingRange(1.8f)
             .setTextureName("teeth")
-            .setBaseDamage(37f)
+            .setBaseDamage(30f)
             .setChannelAnimationLooping(false)
             .setActiveAnimationLooping(false)
-            .setFlip(Bite.calculateFlip(flipValue));
+            .setFlip(PoisonBite.calculateFlip(flipValue));
 
         return ability;
     }
@@ -72,6 +72,10 @@ public class Bite extends AttachedAbility {
 
         creature.applyEffect(CreatureEffect.SLOW, 0.75f, game);
         creature.getParams().getEffectParams().setCurrentSlowMagnitude(0.3f);
+
+        creature.applyEffect(CreatureEffect.POISON, 10f, game);
+        creature.getParams().getEffectParams().setCurrentDamageOverTimeTaken(18f);
+        creature.getParams().getEffectParams().setCurrentDamageOverTimeDealerCreatureId(getParams().getCreatureId());
     }
 
     @Override

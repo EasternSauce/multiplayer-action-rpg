@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 public class CreatureAnimationConfig {
     public static Map<String, CreatureAnimationConfig> configs = new ConcurrentSkipListMap<>();
 
-    static {
+    static { // TODO: move sprite width/height to enemy template?
         configs.put("male1",
             CreatureAnimationConfig.of("male1", 1, 1.8f, 1.8f, 32, 32, 3, 0.1f, textureDirMap(3, 0, 1, 2), false)
         );
@@ -30,8 +30,8 @@ public class CreatureAnimationConfig {
         configs.put("undead_adventurer",
             CreatureAnimationConfig.of("undead_adventurer",
                 0,
-                1.2f,
-                1.8f,
+                1.44f,
+                2.16f,
                 32,
                 48,
                 4,
@@ -54,6 +54,9 @@ public class CreatureAnimationConfig {
         );
         configs.put("wolf",
             CreatureAnimationConfig.of("wolf2", 1, 2f, 2.125f, 32, 34, 6, 0.1f, textureDirMap(3, 0, 1, 2), false)
+        );
+        configs.put("rat",
+            CreatureAnimationConfig.of("rat", 0, 2.4482f, 2f, 71, 58, 4, 0.1f, textureDirMap(3, 0, 1, 2), false)
         );
 
     }

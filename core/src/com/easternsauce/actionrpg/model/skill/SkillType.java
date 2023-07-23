@@ -53,7 +53,9 @@ public enum SkillType {
 
     DIG_TUNNEL("Dig Tunnel (mob only)", true, AbilityType.DIG_TUNNEL, 2f, 15f, 10f),
 
-    BITE("Bite (mob only)", true, AbilityType.BITE, 2f, 15f, 0f);
+    BITE("Bite (mob only)", true, AbilityType.BITE, 2f, 15f, 0f),
+
+    POISON_BITE("Poison Bite (mob only)", true, AbilityType.POISON_BITE, 2f, 15f, 0f);
 
     @Getter
     private String prettyName;

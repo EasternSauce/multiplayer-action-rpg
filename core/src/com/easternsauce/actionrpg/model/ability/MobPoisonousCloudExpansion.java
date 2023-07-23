@@ -46,16 +46,11 @@ public class MobPoisonousCloudExpansion extends Ability {
             currentCloud < cloudSpreadTimes.length &&
             getParams().getStateTimer().getTime() > cloudSpreadTimes[currentCloud]) {
 
-            game.chainAnotherAbility(
-                this,
-                AbilityType.POISONOUS_CLOUD,
-                getParams().getDirVector(),
-                ChainAbilityParams
-                    .of()
-                    .setChainToPos(getParams().getPos())
-                    .setOverrideScale(cloudScales[currentCloud])
-                    .setOverrideDuration(cloudDurations[currentCloud])
-            );
+            game.chainAnotherAbility(this, AbilityType.POISONOUS_CLOUD, getParams().getDirVector(), ChainAbilityParams
+                .of()
+                .setChainToPos(getParams().getPos())
+                .setOverrideScale(cloudScales[currentCloud])
+                .setOverrideDuration(cloudDurations[currentCloud]));
 
             currentCloud += 1;
         }
