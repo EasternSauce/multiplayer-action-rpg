@@ -51,7 +51,9 @@ public enum SkillType {
 
     ICE_SPEAR_RAMPAGE("Ice Spear Rampage", true, AbilityType.ICE_SPEAR_RAMPAGE, 2f, 15f, 20f),
 
-    DIG_TUNNEL("Dig Tunnel (mob only)", true, AbilityType.DIG_TUNNEL, 2f, 15f, 10f);
+    DIG_TUNNEL("Dig Tunnel (mob only)", true, AbilityType.DIG_TUNNEL, 2f, 15f, 10f),
+
+    BITE("Bite (mob only)", true, AbilityType.BITE, 2f, 15f, 0f);
 
     @Getter
     private String prettyName;

@@ -18,6 +18,7 @@ public class ShieldGuard extends AttachedAbility {
         float flipValue = abilityParams.getDirVector().angleDeg();
 
         ShieldGuard ability = ShieldGuard.of();
+
         ability.params = abilityParams
             .setWidth(2f)
             .setHeight(2f)
@@ -29,6 +30,7 @@ public class ShieldGuard extends AttachedAbility {
             .setChannelAnimationLooping(false)
             .setActiveAnimationLooping(false)
             .setFlip(ShieldGuard.calculateFlip(flipValue));
+
         return ability;
     }
 

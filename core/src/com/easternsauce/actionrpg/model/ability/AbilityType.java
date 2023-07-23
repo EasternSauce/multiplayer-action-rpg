@@ -71,7 +71,9 @@ public enum AbilityType {
     ICE_SPEAR_RAMPAGE(IceSpearRampage::of),
     DIG_TUNNEL(DigTunnel::of),
     DIG_TUNNEL_SPLASH(DigTunnelSplash::of),
-    DIG_TUNNEL_EXPLOSION(DigTunnelExplosion::of);
+    DIG_TUNNEL_EXPLOSION(DigTunnelExplosion::of),
+
+    BITE(Bite::of);
 
     @Getter
     private BiFunction<AbilityParams, CoreGame, Ability> factoryMapping;

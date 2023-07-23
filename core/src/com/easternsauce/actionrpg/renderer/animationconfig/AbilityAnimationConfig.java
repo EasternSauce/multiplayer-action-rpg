@@ -77,6 +77,8 @@ public class AbilityAnimationConfig {
             )
         );
 
+        configs.put("teeth", AbilityAnimationConfig.of(100, 128, "teeth", "teeth", 0, 18, 0f, 0.01f, 1f));
+
     }
 
     private Integer textureWidth;

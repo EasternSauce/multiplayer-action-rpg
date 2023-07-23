@@ -279,8 +279,6 @@ public class EnemyAutoControlsProcessor {
 
         if (creature.getParams().getEnemyParams().getAttackCooldownTimer().getTime() >
             Constants.ENEMY_ATTACK_COOLDOWN_TIMER) {
-            System.out.println("zzz2");
-
             Float distanceToTarget = potentialTargetPos.distance(creature.getParams().getPos());
 
             game.getGameState().accessCreatures().handleCreatureUseRandomSkillAtTarget(creature.getParams().getId(),

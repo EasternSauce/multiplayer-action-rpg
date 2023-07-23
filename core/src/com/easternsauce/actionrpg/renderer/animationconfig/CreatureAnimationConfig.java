@@ -52,6 +52,10 @@ public class CreatureAnimationConfig {
         configs.put("sludge",
             CreatureAnimationConfig.of("sludge", 0, 2f, 2f, 64, 64, 4, 0.1f, textureDirMap(3, 0, 1, 2), false)
         );
+        configs.put("wolf",
+            CreatureAnimationConfig.of("wolf2", 1, 2f, 2.125f, 32, 34, 6, 0.1f, textureDirMap(3, 0, 1, 2), false)
+        );
+
     }
 
     private String textureName;

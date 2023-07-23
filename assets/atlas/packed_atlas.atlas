@@ -6,525 +6,532 @@ filter: Nearest, Nearest
 repeat: none
 arrow
   rotate: false
-  xy: 2520, 655
+  xy: 6234, 430
   size: 40, 40
   orig: 40, 40
   offset: 0, 0
   index: -1
 background
   rotate: false
-  xy: 4166, 485
+  xy: 4166, 488
   size: 624, 436
   orig: 624, 436
   offset: 0, 0
   index: -1
 background2
   rotate: false
-  xy: 2564, 345
+  xy: 2564, 348
   size: 1088, 576
   orig: 1088, 576
   offset: 0, 0
   index: -1
 bag
   rotate: false
-  xy: 260, 2
+  xy: 7338, 892
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 black_mage
   rotate: false
-  xy: 6412, 731
+  xy: 5392, 342
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: -1
 blast
   rotate: false
-  xy: 7496, 955
+  xy: 7496, 958
   size: 640, 64
   orig: 640, 64
   offset: 0, 0
   index: -1
 blastHD
   rotate: false
-  xy: 2, 495
+  xy: 2, 498
   size: 2000, 200
   orig: 2000, 200
   offset: 0, 0
   index: -1
 boomerang
   rotate: false
-  xy: 2, 2
+  xy: 7080, 892
   size: 256, 32
   orig: 256, 32
   offset: 0, 0
   index: -1
 bubble
   rotate: false
-  xy: 6176, 305
+  xy: 5242, 592
   size: 128, 64
   orig: 128, 64
   offset: 0, 0
   index: -1
 circle_explosion
   rotate: false
-  xy: 2, 697
+  xy: 2, 700
   size: 2560, 256
   orig: 2560, 256
   offset: 0, 0
   index: -1
 cursor
   rotate: false
-  xy: 5336, 621
+  xy: 5350, 298
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 dig
   rotate: false
-  xy: 7366, 889
+  xy: 6104, 430
   size: 128, 32
   orig: 128, 32
   offset: 0, 0
   index: -1
 downarrow
   rotate: false
-  xy: 708, 112
+  xy: 7980, 924
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 evil_ninja
   rotate: false
-  xy: 5434, 405
+  xy: 5374, 472
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: -1
 explosion
   rotate: false
-  xy: 4792, 857
+  xy: 4792, 860
   size: 768, 64
   orig: 768, 64
   offset: 0, 0
   index: -1
 explosion_windup
   rotate: false
-  xy: 5562, 857
+  xy: 4792, 592
   size: 448, 64
   orig: 448, 64
   offset: 0, 0
   index: -1
 female1
   rotate: false
-  xy: 5336, 405
+  xy: 5294, 332
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: -1
 fireball
   rotate: false
-  xy: 2, 955
+  xy: 2, 958
   size: 2880, 64
   orig: 2880, 64
   offset: 0, 0
   index: -1
 fist_slam
   rotate: false
-  xy: 1732, 347
+  xy: 772, 35
   size: 200, 80
   orig: 200, 80
   offset: 0, 0
   index: -1
 fist_slam_windup
   rotate: false
-  xy: 5974, 309
+  xy: 6342, 668
   size: 200, 80
   orig: 200, 80
   offset: 0, 0
   index: -1
 ghost
   rotate: false
-  xy: 5532, 405
+  xy: 5472, 472
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: -1
 goblet
   rotate: false
-  xy: 5630, 469
+  xy: 5570, 536
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 goblet_lit
   rotate: false
-  xy: 5004, 355
+  xy: 1732, 302
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 goblin
   rotate: false
-  xy: 6412, 601
+  xy: 5490, 342
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: -1
 green_potion_throw
   rotate: false
-  xy: 2564, 937
+  xy: 2564, 940
   size: 192, 16
   orig: 192, 16
   offset: 0, 0
   index: -1
 holy_explosion_active
   rotate: false
-  xy: 2, 397
+  xy: 2, 270
   size: 1728, 96
   orig: 1728, 96
   offset: 0, 0
   index: -1
 holy_explosion_channel
   rotate: false
-  xy: 2, 244
+  xy: 2, 117
   size: 960, 96
   orig: 960, 96
   offset: 0, 0
   index: -1
 ice_shard
   rotate: false
-  xy: 7980, 881
+  xy: 5196, 258
   size: 152, 72
   orig: 152, 72
   offset: 0, 0
   index: -1
 jawa
   rotate: false
-  xy: 6306, 401
+  xy: 5276, 462
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: -1
 lightning
   rotate: false
-  xy: 1732, 429
+  xy: 964, 149
   size: 256, 64
   orig: 256, 64
   offset: 0, 0
   index: -1
 lightning_chain
   rotate: false
-  xy: 2004, 502
+  xy: 2004, 505
   size: 384, 193
   orig: 384, 193
   offset: 0, 0
   index: -1
 magic_orb
   rotate: false
-  xy: 6012, 857
+  xy: 4792, 526
   size: 384, 64
   orig: 384, 64
   offset: 0, 0
   index: -1
 male1
   rotate: false
-  xy: 6306, 271
+  xy: 5196, 332
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: -1
 male2
   rotate: false
-  xy: 6314, 661
+  xy: 5066, 136
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: -1
 minos
   rotate: false
-  xy: 5716, 375
+  xy: 5652, 410
   size: 256, 480
   orig: 256, 480
   offset: 0, 0
   index: -1
 necromancer
   rotate: false
-  xy: 6176, 371
+  xy: 6234, 472
   size: 128, 192
   orig: 128, 192
   offset: 0, 0
   index: -1
 nice_icons
   rotate: false
-  xy: 3654, 217
+  xy: 3654, 220
   size: 510, 704
   orig: 510, 704
   offset: 0, 0
   index: -1
 pillar
   rotate: false
-  xy: 1934, 377
+  xy: 6674, 840
   size: 25, 50
   orig: 25, 50
   offset: 0, 0
   index: -1
 poison_cloud
   rotate: false
-  xy: 4792, 655
+  xy: 4792, 658
   size: 600, 200
   orig: 600, 200
   offset: 0, 0
   index: -1
 poisoned
   rotate: false
-  xy: 4744, 437
+  xy: 8138, 976
   size: 46, 46
   orig: 46, 46
   offset: 0, 0
   index: -1
 punch
   rotate: false
-  xy: 2, 36
+  xy: 6718, 884
   size: 360, 40
   orig: 360, 40
   offset: 0, 0
   index: -1
 rat
   rotate: false
-  xy: 4792, 421
+  xy: 5910, 658
   size: 284, 232
   orig: 284, 232
   offset: 0, 0
   index: -1
 ring_of_fire
   rotate: false
-  xy: 2884, 923
+  xy: 2884, 926
   size: 2688, 96
   orig: 2688, 96
   offset: 0, 0
   index: -1
 ring_of_fire_active
   rotate: false
-  xy: 2, 146
+  xy: 2, 19
   size: 768, 96
   orig: 768, 96
   offset: 0, 0
   index: -1
 ring_of_fire_channel
   rotate: false
-  xy: 5574, 923
+  xy: 5574, 926
   size: 1920, 96
   orig: 1920, 96
   offset: 0, 0
   index: -1
 serpent
   rotate: false
-  xy: 6168, 565
+  xy: 6196, 666
   size: 144, 224
   orig: 144, 224
   offset: 0, 0
   index: -1
 shield
   rotate: false
-  xy: 364, 42
+  xy: 6494, 632
   size: 32, 34
   orig: 32, 34
   offset: 0, 0
   index: -1
 skeleton
   rotate: false
-  xy: 4166, 227
+  xy: 4166, 230
   size: 576, 256
   orig: 576, 256
   offset: 0, 0
   index: -1
 slam
   rotate: false
-  xy: 964, 280
+  xy: 1222, 176
   size: 240, 60
   orig: 240, 60
   offset: 0, 0
   index: -1
 slam_windup
   rotate: false
-  xy: 6398, 861
+  xy: 1464, 176
   size: 240, 60
   orig: 240, 60
   offset: 0, 0
   index: -1
 slash
   rotate: false
-  xy: 7738, 913
+  xy: 4408, 188
   size: 240, 40
   orig: 240, 40
   offset: 0, 0
   index: -1
 slash2
   rotate: false
-  xy: 7124, 881
+  xy: 1222, 134
   size: 240, 40
   orig: 240, 40
   offset: 0, 0
   index: -1
 slash2mirrored
   rotate: false
-  xy: 452, 70
+  xy: 1464, 134
   size: 240, 40
   orig: 240, 40
   offset: 0, 0
   index: -1
 slash_windup
   rotate: false
-  xy: 6640, 881
+  xy: 7496, 916
   size: 240, 40
   orig: 240, 40
   offset: 0, 0
   index: -1
 slash_windup2
   rotate: false
-  xy: 7496, 913
+  xy: 4166, 188
   size: 240, 40
   orig: 240, 40
   offset: 0, 0
   index: -1
 slash_windup3
   rotate: false
-  xy: 6882, 881
+  xy: 7738, 916
   size: 240, 40
   orig: 240, 40
   offset: 0, 0
   index: -1
 slowed
   rotate: false
-  xy: 6360, 824
+  xy: 772, 2
   size: 31, 31
   orig: 31, 31
   offset: 0, 0
   index: -1
 sludge
   rotate: false
-  xy: 5078, 397
+  xy: 5394, 602
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
 smoke
   rotate: false
-  xy: 5974, 791
+  xy: 4792, 460
   size: 384, 64
   orig: 384, 64
   offset: 0, 0
   index: -1
 stego
   rotate: false
-  xy: 5974, 533
+  xy: 5910, 400
   size: 192, 256
   orig: 192, 256
   offset: 0, 0
   index: -1
 stunned
   rotate: false
-  xy: 1220, 365
+  xy: 1220, 238
   size: 480, 30
   orig: 480, 30
   offset: 0, 0
   index: -1
 sword
   rotate: false
-  xy: 8138, 979
+  xy: 2520, 658
   size: 40, 40
   orig: 40, 40
   offset: 0, 0
   index: -1
 taurus
   rotate: false
-  xy: 5394, 535
+  xy: 4744, 138
   size: 320, 320
   orig: 320, 320
   offset: 0, 0
   index: -1
+teeth
+  rotate: false
+  xy: 2, 368
+  size: 1800, 128
+  orig: 1800, 128
+  offset: 0, 0
+  index: -1
 treasure
   rotate: false
-  xy: 694, 78
+  xy: 4650, 196
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 trident_thrust
   rotate: false
-  xy: 2, 112
+  xy: 5562, 892
   size: 704, 32
   orig: 704, 32
   offset: 0, 0
   index: -1
 trident_thrust_windup
   rotate: false
-  xy: 2, 78
+  xy: 6268, 892
   size: 448, 32
   orig: 448, 32
   offset: 0, 0
   index: -1
 undead_adventurer
   rotate: false
-  xy: 1096, 86
+  xy: 6364, 474
   size: 128, 192
   orig: 128, 192
   offset: 0, 0
   index: -1
 undead_knight
   rotate: false
-  xy: 2390, 503
+  xy: 2390, 506
   size: 128, 192
   orig: 128, 192
   offset: 0, 0
   index: -1
 undead_lancer
   rotate: false
-  xy: 966, 86
+  xy: 6544, 698
   size: 128, 192
   orig: 128, 192
   offset: 0, 0
   index: -1
 undead_ninja
   rotate: false
-  xy: 6314, 531
+  xy: 5178, 462
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: -1
 undead_sorcerer
   rotate: false
-  xy: 4744, 227
+  xy: 5066, 266
   size: 128, 192
   orig: 128, 192
   offset: 0, 0
   index: -1
 undead_witch
   rotate: false
-  xy: 4874, 227
+  xy: 6104, 464
   size: 128, 192
   orig: 128, 192
   offset: 0, 0
   index: -1
 warp
   rotate: false
-  xy: 2, 342
+  xy: 2, 215
   size: 1216, 53
   orig: 1216, 53
   offset: 0, 0
   index: -1
 wolf
   rotate: false
-  xy: 5974, 391
+  xy: 6342, 750
   size: 200, 140
   orig: 200, 140
   offset: 0, 0
   index: -1
 wolf2
   rotate: false
-  xy: 772, 106
+  xy: 1804, 360
   size: 192, 136
   orig: 192, 136
   offset: 0, 0

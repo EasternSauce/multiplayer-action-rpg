@@ -80,6 +80,15 @@ public class EnemyTemplate {
             EnemySkillUseEntry.of(SkillType.SUMMON_GHOSTS, 10f, 60f)
         ))
     );
+    public static EnemyTemplate wolf = EnemyTemplate.of(EnemyType.WOLF,
+        400f,
+        4f,
+        10f,
+        randomDropSet,
+        new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.DASH, 22f, 10f),
+            EnemySkillUseEntry.of(SkillType.BITE, 6f, 300f)
+        ))
+    );
 
     @Getter
     private EnemyType enemyType;

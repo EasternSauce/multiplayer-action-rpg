@@ -68,7 +68,7 @@ public class ItemTemplate {
             .setWorth(500)
             .setEquipable(true)
             .setEquipmentSlotType(EquipmentSlotType.PRIMARY_WEAPON)
-            .setAttackSkill(SkillType.CROSSBOW_SHOT)
+            .setAttackSkill(SkillType.BITE)
             .setDamage(10f);
 
         ItemTemplate lifePotion = ItemTemplate

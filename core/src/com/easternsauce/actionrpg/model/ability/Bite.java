@@ -2,37 +2,34 @@ package com.easternsauce.actionrpg.model.ability;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.creature.Creature;
+import com.easternsauce.actionrpg.model.creature.CreatureEffect;
+import com.easternsauce.actionrpg.model.creature.CreatureId;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-public class Dash extends AttachedAbility {
+public class Bite extends AttachedAbility {
     @Getter
     private AbilityParams params;
 
-    public static Dash of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        Creature creature = game.getCreature(abilityParams.getCreatureId());
-
+    public static Bite of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         float flipValue = abilityParams.getDirVector().angleDeg();
 
-        Dash ability = Dash.of();
+        Bite ability = Bite.of();
 
         ability.params = abilityParams
-            .setWidth(5.5f)
-            .setHeight(5.5f)
+            .setWidth(1.8f)
+            .setHeight(1.8f)
             .setChannelTime(0f)
-            .setActiveTime(0.14f)
-            .setTextureName("smoke")
-            .setBaseDamage(0f)
+            .setActiveTime(0.18f)
+            .setStartingRange(1.8f)
+            .setTextureName("teeth")
+            .setBaseDamage(22f)
             .setChannelAnimationLooping(false)
             .setActiveAnimationLooping(false)
-            .setPos(creature.getParams().getPos())
-            .setStartingRange(0.8f)
-            .setDirectionalAttachedAbilityRotationShift(180f)
-            .setFlip(Dash.calculateFlip(flipValue))
-            .setRotationShift(180f);
+            .setFlip(Bite.calculateFlip(flipValue));
 
         return ability;
     }
@@ -57,24 +54,8 @@ public class Dash extends AttachedAbility {
     }
 
     @Override
-    public void onStarted(CoreGame game) {
-        Creature creature = game.getCreature(getParams().getCreatureId());
-
-        creature.getParams().getMovementParams().setDashing(true);
-        creature.getParams().getMovementParams().setDashingVector(getParams().getDirVector());
-        creature.getParams().getMovementParams().setDashingVelocity(30f);
-    }
-
-    @Override
     protected void onActiveUpdate(float delta, CoreGame game) {
         updateAttachedAbilityPosition(game);
-    }
-
-    @Override
-    protected void onCompleted(CoreGame game) {
-        Creature creature = game.getCreature(getParams().getCreatureId());
-
-        creature.getParams().getMovementParams().setDashing(false);
     }
 
     @Override
@@ -86,17 +67,25 @@ public class Dash extends AttachedAbility {
     }
 
     @Override
+    public void onCreatureHit(CreatureId creatureId, CoreGame game) {
+        Creature creature = game.getCreature(creatureId);
+
+        creature.applyEffect(CreatureEffect.SLOW, 0.75f, game);
+        creature.getParams().getEffectParams().setCurrentSlowMagnitude(0.3f);
+    }
+
+    @Override
     protected boolean isWeaponAttack() {
-        return false;
+        return true;
+    }
+
+    @Override
+    public Float getStunDuration() {
+        return 0.2f;
     }
 
     @Override
     public boolean canBeDeactivated() {
         return true;
-    }
-
-    @Override
-    public boolean canStun() {
-        return false;
     }
 }

@@ -98,8 +98,6 @@ public class CreatureAccessor {
                                                      CoreGame game) {
         Creature creature = gameState.accessCreatures().getCreatures().get(creatureId);
 
-        System.out.println("zzz3");
-
         SkillType pickedSkillType;
 
         pickedSkillType = pickRandomSkillToUse(creature.getParams().getEnemyParams().getSkillUses(),
@@ -126,9 +124,6 @@ public class CreatureAccessor {
         Set<EnemySkillUseEntry> filteredSkillUseEntries = skillUseEntries.stream().filter(enemySkillUseEntry ->
             enemySkillUseEntry.getSkillUseRange() >
                 distanceToTarget).collect(Collectors.toSet());
-
-        System.out.println("picking random from set" +
-            filteredSkillUseEntries.stream().map(EnemySkillUseEntry::getSkillType).collect(Collectors.toSet()));
 
         filteredSkillUseEntries.forEach(skillUseEntry -> totalWeight.set(totalWeight.get() +
             skillUseEntry.getWeight()));

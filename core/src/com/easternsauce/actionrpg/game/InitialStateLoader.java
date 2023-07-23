@@ -73,7 +73,7 @@ public class InitialStateLoader {
             Stream.of(
                 //                                new AbstractMap.SimpleEntry<>(EnemyTemplate.mage, 400),
                 //                                new AbstractMap.SimpleEntry<>(EnemyTemplate.archer, 100),
-                new AbstractMap.SimpleEntry<>(EnemyTemplate.mage, 100)
+                new AbstractMap.SimpleEntry<>(EnemyTemplate.wolf, 100)
                 //                new AbstractMap.SimpleEntry<>(EnemyTemplate.sludge, 100),
                 //                                    new AbstractMap.SimpleEntry<>(EnemyTemplate.minos, 100)
             ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)),
