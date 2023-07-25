@@ -19,8 +19,8 @@ public class PoisonousCloud extends Ability {
     public static PoisonousCloud of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         PoisonousCloud ability = PoisonousCloud.of();
         ability.params = abilityParams
-            .setWidth(9f)
-            .setHeight(9f)
+            .setWidth(3f)
+            .setHeight(3f)
             .setChannelTime(0f)
             .setActiveTime(8f)
             .setTextureName("poison_cloud")
@@ -55,7 +55,7 @@ public class PoisonousCloud extends Ability {
         creature.applyEffect(CreatureEffect.SLOW, 1.3f, game);
         creature.getParams().getEffectParams().setCurrentSlowMagnitude(0.5f);
         creature.applyEffect(CreatureEffect.POISON, 10f, game);
-        creature.getParams().getEffectParams().setCurrentDamageOverTimeTaken(13f);
+        creature.getParams().getEffectParams().setCurrentDamageOverTimeTaken(8f);
         creature.getParams().getEffectParams().setCurrentDamageOverTimeDealerCreatureId(getParams().getCreatureId());
     }
 

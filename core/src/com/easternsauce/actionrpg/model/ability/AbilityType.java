@@ -57,11 +57,11 @@ public enum AbilityType {
 
     POISONOUS_MIXTURE(PoisonousMixture::of),
     POISONOUS_CLOUD(PoisonousCloud::of),
-    POISONOUS_CLOUD_EXPANSION(PoisonousCloudExpansion::of),
+    POISONOUS_CLOUD_CONTROL(PoisonousCloudControl::of),
 
     MOB_POISONOUS_MIXTURE(MobPoisonousMixture::of),
     MOB_POISONOUS_CLOUD(MobPoisonousCloud::of),
-    MOB_POISONOUS_CLOUD_EXPANSION(MobPoisonousCloudExpansion::of),
+    MOB_POISONOUS_CLOUD_CONTROL(MobPoisonousCloudControl::of),
 
     PUNCH(Punch::of),
 

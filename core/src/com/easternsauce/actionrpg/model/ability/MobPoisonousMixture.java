@@ -63,7 +63,7 @@ public class MobPoisonousMixture extends Projectile {
     protected void onCompleted(CoreGame game) {
         game.chainAnotherAbility(
             this,
-            AbilityType.POISONOUS_CLOUD_EXPANSION,
+            AbilityType.POISONOUS_CLOUD_CONTROL,
             params.getDirVector(),
             ChainAbilityParams.of().setChainToPos(getParams().getPos())
         );
