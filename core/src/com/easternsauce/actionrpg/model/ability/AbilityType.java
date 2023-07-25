@@ -18,8 +18,8 @@ public enum AbilityType {
     LIGHTNING_CHAIN(LightningChain::of),
 
     CROSSBOW_BOLT(CrossbowBolt::of),
-    CROSSBOW_SHOT(CrossbowShot::of),
-    MOB_CROSSBOW_SHOT(MobCrossbowShot::of),
+    CROSSBOW_SHOT(CrossbowBoltControl::of),
+    MOB_CROSSBOW_SHOT(MobCrossbowBoltControl::of),
 
     MAGIC_ORB(MagicOrb::of),
     MOB_MAGIC_ORB(MobMagicOrb::of),
@@ -33,7 +33,7 @@ public enum AbilityType {
 
     PLAYFUL_GHOST(PlayfulGhost::of),
 
-    RICOCHET_BALLISTA(RicochetBallista::of),
+    RICOCHET_BALLISTA(RicochetBulletControl::of),
 
     RICOCHET_BULLET(RicochetBullet::of),
 
@@ -69,12 +69,15 @@ public enum AbilityType {
     MOB_RING_OF_FIRE(MobRingOfFire::of),
     DASH(Dash::of),
     ICE_SPEAR_RAMPAGE(IceSpearRampage::of),
-    DIG_TUNNEL(DigTunnel::of),
-    DIG_TUNNEL_SPLASH(DigTunnelSplash::of),
-    DIG_TUNNEL_EXPLOSION(DigTunnelExplosion::of),
+    TUNNEL_DIG(TunnelDig::of),
+    DIG_TUNNEL_SPLASH(TunnelDigSplash::of),
+    DIG_TUNNEL_EXPLOSION(TunnelDigExplosion::of),
 
     BITE(Bite::of),
-    POISON_BITE(PoisonBite::of);
+    POISON_BITE(PoisonBite::of),
+
+    EMERALD_SPIN(EmeraldSpin::of),
+    EMERALD_SPIN_CONTROL(EmeraldSpinControl::of);
 
     @Getter
     private BiFunction<AbilityParams, CoreGame, Ability> factoryMapping;

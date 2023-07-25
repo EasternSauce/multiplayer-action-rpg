@@ -51,11 +51,13 @@ public enum SkillType {
 
     ICE_SPEAR_RAMPAGE("Ice Spear Rampage", true, AbilityType.ICE_SPEAR_RAMPAGE, 2f, 15f, 20f),
 
-    DIG_TUNNEL("Dig Tunnel (mob only)", true, AbilityType.DIG_TUNNEL, 2f, 15f, 10f),
+    TUNNEL_DIG("Tunnel Dig (mob only)", true, AbilityType.TUNNEL_DIG, 2f, 15f, 10f),
 
     BITE("Bite (mob only)", true, AbilityType.BITE, 2f, 15f, 0f),
 
-    POISON_BITE("Poison Bite (mob only)", true, AbilityType.POISON_BITE, 2f, 15f, 0f);
+    POISON_BITE("Poison Bite (mob only)", true, AbilityType.POISON_BITE, 2f, 15f, 0f),
+
+    EMERALD_SPIN("Emerald Spin", true, AbilityType.EMERALD_SPIN_CONTROL, 0.5f, 7f, 7f);
 
     @Getter
     private String prettyName;

@@ -87,6 +87,8 @@ public class CreatureParams implements EntityParams {
 
     private RandomGenerator randomGenerator;
 
+    private OnDeathAction onDeathAction;
+
     public static CreatureParams of(CreatureId creatureId,
                                     AreaId areaId,
                                     Vector2 pos,

@@ -8,12 +8,12 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-public class RicochetBallista extends Ability {
+public class RicochetBulletControl extends Ability {
     @Getter
     private AbilityParams params;
 
-    public static RicochetBallista of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        RicochetBallista ability = RicochetBallista.of();
+    public static RicochetBulletControl of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+        RicochetBulletControl ability = RicochetBulletControl.of();
 
         ability.params = abilityParams.setChannelTime(0f).setActiveTime(0f);
 

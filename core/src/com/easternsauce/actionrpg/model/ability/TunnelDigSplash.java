@@ -10,12 +10,12 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-public class DigTunnelSplash extends Ability {
+public class TunnelDigSplash extends Ability {
     @Getter
     private AbilityParams params;
 
-    public static DigTunnelSplash of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        DigTunnelSplash ability = DigTunnelSplash.of();
+    public static TunnelDigSplash of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+        TunnelDigSplash ability = TunnelDigSplash.of();
         ability.params = abilityParams
             .setWidth(2.5f)
             .setHeight(2.5f)

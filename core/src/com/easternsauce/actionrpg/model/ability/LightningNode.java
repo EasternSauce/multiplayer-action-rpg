@@ -27,7 +27,7 @@ public class LightningNode extends Ability {
             .setChannelTime(0f)
             .setActiveTime(0.4f)
             .setTextureName("lightning")
-            .setBaseDamage(25f)
+            .setBaseDamage(15f)
             .setActiveAnimationLooping(true)
             .setAttackWithoutMoving(true)
             .setSkipCreatingBody(true)

@@ -4,6 +4,7 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.ability.AbilityState;
+import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.item.EquipmentSlotType;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.skill.Skill;
@@ -225,6 +226,37 @@ public abstract class Creature implements Entity {
             .reduce(0, ((acc, item) -> acc + item.getArmor()), Integer::sum);
     }
 
+    public void onDeath(@SuppressWarnings("unused") Creature attackerCreature, CoreGame game) {
+        if (getParams().getOnDeathAction() == OnDeathAction.SPAWN_SPIDERS) {
+            Creature creature = game.getCreature(getId());
+
+            AreaId areaId = creature.getParams().getAreaId();
+            Vector2 pos = creature.getParams().getPos();
+
+            for (int i = 0; i < 6; i++) {
+                float x = pos.getX() + (float) Math.sin(Math.PI / 3 * i) * 3f;
+                float y = pos.getY() + (float) Math.cos(Math.PI / 3 * i) * 3f;
+
+                CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.abs(game
+                    .getGameState()
+                    .getRandomGenerator()
+                    .nextFloat()) * 10000000));
+
+                game.getEntityManager().spawnEnemy(enemyId,
+                    areaId,
+                    Vector2.of(x, y),
+                    EnemyTemplate.babySpider,
+                    game.getGameState().getRandomGenerator().nextInt(),
+                    game
+                );
+            }
+        }
+    }
+
+    public CreatureId getId() {
+        return getParams().getId();
+    }
+
     public Map<SkillType, Integer> availableSkills() {
         Map<SkillType, Integer> skills = new ConcurrentSkipListMap<>();
         getParams().getEquipmentItems().forEach((integer, item) -> skills.putAll(item.getGrantedSkills()));
@@ -324,10 +356,6 @@ public abstract class Creature implements Entity {
             effectState.setStartTime(game.getGameState().getTime());
             effectState.setDuration(duration);
         }
-    }
-
-    public CreatureId getId() {
-        return getParams().getId();
     }
 
     public void onKillEffect() {

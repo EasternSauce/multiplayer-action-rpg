@@ -8,14 +8,14 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-public class CrossbowShot extends Ability {
+public class CrossbowBoltControl extends Ability {
     @Getter
     private AbilityParams params;
 
     int currentBoltToFire = 0;
 
-    public static CrossbowShot of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        CrossbowShot ability = CrossbowShot.of();
+    public static CrossbowBoltControl of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+        CrossbowBoltControl ability = CrossbowBoltControl.of();
         ability.params = abilityParams.setChannelTime(0f).setActiveTime(2f);
 
         return ability;

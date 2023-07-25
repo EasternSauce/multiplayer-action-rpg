@@ -12,7 +12,9 @@ public enum EnemyType {
     SERPENT("serpent"),
     SLUDGE("sludge"),
     WOLF("wolf"),
-    RAT("rat");
+    RAT("rat"),
+    SPIDER("spider"),
+    BABY_SPIDER("baby_spider");
 
     public String textureName;
 

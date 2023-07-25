@@ -10,12 +10,12 @@ import java.util.concurrent.ConcurrentSkipListMap;
 @SuppressWarnings("SpellCheckingInspection")
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-public class DigTunnelExplosion extends Ability {
+public class TunnelDigExplosion extends Ability {
     @Getter
     private AbilityParams params;
 
-    public static DigTunnelExplosion of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        DigTunnelExplosion ability = DigTunnelExplosion.of();
+    public static TunnelDigExplosion of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+        TunnelDigExplosion ability = TunnelDigExplosion.of();
 
         ability.params = abilityParams
             .setWidth(10f)

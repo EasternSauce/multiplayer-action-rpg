@@ -20,8 +20,8 @@ public class PoisonBite extends AttachedAbility {
         PoisonBite ability = PoisonBite.of();
 
         ability.params = abilityParams
-            .setWidth(1.8f)
-            .setHeight(1.8f)
+            .setWidth(1.3f)
+            .setHeight(1.3f)
             .setChannelTime(0f)
             .setActiveTime(0.18f)
             .setStartingRange(1.8f)

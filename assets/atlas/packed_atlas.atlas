@@ -34,7 +34,7 @@ bag
   index: -1
 black_mage
   rotate: false
-  xy: 5392, 342
+  xy: 5490, 342
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
@@ -97,7 +97,7 @@ downarrow
   index: -1
 evil_ninja
   rotate: false
-  xy: 5374, 472
+  xy: 5472, 472
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
@@ -118,7 +118,7 @@ explosion_windup
   index: -1
 female1
   rotate: false
-  xy: 5294, 332
+  xy: 5374, 472
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
@@ -146,7 +146,7 @@ fist_slam_windup
   index: -1
 ghost
   rotate: false
-  xy: 5472, 472
+  xy: 5392, 342
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
@@ -167,7 +167,7 @@ goblet_lit
   index: -1
 goblin
   rotate: false
-  xy: 5490, 342
+  xy: 5164, 128
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
@@ -177,6 +177,13 @@ green_potion_throw
   xy: 2564, 940
   size: 192, 16
   orig: 192, 16
+  offset: 0, 0
+  index: -1
+green_whirl
+  rotate: false
+  xy: 5562, 874
+  size: 64, 16
+  orig: 64, 16
   offset: 0, 0
   index: -1
 holy_explosion_active
@@ -202,7 +209,7 @@ ice_shard
   index: -1
 jawa
   rotate: false
-  xy: 5276, 462
+  xy: 5196, 332
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
@@ -230,7 +237,7 @@ magic_orb
   index: -1
 male1
   rotate: false
-  xy: 5196, 332
+  xy: 5294, 332
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
@@ -417,6 +424,13 @@ smoke
   orig: 384, 64
   offset: 0, 0
   index: -1
+spider
+  rotate: false
+  xy: 5178, 462
+  size: 96, 128
+  orig: 96, 128
+  offset: 0, 0
+  index: -1
 stego
   rotate: false
   xy: 5910, 400
@@ -496,7 +510,7 @@ undead_lancer
   index: -1
 undead_ninja
   rotate: false
-  xy: 5178, 462
+  xy: 5276, 462
   size: 96, 128
   orig: 96, 128
   offset: 0, 0

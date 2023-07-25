@@ -48,6 +48,8 @@ public class Enemy extends Creature {
 
         params.setEnemyRallyPointId(enemyRallyPointId);
 
+        params.setOnDeathAction(enemyTemplate.getOnDeathAction());
+
         Enemy enemy = Enemy.of();
         enemy.params = params;
         return enemy;
@@ -142,5 +144,4 @@ public class Enemy extends Creature {
         getParams().getStats().setSpeed(getParams().getStats().getBaseSpeed());
         getParams().getEnemyParams().setAggroedCreatureId(ability.getParams().getCreatureId());
     }
-
 }

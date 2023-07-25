@@ -103,7 +103,7 @@ public abstract class Ability implements Entity {
         if (creature != null) {
             if (getParams().getChainToPos() != null) {
                 getParams().setPos(getParams().getChainToPos());
-            } else {
+            } else if (!getParams().getDontOverridePos()) {
                 getParams().setPos(Ability.calculatePosition(creature.getParams().getPos(),
                     getParams().getDirVector(),
                     getParams().getStartingRange()

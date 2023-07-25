@@ -24,20 +24,24 @@ public class LightningSpark extends Ability {
         Creature creature = game.getCreature(abilityParams.getCreatureId());
 
         LightningSpark ability = LightningSpark.of();
+
+        Vector2 pos = LightningSpark.calculatePos(creature.getParams().getPos().add(abilityParams.getDirVector()),
+            creature.getParams().getPos()
+        );
+
         ability.params = abilityParams
             .setWidth(3f)
             .setHeight(3f)
             .setChannelTime(0f)
             .setActiveTime(0.4f)
             .setTextureName("lightning")
-            .setBaseDamage(25f)
+            .setBaseDamage(15f)
             .setActiveAnimationLooping(true)
             .setAttackWithoutMoving(true)
             .setSkipCreatingBody(true)
             .setDelayedActionTime(0.001f)
-            .setPos(LightningSpark.calculatePos(creature.getParams().getPos().add(abilityParams.getDirVector()),
-                creature.getParams().getPos()
-            ));
+            .setPos(pos)
+            .setDontOverridePos(true);
 
         return ability;
     }

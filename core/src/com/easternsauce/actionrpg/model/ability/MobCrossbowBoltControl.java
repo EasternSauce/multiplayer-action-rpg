@@ -10,15 +10,15 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-public class MobCrossbowShot extends Ability {
+public class MobCrossbowBoltControl extends Ability {
     @Getter
     private AbilityParams params;
 
     int currentBoltToFire = 0;
     Vector2 previousDirVector = null;
 
-    public static MobCrossbowShot of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        MobCrossbowShot ability = MobCrossbowShot.of();
+    public static MobCrossbowBoltControl of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+        MobCrossbowBoltControl ability = MobCrossbowBoltControl.of();
         ability.params = abilityParams.setChannelTime(0f).setActiveTime(2f);
 
         return ability;

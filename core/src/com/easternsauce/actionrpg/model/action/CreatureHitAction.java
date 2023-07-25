@@ -33,6 +33,7 @@ public abstract class CreatureHitAction extends GameStateAction {
         targetCreature.getParams().getTimeSinceDeathTimer().restart();
         targetCreature.getParams().setAwaitingRespawn(true);
         attackerCreature.onKillEffect();
+        targetCreature.onDeath(attackerCreature, game);
 
         if (targetCreature.getParams().getEnemyRallyPointId() != null) {
             EnemyRallyPoint enemyRallyPoint = game.getGameState().getEnemyRallyPoint(targetCreature

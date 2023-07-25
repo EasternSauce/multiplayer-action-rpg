@@ -136,4 +136,6 @@ public class AbilityParams implements EntityParams {
 
     private Boolean noTexture = false;
 
+    private Boolean dontOverridePos = false;
+
 }

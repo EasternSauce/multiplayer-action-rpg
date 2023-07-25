@@ -79,6 +79,8 @@ public class AbilityAnimationConfig {
 
         configs.put("teeth", AbilityAnimationConfig.of(100, 128, "teeth", "teeth", 0, 18, 0f, 0.01f, 1f));
 
+        configs.put("green_whirl", AbilityAnimationConfig.of(16, 16, "green_whirl", "green_whirl", 0, 4, 0f, 0.1f, 1f));
+
     }
 
     private Integer textureWidth;

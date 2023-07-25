@@ -16,14 +16,14 @@ import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-public class DigTunnel extends Projectile {
+public class TunnelDig extends Projectile {
     @Getter
     private AbilityParams params;
 
     private int currentSplash = 0;
 
-    public static DigTunnel of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        DigTunnel ability = DigTunnel.of();
+    public static TunnelDig of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+        TunnelDig ability = TunnelDig.of();
         ability.params = abilityParams
             .setNoTexture(true)
             .setWidth(1.5f)

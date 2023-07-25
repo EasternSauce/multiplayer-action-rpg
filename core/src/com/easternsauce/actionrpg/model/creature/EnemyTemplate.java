@@ -33,7 +33,8 @@ public class EnemyTemplate {
         randomDropSet,
         new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.MOB_CROSSBOW_SHOT, 22f, 100f),
             EnemySkillUseEntry.of(SkillType.MOB_POISONOUS_MIXTURE, 18f, 40f)
-        ))
+        )),
+        null
     );
     public static EnemyTemplate skeleton = EnemyTemplate.of(EnemyType.SKELETON,
         200f,
@@ -42,7 +43,8 @@ public class EnemyTemplate {
         randomDropSet,
         new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.MOB_SWORD_SLASH, 5f, 100f),
             EnemySkillUseEntry.of(SkillType.SHIELD_GUARD, 20f, 5f)
-        ))
+        )),
+        null
     );
     public static EnemyTemplate mage = EnemyTemplate.of(EnemyType.MAGE,
         120f,
@@ -52,7 +54,8 @@ public class EnemyTemplate {
         new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.MOB_MAGIC_ORB, 20f, 100f),
             EnemySkillUseEntry.of(SkillType.MAGE_TELEPORT_COMBO, 20f, 25f)
 
-        ))
+        )),
+        null
     );
     public static EnemyTemplate minos = EnemyTemplate.of(EnemyType.MINOS,
         2300f,
@@ -61,7 +64,8 @@ public class EnemyTemplate {
         randomDropSet,
         new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.BOSS_SWORD_SLASH, 9f, 200f),
             EnemySkillUseEntry.of(SkillType.BOSS_SWORD_SPIN, 6f, 100f)
-        ))
+        )),
+        null
     );
     public static EnemyTemplate serpent = EnemyTemplate.of(EnemyType.SERPENT,
         1500f,
@@ -70,16 +74,18 @@ public class EnemyTemplate {
         randomDropSet,
         new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.ICE_SPEAR_RAMPAGE, 15f, 50f),
             EnemySkillUseEntry.of(SkillType.MOB_RING_OF_FIRE, 7f, 150f)
-        ))
+        )),
+        null
     );
     public static EnemyTemplate sludge = EnemyTemplate.of(EnemyType.SLUDGE,
         400f,
         12f,
         6f,
         randomDropSet,
-        new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.DIG_TUNNEL, 22f, 100f),
+        new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.TUNNEL_DIG, 22f, 100f),
             EnemySkillUseEntry.of(SkillType.SUMMON_GHOSTS, 10f, 60f)
-        ))
+        )),
+        null
     );
     public static EnemyTemplate wolf = EnemyTemplate.of(EnemyType.WOLF,
         350f,
@@ -88,14 +94,32 @@ public class EnemyTemplate {
         randomDropSet,
         new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.DASH, 22f, 10f),
             EnemySkillUseEntry.of(SkillType.BITE, 6f, 300f)
-        ))
+        )),
+        null
     );
     public static EnemyTemplate rat = EnemyTemplate.of(EnemyType.RAT,
         450f,
         4f,
+        11f,
+        randomDropSet,
+        new ConcurrentSkipListSet<>(Collections.singletonList(EnemySkillUseEntry.of(SkillType.POISON_BITE, 6f, 300f))),
+        null
+    );
+    public static EnemyTemplate spider = EnemyTemplate.of(EnemyType.SPIDER,
+        200f,
+        4f,
+        12f,
+        randomDropSet,
+        new ConcurrentSkipListSet<>(Collections.singletonList(EnemySkillUseEntry.of(SkillType.BITE, 6f, 300f))),
+        OnDeathAction.SPAWN_SPIDERS
+    );
+    public static EnemyTemplate babySpider = EnemyTemplate.of(EnemyType.BABY_SPIDER,
+        150f,
+        4f,
         10f,
         randomDropSet,
-        new ConcurrentSkipListSet<>(Collections.singletonList(EnemySkillUseEntry.of(SkillType.POISON_BITE, 6f, 300f)))
+        new ConcurrentSkipListSet<>(Collections.singletonList(EnemySkillUseEntry.of(SkillType.BITE, 6f, 300f))),
+        null
     );
 
     @Getter
@@ -110,4 +134,6 @@ public class EnemyTemplate {
     private Set<DropTableEntry> dropTable;
     @Getter
     private Set<EnemySkillUseEntry> enemySkillUseEntries;
+    @Getter
+    private OnDeathAction onDeathAction;
 }
