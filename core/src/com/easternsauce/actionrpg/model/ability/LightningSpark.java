@@ -1,7 +1,9 @@
 package com.easternsauce.actionrpg.model.ability;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.creature.Creature;
+import com.easternsauce.actionrpg.model.creature.CreatureEffect;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.EqualsAndHashCode;
@@ -26,7 +28,9 @@ public class LightningSpark extends Ability {
         LightningSpark ability = LightningSpark.of();
 
         Vector2 pos = LightningSpark.calculatePos(creature.getParams().getPos().add(abilityParams.getDirVector()),
-            creature.getParams().getPos()
+            creature.getParams().getPos(),
+            creature.getParams().getAreaId(),
+            game
         );
 
         ability.params = abilityParams
@@ -46,14 +50,23 @@ public class LightningSpark extends Ability {
         return ability;
     }
 
-    private static Vector2 calculatePos(Vector2 pos, Vector2 creaturePos) {
+    private static Vector2 calculatePos(Vector2 pos, Vector2 creaturePos, AreaId areaId, CoreGame game) {
         Vector2 vectorTowards = creaturePos.vectorTowards(pos);
 
-        float maxRange = 5f;
+        Vector2 destinationPos;
+
+        float maxRange = 20f;
         if (vectorTowards.len() > maxRange) {
-            return creaturePos.add(vectorTowards.normalized().multiplyBy(maxRange));
+            destinationPos = creaturePos.add(vectorTowards.normalized().multiplyBy(maxRange));
+        } else {
+            destinationPos = pos;
         }
-        return pos;
+
+        if (!game.isLineBetweenPointsUnobstructedByTerrain(areaId, creaturePos, destinationPos)) {
+            destinationPos = creaturePos;
+        }
+
+        return destinationPos;
     }
 
     @Override
@@ -64,6 +77,13 @@ public class LightningSpark extends Ability {
     @Override
     protected void onChannelUpdate(CoreGame game) {
 
+    }
+
+    @Override
+    public void onStarted(CoreGame game) {
+        Creature creature = game.getCreature(getParams().getCreatureId());
+        creature.applyEffect(CreatureEffect.SELF_STUN, 0.1f, game);
+        creature.stopMoving();
     }
 
     @Override

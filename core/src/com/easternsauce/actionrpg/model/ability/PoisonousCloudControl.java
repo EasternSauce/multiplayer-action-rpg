@@ -48,9 +48,11 @@ public class PoisonousCloudControl extends Ability {
             currentCloudSet < cloudSetSpawnTimes.length &&
             getParams().getStateTimer().getTime() > cloudSetSpawnTimes[currentCloudSet]) {
 
-            for(int i = 0; i < cloudSetSpawnCounts[currentCloudSet]; i++) {
-                float x = getParams().getPos().getX() + (float) Math.sin(2 * Math.PI / cloudSetSpawnCounts[currentCloudSet] * i) * cloudSetDistances[currentCloudSet];
-                float y = getParams().getPos().getY() + (float) Math.cos(2 * Math.PI / cloudSetSpawnCounts[currentCloudSet] * i) * cloudSetDistances[currentCloudSet];
+            for (int i = 0; i < cloudSetSpawnCounts[currentCloudSet]; i++) {
+                float x = getParams().getPos().getX() + (float) Math.sin(2 * Math.PI /
+                    cloudSetSpawnCounts[currentCloudSet] * i) * cloudSetDistances[currentCloudSet];
+                float y = getParams().getPos().getY() + (float) Math.cos(2 * Math.PI /
+                    cloudSetSpawnCounts[currentCloudSet] * i) * cloudSetDistances[currentCloudSet];
 
                 game.chainAnotherAbility(
                     this,

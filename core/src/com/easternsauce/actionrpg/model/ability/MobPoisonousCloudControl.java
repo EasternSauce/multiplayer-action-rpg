@@ -15,8 +15,7 @@ public class MobPoisonousCloudControl extends Ability {
 
     int currentCloudSet = 0;
 
-    public static MobPoisonousCloudControl of(AbilityParams abilityParams,
-                                              @SuppressWarnings("unused") CoreGame game) {
+    public static MobPoisonousCloudControl of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         MobPoisonousCloudControl ability = MobPoisonousCloudControl.of();
         ability.params = abilityParams.setChannelTime(0f).setActiveTime(10f);
 
@@ -49,9 +48,11 @@ public class MobPoisonousCloudControl extends Ability {
             currentCloudSet < cloudSetSpawnTimes.length &&
             getParams().getStateTimer().getTime() > cloudSetSpawnTimes[currentCloudSet]) {
 
-            for(int i = 0; i < cloudSetSpawnCounts[currentCloudSet]; i++) {
-                float x = getParams().getPos().getX() + (float) Math.sin(2 * Math.PI / cloudSetSpawnCounts[currentCloudSet] * i) * cloudSetDistances[currentCloudSet];
-                float y = getParams().getPos().getY() + (float) Math.cos(2 * Math.PI / cloudSetSpawnCounts[currentCloudSet] * i) * cloudSetDistances[currentCloudSet];
+            for (int i = 0; i < cloudSetSpawnCounts[currentCloudSet]; i++) {
+                float x = getParams().getPos().getX() + (float) Math.sin(2 * Math.PI /
+                    cloudSetSpawnCounts[currentCloudSet] * i) * cloudSetDistances[currentCloudSet];
+                float y = getParams().getPos().getY() + (float) Math.cos(2 * Math.PI /
+                    cloudSetSpawnCounts[currentCloudSet] * i) * cloudSetDistances[currentCloudSet];
 
                 game.chainAnotherAbility(
                     this,

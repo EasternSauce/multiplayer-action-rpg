@@ -77,7 +77,9 @@ public enum AbilityType {
     POISON_BITE(PoisonBite::of),
 
     EMERALD_SPIN(EmeraldSpin::of),
-    EMERALD_SPIN_CONTROL(EmeraldSpinControl::of);
+    EMERALD_SPIN_CONTROL(EmeraldSpinControl::of),
+
+    METEOR(Meteor::of);
 
     @Getter
     private BiFunction<AbilityParams, CoreGame, Ability> factoryMapping;

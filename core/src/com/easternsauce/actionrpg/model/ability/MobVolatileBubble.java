@@ -1,6 +1,8 @@
 package com.easternsauce.actionrpg.model.ability;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.creature.Creature;
+import com.easternsauce.actionrpg.model.creature.CreatureEffect;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.EqualsAndHashCode;
@@ -40,6 +42,13 @@ public class MobVolatileBubble extends Projectile {
     @Override
     protected void onChannelUpdate(CoreGame game) {
         onProjectileTravelUpdate();
+    }
+
+    @Override
+    public void onStarted(CoreGame game) {
+        Creature creature = game.getCreature(getParams().getCreatureId());
+        creature.applyEffect(CreatureEffect.SELF_STUN, 0.1f, game);
+        creature.stopMoving();
     }
 
     @Override

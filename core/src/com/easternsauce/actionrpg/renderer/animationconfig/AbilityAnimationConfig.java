@@ -81,6 +81,8 @@ public class AbilityAnimationConfig {
 
         configs.put("green_whirl", AbilityAnimationConfig.of(16, 16, "green_whirl", "green_whirl", 0, 4, 0f, 0.1f, 1f));
 
+        configs.put("meteor", AbilityAnimationConfig.of(595, 481, "meteor", "meteor", 0, 1, 0f, 1f, 1f));
+
     }
 
     private Integer textureWidth;
