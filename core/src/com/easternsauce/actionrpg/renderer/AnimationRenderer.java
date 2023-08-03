@@ -47,6 +47,9 @@ public class AnimationRenderer {
     }
 
     private TextureRegion getFrame(float animationTime) {
+        //at com.badlogic.gdx.graphics.g2d.Animation.getKeyFrame(Animation.java:119)
+        //at com.badlogic.gdx.graphics.g2d.Animation.getKeyFrame(Animation.java:106)
+        // TODO Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException: Index -2 out of bounds for length 10
         return animation.getKeyFrame(animationTime, animationSpec.getLooping());
     }
 

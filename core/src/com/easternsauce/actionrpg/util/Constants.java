@@ -30,6 +30,6 @@ public class Constants {
     public static final float DAMAGE_ANIMATION_DURATION = 0.35f;
     public static final float ENEMY_RESPAWN_TIME = 120f;
 
-    public static final boolean IS_DEBUG_ENABLED = true;
-    public static final int TIME_BETWEEN_GAMESTATE_BROADCASTS = 750;
+    public static final boolean IS_DEBUG_ENABLED = false;
+    public static final int TIME_MS_BETWEEN_GAMESTATE_BROADCASTS = 1000;
 }

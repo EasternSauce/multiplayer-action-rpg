@@ -65,6 +65,6 @@ public class PlayerInitAction extends GameStateAction {
 
         int rngSeed = game.getGameState().getRandomGenerator().nextInt();
 
-        return Player.of(playerId, AreaId.of("area3"), pos, textureName, rngSeed);
+        return Player.of(playerId, AreaId.of("Area1"), pos, textureName, rngSeed);
     }
 }

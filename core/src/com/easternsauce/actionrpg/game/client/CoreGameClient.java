@@ -244,7 +244,7 @@ public class CoreGameClient extends CoreGame {
     }
 
     private void handleActionButtonHoldInput(PlayerConfig playerConfig) {
-        if (!playerConfig.getInventoryVisible()) {
+        if (playerConfig != null && !playerConfig.getInventoryVisible()) {
             Vector2 mousePos = getMousePositionRetriever().mousePosRelativeToCenter(this);
 
             Creature player = gameState.accessCreatures().getCreatures().get(getGameState().getThisClientPlayerId());

@@ -82,16 +82,16 @@ public abstract class CreatureHitAction extends GameStateAction {
                 Map<SkillType, Integer> grantedSkills = new ConcurrentSkipListMap<>();
 
                 if (randomSkillType.get() != null) {
-                    float randValue = Math.abs(game.getGameState().getRandomGenerator().nextFloat());
+                    //                    float randValue = Math.abs(game.getGameState().getRandomGenerator().nextFloat());
 
-                    int level;
-                    if (randValue < 0.5f) {
-                        level = 1;
-                    } else if (randValue < 0.8f) {
-                        level = 2;
-                    } else {
-                        level = 3;
-                    }
+                    int level = 1;
+                    //                    if (randValue < 0.5f) { // TODO: temporarily every item drops at lvl1
+                    //                        level = 1;
+                    //                    } else if (randValue < 0.8f) {
+                    //                        level = 2;
+                    //                    } else {
+                    //                        level = 3;
+                    //                    }
 
                     grantedSkills.put(randomSkillType.get(), level);
                 }

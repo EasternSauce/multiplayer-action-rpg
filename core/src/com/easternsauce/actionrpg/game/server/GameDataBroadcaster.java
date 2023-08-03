@@ -19,7 +19,7 @@ public class GameDataBroadcaster {
             try {
                 while (true) {
                     //noinspection BusyWait
-                    Thread.sleep(Constants.TIME_BETWEEN_GAMESTATE_BROADCASTS);
+                    Thread.sleep(Constants.TIME_MS_BETWEEN_GAMESTATE_BROADCASTS);
 
                     Connection[] connections = endPoint.getConnections();
                     for (Connection connection : connections) {

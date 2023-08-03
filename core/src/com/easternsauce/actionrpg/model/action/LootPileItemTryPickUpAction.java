@@ -3,6 +3,7 @@ package com.easternsauce.actionrpg.model.action;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.area.LootPile;
+import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.renderer.hud.inventorywindow.InventoryWindowConsts;
@@ -27,18 +28,17 @@ public class LootPileItemTryPickUpAction extends GameStateAction {
 
     @Override
     public void applyToGame(CoreGame game) {
+        Creature creature = game.getGameState().accessCreatures().getCreature(playerId);
 
-        Map<Integer, Item> inventoryItems = game
-            .getGameState()
-            .accessCreatures()
-            .getCreature(playerId)
-            .getParams()
-            .getInventoryItems();
+        if (creature == null) {
+            return;
+        }
+
+        Map<Integer, Item> inventoryItems = creature.getParams().getInventoryItems();
 
         Integer existingStackableSlot = null;
 
-        if (item.getTemplate().getStackable()) {
-
+        if (item != null && item.getTemplate().getStackable()) {
             for (int i = 0; i < InventoryWindowConsts.INVENTORY_TOTAL_SLOTS; i++) {
                 if (inventoryItems.containsKey(i) && inventoryItems.get(i).getTemplate().getId().equals(item
                     .getTemplate()

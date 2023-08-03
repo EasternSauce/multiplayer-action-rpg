@@ -60,7 +60,7 @@ public class CreatureAnimationConfig {
         );
 
         configs.put("spider",
-            CreatureAnimationConfig.of("spider", 1, 2f, 2f, 32, 32, 3, 0.1f, textureDirMap(3, 0, 1, 2), false)
+            CreatureAnimationConfig.of("spider", 1, 3.5f, 3.5f, 32, 32, 3, 0.1f, textureDirMap(3, 0, 1, 2), false)
         );
 
         configs.put("baby_spider",

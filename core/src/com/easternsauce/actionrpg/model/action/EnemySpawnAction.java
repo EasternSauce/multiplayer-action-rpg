@@ -36,14 +36,15 @@ public class EnemySpawnAction extends GameStateAction {
         return game.getGameState().accessCreatures().getCreature(creatureId);
     }
 
+    @SuppressWarnings("PointlessArithmeticExpression")
     private Creature createNewEnemy(CoreGame game) {
         EnemyRallyPoint enemyRallyPoint = game.getGameState().getEnemyRallyPoint(enemyRallyPointId);
 
         Vector2 rallyPointPos = enemyRallyPoint.getRallyPointInfo().getPos();
 
         Vector2 pos = Vector2.of(
-            rallyPointPos.getX() + 10 * game.getGameState().getRandomGenerator().nextFloat(),
-            rallyPointPos.getY() + 10 * game.getGameState().getRandomGenerator().nextFloat()
+            rallyPointPos.getX() + 1f * game.getGameState().getRandomGenerator().nextFloat(),
+            rallyPointPos.getY() + 1f * game.getGameState().getRandomGenerator().nextFloat()
         );
 
         int rngSeed = game.getGameState().getRandomGenerator().nextInt();

@@ -36,6 +36,10 @@ public class InventoryToPotionMenuStackItemAction extends GameStateAction {
         if (!Objects.equals(inventoryIndex, potionMenuIndex)) {
             Creature player = game.getCreature(playerId);
 
+            if (player == null) {
+                return;
+            }
+
             Item itemFrom = player.getParams().getInventoryItems().get(inventoryIndex);
             Item itemTo = player.getParams().getPotionMenuItems().get(potionMenuIndex);
 

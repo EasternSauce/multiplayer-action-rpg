@@ -8,7 +8,7 @@ import java.io.IOException;
 @NoArgsConstructor(staticName = "of")
 public class ServerConnectionEstablisher {
     public void establish(CoreGameServerListener listener, CoreGameServer game) {
-        Server endPoint = new Server(6400000, 6400000);
+        Server endPoint = new Server(12800000, 12800000);
         endPoint.getKryo().setRegistrationRequired(false);
         endPoint.start();
 

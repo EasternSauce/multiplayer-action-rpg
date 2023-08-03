@@ -13,44 +13,56 @@ import java.util.concurrent.ConcurrentSkipListSet;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 public class EnemyTemplate {
-    private static final Set<DropTableEntry> randomDropSet = new ConcurrentSkipListSet<>(Arrays.asList(DropTableEntry.leatherArmorDrop,
-        DropTableEntry.specialLeatherArmorDrop,
-        DropTableEntry.hideGlovesDrop,
-        DropTableEntry.specialHideGlovesDrop,
-        DropTableEntry.ringmailGreavesDrop,
-        DropTableEntry.specialRingmailGreavesDrop,
-        DropTableEntry.ironSwordDrop,
-        DropTableEntry.specialIronSwordDrop,
-        DropTableEntry.boomerangDrop,
-        DropTableEntry.shieldDrop,
-        DropTableEntry.lifePotionDrop,
-        DropTableEntry.manaPotionDrop
-    ));
-    public static EnemyTemplate archer = EnemyTemplate.of(EnemyType.ARCHER,
-        150f,
-        20f,
-        11f,
-        randomDropSet,
-        new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.MOB_CROSSBOW_SHOT, 22f, 100f),
-            EnemySkillUseEntry.of(SkillType.MOB_POISONOUS_MIXTURE, 18f, 40f)
-        )),
-        null
-    );
     public static EnemyTemplate skeleton = EnemyTemplate.of(EnemyType.SKELETON,
         200f,
         4f,
         10.5f,
-        randomDropSet,
+        new ConcurrentSkipListSet<>(Arrays.asList(DropTableEntry.leatherArmorDrop,
+            DropTableEntry.hideGlovesDrop,
+            DropTableEntry.ringmailGreavesDrop,
+            DropTableEntry.ironSwordDrop,
+            DropTableEntry.tierOneMagicIronSwordDrop,
+            DropTableEntry.shieldDrop,
+            DropTableEntry.lifePotionDrop,
+            DropTableEntry.manaPotionDrop,
+            DropTableEntry.tierOneMagicLeatherArmorDrop
+        )),
         new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.MOB_SWORD_SLASH, 5f, 100f),
             EnemySkillUseEntry.of(SkillType.SHIELD_GUARD, 20f, 5f)
         )),
         null
     );
+
+    public static EnemyTemplate archer = EnemyTemplate.of(EnemyType.ARCHER,
+        150f,
+        20f,
+        11f,
+        new ConcurrentSkipListSet<>(Arrays.asList(DropTableEntry.leatherArmorDrop,
+            DropTableEntry.hideGlovesDrop,
+            DropTableEntry.ringmailGreavesDrop,
+            DropTableEntry.crossbowDrop,
+            DropTableEntry.lifePotionDrop,
+            DropTableEntry.manaPotionDrop,
+            DropTableEntry.tierOneMagicLeatherArmorDrop
+        )),
+        new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.MOB_CROSSBOW_SHOT, 22f, 100f),
+            EnemySkillUseEntry.of(SkillType.MOB_POISONOUS_MIXTURE, 18f, 40f)
+        )),
+        null
+    );
+
     public static EnemyTemplate mage = EnemyTemplate.of(EnemyType.MAGE,
         120f,
         20f,
         11f,
-        randomDropSet,
+        new ConcurrentSkipListSet<>(Arrays.asList(DropTableEntry.tierOneMagicLeatherArmorDrop,
+            DropTableEntry.tierOneMagicHideGlovesDrop,
+            DropTableEntry.ringmailGreavesDrop,
+            DropTableEntry.lifePotionDrop,
+            DropTableEntry.manaPotionDrop,
+            DropTableEntry.manaPotionDrop,
+            DropTableEntry.manaPotionDrop
+        )),
         new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.MOB_MAGIC_ORB, 20f, 100f),
             EnemySkillUseEntry.of(SkillType.MAGE_TELEPORT_COMBO, 20f, 25f)
 
@@ -61,7 +73,20 @@ public class EnemyTemplate {
         2300f,
         6f,
         16f,
-        randomDropSet,
+        new ConcurrentSkipListSet<>(Arrays.asList(DropTableEntry.bossTierThreeMagicLeatherArmorDrop,
+            DropTableEntry.bossTierTwoMagicRingmailGreavesDrop,
+            DropTableEntry.bossTierTwoMagicRingmailGreavesDrop,
+            DropTableEntry.bossTierThreeMagicHideGlovesDrop,
+            DropTableEntry.lifePotionDrop,
+            DropTableEntry.lifePotionDrop,
+            DropTableEntry.lifePotionDrop,
+            DropTableEntry.lifePotionDrop,
+            DropTableEntry.lifePotionDrop,
+            DropTableEntry.lifePotionDrop,
+            DropTableEntry.manaPotionDrop,
+            DropTableEntry.manaPotionDrop,
+            DropTableEntry.manaPotionDrop
+        )),
         new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.BOSS_SWORD_SLASH, 9f, 200f),
             EnemySkillUseEntry.of(SkillType.BOSS_SWORD_SPIN, 6f, 100f)
         )),
@@ -71,7 +96,21 @@ public class EnemyTemplate {
         1500f,
         7f,
         14f,
-        randomDropSet,
+        new ConcurrentSkipListSet<>(Arrays.asList(DropTableEntry.bossTierTwoMagicLeatherArmorDrop,
+            DropTableEntry.bossTierTwoMagicLeatherArmorDrop,
+            DropTableEntry.bossTierOneMagicHideGlovesDrop,
+            DropTableEntry.bossTierOneMagicHideGlovesDrop,
+            DropTableEntry.bossTierTwoMagicHideGlovesDrop,
+            DropTableEntry.bossTierOneMagicRingmailGreavesDrop,
+            DropTableEntry.bossTierOneMagicRingmailGreavesDrop,
+            DropTableEntry.boomerangDrop,
+            DropTableEntry.lifePotionDrop,
+            DropTableEntry.lifePotionDrop,
+            DropTableEntry.lifePotionDrop,
+            DropTableEntry.manaPotionDrop,
+            DropTableEntry.manaPotionDrop,
+            DropTableEntry.manaPotionDrop
+        )),
         new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.ICE_SPEAR_RAMPAGE, 15f, 50f),
             EnemySkillUseEntry.of(SkillType.MOB_RING_OF_FIRE, 7f, 150f)
         )),
@@ -81,7 +120,15 @@ public class EnemyTemplate {
         400f,
         12f,
         6f,
-        randomDropSet,
+        new ConcurrentSkipListSet<>(Arrays.asList(DropTableEntry.tierThreeMagicLeatherArmorDrop,
+            DropTableEntry.tierTwoMagicHideGlovesDrop,
+            DropTableEntry.tierTwoMagicRingmailGreavesDrop,
+            DropTableEntry.boomerangDrop,
+            DropTableEntry.lifePotionDrop,
+            DropTableEntry.lifePotionDrop,
+            DropTableEntry.manaPotionDrop,
+            DropTableEntry.manaPotionDrop
+        )),
         new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.TUNNEL_DIG, 22f, 100f),
             EnemySkillUseEntry.of(SkillType.SUMMON_GHOSTS, 10f, 60f)
         )),
@@ -91,7 +138,15 @@ public class EnemyTemplate {
         350f,
         4f,
         10f,
-        randomDropSet,
+        new ConcurrentSkipListSet<>(Arrays.asList(DropTableEntry.tierTwoMagicLeatherArmorDrop,
+            DropTableEntry.tierThreeMagicLeatherArmorDrop,
+            DropTableEntry.tierTwoMagicRingmailGreavesDrop,
+            DropTableEntry.tierThreeMagicHideGlovesDrop,
+            DropTableEntry.lifePotionDrop,
+            DropTableEntry.lifePotionDrop,
+            DropTableEntry.manaPotionDrop,
+            DropTableEntry.manaPotionDrop
+        )),
         new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.DASH, 22f, 10f),
             EnemySkillUseEntry.of(SkillType.BITE, 6f, 300f)
         )),
@@ -101,7 +156,15 @@ public class EnemyTemplate {
         450f,
         4f,
         11f,
-        randomDropSet,
+        new ConcurrentSkipListSet<>(Arrays.asList(DropTableEntry.tierTwoMagicLeatherArmorDrop,
+            DropTableEntry.tierOneMagicRingmailGreavesDrop,
+            DropTableEntry.tierTwoMagicHideGlovesDrop,
+            DropTableEntry.lifePotionDrop,
+            DropTableEntry.lifePotionDrop,
+            DropTableEntry.lifePotionDrop,
+            DropTableEntry.manaPotionDrop,
+            DropTableEntry.manaPotionDrop
+        )),
         new ConcurrentSkipListSet<>(Collections.singletonList(EnemySkillUseEntry.of(SkillType.POISON_BITE, 6f, 300f))),
         null
     );
@@ -109,7 +172,18 @@ public class EnemyTemplate {
         200f,
         4f,
         12f,
-        randomDropSet,
+        new ConcurrentSkipListSet<>(Arrays.asList(DropTableEntry.tierThreeMagicLeatherArmorDrop,
+            DropTableEntry.tierThreeMagicLeatherArmorDrop,
+            DropTableEntry.tierTwoMagicRingmailGreavesDrop,
+            DropTableEntry.tierTwoMagicHideGlovesDrop,
+            DropTableEntry.crossbowDrop,
+            DropTableEntry.lifePotionDrop,
+            DropTableEntry.lifePotionDrop,
+            DropTableEntry.lifePotionDrop,
+            DropTableEntry.manaPotionDrop,
+            DropTableEntry.manaPotionDrop,
+            DropTableEntry.manaPotionDrop
+        )),
         new ConcurrentSkipListSet<>(Collections.singletonList(EnemySkillUseEntry.of(SkillType.BITE, 6f, 300f))),
         OnDeathAction.SPAWN_SPIDERS
     );
@@ -117,7 +191,9 @@ public class EnemyTemplate {
         150f,
         4f,
         10f,
-        randomDropSet,
+        new ConcurrentSkipListSet<>(Arrays.asList(DropTableEntry.unlikelyLifePotionDrop,
+            DropTableEntry.manaPotionDrop
+        )),
         new ConcurrentSkipListSet<>(Collections.singletonList(EnemySkillUseEntry.of(SkillType.BITE, 6f, 300f))),
         null
     );

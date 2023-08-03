@@ -25,7 +25,7 @@ public class GameStateData {
     private Map<AbilityId, Ability> abilities = new ConcurrentSkipListMap<>();
     private Map<AreaId, Area> areas = new ConcurrentSkipListMap<>();
 
-    private AreaId defaultAreaId = AreaId.of("area1");
+    private AreaId defaultAreaId = AreaId.of("Area1");
     private SimpleTimer generalTimer = SimpleTimer.getStartedTimer();
 
     private Map<CreatureId, PlayerConfig> playerConfig = new ConcurrentSkipListMap<>();

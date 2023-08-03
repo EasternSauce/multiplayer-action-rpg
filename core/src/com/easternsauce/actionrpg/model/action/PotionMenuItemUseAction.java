@@ -30,6 +30,11 @@ public class PotionMenuItemUseAction extends GameStateAction {
 
         if (playerConfig != null && slotIndex != null) {
             Creature creature = game.getCreature(playerId);
+
+            if (creature == null) {
+                return;
+            }
+
             Item item = creature.getParams().getPotionMenuItems().get(slotIndex);
 
             if (item != null && item.getTemplate().getConsumable()) {

@@ -23,8 +23,7 @@ public class Meteor extends Projectile {
 
         Meteor ability = Meteor.of();
 
-        ability.destinationPos = Meteor.calculatePos(
-            creature.getParams().getPos().add(abilityParams.getDirVector()),
+        ability.destinationPos = Meteor.calculatePos(creature.getParams().getPos().add(abilityParams.getDirVector()),
             creature.getParams().getPos(),
             creature.getParams().getAreaId(),
             game

@@ -130,7 +130,7 @@ public class ServerGameState extends GameState {
                     );
                     CreatureRespawnAction action = CreatureRespawnAction.of(creatureId,
                         pos,
-                        AreaId.of("area1")
+                        AreaId.of("Area1")
                     ); // TODO: respawns
 
                     scheduleServerSideAction(action);
