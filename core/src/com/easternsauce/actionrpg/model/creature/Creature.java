@@ -352,7 +352,7 @@ public abstract class Creature implements Entity {
 
     public void applyEffect(CreatureEffect effect, float duration, CoreGame game) {
         CreatureEffectState effectState = getParams().getEffectParams().getEffects().get(effect);
-        if (effectState.getRemaining(game) < duration) {
+        if (effectState.getRemainingTime(game) < duration) {
             effectState.setStartTime(game.getGameState().getTime());
             effectState.setDuration(duration);
         }

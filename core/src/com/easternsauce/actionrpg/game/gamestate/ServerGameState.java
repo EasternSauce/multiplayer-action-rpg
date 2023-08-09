@@ -16,9 +16,13 @@ import com.easternsauce.actionrpg.model.util.GameStateBroadcast;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.util.Constants;
 import com.esotericsoftware.kryonet.Connection;
+import com.google.gson.Gson;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.stream.Collectors;
@@ -31,6 +35,8 @@ public class ServerGameState extends GameState {
 
     @Getter
     private final Map<Integer, CreatureId> clientPlayers = new ConcurrentSkipListMap<>();
+
+    private final Gson gson = new Gson();
 
     @Override
     public Set<CreatureId> getCreaturesToUpdate() {
@@ -145,5 +151,18 @@ public class ServerGameState extends GameState {
             .stream()
             .filter(entry -> entry.getValue().getParams().getFullyLooted())
             .forEach(entry -> scheduleServerSideAction(LootPileDespawnAction.of(entry.getKey())));
+    }
+
+    public void saveToJsonFile(String fileName) {
+        BufferedWriter bufferedWriter;
+        try {
+            FileWriter writer = new FileWriter(fileName);
+            bufferedWriter = new BufferedWriter(writer);
+            gson.toJson(dataHolder.getData(), bufferedWriter);
+
+            bufferedWriter.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

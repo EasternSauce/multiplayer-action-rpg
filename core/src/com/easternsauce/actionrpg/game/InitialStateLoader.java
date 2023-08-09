@@ -61,8 +61,7 @@ public class InitialStateLoader {
 
         Map<EnemyRallyPointId, EnemyRallyPoint> enemyRallyPoints = game.getGameState().getEnemyRallyPoints();
 
-        addEnemyRallyPoint(
-            enemyRallyPoints,
+        addEnemyRallyPoint(enemyRallyPoints,
             AreaId.of("Area1"),
             Vector2.of(72.04751f, 25.991135f),
             Stream
@@ -71,8 +70,7 @@ public class InitialStateLoader {
             2
         );
 
-        addEnemyRallyPoint(
-            enemyRallyPoints,
+        addEnemyRallyPoint(enemyRallyPoints,
             AreaId.of("Area1"),
             Vector2.of(34.088314f, 51.699497f),
             Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.skeleton, 100),
@@ -81,8 +79,7 @@ public class InitialStateLoader {
             2
         );
 
-        addEnemyRallyPoint(
-            enemyRallyPoints,
+        addEnemyRallyPoint(enemyRallyPoints,
             AreaId.of("Area1"),
             Vector2.of(5.743255f, 33.62826f),
             Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.spider, 100)
@@ -91,8 +88,7 @@ public class InitialStateLoader {
             3
         );
 
-        addEnemyRallyPoint(
-            enemyRallyPoints,
+        addEnemyRallyPoint(enemyRallyPoints,
             AreaId.of("Area1"),
             Vector2.of(18.355146f, 102.16021f),
             Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.spider, 300)
@@ -101,8 +97,7 @@ public class InitialStateLoader {
             6
         );
 
-        addEnemyRallyPoint(
-            enemyRallyPoints,
+        addEnemyRallyPoint(enemyRallyPoints,
             AreaId.of("Area1"),
             Vector2.of(53.2744f, 84.06082f),
             Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.skeleton, 300),
@@ -112,8 +107,7 @@ public class InitialStateLoader {
             4
         );
 
-        addEnemyRallyPoint(
-            enemyRallyPoints,
+        addEnemyRallyPoint(enemyRallyPoints,
             AreaId.of("Area1"),
             Vector2.of(71.45329f, 69.61391f),
             Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.skeleton, 100),
@@ -122,8 +116,7 @@ public class InitialStateLoader {
             4
         );
 
-        addEnemyRallyPoint(
-            enemyRallyPoints,
+        addEnemyRallyPoint(enemyRallyPoints,
             AreaId.of("Area1"),
             Vector2.of(54.74892f, 114.00807f),
             Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.skeleton, 200),
@@ -133,8 +126,7 @@ public class InitialStateLoader {
             7
         );
 
-        addEnemyRallyPoint(
-            enemyRallyPoints,
+        addEnemyRallyPoint(enemyRallyPoints,
             AreaId.of("Area1"),
             Vector2.of(50.533447f, 150.28108f),
             Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.skeleton, 200),
@@ -143,8 +135,7 @@ public class InitialStateLoader {
             5
         );
 
-        addEnemyRallyPoint(
-            enemyRallyPoints,
+        addEnemyRallyPoint(enemyRallyPoints,
             AreaId.of("Area1"),
             Vector2.of(3.3964655f, 127.868256f),
             Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.skeleton, 200),
@@ -156,8 +147,7 @@ public class InitialStateLoader {
             5
         );
 
-        addEnemyRallyPoint(
-            enemyRallyPoints,
+        addEnemyRallyPoint(enemyRallyPoints,
             AreaId.of("Area1"),
             Vector2.of(22.922045f, 180.38924f),
             Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.skeleton, 200),

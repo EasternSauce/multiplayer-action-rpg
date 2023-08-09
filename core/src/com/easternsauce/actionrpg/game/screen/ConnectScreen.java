@@ -18,8 +18,8 @@ public class ConnectScreen implements Screen {
     private final ConnectScreenMessageHolder messageHolder = ConnectScreenMessageHolder.of();
     private final SimpleTimer timer = SimpleTimer.of();
     private CoreGame game;
-    private Boolean holdingBackspace = false;
-    private Float holdBackspaceTime = 0f;
+    private boolean holdingBackspace = false;
+    private double holdBackspaceTime = 0f;
     private TextureAtlas.AtlasRegion background;
 
     public void init(TextureAtlas atlas, CoreGame game) {

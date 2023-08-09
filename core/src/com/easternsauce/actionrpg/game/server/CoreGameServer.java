@@ -29,6 +29,7 @@ public class CoreGameServer extends CoreGame {
     private final CoreGameServerListener serverListener = CoreGameServerListener.of(this);
     private final ServerConnectionEstablisher serverConnectionEstablisher = ServerConnectionEstablisher.of();
     private final GameDataBroadcaster gameDataBroadcaster = GameDataBroadcaster.of();
+    private final GameStateSnapshotCreator gameStateSnapshotCreator = GameStateSnapshotCreator.of();
     @Getter
     @Setter
     private Server endPoint;
@@ -43,6 +44,7 @@ public class CoreGameServer extends CoreGame {
         serverConnectionEstablisher.establish(serverListener, this);
 
         gameDataBroadcaster.start(endPoint, this);
+        gameStateSnapshotCreator.start(this);
     }
 
     @Override
@@ -160,5 +162,6 @@ public class CoreGameServer extends CoreGame {
         getEndPoint().stop();
 
         gameDataBroadcaster.stop();
+        gameStateSnapshotCreator.stop();
     }
 }

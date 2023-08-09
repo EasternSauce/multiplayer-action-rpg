@@ -84,5 +84,6 @@ project(":core") {
         annotationProcessor 'org.projectlombok:lombok:1.18.24'
         implementation 'com.esotericsoftware:kryonet:2.22.0-RC1'
         implementation 'space.earlygrey:shapedrawer:2.4.0'
+        implementation 'com.google.code.gson:gson:2.10.1'
     }
 }

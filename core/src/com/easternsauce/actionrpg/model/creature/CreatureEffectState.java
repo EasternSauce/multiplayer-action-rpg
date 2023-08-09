@@ -12,7 +12,7 @@ public class CreatureEffectState {
     private Float startTime = 0f;
     private Float duration = 0f;
 
-    public Float getRemaining(CoreGame game) {
+    public Float getRemainingTime(CoreGame game) {
         float currentTime = game.getGameState().getTime();
         float remainingTime = (startTime + duration) - currentTime;
         if (remainingTime > 0) {
