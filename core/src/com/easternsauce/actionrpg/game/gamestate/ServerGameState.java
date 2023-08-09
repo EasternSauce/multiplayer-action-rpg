@@ -1,5 +1,6 @@
 package com.easternsauce.actionrpg.game.gamestate;
 
+import com.easternsauce.actionrpg.game.gson.InterfaceAdapter;
 import com.easternsauce.actionrpg.model.GameStateData;
 import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.ability.AbilityId;
@@ -17,12 +18,11 @@ import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.util.Constants;
 import com.esotericsoftware.kryonet.Connection;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.stream.Collectors;
@@ -36,7 +36,10 @@ public class ServerGameState extends GameState {
     @Getter
     private final Map<Integer, CreatureId> clientPlayers = new ConcurrentSkipListMap<>();
 
-    private final Gson gson = new Gson();
+    private final Gson gson = new GsonBuilder().enableComplexMapKeySerialization().registerTypeAdapter(
+        Creature.class,
+        new InterfaceAdapter<Creature>()
+    ).setPrettyPrinting().create();
 
     @Override
     public Set<CreatureId> getCreaturesToUpdate() {
@@ -161,6 +164,21 @@ public class ServerGameState extends GameState {
             gson.toJson(dataHolder.getData(), bufferedWriter);
 
             bufferedWriter.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void loadFromJsonFile(String fileName) {
+        BufferedReader bufferedReader;
+        try {
+            FileReader reader = new FileReader(fileName);
+            bufferedReader = new BufferedReader(reader);
+
+            System.out.println("setting data");
+            dataHolder.setData(gson.fromJson(bufferedReader, GameStateData.class));
+
+            bufferedReader.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

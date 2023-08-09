@@ -16,6 +16,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -97,7 +98,16 @@ public class CoreGameServer extends CoreGame {
 
     @Override
     public void initState() {
-        initialStateLoader.setupInitialState(this);
+        String fileName = "./gamestate.json";
+
+        File snapshotFile = new File(fileName);
+
+        if (!snapshotFile.exists()) {
+            System.out.println("setting up initial");
+            initialStateLoader.setupInitialState(this);
+        } else {
+            gameState.loadFromJsonFile(fileName);
+        }
     }
 
     @Override

@@ -12,7 +12,7 @@ public class ClientConnectionEstablisher {
         endPoint.getKryo().setRegistrationRequired(false);
         endPoint.start();
         try {
-            endPoint.connect(12000 * 99999, "192.168.1.5", 20445, 20445);
+            endPoint.connect(12000 * 99999, "localhost", 20445, 20445); // TODO: type ip when joining as client
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

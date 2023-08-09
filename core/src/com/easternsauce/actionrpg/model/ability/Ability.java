@@ -106,8 +106,7 @@ public abstract class Ability implements Entity {
             } else if (!getParams().getDontOverridePos()) {
                 getParams().setPos(Ability.calculatePosition(creature.getParams().getPos(),
                     // TODO: should be moved to AttachedAbility?
-                    getParams().getDirVector(),
-                    getParams().getStartingRange()
+                    getParams().getDirVector(), getParams().getStartingRange()
                 ));
             }
 
