@@ -8,11 +8,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(staticName = "of")
 public class ChatMessage implements Comparable<ChatMessage> {
     @Getter
+    String text;
+    @Getter
     private Float time;
     @Getter
     private String poster;
-    @Getter
-    String text;
 
     @Override
     public int compareTo(ChatMessage other) {

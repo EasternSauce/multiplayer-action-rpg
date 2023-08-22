@@ -36,10 +36,9 @@ public class ServerGameState extends GameState {
     @Getter
     private final Map<Integer, CreatureId> clientPlayers = new ConcurrentSkipListMap<>();
 
-    private final Gson gson = new GsonBuilder().enableComplexMapKeySerialization().registerTypeAdapter(
-        Creature.class,
+    private final Gson gson = new GsonBuilder().enableComplexMapKeySerialization().registerTypeAdapter(Creature.class,
         new InterfaceAdapter<Creature>()
-    ).setPrettyPrinting().create();
+    ).registerTypeAdapter(Ability.class, new InterfaceAdapter<Ability>()).setPrettyPrinting().create();
 
     @Override
     public Set<CreatureId> getCreaturesToUpdate() {
@@ -176,7 +175,8 @@ public class ServerGameState extends GameState {
             bufferedReader = new BufferedReader(reader);
 
             System.out.println("setting data");
-            dataHolder.setData(gson.fromJson(bufferedReader, GameStateData.class));
+            GameStateData data = gson.fromJson(bufferedReader, GameStateData.class);
+            dataHolder.setData(data);
 
             bufferedReader.close();
         } catch (IOException e) {

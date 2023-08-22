@@ -18,6 +18,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 @NoArgsConstructor(staticName = "of")
 @Data
 public class AbilityParams implements EntityParams {
+    Vector2 chainToPos;
     @NonNull
     private AbilityId id;
     @NonNull
@@ -39,73 +40,53 @@ public class AbilityParams implements EntityParams {
     private Vector2 vectorTowardsTarget = Vector2.of(0f, 0f);
     @NonNull
     private String textureName;
-
     @NonNull
     private Float rotationAngle = 0f;
-
     @NonNull
     private Boolean channelAnimationLooping;
     @NonNull
     private Boolean activeAnimationLooping;
-
     @NonNull
     private Float startingRange = 0f;
-
     @NonNull
     private Map<CreatureId, Float> creaturesAlreadyHit = new ConcurrentSkipListMap<>();
     @NonNull
     private CreaturesHitCounter damagingHitCreaturesHitCounter = CreaturesHitCounter.of();
-
     @NonNull
     private Vector2 velocity = Vector2.of(0f, 0f);
     @NonNull
     private Float speed = 0f;
-
     @NonNull
     private Float baseDamage;
     @NonNull
     private Float weaponDamage;
     @NonNull
     private Float damageMultiplier = 1.0f;
-
     @NonNull
     private Boolean playerAbility = false;
-
     @NonNull
     private Float channelTime;
     @NonNull
     private Float activeTime;
-
     @NonNull
     private Boolean attackWithoutMoving = false;
-
     private Float delayedActionTime;
-
     @NonNull
     private Boolean delayedActionCompleted = false;
-
     @NonNull
     private Float maxPlacementRange;
-
     @NonNull
     private Boolean skipCreatingBody = false;
-
     @NonNull
     private Float rotationShift = 0f;
-
     @NonNull
     private Boolean flip = false;
-
     @NonNull
     private SimpleTimer changeDirectionTimer = SimpleTimer.getStartedTimer();
-
     @NonNull
     private Boolean foundTarget = false;
-
     @NonNull
     private Vector2 chainFromPos;
-    Vector2 chainToPos;
-
     @NonNull
     private Vector2 skillStartPos;
 

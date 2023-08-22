@@ -39,14 +39,12 @@ import java.util.Set;
 public abstract class CoreGame extends Game {
     final protected GameplayScreen gameplayScreen = GameplayScreen.of();
     final protected ConnectScreen connectScreen = ConnectScreen.of();
+    @SuppressWarnings("unused")
+    final MenuScreen menuScreen = MenuScreen.of();
     @Getter
     final private GameEntityManager entityManager = GameEntityManager.of();
     @Getter
     final private EntityEventProcessor eventProcessor = EntityEventProcessor.of();
-
-    @SuppressWarnings("unused")
-    final MenuScreen menuScreen = MenuScreen.of();
-
     @Getter
     private final Chat chat = Chat.of();
 

@@ -26,6 +26,10 @@ public class PlayerInitAction extends GameStateAction {
     public void applyToGame(CoreGame game) {
         Creature player;
 
+        if (game.getCreatures().containsKey(playerId)) {
+            removeExistingPlayer(game);
+        }
+
         if (game.getGameState().accessCreatures().getRemovedCreatures().containsKey(playerId)) {
             player = loadExistingPlayerData(game);
         } else {
@@ -40,9 +44,13 @@ public class PlayerInitAction extends GameStateAction {
 
     }
 
-    @Override
-    public Entity getEntity(CoreGame game) {
-        return game.getCreature(playerId);
+    private void removeExistingPlayer(CoreGame game) {
+        Creature creature = game.getCreature(playerId);
+        if (creature != null) {
+            game.getGameState().accessCreatures().getRemovedCreatures().put(playerId, creature);
+
+            game.getEventProcessor().getCreatureModelsToBeRemoved().add(playerId);
+        }
     }
 
     private Creature loadExistingPlayerData(CoreGame game) {
@@ -66,5 +74,10 @@ public class PlayerInitAction extends GameStateAction {
         int rngSeed = game.getGameState().getRandomGenerator().nextInt();
 
         return Player.of(playerId, AreaId.of("Area1"), pos, textureName, rngSeed);
+    }
+
+    @Override
+    public Entity getEntity(CoreGame game) {
+        return game.getCreature(playerId);
     }
 }

@@ -68,10 +68,8 @@ public class CoreGameClient extends CoreGame {
 
     private void correctPlayerBodyArea() {
         Creature player = gameState.accessCreatures().getCreature(gameState.getThisClientPlayerId());
-        if (getCreatureBodies().containsKey(gameState.getThisClientPlayerId()) && !Objects.equals(getCreatureBodies()
-                .get(gameState.getThisClientPlayerId())
-                .getAreaId()
-                .getValue(),
+        if (player != null && getCreatureBodies().containsKey(gameState.getThisClientPlayerId()) && !Objects.equals(
+            getCreatureBodies().get(gameState.getThisClientPlayerId()).getAreaId().getValue(),
             player.getParams().getAreaId().getValue()
         )) {
             addTeleportEvent(TeleportEvent.of(gameState.getThisClientPlayerId(),

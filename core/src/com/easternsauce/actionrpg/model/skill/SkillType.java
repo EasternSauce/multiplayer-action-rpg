@@ -62,17 +62,17 @@ public enum SkillType {
     METEOR("Meteor", true, AbilityType.METEOR, 0.5f, 7f, 7f);
 
     @Getter
-    private String prettyName;
-    @Getter
-    private Boolean damaging;
-    @Getter
-    private AbilityType startingAbilityType;
-    @Getter
     Float cooldown;
     @Getter
     Float staminaCost;
     @Getter
     Float manaCost;
+    @Getter
+    private String prettyName;
+    @Getter
+    private Boolean damaging;
+    @Getter
+    private AbilityType startingAbilityType;
 
     SkillType(String prettyName,
               Boolean damaging,

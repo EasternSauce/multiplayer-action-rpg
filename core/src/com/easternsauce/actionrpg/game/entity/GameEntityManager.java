@@ -246,17 +246,15 @@ public class GameEntityManager {
 
         creature.getParams().getMovementParams().setDashing(false);
 
-        if (!teleportEvent.getUsedGate() && teleportEvent.getToAreaId().getValue().equals(game
-            .getGameState()
-            .accessCreatures()
-            .getCreature(teleportEvent.getCreatureId())
-            .getParams()
-            .getAreaId()
-            .getValue()) && teleportEvent.getToAreaId().getValue().equals(game
-            .getCreatureBodies()
-            .get(teleportEvent.getCreatureId())
-            .getAreaId()
-            .getValue())) {
+        if (teleportEvent.getCreatureId() != null &&
+            !teleportEvent.getUsedGate() &&
+            teleportEvent.getToAreaId().getValue().equals(game.getGameState().accessCreatures().getCreature(
+                teleportEvent.getCreatureId()).getParams().getAreaId().getValue()) &&
+            teleportEvent.getToAreaId().getValue().equals(game
+                .getCreatureBodies()
+                .get(teleportEvent.getCreatureId())
+                .getAreaId()
+                .getValue())) {
             getGameEntityPhysics().getCreatureBodies().get(teleportEvent.getCreatureId()).forceSetTransform(
                 teleportEvent.getPos());
         } else {

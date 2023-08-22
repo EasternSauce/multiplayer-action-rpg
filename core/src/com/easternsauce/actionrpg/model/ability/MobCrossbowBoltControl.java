@@ -11,11 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class MobCrossbowBoltControl extends Ability {
-    @Getter
-    private AbilityParams params;
-
     int currentBoltToFire = 0;
     Vector2 previousDirVector = null;
+    @Getter
+    private AbilityParams params;
 
     public static MobCrossbowBoltControl of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         MobCrossbowBoltControl ability = MobCrossbowBoltControl.of();
