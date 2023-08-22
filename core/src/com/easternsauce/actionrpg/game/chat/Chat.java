@@ -36,14 +36,14 @@ public class Chat {
 
     public void sendMessage(String posterId, String message, CoreGame game) {
         if (getMessages().size() < 6) {
-            getMessages().add(ChatMessage.of(game.getGameState().getTime(), posterId, message));
+            getMessages().add(ChatMessage.of(message, game.getGameState().getTime(), posterId));
         } else {
             List<ChatMessage> newMessages = new ArrayList<>();
             for (int i = 0; i < 5; i++) {
                 newMessages.add(getMessages().get(i + 1));
             }
             messages = newMessages;
-            getMessages().add(ChatMessage.of(game.getGameState().getTime(), posterId, message));
+            getMessages().add(ChatMessage.of(message, game.getGameState().getTime(), posterId));
         }
     }
 
