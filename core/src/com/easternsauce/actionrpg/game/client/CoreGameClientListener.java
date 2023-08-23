@@ -43,8 +43,6 @@ public class CoreGameClientListener extends Listener {
 
             game.getEntityManager().getGameEntityPhysics().setForceUpdateBodyPositions(true);
 
-            game.setFirstBroadcastReceived(true);
-
             if (!action.getGameStateData().isStub()) {
                 game.setFirstNonStubBroadcastReceived(true);
             }

@@ -156,12 +156,6 @@ public abstract class CoreGame extends Game {
     public abstract boolean isPathfindingCalculatedForCreature(Creature creature);
 
     @SuppressWarnings("SameReturnValue")
-    public abstract Boolean getFirstBroadcastReceived();
-
-    @SuppressWarnings({"UnusedReturnValue", "unused"})
-    public abstract CoreGame setFirstBroadcastReceived(@SuppressWarnings("unused") Boolean firstBroadcastReceived);
-
-    @SuppressWarnings("SameReturnValue")
     public abstract Boolean getFirstNonStubBroadcastReceived();
 
     public void chainAnotherAbility(Ability chainFromAbility,

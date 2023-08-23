@@ -157,19 +157,8 @@ public class CoreGameServer extends CoreGame {
     }
 
     @Override
-    public Boolean getFirstBroadcastReceived() {
-        return true;
-    }
-
-    @Override
     public Boolean getFirstNonStubBroadcastReceived() {
         return true;
-    }
-
-    @SuppressWarnings("unused")
-    @Override
-    public CoreGame setFirstBroadcastReceived(Boolean firstBroadcastReceived) {
-        return this;
     }
 
     @Override

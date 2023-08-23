@@ -42,7 +42,6 @@ public class CoreGameServerListener extends Listener {
 
                 game.getGameState().scheduleServerSideAction(playerInitAction);
             }
-
         } else if (object instanceof ChatMessageSendCommand) {
             ChatMessageSendCommand command = (ChatMessageSendCommand) object;
 

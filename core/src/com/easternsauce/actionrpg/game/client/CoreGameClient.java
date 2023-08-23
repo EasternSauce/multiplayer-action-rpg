@@ -50,9 +50,6 @@ public class CoreGameClient extends CoreGame {
     private Boolean areaRenderersLoaded = false;
     @Getter
     @Setter
-    private Boolean firstBroadcastReceived = false;
-    @Getter
-    @Setter
     private Boolean firstNonStubBroadcastReceived = false;
     private Float menuClickTime = 0f; // TODO: should do it differently
 
@@ -347,7 +344,7 @@ public class CoreGameClient extends CoreGame {
 
     @Override
     public boolean isGameplayRunning() {
-        return getFirstBroadcastReceived();
+        return getFirstNonStubBroadcastReceived();
     }
 
     @Override
@@ -396,6 +393,7 @@ public class CoreGameClient extends CoreGame {
         gameState.setThisClientPlayerId(CreatureId.of(playerName));
         getEndPoint().sendTCP(PlayerInitCommand.of(getGameState().getThisClientPlayerId()));
 
+        getEndPoint().sendTCP(OnDemandBroadcastAskCommand.of());
     }
 
     @Override
