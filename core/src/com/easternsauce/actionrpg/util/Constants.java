@@ -31,6 +31,6 @@ public class Constants {
     public static final float ENEMY_RESPAWN_TIME = 120f;
 
     public static final boolean IS_DEBUG_ENABLED = false;
-    public static final int TIME_MS_BETWEEN_GAMESTATE_BROADCASTS = 1000;
-    public static final int TIME_MS_BETWEEN_GAMESTATE_SNAPSHOTS = 5000;
+    public static final float TIME_BETWEEN_GAMESTATE_BROADCASTS = 1f;
+    public static final float TIME_BETWEEN_GAMESTATE_SNAPSHOTS = 5f;
 }

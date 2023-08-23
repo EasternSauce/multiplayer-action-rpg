@@ -44,8 +44,8 @@ public class ClientGameState extends GameState {
                                                       EntityEventProcessor eventProcessor) {
         GameStateData oldGameStateData = dataHolder.getData();
 
-        Set<CreatureId> oldCreatureIds = oldGameStateData.getActiveCreatures();
-        Set<CreatureId> newCreatureIds = newGameStateData.getActiveCreatures();
+        Set<CreatureId> oldCreatureIds = oldGameStateData.getCreatures().keySet();
+        Set<CreatureId> newCreatureIds = newGameStateData.getCreatures().keySet();
         Set<AbilityId> oldAbilityIds = oldGameStateData.getAbilities().keySet();
         Set<AbilityId> newAbilityIds = newGameStateData.getAbilities().keySet();
         Set<LootPileId> oldLootPileIds = oldGameStateData.getLootPiles().keySet();

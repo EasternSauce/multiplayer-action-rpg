@@ -84,6 +84,7 @@ public class ServerGameState extends GameState {
         Creature player = accessCreatures().getCreatures().get(getClientPlayers().get(connection.getID()));
 
         // TODO: also add ALL data about creatures that own abilities within range!
+
         ConcurrentSkipListMap<CreatureId, Creature> personalizedCreatures = new ConcurrentSkipListMap<>(accessCreatures()
             .getCreatures()
             .entrySet()
@@ -91,7 +92,10 @@ public class ServerGameState extends GameState {
             .filter(entry -> entry.getValue().getParams().getAreaId().equals(player.getParams().getAreaId()) &&
                 entry.getValue().getParams().getPos().distance(player.getParams().getPos()) <
                     Constants.CLIENT_GAME_UPDATE_RANGE)
+            .filter(entry -> !(entry.getValue() instanceof Player) ||
+                accessCreatures().getActiveCreatures().contains(entry.getKey()))
             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
+
         ConcurrentSkipListMap<AbilityId, Ability> personalizedAbilities = new ConcurrentSkipListMap<>(accessAbilities()
             .getAbilities()
             .entrySet()
