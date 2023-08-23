@@ -101,10 +101,8 @@ public class GameEntityManager {
         }
     }
 
-    public void removeCreatureEntity(CreatureId creatureId, CoreGame game) {
+    public void removeCreatureEntity(CreatureId creatureId, @SuppressWarnings("unused") CoreGame game) {
         if (creatureId != null) {
-            game.getCreatures().remove(creatureId);
-
             getGameEntityRenderer().getCreatureRenderers().remove(creatureId);
 
             if (gameEntityPhysics.getCreatureBodies().containsKey(creatureId)) {

@@ -21,6 +21,7 @@ public class ConnectScreen implements Screen {
     private boolean holdingBackspace = false;
     private double holdBackspaceTime = 0f;
     private TextureAtlas.AtlasRegion background;
+    private boolean waitingToEnter = false;
 
     public void init(TextureAtlas atlas, CoreGame game) {
         this.game = game;
@@ -53,10 +54,21 @@ public class ConnectScreen implements Screen {
     public void render(float delta) {
         timer.update(delta);
 
+        if (waitingToEnter) {
+            if (game.getFirstNonStubBroadcastReceived()) {
+                game.goToGamePlayScreen();
+                waitingToEnter = false;
+            }
+        }
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
             if (isNameValid(messageHolder.getCurrentMessage())) {
+
                 game.initializePlayer(messageHolder.getCurrentMessage());
-                game.goToGamePlayScreen();
+
+                game.askForBroadcast();
+
+                waitingToEnter = true;
             }
         }
 

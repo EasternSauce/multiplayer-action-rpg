@@ -30,8 +30,8 @@ public class CreatureAccessor {
     @Getter
     private GameStateDataHolder dataHolder;
 
-    public Map<CreatureId, Creature> getRemovedCreatures() {
-        return getData().getRemovedCreatures();
+    public Set<CreatureId> getActiveCreatures() {
+        return getData().getActiveCreatures();
     }
 
     private GameStateData getData() {

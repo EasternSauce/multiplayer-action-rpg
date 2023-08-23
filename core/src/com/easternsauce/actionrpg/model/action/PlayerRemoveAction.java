@@ -22,7 +22,7 @@ public class PlayerRemoveAction extends GameStateAction {
     public void applyToGame(CoreGame game) {
         Creature creature = game.getCreature(playerId);
         if (creature != null) {
-            game.getGameState().accessCreatures().getRemovedCreatures().put(playerId, creature);
+            game.getGameState().accessCreatures().getActiveCreatures().remove(playerId);
 
             game.getEventProcessor().getCreatureModelsToBeRemoved().add(playerId);
         }

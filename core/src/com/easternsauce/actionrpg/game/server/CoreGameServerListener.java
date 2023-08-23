@@ -21,7 +21,7 @@ public class CoreGameServerListener extends Listener {
         PlayerRemoveAction playerRemoveAction = PlayerRemoveAction.of(disconnectedCreatureId);
         game.getGameState().scheduleServerSideAction(playerRemoveAction);
 
-        game.getClientIds().remove((Object) connection.getID());
+        game.getClientIds().remove(connection.getID());
         game.getClientPlayers().remove(connection.getID());
     }
 
@@ -60,6 +60,8 @@ public class CoreGameServerListener extends Listener {
 
             game.getEndPoint().sendToAllTCP(command); // TODO: add to tick actions instead
 
+        } else if (object instanceof OnDemandBroadcastAskCommand) {
+            game.getGameDataBroadcaster().broadcastToConnection(connection, game);
         }
 
     }

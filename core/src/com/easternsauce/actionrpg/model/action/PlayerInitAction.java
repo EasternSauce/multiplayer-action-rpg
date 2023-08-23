@@ -26,15 +26,17 @@ public class PlayerInitAction extends GameStateAction {
     public void applyToGame(CoreGame game) {
         Creature player;
 
-        if (game.getCreatures().containsKey(playerId)) {
-            removeExistingPlayer(game);
+        if (game.getGameState().accessCreatures().getActiveCreatures().contains(playerId)) {
+            disconnectExistingPlayer(game);
         }
 
-        if (game.getGameState().accessCreatures().getRemovedCreatures().containsKey(playerId)) {
+        if (game.getCreatures().containsKey(playerId)) {
             player = loadExistingPlayerData(game);
         } else {
             player = createNewPlayer(game);
         }
+
+        game.getGameState().accessCreatures().getActiveCreatures().add(playerId);
 
         game.getCreatures().put(playerId, player);
 
@@ -44,19 +46,16 @@ public class PlayerInitAction extends GameStateAction {
 
     }
 
-    private void removeExistingPlayer(CoreGame game) {
+    private void disconnectExistingPlayer(CoreGame game) {
         Creature creature = game.getCreature(playerId);
         if (creature != null) {
-            game.getGameState().accessCreatures().getRemovedCreatures().put(playerId, creature);
-
-            game.getEventProcessor().getCreatureModelsToBeRemoved().add(playerId);
+            game.forceDisconnectForPlayer(playerId);
         }
     }
 
     private Creature loadExistingPlayerData(CoreGame game) {
         Creature player;
-        player = game.getGameState().accessCreatures().getRemovedCreatures().get(playerId);
-        game.getGameState().accessCreatures().getRemovedCreatures().remove(playerId);
+        player = game.getCreatures().get(playerId);
         return player;
     }
 

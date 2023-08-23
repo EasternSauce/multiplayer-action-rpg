@@ -38,7 +38,10 @@ public class ServerGameState extends GameState {
 
     private final Gson gson = new GsonBuilder().enableComplexMapKeySerialization().registerTypeAdapter(Creature.class,
         new InterfaceAdapter<Creature>()
-    ).registerTypeAdapter(Ability.class, new InterfaceAdapter<Ability>()).setPrettyPrinting().create();
+    ).registerTypeAdapter(
+        Ability.class,
+        new InterfaceAdapter<Ability>()
+    ).setPrettyPrinting().create();
 
     @Override
     public Set<CreatureId> getCreaturesToUpdate() {
@@ -120,10 +123,12 @@ public class ServerGameState extends GameState {
         connection.sendTCP(GameStateBroadcast.of(personalizedGameStateData));
     }
 
-    public void sendGameDataWithEntitiesEmpty(Connection connection) {
-        GameStateData gameStateDataWithoutEntities = GameStateData.copyWithoutEntities(dataHolder.getData());
+    public void sendStubGameData(Connection connection) {
+        GameStateData gameStateDataStub = GameStateData.copyAsStub(dataHolder.getData());
 
-        connection.sendTCP(GameStateBroadcast.of(gameStateDataWithoutEntities));
+        gameStateDataStub.setStub(true);
+
+        connection.sendTCP(GameStateBroadcast.of(gameStateDataStub));
     }
 
     public void handlePlayerDeaths() {
@@ -155,6 +160,10 @@ public class ServerGameState extends GameState {
             .forEach(entry -> scheduleServerSideAction(LootPileDespawnAction.of(entry.getKey())));
     }
 
+    public void clearActiveCreatures() {
+        accessCreatures().getActiveCreatures().clear();
+    }
+
     public void saveToJsonFile(String fileName) {
         BufferedWriter bufferedWriter;
         try {
@@ -174,7 +183,6 @@ public class ServerGameState extends GameState {
             FileReader reader = new FileReader(fileName);
             bufferedReader = new BufferedReader(reader);
 
-            System.out.println("setting data");
             GameStateData data = gson.fromJson(bufferedReader, GameStateData.class);
             dataHolder.setData(data);
 

@@ -14,15 +14,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 @NoArgsConstructor(staticName = "of")
 @Data
 public class GameStateData {
     private Map<CreatureId, Creature> creatures = new ConcurrentSkipListMap<>();
+    private Set<CreatureId> activeCreatures = new ConcurrentSkipListSet<>();
 
-    private Map<CreatureId, Creature> removedCreatures = new ConcurrentSkipListMap<>();
     private Map<AbilityId, Ability> abilities = new ConcurrentSkipListMap<>();
+
     private Map<AreaId, Area> areas = new ConcurrentSkipListMap<>();
 
     private AreaId defaultAreaId = AreaId.of("Area1");
@@ -38,6 +41,8 @@ public class GameStateData {
 
     private RandomGenerator randomGenerator;
 
+    private boolean isStub = false;
+
     public static GameStateData of(GameStateData gameStateData,
                                    Map<CreatureId, Creature> creatures,
                                    Map<AbilityId, Ability> abilities,
@@ -45,7 +50,7 @@ public class GameStateData {
                                    Map<AreaGateId, AreaGate> areaGates) {
         GameStateData newGameStateData = GameStateData.of();
         newGameStateData.setCreatures(creatures);
-        newGameStateData.setRemovedCreatures(new ConcurrentSkipListMap<>(gameStateData.getRemovedCreatures()));
+        newGameStateData.setActiveCreatures(new ConcurrentSkipListSet<>(gameStateData.getActiveCreatures()));
         newGameStateData.setAbilities(abilities);
         newGameStateData.setLootPiles(lootPiles);
         newGameStateData.setAreaGates(areaGates);
@@ -59,10 +64,10 @@ public class GameStateData {
         return newGameStateData;
     }
 
-    public static GameStateData copyWithoutEntities(GameStateData gameStateData) {
+    public static GameStateData copyAsStub(GameStateData gameStateData) {
         GameStateData newGameStateData = GameStateData.of();
         newGameStateData.setCreatures(new ConcurrentSkipListMap<>());
-        newGameStateData.setRemovedCreatures(new ConcurrentSkipListMap<>(gameStateData.getRemovedCreatures()));
+        newGameStateData.setActiveCreatures(new ConcurrentSkipListSet<>(gameStateData.getActiveCreatures()));
         newGameStateData.setAbilities(new ConcurrentSkipListMap<>());
         newGameStateData.setLootPiles(new ConcurrentSkipListMap<>());
         newGameStateData.setAreaGates(new ConcurrentSkipListMap<>());

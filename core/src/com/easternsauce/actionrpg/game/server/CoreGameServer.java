@@ -10,6 +10,7 @@ import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.physics.world.PhysicsWorld;
 import com.easternsauce.actionrpg.util.Constants;
+import com.easternsauce.actionrpg.util.MapUtils;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 import lombok.Getter;
@@ -18,6 +19,7 @@ import lombok.Setter;
 
 import java.io.File;
 import java.util.*;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
@@ -25,10 +27,12 @@ public class CoreGameServer extends CoreGame {
     private final ServerGameState gameState = ServerGameState.of();
 
     @Getter
-    private final List<Integer> clientIds = Collections.synchronizedList(new ArrayList<>());
+    private final Set<Integer> clientIds = new ConcurrentSkipListSet<>();
+
     private final InitialStateLoader initialStateLoader = InitialStateLoader.of();
     private final CoreGameServerListener serverListener = CoreGameServerListener.of(this);
     private final ServerConnectionEstablisher serverConnectionEstablisher = ServerConnectionEstablisher.of();
+    @Getter
     private final GameDataBroadcaster gameDataBroadcaster = GameDataBroadcaster.of();
     private final GameStateSnapshotCreator gameStateSnapshotCreator = GameStateSnapshotCreator.of();
     @Getter
@@ -103,11 +107,12 @@ public class CoreGameServer extends CoreGame {
         File snapshotFile = new File(fileName);
 
         if (!snapshotFile.exists()) {
-            System.out.println("setting up initial");
             initialStateLoader.setupInitialState(this);
         } else {
             gameState.loadFromJsonFile(fileName);
         }
+
+        gameState.clearActiveCreatures();
     }
 
     @Override
@@ -156,6 +161,11 @@ public class CoreGameServer extends CoreGame {
         return true;
     }
 
+    @Override
+    public Boolean getFirstNonStubBroadcastReceived() {
+        return true;
+    }
+
     @SuppressWarnings("unused")
     @Override
     public CoreGame setFirstBroadcastReceived(Boolean firstBroadcastReceived) {
@@ -165,6 +175,25 @@ public class CoreGameServer extends CoreGame {
     @Override
     public ServerGameState getGameState() {
         return gameState;
+    }
+
+    @Override
+    public void askForBroadcast() {
+
+    }
+
+    @Override
+    public void forceDisconnectForPlayer(CreatureId creatureId) {
+        Creature creature = getCreature(creatureId);
+
+        Integer clientId = MapUtils.getKeyByValue(getClientPlayers(), creatureId);
+
+        if (creature != null && clientId != null) {
+            Optional<Connection> maybeConnection = Arrays.stream(getEndPoint().getConnections()).filter(connection ->
+                connection.getID() ==
+                    clientId).findAny();
+            maybeConnection.ifPresent(Connection::close);
+        }
     }
 
     @Override

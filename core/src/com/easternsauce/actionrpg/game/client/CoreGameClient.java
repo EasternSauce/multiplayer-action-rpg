@@ -4,10 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.game.command.ActionPerformCommand;
-import com.easternsauce.actionrpg.game.command.ChatMessageSendCommand;
-import com.easternsauce.actionrpg.game.command.ConnectionInitCommand;
-import com.easternsauce.actionrpg.game.command.PlayerInitCommand;
+import com.easternsauce.actionrpg.game.command.*;
 import com.easternsauce.actionrpg.game.gamestate.ClientGameState;
 import com.easternsauce.actionrpg.model.ability.AbilityId;
 import com.easternsauce.actionrpg.model.action.*;
@@ -54,6 +51,9 @@ public class CoreGameClient extends CoreGame {
     @Getter
     @Setter
     private Boolean firstBroadcastReceived = false;
+    @Getter
+    @Setter
+    private Boolean firstNonStubBroadcastReceived = false;
     private Float menuClickTime = 0f; // TODO: should do it differently
 
     private CoreGameClient() {
@@ -432,6 +432,16 @@ public class CoreGameClient extends CoreGame {
     @Override
     public ClientGameState getGameState() {
         return gameState;
+    }
+
+    @Override
+    public void askForBroadcast() {
+        getEndPoint().sendTCP(OnDemandBroadcastAskCommand.of());
+    }
+
+    @Override
+    public void forceDisconnectForPlayer(CreatureId creatureId) {
+
     }
 
     @Override

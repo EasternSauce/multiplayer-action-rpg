@@ -135,7 +135,8 @@ public class GameplayScreen implements Screen {
                 game.updateCameraPositions();
             }
 
-            if (!game.getEntityManager().getGameEntityRenderer().getAreasLoaded() && game.getFirstBroadcastReceived()) {
+            if (!game.getEntityManager().getGameEntityRenderer().getAreasLoaded() &&
+                game.getFirstNonStubBroadcastReceived()) {
                 game.getEntityManager().getGameEntityRenderer().loadAreaRenderers(maps, game);
             }
         }

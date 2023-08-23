@@ -161,6 +161,9 @@ public abstract class CoreGame extends Game {
     @SuppressWarnings({"UnusedReturnValue", "unused"})
     public abstract CoreGame setFirstBroadcastReceived(@SuppressWarnings("unused") Boolean firstBroadcastReceived);
 
+    @SuppressWarnings("SameReturnValue")
+    public abstract Boolean getFirstNonStubBroadcastReceived();
+
     public void chainAnotherAbility(Ability chainFromAbility,
                                     AbilityType abilityType,
                                     Vector2 dirVector,
@@ -202,4 +205,8 @@ public abstract class CoreGame extends Game {
     public Vector2 hudMousePos() {
         return getMousePositionRetriever().hudMousePos(this);
     }
+
+    public abstract void askForBroadcast();
+
+    public abstract void forceDisconnectForPlayer(CreatureId creatureId);
 }
