@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 @EqualsAndHashCode(callSuper = true)
 public class MobPoisonousCloud extends Ability {
     @Getter
-    private AbilityParams params;
+    protected AbilityParams params;
 
     public static MobPoisonousCloud of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         MobPoisonousCloud ability = MobPoisonousCloud.of();

@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class MageTeleportCombo extends Ability {
-    int currentFireRingToProc = 0;
     @Getter
-    private AbilityParams params;
+    protected AbilityParams params;
+    int currentFireRingToProc = 0;
 
     public static MageTeleportCombo of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         MageTeleportCombo ability = MageTeleportCombo.of();

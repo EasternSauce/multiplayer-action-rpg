@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 @EqualsAndHashCode(callSuper = true)
 public class LightningNode extends Ability {
     @Getter
-    private AbilityParams params;
+    protected AbilityParams params;
 
     public static LightningNode of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         LightningNode ability = LightningNode.of();

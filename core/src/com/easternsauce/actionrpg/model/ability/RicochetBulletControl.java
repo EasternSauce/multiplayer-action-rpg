@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class RicochetBulletControl extends Ability {
     @Getter
-    private AbilityParams params;
+    protected AbilityParams params;
 
     public static RicochetBulletControl of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         RicochetBulletControl ability = RicochetBulletControl.of();

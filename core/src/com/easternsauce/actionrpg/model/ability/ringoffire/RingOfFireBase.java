@@ -1,34 +1,16 @@
-package com.easternsauce.actionrpg.model.ability;
+package com.easternsauce.actionrpg.model.ability.ringoffire;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.ability.Ability;
+import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import com.easternsauce.actionrpg.model.util.Vector2;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @SuppressWarnings("SpellCheckingInspection")
-@NoArgsConstructor(staticName = "of")
-@EqualsAndHashCode(callSuper = true)
-public class MobRingOfFire extends Ability {
+
+public abstract class RingOfFireBase extends Ability {
     @Getter
-    private AbilityParams params;
-
-    public static MobRingOfFire of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        MobRingOfFire ability = MobRingOfFire.of();
-
-        ability.params = abilityParams
-            .setWidth(20f)
-            .setHeight(20f)
-            .setChannelTime(0.4f)
-            .setActiveTime(0.16f)
-            .setBaseDamage(28f)
-            .setTextureName("ring_of_fire")
-            .setChannelAnimationLooping(false)
-            .setActiveAnimationLooping(false)
-            .setAttackWithoutMoving(true);
-
-        return ability;
-    }
+    protected AbilityParams params;
 
     @Override
     public Boolean isPositionChangedOnUpdate() {

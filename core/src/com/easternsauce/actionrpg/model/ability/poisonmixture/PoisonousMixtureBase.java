@@ -1,42 +1,22 @@
-package com.easternsauce.actionrpg.model.ability;
+package com.easternsauce.actionrpg.model.ability.poisonmixture;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.ability.AbilityParams;
+import com.easternsauce.actionrpg.model.ability.AbilityType;
+import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
+import com.easternsauce.actionrpg.model.ability.Projectile;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.util.Vector2;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
 
-@NoArgsConstructor(staticName = "of")
-@EqualsAndHashCode(callSuper = true)
-public class MobPoisonousMixture extends Projectile {
+public abstract class PoisonousMixtureBase extends Projectile {
     @Getter
-    private AbilityParams params;
-
-    public static MobPoisonousMixture of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        Creature creature = game.getCreature(abilityParams.getCreatureId());
-
-        MobPoisonousMixture ability = MobPoisonousMixture.of();
-        ability.params = abilityParams
-            .setWidth(1.5f)
-            .setHeight(1.5f)
-            .setChannelTime(0f)
-            .setActiveTime(30f)
-            .setTextureName("green_potion_throw")
-            .setBaseDamage(0f)
-            .setChannelAnimationLooping(false)
-            .setActiveAnimationLooping(true)
-            .setDelayedActionTime(0.001f)
-            .setPos(creature.getParams().getPos())
-            .setMaximumRange(18f);
-
-        return ability;
-    }
+    protected AbilityParams params;
 
     @Override
     public Boolean isRanged() {

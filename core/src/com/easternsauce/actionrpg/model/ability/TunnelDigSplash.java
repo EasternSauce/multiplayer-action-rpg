@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class TunnelDigSplash extends Ability {
     @Getter
-    private AbilityParams params;
+    protected AbilityParams params;
 
     public static TunnelDigSplash of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         TunnelDigSplash ability = TunnelDigSplash.of();

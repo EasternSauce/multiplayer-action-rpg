@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class PoisonBite extends AttachedAbility {
     @Getter
-    private AbilityParams params;
+    protected AbilityParams params;
 
     public static PoisonBite of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         float flipValue = abilityParams.getDirVector().angleDeg();

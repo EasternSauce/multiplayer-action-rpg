@@ -17,7 +17,7 @@ public class IceSpearRampage extends Projectile {
     private final List<Float> angles = new LinkedList<>();
     private final List<Float> times = new LinkedList<>();
     @Getter
-    private AbilityParams params;
+    protected AbilityParams params;
     private int currentAbility = 0;
 
     public static IceSpearRampage of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {

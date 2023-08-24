@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @EqualsAndHashCode(callSuper = true)
 public class TunnelDig extends Projectile {
     @Getter
-    private AbilityParams params;
+    protected AbilityParams params;
 
     private int currentSplash = 0;
 

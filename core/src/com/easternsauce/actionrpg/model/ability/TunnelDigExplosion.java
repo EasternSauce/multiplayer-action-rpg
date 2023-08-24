@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 @EqualsAndHashCode(callSuper = true)
 public class TunnelDigExplosion extends Ability {
     @Getter
-    private AbilityParams params;
+    protected AbilityParams params;
 
     public static TunnelDigExplosion of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         TunnelDigExplosion ability = TunnelDigExplosion.of();

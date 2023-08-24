@@ -1,24 +1,19 @@
-package com.easternsauce.actionrpg.model.ability;
+package com.easternsauce.actionrpg.model.ability.crossbowbolt;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.ability.Ability;
+import com.easternsauce.actionrpg.model.ability.AbilityParams;
+import com.easternsauce.actionrpg.model.ability.AbilityType;
+import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-public class CrossbowBoltControl extends Ability {
-    int currentBoltToFire = 0;
+public abstract class CrossbowBoltControlBase extends Ability {
     @Getter
-    private AbilityParams params;
-
-    public static CrossbowBoltControl of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        CrossbowBoltControl ability = CrossbowBoltControl.of();
-        ability.params = abilityParams.setChannelTime(0f).setActiveTime(2f);
-
-        return ability;
-    }
+    protected AbilityParams params;
+    int currentBoltToFire = 0;
 
     @Override
     public Boolean isRanged() {

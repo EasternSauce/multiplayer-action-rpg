@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class Meteor extends Projectile {
     @Getter
-    private AbilityParams params;
+    protected AbilityParams params;
 
     private Vector2 startingPos;
     private Vector2 destinationPos;

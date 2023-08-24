@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class MeteorAim extends Ability {
     @Getter
-    private AbilityParams params;
+    protected AbilityParams params;
 
     public static MeteorAim of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         Creature creature = game.getCreature(abilityParams.getCreatureId());

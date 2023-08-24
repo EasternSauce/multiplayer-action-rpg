@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 @EqualsAndHashCode(callSuper = true)
 public class EmeraldSpin extends Projectile {
     @Getter
-    private AbilityParams params;
+    protected AbilityParams params;
 
     public static EmeraldSpin of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         EmeraldSpin ability = EmeraldSpin.of();

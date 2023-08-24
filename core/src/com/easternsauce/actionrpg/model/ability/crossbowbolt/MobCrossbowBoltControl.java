@@ -1,6 +1,9 @@
-package com.easternsauce.actionrpg.model.ability;
+package com.easternsauce.actionrpg.model.ability.crossbowbolt;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.ability.AbilityParams;
+import com.easternsauce.actionrpg.model.ability.AbilityType;
+import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.util.MathHelper;
 import com.easternsauce.actionrpg.model.util.Vector2;
@@ -10,27 +13,17 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-public class MobCrossbowBoltControl extends Ability {
+public class MobCrossbowBoltControl extends CrossbowBoltControlBase {
+    @Getter
+    protected AbilityParams params;
     int currentBoltToFire = 0;
     Vector2 previousDirVector = null;
-    @Getter
-    private AbilityParams params;
 
     public static MobCrossbowBoltControl of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         MobCrossbowBoltControl ability = MobCrossbowBoltControl.of();
         ability.params = abilityParams.setChannelTime(0f).setActiveTime(2f);
 
         return ability;
-    }
-
-    @Override
-    public Boolean isRanged() {
-        return true;
-    }
-
-    @Override
-    protected void onChannelUpdate(CoreGame game) {
-
     }
 
     @Override
@@ -83,21 +76,6 @@ public class MobCrossbowBoltControl extends Ability {
         if (currentBoltToFire >= boltFireTimes.length) {
             deactivate();
         }
-    }
-
-    @Override
-    protected boolean isWeaponAttack() {
-        return true;
-    }
-
-    @Override
-    public boolean usesEntityModel() {
-        return false;
-    }
-
-    @Override
-    public boolean isAbleToChainAfterCreatureDeath() {
-        return false;
     }
 
     private Vector2 calculateShootingVectorForNextBolt(Vector2 currentDirVector,

@@ -1,39 +1,19 @@
-package com.easternsauce.actionrpg.model.ability;
+package com.easternsauce.actionrpg.model.ability.magicorb;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.ability.AbilityParams;
+import com.easternsauce.actionrpg.model.ability.Projectile;
 import com.easternsauce.actionrpg.model.creature.*;
 import com.easternsauce.actionrpg.model.util.MathHelper;
 import com.easternsauce.actionrpg.model.util.Vector2;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-@NoArgsConstructor(staticName = "of")
-@EqualsAndHashCode(callSuper = true)
-public class MobMagicOrb extends Projectile {
+public abstract class MagicOrbBase extends Projectile {
     @Getter
-    private AbilityParams params;
-
-    public static MobMagicOrb of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        MobMagicOrb ability = MobMagicOrb.of();
-        ability.params = abilityParams
-            .setWidth(1.5f)
-            .setHeight(1.5f)
-            .setChannelTime(0f)
-            .setActiveTime(30f)
-            .setStartingRange(0.5f)
-            .setTextureName("magic_orb")
-            .setBaseDamage(40f)
-            .setChannelAnimationLooping(false)
-            .setActiveAnimationLooping(true)
-            .setDelayedActionTime(0.001f)
-            .setSpeed(13f);
-
-        return ability;
-    }
+    protected AbilityParams params;
 
     @Override
     public Boolean isRanged() {
@@ -81,7 +61,7 @@ public class MobMagicOrb extends Projectile {
 
             float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(currentAngleDeg, targetAngleDeg);
 
-            float incrementFactor = 65f;
+            float incrementFactor = getIncrementFactor();
             float baseIncrement = incrementFactor;
 
             if (getParams().getStateTimer().getTime() > 0.5f && getParams().getStateTimer().getTime() < 2f) {
@@ -124,18 +104,21 @@ public class MobMagicOrb extends Projectile {
 
     @Override
     public Float getStunDuration() {
-        return 0.75f;
+        return 0.25f;
     }
 
-    private boolean isTargetingAllowed(Creature thisCreature, Creature targetCreature) {
+    protected boolean isTargetingAllowed(Creature thisCreature, Creature targetCreature) {
         if (thisCreature instanceof Enemy) {
             return targetCreature instanceof Player;
         }
-
         //noinspection RedundantIfStatement
         if (thisCreature instanceof Player) {
             return true;
         }
         return false;
+    }
+
+    protected float getIncrementFactor() {
+        return 60f;
     }
 }

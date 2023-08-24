@@ -1,6 +1,20 @@
 package com.easternsauce.actionrpg.model.ability;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.ability.bite.Bite;
+import com.easternsauce.actionrpg.model.ability.boomerang.Boomerang;
+import com.easternsauce.actionrpg.model.ability.crossbowbolt.CrossbowBolt;
+import com.easternsauce.actionrpg.model.ability.crossbowbolt.CrossbowBoltControl;
+import com.easternsauce.actionrpg.model.ability.crossbowbolt.MobCrossbowBoltControl;
+import com.easternsauce.actionrpg.model.ability.magicorb.MagicOrb;
+import com.easternsauce.actionrpg.model.ability.magicorb.MobMagicOrb;
+import com.easternsauce.actionrpg.model.ability.poisonmixture.MobPoisonousMixture;
+import com.easternsauce.actionrpg.model.ability.poisonmixture.PoisonousMixture;
+import com.easternsauce.actionrpg.model.ability.punch.Punch;
+import com.easternsauce.actionrpg.model.ability.ringoffire.MobRingOfFire;
+import com.easternsauce.actionrpg.model.ability.ringoffire.RingOfFire;
+import com.easternsauce.actionrpg.model.ability.swordslash.MobSwordSlash;
+import com.easternsauce.actionrpg.model.ability.swordslash.SwordSlash;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

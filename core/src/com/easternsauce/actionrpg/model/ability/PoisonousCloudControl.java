@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class PoisonousCloudControl extends Ability {
-    int currentCloudSet = 0;
     @Getter
-    private AbilityParams params;
+    protected AbilityParams params;
+    int currentCloudSet = 0;
 
     public static PoisonousCloudControl of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         PoisonousCloudControl ability = PoisonousCloudControl.of();

@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 @EqualsAndHashCode(callSuper = true)
 public class IceSpear extends Projectile {
     @Getter
-    private AbilityParams params;
+    protected AbilityParams params;
 
     public static IceSpear of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         IceSpear ability = IceSpear.of();

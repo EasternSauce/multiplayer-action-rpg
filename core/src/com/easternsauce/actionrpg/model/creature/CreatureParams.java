@@ -141,7 +141,8 @@ public class CreatureParams implements EntityParams {
 
         Map<Integer, Item> inventoryItems = new ConcurrentSkipListMap<>();
         inventoryItems.put(2, Item.of().setTemplate(ItemTemplate.templates.get("lifePotion")));
-        inventoryItems.put(7,
+        inventoryItems.put(
+            7,
             Item
                 .of()
                 .setTemplate(ItemTemplate.templates.get("hideGloves"))

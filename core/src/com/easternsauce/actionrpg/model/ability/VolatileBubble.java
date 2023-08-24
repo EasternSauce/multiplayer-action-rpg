@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class VolatileBubble extends Projectile {
     @Getter
-    private AbilityParams params;
+    protected AbilityParams params;
 
     public static VolatileBubble of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         VolatileBubble ability = VolatileBubble.of();

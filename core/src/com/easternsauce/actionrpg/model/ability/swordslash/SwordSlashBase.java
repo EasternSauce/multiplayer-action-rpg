@@ -1,30 +1,14 @@
-package com.easternsauce.actionrpg.model.ability;
+package com.easternsauce.actionrpg.model.ability.swordslash;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import lombok.EqualsAndHashCode;
+import com.easternsauce.actionrpg.model.ability.AbilityParams;
+import com.easternsauce.actionrpg.model.ability.AbilityState;
+import com.easternsauce.actionrpg.model.ability.AttachedAbility;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(staticName = "of")
-@EqualsAndHashCode(callSuper = true)
-public class MobSwordSlash extends AttachedAbility {
+public abstract class SwordSlashBase extends AttachedAbility {
     @Getter
-    private AbilityParams params;
-
-    public static MobSwordSlash of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        MobSwordSlash ability = MobSwordSlash.of();
-        ability.params = abilityParams
-            .setWidth(2f)
-            .setHeight(2f)
-            .setChannelTime(0.15f)
-            .setActiveTime(0.3f)
-            .setStartingRange(1.8f)
-            .setTextureName("slash")
-            .setBaseDamage(35f)
-            .setChannelAnimationLooping(false)
-            .setActiveAnimationLooping(false);
-        return ability;
-    }
+    protected AbilityParams params;
 
     @Override
     public Boolean isPositionChangedOnUpdate() {
@@ -39,24 +23,19 @@ public class MobSwordSlash extends AttachedAbility {
     @Override
     protected void onChannelUpdate(CoreGame game) {
         updateAttachedAbilityPosition(game);
-
     }
 
     @Override
     protected void onActiveUpdate(float delta, CoreGame game) {
-
         updateAttachedAbilityPosition(game);
-
     }
 
     @Override
     public void init(CoreGame game) {
-
         getParams().setState(AbilityState.CHANNEL);
         getParams().getStateTimer().restart();
 
         updateAttachedAbilityPosition(game);
-
     }
 
     @Override

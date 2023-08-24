@@ -1,7 +1,8 @@
-package com.easternsauce.actionrpg.model.ability;
+package com.easternsauce.actionrpg.model.ability.magicorb;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.creature.*;
+import com.easternsauce.actionrpg.model.ability.AbilityParams;
+import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.util.MathHelper;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.EqualsAndHashCode;
@@ -13,15 +14,15 @@ import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-public class MagicOrb extends Projectile {
+public class MobMagicOrb extends MagicOrbBase {
     @Getter
-    private AbilityParams params;
+    protected AbilityParams params;
 
-    public static MagicOrb of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        MagicOrb ability = MagicOrb.of();
+    public static MobMagicOrb of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+        MobMagicOrb ability = MobMagicOrb.of();
         ability.params = abilityParams
-            .setWidth(2.5f)
-            .setHeight(2.5f)
+            .setWidth(1.5f)
+            .setHeight(1.5f)
             .setChannelTime(0f)
             .setActiveTime(30f)
             .setStartingRange(0.5f)
@@ -30,26 +31,9 @@ public class MagicOrb extends Projectile {
             .setChannelAnimationLooping(false)
             .setActiveAnimationLooping(true)
             .setDelayedActionTime(0.001f)
-            .setSpeed(17f);
+            .setSpeed(13f);
 
         return ability;
-    }
-
-    @Override
-    public Boolean isRanged() {
-        return true;
-    }
-
-    @Override
-    protected void onChannelUpdate(CoreGame game) {
-        onProjectileTravelUpdate();
-    }
-
-    @Override
-    public void onStarted(CoreGame game) {
-        Creature creature = game.getCreature(getParams().getCreatureId());
-        creature.applyEffect(CreatureEffect.SELF_STUN, 0.1f, game);
-        creature.stopMoving();
     }
 
     @Override
@@ -81,7 +65,7 @@ public class MagicOrb extends Projectile {
 
             float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(currentAngleDeg, targetAngleDeg);
 
-            float incrementFactor = 60f;
+            float incrementFactor = 65f;
             float baseIncrement = incrementFactor;
 
             if (getParams().getStateTimer().getTime() > 0.5f && getParams().getStateTimer().getTime() < 2f) {
@@ -106,35 +90,7 @@ public class MagicOrb extends Projectile {
     }
 
     @Override
-    public void onCreatureHit(CreatureId creatureId, CoreGame game) {
-        deactivate();
-    }
-
-    @Override
-    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
-        if (getParams().getStateTimer().getTime() > 0.1f) {
-            deactivate();
-        }
-    }
-
-    @Override
-    protected boolean isWeaponAttack() {
-        return false;
-    }
-
-    @Override
     public Float getStunDuration() {
-        return 0.25f;
-    }
-
-    private boolean isTargetingAllowed(Creature thisCreature, Creature targetCreature) {
-        if (thisCreature instanceof Enemy) {
-            return targetCreature instanceof Player;
-        }
-        //noinspection RedundantIfStatement
-        if (thisCreature instanceof Player) {
-            return true;
-        }
-        return false;
+        return 0.75f;
     }
 }

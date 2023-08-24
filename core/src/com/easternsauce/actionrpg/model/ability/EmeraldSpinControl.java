@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class EmeraldSpinControl extends Ability {
     @Getter
-    private AbilityParams params;
+    protected AbilityParams params;
 
     public static EmeraldSpinControl of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         EmeraldSpinControl ability = EmeraldSpinControl.of();

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class RicochetBullet extends Projectile {
     @Getter
-    private AbilityParams params;
+    protected AbilityParams params;
 
     public static RicochetBullet of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         RicochetBullet ability = RicochetBullet.of();

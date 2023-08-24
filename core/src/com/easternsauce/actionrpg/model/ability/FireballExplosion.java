@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 @EqualsAndHashCode(callSuper = true)
 public class FireballExplosion extends Ability {
     @Getter
-    private AbilityParams params;
+    protected AbilityParams params;
 
     public static FireballExplosion of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         FireballExplosion ability = FireballExplosion.of();
