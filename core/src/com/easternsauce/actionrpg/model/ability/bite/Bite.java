@@ -1,6 +1,9 @@
-package com.easternsauce.actionrpg.model.ability;
+package com.easternsauce.actionrpg.model.ability.bite;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.ability.AbilityParams;
+import com.easternsauce.actionrpg.model.ability.AbilityState;
+import com.easternsauce.actionrpg.model.ability.AttachedAbility;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
@@ -12,7 +15,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class Bite extends AttachedAbility {
     @Getter
-    private AbilityParams params;
+    protected AbilityParams params;
 
     public static Bite of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         float flipValue = abilityParams.getDirVector().angleDeg();

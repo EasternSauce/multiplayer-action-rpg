@@ -1,6 +1,9 @@
-package com.easternsauce.actionrpg.model.ability;
+package com.easternsauce.actionrpg.model.ability.punch;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.ability.AbilityParams;
+import com.easternsauce.actionrpg.model.ability.AbilityState;
+import com.easternsauce.actionrpg.model.ability.AttachedAbility;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +12,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class Punch extends AttachedAbility {
     @Getter
-    private AbilityParams params;
+    protected AbilityParams params;
 
     public static Punch of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         Punch ability = Punch.of();
