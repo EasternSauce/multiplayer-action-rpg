@@ -30,8 +30,8 @@ public class CreatureAccessor {
     @Getter
     private GameStateDataHolder dataHolder;
 
-    public Set<CreatureId> getActiveCreatures() {
-        return getData().getActiveCreatures();
+    public Set<CreatureId> getActiveCreatureIds() {
+        return getData().getActiveCreatureIds();
     }
 
     private GameStateData getData() {
@@ -45,14 +45,7 @@ public class CreatureAccessor {
         return getData().getCreatures().get(creatureId).getParams().getPos();
     }
 
-    public Creature getCreature(CreatureId creatureId) {
-        if (creatureId == null || !getData().getCreatures().containsKey(creatureId)) {
-            return null;
-        }
-        return getData().getCreatures().get(creatureId);
-    }
-
-    public Set<CreatureId> getCreaturesToUpdateForPlayerCreatureId(CreatureId playerCreatureId) {
+    public Set<CreatureId> getCreaturesToUpdateForPlayerCreatureId(CreatureId playerCreatureId, CoreGame game) {
         Creature player = getData().getCreatures().get(playerCreatureId);
 
         if (player == null) {
@@ -61,7 +54,7 @@ public class CreatureAccessor {
 
         return getData().getCreatures().keySet().stream().filter(creatureId -> {
             Creature creature = getData().getCreatures().get(creatureId);
-            if (creature != null) {
+            if (creature != null && creature.isCurrentlyActive(game)) {
                 return player.getParams().getAreaId().equals(creature.getParams().getAreaId()) &&
                     creature.getParams().getPos().distance(player.getParams().getPos()) <
                         Constants.CLIENT_GAME_UPDATE_RANGE;
@@ -96,7 +89,7 @@ public class CreatureAccessor {
                                                      Vector2 vectorTowardsTarget,
                                                      Float distanceToTarget,
                                                      CoreGame game) {
-        Creature creature = gameState.accessCreatures().getCreatures().get(creatureId);
+        Creature creature = gameState.accessCreatures().getCreature(creatureId);
 
         SkillType pickedSkillType;
 
@@ -114,6 +107,13 @@ public class CreatureAccessor {
 
             gameState.scheduleServerSideAction(action);
         }
+    }
+
+    public Creature getCreature(CreatureId creatureId) {
+        if (creatureId == null || !getData().getCreatures().containsKey(creatureId)) {
+            return null;
+        }
+        return getData().getCreatures().get(creatureId);
     }
 
     private static SkillType pickRandomSkillToUse(Set<EnemySkillUseEntry> skillUseEntries,
@@ -143,11 +143,14 @@ public class CreatureAccessor {
         return pickedSkillType.get();
     }
 
-    public CreatureId getAliveCreatureIdClosestTo(Vector2 pos, float maxRange, Set<CreatureId> excluded) {
+    public CreatureId getAliveCreatureIdClosestTo(Vector2 pos,
+                                                  float maxRange,
+                                                  Set<CreatureId> excluded,
+                                                  CoreGame game) {
         CreatureId minCreatureId = null;
         float minDistance = Float.MAX_VALUE;
-        for (CreatureId creatureId : gameState.getCreaturesToUpdate()) {
-            Creature creature = gameState.accessCreatures().getCreatures().get(creatureId);
+        for (CreatureId creatureId : gameState.getCreaturesToUpdate(game)) {
+            Creature creature = gameState.accessCreatures().getCreature(creatureId);
             float distance = pos.distance(creature.getParams().getPos());
             if (creature.isAlive() && distance < minDistance && distance < maxRange && !excluded.contains(creatureId)) {
                 minDistance = distance;

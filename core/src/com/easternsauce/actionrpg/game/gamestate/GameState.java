@@ -1,5 +1,6 @@
 package com.easternsauce.actionrpg.game.gamestate;
 
+import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.GameStateData;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
 import com.easternsauce.actionrpg.model.area.*;
@@ -69,7 +70,7 @@ public abstract class GameState {
         return getData().getDefaultAreaId();
     }
 
-    public abstract Set<CreatureId> getCreaturesToUpdate();
+    public abstract Set<CreatureId> getCreaturesToUpdate(CoreGame game);
 
     public abstract void scheduleServerSideAction(GameStateAction action);
 

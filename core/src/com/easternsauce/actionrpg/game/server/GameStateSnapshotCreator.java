@@ -23,7 +23,7 @@ public class GameStateSnapshotCreator {
         return new Thread(() -> {
             try {
                 while (true) {
-                    Thread.sleep((int)(Constants.TIME_BETWEEN_GAMESTATE_SNAPSHOTS * 1000f));
+                    Thread.sleep((int) (Constants.TIME_BETWEEN_GAMESTATE_SNAPSHOTS * 1000f));
 
                     String fileName = "./gamestate.json";
                     game.getGameState().saveToJsonFile(fileName + ".temp");

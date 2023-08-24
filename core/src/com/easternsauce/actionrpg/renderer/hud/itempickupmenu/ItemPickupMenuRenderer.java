@@ -28,6 +28,7 @@ public class ItemPickupMenuRenderer {
         IconRetriever iconRetriever = game.getEntityManager().getGameEntityRenderer().getIconRetriever();
 
         AtomicInteger i = new AtomicInteger();
+
         playerConfig.getItemPickupMenuLootPiles().stream().filter(lootPileId -> game
             .getGameState()
             .getLootPiles()

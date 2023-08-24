@@ -175,7 +175,7 @@ public class GameEntityRenderer {
     }
 
     public void renderPlayerNames(RenderingLayer worldTextRenderingLayer, CoreGame game) {
-        game.getCreatures().values().stream().filter(creature -> creature.isAlive() &&
+        game.getActiveCreatures().values().stream().filter(creature -> creature.isAlive() &&
             canCreatureBeRendered(creature, game) &&
             creature instanceof Player).forEach(creature -> creatureRenderers
             .get(creature.getId())

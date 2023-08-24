@@ -120,17 +120,18 @@ public class Enemy extends Creature {
         }
     }
 
+    @SuppressWarnings("SpellCheckingInspection")
     @Override
     public void onBeingHit(Ability ability, CoreGame game) {
         if (getParams().getEnemyParams() != null) {
             getParams().getEnemyParams().setJustAttackedByCreatureId(ability.getParams().getCreatureId());
 
-            if (getParams().getEnemyParams().getAggroedCreatureId() == null ||
-                !getParams().getEnemyParams().getAggroedCreatureId().equals(ability.getParams().getCreatureId())) {
-                makeAggressiveAfterHitByAbility(ability);
+            CreatureId aggroedCreatureId = getParams().getEnemyParams().getAggroedCreatureId();
+            if (aggroedCreatureId == null || !aggroedCreatureId.equals(ability.getParams().getCreatureId())) {
+                Creature aggroedCreature = game.getCreature(aggroedCreatureId);
 
-                if (ability.isRanged()) {
-                    getParams().getEnemyParams().getJustAttackedFromRangeTimer().restart();
+                if (aggroedCreature != null && aggroedCreature.isCurrentlyActive(game)) {
+                    makeAggressiveAfterHitByAbility(ability);
                 }
             }
         }
@@ -143,5 +144,9 @@ public class Enemy extends Creature {
         getParams().getEnemyParams().setAutoControlsState(EnemyAutoControlsState.AGGRESSIVE);
         getParams().getStats().setSpeed(getParams().getStats().getBaseSpeed());
         getParams().getEnemyParams().setAggroedCreatureId(ability.getParams().getCreatureId());
+
+        if (ability.isRanged()) {
+            getParams().getEnemyParams().getJustAttackedFromRangeTimer().restart();
+        }
     }
 }

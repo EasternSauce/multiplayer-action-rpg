@@ -65,7 +65,7 @@ public class EnemyAutoControlsProcessor {
             if (creature.getParams().getEnemyParams().getAggroedCreatureId() != null) {
                 potentialTarget = game.getCreature(creature.getParams().getEnemyParams().getAggroedCreatureId());
 
-                if (potentialTarget != null) {
+                if (potentialTarget != null && potentialTarget.isCurrentlyActive(game)) {
                     Float distance = creature.getParams().getPos().distance(potentialTarget.getParams().getPos());
 
                     if (distance < Constants.LOSE_AGGRO_DISTANCE) {
@@ -174,7 +174,7 @@ public class EnemyAutoControlsProcessor {
 
         Float minDistance = Float.MAX_VALUE;
         CreatureId minCreatureId = null;
-        for (Creature otherCreature : game.getCreatures().values()) {
+        for (Creature otherCreature : game.getActiveCreatures().values()) {
             boolean condition = otherCreature.isAlive() &&
                 otherCreature.getParams().getAreaId().getValue().equals(creature.getParams().getAreaId().getValue()) &&
                 otherCreature instanceof Player &&

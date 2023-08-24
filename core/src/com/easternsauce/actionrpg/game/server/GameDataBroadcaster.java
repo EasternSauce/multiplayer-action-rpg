@@ -19,7 +19,7 @@ public class GameDataBroadcaster {
             try {
                 while (true) {
                     //noinspection BusyWait
-                    Thread.sleep((int)(Constants.TIME_BETWEEN_GAMESTATE_BROADCASTS * 1000f));
+                    Thread.sleep((int) (Constants.TIME_BETWEEN_GAMESTATE_BROADCASTS * 1000f));
 
                     Connection[] connections = endPoint.getConnections();
                     for (Connection connection : connections) {
@@ -33,12 +33,12 @@ public class GameDataBroadcaster {
     }
 
     public void broadcastToConnection(Connection connection, CoreGameServer game) {
-        if (!game.getClientPlayers().containsKey(connection.getID()) || !game.getCreatures().containsKey(game
+        if (!game.getClientPlayers().containsKey(connection.getID()) || !game.getAllCreatures().containsKey(game
             .getClientPlayers()
             .get(connection.getID()))) {
             game.getGameState().sendStubGameData(connection);
         } else {
-            game.getGameState().sendGameDataPersonalizedForPlayer(connection);
+            game.getGameState().sendGameDataPersonalizedForPlayer(connection, game);
         }
     }
 

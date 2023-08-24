@@ -35,6 +35,7 @@ import lombok.Setter;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public abstract class CoreGame extends Game {
     final protected GameplayScreen gameplayScreen = GameplayScreen.of();
@@ -180,8 +181,14 @@ public abstract class CoreGame extends Game {
         return getGameState().accessAbilities().getAbility(abilityId);
     }
 
-    public Map<CreatureId, Creature> getCreatures() {
+    public Map<CreatureId, Creature> getAllCreatures() {
         return getGameState().accessCreatures().getCreatures();
+    }
+
+    public Map<CreatureId, Creature> getActiveCreatures() {
+        return getGameState().accessCreatures().getCreatures().entrySet().stream().filter(entry -> entry
+            .getValue()
+            .isCurrentlyActive(this)).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     public Creature getCreature(CreatureId creatureId) {

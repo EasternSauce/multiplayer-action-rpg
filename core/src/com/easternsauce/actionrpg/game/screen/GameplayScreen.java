@@ -167,7 +167,7 @@ public class GameplayScreen implements Screen {
         if (game.isForceUpdateBodyPositions()) { // only runs after receiving gameState state update
             game.setForceUpdateBodyPositions(false);
 
-            game.getCreatures().forEach((creatureId, creature) -> {
+            game.getActiveCreatures().forEach((creatureId, creature) -> {
                 if (game.getCreatureBodies().containsKey(creatureId) &&
                     game.getCreatureBodies().get(creatureId).getBodyPos().distance(creature.getParams().getPos()) >
                         Constants.FORCE_UPDATE_MINIMUM_DISTANCE // only setTransform if positions

@@ -61,7 +61,7 @@ public class MobMagicOrb extends Projectile {
 
         Creature thisCreature = game.getCreature(getParams().getCreatureId());
 
-        for (Creature creature : game.getCreatures().values().stream().filter(targetCreature -> Objects.equals(targetCreature.getParams().getAreaId().getValue(),
+        for (Creature creature : game.getActiveCreatures().values().stream().filter(targetCreature -> Objects.equals(targetCreature.getParams().getAreaId().getValue(),
             getParams().getAreaId().getValue()
         ) &&
             !targetCreature.getId().equals(getParams().getCreatureId()) &&

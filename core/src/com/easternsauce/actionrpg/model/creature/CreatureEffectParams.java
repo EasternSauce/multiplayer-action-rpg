@@ -20,10 +20,6 @@ public class CreatureEffectParams {
     @NonNull
     private Float staminaRegeneration = 0.35f;
     @NonNull
-    private Float appliedSlowEffectiveness = 0f;
-    @NonNull
-    private Float appliedPoisonDamage = 0f;
-    @NonNull
     private SimpleTimer damageOverTimeTimer = SimpleTimer.getExpiredTimer();
     @NonNull
     private SimpleTimer lifeRegenerationOverTimeTimer = SimpleTimer.getExpiredTimer();

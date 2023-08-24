@@ -81,7 +81,7 @@ public class CoreGameClient extends CoreGame {
     private void updateClientCreatureAimDirection() {
         Vector2 mousePos = getMousePositionRetriever().mousePosRelativeToCenter(this);
 
-        Creature player = gameState.accessCreatures().getCreatures().get(getGameState().getThisClientPlayerId());
+        Creature player = gameState.accessCreatures().getCreature(getGameState().getThisClientPlayerId());
 
         if (player != null &&
             player.getParams().getMovementParams().getChangeAimDirectionActionsPerSecondLimiterTimer().getTime() >
@@ -170,7 +170,7 @@ public class CoreGameClient extends CoreGame {
     }
 
     private void handlePerformAbilityInput(PlayerConfig playerConfig, int abilitySequenceNumber) {
-        Creature player = gameState.accessCreatures().getCreatures().get(getGameState().getThisClientPlayerId());
+        Creature player = gameState.accessCreatures().getCreature(getGameState().getThisClientPlayerId());
 
         Vector2 dirVector = getMousePositionRetriever().mousePosRelativeToCenter(this);
 
@@ -202,7 +202,7 @@ public class CoreGameClient extends CoreGame {
     private void handleAttackButtonHoldInput(PlayerConfig playerConfig) {
         if (!playerConfig.getInventoryVisible()) {
 
-            Creature player = gameState.accessCreatures().getCreatures().get(getGameState().getThisClientPlayerId());
+            Creature player = gameState.accessCreatures().getCreature(getGameState().getThisClientPlayerId());
 
             Vector2 dirVector = getMousePositionRetriever().mousePosRelativeToCenter(this);
 
@@ -231,10 +231,13 @@ public class CoreGameClient extends CoreGame {
     }
 
     private void handleDebugInformationQueryInput() {
-        CreatureId creatureId = gameState.accessCreatures().getCreatures().keySet().stream().filter(cId -> cId
-            .getValue()
-            .startsWith("kamil")).collect(Collectors.toList()).get(0);
-        Vector2 pos = gameState.accessCreatures().getCreatures().get(creatureId).getParams().getPos();
+        CreatureId creatureId = getActiveCreatures()
+            .keySet()
+            .stream()
+            .filter(cId -> cId.getValue().startsWith("kamil"))
+            .collect(Collectors.toList())
+            .get(0);
+        Vector2 pos = gameState.accessCreatures().getCreature(creatureId).getParams().getPos();
         System.out.println("Vector2.of(" + pos.getX() + "f, " + pos.getY() + "f),");
     }
 
@@ -242,7 +245,7 @@ public class CoreGameClient extends CoreGame {
         if (playerConfig != null && !playerConfig.getInventoryVisible()) {
             Vector2 mousePos = getMousePositionRetriever().mousePosRelativeToCenter(this);
 
-            Creature player = gameState.accessCreatures().getCreatures().get(getGameState().getThisClientPlayerId());
+            Creature player = gameState.accessCreatures().getCreature(getGameState().getThisClientPlayerId());
 
             if (player != null) {
                 if (player.getParams().getMovementParams().getMovementActionsPerSecondLimiterTimer().getTime() >
@@ -373,7 +376,7 @@ public class CoreGameClient extends CoreGame {
 
     @Override
     public Set<AbilityId> getAbilitiesToUpdate() {
-        Creature player = getCreatures().get(getGameState().getThisClientPlayerId());
+        Creature player = getCreature(getGameState().getThisClientPlayerId());
 
         if (player == null) {
             return new ConcurrentSkipListSet<>();

@@ -4,6 +4,7 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.InitialStateLoader;
 import com.easternsauce.actionrpg.game.gamestate.ServerGameState;
 import com.easternsauce.actionrpg.model.ability.AbilityId;
+import com.easternsauce.actionrpg.model.ability.AbilityState;
 import com.easternsauce.actionrpg.model.action.ActionsHolder;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
 import com.easternsauce.actionrpg.model.creature.Creature;
@@ -70,7 +71,7 @@ public class CoreGameServer extends CoreGame {
         Connection[] connections = getEndPoint().getConnections();
         for (Connection connection : connections) {
             if (clientIds.contains(connection.getID())) { // don't update until player is initialized
-                Map<CreatureId, Creature> creatures = getCreatures();
+                Map<CreatureId, Creature> creatures = getAllCreatures();
                 if (getClientPlayers().containsKey(connection.getID()) && creatures.containsKey(getClientPlayers().get(
                     connection.getID()))) {
                     Creature player = creatures.get(getClientPlayers().get(connection.getID()));
@@ -110,6 +111,26 @@ public class CoreGameServer extends CoreGame {
             initialStateLoader.setupInitialState(this);
         } else {
             gameState.loadFromJsonFile(fileName);
+
+            getActiveCreatures().forEach((creatureId, creature) -> getEventProcessor()
+                .getCreatureModelsToBeCreated()
+                .add(creatureId));
+
+            gameState.accessAbilities().getAbilities().forEach((abilityId, ability) -> {
+                getEventProcessor().getAbilityModelsToBeCreated().add(abilityId);
+                if (ability.getParams().getState() == AbilityState.ACTIVE) {
+                    getEventProcessor().getAbilityModelsToBeActivated().add(abilityId);
+                }
+            });
+
+            gameState.getLootPiles().forEach((lootPileId, lootPile) -> getEventProcessor()
+                .getLootPileModelsToBeCreated()
+                .add(lootPileId));
+
+            gameState.getAreaGates().forEach((areaGateId, areaGate) -> getEventProcessor()
+                .getAreaGateModelsToBeCreated()
+                .add(areaGateId));
+
         }
 
         gameState.clearActiveCreatures();
@@ -120,7 +141,7 @@ public class CoreGameServer extends CoreGame {
         Set<AbilityId> abilitiesToUpdate = new HashSet<>();
 
         for (CreatureId clientCreatureId : getClientPlayers().values()) {
-            Creature player = getCreatures().get(clientCreatureId);
+            Creature player = getCreature(clientCreatureId);
             if (player == null) {
                 continue;
             }

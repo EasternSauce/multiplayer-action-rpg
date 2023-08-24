@@ -20,4 +20,9 @@ public class CreatureEffectState {
         }
         return 0f;
     }
+
+    public void terminateEffect() {
+        startTime = 0f;
+        duration = 0f;
+    }
 }

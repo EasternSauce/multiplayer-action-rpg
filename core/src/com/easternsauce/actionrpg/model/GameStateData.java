@@ -22,7 +22,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
 @Data
 public class GameStateData {
     private Map<CreatureId, Creature> creatures = new ConcurrentSkipListMap<>();
-    private Set<CreatureId> activeCreatures = new ConcurrentSkipListSet<>();
+    private Set<CreatureId> activeCreatureIds = new ConcurrentSkipListSet<>();
 
     private Map<AbilityId, Ability> abilities = new ConcurrentSkipListMap<>();
 
@@ -50,7 +50,7 @@ public class GameStateData {
                                    Map<AreaGateId, AreaGate> areaGates) {
         GameStateData newGameStateData = GameStateData.of();
         newGameStateData.setCreatures(creatures);
-        newGameStateData.setActiveCreatures(new ConcurrentSkipListSet<>(gameStateData.getActiveCreatures()));
+        newGameStateData.setActiveCreatureIds(new ConcurrentSkipListSet<>(gameStateData.getActiveCreatureIds()));
         newGameStateData.setAbilities(abilities);
         newGameStateData.setLootPiles(lootPiles);
         newGameStateData.setAreaGates(areaGates);
@@ -67,7 +67,7 @@ public class GameStateData {
     public static GameStateData copyAsStub(GameStateData gameStateData) {
         GameStateData newGameStateData = GameStateData.of();
         newGameStateData.setCreatures(new ConcurrentSkipListMap<>());
-        newGameStateData.setActiveCreatures(new ConcurrentSkipListSet<>(gameStateData.getActiveCreatures()));
+        newGameStateData.setActiveCreatureIds(new ConcurrentSkipListSet<>(gameStateData.getActiveCreatureIds()));
         newGameStateData.setAbilities(new ConcurrentSkipListMap<>());
         newGameStateData.setLootPiles(new ConcurrentSkipListMap<>());
         newGameStateData.setAreaGates(new ConcurrentSkipListMap<>());

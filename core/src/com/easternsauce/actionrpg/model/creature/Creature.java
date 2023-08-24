@@ -397,4 +397,8 @@ public abstract class Creature implements Entity {
     public void onBeingHit(Ability ability, CoreGame game) {
 
     }
+
+    public boolean isCurrentlyActive(CoreGame game) {
+        return true;
+    }
 }

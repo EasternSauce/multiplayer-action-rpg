@@ -36,7 +36,7 @@ public class GameEntityManager {
     private final GameEntityPhysics gameEntityPhysics = GameEntityPhysics.of();
 
     public void createCreatureEntity(CreatureId creatureId, CoreGame game) {
-        Creature creature = game.getCreatures().get(creatureId);
+        Creature creature = game.getCreature(creatureId);
 
         if (creature != null) {
             if (!gameEntityRenderer.getCreatureRenderers().containsKey(creatureId)) {
@@ -147,13 +147,13 @@ public class GameEntityManager {
                            CoreGame game) {
         Enemy enemy = Enemy.of(creatureId, areaId, pos, enemyTemplate, null, rngSeed);
 
-        game.getCreatures().put(creatureId, enemy);
+        game.getAllCreatures().put(creatureId, enemy);
 
         game.getEventProcessor().getCreatureModelsToBeCreated().add(creatureId);
     }
 
     public void updateCreatures(float delta, CoreGame game) {
-        Set<CreatureId> creaturesToUpdate = game.getGameState().getCreaturesToUpdate();
+        Set<CreatureId> creaturesToUpdate = game.getGameState().getCreaturesToUpdate(game);
 
         creaturesToUpdate.forEach(creatureId -> {
             if (getGameEntityPhysics().getCreatureBodies().containsKey(creatureId)) {
@@ -163,10 +163,10 @@ public class GameEntityManager {
 
         // set gamestate position based on b2body position
         creaturesToUpdate.forEach(creatureId -> {
-            if (game.getCreatures().containsKey(creatureId) && getGameEntityPhysics().getCreatureBodies().containsKey(
-                creatureId)) {
+            if (game.getActiveCreatures().containsKey(creatureId) &&
+                getGameEntityPhysics().getCreatureBodies().containsKey(creatureId)) {
 
-                game.getCreatures().get(creatureId).getParams().setPos(getGameEntityPhysics()
+                game.getCreature(creatureId).getParams().setPos(getGameEntityPhysics()
                     .getCreatureBodies()
                     .get(creatureId)
                     .getBodyPos());
@@ -181,15 +181,15 @@ public class GameEntityManager {
             .setActive(creaturesToUpdate.contains(key)));
 
         creaturesToUpdate.forEach(creatureId -> {
-            if (game.getCreatures().containsKey(creatureId) &&
+            if (game.getActiveCreatures().containsKey(creatureId) &&
                 getGameEntityRenderer().getCreatureRenderers().containsKey(creatureId)) {
                 getGameEntityRenderer().getCreatureRenderers().get(creatureId).update(game);
             }
         });
 
         creaturesToUpdate.forEach(creatureId -> {
-            if (game.getCreatures().containsKey(creatureId)) {
-                game.getCreatures().get(creatureId).update(delta, game);
+            if (game.getActiveCreatures().containsKey(creatureId)) {
+                game.getCreature(creatureId).update(delta, game);
             }
         });
 

@@ -1,5 +1,6 @@
 package com.easternsauce.actionrpg.game.gamestate;
 
+import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.gson.InterfaceAdapter;
 import com.easternsauce.actionrpg.model.GameStateData;
 import com.easternsauce.actionrpg.model.ability.Ability;
@@ -41,11 +42,13 @@ public class ServerGameState extends GameState {
     ).registerTypeAdapter(Ability.class, new InterfaceAdapter<Ability>()).setPrettyPrinting().create();
 
     @Override
-    public Set<CreatureId> getCreaturesToUpdate() {
+    public Set<CreatureId> getCreaturesToUpdate(CoreGame game) {
         Set<CreatureId> creaturesToUpdate = new HashSet<>();
 
         for (CreatureId clientCreatureId : getClientPlayers().values()) {
-            Set<CreatureId> creaturesToAdd = accessCreatures().getCreaturesToUpdateForPlayerCreatureId(clientCreatureId);
+            Set<CreatureId> creaturesToAdd = accessCreatures().getCreaturesToUpdateForPlayerCreatureId(clientCreatureId,
+                game
+            );
 
             creaturesToUpdate.addAll(creaturesToAdd);
         }
@@ -80,8 +83,8 @@ public class ServerGameState extends GameState {
         return any.map(creature -> creature.getParams().getAreaId()).orElse(getDefaultAreaId());
     }
 
-    public void sendGameDataPersonalizedForPlayer(Connection connection) {
-        Creature player = accessCreatures().getCreatures().get(getClientPlayers().get(connection.getID()));
+    public void sendGameDataPersonalizedForPlayer(Connection connection, CoreGame game) {
+        Creature player = accessCreatures().getCreature(getClientPlayers().get(connection.getID()));
 
         // TODO: also add ALL data about creatures that own abilities within range!
 
@@ -92,8 +95,7 @@ public class ServerGameState extends GameState {
             .filter(entry -> entry.getValue().getParams().getAreaId().equals(player.getParams().getAreaId()) &&
                 entry.getValue().getParams().getPos().distance(player.getParams().getPos()) <
                     Constants.CLIENT_GAME_UPDATE_RANGE)
-            .filter(entry -> !(entry.getValue() instanceof Player) ||
-                accessCreatures().getActiveCreatures().contains(entry.getKey()))
+            .filter(entry -> entry.getValue().isCurrentlyActive(game))
             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
 
         ConcurrentSkipListMap<AbilityId, Ability> personalizedAbilities = new ConcurrentSkipListMap<>(accessAbilities()
@@ -162,7 +164,7 @@ public class ServerGameState extends GameState {
     }
 
     public void clearActiveCreatures() {
-        accessCreatures().getActiveCreatures().clear();
+        accessCreatures().getActiveCreatureIds().clear();
     }
 
     public void saveToJsonFile(String fileName) {

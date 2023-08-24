@@ -1,8 +1,10 @@
 package com.easternsauce.actionrpg.game.server;
 
+import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.command.*;
 import com.easternsauce.actionrpg.model.action.PlayerInitAction;
 import com.easternsauce.actionrpg.model.action.PlayerRemoveAction;
+import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -35,6 +37,9 @@ public class CoreGameServerListener extends Listener {
             game.getClientIds().add(connection.getID());
         } else if (object instanceof PlayerInitCommand) {
             PlayerInitCommand command = (PlayerInitCommand) object;
+
+            disconnectExistingPlayer(command.getPlayerId(), game);
+
             PlayerInitAction playerInitAction = PlayerInitAction.of(command.getPlayerId());
 
             if (game.getClientIds().contains(connection.getID())) {
@@ -63,6 +68,13 @@ public class CoreGameServerListener extends Listener {
             game.getGameDataBroadcaster().broadcastToConnection(connection, game);
         }
 
+    }
+
+    private void disconnectExistingPlayer(CreatureId playerId, CoreGame game) {
+        Creature creature = game.getCreature(playerId);
+        if (creature != null) {
+            game.forceDisconnectForPlayer(playerId);
+        }
     }
 
 }

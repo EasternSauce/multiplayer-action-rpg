@@ -26,7 +26,7 @@ public class EnemySpawnAction extends GameStateAction {
     public void applyToGame(CoreGame game) {
         Creature enemy = createNewEnemy(game);
 
-        game.getCreatures().put(creatureId, enemy);
+        game.getAllCreatures().put(creatureId, enemy);
 
         game.getEventProcessor().getCreatureModelsToBeCreated().add(creatureId);
     }

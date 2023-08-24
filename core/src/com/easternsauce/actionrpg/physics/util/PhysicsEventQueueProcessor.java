@@ -23,7 +23,7 @@ public class PhysicsEventQueueProcessor {
 
                 Creature destinationCreature = game.getCreature(event.getDestinationCreatureId());
 
-                if (game.getGameState().getCreaturesToUpdate().contains(event.getDestinationCreatureId()) &&
+                if (game.getGameState().getCreaturesToUpdate(game).contains(event.getDestinationCreatureId()) &&
                     game.getAbilitiesToUpdate().contains(event.getAbilityId()) &&
                     !destinationCreature.isEffectActive(CreatureEffect.NO_COLLIDE, game)) {
                     if (event.getSourceCreatureId().equals(event.getDestinationCreatureId())) {

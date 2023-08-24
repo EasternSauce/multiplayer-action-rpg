@@ -60,7 +60,7 @@ public class LightningNode extends Ability {
         Creature targetCreature = game.getCreature(game
             .getGameState()
             .accessCreatures()
-            .getAliveCreatureIdClosestTo(getParams().getPos(), 13f, excluded));
+            .getAliveCreatureIdClosestTo(getParams().getPos(), 13f, excluded, game));
 
         if (targetCreature != null &&
             getParams().getCreaturesAlreadyHit().size() <= 10 &&

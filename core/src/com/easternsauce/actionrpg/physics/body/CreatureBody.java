@@ -33,11 +33,11 @@ public class CreatureBody {
     }
 
     public void update(CoreGame game) {
-        if (!game.getCreatures().containsKey(creatureId)) {
+        if (!game.getActiveCreatures().containsKey(creatureId)) {
             return;
         }
 
-        Creature creature = game.getCreatures().get(creatureId);
+        Creature creature = game.getCreature(creatureId);
 
         if (creature == null) {
             return;

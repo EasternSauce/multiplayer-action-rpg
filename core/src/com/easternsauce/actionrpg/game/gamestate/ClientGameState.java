@@ -1,5 +1,6 @@
 package com.easternsauce.actionrpg.game.gamestate;
 
+import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.entity.EntityEventProcessor;
 import com.easternsauce.actionrpg.model.GameStateData;
 import com.easternsauce.actionrpg.model.ability.AbilityId;
@@ -22,8 +23,8 @@ public class ClientGameState extends GameState {
     private CreatureId thisClientPlayerId;
 
     @Override
-    public Set<CreatureId> getCreaturesToUpdate() {
-        return accessCreatures().getCreaturesToUpdateForPlayerCreatureId(getThisClientPlayerId());
+    public Set<CreatureId> getCreaturesToUpdate(CoreGame game) {
+        return accessCreatures().getCreaturesToUpdateForPlayerCreatureId(getThisClientPlayerId(), game);
     }
 
     @Override
