@@ -71,8 +71,6 @@ public abstract class Ability implements Entity {
     abstract protected void onChannelUpdate(CoreGame game);
 
     private void activate(CoreGame game) {
-        //        game.getGameState().accessAbilities().sendActivateAbilityAction(this); // send action to update the server
-
         game.getEventProcessor().getAbilityModelsToBeActivated().add(getParams().getId());
     }
 

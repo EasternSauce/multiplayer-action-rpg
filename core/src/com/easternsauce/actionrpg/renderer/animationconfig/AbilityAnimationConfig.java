@@ -83,6 +83,8 @@ public class AbilityAnimationConfig {
 
         configs.put("meteor", AbilityAnimationConfig.of(595, 481, "meteor", "meteor", 0, 1, 0f, 1f, 1f));
 
+        configs.put("meteor_aim", AbilityAnimationConfig.of(256, 256, "meteor_aim", "meteor_aim", 0, 1, 0f, 1f, 1f));
+
     }
 
     private Integer textureWidth;

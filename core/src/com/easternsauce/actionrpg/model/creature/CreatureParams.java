@@ -14,6 +14,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
+import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
@@ -21,6 +22,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @NoArgsConstructor(staticName = "of")
 @Data
@@ -132,7 +134,6 @@ public class CreatureParams implements EntityParams {
                                     Vector2 pos,
                                     String textureName,
                                     int rngSeed) {
-
         // TODO remove later
         Map<Integer, Item> potionMenuItems = new ConcurrentSkipListMap<>();
         potionMenuItems.put(0, Item.of().setTemplate(ItemTemplate.templates.get("lifePotion")));
@@ -140,6 +141,14 @@ public class CreatureParams implements EntityParams {
 
         Map<Integer, Item> inventoryItems = new ConcurrentSkipListMap<>();
         inventoryItems.put(2, Item.of().setTemplate(ItemTemplate.templates.get("lifePotion")));
+        inventoryItems.put(7,
+            Item
+                .of()
+                .setTemplate(ItemTemplate.templates.get("hideGloves"))
+                .setGrantedSkills(Stream
+                    .of(new AbstractMap.SimpleEntry<>(SkillType.METEOR, 1))
+                    .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)))
+        );
         // TODO
 
         return produceCreatureParams(creatureId, areaId, pos, textureName, rngSeed)

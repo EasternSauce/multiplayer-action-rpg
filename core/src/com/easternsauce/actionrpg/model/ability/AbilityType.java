@@ -79,7 +79,8 @@ public enum AbilityType {
     EMERALD_SPIN(EmeraldSpin::of),
     EMERALD_SPIN_CONTROL(EmeraldSpinControl::of),
 
-    METEOR(Meteor::of);
+    METEOR(Meteor::of),
+    METEOR_AIM(MeteorAim::of);
 
     @Getter
     private BiFunction<AbilityParams, CoreGame, Ability> factoryMapping;

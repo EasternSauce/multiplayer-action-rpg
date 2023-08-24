@@ -80,6 +80,12 @@ public class Meteor extends Projectile {
         Creature creature = game.getCreature(getParams().getCreatureId());
         creature.applyEffect(CreatureEffect.SELF_STUN, 0.2f, game);
         creature.stopMoving();
+
+        game.chainAnotherAbility(this,
+            AbilityType.METEOR_AIM,
+            getParams().getDirVector(),
+            ChainAbilityParams.of().setChainToPos(destinationPos)
+        );
     }
 
     @Override
@@ -108,7 +114,7 @@ public class Meteor extends Projectile {
                 .of()
                 .setChainToPos(getParams().getPos())
                 .setOverrideStunDuration(0.05f)
-                .setOverrideScale(1f)
+                .setOverrideScale(0.8f)
         );
     }
 

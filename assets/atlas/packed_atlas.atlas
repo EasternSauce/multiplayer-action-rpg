@@ -6,7 +6,7 @@ filter: Nearest, Nearest
 repeat: none
 arrow
   rotate: false
-  xy: 1508, 2
+  xy: 4408, 199
   size: 40, 40
   orig: 40, 40
   offset: 0, 0
@@ -76,7 +76,7 @@ circle_explosion
   index: -1
 cursor
   rotate: false
-  xy: 926, 83
+  xy: 5446, 200
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -90,7 +90,7 @@ dig
   index: -1
 downarrow
   rotate: false
-  xy: 7980, 924
+  xy: 926, 83
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -209,14 +209,14 @@ ice_shard
   index: -1
 jawa
   rotate: false
-  xy: 7209, 696
+  xy: 7207, 566
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: -1
 lightning
   rotate: false
-  xy: 6897, 826
+  xy: 6225, 592
   size: 256, 64
   orig: 256, 64
   offset: 0, 0
@@ -244,7 +244,7 @@ male1
   index: -1
 male2
   rotate: false
-  xy: 1596, 108
+  xy: 7109, 696
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
@@ -256,6 +256,13 @@ meteor
   orig: 595, 481
   offset: 0, 0
   index: -1
+meteor_aim
+  rotate: false
+  xy: 6511, 634
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
 minos
   rotate: false
   xy: 5090, 6
@@ -265,7 +272,7 @@ minos
   index: -1
 necromancer
   rotate: false
-  xy: 1206, 2
+  xy: 1466, 2
   size: 128, 192
   orig: 128, 192
   offset: 0, 0
@@ -279,7 +286,7 @@ nice_icons
   index: -1
 pillar
   rotate: false
-  xy: 2520, 648
+  xy: 6483, 606
   size: 25, 50
   orig: 25, 50
   offset: 0, 0
@@ -335,14 +342,14 @@ ring_of_fire_channel
   index: -1
 serpent
   rotate: false
-  xy: 6705, 600
+  xy: 6963, 600
   size: 144, 224
   orig: 144, 224
   offset: 0, 0
   index: -1
 shield
   rotate: false
-  xy: 6467, 622
+  xy: 2520, 664
   size: 32, 34
   orig: 32, 34
   offset: 0, 0
@@ -363,56 +370,56 @@ slam
   index: -1
 slam_windup
   rotate: false
-  xy: 6225, 596
+  xy: 6225, 530
   size: 240, 60
   orig: 240, 60
   offset: 0, 0
   index: -1
 slash
   rotate: false
-  xy: 1220, 196
+  xy: 4166, 199
   size: 240, 40
   orig: 240, 40
   offset: 0, 0
   index: -1
 slash2
   rotate: false
-  xy: 7496, 916
+  xy: 7738, 916
   size: 240, 40
   orig: 240, 40
   offset: 0, 0
   index: -1
 slash2mirrored
   rotate: false
-  xy: 7738, 916
+  xy: 1220, 196
   size: 240, 40
   orig: 240, 40
   offset: 0, 0
   index: -1
 slash_windup
   rotate: false
-  xy: 6225, 554
+  xy: 964, 111
   size: 240, 40
   orig: 240, 40
   offset: 0, 0
   index: -1
 slash_windup2
   rotate: false
-  xy: 6851, 590
+  xy: 1462, 196
   size: 240, 40
   orig: 240, 40
   offset: 0, 0
   index: -1
 slash_windup3
   rotate: false
-  xy: 964, 111
+  xy: 7496, 916
   size: 240, 40
   orig: 240, 40
   offset: 0, 0
   index: -1
 slowed
   rotate: false
-  xy: 2402, 343
+  xy: 5544, 331
   size: 31, 31
   orig: 31, 31
   offset: 0, 0
@@ -426,21 +433,21 @@ sludge
   index: -1
 smoke
   rotate: false
-  xy: 6511, 826
+  xy: 6769, 826
   size: 384, 64
   orig: 384, 64
   offset: 0, 0
   index: -1
 spider
   rotate: false
-  xy: 2402, 376
+  xy: 7207, 696
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: -1
 stego
   rotate: false
-  xy: 6511, 568
+  xy: 6769, 568
   size: 192, 256
   orig: 192, 256
   offset: 0, 0
@@ -454,7 +461,7 @@ stunned
   index: -1
 sword
   rotate: false
-  xy: 1466, 2
+  xy: 7980, 916
   size: 40, 40
   orig: 40, 40
   offset: 0, 0
@@ -475,7 +482,7 @@ teeth
   index: -1
 treasure
   rotate: false
-  xy: 1596, 74
+  xy: 7285, 858
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -496,7 +503,7 @@ trident_thrust_windup
   index: -1
 undead_adventurer
   rotate: false
-  xy: 1466, 44
+  xy: 2402, 312
   size: 128, 192
   orig: 128, 192
   offset: 0, 0
@@ -510,28 +517,28 @@ undead_knight
   index: -1
 undead_lancer
   rotate: false
-  xy: 1336, 2
+  xy: 1596, 2
   size: 128, 192
   orig: 128, 192
   offset: 0, 0
   index: -1
 undead_ninja
   rotate: false
-  xy: 7111, 696
+  xy: 7109, 566
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: -1
 undead_sorcerer
   rotate: false
-  xy: 6851, 632
+  xy: 1206, 2
   size: 128, 192
   orig: 128, 192
   offset: 0, 0
   index: -1
 undead_witch
   rotate: false
-  xy: 6981, 632
+  xy: 1336, 2
   size: 128, 192
   orig: 128, 192
   offset: 0, 0
