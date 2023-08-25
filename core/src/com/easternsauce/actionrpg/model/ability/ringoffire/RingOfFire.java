@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class RingOfFire extends RingOfFireBase {
     public static RingOfFireBase of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        RingOfFireBase ability = RingOfFire.of();
+        RingOfFire ability = RingOfFire.of();
 
         ability.params = abilityParams
             .setWidth(8f)

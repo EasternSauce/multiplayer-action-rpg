@@ -1,6 +1,8 @@
-package com.easternsauce.actionrpg.model.ability;
+package com.easternsauce.actionrpg.model.ability.explosion;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.ability.Ability;
+import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,12 +11,12 @@ import java.util.concurrent.ConcurrentSkipListMap;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-public class FireballExplosion extends Ability {
+public class Explosion extends Ability {
     @Getter
     protected AbilityParams params;
 
-    public static FireballExplosion of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        FireballExplosion ability = FireballExplosion.of();
+    public static Explosion of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+        Explosion ability = Explosion.of();
         ability.params = abilityParams
             .setWidth(9f)
             .setHeight(9f)

@@ -1,6 +1,10 @@
-package com.easternsauce.actionrpg.model.ability;
+package com.easternsauce.actionrpg.model.ability.emeraldspin;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.ability.Ability;
+import com.easternsauce.actionrpg.model.ability.AbilityParams;
+import com.easternsauce.actionrpg.model.ability.AbilityType;
+import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

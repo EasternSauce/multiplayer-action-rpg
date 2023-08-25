@@ -1,8 +1,8 @@
-package com.easternsauce.actionrpg.model.ability;
+package com.easternsauce.actionrpg.model.ability.emeraldspin;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.creature.CreatureEffect;
+import com.easternsauce.actionrpg.model.ability.AbilityParams;
+import com.easternsauce.actionrpg.model.ability.Projectile;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.EqualsAndHashCode;
@@ -13,26 +13,26 @@ import java.util.concurrent.ConcurrentSkipListMap;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-public class IceSpear extends Projectile {
+public class EmeraldSpin extends Projectile {
     @Getter
     protected AbilityParams params;
 
-    public static IceSpear of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        IceSpear ability = IceSpear.of();
+    public static EmeraldSpin of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+        EmeraldSpin ability = EmeraldSpin.of();
         ability.params = abilityParams
-            .setWidth(2.1f)
-            .setHeight(0.75f)
+            .setWidth(1.3f)
+            .setHeight(1.3f)
             .setChannelTime(0f)
             .setActiveTime(3f)
-            .setStartingRange(3f)
-            .setTextureName("ice_shard")
-            .setBaseDamage(15f)
+            .setStartingRange(0f)
+            .setTextureName("green_whirl")
+            .setBaseDamage(11f)
             .setChannelAnimationLooping(false)
             .setActiveAnimationLooping(true)
             .setDelayedActionTime(0.001f)
             .setSpeed(18f)
             .setCreaturesAlreadyHit(new ConcurrentSkipListMap<>())
-            .setMaximumRange(6.5f);
+            .setMaximumRange(12f);
 
         return ability;
     }
@@ -54,10 +54,7 @@ public class IceSpear extends Projectile {
 
     @Override
     public void onCreatureHit(CreatureId creatureId, CoreGame game) {
-        Creature creature = game.getCreature(creatureId);
 
-        creature.applyEffect(CreatureEffect.SLOW, 2.5f, game);
-        creature.getParams().getEffectParams().setCurrentSlowMagnitude(0.5f);
     }
 
     @Override
@@ -70,6 +67,11 @@ public class IceSpear extends Projectile {
     @Override
     protected boolean isWeaponAttack() {
         return false;
+    }
+
+    @Override
+    public Float getStunDuration() {
+        return 0f;
     }
 
     @Override

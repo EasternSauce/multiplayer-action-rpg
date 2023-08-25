@@ -1,6 +1,8 @@
-package com.easternsauce.actionrpg.model.ability;
+package com.easternsauce.actionrpg.model.ability.meteor;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.ability.Ability;
+import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

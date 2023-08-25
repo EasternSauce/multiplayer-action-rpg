@@ -1,6 +1,7 @@
-package com.easternsauce.actionrpg.model.ability;
+package com.easternsauce.actionrpg.model.ability.swordspin;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import java.util.Set;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-public class BossSwordSpin extends AttachedAbility {
+public class BossSwordSpin extends SwordSpinBase {
     @Getter
     protected AbilityParams params;
 
@@ -21,21 +22,6 @@ public class BossSwordSpin extends AttachedAbility {
             4f).setTextureName("sword").setBaseDamage(42f).setChannelAnimationLooping(false).setActiveAnimationLooping(
             false).setDirVector(abilityParams.getDirVector().withRotatedDegAngle(90));
         return ability;
-    }
-
-    @Override
-    public Boolean isPositionChangedOnUpdate() {
-        return true;
-    }
-
-    @Override
-    public Boolean isRanged() {
-        return false;
-    }
-
-    @Override
-    protected void onChannelUpdate(CoreGame game) {
-        updateAttachedAbilityPosition(game);
     }
 
     @Override
@@ -56,30 +42,8 @@ public class BossSwordSpin extends AttachedAbility {
     }
 
     @Override
-    public void init(CoreGame game) {
-        getParams().setState(AbilityState.CHANNEL);
-        getParams().getStateTimer().restart();
-
-        updateAttachedAbilityPosition(game);
-    }
-
-    @Override
-    protected boolean isWeaponAttack() {
-        return false;
-    }
-
-    @Override
     public Float getStunDuration() {
         return 0.3f;
     }
 
-    @Override
-    public boolean canBeDeactivated() {
-        return true;
-    }
-
-    @Override
-    public boolean isDamagingSkillNotAllowedWhenActive() {
-        return true;
-    }
 }

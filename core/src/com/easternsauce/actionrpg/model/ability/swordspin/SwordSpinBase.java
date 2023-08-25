@@ -1,37 +1,20 @@
-package com.easternsauce.actionrpg.model.ability;
+package com.easternsauce.actionrpg.model.ability.swordspin;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.ability.AbilityParams;
+import com.easternsauce.actionrpg.model.ability.AbilityState;
+import com.easternsauce.actionrpg.model.ability.AttachedAbility;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
 import java.util.Set;
 
-@NoArgsConstructor(staticName = "of")
-@EqualsAndHashCode(callSuper = true)
-public class SwordSpin extends AttachedAbility {
+public abstract class SwordSpinBase extends AttachedAbility {
     @Getter
     protected AbilityParams params;
-
-    public static SwordSpin of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        SwordSpin ability = SwordSpin.of();
-        ability.params = abilityParams
-            .setWidth(2.8f)
-            .setHeight(2.8f)
-            .setChannelTime(0f)
-            .setActiveTime(3f)
-            .setStartingRange(2f)
-            .setTextureName("sword")
-            .setBaseDamage(10f)
-            .setChannelAnimationLooping(false)
-            .setActiveAnimationLooping(false)
-            .setDirVector(abilityParams.getDirVector().withRotatedDegAngle(90));
-        return ability;
-    }
 
     @Override
     public Boolean isPositionChangedOnUpdate() {

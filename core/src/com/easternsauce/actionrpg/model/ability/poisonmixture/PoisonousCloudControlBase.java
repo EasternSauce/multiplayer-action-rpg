@@ -1,25 +1,18 @@
-package com.easternsauce.actionrpg.model.ability;
+package com.easternsauce.actionrpg.model.ability.poisonmixture;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.ability.Ability;
+import com.easternsauce.actionrpg.model.ability.AbilityParams;
+import com.easternsauce.actionrpg.model.ability.AbilityType;
+import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.util.Vector2;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(staticName = "of")
-@EqualsAndHashCode(callSuper = true)
-public class MobPoisonousCloudControl extends Ability {
+public class PoisonousCloudControlBase extends Ability {
     @Getter
     protected AbilityParams params;
     int currentCloudSet = 0;
-
-    public static MobPoisonousCloudControl of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        MobPoisonousCloudControl ability = MobPoisonousCloudControl.of();
-        ability.params = abilityParams.setChannelTime(0f).setActiveTime(10f);
-
-        return ability;
-    }
 
     @Override
     public Boolean isRanged() {
@@ -33,11 +26,11 @@ public class MobPoisonousCloudControl extends Ability {
 
     @Override
     protected void onActiveUpdate(float delta, CoreGame game) {
-        float[] cloudSetSpawnTimes = {0f, 0.2f, 0.4f, 0.6f, 0.8f, 1.2f, 1.6f, 2.0f, 2.4f, 2.8f};
+        float[] cloudSetSpawnTimes = {0f, 0.4f, 0.8f, 1.6f, 2.4f};
 
-        float[] cloudSetSpawnCounts = {5, 6, 5, 6, 5, 6, 5, 6, 5, 6};
+        float[] cloudSetSpawnCounts = {5, 7, 9, 11, 13};
 
-        float[] cloudSetDistances = {2f, 4f, 6f, 8f, 10f, 12f, 14f, 16f, 18f, 20f};
+        float[] cloudSetDistances = {1f, 2f, 3f, 4f, 5f};
 
         float totalDuration = 3.2f;
 

@@ -1,6 +1,10 @@
-package com.easternsauce.actionrpg.model.ability;
+package com.easternsauce.actionrpg.model.ability.lightning;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.ability.Ability;
+import com.easternsauce.actionrpg.model.ability.AbilityParams;
+import com.easternsauce.actionrpg.model.ability.AbilityType;
+import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;

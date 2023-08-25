@@ -1,21 +1,18 @@
-package com.easternsauce.actionrpg.model.ability;
+package com.easternsauce.actionrpg.model.ability.poisonmixture;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.concurrent.ConcurrentSkipListMap;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-public class MobPoisonousCloud extends Ability {
-    @Getter
-    protected AbilityParams params;
-
+public class MobPoisonousCloud extends PoisonousCloudBase {
     public static MobPoisonousCloud of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         MobPoisonousCloud ability = MobPoisonousCloud.of();
         ability.params = abilityParams
@@ -34,21 +31,6 @@ public class MobPoisonousCloud extends Ability {
     }
 
     @Override
-    public Boolean isRanged() {
-        return true;
-    }
-
-    @Override
-    protected void onChannelUpdate(CoreGame game) {
-
-    }
-
-    @Override
-    protected void onActiveUpdate(float delta, CoreGame game) {
-
-    }
-
-    @Override
     public void onCreatureHit(CreatureId creatureId, CoreGame game) {
         Creature creature = game.getCreature(creatureId);
 
@@ -59,13 +41,4 @@ public class MobPoisonousCloud extends Ability {
         creature.getParams().getEffectParams().setCurrentDamageOverTimeDealerCreatureId(getParams().getCreatureId());
     }
 
-    @Override
-    protected boolean isWeaponAttack() {
-        return false;
-    }
-
-    @Override
-    public Float getStunDuration() {
-        return 0f;
-    }
 }

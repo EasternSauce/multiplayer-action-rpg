@@ -6,15 +6,29 @@ import com.easternsauce.actionrpg.model.ability.boomerang.Boomerang;
 import com.easternsauce.actionrpg.model.ability.crossbowbolt.CrossbowBolt;
 import com.easternsauce.actionrpg.model.ability.crossbowbolt.CrossbowBoltControl;
 import com.easternsauce.actionrpg.model.ability.crossbowbolt.MobCrossbowBoltControl;
+import com.easternsauce.actionrpg.model.ability.dash.Dash;
+import com.easternsauce.actionrpg.model.ability.emeraldspin.EmeraldSpin;
+import com.easternsauce.actionrpg.model.ability.emeraldspin.EmeraldSpinControl;
+import com.easternsauce.actionrpg.model.ability.explosion.Explosion;
+import com.easternsauce.actionrpg.model.ability.fireball.Fireball;
+import com.easternsauce.actionrpg.model.ability.icespear.IceSpear;
+import com.easternsauce.actionrpg.model.ability.icespear.IceSpearRampage;
+import com.easternsauce.actionrpg.model.ability.lightning.LightningChain;
+import com.easternsauce.actionrpg.model.ability.lightning.LightningNode;
+import com.easternsauce.actionrpg.model.ability.lightning.LightningSpark;
 import com.easternsauce.actionrpg.model.ability.magicorb.MagicOrb;
 import com.easternsauce.actionrpg.model.ability.magicorb.MobMagicOrb;
-import com.easternsauce.actionrpg.model.ability.poisonmixture.MobPoisonousMixture;
-import com.easternsauce.actionrpg.model.ability.poisonmixture.PoisonousMixture;
+import com.easternsauce.actionrpg.model.ability.meteor.Meteor;
+import com.easternsauce.actionrpg.model.ability.meteor.MeteorAim;
+import com.easternsauce.actionrpg.model.ability.poisonmixture.*;
 import com.easternsauce.actionrpg.model.ability.punch.Punch;
 import com.easternsauce.actionrpg.model.ability.ringoffire.MobRingOfFire;
 import com.easternsauce.actionrpg.model.ability.ringoffire.RingOfFire;
+import com.easternsauce.actionrpg.model.ability.swordslash.BossSwordSlash;
 import com.easternsauce.actionrpg.model.ability.swordslash.MobSwordSlash;
 import com.easternsauce.actionrpg.model.ability.swordslash.SwordSlash;
+import com.easternsauce.actionrpg.model.ability.swordspin.BossSwordSpin;
+import com.easternsauce.actionrpg.model.ability.swordspin.SwordSpin;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -26,7 +40,7 @@ public enum AbilityType {
     MOB_SWORD_SLASH(MobSwordSlash::of),
     BOSS_SWORD_SLASH(BossSwordSlash::of),
     FIREBALL(Fireball::of),
-    FIREBALL_EXPLOSION(FireballExplosion::of),
+    FIREBALL_EXPLOSION(Explosion::of),
     LIGHTNING_SPARK(LightningSpark::of),
     LIGHTNING_NODE(LightningNode::of),
     LIGHTNING_CHAIN(LightningChain::of),
