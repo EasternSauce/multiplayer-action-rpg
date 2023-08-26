@@ -169,7 +169,7 @@ public class EnemyTemplate {
         null
     );
     public static EnemyTemplate spider = EnemyTemplate.of(EnemyType.SPIDER,
-        200f,
+        300f,
         4f,
         12f,
         new ConcurrentSkipListSet<>(Arrays.asList(DropTableEntry.tierThreeMagicLeatherArmorDrop,
@@ -190,9 +190,9 @@ public class EnemyTemplate {
     public static EnemyTemplate babySpider = EnemyTemplate.of(EnemyType.BABY_SPIDER,
         150f,
         4f,
-        10f,
+        13f,
         new ConcurrentSkipListSet<>(Arrays.asList(DropTableEntry.unlikelyLifePotionDrop,
-            DropTableEntry.manaPotionDrop
+            DropTableEntry.unlikelyManaPotionDrop
         )),
         new ConcurrentSkipListSet<>(Collections.singletonList(EnemySkillUseEntry.of(SkillType.BITE, 6f, 300f))),
         null

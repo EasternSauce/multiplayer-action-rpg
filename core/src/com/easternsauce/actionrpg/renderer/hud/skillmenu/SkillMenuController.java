@@ -24,9 +24,7 @@ public class SkillMenuController {
 
         AtomicInteger i = new AtomicInteger();
 
-        Creature player = game.getGameState().accessCreatures().getCreature(game
-            .getGameState()
-            .getThisClientPlayerId());
+        Creature player = game.getCreature(game.getGameState().getThisClientPlayerId());
 
         player.availableSkills().forEach((skillType, level) -> {
             Rect rect = SkillMenuConsts.getSkillPickerRect(i.get());

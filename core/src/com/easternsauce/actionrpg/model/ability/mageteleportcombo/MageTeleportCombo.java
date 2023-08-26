@@ -1,6 +1,10 @@
-package com.easternsauce.actionrpg.model.ability;
+package com.easternsauce.actionrpg.model.ability.mageteleportcombo;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.ability.Ability;
+import com.easternsauce.actionrpg.model.ability.AbilityParams;
+import com.easternsauce.actionrpg.model.ability.AbilityType;
+import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
 import lombok.EqualsAndHashCode;
@@ -39,7 +43,7 @@ public class MageTeleportCombo extends Ability {
 
         game.chainAnotherAbility(
             this,
-            AbilityType.MOB_TELEPORT_SOURCE,
+            AbilityType.ENEMY_TELEPORT_SOURCE,
             getParams().getDirVector(),
             ChainAbilityParams.of().setChainToPos(getParams().getPos())
         );

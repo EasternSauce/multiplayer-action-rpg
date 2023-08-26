@@ -33,7 +33,7 @@ public class EnemySpawnAction extends GameStateAction {
 
     @Override
     public Entity getEntity(CoreGame game) {
-        return game.getGameState().accessCreatures().getCreature(creatureId);
+        return game.getCreature(creatureId);
     }
 
     @SuppressWarnings("PointlessArithmeticExpression")

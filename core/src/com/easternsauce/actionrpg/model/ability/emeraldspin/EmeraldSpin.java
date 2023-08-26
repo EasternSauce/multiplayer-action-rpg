@@ -20,8 +20,8 @@ public class EmeraldSpin extends Projectile {
     public static EmeraldSpin of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         EmeraldSpin ability = EmeraldSpin.of();
         ability.params = abilityParams
-            .setWidth(1.3f)
-            .setHeight(1.3f)
+            .setWidth(0.8f)
+            .setHeight(0.8f)
             .setChannelTime(0f)
             .setActiveTime(3f)
             .setStartingRange(0f)
@@ -30,9 +30,9 @@ public class EmeraldSpin extends Projectile {
             .setChannelAnimationLooping(false)
             .setActiveAnimationLooping(true)
             .setDelayedActionTime(0.001f)
-            .setSpeed(18f)
+            .setSpeed(30f)
             .setCreaturesAlreadyHit(new ConcurrentSkipListMap<>())
-            .setMaximumRange(12f);
+            .setMaximumRange(22f);
 
         return ability;
     }

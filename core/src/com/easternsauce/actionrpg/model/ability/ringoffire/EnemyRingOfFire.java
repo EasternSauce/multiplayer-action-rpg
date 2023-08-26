@@ -3,17 +3,13 @@ package com.easternsauce.actionrpg.model.ability.ringoffire;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-public class MobRingOfFire extends RingOfFireBase {
-    @Getter
-    protected AbilityParams params;
-
-    public static MobRingOfFire of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        MobRingOfFire ability = MobRingOfFire.of();
+public class EnemyRingOfFire extends RingOfFireBase {
+    public static EnemyRingOfFire of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+        EnemyRingOfFire ability = EnemyRingOfFire.of();
 
         ability.params = abilityParams
             .setWidth(20f)

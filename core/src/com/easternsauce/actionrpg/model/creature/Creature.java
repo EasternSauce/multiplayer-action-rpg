@@ -166,11 +166,11 @@ public abstract class Creature implements Entity {
 
     public Integer capability() {
         Float width = animationConfig().getSpriteWidth();
-        if (width >= 0 && width < 2) {
+        if (width >= 0 && width < 3) {
             return 1;
-        } else if (width >= 2 && width <= 4) {
+        } else if (width >= 3 && width <= 6) {
             return 2;
-        } else if (width >= 4 && width <= 6) {
+        } else if (width >= 6 && width <= 9) {
             return 3;
         }
         return 4;

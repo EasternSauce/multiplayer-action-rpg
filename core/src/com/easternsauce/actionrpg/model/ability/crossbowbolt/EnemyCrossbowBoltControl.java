@@ -8,19 +8,16 @@ import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.util.MathHelper;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-public class MobCrossbowBoltControl extends CrossbowBoltControlBase {
-    @Getter
-    protected AbilityParams params;
+public class EnemyCrossbowBoltControl extends CrossbowBoltControlBase {
     int currentBoltToFire = 0;
     Vector2 previousDirVector = null;
 
-    public static MobCrossbowBoltControl of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        MobCrossbowBoltControl ability = MobCrossbowBoltControl.of();
+    public static EnemyCrossbowBoltControl of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+        EnemyCrossbowBoltControl ability = EnemyCrossbowBoltControl.of();
         ability.params = abilityParams.setChannelTime(0f).setActiveTime(2f);
 
         return ability;

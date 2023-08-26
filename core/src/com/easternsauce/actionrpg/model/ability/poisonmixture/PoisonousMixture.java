@@ -17,7 +17,7 @@ public class PoisonousMixture extends PoisonousMixtureBase {
             .setChannelTime(0f)
             .setActiveTime(30f)
             .setTextureName("green_potion_throw")
-            .setBaseDamage(0f)
+            .setBaseDamage(22f)
             .setChannelAnimationLooping(false)
             .setActiveAnimationLooping(true)
             .setDelayedActionTime(0.001f)

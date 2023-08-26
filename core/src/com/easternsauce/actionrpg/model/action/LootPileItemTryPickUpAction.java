@@ -28,7 +28,7 @@ public class LootPileItemTryPickUpAction extends GameStateAction {
 
     @Override
     public void applyToGame(CoreGame game) {
-        Creature creature = game.getGameState().accessCreatures().getCreature(playerId);
+        Creature creature = game.getCreature(playerId);
 
         if (creature == null) {
             return;

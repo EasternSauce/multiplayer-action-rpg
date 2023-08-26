@@ -49,7 +49,7 @@ public abstract class CreatureHitAction extends GameStateAction {
     }
 
     private void spawnDrops(CreatureId targetId, CoreGame game) {
-        Creature creature = game.getGameState().accessCreatures().getCreature(targetId);
+        Creature creature = game.getCreature(targetId);
 
         Set<Item> items = new ConcurrentSkipListSet<>();
 

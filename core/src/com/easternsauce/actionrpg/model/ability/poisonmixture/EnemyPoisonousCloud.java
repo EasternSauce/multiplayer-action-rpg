@@ -12,9 +12,9 @@ import java.util.concurrent.ConcurrentSkipListMap;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-public class MobPoisonousCloud extends PoisonousCloudBase {
-    public static MobPoisonousCloud of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        MobPoisonousCloud ability = MobPoisonousCloud.of();
+public class EnemyPoisonousCloud extends PoisonousCloudBase {
+    public static EnemyPoisonousCloud of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+        EnemyPoisonousCloud ability = EnemyPoisonousCloud.of();
         ability.params = abilityParams
             .setWidth(9f)
             .setHeight(9f)

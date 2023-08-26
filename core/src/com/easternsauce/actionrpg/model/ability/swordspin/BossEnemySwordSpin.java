@@ -4,7 +4,6 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
@@ -12,12 +11,9 @@ import java.util.Set;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-public class BossSwordSpin extends SwordSpinBase {
-    @Getter
-    protected AbilityParams params;
-
-    public static BossSwordSpin of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        BossSwordSpin ability = BossSwordSpin.of();
+public class BossEnemySwordSpin extends SwordSpinBase {
+    public static BossEnemySwordSpin of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+        BossEnemySwordSpin ability = BossEnemySwordSpin.of();
         ability.params = abilityParams.setWidth(6f).setHeight(6f).setChannelTime(0f).setActiveTime(4f).setStartingRange(
             4f).setTextureName("sword").setBaseDamage(42f).setChannelAnimationLooping(false).setActiveAnimationLooping(
             false).setDirVector(abilityParams.getDirVector().withRotatedDegAngle(90));

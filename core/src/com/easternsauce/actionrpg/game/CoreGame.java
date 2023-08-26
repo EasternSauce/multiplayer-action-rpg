@@ -121,7 +121,7 @@ public abstract class CoreGame extends Game {
     }
 
     public Boolean isDebugEnabled() {
-        return Constants.IS_DEBUG_ENABLED;
+        return Constants.DEBUG_ENABLED;
     }
 
     public List<PhysicsEvent> getPhysicsEventQueue() {

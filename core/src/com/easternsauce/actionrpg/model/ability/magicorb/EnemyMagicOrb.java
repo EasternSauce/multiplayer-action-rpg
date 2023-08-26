@@ -6,7 +6,6 @@ import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.util.MathHelper;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.Objects;
@@ -14,12 +13,9 @@ import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-public class MobMagicOrb extends MagicOrbBase {
-    @Getter
-    protected AbilityParams params;
-
-    public static MobMagicOrb of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        MobMagicOrb ability = MobMagicOrb.of();
+public class EnemyMagicOrb extends MagicOrbBase {
+    public static EnemyMagicOrb of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+        EnemyMagicOrb ability = EnemyMagicOrb.of();
         ability.params = abilityParams
             .setWidth(1.5f)
             .setHeight(1.5f)

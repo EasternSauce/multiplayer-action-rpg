@@ -7,18 +7,16 @@ import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-public class MobPoisonousCloudControl extends PoisonousCloudControlBase {
-    @Getter
-    protected AbilityParams params;
+public class EnemyPoisonousCloudControl extends PoisonousCloudControlBase {
     int currentCloudSet = 0;
 
-    public static MobPoisonousCloudControl of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        MobPoisonousCloudControl ability = MobPoisonousCloudControl.of();
+    public static EnemyPoisonousCloudControl of(AbilityParams abilityParams,
+                                                @SuppressWarnings("unused") CoreGame game) {
+        EnemyPoisonousCloudControl ability = EnemyPoisonousCloudControl.of();
         ability.params = abilityParams.setChannelTime(0f).setActiveTime(10f);
 
         return ability;

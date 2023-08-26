@@ -12,12 +12,12 @@ public class RingOfFire extends RingOfFireBase {
         RingOfFire ability = RingOfFire.of();
 
         ability.params = abilityParams
-            .setWidth(8f)
-            .setHeight(8f)
-            .setChannelTime(0.4f)
-            .setActiveTime(0.16f)
+            .setWidth(10f)
+            .setHeight(10f)
+            .setChannelTime(0.3f)
+            .setActiveTime(0.12f)
             .setBaseDamage(28f)
-            .setTextureName("ring_of_fire")
+            .setTextureName("fast_ring_of_fire")
             .setChannelAnimationLooping(false)
             .setActiveAnimationLooping(false)
             .setAttackWithoutMoving(true);

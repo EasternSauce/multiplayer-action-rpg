@@ -3,17 +3,13 @@ package com.easternsauce.actionrpg.model.ability.swordslash;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-public class MobSwordSlash extends SwordSlashBase {
-    @Getter
-    protected AbilityParams params;
-
-    public static MobSwordSlash of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        MobSwordSlash ability = MobSwordSlash.of();
+public class EnemySwordSlash extends SwordSlashBase {
+    public static EnemySwordSlash of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+        EnemySwordSlash ability = EnemySwordSlash.of();
         ability.params = abilityParams
             .setWidth(2f)
             .setHeight(2f)

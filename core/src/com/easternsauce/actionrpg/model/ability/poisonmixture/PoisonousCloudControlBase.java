@@ -28,7 +28,7 @@ public class PoisonousCloudControlBase extends Ability {
     protected void onActiveUpdate(float delta, CoreGame game) {
         float[] cloudSetSpawnTimes = {0f, 0.4f, 0.8f, 1.6f, 2.4f};
 
-        float[] cloudSetSpawnCounts = {5, 7, 9, 11, 13};
+        float[] cloudSetSpawnCounts = {3, 5, 7, 9, 11};
 
         float[] cloudSetDistances = {1f, 2f, 3f, 4f, 5f};
 
@@ -54,6 +54,7 @@ public class PoisonousCloudControlBase extends Ability {
                         .of()
                         .setChainToPos(Vector2.of(x, y))
                         .setOverrideDuration(totalDuration - cloudSetSpawnTimes[currentCloudSet])
+                        .setOverrideScale(0.8f)
                 );
             }
 

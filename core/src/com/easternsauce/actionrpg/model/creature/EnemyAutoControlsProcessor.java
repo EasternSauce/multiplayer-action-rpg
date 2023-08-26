@@ -318,10 +318,7 @@ public class EnemyAutoControlsProcessor {
                     creature.getParams().getEnemyParams().getPathCalculationCooldown());
 
         if (pathfindingAllowed) {
-            Creature target = game.getGameState().accessCreatures().getCreature(creature
-                .getParams()
-                .getEnemyParams()
-                .getTargetCreatureId());
+            Creature target = game.getCreature(creature.getParams().getEnemyParams().getTargetCreatureId());
 
             if (target != null && !game.isLineBetweenPointsUnobstructedByTerrain(creature.getParams().getAreaId(),
                 creature.getParams().getPos(),

@@ -246,8 +246,11 @@ public class GameEntityManager {
 
         if (teleportEvent.getCreatureId() != null &&
             !teleportEvent.getUsedGate() &&
-            teleportEvent.getToAreaId().getValue().equals(game.getGameState().accessCreatures().getCreature(
-                teleportEvent.getCreatureId()).getParams().getAreaId().getValue()) &&
+            teleportEvent.getToAreaId().getValue().equals(game
+                .getCreature(teleportEvent.getCreatureId())
+                .getParams()
+                .getAreaId()
+                .getValue()) &&
             teleportEvent.getToAreaId().getValue().equals(game
                 .getCreatureBodies()
                 .get(teleportEvent.getCreatureId())

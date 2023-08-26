@@ -67,7 +67,7 @@ public class InitialStateLoader {
             Stream
                 .of(new AbstractMap.SimpleEntry<>(EnemyTemplate.skeleton, 100))
                 .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)),
-            2
+            1
         );
 
         addEnemyRallyPoint(enemyRallyPoints,

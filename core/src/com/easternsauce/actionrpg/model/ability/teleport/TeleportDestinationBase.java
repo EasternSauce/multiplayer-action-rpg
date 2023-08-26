@@ -1,29 +1,16 @@
-package com.easternsauce.actionrpg.model.ability.meteor;
+package com.easternsauce.actionrpg.model.ability.teleport;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import lombok.EqualsAndHashCode;
+import com.easternsauce.actionrpg.model.creature.CreatureEffect;
+import com.easternsauce.actionrpg.model.util.TeleportEvent;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(staticName = "of")
-@EqualsAndHashCode(callSuper = true)
-public class MeteorAim extends Ability {
+public abstract class TeleportDestinationBase extends Ability {
     @Getter
     protected AbilityParams params;
-
-    public static MeteorAim of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        Creature creature = game.getCreature(abilityParams.getCreatureId());
-
-        MeteorAim ability = MeteorAim.of();
-        ability.params = abilityParams.setWidth(3f).setHeight(3f).setChannelTime(0f).setActiveTime(0.8f).setTextureName(
-            "meteor_aim").setBaseDamage(0f).setChannelAnimationLooping(false).setActiveAnimationLooping(false).setPos(
-            creature.getParams().getPos());
-
-        return ability;
-    }
 
     @Override
     public Boolean isRanged() {
@@ -37,7 +24,15 @@ public class MeteorAim extends Ability {
 
     @Override
     public void onStarted(CoreGame game) {
-
+        Creature creature = game.getCreature(getParams().getCreatureId());
+        creature.applyEffect(CreatureEffect.SELF_STUN, 0.3f, game);
+        game.addTeleportEvent(TeleportEvent.of(
+            getParams().getCreatureId(),
+            getParams().getPos(),
+            getParams().getAreaId(),
+            getParams().getAreaId(),
+            false
+        ));
     }
 
     @Override

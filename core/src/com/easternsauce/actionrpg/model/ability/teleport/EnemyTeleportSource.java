@@ -1,6 +1,10 @@
-package com.easternsauce.actionrpg.model.ability;
+package com.easternsauce.actionrpg.model.ability.teleport;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.ability.Ability;
+import com.easternsauce.actionrpg.model.ability.AbilityParams;
+import com.easternsauce.actionrpg.model.ability.AbilityType;
+import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
 import lombok.EqualsAndHashCode;
@@ -9,14 +13,14 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-public class TeleportSource extends Ability {
+public class EnemyTeleportSource extends Ability {
     @Getter
     protected AbilityParams params;
 
-    public static TeleportSource of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+    public static EnemyTeleportSource of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
         Creature creature = game.getCreature(abilityParams.getCreatureId());
 
-        TeleportSource ability = TeleportSource.of();
+        EnemyTeleportSource ability = EnemyTeleportSource.of();
         ability.params = abilityParams
             .setWidth(4.5f)
             .setHeight(4.5f)
@@ -58,7 +62,7 @@ public class TeleportSource extends Ability {
     public void onDelayedAction(CoreGame game) {
         game.chainAnotherAbility(
             this,
-            AbilityType.TELEPORT_DESTINATION,
+            AbilityType.ENEMY_TELEPORT_DESTINATION,
             getParams().getDirVector(),
             ChainAbilityParams.of().setChainToPos(getParams().getPos())
         );

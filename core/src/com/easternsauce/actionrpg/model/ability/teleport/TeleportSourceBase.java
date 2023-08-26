@@ -1,36 +1,17 @@
-package com.easternsauce.actionrpg.model.ability;
+package com.easternsauce.actionrpg.model.ability.teleport;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.ability.Ability;
+import com.easternsauce.actionrpg.model.ability.AbilityParams;
+import com.easternsauce.actionrpg.model.ability.AbilityType;
+import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(staticName = "of")
-@EqualsAndHashCode(callSuper = true)
-public class MobTeleportSource extends Ability {
+public abstract class TeleportSourceBase extends Ability {
     @Getter
     protected AbilityParams params;
-
-    public static MobTeleportSource of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        Creature creature = game.getGameState().accessCreatures().getCreature(abilityParams.getCreatureId());
-
-        MobTeleportSource ability = MobTeleportSource.of();
-        ability.params = abilityParams
-            .setWidth(4.5f)
-            .setHeight(4.5f)
-            .setChannelTime(0f)
-            .setActiveTime(1f)
-            .setTextureName("warp")
-            .setBaseDamage(0f)
-            .setChannelAnimationLooping(false)
-            .setActiveAnimationLooping(false)
-            .setPos(creature.getParams().getPos())
-            .setDelayedActionTime(0.3f);
-
-        return ability;
-    }
 
     @Override
     public Boolean isRanged() {
@@ -44,7 +25,7 @@ public class MobTeleportSource extends Ability {
 
     @Override
     public void onStarted(CoreGame game) {
-        Creature creature = game.getGameState().accessCreatures().getCreature(getParams().getCreatureId());
+        Creature creature = game.getCreature(getParams().getCreatureId());
         creature.applyEffect(CreatureEffect.SELF_STUN, 0.5f, game);
         creature.stopMoving();
     }
@@ -58,7 +39,7 @@ public class MobTeleportSource extends Ability {
     public void onDelayedAction(CoreGame game) {
         game.chainAnotherAbility(
             this,
-            AbilityType.MOB_TELEPORT_DESTINATION,
+            AbilityType.TELEPORT_DESTINATION,
             getParams().getDirVector(),
             ChainAbilityParams.of().setChainToPos(getParams().getPos())
         );

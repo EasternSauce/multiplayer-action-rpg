@@ -60,6 +60,10 @@ public class AbilityAnimationConfig {
             AbilityAnimationConfig.of(96, 96, "ring_of_fire_channel", "ring_of_fire_active", 20, 8, 0.02f, 0.02f, 1f)
         );
 
+        configs.put("fast_ring_of_fire",
+            AbilityAnimationConfig.of(96, 96, "ring_of_fire_channel", "ring_of_fire_active", 20, 8, 0.015f, 0.015f, 1f)
+        );
+
         configs.put("smoke", AbilityAnimationConfig.of(64, 64, "smoke", "smoke", 0, 6, 0f, 0.022f, 1f));
 
         configs.put("dig", AbilityAnimationConfig.of(32, 32, "dig", "dig", 0, 4, 0f, 0.1f, 1f));

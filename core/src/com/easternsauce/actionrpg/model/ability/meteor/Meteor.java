@@ -86,7 +86,7 @@ public class Meteor extends Projectile {
         creature.stopMoving();
 
         game.chainAnotherAbility(this,
-            AbilityType.METEOR_AIM,
+            AbilityType.METEOR_TARGET,
             getParams().getDirVector(),
             ChainAbilityParams.of().setChainToPos(destinationPos)
         );
@@ -125,11 +125,6 @@ public class Meteor extends Projectile {
     @Override
     protected boolean isWeaponAttack() {
         return false;
-    }
-
-    @Override
-    public boolean canBeDeactivated() {
-        return true;
     }
 
     @Override

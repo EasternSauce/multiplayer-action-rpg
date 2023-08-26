@@ -18,7 +18,7 @@ public abstract class AttachedAbility extends Ability {
             }
         }
 
-        Vector2 creaturePos = game.getGameState().accessCreatures().getCreaturePos(getParams().getCreatureId());
+        Vector2 creaturePos = game.getCreaturePos(getParams().getCreatureId());
 
         if (creaturePos != null) {
             getParams().setPos(Ability.calculatePosition(creaturePos, dirVector, getParams().getStartingRange()));

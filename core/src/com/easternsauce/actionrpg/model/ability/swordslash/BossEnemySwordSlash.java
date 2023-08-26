@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-public class BossSwordSlash extends SwordSlashBase {
-    public static BossSwordSlash of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        BossSwordSlash ability = BossSwordSlash.of();
+public class BossEnemySwordSlash extends SwordSlashBase {
+    public static BossEnemySwordSlash of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+        BossEnemySwordSlash ability = BossEnemySwordSlash.of();
         ability.params = abilityParams
             .setWidth(4.5f)
             .setHeight(4.5f)

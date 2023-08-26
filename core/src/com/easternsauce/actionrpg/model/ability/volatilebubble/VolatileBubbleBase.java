@@ -1,38 +1,19 @@
-package com.easternsauce.actionrpg.model.ability;
+package com.easternsauce.actionrpg.model.ability.volatilebubble;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.ability.AbilityParams;
+import com.easternsauce.actionrpg.model.ability.AbilityType;
+import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
+import com.easternsauce.actionrpg.model.ability.Projectile;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.util.Vector2;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(staticName = "of")
-@EqualsAndHashCode(callSuper = true)
-public class MobVolatileBubble extends Projectile {
+public abstract class VolatileBubbleBase extends Projectile {
     @Getter
     protected AbilityParams params;
-
-    public static MobVolatileBubble of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        MobVolatileBubble ability = MobVolatileBubble.of();
-        ability.params = abilityParams
-            .setWidth(2f)
-            .setHeight(2f)
-            .setChannelTime(0f)
-            .setActiveTime(30f)
-            .setStartingRange(1.5f)
-            .setTextureName("bubble")
-            .setBaseDamage(0f)
-            .setChannelAnimationLooping(false)
-            .setActiveAnimationLooping(true)
-            .setDelayedActionTime(0.001f)
-            .setSpeed(18f)
-            .setMaximumRange(17f);
-
-        return ability;
-    }
 
     @Override
     public Boolean isRanged() {

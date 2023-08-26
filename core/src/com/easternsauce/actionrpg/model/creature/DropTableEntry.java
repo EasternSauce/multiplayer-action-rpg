@@ -46,12 +46,17 @@ public class DropTableEntry implements Comparable<DropTableEntry> {
         0f,
         new ConcurrentSkipListMap<>()
     );
-    public static DropTableEntry unlikelyLifePotionDrop = DropTableEntry.of(0.5f,
+    public static DropTableEntry unlikelyLifePotionDrop = DropTableEntry.of(0.2f,
         ItemTemplate.templates.get("lifePotion"),
         0f,
         new ConcurrentSkipListMap<>()
     );
     public static DropTableEntry manaPotionDrop = DropTableEntry.of(0.9f,
+        ItemTemplate.templates.get("manaPotion"),
+        0f,
+        new ConcurrentSkipListMap<>()
+    );
+    public static DropTableEntry unlikelyManaPotionDrop = DropTableEntry.of(0.2f,
         ItemTemplate.templates.get("manaPotion"),
         0f,
         new ConcurrentSkipListMap<>()
@@ -67,8 +72,7 @@ public class DropTableEntry implements Comparable<DropTableEntry> {
         Stream.of(new AbstractMap.SimpleEntry<>(SkillType.METEOR, 100),
             new AbstractMap.SimpleEntry<>(SkillType.EMERALD_SPIN, 100),
             new AbstractMap.SimpleEntry<>(SkillType.RING_OF_FIRE, 100),
-            new AbstractMap.SimpleEntry<>(SkillType.POISONOUS_MIXTURE, 100),
-            new AbstractMap.SimpleEntry<>(SkillType.TUNNEL_DIG, 100)
+            new AbstractMap.SimpleEntry<>(SkillType.POISONOUS_MIXTURE, 100)
         ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue))
     );
     public static DropTableEntry tierTwoMagicLeatherArmorDrop = DropTableEntry.of(0.1f,

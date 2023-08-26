@@ -1,18 +1,22 @@
-package com.easternsauce.actionrpg.model.ability;
+package com.easternsauce.actionrpg.model.ability.playfulghost;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.ability.Ability;
+import com.easternsauce.actionrpg.model.ability.AbilityParams;
+import com.easternsauce.actionrpg.model.ability.AbilityType;
+import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-public class SummonGhosts extends Ability {
+public class PlayfulGhostControl extends Ability {
     @Getter
     protected AbilityParams params;
 
-    public static SummonGhosts of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        SummonGhosts ability = SummonGhosts.of();
+    public static PlayfulGhostControl of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+        PlayfulGhostControl ability = PlayfulGhostControl.of();
         ability.params = abilityParams.setChannelTime(0f).setActiveTime(0f);
 
         return ability;
