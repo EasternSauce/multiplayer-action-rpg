@@ -39,7 +39,10 @@ public class ServerGameState extends GameState {
 
     private final Gson gson = new GsonBuilder().enableComplexMapKeySerialization().registerTypeAdapter(Creature.class,
         new InterfaceAdapter<Creature>()
-    ).registerTypeAdapter(Ability.class, new InterfaceAdapter<Ability>()).setPrettyPrinting().create();
+    ).registerTypeAdapter(
+        Ability.class,
+        new InterfaceAdapter<Ability>()
+    ).setPrettyPrinting().create();
 
     @Override
     public Set<CreatureId> getCreaturesToUpdate(CoreGame game) {
