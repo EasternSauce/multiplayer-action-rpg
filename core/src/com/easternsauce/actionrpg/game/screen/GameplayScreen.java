@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 public class GameplayScreen implements Screen {
     private final PhysicsEventQueueProcessor processPhysicsEventQueueProcessor = PhysicsEventQueueProcessor.of();
     private final GameplayRenderer gameplayRenderer = GameplayRenderer.of();
+
     private CoreGame game;
     private Map<AreaId, TiledMap> maps;
     private TextureAtlas atlas;
@@ -35,14 +36,7 @@ public class GameplayScreen implements Screen {
 
         game.getEntityManager().getGameEntityPhysics().setDebugRenderer(new Box2DDebugRenderer());
 
-        Map<AreaId, String> mapsToLoad = new ConcurrentSkipListMap<>();
-        mapsToLoad.put(AreaId.of("Area1"), "assets/areas/area1");
-        mapsToLoad.put(AreaId.of("Area2"), "assets/areas/area2");
-        mapsToLoad.put(AreaId.of("Area3"), "assets/areas/area3");
-
-        maps = mapsToLoad.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
-            entry -> game.getEntityManager().getGameEntityRenderer().loadMap(entry.getValue() + "/tile_map.tmx")
-        ));
+        maps = loadMaps();
 
         game.getGameState().setRandomGenerator(RandomGenerator.of(Instant.now().getNano()));
 
@@ -51,18 +45,23 @@ public class GameplayScreen implements Screen {
         game.getEntityManager().getGameEntityRenderer().init(atlas);
         game.getHudRenderer().init(atlas);
 
-        game.getEntityManager().getGameEntityPhysics().init(maps,
-            game
-        ); // TODO: doesn't run if we receive state too late....
+        game.getEntityManager().getGameEntityPhysics().init(maps, game);
 
         initializeRenderingLayers(game);
 
         game.getViewportsHandler().initViewports();
 
-        game.getViewportsHandler().setHudCameraPosition(Constants.WINDOW_WIDTH / 2f,
-            Constants.WINDOW_HEIGHT / 2f
-        ); // TODO: move it inward?
+    }
 
+    private Map<AreaId, TiledMap> loadMaps() {
+        Map<AreaId, String> mapsToLoad = new ConcurrentSkipListMap<>();
+        mapsToLoad.put(AreaId.of("Area1"), "assets/areas/area1");
+        mapsToLoad.put(AreaId.of("Area2"), "assets/areas/area2");
+        mapsToLoad.put(AreaId.of("Area3"), "assets/areas/area3");
+
+        return mapsToLoad.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
+            entry -> game.getEntityManager().getGameEntityRenderer().loadMap(entry.getValue() + "/tile_map.tmx")
+        ));
     }
 
     private void initializeRenderingLayers(CoreGame game) {

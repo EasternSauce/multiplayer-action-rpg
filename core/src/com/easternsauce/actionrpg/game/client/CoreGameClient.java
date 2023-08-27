@@ -14,10 +14,6 @@ import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.util.TeleportEvent;
 import com.easternsauce.actionrpg.model.util.Vector2;
-import com.easternsauce.actionrpg.renderer.hud.inventorywindow.InventoryWindowController;
-import com.easternsauce.actionrpg.renderer.hud.inventorywindow.PotionMenuController;
-import com.easternsauce.actionrpg.renderer.hud.itempickupmenu.ItemPickupMenuController;
-import com.easternsauce.actionrpg.renderer.hud.skillmenu.SkillMenuController;
 import com.easternsauce.actionrpg.util.Constants;
 import com.esotericsoftware.kryonet.Client;
 import lombok.Getter;
@@ -34,15 +30,9 @@ public class CoreGameClient extends CoreGame {
 
     private final CoreGameClientListener clientListener = CoreGameClientListener.of(this);
     private final ClientConnectionEstablisher clientConnectionEstablisher = ClientConnectionEstablisher.of();
-    @Getter
-    private final SkillMenuController skillMenuController = SkillMenuController.of();
-    @Getter
-    private final InventoryWindowController inventoryWindowController = InventoryWindowController.of();
-    @Getter
-    private final ItemPickupMenuController pickupMenuController = ItemPickupMenuController.of();
-    @Getter
-    private final PotionMenuController potionMenuController = PotionMenuController.of();
-    private final CoreGameClientInputProcessor inputProcessor = CoreGameClientInputProcessor.of();
+
+    private final CoreGameClientInputHandler inputHandler = CoreGameClientInputHandler.of();
+
     @Getter
     @Setter
     private Client endPoint;
@@ -52,9 +42,6 @@ public class CoreGameClient extends CoreGame {
     @Getter
     @Setter
     private Boolean firstNonStubBroadcastReceived = false;
-    @Getter
-    @Setter
-    private Float menuClickTime = 0f; // TODO: should do it differently
 
     private CoreGameClient() {
     }
@@ -85,7 +72,7 @@ public class CoreGameClient extends CoreGame {
 
     @Override
     public void onUpdate() {
-        inputProcessor.process(this);
+        inputHandler.process(this);
         updateClientCreatureAimDirection();
         correctPlayerBodyArea();
     }

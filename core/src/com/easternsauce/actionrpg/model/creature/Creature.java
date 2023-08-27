@@ -32,12 +32,7 @@ public abstract class Creature implements Entity {
 
         if (!isEffectActive(CreatureEffect.STUN, game) &&
             getParams().getMovementParams().getStillMovingCheckTimer().getTime() > 0.02f) {
-            //on stopped moving before reaching target (e.g. hit a wall)
-            if (getParams().getMovementParams().getMoving() && getParams().getPos().distance(getParams()
-                .getMovementParams()
-                .getPreviousPos()) < 0.005f) {
-                stopMoving();
-            }
+            handleAbruptStoppedMoving();
             getParams().getMovementParams().setPreviousPos(getParams().getPos());
             getParams().getMovementParams().getStillMovingCheckTimer().restart();
         }
@@ -46,6 +41,14 @@ public abstract class Creature implements Entity {
         updateTimers(delta);
         updateEnemyTimers(delta);
 
+    }
+
+    private void handleAbruptStoppedMoving() {
+        if (getParams().getMovementParams().getMoving() && getParams().getPos().distance(getParams()
+            .getMovementParams()
+            .getPreviousPos()) < 0.005f) {
+            stopMoving();
+        }
     }
 
     protected void updateEnemyTimers(float delta) {

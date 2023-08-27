@@ -15,13 +15,27 @@ import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.skill.SkillType;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;
 import com.easternsauce.actionrpg.model.util.Vector2;
+import com.easternsauce.actionrpg.renderer.hud.inventorywindow.InventoryWindowController;
+import com.easternsauce.actionrpg.renderer.hud.inventorywindow.PotionMenuController;
+import com.easternsauce.actionrpg.renderer.hud.itempickupmenu.ItemPickupMenuController;
+import com.easternsauce.actionrpg.renderer.hud.skillmenu.SkillMenuController;
 import com.easternsauce.actionrpg.util.Constants;
 import lombok.NoArgsConstructor;
 
 import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
-public class CoreGameClientInputProcessor {
+public class CoreGameClientInputHandler {
+    private final SkillMenuController skillMenuController = SkillMenuController.of();
+
+    private final InventoryWindowController inventoryWindowController = InventoryWindowController.of();
+
+    private final ItemPickupMenuController pickupMenuController = ItemPickupMenuController.of();
+
+    private final PotionMenuController potionMenuController = PotionMenuController.of();
+
+    private Float menuClickTime = 0f; // TODO: should do it differently
+
     public void process(CoreGameClient game) {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
             handleChatMessageActionInput(game);
@@ -161,28 +175,24 @@ public class CoreGameClientInputProcessor {
     private void handleActionButtonInput(PlayerConfig playerConfig, CoreGameClient game) {
         if (playerConfig != null) {
             if (playerConfig.getInventoryVisible()) {
-                game.getInventoryWindowController().performMoveItemClick(game.getEndPoint(), game);
+                inventoryWindowController.performMoveItemClick(game.getEndPoint(), game);
             } else if (!playerConfig.getInventoryVisible() && !playerConfig.getItemPickupMenuLootPiles().isEmpty()) {
-                boolean successful = game.getPickupMenuController().performItemPickupMenuClick(game.getEndPoint(),
-                    game
-                );
+                boolean successful = pickupMenuController.performItemPickupMenuClick(game.getEndPoint(), game);
                 if (successful) {
-                    game.setMenuClickTime(game.getGameState().getTime());
+                    menuClickTime = game.getGameState().getTime();
                 }
 
             } else if (!playerConfig.getInventoryVisible() &&
                 playerConfig.getSkillMenuPickerSlotBeingChanged() != null) {
-                boolean successful = game.getSkillMenuController().performSkillMenuPickerClick(game.getEndPoint(),
-                    game
-                );
+                boolean successful = skillMenuController.performSkillMenuPickerClick(game.getEndPoint(), game);
                 if (successful) {
-                    game.setMenuClickTime(game.getGameState().getTime());
+                    menuClickTime = game.getGameState().getTime();
                 }
 
             } else {
-                boolean successful = game.getSkillMenuController().performSkillMenuClick(game.getEndPoint(), game);
+                boolean successful = skillMenuController.performSkillMenuClick(game.getEndPoint(), game);
                 if (successful) {
-                    game.setMenuClickTime(game.getGameState().getTime());
+                    menuClickTime = game.getGameState().getTime();
                 }
 
             }
@@ -199,8 +209,7 @@ public class CoreGameClientInputProcessor {
 
             if (player != null) {
                 if (player.getParams().getMovementParams().getMovementActionsPerSecondLimiterTimer().getTime() >
-                    Constants.MOVEMENT_COMMAND_COOLDOWN &&
-                    game.getGameState().getTime() > game.getMenuClickTime() + 0.1f) {
+                    Constants.MOVEMENT_COMMAND_COOLDOWN && game.getGameState().getTime() > menuClickTime + 0.1f) {
                     game.getEndPoint().sendTCP(ActionPerformCommand.of(CreatureMoveTowardsTargetAction.of(game
                         .getGameState()
                         .getThisClientPlayerId(), mousePos)));
@@ -218,10 +227,10 @@ public class CoreGameClientInputProcessor {
     }
 
     private void handleAttackButtonInput(PlayerConfig playerConfig, CoreGameClient game) {
-        game.getPotionMenuController().performUseItemClick(game.getEndPoint(), game);
+        potionMenuController.performUseItemClick(game.getEndPoint(), game);
 
         if (playerConfig.getInventoryVisible()) {
-            game.getInventoryWindowController().performUseItemClick(game.getEndPoint(), game);
+            inventoryWindowController.performUseItemClick(game.getEndPoint(), game);
         }
     }
 

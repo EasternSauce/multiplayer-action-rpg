@@ -32,6 +32,13 @@ public class ViewportsHandler {
             Constants.VIEWPOINT_WORLD_HEIGHT,
             worldTextCamera
         );
+
+        setHudCameraPosition(Constants.WINDOW_WIDTH / 2f, Constants.WINDOW_HEIGHT / 2f);
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    private void setHudCameraPosition(float x, float y) {
+        hudCamera.position.set(x, y, 0);
     }
 
     public void updateViewportsOnResize(int width, int height) {
@@ -73,10 +80,6 @@ public class ViewportsHandler {
 
     public void unprojectHudCamera(Vector3 screenCoords) {
         hudCamera.unproject(screenCoords);
-    }
-
-    public void setHudCameraPosition(float x, float y) {
-        hudCamera.position.set(x, y, 0);
     }
 
     public OrthographicCamera getWorldCamera() {

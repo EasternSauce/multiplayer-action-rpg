@@ -147,17 +147,20 @@ public class CreatureAccessor {
                                                   float maxRange,
                                                   Set<CreatureId> excluded,
                                                   CoreGame game) {
-        CreatureId minCreatureId = null;
-        float minDistance = Float.MAX_VALUE;
-        for (CreatureId creatureId : gameState.getCreaturesToUpdate(game)) {
+        AtomicReference<CreatureId> minCreatureId = new AtomicReference<>(null);
+        AtomicReference<Float> minDistance = new AtomicReference<>(Float.MAX_VALUE);
+
+        gameState.getCreaturesToUpdate(game).forEach(creatureId -> {
             Creature creature = gameState.accessCreatures().getCreature(creatureId);
             float distance = pos.distance(creature.getParams().getPos());
-            if (creature.isAlive() && distance < minDistance && distance < maxRange && !excluded.contains(creatureId)) {
-                minDistance = distance;
-                minCreatureId = creatureId;
+            if (creature.isAlive() && distance < minDistance.get() && distance < maxRange && !excluded.contains(
+                creatureId)) {
+                minDistance.set(distance);
+                minCreatureId.set(creatureId);
             }
-        }
-        return minCreatureId;
+        });
+
+        return minCreatureId.get();
     }
 
     public void creatureTakeDamageOverTime(CreatureId attackerId, CreatureId targetId, Float damage) {
