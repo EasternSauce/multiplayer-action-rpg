@@ -2,8 +2,8 @@ package com.easternsauce.actionrpg.game.server;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.command.*;
-import com.easternsauce.actionrpg.model.action.PlayerInitAction;
-import com.easternsauce.actionrpg.model.action.PlayerRemoveAction;
+import com.easternsauce.actionrpg.model.action.PlayerJoinAction;
+import com.easternsauce.actionrpg.model.action.PlayerLeaveAction;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.esotericsoftware.kryonet.Connection;
@@ -20,8 +20,8 @@ public class CoreGameServerListener extends Listener {
     public void disconnected(Connection connection) {
         CreatureId disconnectedCreatureId = game.getClientPlayers().get(connection.getID());
 
-        PlayerRemoveAction playerRemoveAction = PlayerRemoveAction.of(disconnectedCreatureId);
-        game.getGameState().scheduleServerSideAction(playerRemoveAction);
+        PlayerLeaveAction playerLeaveAction = PlayerLeaveAction.of(disconnectedCreatureId);
+        game.getGameState().scheduleServerSideAction(playerLeaveAction);
 
         game.getClientIds().remove(connection.getID());
         game.getClientPlayers().remove(connection.getID());
@@ -40,12 +40,12 @@ public class CoreGameServerListener extends Listener {
 
             disconnectExistingPlayer(command.getPlayerId(), game);
 
-            PlayerInitAction playerInitAction = PlayerInitAction.of(command.getPlayerId());
+            PlayerJoinAction playerJoinAction = PlayerJoinAction.of(command.getPlayerId());
 
             if (game.getClientIds().contains(connection.getID())) {
-                game.getClientPlayers().put(connection.getID(), playerInitAction.getPlayerId());
+                game.getClientPlayers().put(connection.getID(), playerJoinAction.getPlayerId());
 
-                game.getGameState().scheduleServerSideAction(playerInitAction);
+                game.getGameState().scheduleServerSideAction(playerJoinAction);
             }
         } else if (object instanceof ChatMessageSendCommand) {
             ChatMessageSendCommand command = (ChatMessageSendCommand) object;

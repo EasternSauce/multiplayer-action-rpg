@@ -24,6 +24,7 @@ public abstract class GameState {
     }
 
     public void initPlayerConfig(CreatureId playerId) {
+        System.out.println("INITING>..");
         getData().getPlayerConfig().put(playerId, PlayerConfig.of());
     }
 

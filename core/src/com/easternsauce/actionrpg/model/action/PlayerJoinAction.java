@@ -13,12 +13,12 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-public class PlayerInitAction extends GameStateAction {
+public class PlayerJoinAction extends GameStateAction {
     @Getter
     private CreatureId playerId;
 
-    public static PlayerInitAction of(CreatureId playerId) {
-        PlayerInitAction action = PlayerInitAction.of();
+    public static PlayerJoinAction of(CreatureId playerId) {
+        PlayerJoinAction action = PlayerJoinAction.of();
         action.playerId = playerId;
         return action;
     }
@@ -32,13 +32,13 @@ public class PlayerInitAction extends GameStateAction {
             player = loadExistingPlayerData(game);
         } else {
             player = createNewPlayer(game);
+
+            game.getGameState().initPlayerConfig(playerId);
         }
 
         game.getAllCreatures().put(playerId, player);
 
         game.getEventProcessor().getCreatureModelsToBeCreated().add(playerId);
-
-        game.getGameState().initPlayerConfig(playerId);
 
     }
 

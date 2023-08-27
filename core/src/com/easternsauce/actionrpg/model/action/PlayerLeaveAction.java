@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-public class PlayerRemoveAction extends GameStateAction {
+public class PlayerLeaveAction extends GameStateAction {
     private CreatureId playerId;
 
-    public static PlayerRemoveAction of(CreatureId playerId) {
-        PlayerRemoveAction action = PlayerRemoveAction.of();
+    public static PlayerLeaveAction of(CreatureId playerId) {
+        PlayerLeaveAction action = PlayerLeaveAction.of();
         action.playerId = playerId;
         return action;
     }
