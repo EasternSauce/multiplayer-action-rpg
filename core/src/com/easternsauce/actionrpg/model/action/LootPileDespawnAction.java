@@ -10,21 +10,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class LootPileDespawnAction extends GameStateAction {
-    private LootPileId lootPileId;
+  private LootPileId lootPileId;
 
-    public static LootPileDespawnAction of(LootPileId lootPileId) {
-        LootPileDespawnAction action = LootPileDespawnAction.of();
-        action.lootPileId = lootPileId;
-        return action;
-    }
+  public static LootPileDespawnAction of(LootPileId lootPileId) {
+    LootPileDespawnAction action = LootPileDespawnAction.of();
+    action.lootPileId = lootPileId;
+    return action;
+  }
 
-    @Override
-    public void applyToGame(CoreGame game) {
-        game.getEventProcessor().getLootPileModelsToBeRemoved().add(lootPileId);
-    }
+  @Override
+  public void applyToGame(CoreGame game) {
+    game.getEventProcessor().getLootPileModelsToBeRemoved().add(lootPileId);
+  }
 
-    @Override
-    public Entity getEntity(CoreGame game) {
-        return game.getGameState().getLootPiles().get(lootPileId);
-    }
+  @Override
+  public Entity getEntity(CoreGame game) {
+    return game.getGameState().getLootPiles().get(lootPileId);
+  }
 }

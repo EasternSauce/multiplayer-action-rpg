@@ -17,49 +17,41 @@ import java.util.List;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 public class Chat {
-    @Getter
-    private List<ChatMessage> messages = new LinkedList<>();
+  @Getter
+  private List<ChatMessage> messages = new LinkedList<>();
 
-    @Getter
-    @Setter
-    private Boolean typing = false;
-    @Getter
-    @Setter
-    private String currentMessage = "";
+  @Getter
+  @Setter
+  private Boolean typing = false;
+  @Getter
+  @Setter
+  private String currentMessage = "";
 
-    @Getter
-    @Setter
-    private Float holdBackspaceTime;
-    @Getter
-    @Setter
-    private Boolean holdingBackspace = false;
+  @Getter
+  @Setter
+  private Float holdBackspaceTime;
+  @Getter
+  @Setter
+  private Boolean holdingBackspace = false;
 
-    public void sendMessage(String posterId, String message, CoreGame game) {
-        if (getMessages().size() < 6) {
-            getMessages().add(ChatMessage.of(message, game.getGameState().getTime(), posterId));
-        } else {
-            List<ChatMessage> newMessages = new ArrayList<>();
-            for (int i = 0; i < 5; i++) {
-                newMessages.add(getMessages().get(i + 1));
-            }
-            messages = newMessages;
-            getMessages().add(ChatMessage.of(message, game.getGameState().getTime(), posterId));
-        }
+  public void sendMessage(String posterId, String message, CoreGame game) {
+    if (getMessages().size() < 6) {
+      getMessages().add(ChatMessage.of(message, game.getGameState().getTime(), posterId));
+    } else {
+      List<ChatMessage> newMessages = new ArrayList<>();
+      for (int i = 0; i < 5; i++) {
+        newMessages.add(getMessages().get(i + 1));
+      }
+      messages = newMessages;
+      getMessages().add(ChatMessage.of(message, game.getGameState().getTime(), posterId));
+    }
+  }
+
+  public void render(RenderingLayer renderingLayer) {
+    for (int i = 0; i < Math.min(getMessages().size(), 6); i++) {
+      Assets.renderSmallFont(renderingLayer, getMessages().get(i).getPoster() + ": " + getMessages().get(i).getText(), Vector2.of(30, 220 - 20 * i), Color.PURPLE);
     }
 
-    public void render(RenderingLayer renderingLayer) {
-        for (int i = 0; i < Math.min(getMessages().size(), 6); i++) {
-            Assets.renderSmallFont(renderingLayer,
-                getMessages().get(i).getPoster() + ": " + getMessages().get(i).getText(),
-                Vector2.of(30, 220 - 20 * i),
-                Color.PURPLE
-            );
-        }
-
-        Assets.renderSmallFont(renderingLayer,
-            (getTyping() ? "> " : "") + getCurrentMessage(),
-            Vector2.of(30, 70),
-            Color.PURPLE
-        );
-    }
+    Assets.renderSmallFont(renderingLayer, (getTyping() ? "> " : "") + getCurrentMessage(), Vector2.of(30, 70), Color.PURPLE);
+  }
 }

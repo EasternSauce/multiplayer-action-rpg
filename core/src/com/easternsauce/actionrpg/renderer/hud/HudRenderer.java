@@ -14,58 +14,58 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 public class HudRenderer {
-    @Getter
-    private final FpsCounterRenderer fpsCounterRenderer = FpsCounterRenderer.of();
-    @Getter
-    private final InventoryWindowRenderer inventoryWindowRenderer = InventoryWindowRenderer.of();
-    @Getter
-    private final PlayerStatBarsRenderer playerStatBarsRenderer = PlayerStatBarsRenderer.of();
-    @Getter
-    private final RespawnMessageRenderer respawnMessageRenderer = RespawnMessageRenderer.of();
-    @Getter
-    private final ServerRunningMessageRenderer serverRunningMessageRenderer = ServerRunningMessageRenderer.of();
-    @Getter
-    private final SkillMenuRenderer skillMenuRenderer = SkillMenuRenderer.of();
-    @Getter
-    private final ItemPickupMenuRenderer pickUpMenuRenderer = ItemPickupMenuRenderer.of();
-    @Getter
-    private final PotionMenuRenderer potionMenuRenderer = PotionMenuRenderer.of();
+  @Getter
+  private final FpsCounterRenderer fpsCounterRenderer = FpsCounterRenderer.of();
+  @Getter
+  private final InventoryWindowRenderer inventoryWindowRenderer = InventoryWindowRenderer.of();
+  @Getter
+  private final PlayerStatBarsRenderer playerStatBarsRenderer = PlayerStatBarsRenderer.of();
+  @Getter
+  private final RespawnMessageRenderer respawnMessageRenderer = RespawnMessageRenderer.of();
+  @Getter
+  private final ServerRunningMessageRenderer serverRunningMessageRenderer = ServerRunningMessageRenderer.of();
+  @Getter
+  private final SkillMenuRenderer skillMenuRenderer = SkillMenuRenderer.of();
+  @Getter
+  private final ItemPickupMenuRenderer pickUpMenuRenderer = ItemPickupMenuRenderer.of();
+  @Getter
+  private final PotionMenuRenderer potionMenuRenderer = PotionMenuRenderer.of();
 
-    public void init(TextureAtlas atlas) {
-        inventoryWindowRenderer.init(atlas);
+  public void init(TextureAtlas atlas) {
+    inventoryWindowRenderer.init(atlas);
+  }
+
+  public void render(CoreGame game) {
+    RenderingLayer renderingLayer = game.getHudRenderingLayer();
+
+    renderingLayer.begin();
+
+    game.getChat().render(renderingLayer);
+
+    fpsCounterRenderer.render(renderingLayer);
+
+    if (game.getGameState().getThisClientPlayerId() != null) {
+      Creature player = game.getCreature(game.getGameState().getThisClientPlayerId());
+
+      skillMenuRenderer.renderMenu(renderingLayer, game);
+
+      skillMenuRenderer.renderPicker(player, renderingLayer, game);
+
+      respawnMessageRenderer.render(player, renderingLayer);
+
+      playerStatBarsRenderer.render(player, renderingLayer);
+
     }
 
-    public void render(CoreGame game) {
-        RenderingLayer renderingLayer = game.getHudRenderingLayer();
+    pickUpMenuRenderer.render(renderingLayer, game);
 
-        renderingLayer.begin();
+    potionMenuRenderer.renderMenu(renderingLayer, game);
 
-        game.getChat().render(renderingLayer);
+    inventoryWindowRenderer.render(renderingLayer, game);
 
-        fpsCounterRenderer.render(renderingLayer);
+    ItemOnCursorRenderer.render(renderingLayer, game);
 
-        if (game.getGameState().getThisClientPlayerId() != null) {
-            Creature player = game.getCreature(game.getGameState().getThisClientPlayerId());
-
-            skillMenuRenderer.renderMenu(renderingLayer, game);
-
-            skillMenuRenderer.renderPicker(player, renderingLayer, game);
-
-            respawnMessageRenderer.render(player, renderingLayer);
-
-            playerStatBarsRenderer.render(player, renderingLayer);
-
-        }
-
-        pickUpMenuRenderer.render(renderingLayer, game);
-
-        potionMenuRenderer.renderMenu(renderingLayer, game);
-
-        inventoryWindowRenderer.render(renderingLayer, game);
-
-        ItemOnCursorRenderer.render(renderingLayer, game);
-
-        renderingLayer.end();
-    }
+    renderingLayer.end();
+  }
 
 }

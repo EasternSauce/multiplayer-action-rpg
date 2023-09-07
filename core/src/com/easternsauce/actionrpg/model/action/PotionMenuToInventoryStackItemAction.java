@@ -14,50 +14,44 @@ import java.util.Objects;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class PotionMenuToInventoryStackItemAction extends GameStateAction {
-    private CreatureId playerId;
+  private CreatureId playerId;
 
-    private Integer inventoryIndex;
-    private Integer potionMenuIndex;
+  private Integer inventoryIndex;
+  private Integer potionMenuIndex;
 
-    public static PotionMenuToInventoryStackItemAction of(CreatureId creatureId,
-                                                          Integer inventoryIndex,
-                                                          Integer potionMenuIndex) {
-        PotionMenuToInventoryStackItemAction action = PotionMenuToInventoryStackItemAction.of();
-        action.playerId = creatureId;
-        action.inventoryIndex = inventoryIndex;
-        action.potionMenuIndex = potionMenuIndex;
-        return action;
+  public static PotionMenuToInventoryStackItemAction of(CreatureId creatureId, Integer inventoryIndex, Integer potionMenuIndex) {
+    PotionMenuToInventoryStackItemAction action = PotionMenuToInventoryStackItemAction.of();
+    action.playerId = creatureId;
+    action.inventoryIndex = inventoryIndex;
+    action.potionMenuIndex = potionMenuIndex;
+    return action;
+  }
+
+  @Override
+  public void applyToGame(CoreGame game) {
+    PlayerConfig playerConfig = game.getGameState().getPlayerConfig(playerId);
+
+    if (!Objects.equals(potionMenuIndex, inventoryIndex)) {
+      Creature player = game.getCreature(playerId);
+
+      Item itemFrom = player.getParams().getPotionMenuItems().get(potionMenuIndex);
+      Item itemTo = player.getParams().getInventoryItems().get(inventoryIndex);
+
+      boolean isCanStackItems = itemFrom != null && itemTo != null && itemFrom.getTemplate().getStackable() && itemTo.getTemplate().getStackable() && itemFrom.getTemplate().getId().equals(itemTo.getTemplate().getId());
+
+      if (isCanStackItems) {
+        player.getParams().getPotionMenuItems().remove(potionMenuIndex);
+        itemTo.setQuantity(itemTo.getQuantity() + itemFrom.getQuantity());
+      }
     }
 
-    @Override
-    public void applyToGame(CoreGame game) {
-        PlayerConfig playerConfig = game.getGameState().getPlayerConfig(playerId);
+    playerConfig.setInventoryItemBeingMoved(null);
+    playerConfig.setEquipmentItemBeingMoved(null);
+    playerConfig.setPotionMenuItemBeingMoved(null);
+  }
 
-        if (!Objects.equals(potionMenuIndex, inventoryIndex)) {
-            Creature player = game.getCreature(playerId);
-
-            Item itemFrom = player.getParams().getPotionMenuItems().get(potionMenuIndex);
-            Item itemTo = player.getParams().getInventoryItems().get(inventoryIndex);
-
-            boolean isCanStackItems = itemFrom != null &&
-                itemTo != null &&
-                itemFrom.getTemplate().getStackable() &&
-                itemTo.getTemplate().getStackable() &&
-                itemFrom.getTemplate().getId().equals(itemTo.getTemplate().getId());
-
-            if (isCanStackItems) {
-                player.getParams().getPotionMenuItems().remove(potionMenuIndex);
-                itemTo.setQuantity(itemTo.getQuantity() + itemFrom.getQuantity());
-            }
-        }
-
-        playerConfig.setInventoryItemBeingMoved(null);
-        playerConfig.setEquipmentItemBeingMoved(null);
-        playerConfig.setPotionMenuItemBeingMoved(null);
-    }
-
-    @Override
-    public Entity getEntity(CoreGame game) {
-        return game.getCreature(playerId);
-    }
+  @Override
+  public Entity getEntity(CoreGame game) {
+    return game.getCreature(playerId);
+  }
 }

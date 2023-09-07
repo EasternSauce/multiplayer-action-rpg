@@ -10,23 +10,23 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class SkillPickerMenuDeactivateAction extends GameStateAction {
-    private CreatureId playerId;
+  private CreatureId playerId;
 
-    public static SkillPickerMenuDeactivateAction of(CreatureId playerId) {
-        SkillPickerMenuDeactivateAction action = SkillPickerMenuDeactivateAction.of();
-        action.playerId = playerId;
-        return action;
-    }
+  public static SkillPickerMenuDeactivateAction of(CreatureId playerId) {
+    SkillPickerMenuDeactivateAction action = SkillPickerMenuDeactivateAction.of();
+    action.playerId = playerId;
+    return action;
+  }
 
-    @Override
-    public void applyToGame(CoreGame game) {
-        PlayerConfig playerConfig = game.getGameState().getPlayerConfig(playerId);
+  @Override
+  public void applyToGame(CoreGame game) {
+    PlayerConfig playerConfig = game.getGameState().getPlayerConfig(playerId);
 
-        playerConfig.setSkillMenuPickerSlotBeingChanged(null);
-    }
+    playerConfig.setSkillMenuPickerSlotBeingChanged(null);
+  }
 
-    @Override
-    public Entity getEntity(CoreGame game) {
-        return game.getCreature(playerId);
-    }
+  @Override
+  public Entity getEntity(CoreGame game) {
+    return game.getCreature(playerId);
+  }
 }

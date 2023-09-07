@@ -14,88 +14,88 @@ import java.util.Map;
 import java.util.Set;
 
 public abstract class GameState {
-    protected final GameStateDataHolder dataHolder = GameStateDataHolder.of(GameStateData.of());
+  protected final GameStateDataHolder dataHolder = GameStateDataHolder.of(GameStateData.of());
 
-    protected final AbilityAccessor abilityAccessor = AbilityAccessor.of(this, dataHolder);
-    protected final CreatureAccessor creatureAccessor = CreatureAccessor.of(this, dataHolder);
+  protected final AbilityAccessor abilityAccessor = AbilityAccessor.of(this, dataHolder);
+  protected final CreatureAccessor creatureAccessor = CreatureAccessor.of(this, dataHolder);
 
-    public CreatureAccessor accessCreatures() {
-        return creatureAccessor;
+  public CreatureAccessor accessCreatures() {
+    return creatureAccessor;
+  }
+
+  public void initPlayerConfig(CreatureId playerId) {
+    System.out.println("INITING>..");
+    getData().getPlayerConfig().put(playerId, PlayerConfig.of());
+  }
+
+  private GameStateData getData() {
+    return dataHolder.getData();
+  }
+
+  public PlayerConfig getPlayerConfig(CreatureId creatureId) {
+    if (creatureId != null) {
+      return getData().getPlayerConfig().get(creatureId);
     }
+    return null;
+  }
 
-    public void initPlayerConfig(CreatureId playerId) {
-        System.out.println("INITING>..");
-        getData().getPlayerConfig().put(playerId, PlayerConfig.of());
+  public LootPile getLootPile(LootPileId lootPileId) {
+    return getData().getLootPiles().get(lootPileId);
+  }
+
+  public Map<LootPileId, LootPile> getLootPiles() {
+    return getData().getLootPiles();
+  }
+
+  public AreaGate getAreaGate(AreaGateId areaGateId) {
+    return getData().getAreaGates().get(areaGateId);
+  }
+
+  public Map<AreaGateId, AreaGate> getAreaGates() {
+    return getData().getAreaGates();
+  }
+
+  public AbilityAccessor accessAbilities() {
+    return abilityAccessor;
+  }
+
+  public Float getTime() {
+    return getData().getGeneralTimer().getTime();
+  }
+
+  public void updateGeneralTimer(float delta) {
+    getData().getGeneralTimer().update(delta);
+  }
+
+  public AreaId getDefaultAreaId() {
+    return getData().getDefaultAreaId();
+  }
+
+  public abstract Set<CreatureId> getCreaturesToUpdate(CoreGame game);
+
+  public abstract void scheduleServerSideAction(GameStateAction action);
+
+  @SuppressWarnings("SameReturnValue")
+  public abstract CreatureId getThisClientPlayerId();
+
+  public abstract AreaId getCurrentAreaId();
+
+  public RandomGenerator getRandomGenerator() {
+    return getData().getRandomGenerator();
+  }
+
+  public void setRandomGenerator(RandomGenerator randomGenerator) {
+    getData().setRandomGenerator(randomGenerator);
+  }
+
+  public Map<EnemyRallyPointId, EnemyRallyPoint> getEnemyRallyPoints() {
+    return getData().getEnemyRallyPoints();
+  }
+
+  public EnemyRallyPoint getEnemyRallyPoint(EnemyRallyPointId enemyRallyPointId) {
+    if (enemyRallyPointId == null || !getData().getEnemyRallyPoints().containsKey(enemyRallyPointId)) {
+      return null;
     }
-
-    private GameStateData getData() {
-        return dataHolder.getData();
-    }
-
-    public PlayerConfig getPlayerConfig(CreatureId creatureId) {
-        if (creatureId != null) {
-            return getData().getPlayerConfig().get(creatureId);
-        }
-        return null;
-    }
-
-    public LootPile getLootPile(LootPileId lootPileId) {
-        return getData().getLootPiles().get(lootPileId);
-    }
-
-    public Map<LootPileId, LootPile> getLootPiles() {
-        return getData().getLootPiles();
-    }
-
-    public AreaGate getAreaGate(AreaGateId areaGateId) {
-        return getData().getAreaGates().get(areaGateId);
-    }
-
-    public Map<AreaGateId, AreaGate> getAreaGates() {
-        return getData().getAreaGates();
-    }
-
-    public AbilityAccessor accessAbilities() {
-        return abilityAccessor;
-    }
-
-    public Float getTime() {
-        return getData().getGeneralTimer().getTime();
-    }
-
-    public void updateGeneralTimer(float delta) {
-        getData().getGeneralTimer().update(delta);
-    }
-
-    public AreaId getDefaultAreaId() {
-        return getData().getDefaultAreaId();
-    }
-
-    public abstract Set<CreatureId> getCreaturesToUpdate(CoreGame game);
-
-    public abstract void scheduleServerSideAction(GameStateAction action);
-
-    @SuppressWarnings("SameReturnValue")
-    public abstract CreatureId getThisClientPlayerId();
-
-    public abstract AreaId getCurrentAreaId();
-
-    public RandomGenerator getRandomGenerator() {
-        return getData().getRandomGenerator();
-    }
-
-    public void setRandomGenerator(RandomGenerator randomGenerator) {
-        getData().setRandomGenerator(randomGenerator);
-    }
-
-    public Map<EnemyRallyPointId, EnemyRallyPoint> getEnemyRallyPoints() {
-        return getData().getEnemyRallyPoints();
-    }
-
-    public EnemyRallyPoint getEnemyRallyPoint(EnemyRallyPointId enemyRallyPointId) {
-        if (enemyRallyPointId == null || !getData().getEnemyRallyPoints().containsKey(enemyRallyPointId)) {
-            return null;
-        }
-        return getData().getEnemyRallyPoints().get(enemyRallyPointId);
-    }
+    return getData().getEnemyRallyPoints().get(enemyRallyPointId);
+  }
 }

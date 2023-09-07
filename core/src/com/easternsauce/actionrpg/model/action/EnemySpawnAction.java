@@ -18,37 +18,34 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class EnemySpawnAction extends GameStateAction {
-    private CreatureId creatureId;
-    private AreaId areaId;
-    private EnemyRallyPointId enemyRallyPointId;
-    private EnemyTemplate enemyTemplate;
+  private CreatureId creatureId;
+  private AreaId areaId;
+  private EnemyRallyPointId enemyRallyPointId;
+  private EnemyTemplate enemyTemplate;
 
-    public void applyToGame(CoreGame game) {
-        Creature enemy = createNewEnemy(game);
+  public void applyToGame(CoreGame game) {
+    Creature enemy = createNewEnemy(game);
 
-        game.getAllCreatures().put(creatureId, enemy);
+    game.getAllCreatures().put(creatureId, enemy);
 
-        game.getEventProcessor().getCreatureModelsToBeCreated().add(creatureId);
-    }
+    game.getEventProcessor().getCreatureModelsToBeCreated().add(creatureId);
+  }
 
-    @Override
-    public Entity getEntity(CoreGame game) {
-        return game.getCreature(creatureId);
-    }
+  @Override
+  public Entity getEntity(CoreGame game) {
+    return game.getCreature(creatureId);
+  }
 
-    @SuppressWarnings("PointlessArithmeticExpression")
-    private Creature createNewEnemy(CoreGame game) {
-        EnemyRallyPoint enemyRallyPoint = game.getGameState().getEnemyRallyPoint(enemyRallyPointId);
+  @SuppressWarnings("PointlessArithmeticExpression")
+  private Creature createNewEnemy(CoreGame game) {
+    EnemyRallyPoint enemyRallyPoint = game.getGameState().getEnemyRallyPoint(enemyRallyPointId);
 
-        Vector2 rallyPointPos = enemyRallyPoint.getRallyPointInfo().getPos();
+    Vector2 rallyPointPos = enemyRallyPoint.getRallyPointInfo().getPos();
 
-        Vector2 pos = Vector2.of(
-            rallyPointPos.getX() + 1f * game.getGameState().getRandomGenerator().nextFloat(),
-            rallyPointPos.getY() + 1f * game.getGameState().getRandomGenerator().nextFloat()
-        );
+    Vector2 pos = Vector2.of(rallyPointPos.getX() + 1f * game.getGameState().getRandomGenerator().nextFloat(), rallyPointPos.getY() + 1f * game.getGameState().getRandomGenerator().nextFloat());
 
-        int rngSeed = game.getGameState().getRandomGenerator().nextInt();
+    int rngSeed = game.getGameState().getRandomGenerator().nextInt();
 
-        return Enemy.of(creatureId, areaId, pos, enemyTemplate, enemyRallyPointId, rngSeed);
-    }
+    return Enemy.of(creatureId, areaId, pos, enemyTemplate, enemyRallyPointId, rngSeed);
+  }
 }

@@ -38,176 +38,162 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public abstract class CoreGame extends Game {
-    final protected GameplayScreen gameplayScreen = GameplayScreen.of();
-    final protected ConnectScreen connectScreen = ConnectScreen.of();
-    @SuppressWarnings("unused")
-    final MenuScreen menuScreen = MenuScreen.of();
-    @Getter
-    final private GameEntityManager entityManager = GameEntityManager.of();
-    @Getter
-    final private EntityEventProcessor eventProcessor = EntityEventProcessor.of();
-    @Getter
-    private final Chat chat = Chat.of();
+  final protected GameplayScreen gameplayScreen = GameplayScreen.of();
+  final protected ConnectScreen connectScreen = ConnectScreen.of();
+  @SuppressWarnings("unused")
+  final MenuScreen menuScreen = MenuScreen.of();
+  @Getter
+  final private GameEntityManager entityManager = GameEntityManager.of();
+  @Getter
+  final private EntityEventProcessor eventProcessor = EntityEventProcessor.of();
+  @Getter
+  private final Chat chat = Chat.of();
 
-    @Getter
-    private final HudRenderer hudRenderer = HudRenderer.of();
+  @Getter
+  private final HudRenderer hudRenderer = HudRenderer.of();
 
-    @Getter
-    private final PhysicsDebugRenderer physicsDebugRenderer = PhysicsDebugRenderer.of();
+  @Getter
+  private final PhysicsDebugRenderer physicsDebugRenderer = PhysicsDebugRenderer.of();
 
-    @Getter
-    private final MousePositionRetriever mousePositionRetriever = MousePositionRetriever.of();
-    @Getter
-    private final ViewportsHandler viewportsHandler = ViewportsHandler.of();
-    @Getter
-    @Setter
-    private RenderingLayer worldElementsRenderingLayer;
-    @Getter
-    @Setter
-    private RenderingLayer hudRenderingLayer;
-    @Getter
-    @Setter
-    private RenderingLayer worldTextRenderingLayer;
+  @Getter
+  private final MousePositionRetriever mousePositionRetriever = MousePositionRetriever.of();
+  @Getter
+  private final ViewportsHandler viewportsHandler = ViewportsHandler.of();
+  @Getter
+  @Setter
+  private RenderingLayer worldElementsRenderingLayer;
+  @Getter
+  @Setter
+  private RenderingLayer hudRenderingLayer;
+  @Getter
+  @Setter
+  private RenderingLayer worldTextRenderingLayer;
 
-    public void addTeleportEvent(TeleportEvent teleportEvent) {
-        eventProcessor.getTeleportEvents().add(teleportEvent);
-    }
+  public void addTeleportEvent(TeleportEvent teleportEvent) {
+    eventProcessor.getTeleportEvents().add(teleportEvent);
+  }
 
-    @SuppressWarnings("unused")
-    public abstract EndPoint getEndPoint();
+  @SuppressWarnings("unused")
+  public abstract EndPoint getEndPoint();
 
-    public abstract boolean isGameplayRunning();
+  public abstract boolean isGameplayRunning();
 
-    @Override
-    public void create() {
-        onStartup();
-        initializeScreens();
-        setStartingScreen();
-    }
+  @Override
+  public void create() {
+    onStartup();
+    initializeScreens();
+    setStartingScreen();
+  }
 
-    abstract public void onStartup();
+  abstract public void onStartup();
 
-    private void initializeScreens() {
-        TextureAtlas atlas = new TextureAtlas("assets/atlas/packed_atlas.atlas");
+  private void initializeScreens() {
+    TextureAtlas atlas = new TextureAtlas("assets/atlas/packed_atlas.atlas");
 
-        gameplayScreen.init(atlas, this);
-        connectScreen.init(atlas, this);
-    }
+    gameplayScreen.init(atlas, this);
+    connectScreen.init(atlas, this);
+  }
 
-    public abstract void setStartingScreen();
+  public abstract void setStartingScreen();
 
-    abstract public void onUpdate();
+  abstract public void onUpdate();
 
-    abstract public void initState();
+  abstract public void initState();
 
-    public abstract Set<AbilityId> getAbilitiesToUpdate();
+  public abstract Set<AbilityId> getAbilitiesToUpdate();
 
-    public PhysicsWorld getPhysicsWorld(AreaId areaId) {
-        return entityManager.getGameEntityPhysics().getPhysicsWorlds().get(areaId);
-    }
+  public PhysicsWorld getPhysicsWorld(AreaId areaId) {
+    return entityManager.getGameEntityPhysics().getPhysicsWorlds().get(areaId);
+  }
 
-    abstract public void performPhysicsWorldStep();
+  abstract public void performPhysicsWorldStep();
 
-    public boolean isLineBetweenPointsUnobstructedByTerrain(AreaId areaId, Vector2 fromPos, Vector2 toPos) {
-        return entityManager
-            .getGameEntityPhysics()
-            .getPhysicsWorlds()
-            .get(areaId)
-            .isLineBetweenPointsUnobstructedByTerrain(fromPos, toPos);
-    }
+  public boolean isLineBetweenPointsUnobstructedByTerrain(AreaId areaId, Vector2 fromPos, Vector2 toPos) {
+    return entityManager.getGameEntityPhysics().getPhysicsWorlds().get(areaId).isLineBetweenPointsUnobstructedByTerrain(fromPos, toPos);
+  }
 
-    public void updateCameraPositions() {
-        viewportsHandler.updateCameraPositions(this);
-    }
+  public void updateCameraPositions() {
+    viewportsHandler.updateCameraPositions(this);
+  }
 
-    public Boolean isDebugEnabled() {
-        return Constants.DEBUG_ENABLED;
-    }
+  public Boolean isDebugEnabled() {
+    return Constants.DEBUG_ENABLED;
+  }
 
-    public List<PhysicsEvent> getPhysicsEventQueue() {
-        return entityManager.getGameEntityPhysics().getPhysicsEventQueue();
-    }
+  public List<PhysicsEvent> getPhysicsEventQueue() {
+    return entityManager.getGameEntityPhysics().getPhysicsEventQueue();
+  }
 
-    public Map<CreatureId, CreatureBody> getCreatureBodies() {
-        return entityManager.getGameEntityPhysics().getCreatureBodies();
-    }
+  public Map<CreatureId, CreatureBody> getCreatureBodies() {
+    return entityManager.getGameEntityPhysics().getCreatureBodies();
+  }
 
-    public Map<AbilityId, AbilityBody> getAbilityBodies() {
-        return entityManager.getGameEntityPhysics().getAbilityBodies();
-    }
+  public Map<AbilityId, AbilityBody> getAbilityBodies() {
+    return entityManager.getGameEntityPhysics().getAbilityBodies();
+  }
 
-    public boolean isForceUpdateBodyPositions() {
-        return entityManager.getGameEntityPhysics().getForceUpdateBodyPositions();
-    }
+  public boolean isForceUpdateBodyPositions() {
+    return entityManager.getGameEntityPhysics().getForceUpdateBodyPositions();
+  }
 
-    public void setForceUpdateBodyPositions(boolean value) {
-        entityManager.getGameEntityPhysics().setForceUpdateBodyPositions(value);
-    }
+  public void setForceUpdateBodyPositions(boolean value) {
+    entityManager.getGameEntityPhysics().setForceUpdateBodyPositions(value);
+  }
 
-    public void goToGamePlayScreen() {
-        setScreen(gameplayScreen);
-    }
+  public void goToGamePlayScreen() {
+    setScreen(gameplayScreen);
+  }
 
-    public abstract void initializePlayer(String playerName);
+  public abstract void initializePlayer(String playerName);
 
-    public abstract void setChatInputProcessor();
+  public abstract void setChatInputProcessor();
 
-    public abstract void renderServerRunningMessage();
+  public abstract void renderServerRunningMessage();
 
-    public abstract boolean isPathfindingCalculatedForCreature(Creature creature);
+  public abstract boolean isPathfindingCalculatedForCreature(Creature creature);
 
-    @SuppressWarnings("SameReturnValue")
-    public abstract Boolean getFirstNonStubBroadcastReceived();
+  @SuppressWarnings("SameReturnValue")
+  public abstract Boolean getFirstNonStubBroadcastReceived();
 
-    public void chainAnotherAbility(Ability chainFromAbility,
-                                    AbilityType abilityType,
-                                    Vector2 dirVector,
-                                    ChainAbilityParams chainAbilityParams) {
-        getGameState().accessAbilities().chainAnotherAbility(chainFromAbility,
-            abilityType,
-            dirVector,
-            chainAbilityParams,
-            this
-        );
-    }
+  public void chainAnotherAbility(Ability chainFromAbility, AbilityType abilityType, Vector2 dirVector, ChainAbilityParams chainAbilityParams) {
+    getGameState().accessAbilities().chainAnotherAbility(chainFromAbility, abilityType, dirVector, chainAbilityParams, this);
+  }
 
-    public abstract GameState getGameState();
+  public abstract GameState getGameState();
 
-    public Map<AbilityId, Ability> getAbilities() {
-        return getGameState().accessAbilities().getAbilities();
-    }
+  public Map<AbilityId, Ability> getAbilities() {
+    return getGameState().accessAbilities().getAbilities();
+  }
 
-    public Ability getAbility(AbilityId abilityId) {
-        return getGameState().accessAbilities().getAbility(abilityId);
-    }
+  public Ability getAbility(AbilityId abilityId) {
+    return getGameState().accessAbilities().getAbility(abilityId);
+  }
 
-    public Map<CreatureId, Creature> getAllCreatures() {
-        return getGameState().accessCreatures().getCreatures();
-    }
+  public Map<CreatureId, Creature> getAllCreatures() {
+    return getGameState().accessCreatures().getCreatures();
+  }
 
-    public Map<CreatureId, Creature> getActiveCreatures() {
-        return getGameState().accessCreatures().getCreatures().entrySet().stream().filter(entry -> entry
-            .getValue()
-            .isCurrentlyActive(this)).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-    }
+  public Map<CreatureId, Creature> getActiveCreatures() {
+    return getGameState().accessCreatures().getCreatures().entrySet().stream().filter(entry -> entry.getValue().isCurrentlyActive(this)).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+  }
 
-    public Creature getCreature(CreatureId creatureId) {
-        return getGameState().accessCreatures().getCreature(creatureId);
-    }
+  public Creature getCreature(CreatureId creatureId) {
+    return getGameState().accessCreatures().getCreature(creatureId);
+  }
 
-    public Vector2 getCreaturePos(CreatureId creatureId) {
-        return getGameState().accessCreatures().getCreaturePos(creatureId);
-    }
+  public Vector2 getCreaturePos(CreatureId creatureId) {
+    return getGameState().accessCreatures().getCreaturePos(creatureId);
+  }
 
-    public AreaId getCurrentAreaId() {
-        return getGameState().getCurrentAreaId();
-    }
+  public AreaId getCurrentAreaId() {
+    return getGameState().getCurrentAreaId();
+  }
 
-    public Vector2 hudMousePos() {
-        return getMousePositionRetriever().hudMousePos(this);
-    }
+  public Vector2 hudMousePos() {
+    return getMousePositionRetriever().hudMousePos(this);
+  }
 
-    public abstract void askForBroadcast();
+  public abstract void askForBroadcast();
 
-    public abstract void forceDisconnectForPlayer(CreatureId creatureId);
+  public abstract void forceDisconnectForPlayer(CreatureId creatureId);
 }

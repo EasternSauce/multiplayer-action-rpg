@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 public class ChatMessageSendCommand implements GameCommand {
-    @Getter
-    String poster;
-    @Getter
-    String text;
+  @Getter
+  String poster;
+  @Getter
+  String text;
 }
 

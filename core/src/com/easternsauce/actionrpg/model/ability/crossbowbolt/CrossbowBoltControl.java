@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class CrossbowBoltControl extends CrossbowBoltControlBase {
 
-    public static CrossbowBoltControl of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        CrossbowBoltControl ability = CrossbowBoltControl.of();
-        ability.params = abilityParams.setChannelTime(0f).setActiveTime(2f);
+  public static CrossbowBoltControl of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+    CrossbowBoltControl ability = CrossbowBoltControl.of();
+    ability.params = abilityParams.setChannelTime(0f).setActiveTime(2f);
 
-        return ability;
-    }
+    return ability;
+  }
 }

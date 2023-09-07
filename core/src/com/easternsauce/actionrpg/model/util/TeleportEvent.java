@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(staticName = "of")
 @Data
 public class TeleportEvent {
-    private CreatureId creatureId;
-    private Vector2 pos;
-    private AreaId fromAreaId;
-    private AreaId toAreaId;
-    private Boolean usedGate;
+  private CreatureId creatureId;
+  private Vector2 pos;
+  private AreaId fromAreaId;
+  private AreaId toAreaId;
+  private Boolean usedGate;
 }

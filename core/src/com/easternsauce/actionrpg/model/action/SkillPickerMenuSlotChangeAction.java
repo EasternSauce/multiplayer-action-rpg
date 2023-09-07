@@ -11,27 +11,27 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class SkillPickerMenuSlotChangeAction extends GameStateAction {
-    private CreatureId playerId;
+  private CreatureId playerId;
 
-    private SkillType skillType;
+  private SkillType skillType;
 
-    public static SkillPickerMenuSlotChangeAction of(CreatureId playerId, SkillType skillType) {
-        SkillPickerMenuSlotChangeAction action = SkillPickerMenuSlotChangeAction.of();
-        action.playerId = playerId;
-        action.skillType = skillType;
-        return action;
-    }
+  public static SkillPickerMenuSlotChangeAction of(CreatureId playerId, SkillType skillType) {
+    SkillPickerMenuSlotChangeAction action = SkillPickerMenuSlotChangeAction.of();
+    action.playerId = playerId;
+    action.skillType = skillType;
+    return action;
+  }
 
-    @Override
-    public void applyToGame(CoreGame game) {
-        PlayerConfig playerConfig = game.getGameState().getPlayerConfig(playerId);
+  @Override
+  public void applyToGame(CoreGame game) {
+    PlayerConfig playerConfig = game.getGameState().getPlayerConfig(playerId);
 
-        playerConfig.getSkillMenuSlots().put(playerConfig.getSkillMenuPickerSlotBeingChanged(), skillType);
-        playerConfig.setSkillMenuPickerSlotBeingChanged(null);
-    }
+    playerConfig.getSkillMenuSlots().put(playerConfig.getSkillMenuPickerSlotBeingChanged(), skillType);
+    playerConfig.setSkillMenuPickerSlotBeingChanged(null);
+  }
 
-    @Override
-    public Entity getEntity(CoreGame game) {
-        return game.getCreature(playerId);
-    }
+  @Override
+  public Entity getEntity(CoreGame game) {
+    return game.getCreature(playerId);
+  }
 }

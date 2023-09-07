@@ -13,35 +13,25 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @NoArgsConstructor(staticName = "of")
 public class ItemPickupMenuController {
-    public boolean performItemPickupMenuClick(Client client, CoreGame game) {
-        PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
+  public boolean performItemPickupMenuClick(Client client, CoreGame game) {
+    PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
 
-        float x = game.hudMousePos().getX();
-        float y = game.hudMousePos().getY();
+    float x = game.hudMousePos().getX();
+    float y = game.hudMousePos().getY();
 
-        AtomicBoolean isSuccessful = new AtomicBoolean(false);
+    AtomicBoolean isSuccessful = new AtomicBoolean(false);
 
-        AtomicInteger i = new AtomicInteger();
-        playerConfig.getItemPickupMenuLootPiles().stream().filter(lootPileId -> game
-            .getGameState()
-            .getLootPiles()
-            .containsKey(lootPileId)).flatMap(lootPileId -> game
-            .getGameState()
-            .getLootPile(lootPileId)
-            .getParams()
-            .getItems()
-            .stream()).forEach(item -> {
-            Rect rect = ItemPickupMenuConsts.getMenuOptionRect(i.get());
+    AtomicInteger i = new AtomicInteger();
+    playerConfig.getItemPickupMenuLootPiles().stream().filter(lootPileId -> game.getGameState().getLootPiles().containsKey(lootPileId)).flatMap(lootPileId -> game.getGameState().getLootPile(lootPileId).getParams().getItems().stream()).forEach(item -> {
+      Rect rect = ItemPickupMenuConsts.getMenuOptionRect(i.get());
 
-            if (rect.contains(x, y)) {
-                client.sendTCP(ActionPerformCommand.of(LootPileItemTryPickUpAction.of(game
-                    .getGameState()
-                    .getThisClientPlayerId(), item)));
-                isSuccessful.set(true);
-            }
+      if (rect.contains(x, y)) {
+        client.sendTCP(ActionPerformCommand.of(LootPileItemTryPickUpAction.of(game.getGameState().getThisClientPlayerId(), item)));
+        isSuccessful.set(true);
+      }
 
-            i.getAndIncrement();
-        });
-        return isSuccessful.get();
-    }
+      i.getAndIncrement();
+    });
+    return isSuccessful.get();
+  }
 }

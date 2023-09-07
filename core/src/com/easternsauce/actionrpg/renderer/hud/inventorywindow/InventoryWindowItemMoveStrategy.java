@@ -11,15 +11,15 @@ import java.util.function.Function;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 public class InventoryWindowItemMoveStrategy {
-    private Function<InventoryWindowState, Boolean> applicableCondition;
-    private BiFunction<InventoryWindowState, CoreGame, GameStateAction> action;
+  private Function<InventoryWindowState, Boolean> applicableCondition;
+  private BiFunction<InventoryWindowState, CoreGame, GameStateAction> action;
 
-    public boolean isApplicable(InventoryWindowState inventoryWindowState) {
-        return applicableCondition.apply(inventoryWindowState);
-    }
+  public boolean isApplicable(InventoryWindowState inventoryWindowState) {
+    return applicableCondition.apply(inventoryWindowState);
+  }
 
-    public GameStateAction apply(InventoryWindowState inventoryWindowState, CoreGame game) {
-        return action.apply(inventoryWindowState, game);
-    }
+  public GameStateAction apply(InventoryWindowState inventoryWindowState, CoreGame game) {
+    return action.apply(inventoryWindowState, game);
+  }
 
 }

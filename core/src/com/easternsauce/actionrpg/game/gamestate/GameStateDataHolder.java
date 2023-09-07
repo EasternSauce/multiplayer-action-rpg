@@ -9,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 public class GameStateDataHolder {
-    @Getter
-    @Setter
-    private GameStateData data;
+  @Getter
+  @Setter
+  private GameStateData data;
 }

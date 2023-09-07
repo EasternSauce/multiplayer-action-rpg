@@ -25,192 +25,176 @@ import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
 public class CoreGameServer extends CoreGame {
-    private final ServerGameState gameState = ServerGameState.of();
+  private final ServerGameState gameState = ServerGameState.of();
 
-    @Getter
-    private final Set<Integer> clientIds = new ConcurrentSkipListSet<>();
+  @Getter
+  private final Set<Integer> clientIds = new ConcurrentSkipListSet<>();
 
-    private final InitialStateLoader initialStateLoader = InitialStateLoader.of();
-    private final CoreGameServerListener serverListener = CoreGameServerListener.of(this);
-    private final ServerConnectionEstablisher serverConnectionEstablisher = ServerConnectionEstablisher.of();
-    @Getter
-    private final GameDataBroadcaster gameDataBroadcaster = GameDataBroadcaster.of();
-    private final GameStateSnapshotCreator gameStateSnapshotCreator = GameStateSnapshotCreator.of();
-    @Getter
-    @Setter
-    private Server endPoint;
+  private final InitialStateLoader initialStateLoader = InitialStateLoader.of();
+  private final CoreGameServerListener serverListener = CoreGameServerListener.of(this);
+  private final ServerConnectionEstablisher serverConnectionEstablisher = ServerConnectionEstablisher.of();
+  @Getter
+  private final GameDataBroadcaster gameDataBroadcaster = GameDataBroadcaster.of();
+  private final GameStateSnapshotCreator gameStateSnapshotCreator = GameStateSnapshotCreator.of();
+  @Getter
+  @Setter
+  private Server endPoint;
 
-    @Override
-    public boolean isGameplayRunning() {
-        return true;
-    }
+  @Override
+  public boolean isGameplayRunning() {
+    return true;
+  }
 
-    @Override
-    public void onStartup() {
-        serverConnectionEstablisher.establish(serverListener, this);
+  @Override
+  public void onStartup() {
+    serverConnectionEstablisher.establish(serverListener, this);
 
-        gameDataBroadcaster.start(endPoint, this);
-        gameStateSnapshotCreator.start(this);
-    }
+    gameDataBroadcaster.start(endPoint, this);
+    gameStateSnapshotCreator.start(this);
+  }
 
-    @Override
-    public void setStartingScreen() {
-        setScreen(gameplayScreen);
-    }
+  @Override
+  public void setStartingScreen() {
+    setScreen(gameplayScreen);
+  }
 
-    @Override
-    public void onUpdate() {
-        gameState.handlePlayerDeaths();
+  @Override
+  public void onUpdate() {
+    gameState.handlePlayerDeaths();
 
-        gameState.handleExpiredLootPiles();
+    gameState.handleExpiredLootPiles();
 
-        ArrayList<GameStateAction> onTickActions = new ArrayList<>(gameState.getOnTickActions());
+    ArrayList<GameStateAction> onTickActions = new ArrayList<>(gameState.getOnTickActions());
 
-        onTickActions.forEach(gameStateAction -> gameStateAction.applyToGame(this));
+    onTickActions.forEach(gameStateAction -> gameStateAction.applyToGame(this));
 
-        Connection[] connections = getEndPoint().getConnections();
-        for (Connection connection : connections) {
-            if (clientIds.contains(connection.getID())) { // don't update until player is initialized
-                Map<CreatureId, Creature> creatures = getAllCreatures();
-                if (getClientPlayers().containsKey(connection.getID()) && creatures.containsKey(getClientPlayers().get(
-                    connection.getID()))) {
-                    Creature player = creatures.get(getClientPlayers().get(connection.getID()));
+    Connection[] connections = getEndPoint().getConnections();
+    for (Connection connection : connections) {
+      if (clientIds.contains(connection.getID())) { // don't update until player is initialized
+        Map<CreatureId, Creature> creatures = getAllCreatures();
+        if (getClientPlayers().containsKey(connection.getID()) && creatures.containsKey(getClientPlayers().get(connection.getID()))) {
+          Creature player = creatures.get(getClientPlayers().get(connection.getID()));
 
-                    List<GameStateAction> personalizedTickActions = onTickActions
-                        .stream()
-                        .filter(action -> isActionRelevantForPlayer(player, action))
-                        .collect(Collectors.toList());
-                    connection.sendTCP(ActionsHolder.of(personalizedTickActions));
-                }
-            }
-
+          List<GameStateAction> personalizedTickActions = onTickActions.stream().filter(action -> isActionRelevantForPlayer(player, action)).collect(Collectors.toList());
+          connection.sendTCP(ActionsHolder.of(personalizedTickActions));
         }
+      }
 
-        gameState.getOnTickActions().clear();
     }
 
-    public Map<Integer, CreatureId> getClientPlayers() {
-        return getGameState().getClientPlayers();
-    }
+    gameState.getOnTickActions().clear();
+  }
 
-    private boolean isActionRelevantForPlayer(Creature player, GameStateAction action) {
-        return action.isActionObjectValid(this) && action.getActionObjectAreaId(this).getValue().equals(player
-            .getParams()
-            .getAreaId()
-            .getValue()) && action.getActionObjectPos(this).distance(player.getParams().getPos()) <
-            Constants.CLIENT_GAME_UPDATE_RANGE;
-    }
+  public Map<Integer, CreatureId> getClientPlayers() {
+    return getGameState().getClientPlayers();
+  }
 
-    @Override
-    public void initState() {
-        String fileName = "./gamestate.json";
+  private boolean isActionRelevantForPlayer(Creature player, GameStateAction action) {
+    return action.isActionObjectValid(this) && action.getActionObjectAreaId(this).getValue().equals(player.getParams().getAreaId().getValue()) && action.getActionObjectPos(this).distance(player.getParams().getPos()) < Constants.CLIENT_GAME_UPDATE_RANGE;
+  }
 
-        File snapshotFile = new File(fileName);
+  @Override
+  public void initState() {
+    String fileName = "./gamestate.json";
 
-        if (!snapshotFile.exists()) {
-            initialStateLoader.setupInitialState(this);
-        } else {
-            gameState.loadFromJsonFile(fileName);
+    File snapshotFile = new File(fileName);
 
-            getActiveCreatures().forEach((creatureId, creature) -> getEventProcessor()
-                .getCreatureModelsToBeCreated()
-                .add(creatureId));
+    if (!snapshotFile.exists()) {
+      initialStateLoader.setupInitialState(this);
+    } else {
+      gameState.loadFromJsonFile(fileName);
 
-            gameState.accessAbilities().getAbilities().forEach((abilityId, ability) -> {
-                getEventProcessor().getAbilityModelsToBeCreated().add(abilityId);
-                if (ability.getParams().getState() == AbilityState.ACTIVE) {
-                    getEventProcessor().getAbilityModelsToBeActivated().add(abilityId);
-                }
-            });
+      getActiveCreatures().forEach((creatureId, creature) -> getEventProcessor().getCreatureModelsToBeCreated().add(creatureId));
 
-            gameState.getLootPiles().forEach((lootPileId, lootPile) -> getEventProcessor()
-                .getLootPileModelsToBeCreated()
-                .add(lootPileId));
-
-            gameState.getAreaGates().forEach((areaGateId, areaGate) -> getEventProcessor()
-                .getAreaGateModelsToBeCreated()
-                .add(areaGateId));
-
+      gameState.accessAbilities().getAbilities().forEach((abilityId, ability) -> {
+        getEventProcessor().getAbilityModelsToBeCreated().add(abilityId);
+        if (ability.getParams().getState() == AbilityState.ACTIVE) {
+          getEventProcessor().getAbilityModelsToBeActivated().add(abilityId);
         }
+      });
 
-        gameState.clearActiveCreatures();
-    }
+      gameState.getLootPiles().forEach((lootPileId, lootPile) -> getEventProcessor().getLootPileModelsToBeCreated().add(lootPileId));
 
-    @Override
-    public Set<AbilityId> getAbilitiesToUpdate() {
-        Set<AbilityId> abilitiesToUpdate = new HashSet<>();
-
-        for (CreatureId clientCreatureId : getClientPlayers().values()) {
-            Creature player = getCreature(clientCreatureId);
-            if (player == null) {
-                continue;
-            }
-
-            abilitiesToUpdate.addAll(getGameState().accessAbilities().getAbilitiesWithinRange(player));
-        }
-
-        return abilitiesToUpdate;
-    }
-
-    @Override
-    public void performPhysicsWorldStep() {
-        getEntityManager().getGameEntityPhysics().getPhysicsWorlds().values().forEach(PhysicsWorld::step);
-    }
-
-    @Override
-    public void initializePlayer(String playerName) {
+      gameState.getAreaGates().forEach((areaGateId, areaGate) -> getEventProcessor().getAreaGateModelsToBeCreated().add(areaGateId));
 
     }
 
-    @Override
-    public void setChatInputProcessor() {
+    gameState.clearActiveCreatures();
+  }
 
+  @Override
+  public Set<AbilityId> getAbilitiesToUpdate() {
+    Set<AbilityId> abilitiesToUpdate = new HashSet<>();
+
+    for (CreatureId clientCreatureId : getClientPlayers().values()) {
+      Creature player = getCreature(clientCreatureId);
+      if (player == null) {
+        continue;
+      }
+
+      abilitiesToUpdate.addAll(getGameState().accessAbilities().getAbilitiesWithinRange(player));
     }
 
-    @Override
-    public void renderServerRunningMessage() {
-        getHudRenderer().getServerRunningMessageRenderer().render(getHudRenderingLayer());
+    return abilitiesToUpdate;
+  }
+
+  @Override
+  public void performPhysicsWorldStep() {
+    getEntityManager().getGameEntityPhysics().getPhysicsWorlds().values().forEach(PhysicsWorld::step);
+  }
+
+  @Override
+  public void initializePlayer(String playerName) {
+
+  }
+
+  @Override
+  public void setChatInputProcessor() {
+
+  }
+
+  @Override
+  public void renderServerRunningMessage() {
+    getHudRenderer().getServerRunningMessageRenderer().render(getHudRenderingLayer());
+  }
+
+  @Override
+  public boolean isPathfindingCalculatedForCreature(Creature creature) {
+    return true; // always calculate this server side regardless of current area
+  }
+
+  @Override
+  public Boolean getFirstNonStubBroadcastReceived() {
+    return true;
+  }
+
+  @Override
+  public ServerGameState getGameState() {
+    return gameState;
+  }
+
+  @Override
+  public void askForBroadcast() {
+
+  }
+
+  @Override
+  public void forceDisconnectForPlayer(CreatureId creatureId) {
+    Creature creature = getCreature(creatureId);
+
+    Integer clientId = MapUtils.getKeyByValue(getClientPlayers(), creatureId);
+
+    if (creature != null && clientId != null) {
+      Optional<Connection> maybeConnection = Arrays.stream(getEndPoint().getConnections()).filter(connection -> connection.getID() == clientId).findAny();
+      maybeConnection.ifPresent(Connection::close);
     }
+  }
 
-    @Override
-    public boolean isPathfindingCalculatedForCreature(Creature creature) {
-        return true; // always calculate this server side regardless of current area
-    }
+  @Override
+  public void dispose() {
+    getEndPoint().stop();
 
-    @Override
-    public Boolean getFirstNonStubBroadcastReceived() {
-        return true;
-    }
-
-    @Override
-    public ServerGameState getGameState() {
-        return gameState;
-    }
-
-    @Override
-    public void askForBroadcast() {
-
-    }
-
-    @Override
-    public void forceDisconnectForPlayer(CreatureId creatureId) {
-        Creature creature = getCreature(creatureId);
-
-        Integer clientId = MapUtils.getKeyByValue(getClientPlayers(), creatureId);
-
-        if (creature != null && clientId != null) {
-            Optional<Connection> maybeConnection = Arrays.stream(getEndPoint().getConnections()).filter(connection ->
-                connection.getID() ==
-                    clientId).findAny();
-            maybeConnection.ifPresent(Connection::close);
-        }
-    }
-
-    @Override
-    public void dispose() {
-        getEndPoint().stop();
-
-        gameDataBroadcaster.stop();
-        gameStateSnapshotCreator.stop();
-    }
+    gameDataBroadcaster.stop();
+    gameStateSnapshotCreator.stop();
+  }
 }

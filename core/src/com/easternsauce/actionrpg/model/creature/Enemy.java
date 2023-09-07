@@ -18,135 +18,127 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class Enemy extends Creature {
-    private final EnemyAutoControlsProcessor autoControlsProcessor = EnemyAutoControlsProcessor.of();
-    @Getter
-    private CreatureParams params;
+  private final EnemyAutoControlsProcessor autoControlsProcessor = EnemyAutoControlsProcessor.of();
+  @Getter
+  private CreatureParams params;
 
-    public static Enemy of(CreatureId creatureId,
-                           AreaId areaId,
-                           Vector2 pos,
-                           EnemyTemplate enemyTemplate,
-                           EnemyRallyPointId enemyRallyPointId,
-                           int rngSeed) {
-        CreatureParams params = CreatureParams.of(creatureId, areaId, pos, enemyTemplate, rngSeed);
+  public static Enemy of(CreatureId creatureId, AreaId areaId, Vector2 pos, EnemyTemplate enemyTemplate, EnemyRallyPointId enemyRallyPointId, int rngSeed) {
+    CreatureParams params = CreatureParams.of(creatureId, areaId, pos, enemyTemplate, rngSeed);
 
-        params.setDropTable(enemyTemplate.getDropTable());
-        params.getStats().setBaseSpeed(11f);
-        params.getStats().setMaxLife(enemyTemplate.getMaxLife());
-        params.getStats().setLife(enemyTemplate.getMaxLife());
+    params.setDropTable(enemyTemplate.getDropTable());
+    params.getStats().setBaseSpeed(11f);
+    params.getStats().setMaxLife(enemyTemplate.getMaxLife());
+    params.getStats().setLife(enemyTemplate.getMaxLife());
 
-        params.setEnemyParams(EnemyParams.of());
-        params.getEnemyParams().setFindTargetCooldown(0.5f + Math.abs(params.getRandomGenerator().nextFloat()));
-        params.getEnemyParams().setPathCalculationCooldown(4f + 2f * Math.abs(params.getRandomGenerator().nextFloat()));
-        params.getEnemyParams().setAutoControlsStateTime(0f);
+    params.setEnemyParams(EnemyParams.of());
+    params.getEnemyParams().setFindTargetCooldown(0.5f + Math.abs(params.getRandomGenerator().nextFloat()));
+    params.getEnemyParams().setPathCalculationCooldown(4f + 2f * Math.abs(params.getRandomGenerator().nextFloat()));
+    params.getEnemyParams().setAutoControlsStateTime(0f);
 
-        params.setRespawnTime(120f);
+    params.setRespawnTime(120f);
 
-        params.getEnemyParams().setWalkUpRange(enemyTemplate.getWalkUpRange());
-        params.getStats().setBaseSpeed(enemyTemplate.getSpeed());
-        params.getEnemyParams().setSkillUses(enemyTemplate.getEnemySkillUseEntries());
+    params.getEnemyParams().setWalkUpRange(enemyTemplate.getWalkUpRange());
+    params.getStats().setBaseSpeed(enemyTemplate.getSpeed());
+    params.getEnemyParams().setSkillUses(enemyTemplate.getEnemySkillUseEntries());
 
-        params.setEnemyRallyPointId(enemyRallyPointId);
+    params.setEnemyRallyPointId(enemyRallyPointId);
 
-        params.setOnDeathAction(enemyTemplate.getOnDeathAction());
+    params.setOnDeathAction(enemyTemplate.getOnDeathAction());
 
-        Enemy enemy = Enemy.of();
-        enemy.params = params;
-        return enemy;
+    Enemy enemy = Enemy.of();
+    enemy.params = params;
+    return enemy;
+  }
+
+  @Override
+  protected void updateEnemyTimers(float delta) {
+    getParams().getEnemyParams().getPathCalculationCooldownTimer().update(delta);
+    getParams().getEnemyParams().getAggroTimer().update(delta);
+    getParams().getEnemyParams().getFindTargetTimer().update(delta);
+    getParams().getEnemyParams().getAutoControlsStateTimer().update(delta);
+    getParams().getEnemyParams().getAttackCooldownTimer().update(delta);
+    getParams().getEnemyParams().getJustAttackedFromRangeTimer().update(delta);
+  }
+
+  @Override
+  public WorldDirection facingDirection(CoreGame game) {
+    float deg;
+    if (getParams().getEnemyParams().getTargetCreatureId() != null) {
+      Vector2 targetPos = game.getCreaturePos(getParams().getEnemyParams().getTargetCreatureId());
+      if (targetPos != null) {
+        deg = this.getParams().getPos().vectorTowards(targetPos).angleDeg();
+      } else {
+        deg = 0f;
+      }
+
+    } else {
+      deg = getParams().getMovementParams().getMovingVector().angleDeg();
     }
 
-    @Override
-    protected void updateEnemyTimers(float delta) {
-        getParams().getEnemyParams().getPathCalculationCooldownTimer().update(delta);
-        getParams().getEnemyParams().getAggroTimer().update(delta);
-        getParams().getEnemyParams().getFindTargetTimer().update(delta);
-        getParams().getEnemyParams().getAutoControlsStateTimer().update(delta);
-        getParams().getEnemyParams().getAttackCooldownTimer().update(delta);
-        getParams().getEnemyParams().getJustAttackedFromRangeTimer().update(delta);
+    if (deg >= 45 && deg < 135) {
+      return WorldDirection.UP;
+    } else if (deg >= 135 && deg < 225) {
+      return WorldDirection.LEFT;
+    } else if (deg >= 225 && deg < 315) {
+      return WorldDirection.DOWN;
+    } else {
+      return WorldDirection.RIGHT;
     }
 
-    @Override
-    public WorldDirection facingDirection(CoreGame game) {
-        float deg;
-        if (getParams().getEnemyParams().getTargetCreatureId() != null) {
-            Vector2 targetPos = game.getCreaturePos(getParams().getEnemyParams().getTargetCreatureId());
-            if (targetPos != null) {
-                deg = this.getParams().getPos().vectorTowards(targetPos).angleDeg();
-            } else {
-                deg = 0f;
-            }
+  }
 
-        } else {
-            deg = getParams().getMovementParams().getMovingVector().angleDeg();
+  @Override
+  public void updateAutoControls(CoreGame game) {
+    autoControlsProcessor.update(getId(), game);
+  }
+
+  @Override
+  public boolean canPerformSkill(Skill skill, CoreGame game) {
+    return isAlive() && hasEnoughStamina(skill) && !isAbilityThatBlocksDamagingAbilitiesActive(skill, game);
+  }
+
+  private boolean hasEnoughStamina(Skill skill) {
+    return getParams().getStats().getStamina() >= skill.getStaminaCost();
+  }
+
+  private boolean isAbilityThatBlocksDamagingAbilitiesActive(Skill skill, CoreGame game) {
+    if (skill.getSkillType().getDamaging()) {
+      Set<Ability> damagingSkillNotAllowedAbilities = game.getAbilities().values().stream().filter(ability -> ability.isDamagingSkillNotAllowedWhenActive() && ability.getParams().getCreatureId().equals(this.getParams().getId()) &&
+
+        ability.getParams().getState() == AbilityState.ACTIVE).collect(Collectors.toSet());
+
+      return !damagingSkillNotAllowedAbilities.isEmpty();
+    } else {
+      return false;
+    }
+  }
+
+  @SuppressWarnings("SpellCheckingInspection")
+  @Override
+  public void onBeingHit(Ability ability, CoreGame game) {
+    if (getParams().getEnemyParams() != null) {
+      getParams().getEnemyParams().setJustAttackedByCreatureId(ability.getParams().getCreatureId());
+
+      CreatureId aggroedCreatureId = getParams().getEnemyParams().getAggroedCreatureId();
+      if (aggroedCreatureId == null || !aggroedCreatureId.equals(ability.getParams().getCreatureId())) {
+        Creature aggroedCreature = game.getCreature(aggroedCreatureId);
+
+        if (aggroedCreature != null && aggroedCreature.isCurrentlyActive(game)) {
+          makeAggressiveAfterHitByAbility(ability);
         }
-
-        if (deg >= 45 && deg < 135) {
-            return WorldDirection.UP;
-        } else if (deg >= 135 && deg < 225) {
-            return WorldDirection.LEFT;
-        } else if (deg >= 225 && deg < 315) {
-            return WorldDirection.DOWN;
-        } else {
-            return WorldDirection.RIGHT;
-        }
-
+      }
     }
+  }
 
-    @Override
-    public void updateAutoControls(CoreGame game) {
-        autoControlsProcessor.update(getId(), game);
+  private void makeAggressiveAfterHitByAbility(Ability ability) {
+    getParams().getEnemyParams().setAutoControlsStateTime(1f + Math.abs(getParams().getRandomGenerator().nextFloat()));
+    getParams().getEnemyParams().getAutoControlsStateTimer().restart();
+    getParams().getEnemyParams().setAutoControlsState(EnemyAutoControlsState.AGGRESSIVE);
+    getParams().getStats().setSpeed(getParams().getStats().getBaseSpeed());
+    getParams().getEnemyParams().setAggroedCreatureId(ability.getParams().getCreatureId());
+
+    if (ability.isRanged()) {
+      getParams().getEnemyParams().getJustAttackedFromRangeTimer().restart();
     }
-
-    @Override
-    public boolean canPerformSkill(Skill skill, CoreGame game) {
-        return isAlive() && hasEnoughStamina(skill) && !isAbilityThatBlocksDamagingAbilitiesActive(skill, game);
-    }
-
-    private boolean hasEnoughStamina(Skill skill) {
-        return getParams().getStats().getStamina() >= skill.getStaminaCost();
-    }
-
-    private boolean isAbilityThatBlocksDamagingAbilitiesActive(Skill skill, CoreGame game) {
-        if (skill.getSkillType().getDamaging()) {
-            Set<Ability> damagingSkillNotAllowedAbilities = game.getAbilities().values().stream().filter(ability ->
-                ability.isDamagingSkillNotAllowedWhenActive() &&
-                    ability.getParams().getCreatureId().equals(this.getParams().getId()) &&
-
-                    ability.getParams().getState() == AbilityState.ACTIVE).collect(Collectors.toSet());
-
-            return !damagingSkillNotAllowedAbilities.isEmpty();
-        } else {
-            return false;
-        }
-    }
-
-    @SuppressWarnings("SpellCheckingInspection")
-    @Override
-    public void onBeingHit(Ability ability, CoreGame game) {
-        if (getParams().getEnemyParams() != null) {
-            getParams().getEnemyParams().setJustAttackedByCreatureId(ability.getParams().getCreatureId());
-
-            CreatureId aggroedCreatureId = getParams().getEnemyParams().getAggroedCreatureId();
-            if (aggroedCreatureId == null || !aggroedCreatureId.equals(ability.getParams().getCreatureId())) {
-                Creature aggroedCreature = game.getCreature(aggroedCreatureId);
-
-                if (aggroedCreature != null && aggroedCreature.isCurrentlyActive(game)) {
-                    makeAggressiveAfterHitByAbility(ability);
-                }
-            }
-        }
-    }
-
-    private void makeAggressiveAfterHitByAbility(Ability ability) {
-        getParams().getEnemyParams().setAutoControlsStateTime(1f +
-            Math.abs(getParams().getRandomGenerator().nextFloat()));
-        getParams().getEnemyParams().getAutoControlsStateTimer().restart();
-        getParams().getEnemyParams().setAutoControlsState(EnemyAutoControlsState.AGGRESSIVE);
-        getParams().getStats().setSpeed(getParams().getStats().getBaseSpeed());
-        getParams().getEnemyParams().setAggroedCreatureId(ability.getParams().getCreatureId());
-
-        if (ability.isRanged()) {
-            getParams().getEnemyParams().getJustAttackedFromRangeTimer().restart();
-        }
-    }
+  }
 }

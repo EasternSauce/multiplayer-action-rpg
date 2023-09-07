@@ -10,20 +10,10 @@ import java.util.concurrent.ConcurrentSkipListMap;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class PoisonousCloud extends PoisonousCloudBase {
-    public static PoisonousCloudBase of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        PoisonousCloud ability = PoisonousCloud.of();
-        ability.params = abilityParams
-            .setWidth(3f)
-            .setHeight(3f)
-            .setChannelTime(0f)
-            .setActiveTime(8f)
-            .setTextureName("poison_cloud")
-            .setBaseDamage(0f)
-            .setChannelAnimationLooping(false)
-            .setActiveAnimationLooping(true)
-            .setAttackWithoutMoving(true)
-            .setCreaturesAlreadyHit(new ConcurrentSkipListMap<>());
+  public static PoisonousCloudBase of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+    PoisonousCloud ability = PoisonousCloud.of();
+    ability.params = abilityParams.setWidth(3f).setHeight(3f).setChannelTime(0f).setActiveTime(8f).setTextureName("poison_cloud").setBaseDamage(0f).setChannelAnimationLooping(false).setActiveAnimationLooping(true).setAttackWithoutMoving(true).setCreaturesAlreadyHit(new ConcurrentSkipListMap<>());
 
-        return ability;
-    }
+    return ability;
+  }
 }

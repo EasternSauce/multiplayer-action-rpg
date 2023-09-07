@@ -27,133 +27,108 @@ import java.util.stream.Stream;
 @NoArgsConstructor(staticName = "of")
 @Data
 public class CreatureParams implements EntityParams {
-    @NonNull
-    private final CreatureStats stats = CreatureStats.of();
-    @NonNull
-    private final CreatureMovementParams movementParams = CreatureMovementParams.of();
-    @NonNull
-    private final CreatureEffectParams effectParams = CreatureEffectParams.of();
-    private EnemyParams enemyParams;
+  @NonNull
+  private final CreatureStats stats = CreatureStats.of();
+  @NonNull
+  private final CreatureMovementParams movementParams = CreatureMovementParams.of();
+  @NonNull
+  private final CreatureEffectParams effectParams = CreatureEffectParams.of();
+  private EnemyParams enemyParams;
 
-    @NonNull
-    private CreatureId id;
+  @NonNull
+  private CreatureId id;
 
-    private Vector2 pos;
-    @NonNull
-    private AreaId areaId;
+  private Vector2 pos;
+  @NonNull
+  private AreaId areaId;
 
-    @NonNull
-    private Vector2 initialPos;
-    @NonNull
-    private AreaId initialAreaId;
+  @NonNull
+  private Vector2 initialPos;
+  @NonNull
+  private AreaId initialAreaId;
 
-    @NonNull
-    private SimpleTimer animationTimer = SimpleTimer.getStartedTimer();
+  @NonNull
+  private SimpleTimer animationTimer = SimpleTimer.getStartedTimer();
 
-    @NonNull
-    private String textureName;
+  @NonNull
+  private String textureName;
 
-    @NonNull
-    private SimpleTimer timeSinceDeathTimer = SimpleTimer.getExpiredTimer();
-    @NonNull
-    private Float respawnTime = 5f;
+  @NonNull
+  private SimpleTimer timeSinceDeathTimer = SimpleTimer.getExpiredTimer();
+  @NonNull
+  private Float respawnTime = 5f;
 
-    @NonNull
-    private Float actionCooldown = 0.7f;
+  @NonNull
+  private Float actionCooldown = 0.7f;
 
-    @NonNull
-    private Boolean dead = false;
-    @NonNull
-    private Boolean awaitingRespawn = false;
+  @NonNull
+  private Boolean dead = false;
+  @NonNull
+  private Boolean awaitingRespawn = false;
 
-    @NonNull
-    private Map<SkillType, Skill> skills = new ConcurrentSkipListMap<>();
+  @NonNull
+  private Map<SkillType, Skill> skills = new ConcurrentSkipListMap<>();
 
-    @NonNull
-    private Set<DropTableEntry> dropTable = new ConcurrentSkipListSet<>();
+  @NonNull
+  private Set<DropTableEntry> dropTable = new ConcurrentSkipListSet<>();
 
-    @NonNull
-    private Map<Integer, Item> equipmentItems = new ConcurrentSkipListMap<>();
-    @NonNull
-    private Map<Integer, Item> inventoryItems = new ConcurrentSkipListMap<>();
-    @NonNull
-    private Map<Integer, Item> potionMenuItems = new ConcurrentSkipListMap<>();
+  @NonNull
+  private Map<Integer, Item> equipmentItems = new ConcurrentSkipListMap<>();
+  @NonNull
+  private Map<Integer, Item> inventoryItems = new ConcurrentSkipListMap<>();
+  @NonNull
+  private Map<Integer, Item> potionMenuItems = new ConcurrentSkipListMap<>();
 
-    @NonNull
-    private Float dropRngSeed = (float) Math.random(); // TODO: use random generator
+  @NonNull
+  private Float dropRngSeed = (float) Math.random(); // TODO: use random generator
 
-    @NonNull
-    private SimpleTimer globalSkillPerformCooldownTimer = SimpleTimer.getExpiredTimer();
+  @NonNull
+  private SimpleTimer globalSkillPerformCooldownTimer = SimpleTimer.getExpiredTimer();
 
-    private EnemyRallyPointId enemyRallyPointId; // TODO: move to enemy params?
+  private EnemyRallyPointId enemyRallyPointId; // TODO: move to enemy params?
 
-    private RandomGenerator randomGenerator;
+  private RandomGenerator randomGenerator;
 
-    private OnDeathAction onDeathAction;
+  private OnDeathAction onDeathAction;
 
-    public static CreatureParams of(CreatureId creatureId,
-                                    AreaId areaId,
-                                    Vector2 pos,
-                                    EnemyTemplate enemyTemplate,
-                                    int rngSeed) {
-        return produceCreatureParams(creatureId, areaId, pos, enemyTemplate.getEnemyType().textureName, rngSeed);
-    }
+  public static CreatureParams of(CreatureId creatureId, AreaId areaId, Vector2 pos, EnemyTemplate enemyTemplate, int rngSeed) {
+    return produceCreatureParams(creatureId, areaId, pos, enemyTemplate.getEnemyType().textureName, rngSeed);
+  }
 
-    private static CreatureParams produceCreatureParams(CreatureId creatureId,
-                                                        AreaId areaId,
-                                                        Vector2 enemySpawn,
-                                                        String textureName,
-                                                        int rngSeed) {
-        CreatureParams params = CreatureParams.of();
-        params.id = creatureId;
-        params.areaId = areaId;
-        params.pos = enemySpawn;
-        params.initialPos = enemySpawn;
-        params.initialAreaId = areaId;
-        params.textureName = textureName;
+  private static CreatureParams produceCreatureParams(CreatureId creatureId, AreaId areaId, Vector2 enemySpawn, String textureName, int rngSeed) {
+    CreatureParams params = CreatureParams.of();
+    params.id = creatureId;
+    params.areaId = areaId;
+    params.pos = enemySpawn;
+    params.initialPos = enemySpawn;
+    params.initialAreaId = areaId;
+    params.textureName = textureName;
 
-        Map<SkillType, Skill> allPossibleSkills = Arrays
-            .stream(SkillType.values())
-            .collect(Collectors.toMap(Function.identity(), skillType -> Skill.of(skillType, creatureId)));
+    Map<SkillType, Skill> allPossibleSkills = Arrays.stream(SkillType.values()).collect(Collectors.toMap(Function.identity(), skillType -> Skill.of(skillType, creatureId)));
 
-        // TODO: should we restrict which creature can perform which skill?
-        params.skills = new ConcurrentSkipListMap<>(allPossibleSkills);
+    // TODO: should we restrict which creature can perform which skill?
+    params.skills = new ConcurrentSkipListMap<>(allPossibleSkills);
 
-        Map<CreatureEffect, CreatureEffectState> allPossibleEffects = Arrays.stream(CreatureEffect.values()).collect(
-            Collectors.toMap(effect -> effect, effect -> CreatureEffectState.of()));
+    Map<CreatureEffect, CreatureEffectState> allPossibleEffects = Arrays.stream(CreatureEffect.values()).collect(Collectors.toMap(effect -> effect, effect -> CreatureEffectState.of()));
 
-        params.getEffectParams().setEffects(new ConcurrentSkipListMap<>(allPossibleEffects));
+    params.getEffectParams().setEffects(new ConcurrentSkipListMap<>(allPossibleEffects));
 
-        params.setRandomGenerator(RandomGenerator.of(rngSeed));
+    params.setRandomGenerator(RandomGenerator.of(rngSeed));
 
-        return params;
-    }
+    return params;
+  }
 
-    public static CreatureParams of(CreatureId creatureId,
-                                    AreaId areaId,
-                                    Vector2 pos,
-                                    String textureName,
-                                    int rngSeed) {
-        // TODO remove later
-        Map<Integer, Item> potionMenuItems = new ConcurrentSkipListMap<>();
-        potionMenuItems.put(0, Item.of().setTemplate(ItemTemplate.templates.get("lifePotion")));
-        potionMenuItems.put(1, Item.of().setTemplate(ItemTemplate.templates.get("lifePotion")));
+  public static CreatureParams of(CreatureId creatureId, AreaId areaId, Vector2 pos, String textureName, int rngSeed) {
+    // TODO remove later
+    Map<Integer, Item> potionMenuItems = new ConcurrentSkipListMap<>();
+    potionMenuItems.put(0, Item.of().setTemplate(ItemTemplate.templates.get("lifePotion")));
+    potionMenuItems.put(1, Item.of().setTemplate(ItemTemplate.templates.get("lifePotion")));
 
-        Map<Integer, Item> inventoryItems = new ConcurrentSkipListMap<>();
-        inventoryItems.put(2, Item.of().setTemplate(ItemTemplate.templates.get("lifePotion")));
-        inventoryItems.put(
-            7,
-            Item
-                .of()
-                .setTemplate(ItemTemplate.templates.get("hideGloves"))
-                .setGrantedSkills(Stream
-                    .of(new AbstractMap.SimpleEntry<>(SkillType.METEOR, 1))
-                    .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)))
-        );
-        // TODO
+    Map<Integer, Item> inventoryItems = new ConcurrentSkipListMap<>();
+    inventoryItems.put(2, Item.of().setTemplate(ItemTemplate.templates.get("lifePotion")));
+    inventoryItems.put(7, Item.of().setTemplate(ItemTemplate.templates.get("hideGloves")).setGrantedSkills(Stream.of(new AbstractMap.SimpleEntry<>(SkillType.METEOR, 1)).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue))));
+    // TODO
 
-        return produceCreatureParams(creatureId, areaId, pos, textureName, rngSeed)
-            .setPotionMenuItems(potionMenuItems)
-            .setInventoryItems(inventoryItems);
-    }
+    return produceCreatureParams(creatureId, areaId, pos, textureName, rngSeed).setPotionMenuItems(potionMenuItems).setInventoryItems(inventoryItems);
+  }
 }

@@ -15,138 +15,108 @@ import java.util.List;
 
 @NoArgsConstructor(staticName = "of")
 public class GameplayRenderer {
-    public void renderGameplay(CoreGame game) {
-        GameEntityRenderer renderer = game.getEntityManager().getGameEntityRenderer();
-        PhysicsDebugRenderer physicsDebugRenderer = game.getPhysicsDebugRenderer();
-        RenderingLayer worldElementsRenderingLayer = game.getWorldElementsRenderingLayer();
-        RenderingLayer worldTextRenderingLayer = game.getWorldTextRenderingLayer();
+  public void renderGameplay(CoreGame game) {
+    GameEntityRenderer renderer = game.getEntityManager().getGameEntityRenderer();
+    PhysicsDebugRenderer physicsDebugRenderer = game.getPhysicsDebugRenderer();
+    RenderingLayer worldElementsRenderingLayer = game.getWorldElementsRenderingLayer();
+    RenderingLayer worldTextRenderingLayer = game.getWorldTextRenderingLayer();
 
-        renderAreaLayers(renderer, Arrays.asList(0, 1), game);
+    renderAreaLayers(renderer, Arrays.asList(0, 1), game);
 
-        renderWorldElements(renderer, worldElementsRenderingLayer, game);
-        renderWorldText(renderer, worldTextRenderingLayer, game);
+    renderWorldElements(renderer, worldElementsRenderingLayer, game);
+    renderWorldText(renderer, worldTextRenderingLayer, game);
 
-        renderAreaLayers(renderer, Arrays.asList(2, 3), game);
+    renderAreaLayers(renderer, Arrays.asList(2, 3), game);
 
-        renderAbilities(renderer, worldElementsRenderingLayer, game);
+    renderAbilities(renderer, worldElementsRenderingLayer, game);
 
-        renderCreatureLifeBars(renderer, worldElementsRenderingLayer, game);
+    renderCreatureLifeBars(renderer, worldElementsRenderingLayer, game);
 
-        renderCreatureHitAnimations(renderer, worldElementsRenderingLayer, game);
-        renderDamageNumbers(renderer, worldTextRenderingLayer, game);
+    renderCreatureHitAnimations(renderer, worldElementsRenderingLayer, game);
+    renderDamageNumbers(renderer, worldTextRenderingLayer, game);
 
-        physicsDebugRenderer.render(game);
+    physicsDebugRenderer.render(game);
+  }
+
+  private void renderAreaLayers(GameEntityRenderer renderer, List<Integer> layers, CoreGame game) {
+    int[] layersArray = layers.stream().mapToInt(Integer::intValue).toArray();
+    if (renderer.getAreaRenderers().containsKey(game.getCurrentAreaId())) {
+      renderer.getAreaRenderers().get(game.getCurrentAreaId()).render(layersArray);
     }
+  }
 
-    private void renderAreaLayers(GameEntityRenderer renderer, List<Integer> layers, CoreGame game) {
-        int[] layersArray = layers.stream().mapToInt(Integer::intValue).toArray();
-        if (renderer.getAreaRenderers().containsKey(game.getCurrentAreaId())) {
-            renderer.getAreaRenderers().get(game.getCurrentAreaId()).render(layersArray);
-        }
-    }
+  private void renderWorldElements(GameEntityRenderer renderer, RenderingLayer worldElementsRenderingLayer, CoreGame game) {
+    worldElementsRenderingLayer.getSpriteBatch().begin();
 
-    private void renderWorldElements(GameEntityRenderer renderer,
-                                     RenderingLayer worldElementsRenderingLayer,
-                                     CoreGame game) {
-        worldElementsRenderingLayer.getSpriteBatch().begin();
+    renderer.renderAreaGates(worldElementsRenderingLayer, game);
+    renderer.renderDeadCreatures(worldElementsRenderingLayer, game);
+    renderer.renderLootPiles(worldElementsRenderingLayer, game);
+    renderer.renderAliveCreatures(worldElementsRenderingLayer, game);
 
-        renderer.renderAreaGates(worldElementsRenderingLayer, game);
-        renderer.renderDeadCreatures(worldElementsRenderingLayer, game);
-        renderer.renderLootPiles(worldElementsRenderingLayer, game);
-        renderer.renderAliveCreatures(worldElementsRenderingLayer, game);
+    worldElementsRenderingLayer.end();
+  }
 
-        worldElementsRenderingLayer.end();
-    }
+  private void renderWorldText(GameEntityRenderer renderer, RenderingLayer worldTextRenderingLayer, CoreGame game) {
+    worldTextRenderingLayer.begin();
 
-    private void renderWorldText(GameEntityRenderer renderer, RenderingLayer worldTextRenderingLayer, CoreGame game) {
-        worldTextRenderingLayer.begin();
+    renderer.renderPlayerNames(worldTextRenderingLayer, game);
 
-        renderer.renderPlayerNames(worldTextRenderingLayer, game);
+    worldTextRenderingLayer.end();
+  }
 
-        worldTextRenderingLayer.end();
-    }
+  private void renderAbilities(GameEntityRenderer renderer, RenderingLayer worldElementsRenderingLayer, CoreGame game) {
+    worldElementsRenderingLayer.begin();
 
-    private void renderAbilities(GameEntityRenderer renderer,
-                                 RenderingLayer worldElementsRenderingLayer,
-                                 CoreGame game) {
-        worldElementsRenderingLayer.begin();
+    renderer.renderAbilities(worldElementsRenderingLayer, game);
 
-        renderer.renderAbilities(worldElementsRenderingLayer, game);
+    worldElementsRenderingLayer.end();
+  }
 
-        worldElementsRenderingLayer.end();
-    }
+  private void renderCreatureLifeBars(GameEntityRenderer renderer, RenderingLayer worldElementsRenderingLayer, CoreGame game) {
+    worldElementsRenderingLayer.begin();
 
-    private void renderCreatureLifeBars(GameEntityRenderer renderer,
-                                        RenderingLayer worldElementsRenderingLayer,
-                                        CoreGame game) {
-        worldElementsRenderingLayer.begin();
+    renderer.renderCreatureLifeBars(worldElementsRenderingLayer, game);
 
-        renderer.renderCreatureLifeBars(worldElementsRenderingLayer, game);
+    worldElementsRenderingLayer.end();
+  }
 
-        worldElementsRenderingLayer.end();
-    }
+  private void renderCreatureHitAnimations(GameEntityRenderer renderer, RenderingLayer worldElementsRenderingLayer, CoreGame game) {
+    worldElementsRenderingLayer.begin();
 
-    private void renderCreatureHitAnimations(GameEntityRenderer renderer,
-                                             RenderingLayer worldElementsRenderingLayer,
-                                             CoreGame game) {
-        worldElementsRenderingLayer.begin();
+    renderer.getCreatureHitAnimations().stream().filter(creatureHitAnimation -> creatureHitAnimation.getAreaId().getValue().equals(game.getCurrentAreaId().getValue())).forEach(creatureHitAnimation -> renderer.getCreatureHitAnimationRenderer().render(creatureHitAnimation.getCreatureId(), game.getGameState().getTime() - creatureHitAnimation.getHitTime(), creatureHitAnimation.getVectorTowardsContactPoint(), worldElementsRenderingLayer, game));
 
-        renderer.getCreatureHitAnimations().stream().filter(creatureHitAnimation -> creatureHitAnimation
-            .getAreaId()
-            .getValue()
-            .equals(game.getCurrentAreaId().getValue())).forEach(creatureHitAnimation -> renderer
-            .getCreatureHitAnimationRenderer()
-            .render(
-                creatureHitAnimation.getCreatureId(),
-                game.getGameState().getTime() - creatureHitAnimation.getHitTime(),
-                creatureHitAnimation.getVectorTowardsContactPoint(),
-                worldElementsRenderingLayer,
-                game
-            ));
+    worldElementsRenderingLayer.end();
+  }
 
-        worldElementsRenderingLayer.end();
-    }
+  private void renderDamageNumbers(GameEntityRenderer renderer, RenderingLayer worldTextRenderingLayer, CoreGame game) {
+    worldTextRenderingLayer.begin();
 
-    private void renderDamageNumbers(GameEntityRenderer renderer,
-                                     RenderingLayer worldTextRenderingLayer,
-                                     CoreGame game) {
-        worldTextRenderingLayer.begin();
+    renderer.getDamageNumbers().stream().filter(damageNumber -> damageNumber.getAreaId().getValue().equals(game.getCurrentAreaId().getValue())).forEach(damageNumber -> {
+      float timeElapsed = game.getGameState().getTime() - damageNumber.getDamageTime();
 
-        renderer.getDamageNumbers().stream().filter(damageNumber -> damageNumber
-            .getAreaId()
-            .getValue()
-            .equals(game.getCurrentAreaId().getValue())).forEach(damageNumber -> {
-            float timeElapsed = game.getGameState().getTime() - damageNumber.getDamageTime();
+      float posX = damageNumber.getPos().getX() - 8f / Constants.PPM;
+      float posY = damageNumber.getPos().getY() + 12f * (float) Math.pow(timeElapsed / Constants.DAMAGE_NUMBER_SHOW_DURATION, 2f) + 12f / Constants.PPM;
 
-            float posX = damageNumber.getPos().getX() - 8f / Constants.PPM;
-            float posY = damageNumber.getPos().getY() + 12f * (float) Math.pow(timeElapsed /
-                Constants.DAMAGE_NUMBER_SHOW_DURATION, 2f) + 12f / Constants.PPM;
+      Vector2 rescaledPos = Vector2.of(posX * Constants.PPM, posY * Constants.PPM);
 
-            Vector2 rescaledPos = Vector2.of(posX * Constants.PPM, posY * Constants.PPM);
+      float alpha;
 
-            float alpha;
+      if (timeElapsed < Constants.DAMAGE_NUMBER_SHOW_DURATION / 2f) {
+        alpha = 1f;
+      } else {
+        alpha = 1f - (timeElapsed / 2f) / Constants.DAMAGE_NUMBER_SHOW_DURATION;
+      }
 
-            if (timeElapsed < Constants.DAMAGE_NUMBER_SHOW_DURATION / 2f) {
-                alpha = 1f;
-            } else {
-                alpha = 1f - (timeElapsed / 2f) / Constants.DAMAGE_NUMBER_SHOW_DURATION;
-            }
+      Assets.renderLargeFont(worldTextRenderingLayer, Integer.toString(damageNumber.getDamageValue().intValue()), rescaledPos, new Color(damageNumber.getColorR(), damageNumber.getColorG(), damageNumber.getColorB(), alpha));
+    });
 
-            Assets.renderLargeFont(
-                worldTextRenderingLayer,
-                Integer.toString(damageNumber.getDamageValue().intValue()),
-                rescaledPos,
-                new Color(damageNumber.getColorR(), damageNumber.getColorG(), damageNumber.getColorB(), alpha)
-            );
-        });
+    worldTextRenderingLayer.end();
+  }
 
-        worldTextRenderingLayer.end();
-    }
+  public void updateRenderer(CoreGame game) {
+    GameEntityRenderer renderer = game.getEntityManager().getGameEntityRenderer();
 
-    public void updateRenderer(CoreGame game) {
-        GameEntityRenderer renderer = game.getEntityManager().getGameEntityRenderer();
-
-        renderer.updateDamageNumbers(game);
-        renderer.updateCreatureHitAnimations(game);
-    }
+    renderer.updateDamageNumbers(game);
+    renderer.updateCreatureHitAnimations(game);
+  }
 }

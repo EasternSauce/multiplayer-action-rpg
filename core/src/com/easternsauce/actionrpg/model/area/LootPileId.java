@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(staticName = "of")
 @EqualsAndHashCode
 public class LootPileId implements Comparable<LootPileId> {
-    @Getter
-    private String value;
+  @Getter
+  private String value;
 
-    @Override
-    public int compareTo(LootPileId o) {
-        return getValue().compareTo(o.getValue());
-    }
+  @Override
+  public int compareTo(LootPileId o) {
+    return getValue().compareTo(o.getValue());
+  }
 }

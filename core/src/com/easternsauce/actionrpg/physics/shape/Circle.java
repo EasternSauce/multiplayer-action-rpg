@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 public class Circle implements BodyShape {
-    @Getter
-    private float radius;
+  @Getter
+  private float radius;
 
-    @Override
-    public Shape b2Shape() {
-        CircleShape shape = new CircleShape();
-        shape.setRadius(radius);
-        return shape;
-    }
+  @Override
+  public Shape b2Shape() {
+    CircleShape shape = new CircleShape();
+    shape.setRadius(radius);
+    return shape;
+  }
 }

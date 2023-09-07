@@ -15,55 +15,49 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @NoArgsConstructor(staticName = "of")
 public class SkillMenuController {
-    @SuppressWarnings("UnusedReturnValue")
-    public boolean performSkillMenuPickerClick(Client client, CoreGame game) {
-        float x = game.hudMousePos().getX();
-        float y = game.hudMousePos().getY();
+  @SuppressWarnings("UnusedReturnValue")
+  public boolean performSkillMenuPickerClick(Client client, CoreGame game) {
+    float x = game.hudMousePos().getX();
+    float y = game.hudMousePos().getY();
 
-        AtomicBoolean isSuccessful = new AtomicBoolean(false);
+    AtomicBoolean isSuccessful = new AtomicBoolean(false);
 
-        AtomicInteger i = new AtomicInteger();
+    AtomicInteger i = new AtomicInteger();
 
-        Creature player = game.getCreature(game.getGameState().getThisClientPlayerId());
+    Creature player = game.getCreature(game.getGameState().getThisClientPlayerId());
 
-        player.availableSkills().forEach((skillType, level) -> {
-            Rect rect = SkillMenuConsts.getSkillPickerRect(i.get());
+    player.availableSkills().forEach((skillType, level) -> {
+      Rect rect = SkillMenuConsts.getSkillPickerRect(i.get());
 
-            if (rect.contains(x, y)) {
-                client.sendTCP(ActionPerformCommand.of(SkillPickerMenuSlotChangeAction.of(game
-                    .getGameState()
-                    .getThisClientPlayerId(), skillType)));
-                isSuccessful.set(true);
-            }
+      if (rect.contains(x, y)) {
+        client.sendTCP(ActionPerformCommand.of(SkillPickerMenuSlotChangeAction.of(game.getGameState().getThisClientPlayerId(), skillType)));
+        isSuccessful.set(true);
+      }
 
-            i.getAndIncrement();
-        });
+      i.getAndIncrement();
+    });
 
-        if (!isSuccessful.get()) {
-            client.sendTCP(ActionPerformCommand.of(SkillPickerMenuDeactivateAction.of(game
-                .getGameState()
-                .getThisClientPlayerId())));
-        }
-
-        return isSuccessful.get();
+    if (!isSuccessful.get()) {
+      client.sendTCP(ActionPerformCommand.of(SkillPickerMenuDeactivateAction.of(game.getGameState().getThisClientPlayerId())));
     }
 
-    public boolean performSkillMenuClick(Client client, CoreGame game) {
-        float x = game.hudMousePos().getX();
-        float y = game.hudMousePos().getY();
+    return isSuccessful.get();
+  }
 
-        AtomicBoolean isSuccessful = new AtomicBoolean(false);
+  public boolean performSkillMenuClick(Client client, CoreGame game) {
+    float x = game.hudMousePos().getX();
+    float y = game.hudMousePos().getY();
 
-        SkillMenuConsts.slotRectangles.forEach((slotNum, rect) -> {
-            if (rect.contains(x, y)) {
-                client.sendTCP(ActionPerformCommand.of(SkillPickerMenuActivateAction.of(game
-                    .getGameState()
-                    .getThisClientPlayerId(), slotNum)));
-                isSuccessful.set(true);
-            }
-        });
+    AtomicBoolean isSuccessful = new AtomicBoolean(false);
 
-        return isSuccessful.get();
+    SkillMenuConsts.slotRectangles.forEach((slotNum, rect) -> {
+      if (rect.contains(x, y)) {
+        client.sendTCP(ActionPerformCommand.of(SkillPickerMenuActivateAction.of(game.getGameState().getThisClientPlayerId(), slotNum)));
+        isSuccessful.set(true);
+      }
+    });
 
-    }
+    return isSuccessful.get();
+
+  }
 }

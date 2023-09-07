@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 public class CreatureLeavesAreaGateEvent implements PhysicsEvent {
-    @Getter
-    private CreatureId creatureId;
-    @Getter
-    private AreaGateId areaGateId;
+  @Getter
+  private CreatureId creatureId;
+  @Getter
+  private AreaGateId areaGateId;
 }

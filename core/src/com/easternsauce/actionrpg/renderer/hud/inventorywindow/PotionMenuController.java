@@ -9,22 +9,20 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 public class PotionMenuController {
-    public void performUseItemClick(Client client, CoreGame game) {
-        float x = game.hudMousePos().getX();
-        float y = game.hudMousePos().getY();
+  public void performUseItemClick(Client client, CoreGame game) {
+    float x = game.hudMousePos().getX();
+    float y = game.hudMousePos().getY();
 
-        Integer potionMenuSlotClicked = PotionMenuConsts.getPotionMenuClicked(x, y);
+    Integer potionMenuSlotClicked = PotionMenuConsts.getPotionMenuClicked(x, y);
 
-        if (potionMenuSlotClicked != null) {
-            sendUseItemAction(potionMenuSlotClicked, client, game);
-        }
+    if (potionMenuSlotClicked != null) {
+      sendUseItemAction(potionMenuSlotClicked, client, game);
     }
+  }
 
-    public void sendUseItemAction(Integer potionMenuSlotClicked, Client client, CoreGame game) {
-        GameStateAction action = PotionMenuItemUseAction.of(game.getGameState().getThisClientPlayerId(),
-            potionMenuSlotClicked
-        );
+  public void sendUseItemAction(Integer potionMenuSlotClicked, Client client, CoreGame game) {
+    GameStateAction action = PotionMenuItemUseAction.of(game.getGameState().getThisClientPlayerId(), potionMenuSlotClicked);
 
-        client.sendTCP(ActionPerformCommand.of(action));
-    }
+    client.sendTCP(ActionPerformCommand.of(action));
+  }
 }

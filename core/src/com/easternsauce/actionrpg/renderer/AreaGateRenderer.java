@@ -12,38 +12,38 @@ import lombok.NoArgsConstructor;
 @SuppressWarnings("SpellCheckingInspection")
 @NoArgsConstructor(staticName = "of")
 public class AreaGateRenderer {
-    @Getter
-    private AreaGateId areaGateId;
+  @Getter
+  private AreaGateId areaGateId;
 
-    @Getter
-    private Sprite sprite;
+  @Getter
+  private Sprite sprite;
 
-    public static AreaGateRenderer of(AreaGateId areaGateId) {
+  public static AreaGateRenderer of(AreaGateId areaGateId) {
 
-        AreaGateRenderer areaGateRenderer = AreaGateRenderer.of();
-        areaGateRenderer.areaGateId = areaGateId;
-        return areaGateRenderer;
+    AreaGateRenderer areaGateRenderer = AreaGateRenderer.of();
+    areaGateRenderer.areaGateId = areaGateId;
+    return areaGateRenderer;
 
+  }
+
+  public void init(TextureAtlas atlas, CoreGame game) {
+    sprite = new Sprite();
+    sprite.setRegion(atlas.findRegion("downarrow"));
+
+    AreaGate areaGate = game.getGameState().getAreaGate(areaGateId);
+
+    sprite.setSize(areaGate.getWidth(), areaGate.getHeight());
+    sprite.setCenter(areaGate.getPos().getX(), areaGate.getPos().getY());
+
+  }
+
+  public void render(RenderingLayer renderingLayer, CoreGame game) {
+    AreaId currentAreaId = game.getCurrentAreaId();
+
+    AreaGate areaGate = game.getGameState().getAreaGate(areaGateId);
+
+    if (currentAreaId.equals(areaGate.getAreaId())) {
+      sprite.draw(renderingLayer.getSpriteBatch());
     }
-
-    public void init(TextureAtlas atlas, CoreGame game) {
-        sprite = new Sprite();
-        sprite.setRegion(atlas.findRegion("downarrow"));
-
-        AreaGate areaGate = game.getGameState().getAreaGate(areaGateId);
-
-        sprite.setSize(areaGate.getWidth(), areaGate.getHeight());
-        sprite.setCenter(areaGate.getPos().getX(), areaGate.getPos().getY());
-
-    }
-
-    public void render(RenderingLayer renderingLayer, CoreGame game) {
-        AreaId currentAreaId = game.getCurrentAreaId();
-
-        AreaGate areaGate = game.getGameState().getAreaGate(areaGateId);
-
-        if (currentAreaId.equals(areaGate.getAreaId())) {
-            sprite.draw(renderingLayer.getSpriteBatch());
-        }
-    }
+  }
 }

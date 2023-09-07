@@ -8,20 +8,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class EnemyRingOfFire extends RingOfFireBase {
-    public static EnemyRingOfFire of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        EnemyRingOfFire ability = EnemyRingOfFire.of();
+  public static EnemyRingOfFire of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+    EnemyRingOfFire ability = EnemyRingOfFire.of();
 
-        ability.params = abilityParams
-            .setWidth(20f)
-            .setHeight(20f)
-            .setChannelTime(0.4f)
-            .setActiveTime(0.16f)
-            .setBaseDamage(28f)
-            .setTextureName("ring_of_fire")
-            .setChannelAnimationLooping(false)
-            .setActiveAnimationLooping(false)
-            .setAttackWithoutMoving(true);
+    ability.params = abilityParams.setWidth(20f).setHeight(20f).setChannelTime(0.4f).setActiveTime(0.16f).setBaseDamage(28f).setTextureName("ring_of_fire").setChannelAnimationLooping(false).setActiveAnimationLooping(false).setAttackWithoutMoving(true);
 
-        return ability;
-    }
+    return ability;
+  }
 }

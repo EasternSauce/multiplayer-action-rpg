@@ -11,15 +11,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 public class EnemySpawnCommand implements GameCommand {
-    @Getter
-    CreatureId creatureId;
-    @Getter
-    AreaId areaId;
-    @Getter
-    Vector2 pos;
-    @Getter
-    EnemyTemplate enemyTemplate;
-    @Getter
-    Integer rngSeed;
+  @Getter
+  CreatureId creatureId;
+  @Getter
+  AreaId areaId;
+  @Getter
+  Vector2 pos;
+  @Getter
+  EnemyTemplate enemyTemplate;
+  @Getter
+  Integer rngSeed;
 
 }

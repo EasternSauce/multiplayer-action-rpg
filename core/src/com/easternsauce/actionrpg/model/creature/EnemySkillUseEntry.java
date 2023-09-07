@@ -8,15 +8,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 public class EnemySkillUseEntry implements Comparable<EnemySkillUseEntry> {
-    @Getter
-    SkillType skillType;
-    @Getter
-    Float skillUseRange;
-    @Getter
-    Float weight;
+  @Getter
+  SkillType skillType;
+  @Getter
+  Float skillUseRange;
+  @Getter
+  Float weight;
 
-    @Override
-    public int compareTo(EnemySkillUseEntry o) {
-        return this.toString().compareTo(o.toString());
-    }
+  @Override
+  public int compareTo(EnemySkillUseEntry o) {
+    return this.toString().compareTo(o.toString());
+  }
 }

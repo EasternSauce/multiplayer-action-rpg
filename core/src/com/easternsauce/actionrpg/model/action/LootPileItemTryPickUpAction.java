@@ -15,87 +15,74 @@ import java.util.Map;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class LootPileItemTryPickUpAction extends GameStateAction {
-    private CreatureId playerId;
+  private CreatureId playerId;
 
-    private Item item;
+  private Item item;
 
-    public static LootPileItemTryPickUpAction of(CreatureId playerId, Item item) {
-        LootPileItemTryPickUpAction action = LootPileItemTryPickUpAction.of();
-        action.playerId = playerId;
-        action.item = item;
-        return action;
+  public static LootPileItemTryPickUpAction of(CreatureId playerId, Item item) {
+    LootPileItemTryPickUpAction action = LootPileItemTryPickUpAction.of();
+    action.playerId = playerId;
+    action.item = item;
+    return action;
+  }
+
+  @Override
+  public void applyToGame(CoreGame game) {
+    Creature creature = game.getCreature(playerId);
+
+    if (creature == null) {
+      return;
     }
 
-    @Override
-    public void applyToGame(CoreGame game) {
-        Creature creature = game.getCreature(playerId);
+    Map<Integer, Item> inventoryItems = creature.getParams().getInventoryItems();
 
-        if (creature == null) {
-            return;
+    Integer existingStackableSlot = null;
+
+    if (item != null && item.getTemplate().getStackable()) {
+      for (int i = 0; i < InventoryWindowConsts.INVENTORY_TOTAL_SLOTS; i++) {
+        if (inventoryItems.containsKey(i) && inventoryItems.get(i).getTemplate().getId().equals(item.getTemplate().getId())) {
+          existingStackableSlot = i;
+          break;
         }
-
-        Map<Integer, Item> inventoryItems = creature.getParams().getInventoryItems();
-
-        Integer existingStackableSlot = null;
-
-        if (item != null && item.getTemplate().getStackable()) {
-            for (int i = 0; i < InventoryWindowConsts.INVENTORY_TOTAL_SLOTS; i++) {
-                if (inventoryItems.containsKey(i) && inventoryItems.get(i).getTemplate().getId().equals(item
-                    .getTemplate()
-                    .getId())) {
-                    existingStackableSlot = i;
-                    break;
-                }
-            }
-        }
-
-        if (existingStackableSlot != null) {
-            LootPile lootPile = game.getGameState().getLootPile(item.getLootPileId());
-
-            if (lootPile != null) {
-                inventoryItems.get(existingStackableSlot).setQuantity(inventoryItems
-                    .get(existingStackableSlot)
-                    .getQuantity() + item.getQuantity());
-
-                lootPile.getParams().getItems().remove(item);
-                if (lootPile.getParams().getItems().isEmpty()) {
-                    lootPile.getParams().setFullyLooted(true);
-                }
-            }
-        } else {
-            Integer freeSlot = null;
-            for (int i = 0; i < InventoryWindowConsts.INVENTORY_TOTAL_SLOTS; i++) {
-                if (!inventoryItems.containsKey(i)) {
-                    freeSlot = i;
-                    break;
-                }
-            }
-
-            LootPile lootPile = game.getGameState().getLootPile(item.getLootPileId());
-
-            if (freeSlot != null && lootPile != null) {
-                inventoryItems.put(
-                    freeSlot,
-                    Item
-                        .of()
-                        .setTemplate(item.getTemplate())
-                        .setQuantity(item.getQuantity())
-                        .setQualityModifier(item.getQualityModifier())
-                        .setGrantedSkills(item.getGrantedSkills())
-                        .setLootPileId(null)
-                );
-
-                lootPile.getParams().getItems().remove(item);
-                if (lootPile.getParams().getItems().isEmpty()) {
-                    lootPile.getParams().setFullyLooted(true);
-                }
-            }
-        }
-
+      }
     }
 
-    @Override
-    public Entity getEntity(CoreGame game) {
-        return game.getGameState().getLootPiles().get(item.getLootPileId());
+    if (existingStackableSlot != null) {
+      LootPile lootPile = game.getGameState().getLootPile(item.getLootPileId());
+
+      if (lootPile != null) {
+        inventoryItems.get(existingStackableSlot).setQuantity(inventoryItems.get(existingStackableSlot).getQuantity() + item.getQuantity());
+
+        lootPile.getParams().getItems().remove(item);
+        if (lootPile.getParams().getItems().isEmpty()) {
+          lootPile.getParams().setFullyLooted(true);
+        }
+      }
+    } else {
+      Integer freeSlot = null;
+      for (int i = 0; i < InventoryWindowConsts.INVENTORY_TOTAL_SLOTS; i++) {
+        if (!inventoryItems.containsKey(i)) {
+          freeSlot = i;
+          break;
+        }
+      }
+
+      LootPile lootPile = game.getGameState().getLootPile(item.getLootPileId());
+
+      if (freeSlot != null && lootPile != null) {
+        inventoryItems.put(freeSlot, Item.of().setTemplate(item.getTemplate()).setQuantity(item.getQuantity()).setQualityModifier(item.getQualityModifier()).setGrantedSkills(item.getGrantedSkills()).setLootPileId(null));
+
+        lootPile.getParams().getItems().remove(item);
+        if (lootPile.getParams().getItems().isEmpty()) {
+          lootPile.getParams().setFullyLooted(true);
+        }
+      }
     }
+
+  }
+
+  @Override
+  public Entity getEntity(CoreGame game) {
+    return game.getGameState().getLootPiles().get(item.getLootPileId());
+  }
 }

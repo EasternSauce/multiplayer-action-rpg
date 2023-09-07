@@ -14,58 +14,54 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class PlayerJoinAction extends GameStateAction {
-    @Getter
-    private CreatureId playerId;
+  @Getter
+  private CreatureId playerId;
 
-    public static PlayerJoinAction of(CreatureId playerId) {
-        PlayerJoinAction action = PlayerJoinAction.of();
-        action.playerId = playerId;
-        return action;
+  public static PlayerJoinAction of(CreatureId playerId) {
+    PlayerJoinAction action = PlayerJoinAction.of();
+    action.playerId = playerId;
+    return action;
+  }
+
+  public void applyToGame(CoreGame game) {
+    game.getGameState().accessCreatures().getActiveCreatureIds().add(playerId);
+
+    Creature player;
+
+    if (game.getAllCreatures().containsKey(playerId)) {
+      player = loadExistingPlayerData(game);
+    } else {
+      player = createNewPlayer(game);
+
+      game.getGameState().initPlayerConfig(playerId);
     }
 
-    public void applyToGame(CoreGame game) {
-        game.getGameState().accessCreatures().getActiveCreatureIds().add(playerId);
+    game.getAllCreatures().put(playerId, player);
 
-        Creature player;
+    game.getEventProcessor().getCreatureModelsToBeCreated().add(playerId);
 
-        if (game.getAllCreatures().containsKey(playerId)) {
-            player = loadExistingPlayerData(game);
-        } else {
-            player = createNewPlayer(game);
+  }
 
-            game.getGameState().initPlayerConfig(playerId);
-        }
+  private Creature loadExistingPlayerData(CoreGame game) {
+    Creature player;
+    player = game.getCreature(playerId);
+    return player;
+  }
 
-        game.getAllCreatures().put(playerId, player);
+  private Creature createNewPlayer(CoreGame game) {
+    String[] textures = new String[]{"male1", "male2", "female1"};
 
-        game.getEventProcessor().getCreatureModelsToBeCreated().add(playerId);
+    Vector2 pos = Vector2.of((Math.abs(game.getGameState().getRandomGenerator().nextFloat()) * (28 - 18)) + 18, (Math.abs(game.getGameState().getRandomGenerator().nextFloat()) * (12 - 6)) + 6);
 
-    }
+    String textureName = textures[((int) (Math.abs(game.getGameState().getRandomGenerator().nextFloat()) * 100) % 3)];
 
-    private Creature loadExistingPlayerData(CoreGame game) {
-        Creature player;
-        player = game.getCreature(playerId);
-        return player;
-    }
+    int rngSeed = game.getGameState().getRandomGenerator().nextInt();
 
-    private Creature createNewPlayer(CoreGame game) {
-        String[] textures = new String[]{"male1", "male2", "female1"};
+    return Player.of(playerId, AreaId.of("Area1"), pos, textureName, rngSeed);
+  }
 
-        Vector2 pos = Vector2.of(
-            (Math.abs(game.getGameState().getRandomGenerator().nextFloat()) * (28 - 18)) + 18,
-            (Math.abs(game.getGameState().getRandomGenerator().nextFloat()) * (12 - 6)) + 6
-        );
-
-        String textureName = textures[((int) (Math.abs(game.getGameState().getRandomGenerator().nextFloat()) * 100) %
-            3)];
-
-        int rngSeed = game.getGameState().getRandomGenerator().nextInt();
-
-        return Player.of(playerId, AreaId.of("Area1"), pos, textureName, rngSeed);
-    }
-
-    @Override
-    public Entity getEntity(CoreGame game) {
-        return game.getCreature(playerId);
-    }
+  @Override
+  public Entity getEntity(CoreGame game) {
+    return game.getCreature(playerId);
+  }
 }

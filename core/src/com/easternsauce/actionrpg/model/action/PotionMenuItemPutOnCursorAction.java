@@ -10,28 +10,28 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class PotionMenuItemPutOnCursorAction extends GameStateAction {
-    private CreatureId playerId;
+  private CreatureId playerId;
 
-    private Integer slotIndex;
+  private Integer slotIndex;
 
-    public static PotionMenuItemPutOnCursorAction of(CreatureId creatureId, Integer slotIndex) {
-        PotionMenuItemPutOnCursorAction action = PotionMenuItemPutOnCursorAction.of();
-        action.playerId = creatureId;
-        action.slotIndex = slotIndex;
-        return action;
+  public static PotionMenuItemPutOnCursorAction of(CreatureId creatureId, Integer slotIndex) {
+    PotionMenuItemPutOnCursorAction action = PotionMenuItemPutOnCursorAction.of();
+    action.playerId = creatureId;
+    action.slotIndex = slotIndex;
+    return action;
+  }
+
+  @Override
+  public void applyToGame(CoreGame game) {
+    PlayerConfig playerConfig = game.getGameState().getPlayerConfig(playerId);
+
+    if (playerConfig != null) {
+      playerConfig.setPotionMenuItemBeingMoved(slotIndex);
     }
+  }
 
-    @Override
-    public void applyToGame(CoreGame game) {
-        PlayerConfig playerConfig = game.getGameState().getPlayerConfig(playerId);
-
-        if (playerConfig != null) {
-            playerConfig.setPotionMenuItemBeingMoved(slotIndex);
-        }
-    }
-
-    @Override
-    public Entity getEntity(CoreGame game) {
-        return game.getCreature(playerId);
-    }
+  @Override
+  public Entity getEntity(CoreGame game) {
+    return game.getCreature(playerId);
+  }
 }

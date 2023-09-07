@@ -13,30 +13,22 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 public class CreatureStunnedAnimationRenderer {
-    @Getter
-    private final AnimationRenderer animationRenderer = AnimationRenderer.of(AnimationSpec.of(60,
-        30,
-        3f,
-        1.5f,
-        0.045f,
-        8,
-        "stunned",
-        true
-    ));
+  @Getter
+  private final AnimationRenderer animationRenderer = AnimationRenderer.of(AnimationSpec.of(60, 30, 3f, 1.5f, 0.045f, 8, "stunned", true));
 
-    public void render(CreatureId creatureId, float spriteWidth, RenderingLayer renderingLayer, CoreGame game) {
-        Creature creature = game.getCreature(creatureId);
+  public void render(CreatureId creatureId, float spriteWidth, RenderingLayer renderingLayer, CoreGame game) {
+    Creature creature = game.getCreature(creatureId);
 
-        if (creature != null && creature.isEffectActive(CreatureEffect.STUN, game)) {
-            float posX = creature.getParams().getPos().getX() - 1.5f;
-            float posY = LifeBarUtils.getLifeBarPosY(creature, spriteWidth) - 1f;
+    if (creature != null && creature.isEffectActive(CreatureEffect.STUN, game)) {
+      float posX = creature.getParams().getPos().getX() - 1.5f;
+      float posY = LifeBarUtils.getLifeBarPosY(creature, spriteWidth) - 1f;
 
-            Vector2 pos = Vector2.of(posX, posY);
+      Vector2 pos = Vector2.of(posX, posY);
 
-            float stunTimeSinceStarted = creature.getTimeSinceStarted(CreatureEffect.STUN, game);
+      float stunTimeSinceStarted = creature.getTimeSinceStarted(CreatureEffect.STUN, game);
 
-            animationRenderer.render(pos, stunTimeSinceStarted, renderingLayer);
-        }
+      animationRenderer.render(pos, stunTimeSinceStarted, renderingLayer);
     }
+  }
 
 }

@@ -15,66 +15,32 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @NoArgsConstructor(staticName = "of")
 public class ItemPickupMenuRenderer {
-    public void render(RenderingLayer renderingLayer, CoreGame game) {
-        PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
+  public void render(RenderingLayer renderingLayer, CoreGame game) {
+    PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
 
-        if (playerConfig == null || playerConfig.getInventoryVisible()) {
-            return;
-        }
-
-        float x = game.hudMousePos().getX();
-        float y = game.hudMousePos().getY();
-
-        IconRetriever iconRetriever = game.getEntityManager().getGameEntityRenderer().getIconRetriever();
-
-        AtomicInteger i = new AtomicInteger();
-
-        playerConfig.getItemPickupMenuLootPiles().stream().filter(lootPileId -> game
-            .getGameState()
-            .getLootPiles()
-            .containsKey(lootPileId)).flatMap(lootPileId -> game
-            .getGameState()
-            .getLootPile(lootPileId)
-            .getParams()
-            .getItems()
-            .stream()).forEach(item -> renderMenuOption(renderingLayer, iconRetriever, x, y, i, item));
+    if (playerConfig == null || playerConfig.getInventoryVisible()) {
+      return;
     }
 
-    private void renderMenuOption(RenderingLayer renderingLayer,
-                                  IconRetriever iconRetriever,
-                                  float x,
-                                  float y,
-                                  AtomicInteger i,
-                                  Item item) {
-        Rect rect = ItemPickupMenuConsts.getMenuOptionRect(i.get());
-        renderingLayer.getShapeDrawer().filledRectangle(rect.getX(),
-            rect.getY(),
-            rect.getWidth(),
-            rect.getHeight(),
-            Color.DARK_GRAY.cpy().sub(0, 0, 0, 0.3f)
-        );
-        if (rect.contains(x, y)) {
-            renderingLayer.getShapeDrawer().rectangle(rect.getX(),
-                rect.getY(),
-                rect.getWidth(),
-                rect.getHeight(),
-                Color.ORANGE
-            );
-        }
-        renderingLayer.getSpriteBatch().draw(iconRetriever.getIcon(item.getTemplate().getIconPos().getX(),
-                item.getTemplate().getIconPos().getY()
-            ),
-            rect.getX() + 10f,
-            rect.getY(),
-            20f,
-            20f
-        );
-        Assets.renderSmallFont(renderingLayer,
-            item.getTemplate().getName(),
-            Vector2.of(rect.getX() + 40f, rect.getY() + 17f),
-            Color.CYAN
-        );
-        i.getAndIncrement();
+    float x = game.hudMousePos().getX();
+    float y = game.hudMousePos().getY();
+
+    IconRetriever iconRetriever = game.getEntityManager().getGameEntityRenderer().getIconRetriever();
+
+    AtomicInteger i = new AtomicInteger();
+
+    playerConfig.getItemPickupMenuLootPiles().stream().filter(lootPileId -> game.getGameState().getLootPiles().containsKey(lootPileId)).flatMap(lootPileId -> game.getGameState().getLootPile(lootPileId).getParams().getItems().stream()).forEach(item -> renderMenuOption(renderingLayer, iconRetriever, x, y, i, item));
+  }
+
+  private void renderMenuOption(RenderingLayer renderingLayer, IconRetriever iconRetriever, float x, float y, AtomicInteger i, Item item) {
+    Rect rect = ItemPickupMenuConsts.getMenuOptionRect(i.get());
+    renderingLayer.getShapeDrawer().filledRectangle(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(), Color.DARK_GRAY.cpy().sub(0, 0, 0, 0.3f));
+    if (rect.contains(x, y)) {
+      renderingLayer.getShapeDrawer().rectangle(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(), Color.ORANGE);
     }
+    renderingLayer.getSpriteBatch().draw(iconRetriever.getIcon(item.getTemplate().getIconPos().getX(), item.getTemplate().getIconPos().getY()), rect.getX() + 10f, rect.getY(), 20f, 20f);
+    Assets.renderSmallFont(renderingLayer, item.getTemplate().getName(), Vector2.of(rect.getX() + 40f, rect.getY() + 17f), Color.CYAN);
+    i.getAndIncrement();
+  }
 
 }

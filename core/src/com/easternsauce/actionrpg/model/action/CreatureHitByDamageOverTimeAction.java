@@ -10,39 +10,39 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class CreatureHitByDamageOverTimeAction extends CreatureHitAction {
-    private CreatureId attackerId;
-    private CreatureId targetId;
-    private Float damage;
+  private CreatureId attackerId;
+  private CreatureId targetId;
+  private Float damage;
 
-    public static CreatureHitByDamageOverTimeAction of(CreatureId attackerId, CreatureId targetId, Float damage) {
-        CreatureHitByDamageOverTimeAction action = CreatureHitByDamageOverTimeAction.of();
-        action.attackerId = attackerId;
-        action.targetId = targetId;
-        action.damage = damage;
-        return action;
+  public static CreatureHitByDamageOverTimeAction of(CreatureId attackerId, CreatureId targetId, Float damage) {
+    CreatureHitByDamageOverTimeAction action = CreatureHitByDamageOverTimeAction.of();
+    action.attackerId = attackerId;
+    action.targetId = targetId;
+    action.damage = damage;
+    return action;
+  }
+
+  @Override
+  public void applyToGame(CoreGame game) {
+    Creature targetCreature = game.getCreature(targetId);
+    Creature attackerCreature = game.getCreature(attackerId);
+
+    if (targetCreature == null || attackerCreature == null) {
+      return;
     }
 
-    @Override
-    public void applyToGame(CoreGame game) {
-        Creature targetCreature = game.getCreature(targetId);
-        Creature attackerCreature = game.getCreature(attackerId);
+    targetCreature.takeLifeDamage(damage, targetCreature.getParams().getPos(), game);
 
-        if (targetCreature == null || attackerCreature == null) {
-            return;
-        }
+    handleCreatureDeath(targetCreature, attackerCreature, game);
+  }
 
-        targetCreature.takeLifeDamage(damage, targetCreature.getParams().getPos(), game);
+  @Override
+  public Entity getEntity(CoreGame game) {
+    return game.getCreature(targetId);
+  }
 
-        handleCreatureDeath(targetCreature, attackerCreature, game);
-    }
-
-    @Override
-    public Entity getEntity(CoreGame game) {
-        return game.getCreature(targetId);
-    }
-
-    @Override
-    public boolean isActionObjectValid(CoreGame game) {
-        return true;
-    }
+  @Override
+  public boolean isActionObjectValid(CoreGame game) {
+    return true;
+  }
 }

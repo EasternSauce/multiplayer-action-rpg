@@ -12,6 +12,6 @@ import java.util.List;
 @AllArgsConstructor(staticName = "of")
 @Data
 public class AstarResult {
-    private List<Vector2> path;
-    private boolean gaveUp;
+  private List<Vector2> path;
+  private boolean gaveUp;
 }

@@ -11,35 +11,30 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 public class AreaGateBody {
-    private Body b2body;
+  private Body b2body;
 
-    private PhysicsWorld world;
+  private PhysicsWorld world;
 
-    @Getter
-    private AreaGateId areaGateId;
+  @Getter
+  private AreaGateId areaGateId;
 
-    public static AreaGateBody of(AreaGateId areaGateId) {
-        AreaGateBody areaGateBody = AreaGateBody.of();
-        areaGateBody.areaGateId = areaGateId;
+  public static AreaGateBody of(AreaGateId areaGateId) {
+    AreaGateBody areaGateBody = AreaGateBody.of();
+    areaGateBody.areaGateId = areaGateId;
 
-        return areaGateBody;
-    }
+    return areaGateBody;
+  }
 
-    public void init(CoreGame game) {
-        AreaGate areaGate = game.getGameState().getAreaGates().get(areaGateId);
+  public void init(CoreGame game) {
+    AreaGate areaGate = game.getGameState().getAreaGates().get(areaGateId);
 
-        AreaId areaId = areaGate.getAreaId();
-        world = game.getEntityManager().getGameEntityPhysics().getPhysicsWorlds().get(areaId);
+    AreaId areaId = areaGate.getAreaId();
+    world = game.getEntityManager().getGameEntityPhysics().getPhysicsWorlds().get(areaId);
 
-        b2body = B2BodyFactory.createAreaGateB2body(world,
-            this,
-            areaGate.getPos(),
-            areaGate.getWidth(),
-            areaGate.getHeight()
-        );
-    }
+    b2body = B2BodyFactory.createAreaGateB2body(world, this, areaGate.getPos(), areaGate.getWidth(), areaGate.getHeight());
+  }
 
-    public void onRemove() {
-        world.getB2world().destroyBody(b2body);
-    }
+  public void onRemove() {
+    world.getB2world().destroyBody(b2body);
+  }
 }

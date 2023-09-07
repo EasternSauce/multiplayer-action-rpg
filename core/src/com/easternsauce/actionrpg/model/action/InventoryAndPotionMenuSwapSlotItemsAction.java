@@ -15,80 +15,78 @@ import java.util.concurrent.ConcurrentSkipListSet;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class InventoryAndPotionMenuSwapSlotItemsAction extends GameStateAction {
-    private CreatureId playerId;
+  private CreatureId playerId;
 
-    private Integer inventoryIndex;
-    private Integer potionMenuIndex;
+  private Integer inventoryIndex;
+  private Integer potionMenuIndex;
 
-    public static InventoryAndPotionMenuSwapSlotItemsAction of(CreatureId creatureId,
-                                                               Integer inventoryIndex,
-                                                               Integer potionMenuIndex) {
-        InventoryAndPotionMenuSwapSlotItemsAction action = InventoryAndPotionMenuSwapSlotItemsAction.of();
-        action.playerId = creatureId;
-        action.inventoryIndex = inventoryIndex;
-        action.potionMenuIndex = potionMenuIndex;
-        return action;
+  public static InventoryAndPotionMenuSwapSlotItemsAction of(CreatureId creatureId, Integer inventoryIndex, Integer potionMenuIndex) {
+    InventoryAndPotionMenuSwapSlotItemsAction action = InventoryAndPotionMenuSwapSlotItemsAction.of();
+    action.playerId = creatureId;
+    action.inventoryIndex = inventoryIndex;
+    action.potionMenuIndex = potionMenuIndex;
+    return action;
+  }
+
+  @Override
+  public void applyToGame(CoreGame game) {
+    Creature player = game.getCreature(playerId);
+    PlayerConfig playerConfig = game.getGameState().getPlayerConfig(playerId);
+
+    Item inventoryItem = player.getParams().getInventoryItems().get(inventoryIndex);
+    Item potionMenuItem = player.getParams().getPotionMenuItems().get(potionMenuIndex);
+
+    if (checkPotionMenuSlotAcceptsItemType(inventoryItem)) {
+      handleSwapInInventory(player, potionMenuItem);
+      handleSwapInPotionMenu(player, inventoryItem);
     }
 
-    @Override
-    public void applyToGame(CoreGame game) {
-        Creature player = game.getCreature(playerId);
-        PlayerConfig playerConfig = game.getGameState().getPlayerConfig(playerId);
+    finalizeItemSwap(player, playerConfig);
+  }
 
-        Item inventoryItem = player.getParams().getInventoryItems().get(inventoryIndex);
-        Item potionMenuItem = player.getParams().getPotionMenuItems().get(potionMenuIndex);
+  @Override
+  public Entity getEntity(CoreGame game) {
+    return game.getCreature(playerId);
+  }
 
-        if (checkPotionMenuSlotAcceptsItemType(inventoryItem)) {
-            handleSwapInInventory(player, potionMenuItem);
-            handleSwapInPotionMenu(player, inventoryItem);
-        }
+  private boolean checkPotionMenuSlotAcceptsItemType(Item inventoryItem) {
+    return inventoryItem == null || inventoryItem.getTemplate().getConsumable();
+  }
 
-        finalizeItemSwap(player, playerConfig);
+  private void handleSwapInInventory(Creature player, Item potionMenuItem) {
+    if (potionMenuItem != null) {
+      player.getParams().getInventoryItems().put(inventoryIndex, potionMenuItem);
+    } else {
+      player.getParams().getInventoryItems().remove(inventoryIndex);
     }
+  }
 
-    @Override
-    public Entity getEntity(CoreGame game) {
-        return game.getCreature(playerId);
+  private void handleSwapInPotionMenu(Creature player, Item inventoryItem) {
+    if (inventoryItem != null) {
+      player.getParams().getPotionMenuItems().put(potionMenuIndex, inventoryItem);
+    } else {
+      player.getParams().getPotionMenuItems().remove(potionMenuIndex);
     }
+  }
 
-    private boolean checkPotionMenuSlotAcceptsItemType(Item inventoryItem) {
-        return inventoryItem == null || inventoryItem.getTemplate().getConsumable();
-    }
+  private void finalizeItemSwap(Creature player, PlayerConfig playerConfig) {
+    playerConfig.setInventoryItemBeingMoved(null);
+    playerConfig.setEquipmentItemBeingMoved(null);
+    playerConfig.setPotionMenuItemBeingMoved(null);
 
-    private void handleSwapInInventory(Creature player, Item potionMenuItem) {
-        if (potionMenuItem != null) {
-            player.getParams().getInventoryItems().put(inventoryIndex, potionMenuItem);
-        } else {
-            player.getParams().getInventoryItems().remove(inventoryIndex);
-        }
-    }
+    playerConfig.setSkillMenuPickerSlotBeingChanged(null);
 
-    private void handleSwapInPotionMenu(Creature player, Item inventoryItem) {
-        if (inventoryItem != null) {
-            player.getParams().getPotionMenuItems().put(potionMenuIndex, inventoryItem);
-        } else {
-            player.getParams().getPotionMenuItems().remove(potionMenuIndex);
-        }
-    }
+    removeSkillFromSkillMenuOnItemUnequip(player, playerConfig);
+  }
 
-    private void finalizeItemSwap(Creature player, PlayerConfig playerConfig) {
-        playerConfig.setInventoryItemBeingMoved(null);
-        playerConfig.setEquipmentItemBeingMoved(null);
-        playerConfig.setPotionMenuItemBeingMoved(null);
-
-        playerConfig.setSkillMenuPickerSlotBeingChanged(null);
-
-        removeSkillFromSkillMenuOnItemUnequip(player, playerConfig);
-    }
-
-    @SuppressWarnings("SpellCheckingInspection")
-    private void removeSkillFromSkillMenuOnItemUnequip(Creature player, PlayerConfig playerConfig) {
-        Set<Integer> slotsToRemove = new ConcurrentSkipListSet<>();
-        playerConfig.getSkillMenuSlots().forEach((slotIndex, skillType) -> {
-            if (!player.availableSkills().containsKey(skillType)) {
-                slotsToRemove.add(slotIndex);
-            }
-        });
-        slotsToRemove.forEach(slotIndex -> playerConfig.getSkillMenuSlots().remove(slotIndex));
-    }
+  @SuppressWarnings("SpellCheckingInspection")
+  private void removeSkillFromSkillMenuOnItemUnequip(Creature player, PlayerConfig playerConfig) {
+    Set<Integer> slotsToRemove = new ConcurrentSkipListSet<>();
+    playerConfig.getSkillMenuSlots().forEach((slotIndex, skillType) -> {
+      if (!player.availableSkills().containsKey(skillType)) {
+        slotsToRemove.add(slotIndex);
+      }
+    });
+    slotsToRemove.forEach(slotIndex -> playerConfig.getSkillMenuSlots().remove(slotIndex));
+  }
 }

@@ -14,80 +14,74 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class CreatureHitByAbilityAction extends CreatureHitAction {
-    private CreatureId attackerId;
-    private CreatureId targetId;
-    private Ability ability;
-    private Integer hitCount;
-    private Vector2 contactPoint;
+  private CreatureId attackerId;
+  private CreatureId targetId;
+  private Ability ability;
+  private Integer hitCount;
+  private Vector2 contactPoint;
 
-    public static CreatureHitByAbilityAction of(CreatureId attackerId,
-                                                CreatureId targetId,
-                                                Ability ability,
-                                                Integer hitCount,
-                                                Vector2 contactPoint) {
-        CreatureHitByAbilityAction action = CreatureHitByAbilityAction.of();
-        action.attackerId = attackerId;
-        action.targetId = targetId;
-        action.ability = ability;
-        action.hitCount = hitCount;
-        action.contactPoint = contactPoint;
-        return action;
+  public static CreatureHitByAbilityAction of(CreatureId attackerId, CreatureId targetId, Ability ability, Integer hitCount, Vector2 contactPoint) {
+    CreatureHitByAbilityAction action = CreatureHitByAbilityAction.of();
+    action.attackerId = attackerId;
+    action.targetId = targetId;
+    action.ability = ability;
+    action.hitCount = hitCount;
+    action.contactPoint = contactPoint;
+    return action;
+  }
+
+  @Override
+  public void applyToGame(CoreGame game) {
+    Creature targetCreature = game.getCreature(targetId);
+    Creature attackerCreature = game.getCreature(attackerId);
+
+    if (targetCreature == null || attackerCreature == null) {
+      return;
     }
 
-    @Override
-    public void applyToGame(CoreGame game) {
-        Creature targetCreature = game.getCreature(targetId);
-        Creature attackerCreature = game.getCreature(attackerId);
+    Float damage = ability.getDamage(game);
 
-        if (targetCreature == null || attackerCreature == null) {
-            return;
+    boolean meleeAbilityShielded = targetCreature.isMeleeAbilityShielded(ability, game);
+    boolean markedAsShielded = ability.getParams().getMarkedAsShielded();
+    boolean isShielded = markedAsShielded || meleeAbilityShielded;
+
+    if (hitCount <= ability.maximumCreatureHitCount(targetId, game) && !(isShielded && targetCreature instanceof Player) && damage > 0f) {
+
+      float realDamage;
+
+      if (isShielded) {
+        realDamage = damage / 4f;
+      } else {
+        realDamage = damage;
+      }
+
+      targetCreature.takeLifeDamage(realDamage, contactPoint, game);
+
+      if (ability.canStun()) {
+        Float stunDuration;
+        if (ability.getParams().getOverrideStunDuration() != null) {
+          stunDuration = ability.getParams().getOverrideStunDuration();
+        } else {
+          stunDuration = ability.getStunDuration();
         }
 
-        Float damage = ability.getDamage(game);
+        targetCreature.applyEffect(CreatureEffect.STUN, stunDuration, game);
+      }
 
-        boolean meleeAbilityShielded = targetCreature.isMeleeAbilityShielded(ability, game);
-        boolean markedAsShielded = ability.getParams().getMarkedAsShielded();
-        boolean isShielded = markedAsShielded || meleeAbilityShielded;
-
-        if (hitCount <= ability.maximumCreatureHitCount(targetId, game) &&
-            !(isShielded && targetCreature instanceof Player) &&
-            damage > 0f) {
-
-            float realDamage;
-
-            if (isShielded) {
-                realDamage = damage / 4f;
-            } else {
-                realDamage = damage;
-            }
-
-            targetCreature.takeLifeDamage(realDamage, contactPoint, game);
-
-            if (ability.canStun()) {
-                Float stunDuration;
-                if (ability.getParams().getOverrideStunDuration() != null) {
-                    stunDuration = ability.getParams().getOverrideStunDuration();
-                } else {
-                    stunDuration = ability.getStunDuration();
-                }
-
-                targetCreature.applyEffect(CreatureEffect.STUN, stunDuration, game);
-            }
-
-            targetCreature.onBeingHit(ability, game);
-        }
-
-        handleCreatureDeath(targetCreature, attackerCreature, game);
-
+      targetCreature.onBeingHit(ability, game);
     }
 
-    @Override
-    public Entity getEntity(CoreGame game) {
-        return game.getCreature(targetId);
-    }
+    handleCreatureDeath(targetCreature, attackerCreature, game);
 
-    @Override
-    public boolean isActionObjectValid(CoreGame game) {
-        return true;
-    }
+  }
+
+  @Override
+  public Entity getEntity(CoreGame game) {
+    return game.getCreature(targetId);
+  }
+
+  @Override
+  public boolean isActionObjectValid(CoreGame game) {
+    return true;
+  }
 }

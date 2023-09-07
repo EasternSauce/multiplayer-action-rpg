@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(staticName = "of")
 @EqualsAndHashCode
 public class CreatureId implements Comparable<CreatureId> {
-    @Getter
-    String value;
+  @Getter
+  String value;
 
-    @Override
-    public int compareTo(CreatureId o) {
-        return getValue().compareTo(o.getValue());
-    }
+  @Override
+  public int compareTo(CreatureId o) {
+    return getValue().compareTo(o.getValue());
+  }
 }

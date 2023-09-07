@@ -11,30 +11,30 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class CreatureChangeAimDirectionAction extends GameStateAction {
-    private CreatureId creatureId;
+  private CreatureId creatureId;
 
-    private Vector2 mousePos;
+  private Vector2 mousePos;
 
-    public static CreatureChangeAimDirectionAction of(CreatureId creatureId, Vector2 mousePos) {
-        CreatureChangeAimDirectionAction action = CreatureChangeAimDirectionAction.of();
-        action.creatureId = creatureId;
-        action.mousePos = mousePos;
-        return action;
+  public static CreatureChangeAimDirectionAction of(CreatureId creatureId, Vector2 mousePos) {
+    CreatureChangeAimDirectionAction action = CreatureChangeAimDirectionAction.of();
+    action.creatureId = creatureId;
+    action.mousePos = mousePos;
+    return action;
+  }
+
+  @Override
+  public void applyToGame(CoreGame game) {
+    Creature creature = game.getCreature(creatureId);
+
+    if (creature != null && creature.isAlive() && !creature.isStunned(game)) {
+      creature.getParams().getMovementParams().setAimDirection(mousePos.normalized());
+
+      creature.getParams().getMovementParams().getChangeAimDirectionActionsPerSecondLimiterTimer().restart();
     }
+  }
 
-    @Override
-    public void applyToGame(CoreGame game) {
-        Creature creature = game.getCreature(creatureId);
-
-        if (creature != null && creature.isAlive() && !creature.isStunned(game)) {
-            creature.getParams().getMovementParams().setAimDirection(mousePos.normalized());
-
-            creature.getParams().getMovementParams().getChangeAimDirectionActionsPerSecondLimiterTimer().restart();
-        }
-    }
-
-    @Override
-    public Entity getEntity(CoreGame game) {
-        return game.getCreature(creatureId);
-    }
+  @Override
+  public Entity getEntity(CoreGame game) {
+    return game.getCreature(creatureId);
+  }
 }

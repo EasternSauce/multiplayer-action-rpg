@@ -16,54 +16,46 @@ import java.util.Objects;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 public class CoreGameClientListener extends Listener {
-    private CoreGameClient game;
+  private CoreGameClient game;
 
-    @Override
-    public void disconnected(Connection connection) {
-        System.out.println("Disconnecting...");
-        System.exit(0);
+  @Override
+  public void disconnected(Connection connection) {
+    System.out.println("Disconnecting...");
+    System.exit(0);
+  }
+
+  @Override
+  public void received(Connection connection, Object object) {
+    if (object instanceof ActionsHolder) {
+      ActionsHolder actionsHolder = (ActionsHolder) object;
+
+      List<GameStateAction> actions = actionsHolder.getActions();
+
+      actions.forEach(gameStateAction -> gameStateAction.applyToGame(game));
+
+    } else if (object instanceof GameStateBroadcast) {
+      GameStateBroadcast action = (GameStateBroadcast) object;
+
+      game.getGameState().createEventsFromReceivedGameStateData(action.getGameStateData(), game.getEventProcessor());
+      game.getGameState().setNewGameState(action.getGameStateData());
+
+      game.getEntityManager().getGameEntityPhysics().setForceUpdateBodyPositions(true);
+
+      if (!action.getGameStateData().isStub()) {
+        game.setFirstNonStubBroadcastReceived(true);
+      }
+    } else if (object instanceof ChatMessageSendCommand) {
+      ChatMessageSendCommand action = (ChatMessageSendCommand) object;
+
+      if (!Objects.equals(action.getPoster(), game.getGameState().getThisClientPlayerId().getValue())) {
+        game.getChat().sendMessage(action.getPoster(), action.getText(), game);
+      }
+
+    } else if (object instanceof EnemySpawnCommand) {
+      EnemySpawnCommand command = (EnemySpawnCommand) object;
+
+      game.getEntityManager().spawnEnemy(command.getCreatureId(), command.getAreaId(), command.getPos(), command.getEnemyTemplate(), command.getRngSeed(), game);
     }
 
-    @Override
-    public void received(Connection connection, Object object) {
-        if (object instanceof ActionsHolder) {
-            ActionsHolder actionsHolder = (ActionsHolder) object;
-
-            List<GameStateAction> actions = actionsHolder.getActions();
-
-            actions.forEach(gameStateAction -> gameStateAction.applyToGame(game));
-
-        } else if (object instanceof GameStateBroadcast) {
-            GameStateBroadcast action = (GameStateBroadcast) object;
-
-            game.getGameState().createEventsFromReceivedGameStateData(action.getGameStateData(),
-                game.getEventProcessor()
-            );
-            game.getGameState().setNewGameState(action.getGameStateData());
-
-            game.getEntityManager().getGameEntityPhysics().setForceUpdateBodyPositions(true);
-
-            if (!action.getGameStateData().isStub()) {
-                game.setFirstNonStubBroadcastReceived(true);
-            }
-        } else if (object instanceof ChatMessageSendCommand) {
-            ChatMessageSendCommand action = (ChatMessageSendCommand) object;
-
-            if (!Objects.equals(action.getPoster(), game.getGameState().getThisClientPlayerId().getValue())) {
-                game.getChat().sendMessage(action.getPoster(), action.getText(), game);
-            }
-
-        } else if (object instanceof EnemySpawnCommand) {
-            EnemySpawnCommand command = (EnemySpawnCommand) object;
-
-            game.getEntityManager().spawnEnemy(command.getCreatureId(),
-                command.getAreaId(),
-                command.getPos(),
-                command.getEnemyTemplate(),
-                command.getRngSeed(),
-                game
-            );
-        }
-
-    }
+  }
 }

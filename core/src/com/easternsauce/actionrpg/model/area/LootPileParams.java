@@ -14,12 +14,12 @@ import java.util.concurrent.ConcurrentSkipListSet;
 @AllArgsConstructor(staticName = "of")
 @Data
 public class LootPileParams implements EntityParams {
-    private LootPileId id;
+  private LootPileId id;
 
-    private AreaId areaId;
+  private AreaId areaId;
 
-    private Vector2 pos;
-    private Set<Item> items = new ConcurrentSkipListSet<>();
+  private Vector2 pos;
+  private Set<Item> items = new ConcurrentSkipListSet<>();
 
-    private Boolean fullyLooted = false;
+  private Boolean fullyLooted = false;
 }

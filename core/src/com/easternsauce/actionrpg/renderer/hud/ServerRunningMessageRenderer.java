@@ -9,16 +9,16 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 public class ServerRunningMessageRenderer {
-    public void render(RenderingLayer renderingLayer) {
-        renderingLayer.begin();
+  public void render(RenderingLayer renderingLayer) {
+    renderingLayer.begin();
 
-        float x = Constants.WINDOW_WIDTH / 2f - 250;
-        float y = Constants.WINDOW_HEIGHT / 2f + Constants.WINDOW_HEIGHT * 0.45f;
+    float x = Constants.WINDOW_WIDTH / 2f - 250;
+    float y = Constants.WINDOW_HEIGHT / 2f + Constants.WINDOW_HEIGHT * 0.45f;
 
-        renderingLayer.getShapeDrawer().filledRectangle(x - 50f, y - 90f, 650f, 110f, new Color(0f, 0f, 0f, 0.6f));
+    renderingLayer.getShapeDrawer().filledRectangle(x - 50f, y - 90f, 650f, 110f, new Color(0f, 0f, 0f, 0.6f));
 
-        Assets.renderVeryLargeFont(renderingLayer, "Server is running...", Vector2.of(x, y), Color.WHITE);
+    Assets.renderVeryLargeFont(renderingLayer, "Server is running...", Vector2.of(x, y), Color.WHITE);
 
-        renderingLayer.end();
-    }
+    renderingLayer.end();
+  }
 }

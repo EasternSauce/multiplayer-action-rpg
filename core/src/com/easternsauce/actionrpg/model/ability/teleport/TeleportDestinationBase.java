@@ -9,49 +9,43 @@ import com.easternsauce.actionrpg.model.util.TeleportEvent;
 import lombok.Getter;
 
 public abstract class TeleportDestinationBase extends Ability {
-    @Getter
-    protected AbilityParams params;
+  @Getter
+  protected AbilityParams params;
 
-    @Override
-    public Boolean isRanged() {
-        return true;
-    }
+  @Override
+  public Boolean isRanged() {
+    return true;
+  }
 
-    @Override
-    protected void onChannelUpdate(CoreGame game) {
+  @Override
+  protected void onChannelUpdate(CoreGame game) {
 
-    }
+  }
 
-    @Override
-    public void onStarted(CoreGame game) {
-        Creature creature = game.getCreature(getParams().getCreatureId());
-        creature.applyEffect(CreatureEffect.SELF_STUN, 0.3f, game);
-        game.addTeleportEvent(TeleportEvent.of(
-            getParams().getCreatureId(),
-            getParams().getPos(),
-            getParams().getAreaId(),
-            getParams().getAreaId(),
-            false
-        ));
-    }
+  @Override
+  public void onStarted(CoreGame game) {
+    Creature creature = game.getCreature(getParams().getCreatureId());
+    creature.applyEffect(CreatureEffect.SELF_STUN, 0.3f, game);
+    game.addTeleportEvent(TeleportEvent.of(getParams().getCreatureId(), getParams().getPos(), getParams().getAreaId(), getParams().getAreaId(), false));
+  }
 
-    @Override
-    protected void onActiveUpdate(float delta, CoreGame game) {
+  @Override
+  protected void onActiveUpdate(float delta, CoreGame game) {
 
-    }
+  }
 
-    @Override
-    protected boolean isWeaponAttack() {
-        return false;
-    }
+  @Override
+  protected boolean isWeaponAttack() {
+    return false;
+  }
 
-    @Override
-    public boolean canBeDeactivated() {
-        return true;
-    }
+  @Override
+  public boolean canBeDeactivated() {
+    return true;
+  }
 
-    @Override
-    public boolean canStun() {
-        return false;
-    }
+  @Override
+  public boolean canStun() {
+    return false;
+  }
 }

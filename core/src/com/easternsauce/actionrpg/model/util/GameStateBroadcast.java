@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 public class GameStateBroadcast {
-    @Getter
-    private GameStateData gameStateData;
+  @Getter
+  private GameStateData gameStateData;
 }

@@ -10,32 +10,27 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 public class LootPileBody {
-    @Getter
-    private LootPileId lootPileId;
-    private Body b2body;
+  @Getter
+  private LootPileId lootPileId;
+  private Body b2body;
 
-    private PhysicsWorld world;
+  private PhysicsWorld world;
 
-    public static LootPileBody of(LootPileId lootPileId) {
-        LootPileBody lootPileBody = LootPileBody.of();
-        lootPileBody.lootPileId = lootPileId;
-        return lootPileBody;
-    }
+  public static LootPileBody of(LootPileId lootPileId) {
+    LootPileBody lootPileBody = LootPileBody.of();
+    lootPileBody.lootPileId = lootPileId;
+    return lootPileBody;
+  }
 
-    public void init(CoreGame game) {
-        LootPile lootPile = game.getGameState().getLootPile(lootPileId);
+  public void init(CoreGame game) {
+    LootPile lootPile = game.getGameState().getLootPile(lootPileId);
 
-        world = game.getPhysicsWorld(lootPile.getParams().getAreaId());
+    world = game.getPhysicsWorld(lootPile.getParams().getAreaId());
 
-        b2body = B2BodyFactory.createLootPileB2body(world,
-            this,
-            lootPile.getParams().getPos(),
-            lootPile.getWidth(),
-            lootPile.getHeight()
-        );
-    }
+    b2body = B2BodyFactory.createLootPileB2body(world, this, lootPile.getParams().getPos(), lootPile.getWidth(), lootPile.getHeight());
+  }
 
-    public void onRemove() {
-        world.getB2world().destroyBody(b2body);
-    }
+  public void onRemove() {
+    world.getB2world().destroyBody(b2body);
+  }
 }

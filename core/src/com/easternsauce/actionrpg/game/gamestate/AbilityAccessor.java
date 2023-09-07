@@ -22,129 +22,89 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 public class AbilityAccessor {
-    @Getter
-    private GameState gameState;
-    @Getter
-    private GameStateDataHolder dataHolder;
+  @Getter
+  private GameState gameState;
+  @Getter
+  private GameStateDataHolder dataHolder;
 
-    public Ability getAbilityBySkillType(CreatureId creatureId, SkillType skillType) {
-        Optional<Ability> first = getData().getAbilities().values().stream().filter(ability -> ability
-            .getParams()
-            .getCreatureId()
-            .equals(creatureId) && ability.getParams().getSkillType() == skillType).findFirst();
+  public Ability getAbilityBySkillType(CreatureId creatureId, SkillType skillType) {
+    Optional<Ability> first = getData().getAbilities().values().stream().filter(ability -> ability.getParams().getCreatureId().equals(creatureId) && ability.getParams().getSkillType() == skillType).findFirst();
 
-        return first.orElse(null);
+    return first.orElse(null);
+  }
+
+  private GameStateData getData() {
+    return dataHolder.getData();
+  }
+
+  public Set<AbilityId> getAbilitiesWithinRange(Creature player) {
+    return getAbilities().keySet().stream().filter(abilityId -> {
+      Ability ability = getAbilities().get(abilityId);
+      if (ability != null && player.getParams().getPos() != null && ability.getParams().getPos() != null) {
+        return ability.getParams().getPos().distance(player.getParams().getPos()) < Constants.CLIENT_GAME_UPDATE_RANGE;
+      }
+      return false;
+    }).collect(Collectors.toSet());
+  }
+
+  public Map<AbilityId, Ability> getAbilities() {
+    return getData().getAbilities();
+  }
+
+  public void chainAnotherAbility(Ability chainFromAbility, AbilityType abilityType, Vector2 dirVector, ChainAbilityParams chainAbilityParams, CoreGame game) {
+    Creature creature = game.getCreature(chainFromAbility.getParams().getCreatureId());
+
+    if (creature != null && (creature.isAlive() || chainFromAbility.isAbleToChainAfterCreatureDeath())) {
+      AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
+
+      Map<CreatureId, Float> creaturesAlreadyHit = new ConcurrentSkipListMap<>(chainFromAbility.getParams().getCreaturesAlreadyHit());
+
+      Vector2 chainFromPos = chainFromAbility.getParams().getPos();
+
+      AbilityParams abilityParams = AbilityParams.of().setId(abilityId).setAreaId(chainFromAbility.getParams().getAreaId()).setCreatureId(chainFromAbility.getParams().getCreatureId()).setCreaturesAlreadyHit(creaturesAlreadyHit).setChainFromPos(chainFromPos).setChainToPos(chainAbilityParams.getChainToPos()).setDirVector(dirVector).setVectorTowardsTarget(dirVector).setOverrideScale(chainAbilityParams.getOverrideScale()).setOverrideDuration(chainAbilityParams.getOverrideDuration()).setOverrideDamage(chainAbilityParams.getOverrideDamage()).setOverrideMaximumRange(chainAbilityParams.getOverrideMaximumRange()).setOverrideSpeed(chainAbilityParams.getOverrideSpeed()).setOverrideStunDuration(chainAbilityParams.getOverrideStunDuration()).setSkillType(chainFromAbility.getParams().getSkillType()).setSkillStartPos(chainFromPos).setDamagingHitCreaturesHitCounter(chainFromAbility.getParams().getDamagingHitCreaturesHitCounter());
+
+      spawnAbility(abilityType, abilityParams, game);
     }
+  }
 
-    private GameStateData getData() {
-        return dataHolder.getData();
+  public void spawnAbility(AbilityType abilityType, AbilityParams abilityParams, CoreGame game) {
+    Creature creature = gameState.accessCreatures().getCreature(abilityParams.getCreatureId());
+
+    if (creature != null) {
+      Ability ability = abilityType.getFactoryMapping().apply(abilityParams, game);
+
+      initializeAbility(creature, ability, game);
     }
+  }
 
-    public Set<AbilityId> getAbilitiesWithinRange(Creature player) {
-        return getAbilities().keySet().stream().filter(abilityId -> {
-            Ability ability = getAbilities().get(abilityId);
-            if (ability != null && player.getParams().getPos() != null && ability.getParams().getPos() != null) {
-                return ability.getParams().getPos().distance(player.getParams().getPos()) <
-                    Constants.CLIENT_GAME_UPDATE_RANGE;
-            }
-            return false;
-        }).collect(Collectors.toSet());
+  private void initializeAbility(Creature creature, Ability ability, CoreGame game) {
+    game.getAbilities().put(ability.getParams().getId(), ability);
+
+    game.getEventProcessor().getAbilityModelsToBeCreated().add(ability.getParams().getId());
+
+    ability.init(game);
+
+    creature.onAbilityPerformed(ability);
+  }
+
+  public void onAbilityHitsCreature(CreatureId attackerId, CreatureId targetId, AbilityId abilityId, Vector2 contactPoint, CoreGame game) {
+    Ability ability = game.getAbility(abilityId);
+
+    ability.onCreatureHit(targetId, game);
+
+    ability.getParams().getCreaturesAlreadyHit().put(targetId, ability.getParams().getStateTimer().getTime());
+
+    ability.getParams().getDamagingHitCreaturesHitCounter().incrementForCreature(targetId);
+
+    CreatureHitByAbilityAction action = CreatureHitByAbilityAction.of(attackerId, targetId, ability, ability.getParams().getDamagingHitCreaturesHitCounter().getCount(targetId), contactPoint);
+    gameState.scheduleServerSideAction(action);
+  }
+
+  public Ability getAbility(AbilityId abilityId) {
+    if (abilityId == null || !getData().getAbilities().containsKey(abilityId)) {
+      return null;
     }
-
-    public Map<AbilityId, Ability> getAbilities() {
-        return getData().getAbilities();
-    }
-
-    public void chainAnotherAbility(Ability chainFromAbility,
-                                    AbilityType abilityType,
-                                    Vector2 dirVector,
-                                    ChainAbilityParams chainAbilityParams,
-                                    CoreGame game) {
-        Creature creature = game.getCreature(chainFromAbility.getParams().getCreatureId());
-
-        if (creature != null && (creature.isAlive() || chainFromAbility.isAbleToChainAfterCreatureDeath())) {
-            AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
-
-            Map<CreatureId, Float> creaturesAlreadyHit = new ConcurrentSkipListMap<>(chainFromAbility
-                .getParams()
-                .getCreaturesAlreadyHit());
-
-            Vector2 chainFromPos = chainFromAbility.getParams().getPos();
-
-            AbilityParams abilityParams = AbilityParams
-                .of()
-                .setId(abilityId)
-                .setAreaId(chainFromAbility
-                    .getParams()
-                    .getAreaId())
-                .setCreatureId(chainFromAbility.getParams().getCreatureId())
-                .setCreaturesAlreadyHit(creaturesAlreadyHit)
-                .setChainFromPos(chainFromPos)
-                .setChainToPos(chainAbilityParams.getChainToPos())
-                .setDirVector(dirVector)
-                .setVectorTowardsTarget(dirVector)
-                .setOverrideScale(chainAbilityParams.getOverrideScale())
-                .setOverrideDuration(chainAbilityParams.getOverrideDuration())
-                .setOverrideDamage(chainAbilityParams.getOverrideDamage())
-                .setOverrideMaximumRange(chainAbilityParams.getOverrideMaximumRange())
-                .setOverrideSpeed(chainAbilityParams.getOverrideSpeed())
-                .setOverrideStunDuration(chainAbilityParams.getOverrideStunDuration())
-                .setSkillType(chainFromAbility.getParams().getSkillType())
-                .setSkillStartPos(chainFromPos)
-                .setDamagingHitCreaturesHitCounter(chainFromAbility.getParams().getDamagingHitCreaturesHitCounter());
-
-            spawnAbility(abilityType, abilityParams, game);
-        }
-    }
-
-    public void spawnAbility(AbilityType abilityType, AbilityParams abilityParams, CoreGame game) {
-        Creature creature = gameState.accessCreatures().getCreature(abilityParams.getCreatureId());
-
-        if (creature != null) {
-            Ability ability = abilityType.getFactoryMapping().apply(abilityParams, game);
-
-            initializeAbility(creature, ability, game);
-        }
-    }
-
-    private void initializeAbility(Creature creature, Ability ability, CoreGame game) {
-        game.getAbilities().put(ability.getParams().getId(), ability);
-
-        game.getEventProcessor().getAbilityModelsToBeCreated().add(ability.getParams().getId());
-
-        ability.init(game);
-
-        creature.onAbilityPerformed(ability);
-    }
-
-    public void onAbilityHitsCreature(CreatureId attackerId,
-                                      CreatureId targetId,
-                                      AbilityId abilityId,
-                                      Vector2 contactPoint,
-                                      CoreGame game) {
-        Ability ability = game.getAbility(abilityId);
-
-        ability.onCreatureHit(targetId, game);
-
-        ability.getParams().getCreaturesAlreadyHit().put(targetId, ability.getParams().getStateTimer().getTime());
-
-        ability.getParams().getDamagingHitCreaturesHitCounter().incrementForCreature(targetId);
-
-        CreatureHitByAbilityAction action = CreatureHitByAbilityAction.of(
-            attackerId,
-            targetId,
-            ability,
-            ability.getParams().getDamagingHitCreaturesHitCounter().getCount(targetId),
-            contactPoint
-        );
-        gameState.scheduleServerSideAction(action);
-    }
-
-    public Ability getAbility(AbilityId abilityId) {
-        if (abilityId == null || !getData().getAbilities().containsKey(abilityId)) {
-            return null;
-        }
-        return getData().getAbilities().get(abilityId);
-    }
+    return getData().getAbilities().get(abilityId);
+  }
 
 }

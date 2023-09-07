@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 public class AbilityHitsTerrainEvent implements PhysicsEvent {
-    @Getter
-    private AbilityId abilityId;
-    @Getter
-    private Vector2 abilityPos;
-    @Getter
-    private Vector2 tilePos;
+  @Getter
+  private AbilityId abilityId;
+  @Getter
+  private Vector2 abilityPos;
+  @Getter
+  private Vector2 tilePos;
 }

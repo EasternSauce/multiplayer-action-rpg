@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(staticName = "of")
 @EqualsAndHashCode
 public class EnemyRallyPointId implements Comparable<EnemyRallyPointId> {
-    @Getter
-    String value;
+  @Getter
+  String value;
 
-    @Override
-    public int compareTo(EnemyRallyPointId o) {
-        return getValue().compareTo(o.getValue());
-    }
+  @Override
+  public int compareTo(EnemyRallyPointId o) {
+    return getValue().compareTo(o.getValue());
+  }
 }

@@ -11,47 +11,45 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class MeteorTarget extends Ability {
-    @Getter
-    protected AbilityParams params;
+  @Getter
+  protected AbilityParams params;
 
-    public static MeteorTarget of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        Creature creature = game.getCreature(abilityParams.getCreatureId());
+  public static MeteorTarget of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+    Creature creature = game.getCreature(abilityParams.getCreatureId());
 
-        MeteorTarget ability = MeteorTarget.of();
-        ability.params = abilityParams.setWidth(3f).setHeight(3f).setChannelTime(0f).setActiveTime(0.8f).setTextureName(
-            "meteor_aim").setBaseDamage(0f).setChannelAnimationLooping(false).setActiveAnimationLooping(false).setPos(
-            creature.getParams().getPos());
+    MeteorTarget ability = MeteorTarget.of();
+    ability.params = abilityParams.setWidth(3f).setHeight(3f).setChannelTime(0f).setActiveTime(0.8f).setTextureName("meteor_aim").setBaseDamage(0f).setChannelAnimationLooping(false).setActiveAnimationLooping(false).setPos(creature.getParams().getPos());
 
-        return ability;
-    }
+    return ability;
+  }
 
-    @Override
-    public Boolean isRanged() {
-        return true;
-    }
+  @Override
+  public Boolean isRanged() {
+    return true;
+  }
 
-    @Override
-    protected void onChannelUpdate(CoreGame game) {
+  @Override
+  protected void onChannelUpdate(CoreGame game) {
 
-    }
+  }
 
-    @Override
-    public void onStarted(CoreGame game) {
+  @Override
+  public void onStarted(CoreGame game) {
 
-    }
+  }
 
-    @Override
-    protected void onActiveUpdate(float delta, CoreGame game) {
+  @Override
+  protected void onActiveUpdate(float delta, CoreGame game) {
 
-    }
+  }
 
-    @Override
-    protected boolean isWeaponAttack() {
-        return false;
-    }
+  @Override
+  protected boolean isWeaponAttack() {
+    return false;
+  }
 
-    @Override
-    public boolean canStun() {
-        return false;
-    }
+  @Override
+  public boolean canStun() {
+    return false;
+  }
 }

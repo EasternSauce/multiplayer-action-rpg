@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(staticName = "of")
 @EqualsAndHashCode
 public class AreaId implements Comparable<AreaId> {
-    @Getter
-    String value;
+  @Getter
+  String value;
 
-    @Override
-    public int compareTo(AreaId o) {
-        return getValue().compareTo(o.getValue());
-    }
+  @Override
+  public int compareTo(AreaId o) {
+    return getValue().compareTo(o.getValue());
+  }
 }

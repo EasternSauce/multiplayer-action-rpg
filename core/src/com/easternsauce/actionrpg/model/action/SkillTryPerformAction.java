@@ -14,56 +14,49 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class SkillTryPerformAction extends GameStateAction {
 
-    private CreatureId creatureId;
-    private SkillType skillType;
+  private CreatureId creatureId;
+  private SkillType skillType;
 
-    private Vector2 startingPos;
-    private Vector2 dirVector;
+  private Vector2 startingPos;
+  private Vector2 dirVector;
 
-    private Float damage;
+  private Float damage;
 
-    public static SkillTryPerformAction of(CreatureId creatureId,
-                                           SkillType skillType,
-                                           Vector2 startingPos,
-                                           Vector2 dirVector) {
-        SkillTryPerformAction action = SkillTryPerformAction.of();
-        action.creatureId = creatureId;
-        action.skillType = skillType;
-        action.startingPos = startingPos;
-        action.dirVector = dirVector;
-        return action;
+  public static SkillTryPerformAction of(CreatureId creatureId, SkillType skillType, Vector2 startingPos, Vector2 dirVector) {
+    SkillTryPerformAction action = SkillTryPerformAction.of();
+    action.creatureId = creatureId;
+    action.skillType = skillType;
+    action.startingPos = startingPos;
+    action.dirVector = dirVector;
+    return action;
+  }
+
+  public static SkillTryPerformAction of(CreatureId creatureId, SkillType skillType, Vector2 startingPos, Vector2 dirVector, Float damage) {
+    SkillTryPerformAction action = SkillTryPerformAction.of();
+    action.creatureId = creatureId;
+    action.skillType = skillType;
+    action.startingPos = startingPos;
+    action.dirVector = dirVector;
+    action.damage = damage;
+    return action;
+  }
+
+  @Override
+  public void applyToGame(CoreGame game) {
+    Creature creature = game.getCreature(creatureId);
+
+    if (creature != null) {
+      Skill skill = creature.getParams().getSkills().get(skillType);
+
+      if (skill.canPerform(game)) {
+        skill.perform(startingPos, dirVector, game);
+      }
     }
 
-    public static SkillTryPerformAction of(CreatureId creatureId,
-                                           SkillType skillType,
-                                           Vector2 startingPos,
-                                           Vector2 dirVector,
-                                           Float damage) {
-        SkillTryPerformAction action = SkillTryPerformAction.of();
-        action.creatureId = creatureId;
-        action.skillType = skillType;
-        action.startingPos = startingPos;
-        action.dirVector = dirVector;
-        action.damage = damage;
-        return action;
-    }
+  }
 
-    @Override
-    public void applyToGame(CoreGame game) {
-        Creature creature = game.getCreature(creatureId);
-
-        if (creature != null) {
-            Skill skill = creature.getParams().getSkills().get(skillType);
-
-            if (skill.canPerform(game)) {
-                skill.perform(startingPos, dirVector, game);
-            }
-        }
-
-    }
-
-    @Override
-    public Entity getEntity(CoreGame game) {
-        return game.getCreature(creatureId);
-    }
+  @Override
+  public Entity getEntity(CoreGame game) {
+    return game.getCreature(creatureId);
+  }
 }

@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 public class PlayerInitCommand implements GameCommand {
-    @Getter
-    CreatureId playerId;
+  @Getter
+  CreatureId playerId;
 }

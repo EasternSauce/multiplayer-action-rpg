@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 public class PathingEdge {
-    @Getter
-    private Float weight;
-    @Getter
-    private Vector2Int neighborPos;
+  @Getter
+  private Float weight;
+  @Getter
+  private Vector2Int neighborPos;
 }

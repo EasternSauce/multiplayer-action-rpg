@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class PoisonousCloudControl extends PoisonousCloudControlBase {
 
-    public static PoisonousCloudControlBase of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        PoisonousCloudControl ability = PoisonousCloudControl.of();
-        ability.params = abilityParams.setChannelTime(0f).setActiveTime(10f);
+  public static PoisonousCloudControlBase of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+    PoisonousCloudControl ability = PoisonousCloudControl.of();
+    ability.params = abilityParams.setChannelTime(0f).setActiveTime(10f);
 
-        return ability;
-    }
+    return ability;
+  }
 
 }

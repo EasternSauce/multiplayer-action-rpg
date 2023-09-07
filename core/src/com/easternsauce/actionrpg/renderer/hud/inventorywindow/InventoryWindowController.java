@@ -11,65 +11,43 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 public class InventoryWindowController {
-    public void performMoveItemClick(Client client, CoreGame game) {
-        PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
+  public void performMoveItemClick(Client client, CoreGame game) {
+    PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
 
-        float mouseX = game.hudMousePos().getX();
-        float mouseY = game.hudMousePos().getY();
+    float mouseX = game.hudMousePos().getX();
+    float mouseY = game.hudMousePos().getY();
 
-        GameStateAction action = null;
+    GameStateAction action = null;
 
-        if (InventoryWindowConsts.backgroundOuterRect.contains(mouseX, mouseY) || PotionMenuConsts.isMenuContainsPos(mouseX,
-            mouseY
-        )) {
-            InventoryWindowState inventoryWindowState = InventoryWindowState.of(InventoryWindowConsts.getInventorySlotClicked(mouseX,
-                    mouseY
-                ),
-                InventoryWindowConsts.getEquipmentSlotClicked(mouseX, mouseY),
-                PotionMenuConsts.getPotionMenuClicked(mouseX, mouseY),
-                playerConfig.getInventoryItemBeingMoved(),
-                playerConfig.getEquipmentItemBeingMoved(),
-                playerConfig.getPotionMenuItemBeingMoved()
-            );
+    if (InventoryWindowConsts.backgroundOuterRect.contains(mouseX, mouseY) || PotionMenuConsts.isMenuContainsPos(mouseX, mouseY)) {
+      InventoryWindowState inventoryWindowState = InventoryWindowState.of(InventoryWindowConsts.getInventorySlotClicked(mouseX, mouseY), InventoryWindowConsts.getEquipmentSlotClicked(mouseX, mouseY), PotionMenuConsts.getPotionMenuClicked(mouseX, mouseY), playerConfig.getInventoryItemBeingMoved(), playerConfig.getEquipmentItemBeingMoved(), playerConfig.getPotionMenuItemBeingMoved());
 
-            action = InventoryWindowActionDecider.decide(inventoryWindowState, game);
-        } else if (playerConfig.getInventoryItemBeingMoved() != null ||
-            playerConfig.getEquipmentItemBeingMoved() != null ||
-            playerConfig.getPotionMenuItemBeingMoved() != null) {
-            action = ItemDropOnGroundAction.of(game.getGameState().getThisClientPlayerId());
-        }
-
-        if (action != null) {
-            client.sendTCP(ActionPerformCommand.of(action));
-        }
+      action = InventoryWindowActionDecider.decide(inventoryWindowState, game);
+    } else if (playerConfig.getInventoryItemBeingMoved() != null || playerConfig.getEquipmentItemBeingMoved() != null || playerConfig.getPotionMenuItemBeingMoved() != null) {
+      action = ItemDropOnGroundAction.of(game.getGameState().getThisClientPlayerId());
     }
 
-    public void performUseItemClick(Client client, CoreGame game) {
-        PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
-
-        float x = game.hudMousePos().getX();
-        float y = game.hudMousePos().getY();
-
-        GameStateAction action = null;
-
-        if (InventoryWindowConsts.backgroundOuterRect.contains(x, y)) {
-            InventoryWindowState inventoryWindowState = InventoryWindowState.of(InventoryWindowConsts.getInventorySlotClicked(x,
-                    y
-                ),
-                InventoryWindowConsts.getEquipmentSlotClicked(x, y),
-                PotionMenuConsts.getPotionMenuClicked(x, y),
-                playerConfig.getInventoryItemBeingMoved(),
-                playerConfig.getEquipmentItemBeingMoved(),
-                playerConfig.getPotionMenuItemBeingMoved()
-            );
-
-            action = InventoryItemUseAction.of(game.getGameState().getThisClientPlayerId(),
-                inventoryWindowState.getInventorySlotClicked()
-            );
-        }
-
-        if (action != null) {
-            client.sendTCP(ActionPerformCommand.of(action));
-        }
+    if (action != null) {
+      client.sendTCP(ActionPerformCommand.of(action));
     }
+  }
+
+  public void performUseItemClick(Client client, CoreGame game) {
+    PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
+
+    float x = game.hudMousePos().getX();
+    float y = game.hudMousePos().getY();
+
+    GameStateAction action = null;
+
+    if (InventoryWindowConsts.backgroundOuterRect.contains(x, y)) {
+      InventoryWindowState inventoryWindowState = InventoryWindowState.of(InventoryWindowConsts.getInventorySlotClicked(x, y), InventoryWindowConsts.getEquipmentSlotClicked(x, y), PotionMenuConsts.getPotionMenuClicked(x, y), playerConfig.getInventoryItemBeingMoved(), playerConfig.getEquipmentItemBeingMoved(), playerConfig.getPotionMenuItemBeingMoved());
+
+      action = InventoryItemUseAction.of(game.getGameState().getThisClientPlayerId(), inventoryWindowState.getInventorySlotClicked());
+    }
+
+    if (action != null) {
+      client.sendTCP(ActionPerformCommand.of(action));
+    }
+  }
 }

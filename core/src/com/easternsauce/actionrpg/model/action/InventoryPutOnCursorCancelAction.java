@@ -10,27 +10,27 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class InventoryPutOnCursorCancelAction extends GameStateAction {
-    private CreatureId playerId;
+  private CreatureId playerId;
 
-    public static InventoryPutOnCursorCancelAction of(CreatureId creatureId) {
-        InventoryPutOnCursorCancelAction action = InventoryPutOnCursorCancelAction.of();
-        action.playerId = creatureId;
-        return action;
+  public static InventoryPutOnCursorCancelAction of(CreatureId creatureId) {
+    InventoryPutOnCursorCancelAction action = InventoryPutOnCursorCancelAction.of();
+    action.playerId = creatureId;
+    return action;
+  }
+
+  @Override
+  public void applyToGame(CoreGame game) {
+    PlayerConfig playerConfig = game.getGameState().getPlayerConfig(playerId);
+
+    if (playerConfig != null) {
+      playerConfig.setInventoryItemBeingMoved(null);
+      playerConfig.setEquipmentItemBeingMoved(null);
+      playerConfig.setPotionMenuItemBeingMoved(null);
     }
+  }
 
-    @Override
-    public void applyToGame(CoreGame game) {
-        PlayerConfig playerConfig = game.getGameState().getPlayerConfig(playerId);
-
-        if (playerConfig != null) {
-            playerConfig.setInventoryItemBeingMoved(null);
-            playerConfig.setEquipmentItemBeingMoved(null);
-            playerConfig.setPotionMenuItemBeingMoved(null);
-        }
-    }
-
-    @Override
-    public Entity getEntity(CoreGame game) {
-        return game.getCreature(playerId);
-    }
+  @Override
+  public Entity getEntity(CoreGame game) {
+    return game.getCreature(playerId);
+  }
 }

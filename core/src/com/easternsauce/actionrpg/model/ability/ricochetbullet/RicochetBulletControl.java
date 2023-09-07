@@ -13,77 +13,54 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class RicochetBulletControl extends Ability {
-    @Getter
-    protected AbilityParams params;
+  @Getter
+  protected AbilityParams params;
 
-    public static RicochetBulletControl of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        RicochetBulletControl ability = RicochetBulletControl.of();
+  public static RicochetBulletControl of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+    RicochetBulletControl ability = RicochetBulletControl.of();
 
-        ability.params = abilityParams.setChannelTime(0f).setActiveTime(0f);
+    ability.params = abilityParams.setChannelTime(0f).setActiveTime(0f);
 
-        return ability;
-    }
+    return ability;
+  }
 
-    @Override
-    public Boolean isRanged() {
-        return true;
-    }
+  @Override
+  public Boolean isRanged() {
+    return true;
+  }
 
-    @Override
-    protected void onChannelUpdate(CoreGame game) {
+  @Override
+  protected void onChannelUpdate(CoreGame game) {
 
-    }
+  }
 
-    @Override
-    protected void onActiveUpdate(float delta, CoreGame game) {
+  @Override
+  protected void onActiveUpdate(float delta, CoreGame game) {
 
-    }
+  }
 
-    @Override
-    protected void onCompleted(CoreGame game) {
-        Vector2 leftSidePos = getParams().getPos().add(params
-            .getDirVector()
-            .normalized()
-            .multiplyBy(1.5f)
-            .withRotatedDegAngle(90));
-        Vector2 rightSidePos = getParams().getPos().add(params
-            .getDirVector()
-            .normalized()
-            .multiplyBy(1.5f)
-            .withRotatedDegAngle(-90));
+  @Override
+  protected void onCompleted(CoreGame game) {
+    Vector2 leftSidePos = getParams().getPos().add(params.getDirVector().normalized().multiplyBy(1.5f).withRotatedDegAngle(90));
+    Vector2 rightSidePos = getParams().getPos().add(params.getDirVector().normalized().multiplyBy(1.5f).withRotatedDegAngle(-90));
 
-        game.chainAnotherAbility(
-            this,
-            AbilityType.RICOCHET_BULLET,
-            params.getDirVector(),
-            ChainAbilityParams.of().setChainToPos(getParams().getPos())
-        );
-        game.chainAnotherAbility(
-            this,
-            AbilityType.RICOCHET_BULLET,
-            params.getDirVector(),
-            ChainAbilityParams.of().setChainToPos(leftSidePos)
-        );
-        game.chainAnotherAbility(
-            this,
-            AbilityType.RICOCHET_BULLET,
-            params.getDirVector(),
-            ChainAbilityParams.of().setChainToPos(rightSidePos)
-        );
-    }
+    game.chainAnotherAbility(this, AbilityType.RICOCHET_BULLET, params.getDirVector(), ChainAbilityParams.of().setChainToPos(getParams().getPos()));
+    game.chainAnotherAbility(this, AbilityType.RICOCHET_BULLET, params.getDirVector(), ChainAbilityParams.of().setChainToPos(leftSidePos));
+    game.chainAnotherAbility(this, AbilityType.RICOCHET_BULLET, params.getDirVector(), ChainAbilityParams.of().setChainToPos(rightSidePos));
+  }
 
-    @Override
-    protected boolean isWeaponAttack() {
-        return false;
-    }
+  @Override
+  protected boolean isWeaponAttack() {
+    return false;
+  }
 
-    @Override
-    public Float getStunDuration() {
-        return 0.2f;
-    }
+  @Override
+  public Float getStunDuration() {
+    return 0.2f;
+  }
 
-    @Override
-    public boolean usesEntityModel() {
-        return false;
-    }
+  @Override
+  public boolean usesEntityModel() {
+    return false;
+  }
 }

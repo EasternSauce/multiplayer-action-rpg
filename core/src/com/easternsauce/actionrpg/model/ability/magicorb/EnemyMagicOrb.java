@@ -14,79 +14,61 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class EnemyMagicOrb extends MagicOrbBase {
-    public static EnemyMagicOrb of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        EnemyMagicOrb ability = EnemyMagicOrb.of();
-        ability.params = abilityParams
-            .setWidth(1.5f)
-            .setHeight(1.5f)
-            .setChannelTime(0f)
-            .setActiveTime(30f)
-            .setStartingRange(0.5f)
-            .setTextureName("magic_orb")
-            .setBaseDamage(40f)
-            .setChannelAnimationLooping(false)
-            .setActiveAnimationLooping(true)
-            .setDelayedActionTime(0.001f)
-            .setSpeed(13f);
+  public static EnemyMagicOrb of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+    EnemyMagicOrb ability = EnemyMagicOrb.of();
+    ability.params = abilityParams.setWidth(1.5f).setHeight(1.5f).setChannelTime(0f).setActiveTime(30f).setStartingRange(0.5f).setTextureName("magic_orb").setBaseDamage(40f).setChannelAnimationLooping(false).setActiveAnimationLooping(true).setDelayedActionTime(0.001f).setSpeed(13f);
 
-        return ability;
+    return ability;
+  }
+
+  @Override
+  protected void onActiveUpdate(float delta, CoreGame game) {
+    onProjectileTravelUpdate();
+
+    Creature minimumDistanceCreature = null;
+    float minimumDistance = Float.MAX_VALUE;
+
+    Creature thisCreature = game.getCreature(getParams().getCreatureId());
+
+    for (Creature creature : game.getActiveCreatures().values().stream().filter(targetCreature -> Objects.equals(targetCreature.getParams().getAreaId().getValue(), getParams().getAreaId().getValue()) && !targetCreature.getId().equals(getParams().getCreatureId()) && targetCreature.isAlive() && isTargetingAllowed(thisCreature, targetCreature) && targetCreature.getParams().getPos().distance(getParams().getPos()) < 20f).collect(Collectors.toSet())) {
+      if (creature.getParams().getPos().distance(getParams().getPos()) < minimumDistance) {
+        minimumDistanceCreature = creature;
+        minimumDistance = creature.getParams().getPos().distance(getParams().getPos());
+      }
     }
 
-    @Override
-    protected void onActiveUpdate(float delta, CoreGame game) {
-        onProjectileTravelUpdate();
+    if (minimumDistanceCreature != null) {
+      Vector2 vectorTowards = getParams().getPos().vectorTowards(minimumDistanceCreature.getParams().getPos());
+      float targetAngleDeg = vectorTowards.angleDeg();
+      float currentAngleDeg = getParams().getDirVector().angleDeg();
 
-        Creature minimumDistanceCreature = null;
-        float minimumDistance = Float.MAX_VALUE;
+      float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(currentAngleDeg, targetAngleDeg);
 
-        Creature thisCreature = game.getCreature(getParams().getCreatureId());
+      float incrementFactor = 65f;
+      float baseIncrement = incrementFactor;
 
-        for (Creature creature : game.getActiveCreatures().values().stream().filter(targetCreature -> Objects.equals(targetCreature.getParams().getAreaId().getValue(),
-            getParams().getAreaId().getValue()
-        ) &&
-            !targetCreature.getId().equals(getParams().getCreatureId()) &&
-            targetCreature.isAlive() &&
-            isTargetingAllowed(thisCreature, targetCreature) &&
-            targetCreature.getParams().getPos().distance(getParams().getPos()) < 20f).collect(Collectors.toSet())) {
-            if (creature.getParams().getPos().distance(getParams().getPos()) < minimumDistance) {
-                minimumDistanceCreature = creature;
-                minimumDistance = creature.getParams().getPos().distance(getParams().getPos());
-            }
-        }
+      if (getParams().getStateTimer().getTime() > 0.5f && getParams().getStateTimer().getTime() < 2f) {
+        baseIncrement = incrementFactor - (getParams().getStateTimer().getTime() - 0.5f) / 1.5f * incrementFactor;
+      } else if (getParams().getStateTimer().getTime() >= 2f) {
+        baseIncrement = 0f;
+      }
 
-        if (minimumDistanceCreature != null) {
-            Vector2 vectorTowards = getParams().getPos().vectorTowards(minimumDistanceCreature.getParams().getPos());
-            float targetAngleDeg = vectorTowards.angleDeg();
-            float currentAngleDeg = getParams().getDirVector().angleDeg();
+      float increment = baseIncrement * delta;
 
-            float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(currentAngleDeg, targetAngleDeg);
-
-            float incrementFactor = 65f;
-            float baseIncrement = incrementFactor;
-
-            if (getParams().getStateTimer().getTime() > 0.5f && getParams().getStateTimer().getTime() < 2f) {
-                baseIncrement = incrementFactor -
-                    (getParams().getStateTimer().getTime() - 0.5f) / 1.5f * incrementFactor;
-            } else if (getParams().getStateTimer().getTime() >= 2f) {
-                baseIncrement = 0f;
-            }
-
-            float increment = baseIncrement * delta;
-
-            if (shortestAngleRotation > increment) {
-                getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(increment));
-            } else if (shortestAngleRotation < -increment) {
-                getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(-increment));
-            } else {
-                getParams().setDirVector(getParams().getDirVector().withSetDegAngle(targetAngleDeg));
-            }
-
-        }
+      if (shortestAngleRotation > increment) {
+        getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(increment));
+      } else if (shortestAngleRotation < -increment) {
+        getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(-increment));
+      } else {
+        getParams().setDirVector(getParams().getDirVector().withSetDegAngle(targetAngleDeg));
+      }
 
     }
 
-    @Override
-    public Float getStunDuration() {
-        return 0.75f;
-    }
+  }
+
+  @Override
+  public Float getStunDuration() {
+    return 0.75f;
+  }
 }

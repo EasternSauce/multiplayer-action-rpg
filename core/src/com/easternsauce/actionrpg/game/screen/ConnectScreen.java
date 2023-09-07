@@ -15,135 +15,120 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 public class ConnectScreen implements Screen {
-    private final ConnectScreenMessageHolder messageHolder = ConnectScreenMessageHolder.of();
-    private final SimpleTimer timer = SimpleTimer.of();
-    private CoreGame game;
-    private boolean holdingBackspace = false;
-    private double holdBackspaceTime = 0f;
-    private TextureAtlas.AtlasRegion background;
-    private boolean waitingToEnter = false;
+  private final ConnectScreenMessageHolder messageHolder = ConnectScreenMessageHolder.of();
+  private final SimpleTimer timer = SimpleTimer.of();
+  private CoreGame game;
+  private boolean holdingBackspace = false;
+  private double holdBackspaceTime = 0f;
+  private TextureAtlas.AtlasRegion background;
+  private boolean waitingToEnter = false;
 
-    public void init(TextureAtlas atlas, CoreGame game) {
-        this.game = game;
+  public void init(TextureAtlas atlas, CoreGame game) {
+    this.game = game;
 
-        background = atlas.findRegion("background2");
-    }
+    background = atlas.findRegion("background2");
+  }
 
-    @Override
-    public void show() {
-        timer.start();
+  @Override
+  public void show() {
+    timer.start();
 
-        setInputProcessor();
-    }
+    setInputProcessor();
+  }
 
-    private void setInputProcessor() {
-        Gdx.input.setInputProcessor(new InputAdapter() {
-            @Override
-            public boolean keyTyped(char character) {
-                if ((Character.isAlphabetic(character) || Character.isDigit(character)) &&
-                    messageHolder.getCurrentMessage().length() <= 20f) {
-                    messageHolder.setCurrentMessage(messageHolder.getCurrentMessage().concat("" + character));
-                }
-
-                return true;
-            }
-        });
-    }
-
-    @Override
-    public void render(float delta) {
-        timer.update(delta);
-
-        if (waitingToEnter) {
-            if (game.getFirstNonStubBroadcastReceived()) {
-                game.goToGamePlayScreen();
-                waitingToEnter = false;
-            }
+  private void setInputProcessor() {
+    Gdx.input.setInputProcessor(new InputAdapter() {
+      @Override
+      public boolean keyTyped(char character) {
+        if ((Character.isAlphabetic(character) || Character.isDigit(character)) && messageHolder.getCurrentMessage().length() <= 20f) {
+          messageHolder.setCurrentMessage(messageHolder.getCurrentMessage().concat("" + character));
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
-            if (isNameValid(messageHolder.getCurrentMessage())) {
+        return true;
+      }
+    });
+  }
 
-                game.initializePlayer(messageHolder.getCurrentMessage());
+  @Override
+  public void render(float delta) {
+    timer.update(delta);
 
-                game.askForBroadcast();
+    if (waitingToEnter) {
+      if (game.getFirstNonStubBroadcastReceived()) {
+        game.goToGamePlayScreen();
+        waitingToEnter = false;
+      }
+    }
 
-                waitingToEnter = true;
-            }
+    if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+      if (isNameValid(messageHolder.getCurrentMessage())) {
+
+        game.initializePlayer(messageHolder.getCurrentMessage());
+
+        game.askForBroadcast();
+
+        waitingToEnter = true;
+      }
+    }
+
+    if (Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)) {
+
+      if (holdingBackspace) {
+        if (!messageHolder.getCurrentMessage().isEmpty() && timer.getTime() > holdBackspaceTime + 0.3f) {
+          messageHolder.setCurrentMessage(messageHolder.getCurrentMessage().substring(0, messageHolder.getCurrentMessage().length() - 1));
         }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)) {
-
-            if (holdingBackspace) {
-                if (!messageHolder.getCurrentMessage().isEmpty() && timer.getTime() > holdBackspaceTime + 0.3f) {
-                    messageHolder.setCurrentMessage(messageHolder
-                        .getCurrentMessage()
-                        .substring(0, messageHolder.getCurrentMessage().length() - 1));
-                }
-            } else {
-                holdingBackspace = true;
-                holdBackspaceTime = timer.getTime();
-                if (!messageHolder.getCurrentMessage().isEmpty()) {
-                    messageHolder.setCurrentMessage(messageHolder
-                        .getCurrentMessage()
-                        .substring(0, messageHolder.getCurrentMessage().length() - 1));
-                }
-            }
-        } else {
-            if (holdingBackspace) {
-                holdingBackspace = false;
-            }
+      } else {
+        holdingBackspace = true;
+        holdBackspaceTime = timer.getTime();
+        if (!messageHolder.getCurrentMessage().isEmpty()) {
+          messageHolder.setCurrentMessage(messageHolder.getCurrentMessage().substring(0, messageHolder.getCurrentMessage().length() - 1));
         }
-
-        SpriteBatch spriteBatch = game.getHudRenderingLayer().getSpriteBatch();
-
-        spriteBatch.begin();
-
-        spriteBatch.draw(background, ConnectScreenConsts.BACKGROUND_POS_X, ConnectScreenConsts.BACKGROUND_POS_Y);
-
-        Assets.renderMediumFont(
-            game.getHudRenderingLayer(),
-            "Your character name:",
-            Vector2.of(ConnectScreenConsts.PROMPT_POS_X, ConnectScreenConsts.PROMPT_POS_Y),
-            Color.BLACK
-        );
-
-        Assets.renderMediumFont(
-            game.getHudRenderingLayer(),
-            messageHolder.getCurrentMessage(),
-            Vector2.of(ConnectScreenConsts.INPUT_POS_X, ConnectScreenConsts.INPUT_POS_Y),
-            Color.BLACK
-        );
-
-        spriteBatch.end();
+      }
+    } else {
+      if (holdingBackspace) {
+        holdingBackspace = false;
+      }
     }
 
-    private boolean isNameValid(String currentMessage) {
-        return !currentMessage.isEmpty();
-    }
+    SpriteBatch spriteBatch = game.getHudRenderingLayer().getSpriteBatch();
 
-    @Override
-    public void resize(int width, int height) {
+    spriteBatch.begin();
 
-    }
+    spriteBatch.draw(background, ConnectScreenConsts.BACKGROUND_POS_X, ConnectScreenConsts.BACKGROUND_POS_Y);
 
-    @Override
-    public void pause() {
+    Assets.renderMediumFont(game.getHudRenderingLayer(), "Your character name:", Vector2.of(ConnectScreenConsts.PROMPT_POS_X, ConnectScreenConsts.PROMPT_POS_Y), Color.BLACK);
 
-    }
+    Assets.renderMediumFont(game.getHudRenderingLayer(), messageHolder.getCurrentMessage(), Vector2.of(ConnectScreenConsts.INPUT_POS_X, ConnectScreenConsts.INPUT_POS_Y), Color.BLACK);
 
-    @Override
-    public void resume() {
+    spriteBatch.end();
+  }
 
-    }
+  private boolean isNameValid(String currentMessage) {
+    return !currentMessage.isEmpty();
+  }
 
-    @Override
-    public void hide() {
+  @Override
+  public void resize(int width, int height) {
 
-    }
+  }
 
-    @Override
-    public void dispose() {
+  @Override
+  public void pause() {
 
-    }
+  }
+
+  @Override
+  public void resume() {
+
+  }
+
+  @Override
+  public void hide() {
+
+  }
+
+  @Override
+  public void dispose() {
+
+  }
 }

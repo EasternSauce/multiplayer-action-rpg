@@ -52,84 +52,60 @@ import java.util.function.BiFunction;
 
 @NoArgsConstructor
 public enum AbilityType {
-    SWORD_SLASH(SwordSlash::of),
-    EMEMY_SWORD_SLASH(EnemySwordSlash::of),
-    BOSS_ENEMY_SWORD_SLASH(BossEnemySwordSlash::of),
-    FIREBALL(Fireball::of),
-    FIREBALL_EXPLOSION(Explosion::of),
-    LIGHTNING_SPARK(LightningSpark::of),
-    LIGHTNING_NODE(LightningNode::of),
-    LIGHTNING_CHAIN(LightningChain::of),
+  SWORD_SLASH(SwordSlash::of), EMEMY_SWORD_SLASH(EnemySwordSlash::of), BOSS_ENEMY_SWORD_SLASH(BossEnemySwordSlash::of), FIREBALL(Fireball::of), FIREBALL_EXPLOSION(Explosion::of), LIGHTNING_SPARK(LightningSpark::of), LIGHTNING_NODE(LightningNode::of), LIGHTNING_CHAIN(LightningChain::of),
 
-    CROSSBOW_BOLT(CrossbowBolt::of),
-    CROSSBOW_SHOT(CrossbowBoltControl::of),
-    ENEMY_CROSSBOW_SHOT(EnemyCrossbowBoltControl::of),
+  CROSSBOW_BOLT(CrossbowBolt::of), CROSSBOW_SHOT(CrossbowBoltControl::of), ENEMY_CROSSBOW_SHOT(EnemyCrossbowBoltControl::of),
 
-    MAGIC_ORB(MagicOrb::of),
-    ENEMY_MAGIC_ORB(EnemyMagicOrb::of),
+  MAGIC_ORB(MagicOrb::of), ENEMY_MAGIC_ORB(EnemyMagicOrb::of),
 
-    VOLATILE_BUBBLE(VolatileBubble::of),
-    ENEMY_VOLATILE_BUBBLE(EnemyVolatileBubble::of),
+  VOLATILE_BUBBLE(VolatileBubble::of), ENEMY_VOLATILE_BUBBLE(EnemyVolatileBubble::of),
 
-    ICE_SPEAR(IceSpear::of),
+  ICE_SPEAR(IceSpear::of),
 
-    SUMMON_GHOSTS(PlayfulGhostControl::of),
+  SUMMON_GHOSTS(PlayfulGhostControl::of),
 
-    PLAYFUL_GHOST(PlayfulGhost::of),
+  PLAYFUL_GHOST(PlayfulGhost::of),
 
-    RICOCHET_BALLISTA(RicochetBulletControl::of),
+  RICOCHET_BALLISTA(RicochetBulletControl::of),
 
-    RICOCHET_BULLET(RicochetBullet::of),
+  RICOCHET_BULLET(RicochetBullet::of),
 
-    BOOMERANG(Boomerang::of),
+  BOOMERANG(Boomerang::of),
 
-    SHIELD_GUARD(ShieldGuard::of),
+  SHIELD_GUARD(ShieldGuard::of),
 
-    SWORD_SPIN(SwordSpin::of),
+  SWORD_SPIN(SwordSpin::of),
 
-    BOSS_ENEMY_SWORD_SPIN(BossEnemySwordSpin::of),
+  BOSS_ENEMY_SWORD_SPIN(BossEnemySwordSpin::of),
 
-    TELEPORT_SOURCE(TeleportSource::of),
+  TELEPORT_SOURCE(TeleportSource::of),
 
-    TELEPORT_DESTINATION(TeleportDestination::of),
+  TELEPORT_DESTINATION(TeleportDestination::of),
 
-    ENEMY_TELEPORT_SOURCE(EnemyTeleportSource::of),
+  ENEMY_TELEPORT_SOURCE(EnemyTeleportSource::of),
 
-    ENEMY_TELEPORT_DESTINATION(EnemyTeleportDestination::of),
+  ENEMY_TELEPORT_DESTINATION(EnemyTeleportDestination::of),
 
-    MAGE_TELEPORT_COMBO(MageTeleportCombo::of),
+  MAGE_TELEPORT_COMBO(MageTeleportCombo::of),
 
-    POISONOUS_MIXTURE(PoisonousMixture::of),
-    POISONOUS_CLOUD(PoisonousCloud::of),
-    POISONOUS_CLOUD_CONTROL(PoisonousCloudControl::of),
+  POISONOUS_MIXTURE(PoisonousMixture::of), POISONOUS_CLOUD(PoisonousCloud::of), POISONOUS_CLOUD_CONTROL(PoisonousCloudControl::of),
 
-    ENEMY_POISONOUS_MIXTURE(EnemyPoisonousMixture::of),
-    ENEMY_POISONOUS_CLOUD(EnemyPoisonousCloud::of),
-    ENEMY_POISONOUS_CLOUD_CONTROL(EnemyPoisonousCloudControl::of),
+  ENEMY_POISONOUS_MIXTURE(EnemyPoisonousMixture::of), ENEMY_POISONOUS_CLOUD(EnemyPoisonousCloud::of), ENEMY_POISONOUS_CLOUD_CONTROL(EnemyPoisonousCloudControl::of),
 
-    PUNCH(Punch::of),
+  PUNCH(Punch::of),
 
-    RING_OF_FIRE(RingOfFire::of),
-    ENEMY_RING_OF_FIRE(EnemyRingOfFire::of),
-    DASH(Dash::of),
-    ICE_SPEAR_RAMPAGE(IceSpearRampage::of),
-    TUNNEL_DIG(TunnelDig::of),
-    DIG_TUNNEL_SPLASH(TunnelDigSplash::of),
-    DIG_TUNNEL_EXPLOSION(TunnelDigExplosion::of),
+  RING_OF_FIRE(RingOfFire::of), ENEMY_RING_OF_FIRE(EnemyRingOfFire::of), DASH(Dash::of), ICE_SPEAR_RAMPAGE(IceSpearRampage::of), TUNNEL_DIG(TunnelDig::of), DIG_TUNNEL_SPLASH(TunnelDigSplash::of), DIG_TUNNEL_EXPLOSION(TunnelDigExplosion::of),
 
-    BITE(Bite::of),
-    POISON_BITE(PoisonBite::of),
+  BITE(Bite::of), POISON_BITE(PoisonBite::of),
 
-    EMERALD_SPIN(EmeraldSpin::of),
-    EMERALD_SPIN_CONTROL(EmeraldSpinControl::of),
+  EMERALD_SPIN(EmeraldSpin::of), EMERALD_SPIN_CONTROL(EmeraldSpinControl::of),
 
-    METEOR(Meteor::of),
-    METEOR_TARGET(MeteorTarget::of);
+  METEOR(Meteor::of), METEOR_TARGET(MeteorTarget::of);
 
-    @Getter
-    private BiFunction<AbilityParams, CoreGame, Ability> factoryMapping;
+  @Getter
+  private BiFunction<AbilityParams, CoreGame, Ability> factoryMapping;
 
-    AbilityType(BiFunction<AbilityParams, CoreGame, Ability> factoryMapping) {
-        this.factoryMapping = factoryMapping;
-    }
+  AbilityType(BiFunction<AbilityParams, CoreGame, Ability> factoryMapping) {
+    this.factoryMapping = factoryMapping;
+  }
 }

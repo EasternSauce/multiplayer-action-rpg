@@ -7,23 +7,12 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 public class PoisonousMixture extends PoisonousMixtureBase {
-    public static PoisonousMixtureBase of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        Creature creature = game.getCreature(abilityParams.getCreatureId());
+  public static PoisonousMixtureBase of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+    Creature creature = game.getCreature(abilityParams.getCreatureId());
 
-        PoisonousMixture ability = PoisonousMixture.of();
-        ability.params = abilityParams
-            .setWidth(1.5f)
-            .setHeight(1.5f)
-            .setChannelTime(0f)
-            .setActiveTime(30f)
-            .setTextureName("green_potion_throw")
-            .setBaseDamage(22f)
-            .setChannelAnimationLooping(false)
-            .setActiveAnimationLooping(true)
-            .setDelayedActionTime(0.001f)
-            .setPos(creature.getParams().getPos())
-            .setMaximumRange(16f);
+    PoisonousMixture ability = PoisonousMixture.of();
+    ability.params = abilityParams.setWidth(1.5f).setHeight(1.5f).setChannelTime(0f).setActiveTime(30f).setTextureName("green_potion_throw").setBaseDamage(22f).setChannelAnimationLooping(false).setActiveAnimationLooping(true).setDelayedActionTime(0.001f).setPos(creature.getParams().getPos()).setMaximumRange(16f);
 
-        return ability;
-    }
+    return ability;
+  }
 }

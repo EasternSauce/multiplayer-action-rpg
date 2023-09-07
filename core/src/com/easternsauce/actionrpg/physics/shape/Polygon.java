@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 public class Polygon implements BodyShape {
-    @Getter
-    private float[] vertices;
+  @Getter
+  private float[] vertices;
 
-    @Override
-    public Shape b2Shape() {
-        PolygonShape shape = new PolygonShape();
-        shape.set(vertices);
-        return shape;
-    }
+  @Override
+  public Shape b2Shape() {
+    PolygonShape shape = new PolygonShape();
+    shape.set(vertices);
+    return shape;
+  }
 }

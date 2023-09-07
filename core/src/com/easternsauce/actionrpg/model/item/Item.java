@@ -11,59 +11,50 @@ import java.util.concurrent.ConcurrentSkipListMap;
 @NoArgsConstructor(staticName = "of")
 @Data
 public class Item implements Comparable<Item> {
-    private ItemTemplate template;
-    private Integer quantity = 1;
-    private Float qualityModifier = 1f;
-    private Map<SkillType, Integer> grantedSkills = new ConcurrentSkipListMap<>();
+  private ItemTemplate template;
+  private Integer quantity = 1;
+  private Float qualityModifier = 1f;
+  private Map<SkillType, Integer> grantedSkills = new ConcurrentSkipListMap<>();
 
-    private LootPileId lootPileId;
+  private LootPileId lootPileId;
 
-    @SuppressWarnings("StringConcatenationInsideStringBufferAppend")
-    public String getDescription() {
-        StringBuilder builder = new StringBuilder();
-        if (template.getDamage() != null) {
-            builder.append("Damage: " + getDamage() + "\n");
-        }
-        if (template.getArmor() != null) {
-            builder.append("Armor: " + getArmor() + "\n");
-        }
-        grantedSkills.forEach((skillType, level) -> builder.append("Grants Level " +
-            level +
-            " " +
-            skillType.getPrettyName() +
-            "\n"));
-        if (template.getWorth() != null) {
-            builder.append("Worth: " + getWorth() + "\n");
-        }
-        return builder.toString();
+  @SuppressWarnings("StringConcatenationInsideStringBufferAppend")
+  public String getDescription() {
+    StringBuilder builder = new StringBuilder();
+    if (template.getDamage() != null) {
+      builder.append("Damage: " + getDamage() + "\n");
     }
-
-    public Integer getDamage() {
-        return (int) (template.getDamage() * qualityModifier);
+    if (template.getArmor() != null) {
+      builder.append("Armor: " + getArmor() + "\n");
     }
-
-    public Integer getArmor() {
-        return (int) (template.getArmor() * qualityModifier);
+    grantedSkills.forEach((skillType, level) -> builder.append("Grants Level " + level + " " + skillType.getPrettyName() + "\n"));
+    if (template.getWorth() != null) {
+      builder.append("Worth: " + getWorth() + "\n");
     }
+    return builder.toString();
+  }
 
-    public Integer getWorth() {
-        return (int) (template.getWorth() * qualityModifier);
-    }
+  public Integer getDamage() {
+    return (int) (template.getDamage() * qualityModifier);
+  }
 
-    @Override
-    public int compareTo(Item o) {
-        if (this.template.getId().equals(o.template.getId())) {
-            return this.qualityModifier.compareTo(o.qualityModifier);
-        }
-        return this.template.getId().compareTo(o.template.getId());
-    }
+  public Integer getArmor() {
+    return (int) (template.getArmor() * qualityModifier);
+  }
 
-    public Item copy() {
-        return Item
-            .of()
-            .setTemplate(template)
-            .setQuantity(quantity)
-            .setQualityModifier(qualityModifier)
-            .setGrantedSkills(new ConcurrentSkipListMap<>(grantedSkills));
+  public Integer getWorth() {
+    return (int) (template.getWorth() * qualityModifier);
+  }
+
+  @Override
+  public int compareTo(Item o) {
+    if (this.template.getId().equals(o.template.getId())) {
+      return this.qualityModifier.compareTo(o.qualityModifier);
     }
+    return this.template.getId().compareTo(o.template.getId());
+  }
+
+  public Item copy() {
+    return Item.of().setTemplate(template).setQuantity(quantity).setQualityModifier(qualityModifier).setGrantedSkills(new ConcurrentSkipListMap<>(grantedSkills));
+  }
 }

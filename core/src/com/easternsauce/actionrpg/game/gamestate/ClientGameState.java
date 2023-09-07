@@ -18,78 +18,77 @@ import java.util.Set;
 
 @NoArgsConstructor(staticName = "of")
 public class ClientGameState extends GameState {
-    @Getter
-    @Setter
-    private CreatureId thisClientPlayerId;
+  @Getter
+  @Setter
+  private CreatureId thisClientPlayerId;
 
-    @Override
-    public Set<CreatureId> getCreaturesToUpdate(CoreGame game) {
-        return accessCreatures().getCreaturesToUpdateForPlayerCreatureId(getThisClientPlayerId(), game);
+  @Override
+  public Set<CreatureId> getCreaturesToUpdate(CoreGame game) {
+    return accessCreatures().getCreaturesToUpdateForPlayerCreatureId(getThisClientPlayerId(), game);
+  }
+
+  @Override
+  public void scheduleServerSideAction(GameStateAction action) {
+    // do nothing on client side
+  }
+
+  @Override
+  public AreaId getCurrentAreaId() {
+    if (!accessCreatures().getCreatures().containsKey(getThisClientPlayerId())) {
+      return getDefaultAreaId();
     }
 
-    @Override
-    public void scheduleServerSideAction(GameStateAction action) {
-        // do nothing on client side
-    }
+    return accessCreatures().getCreature(getThisClientPlayerId()).getParams().getAreaId();
+  }
 
-    @Override
-    public AreaId getCurrentAreaId() {
-        if (!accessCreatures().getCreatures().containsKey(getThisClientPlayerId())) {
-            return getDefaultAreaId();
-        }
+  public void createEventsFromReceivedGameStateData(GameStateData newGameStateData, EntityEventProcessor eventProcessor) {
+    GameStateData oldGameStateData = dataHolder.getData();
 
-        return accessCreatures().getCreature(getThisClientPlayerId()).getParams().getAreaId();
-    }
+    Set<CreatureId> oldCreatureIds = oldGameStateData.getCreatures().keySet();
+    Set<CreatureId> newCreatureIds = newGameStateData.getCreatures().keySet();
+    Set<AbilityId> oldAbilityIds = oldGameStateData.getAbilities().keySet();
+    Set<AbilityId> newAbilityIds = newGameStateData.getAbilities().keySet();
+    Set<LootPileId> oldLootPileIds = oldGameStateData.getLootPiles().keySet();
+    Set<LootPileId> newLootPileIds = newGameStateData.getLootPiles().keySet();
+    Set<AreaGateId> oldAreaGateIds = oldGameStateData.getAreaGates().keySet();
+    Set<AreaGateId> newAreaGateIds = newGameStateData.getAreaGates().keySet();
 
-    public void createEventsFromReceivedGameStateData(GameStateData newGameStateData,
-                                                      EntityEventProcessor eventProcessor) {
-        GameStateData oldGameStateData = dataHolder.getData();
+    Set<CreatureId> creaturesAddedSinceLastUpdate = new HashSet<>(newCreatureIds);
+    creaturesAddedSinceLastUpdate.removeAll(oldCreatureIds);
 
-        Set<CreatureId> oldCreatureIds = oldGameStateData.getCreatures().keySet();
-        Set<CreatureId> newCreatureIds = newGameStateData.getCreatures().keySet();
-        Set<AbilityId> oldAbilityIds = oldGameStateData.getAbilities().keySet();
-        Set<AbilityId> newAbilityIds = newGameStateData.getAbilities().keySet();
-        Set<LootPileId> oldLootPileIds = oldGameStateData.getLootPiles().keySet();
-        Set<LootPileId> newLootPileIds = newGameStateData.getLootPiles().keySet();
-        Set<AreaGateId> oldAreaGateIds = oldGameStateData.getAreaGates().keySet();
-        Set<AreaGateId> newAreaGateIds = newGameStateData.getAreaGates().keySet();
+    Set<CreatureId> creaturesRemovedSinceLastUpdate = new HashSet<>(oldCreatureIds);
+    creaturesRemovedSinceLastUpdate.removeAll(newCreatureIds);
 
-        Set<CreatureId> creaturesAddedSinceLastUpdate = new HashSet<>(newCreatureIds);
-        creaturesAddedSinceLastUpdate.removeAll(oldCreatureIds);
+    Set<AbilityId> abilitiesAddedSinceLastUpdate = new HashSet<>(newAbilityIds);
+    abilitiesAddedSinceLastUpdate.removeAll(oldAbilityIds);
 
-        Set<CreatureId> creaturesRemovedSinceLastUpdate = new HashSet<>(oldCreatureIds);
-        creaturesRemovedSinceLastUpdate.removeAll(newCreatureIds);
+    Set<AbilityId> abilitiesRemovedSinceLastUpdate = new HashSet<>(oldAbilityIds);
+    abilitiesRemovedSinceLastUpdate.removeAll(newAbilityIds);
 
-        Set<AbilityId> abilitiesAddedSinceLastUpdate = new HashSet<>(newAbilityIds);
-        abilitiesAddedSinceLastUpdate.removeAll(oldAbilityIds);
+    Set<LootPileId> lootPilesAddedSinceLastUpdate = new HashSet<>(newLootPileIds);
+    lootPilesAddedSinceLastUpdate.removeAll(oldLootPileIds);
 
-        Set<AbilityId> abilitiesRemovedSinceLastUpdate = new HashSet<>(oldAbilityIds);
-        abilitiesRemovedSinceLastUpdate.removeAll(newAbilityIds);
+    Set<LootPileId> lootPilesRemovedSinceLastUpdate = new HashSet<>(oldLootPileIds);
+    lootPilesRemovedSinceLastUpdate.removeAll(newLootPileIds);
 
-        Set<LootPileId> lootPilesAddedSinceLastUpdate = new HashSet<>(newLootPileIds);
-        lootPilesAddedSinceLastUpdate.removeAll(oldLootPileIds);
+    Set<AreaGateId> areaGatesAddedSinceLastUpdate = new HashSet<>(newAreaGateIds);
+    areaGatesAddedSinceLastUpdate.removeAll(oldAreaGateIds);
 
-        Set<LootPileId> lootPilesRemovedSinceLastUpdate = new HashSet<>(oldLootPileIds);
-        lootPilesRemovedSinceLastUpdate.removeAll(newLootPileIds);
+    Set<AreaGateId> areaGatesRemovedSinceLastUpdate = new HashSet<>(oldAreaGateIds);
+    areaGatesRemovedSinceLastUpdate.removeAll(newAreaGateIds);
 
-        Set<AreaGateId> areaGatesAddedSinceLastUpdate = new HashSet<>(newAreaGateIds);
-        areaGatesAddedSinceLastUpdate.removeAll(oldAreaGateIds);
+    eventProcessor.getCreatureModelsToBeCreated().addAll(creaturesAddedSinceLastUpdate);
+    eventProcessor.getCreatureModelsToBeRemoved().addAll(creaturesRemovedSinceLastUpdate);
+    eventProcessor.getAbilityModelsToBeCreated().addAll(abilitiesAddedSinceLastUpdate);
+    eventProcessor.getAbilityModelsToBeRemoved().addAll(abilitiesRemovedSinceLastUpdate);
+    eventProcessor.getLootPileModelsToBeCreated().addAll(lootPilesAddedSinceLastUpdate);
+    eventProcessor.getLootPileModelsToBeRemoved().addAll(lootPilesRemovedSinceLastUpdate);
+    eventProcessor.getAreaGateModelsToBeCreated().addAll(areaGatesAddedSinceLastUpdate);
+    eventProcessor.getAreaGateModelsToBeRemoved().addAll(areaGatesRemovedSinceLastUpdate);
+  }
 
-        Set<AreaGateId> areaGatesRemovedSinceLastUpdate = new HashSet<>(oldAreaGateIds);
-        areaGatesRemovedSinceLastUpdate.removeAll(newAreaGateIds);
-
-        eventProcessor.getCreatureModelsToBeCreated().addAll(creaturesAddedSinceLastUpdate);
-        eventProcessor.getCreatureModelsToBeRemoved().addAll(creaturesRemovedSinceLastUpdate);
-        eventProcessor.getAbilityModelsToBeCreated().addAll(abilitiesAddedSinceLastUpdate);
-        eventProcessor.getAbilityModelsToBeRemoved().addAll(abilitiesRemovedSinceLastUpdate);
-        eventProcessor.getLootPileModelsToBeCreated().addAll(lootPilesAddedSinceLastUpdate);
-        eventProcessor.getLootPileModelsToBeRemoved().addAll(lootPilesRemovedSinceLastUpdate);
-        eventProcessor.getAreaGateModelsToBeCreated().addAll(areaGatesAddedSinceLastUpdate);
-        eventProcessor.getAreaGateModelsToBeRemoved().addAll(areaGatesRemovedSinceLastUpdate);
-    }
-
-    public void setNewGameState(GameStateData receivedGameStateData) {
-        dataHolder.setData(receivedGameStateData);
-    }
+  public void setNewGameState(GameStateData receivedGameStateData) {
+    dataHolder.setData(receivedGameStateData);
+  }
 
 }

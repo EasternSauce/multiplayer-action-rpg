@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 public class AbilityHitsCreatureEvent implements PhysicsEvent {
-    @Getter
-    private CreatureId sourceCreatureId;
-    @Getter
-    private CreatureId destinationCreatureId;
-    @Getter
-    private AbilityId abilityId;
+  @Getter
+  private CreatureId sourceCreatureId;
+  @Getter
+  private CreatureId destinationCreatureId;
+  @Getter
+  private AbilityId abilityId;
 }

@@ -19,278 +19,237 @@ import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
 public class PhysicsWorld {
-    @Getter
-    private final Map<Vector2Int, Boolean> traversables = new HashMap<>();
-    @Getter
-    private final Map<Vector2Int, Boolean> traversablesWithMargins = new HashMap<>();
-    @Getter
-    private final Map<Vector2Int, Boolean> flyover = new HashMap<>();
-    @Getter
-    private final List<TerrainTileBody> terrainTiles = new LinkedList<>();
-    @Getter
-    private final List<TerrainTileBody> terrainBorders = new LinkedList<>();
-    private TiledMap map;
-    private TiledMapTileLayer layer;
-    @Getter
-    private World b2world;
-    @Getter
-    private Map<Vector2Int, Integer> clearances = new HashMap<>();
-    private Float tileWidth;
-    private Float tileHeight;
-    private Map<Vector2Int, PathingNode> pathingGraph;
+  @Getter
+  private final Map<Vector2Int, Boolean> traversables = new HashMap<>();
+  @Getter
+  private final Map<Vector2Int, Boolean> traversablesWithMargins = new HashMap<>();
+  @Getter
+  private final Map<Vector2Int, Boolean> flyover = new HashMap<>();
+  @Getter
+  private final List<TerrainTileBody> terrainTiles = new LinkedList<>();
+  @Getter
+  private final List<TerrainTileBody> terrainBorders = new LinkedList<>();
+  private TiledMap map;
+  private TiledMapTileLayer layer;
+  @Getter
+  private World b2world;
+  @Getter
+  private Map<Vector2Int, Integer> clearances = new HashMap<>();
+  private Float tileWidth;
+  private Float tileHeight;
+  private Map<Vector2Int, PathingNode> pathingGraph;
 
-    public static PhysicsWorld of(TiledMap map) {
-        PhysicsWorld world = PhysicsWorld.of();
+  public static PhysicsWorld of(TiledMap map) {
+    PhysicsWorld world = PhysicsWorld.of();
 
-        world.map = map;
+    world.map = map;
 
-        return world;
+    return world;
+  }
+
+  public Map<Vector2Int, PathingNode> pathingGraph() {
+    return pathingGraph;
+  }
+
+  public Vector2 getTileCenter(Vector2Int pos) {
+
+    return Vector2.of(pos.getX() * tileWidth + tileWidth / 2, pos.getY() * tileHeight + tileHeight / 2);
+  }
+
+  public Vector2Int getClosestTile(Vector2 pos) {
+    return Vector2Int.of((int) (pos.getX() / tileWidth), (int) (pos.getY() / tileHeight));
+  }
+
+  public void init() {
+    layer = (TiledMapTileLayer) map.getLayers().get(0);
+
+    b2world = new World(new com.badlogic.gdx.math.Vector2(0, 0), true);
+
+    tileWidth = layer.getTileWidth() * Constants.MAP_SCALE / Constants.PPM;
+    tileHeight = layer.getTileHeight() * Constants.MAP_SCALE / Constants.PPM;
+
+    for (int i = 0; i < heightInTiles(); i++) {
+      for (int j = 0; j < widthInTiles(); j++) {
+        traversables.put(Vector2Int.of(j, i), true);
+      }
     }
 
-    public Map<Vector2Int, PathingNode> pathingGraph() {
-        return pathingGraph;
+    for (int i = 0; i < heightInTiles(); i++) {
+      for (int j = 0; j < widthInTiles(); j++) {
+        traversablesWithMargins.put(Vector2Int.of(j, i), true);
+      }
     }
 
-    public Vector2 getTileCenter(Vector2Int pos) {
-
-        return Vector2.of(pos.getX() * tileWidth + tileWidth / 2, pos.getY() * tileHeight + tileHeight / 2);
+    for (int i = 0; i < heightInTiles(); i++) {
+      for (int j = 0; j < widthInTiles(); j++) {
+        flyover.put(Vector2Int.of(j, i), true);
+      }
     }
 
-    public Vector2Int getClosestTile(Vector2 pos) {
-        return Vector2Int.of((int) (pos.getX() / tileWidth), (int) (pos.getY() / tileHeight));
-    }
+    createTerrainTiles();
+    createBorders();
 
-    public void init() {
-        layer = (TiledMapTileLayer) map.getLayers().get(0);
+    pathingGraph = Astar.generatePathingGraph(this);
+  }
 
-        b2world = new World(new com.badlogic.gdx.math.Vector2(0, 0), true);
+  public Integer heightInTiles() {
+    return layer.getHeight();
+  }
 
-        tileWidth = layer.getTileWidth() * Constants.MAP_SCALE / Constants.PPM;
-        tileHeight = layer.getTileHeight() * Constants.MAP_SCALE / Constants.PPM;
+  public Integer widthInTiles() {
+    return layer.getWidth();
+  }
 
-        for (int i = 0; i < heightInTiles(); i++) {
-            for (int j = 0; j < widthInTiles(); j++) {
-                traversables.put(Vector2Int.of(j, i), true);
-            }
-        }
+  public void createTerrainTiles() {
+    for (int layerNum = 0; layerNum <= 1; layerNum++) {
+      TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(layerNum);
 
-        for (int i = 0; i < heightInTiles(); i++) {
-            for (int j = 0; j < widthInTiles(); j++) {
-                traversablesWithMargins.put(Vector2Int.of(j, i), true);
-            }
-        }
+      for (int y = 0; y < layer.getHeight(); y++) {
+        for (int x = 0; x < layer.getWidth(); x++) {
+          TiledMapTileLayer.Cell cell = layer.getCell(x, y);
 
-        for (int i = 0; i < heightInTiles(); i++) {
-            for (int j = 0; j < widthInTiles(); j++) {
-                flyover.put(Vector2Int.of(j, i), true);
-            }
-        }
+          if (cell != null) {
+            Boolean isTileTraversable = (Boolean) cell.getTile().getProperties().get("traversable");
+            Boolean isTileFlyover = (Boolean) cell.getTile().getProperties().get("flyover");
 
-        createTerrainTiles();
-        createBorders();
+            if (!isTileTraversable) {
+              traversables.put(Vector2Int.of(x, y), false);
 
-        pathingGraph = Astar.generatePathingGraph(this);
-    }
+              traversablesWithMargins.put(Vector2Int.of(x, y), false);
 
-    public Integer heightInTiles() {
-        return layer.getHeight();
-    }
+              List<Vector2Int> combinations = Arrays.asList(Vector2Int.of(0, 1), Vector2Int.of(1, 0), Vector2Int.of(-1, 0), Vector2Int.of(0, -1), Vector2Int.of(1, 1), Vector2Int.of(-1, 1), Vector2Int.of(-1, -1), Vector2Int.of(1, -1));
 
-    public Integer widthInTiles() {
-        return layer.getWidth();
-    }
+              final int _x = x;
+              final int _y = y;
 
-    public void createTerrainTiles() {
-        for (int layerNum = 0; layerNum <= 1; layerNum++) {
-            TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(layerNum);
+              combinations.stream().filter(pos -> tileExists(_x + pos.getX(), _y + pos.getY())).forEach(tilePos -> traversablesWithMargins.put(Vector2Int.of(_x + tilePos.getX(), _y + tilePos.getY()), false));
 
-            for (int y = 0; y < layer.getHeight(); y++) {
-                for (int x = 0; x < layer.getWidth(); x++) {
-                    TiledMapTileLayer.Cell cell = layer.getCell(x, y);
-
-                    if (cell != null) {
-                        Boolean isTileTraversable = (Boolean) cell.getTile().getProperties().get("traversable");
-                        Boolean isTileFlyover = (Boolean) cell.getTile().getProperties().get("flyover");
-
-                        if (!isTileTraversable) {
-                            traversables.put(Vector2Int.of(x, y), false);
-
-                            traversablesWithMargins.put(Vector2Int.of(x, y), false);
-
-                            List<Vector2Int> combinations = Arrays.asList(Vector2Int.of(0, 1),
-                                Vector2Int.of(1, 0),
-                                Vector2Int.of(-1, 0),
-                                Vector2Int.of(0, -1),
-                                Vector2Int.of(1, 1),
-                                Vector2Int.of(-1, 1),
-                                Vector2Int.of(-1, -1),
-                                Vector2Int.of(1, -1)
-                            );
-
-                            final int _x = x;
-                            final int _y = y;
-
-                            combinations.stream().filter(pos -> tileExists(_x + pos.getX(), _y + pos.getY())).forEach(
-                                tilePos -> traversablesWithMargins.put(Vector2Int.of(_x + tilePos.getX(),
-                                    _y + tilePos.getY()
-                                ), false));
-
-                        }
-
-                        if (!isTileFlyover) {
-                            flyover.put(Vector2Int.of(x, y), false);
-                        }
-                    }
-
-                }
             }
 
-            for (int y = 0; y < layer.getHeight(); y++) {
-                for (int x = 0; x < layer.getWidth(); x++) {
-                    if (!traversables.get(Vector2Int.of(x, y))) {
-                        TerrainTileBody tile = TerrainTileBody.of(Vector2Int.of(x, y),
-                            tileWidth,
-                            tileHeight,
-                            layerNum,
-                            flyover.get(Vector2Int.of(x, y))
-                        );
-
-                        tile.init(this);
-                        terrainTiles.add(tile);
-                    }
-                }
+            if (!isTileFlyover) {
+              flyover.put(Vector2Int.of(x, y), false);
             }
-        }
+          }
 
-        calculateClearances(traversables);
+        }
+      }
+
+      for (int y = 0; y < layer.getHeight(); y++) {
+        for (int x = 0; x < layer.getWidth(); x++) {
+          if (!traversables.get(Vector2Int.of(x, y))) {
+            TerrainTileBody tile = TerrainTileBody.of(Vector2Int.of(x, y), tileWidth, tileHeight, layerNum, flyover.get(Vector2Int.of(x, y)));
+
+            tile.init(this);
+            terrainTiles.add(tile);
+          }
+        }
+      }
     }
 
-    public void createBorders() {
+    calculateClearances(traversables);
+  }
 
-        for (int x = 0; x < widthInTiles(); x++) {
-            TerrainTileBody tile1 = TerrainTileBody.of(Vector2Int.of(x, -1), tileWidth, tileHeight, 0, false);
-            tile1.init(this);
-            terrainBorders.add(tile1);
-            TerrainTileBody tile2 = TerrainTileBody.of(Vector2Int.of(x, heightInTiles()),
-                tileWidth,
-                tileHeight,
-                0,
-                false
-            );
-            tile2.init(this);
-            terrainBorders.add(tile2);
-        }
-        for (int y = 0; y < heightInTiles(); y++) {
-            TerrainTileBody tile1 = TerrainTileBody.of(Vector2Int.of(-1, y), tileWidth, tileHeight, 0, false);
-            tile1.init(this);
-            terrainBorders.add(tile1);
-            TerrainTileBody tile2 = TerrainTileBody.of(Vector2Int.of(widthInTiles(), y),
-                tileWidth,
-                tileHeight,
-                0,
-                false
-            );
-            tile2.init(this);
-            terrainBorders.add(tile2);
-        }
+  public void createBorders() {
 
+    for (int x = 0; x < widthInTiles(); x++) {
+      TerrainTileBody tile1 = TerrainTileBody.of(Vector2Int.of(x, -1), tileWidth, tileHeight, 0, false);
+      tile1.init(this);
+      terrainBorders.add(tile1);
+      TerrainTileBody tile2 = TerrainTileBody.of(Vector2Int.of(x, heightInTiles()), tileWidth, tileHeight, 0, false);
+      tile2.init(this);
+      terrainBorders.add(tile2);
+    }
+    for (int y = 0; y < heightInTiles(); y++) {
+      TerrainTileBody tile1 = TerrainTileBody.of(Vector2Int.of(-1, y), tileWidth, tileHeight, 0, false);
+      tile1.init(this);
+      terrainBorders.add(tile1);
+      TerrainTileBody tile2 = TerrainTileBody.of(Vector2Int.of(widthInTiles(), y), tileWidth, tileHeight, 0, false);
+      tile2.init(this);
+      terrainBorders.add(tile2);
     }
 
-    private Boolean tileExists(Integer x, Integer y) {
-        return x >= 0 && x < widthInTiles() && y >= 0 && y < heightInTiles();
+  }
+
+  private Boolean tileExists(Integer x, Integer y) {
+    return x >= 0 && x < widthInTiles() && y >= 0 && y < heightInTiles();
+  }
+
+  public void calculateClearances(Map<Vector2Int, Boolean> traversables) {
+    clearances = new HashMap<>();
+
+    for (int y = 0; y < heightInTiles(); y++) {
+      for (int x = 0; x < widthInTiles(); x++) {
+        if (!traversables.get(Vector2Int.of(x, y))) {
+          tryAddClearance(Vector2Int.of(x - 1, y - 1), 1);
+          tryAddClearance(Vector2Int.of(x, y - 1), 1);
+          tryAddClearance(Vector2Int.of(x + 1, y - 1), 1);
+          tryAddClearance(Vector2Int.of(x - 1, y + 1), 1);
+          tryAddClearance(Vector2Int.of(x, y + 1), 1);
+          tryAddClearance(Vector2Int.of(x + 1, y + 1), 1);
+          tryAddClearance(Vector2Int.of(x - 1, y), 1);
+          tryAddClearance(Vector2Int.of(x + 1, y), 1);
+        }
+      }
     }
 
-    public void calculateClearances(Map<Vector2Int, Boolean> traversables) {
-        clearances = new HashMap<>();
+    int currentLevel = 2;
 
-        for (int y = 0; y < heightInTiles(); y++) {
-            for (int x = 0; x < widthInTiles(); x++) {
-                if (!traversables.get(Vector2Int.of(x, y))) {
-                    tryAddClearance(Vector2Int.of(x - 1, y - 1), 1);
-                    tryAddClearance(Vector2Int.of(x, y - 1), 1);
-                    tryAddClearance(Vector2Int.of(x + 1, y - 1), 1);
-                    tryAddClearance(Vector2Int.of(x - 1, y + 1), 1);
-                    tryAddClearance(Vector2Int.of(x, y + 1), 1);
-                    tryAddClearance(Vector2Int.of(x + 1, y + 1), 1);
-                    tryAddClearance(Vector2Int.of(x - 1, y), 1);
-                    tryAddClearance(Vector2Int.of(x + 1, y), 1);
-                }
-            }
-        }
+    while (traversables.values().stream().filter(isTraversable -> isTraversable).count() != clearances.size()) {
 
-        int currentLevel = 2;
+      final int level = currentLevel;
 
-        while (traversables.values().stream().filter(isTraversable -> isTraversable).count() != clearances.size()) {
+      List<Vector2Int> lowerLevelClearances = clearances.entrySet().stream().filter(entry -> entry.getValue() == level - 1).map(Map.Entry::getKey).collect(Collectors.toList());
 
-            final int level = currentLevel;
+      lowerLevelClearances.forEach(pos -> {
+        int x = pos.getX();
+        int y = pos.getY();
 
-            List<Vector2Int> lowerLevelClearances = clearances.entrySet().stream().filter(entry -> entry.getValue() ==
-                level - 1).map(Map.Entry::getKey).collect(Collectors.toList());
+        tryAddClearance(Vector2Int.of(x - 1, y - 1), level);
+        tryAddClearance(Vector2Int.of(x, y - 1), level);
+        tryAddClearance(Vector2Int.of(x + 1, y - 1), level);
+        tryAddClearance(Vector2Int.of(x - 1, y + 1), level);
+        tryAddClearance(Vector2Int.of(x, y + 1), level);
+        tryAddClearance(Vector2Int.of(x + 1, y + 1), level);
+        tryAddClearance(Vector2Int.of(x - 1, y), level);
+        tryAddClearance(Vector2Int.of(x + 1, y), level);
+      });
 
-            lowerLevelClearances.forEach(pos -> {
-                int x = pos.getX();
-                int y = pos.getY();
-
-                tryAddClearance(Vector2Int.of(x - 1, y - 1), level);
-                tryAddClearance(Vector2Int.of(x, y - 1), level);
-                tryAddClearance(Vector2Int.of(x + 1, y - 1), level);
-                tryAddClearance(Vector2Int.of(x - 1, y + 1), level);
-                tryAddClearance(Vector2Int.of(x, y + 1), level);
-                tryAddClearance(Vector2Int.of(x + 1, y + 1), level);
-                tryAddClearance(Vector2Int.of(x - 1, y), level);
-                tryAddClearance(Vector2Int.of(x + 1, y), level);
-            });
-
-            currentLevel++;
-        }
-
+      currentLevel++;
     }
 
-    public void tryAddClearance(Vector2Int pos, Integer level) {
-        if (!clearances.containsKey(pos) &&
-            pos.getX() >= 0 &&
-            pos.getY() >= 0 &&
-            pos.getX() < widthInTiles() &&
-            pos.getY() < heightInTiles() &&
-            traversables.get(pos)) {
-            clearances.put(pos, level);
-        }
+  }
+
+  public void tryAddClearance(Vector2Int pos, Integer level) {
+    if (!clearances.containsKey(pos) && pos.getX() >= 0 && pos.getY() >= 0 && pos.getX() < widthInTiles() && pos.getY() < heightInTiles() && traversables.get(pos)) {
+      clearances.put(pos, level);
+    }
+  }
+
+  public void step() {
+    b2world.step(Math.min(Gdx.graphics.getDeltaTime(), 0.15f), 6, 2);
+  }
+
+  public Boolean isLineBetweenPointsUnobstructedByTerrain(Vector2 fromPos, Vector2 toPos) {
+    float lineWidth = 0.3f;
+    com.badlogic.gdx.math.Polygon lineOfSightRect = new com.badlogic.gdx.math.Polygon(new float[]{fromPos.getX(), fromPos.getY(), fromPos.getX() + lineWidth, fromPos.getY() + lineWidth, toPos.getX() + lineWidth, toPos.getY() + lineWidth, toPos.getX(), toPos.getY()});
+
+    List<com.badlogic.gdx.math.Polygon> terrainPolygons = terrainTiles.stream().map(TerrainTileBody::getPolygon).collect(Collectors.toList());
+
+    List<com.badlogic.gdx.math.Polygon> borderPolygons = terrainBorders.stream().map(TerrainTileBody::getPolygon).collect(Collectors.toList());
+
+    // TODO: maybe check nearby tiles only?
+    for (com.badlogic.gdx.math.Polygon polygon : terrainPolygons) {
+      if (Intersector.overlapConvexPolygons(polygon, lineOfSightRect)) {
+        return false;
+      }
     }
 
-    public void step() {
-        b2world.step(Math.min(Gdx.graphics.getDeltaTime(), 0.15f), 6, 2);
+    for (com.badlogic.gdx.math.Polygon polygon : borderPolygons) {
+      if (Intersector.overlapConvexPolygons(polygon, lineOfSightRect)) {
+        return false;
+      }
     }
 
-    public Boolean isLineBetweenPointsUnobstructedByTerrain(Vector2 fromPos, Vector2 toPos) {
-        float lineWidth = 0.3f;
-        com.badlogic.gdx.math.Polygon lineOfSightRect = new com.badlogic.gdx.math.Polygon(new float[]{fromPos.getX(), fromPos.getY(),
-            fromPos.getX() +
-                lineWidth, fromPos.getY() + lineWidth, toPos.getX() + lineWidth, toPos.getY() +
-            lineWidth, toPos.getX(), toPos.getY()});
-
-        List<com.badlogic.gdx.math.Polygon> terrainPolygons = terrainTiles
-            .stream()
-            .map(TerrainTileBody::getPolygon)
-            .collect(Collectors.toList());
-
-        List<com.badlogic.gdx.math.Polygon> borderPolygons = terrainBorders
-            .stream()
-            .map(TerrainTileBody::getPolygon)
-            .collect(Collectors.toList());
-
-        // TODO: maybe check nearby tiles only?
-        for (com.badlogic.gdx.math.Polygon polygon : terrainPolygons) {
-            if (Intersector.overlapConvexPolygons(polygon, lineOfSightRect)) {
-                return false;
-            }
-        }
-
-        for (com.badlogic.gdx.math.Polygon polygon : borderPolygons) {
-            if (Intersector.overlapConvexPolygons(polygon, lineOfSightRect)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
+    return true;
+  }
 }

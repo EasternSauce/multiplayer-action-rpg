@@ -18,65 +18,61 @@ import java.util.concurrent.ConcurrentSkipListSet;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class ItemDropOnGroundAction extends GameStateAction {
-    private CreatureId playerId;
+  private CreatureId playerId;
 
-    public static ItemDropOnGroundAction of(CreatureId playerId) {
-        ItemDropOnGroundAction action = ItemDropOnGroundAction.of();
-        action.playerId = playerId;
-        return action;
+  public static ItemDropOnGroundAction of(CreatureId playerId) {
+    ItemDropOnGroundAction action = ItemDropOnGroundAction.of();
+    action.playerId = playerId;
+    return action;
+  }
+
+  @Override
+  public void applyToGame(CoreGame game) {
+
+    PlayerConfig playerConfig = game.getGameState().getPlayerConfig(playerId);
+
+    Creature player = game.getCreature(playerId);
+
+    if (player == null) {
+      return;
     }
 
-    @Override
-    public void applyToGame(CoreGame game) {
+    Map<Integer, Item> inventoryItems = player.getParams().getInventoryItems();
+    Map<Integer, Item> equipmentItems = player.getParams().getEquipmentItems();
+    Map<Integer, Item> potionMenuItems = player.getParams().getPotionMenuItems();
 
-        PlayerConfig playerConfig = game.getGameState().getPlayerConfig(playerId);
-
-        Creature player = game.getCreature(playerId);
-
-        if (player == null) {
-            return;
-        }
-
-        Map<Integer, Item> inventoryItems = player.getParams().getInventoryItems();
-        Map<Integer, Item> equipmentItems = player.getParams().getEquipmentItems();
-        Map<Integer, Item> potionMenuItems = player.getParams().getPotionMenuItems();
-
-        Item item;
-        if (playerConfig.getInventoryItemBeingMoved() != null) {
-            item = inventoryItems.get(playerConfig.getInventoryItemBeingMoved());
-            inventoryItems.remove(playerConfig.getInventoryItemBeingMoved());
-            playerConfig.setInventoryItemBeingMoved(null);
-        } else if (playerConfig.getEquipmentItemBeingMoved() != null) {
-            item = equipmentItems.get(playerConfig.getEquipmentItemBeingMoved());
-            equipmentItems.remove(playerConfig.getEquipmentItemBeingMoved());
-            playerConfig.setEquipmentItemBeingMoved(null);
-        } else if (playerConfig.getPotionMenuItemBeingMoved() != null) {
-            item = potionMenuItems.get(playerConfig.getPotionMenuItemBeingMoved());
-            potionMenuItems.remove(playerConfig.getPotionMenuItemBeingMoved());
-            playerConfig.setPotionMenuItemBeingMoved(null);
-        } else {
-            throw new RuntimeException("impossible state");
-        }
-
-        LootPileId lootPileId = LootPileId.of("LootPile_" + (int) (Math.random() * 10000000)); // TODO: use seeded rng
-
-        Set<Item> lootPileItems = new ConcurrentSkipListSet<>();
-        lootPileItems.add(item.copy().setLootPileId(lootPileId));
-
-        LootPile lootPile = LootPile.of(lootPileId,
-            player.getParams().getAreaId(),
-            player.getParams().getPos(),
-            lootPileItems
-        );
-
-        game.getGameState().getLootPiles().put(lootPile.getParams().getId(), lootPile);
-
-        game.getEventProcessor().getLootPileModelsToBeCreated().add(lootPile.getParams().getId());
-
+    Item item;
+    if (playerConfig.getInventoryItemBeingMoved() != null) {
+      item = inventoryItems.get(playerConfig.getInventoryItemBeingMoved());
+      inventoryItems.remove(playerConfig.getInventoryItemBeingMoved());
+      playerConfig.setInventoryItemBeingMoved(null);
+    } else if (playerConfig.getEquipmentItemBeingMoved() != null) {
+      item = equipmentItems.get(playerConfig.getEquipmentItemBeingMoved());
+      equipmentItems.remove(playerConfig.getEquipmentItemBeingMoved());
+      playerConfig.setEquipmentItemBeingMoved(null);
+    } else if (playerConfig.getPotionMenuItemBeingMoved() != null) {
+      item = potionMenuItems.get(playerConfig.getPotionMenuItemBeingMoved());
+      potionMenuItems.remove(playerConfig.getPotionMenuItemBeingMoved());
+      playerConfig.setPotionMenuItemBeingMoved(null);
+    } else {
+      throw new RuntimeException("impossible state");
     }
 
-    @Override
-    public Entity getEntity(CoreGame game) {
-        return game.getCreature(playerId);
-    }
+    LootPileId lootPileId = LootPileId.of("LootPile_" + (int) (Math.random() * 10000000)); // TODO: use seeded rng
+
+    Set<Item> lootPileItems = new ConcurrentSkipListSet<>();
+    lootPileItems.add(item.copy().setLootPileId(lootPileId));
+
+    LootPile lootPile = LootPile.of(lootPileId, player.getParams().getAreaId(), player.getParams().getPos(), lootPileItems);
+
+    game.getGameState().getLootPiles().put(lootPile.getParams().getId(), lootPile);
+
+    game.getEventProcessor().getLootPileModelsToBeCreated().add(lootPile.getParams().getId());
+
+  }
+
+  @Override
+  public Entity getEntity(CoreGame game) {
+    return game.getCreature(playerId);
+  }
 }

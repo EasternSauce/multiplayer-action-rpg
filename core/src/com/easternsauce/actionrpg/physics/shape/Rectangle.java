@@ -9,15 +9,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 public class Rectangle implements BodyShape {
-    @Getter
-    private float width;
-    @Getter
-    private float height;
+  @Getter
+  private float width;
+  @Getter
+  private float height;
 
-    @Override
-    public Shape b2Shape() {
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(width / 2, height / 2);
-        return shape;
-    }
+  @Override
+  public Shape b2Shape() {
+    PolygonShape shape = new PolygonShape();
+    shape.setAsBox(width / 2, height / 2);
+    return shape;
+  }
 }

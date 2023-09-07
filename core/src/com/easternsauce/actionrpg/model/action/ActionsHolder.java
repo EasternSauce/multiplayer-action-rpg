@@ -9,6 +9,6 @@ import java.util.List;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 public class ActionsHolder {
-    @Getter
-    List<GameStateAction> actions;
+  @Getter
+  List<GameStateAction> actions;
 }

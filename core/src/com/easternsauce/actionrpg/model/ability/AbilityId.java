@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(staticName = "of")
 @EqualsAndHashCode
 public class AbilityId implements Comparable<AbilityId> {
-    @Getter
-    String value;
+  @Getter
+  String value;
 
-    @Override
-    public int compareTo(AbilityId o) {
-        return getValue().compareTo(o.getValue());
-    }
+  @Override
+  public int compareTo(AbilityId o) {
+    return getValue().compareTo(o.getValue());
+  }
 }

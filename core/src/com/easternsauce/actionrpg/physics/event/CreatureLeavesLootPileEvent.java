@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 public class CreatureLeavesLootPileEvent implements PhysicsEvent {
-    @Getter
-    private CreatureId creatureId;
-    @Getter
-    private LootPileId lootPileId;
+  @Getter
+  private CreatureId creatureId;
+  @Getter
+  private LootPileId lootPileId;
 }

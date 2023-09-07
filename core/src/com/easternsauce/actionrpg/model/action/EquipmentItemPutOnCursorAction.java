@@ -10,28 +10,28 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class EquipmentItemPutOnCursorAction extends GameStateAction {
-    private CreatureId playerId;
+  private CreatureId playerId;
 
-    private Integer slotIndex;
+  private Integer slotIndex;
 
-    public static EquipmentItemPutOnCursorAction of(CreatureId creatureId, Integer slotIndex) {
-        EquipmentItemPutOnCursorAction action = EquipmentItemPutOnCursorAction.of();
-        action.playerId = creatureId;
-        action.slotIndex = slotIndex;
-        return action;
+  public static EquipmentItemPutOnCursorAction of(CreatureId creatureId, Integer slotIndex) {
+    EquipmentItemPutOnCursorAction action = EquipmentItemPutOnCursorAction.of();
+    action.playerId = creatureId;
+    action.slotIndex = slotIndex;
+    return action;
+  }
+
+  @Override
+  public void applyToGame(CoreGame game) {
+    PlayerConfig playerConfig = game.getGameState().getPlayerConfig(playerId);
+
+    if (playerConfig != null) {
+      playerConfig.setEquipmentItemBeingMoved(slotIndex);
     }
+  }
 
-    @Override
-    public void applyToGame(CoreGame game) {
-        PlayerConfig playerConfig = game.getGameState().getPlayerConfig(playerId);
-
-        if (playerConfig != null) {
-            playerConfig.setEquipmentItemBeingMoved(slotIndex);
-        }
-    }
-
-    @Override
-    public Entity getEntity(CoreGame game) {
-        return game.getCreature(playerId);
-    }
+  @Override
+  public Entity getEntity(CoreGame game) {
+    return game.getCreature(playerId);
+  }
 }

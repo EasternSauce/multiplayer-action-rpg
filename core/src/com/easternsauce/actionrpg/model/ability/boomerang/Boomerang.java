@@ -15,100 +15,90 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class Boomerang extends Projectile {
-    @Getter
-    protected AbilityParams params;
+  @Getter
+  protected AbilityParams params;
 
-    public static Boomerang of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-        Boomerang ability = Boomerang.of();
-        ability.params = abilityParams
-            .setWidth(1.3f)
-            .setHeight(1.3f)
-            .setChannelTime(0f)
-            .setActiveTime(10f)
-            .setStartingRange(0.5f)
-            .setTextureName("boomerang")
-            .setBaseDamage(22f)
-            .setChannelAnimationLooping(true)
-            .setActiveAnimationLooping(true)
-            .setSpeed(22f);
+  public static Boomerang of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+    Boomerang ability = Boomerang.of();
+    ability.params = abilityParams.setWidth(1.3f).setHeight(1.3f).setChannelTime(0f).setActiveTime(10f).setStartingRange(0.5f).setTextureName("boomerang").setBaseDamage(22f).setChannelAnimationLooping(true).setActiveAnimationLooping(true).setSpeed(22f);
 
-        return ability;
-    }
+    return ability;
+  }
 
-    @Override
-    public Boolean isRanged() {
-        return true;
-    }
+  @Override
+  public Boolean isRanged() {
+    return true;
+  }
 
-    @Override
-    protected void onChannelUpdate(CoreGame game) {
-        onProjectileTravelUpdate();
-    }
+  @Override
+  protected void onChannelUpdate(CoreGame game) {
+    onProjectileTravelUpdate();
+  }
 
-    @Override
-    protected void onActiveUpdate(float delta, CoreGame game) {
-        onProjectileTravelUpdate();
+  @Override
+  protected void onActiveUpdate(float delta, CoreGame game) {
+    onProjectileTravelUpdate();
 
-        Creature creature = game.getCreature(getParams().getCreatureId());
+    Creature creature = game.getCreature(getParams().getCreatureId());
 
-        if (creature != null) {
-            if (!getParams().getComingBack() && getParams().getStateTimer().getTime() > 1f) {
-                getParams().setComingBack(true);
-                getParams().setSpeed(20f);
-            }
-
-            if (getParams().getComingBack()) {
-                Vector2 vectorTowards = getParams().getPos().vectorTowards(creature.getParams().getPos());
-                float targetAngleDeg = vectorTowards.angleDeg();
-                float currentAngleDeg = getParams().getDirVector().angleDeg();
-
-                float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(currentAngleDeg, targetAngleDeg);
-
-                float incrementFactor = 330f;
-                float increment = incrementFactor * delta;
-
-                if (shortestAngleRotation > increment || shortestAngleRotation < -increment) {
-                    getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(increment));
-                } else {
-                    getParams().setDirVector(getParams().getDirVector().withSetDegAngle(targetAngleDeg));
-                }
-            }
-
-        }
-
-    }
-
-    @Override
-    public void onCreatureHit(CreatureId creatureId, CoreGame game) {
+    if (creature != null) {
+      if (!getParams().getComingBack() && getParams().getStateTimer().getTime() > 1f) {
         getParams().setComingBack(true);
-        getParams().setSpeed(30f);
-    }
+        getParams().setSpeed(20f);
+      }
 
-    @Override
-    public void onSelfCreatureHit(CoreGame game) {
-        if (getParams().getComingBack()) {
-            Creature creature = game.getCreature(getParams().getCreatureId());
-            Skill skill = creature.getParams().getSkills().get(getParams().getSkillType());
+      if (getParams().getComingBack()) {
+        Vector2 vectorTowards = getParams().getPos().vectorTowards(creature.getParams().getPos());
+        float targetAngleDeg = vectorTowards.angleDeg();
+        float currentAngleDeg = getParams().getDirVector().angleDeg();
 
-            skill.resetCooldown();
+        float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(currentAngleDeg, targetAngleDeg);
 
-            deactivate();
+        float incrementFactor = 330f;
+        float increment = incrementFactor * delta;
+
+        if (shortestAngleRotation > increment || shortestAngleRotation < -increment) {
+          getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(increment));
+        } else {
+          getParams().setDirVector(getParams().getDirVector().withSetDegAngle(targetAngleDeg));
         }
+      }
+
     }
 
-    @Override
-    public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
-        getParams().setComingBack(true);
-        getParams().setSpeed(30f);
-    }
+  }
 
-    @Override
-    protected boolean isWeaponAttack() {
-        return true;
-    }
+  @Override
+  public void onCreatureHit(CreatureId creatureId, CoreGame game) {
+    getParams().setComingBack(true);
+    getParams().setSpeed(30f);
+  }
 
-    @Override
-    public Float getStunDuration() {
-        return 0.65f;
+  @Override
+  public void onSelfCreatureHit(CoreGame game) {
+    if (getParams().getComingBack()) {
+      Creature creature = game.getCreature(getParams().getCreatureId());
+      Skill skill = creature.getParams().getSkills().get(getParams().getSkillType());
+
+      skill.resetCooldown();
+
+      deactivate();
     }
+  }
+
+  @Override
+  public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
+    getParams().setComingBack(true);
+    getParams().setSpeed(30f);
+  }
+
+  @Override
+  protected boolean isWeaponAttack() {
+    return true;
+  }
+
+  @Override
+  public Float getStunDuration() {
+    return 0.65f;
+  }
 }

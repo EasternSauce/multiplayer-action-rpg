@@ -11,28 +11,28 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class CreatureMovingVectorSetAction extends GameStateAction {
-    private CreatureId creatureId;
-    private Vector2 movingVector;
+  private CreatureId creatureId;
+  private Vector2 movingVector;
 
-    public static CreatureMovingVectorSetAction of(CreatureId creatureId, Vector2 movingVector) {
-        CreatureMovingVectorSetAction action = CreatureMovingVectorSetAction.of();
-        action.creatureId = creatureId;
-        action.movingVector = movingVector;
-        return action;
+  public static CreatureMovingVectorSetAction of(CreatureId creatureId, Vector2 movingVector) {
+    CreatureMovingVectorSetAction action = CreatureMovingVectorSetAction.of();
+    action.creatureId = creatureId;
+    action.movingVector = movingVector;
+    return action;
+  }
+
+  @Override
+  public void applyToGame(CoreGame game) {
+    Creature creature = game.getCreature(creatureId);
+
+    if (creature != null) {
+      creature.getParams().getMovementParams().setMovingVector(movingVector);
     }
 
-    @Override
-    public void applyToGame(CoreGame game) {
-        Creature creature = game.getCreature(creatureId);
+  }
 
-        if (creature != null) {
-            creature.getParams().getMovementParams().setMovingVector(movingVector);
-        }
-
-    }
-
-    @Override
-    public Entity getEntity(CoreGame game) {
-        return game.getCreature(creatureId);
-    }
+  @Override
+  public Entity getEntity(CoreGame game) {
+    return game.getCreature(creatureId);
+  }
 }

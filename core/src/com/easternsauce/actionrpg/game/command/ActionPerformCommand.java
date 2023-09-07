@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(staticName = "of")
 @NoArgsConstructor(staticName = "of")
 public class ActionPerformCommand implements GameCommand {
-    @Getter
-    GameStateAction action;
+  @Getter
+  GameStateAction action;
 }
