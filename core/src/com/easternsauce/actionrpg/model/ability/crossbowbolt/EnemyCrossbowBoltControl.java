@@ -36,7 +36,7 @@ public class EnemyCrossbowBoltControl extends CrossbowBoltControlBase {
 
     Creature creature = game.getCreature(getParams().getCreatureId());
 
-    if (creature != null && currentBoltToFire < boltFireTimes.length &&
+    if (currentBoltToFire < boltFireTimes.length &&
       getParams().getStateTimer().getTime() > boltFireTimes[currentBoltToFire]) {
       Vector2 aimDirection = creature.getParams().getMovementParams().getAimDirection();
 

@@ -126,7 +126,7 @@ public class GameEntityRenderer {
   }
 
   private void renderCreaturePoisonedIcon(RenderingLayer renderingLayer, Creature creature, CoreGame game) {
-    if (creature != null && creature.isEffectActive(CreatureEffect.POISON, game)) {
+    if (creature.isEffectActive(CreatureEffect.POISON, game)) {
       CreatureRenderer creatureRenderer = creatureRenderers.get(creature.getId());
       float spriteWidth = creatureRenderer.getCreatureSprite().getWidth();
 

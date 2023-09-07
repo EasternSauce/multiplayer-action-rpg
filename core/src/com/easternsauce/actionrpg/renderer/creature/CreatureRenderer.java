@@ -45,15 +45,13 @@ public class CreatureRenderer {
   public void renderLifeBar(RenderingLayer renderingLayer, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
-    if (creature != null) {
-      float currentLifeBarWidth = LifeBarUtils.LIFE_BAR_WIDTH * creature.getParams().getStats().getLife() /
-        creature.getParams().getStats().getMaxLife();
-      float barPosX = LifeBarUtils.getLifeBarPosX(creature);
-      float barPosY = LifeBarUtils.getLifeBarPosY(creature, creatureSprite.getWidth());
+    float currentLifeBarWidth = LifeBarUtils.LIFE_BAR_WIDTH * creature.getParams().getStats().getLife() /
+      creature.getParams().getStats().getMaxLife();
+    float barPosX = LifeBarUtils.getLifeBarPosX(creature);
+    float barPosY = LifeBarUtils.getLifeBarPosY(creature, creatureSprite.getWidth());
 
-      LifeBarUtils.renderBar(renderingLayer, barPosX, barPosY, LifeBarUtils.LIFE_BAR_WIDTH, Color.ORANGE);
-      LifeBarUtils.renderBar(renderingLayer, barPosX, barPosY, currentLifeBarWidth, Color.RED);
-    }
+    LifeBarUtils.renderBar(renderingLayer, barPosX, barPosY, LifeBarUtils.LIFE_BAR_WIDTH, Color.ORANGE);
+    LifeBarUtils.renderBar(renderingLayer, barPosX, barPosY, currentLifeBarWidth, Color.RED);
   }
 
   public void renderCreatureName(RenderingLayer renderingLayer, CoreGame game) {

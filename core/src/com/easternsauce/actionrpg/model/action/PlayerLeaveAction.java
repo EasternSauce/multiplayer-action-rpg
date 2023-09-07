@@ -2,7 +2,6 @@ package com.easternsauce.actionrpg.model.action;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.entity.Entity;
-import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -22,12 +21,10 @@ public class PlayerLeaveAction extends GameStateAction {
   public void applyToGame(CoreGame game) {
     game.getGameState().accessCreatures().getActiveCreatureIds().remove(playerId);
 
-    Creature creature = game.getCreature(playerId);
-    if (creature != null) {
-      game.getEventProcessor().getCreatureModelsToBeRemoved().add(playerId);
-      System.out.println("removed model " + playerId.getValue());
-    }
+    game.getEventProcessor().getCreatureModelsToBeRemoved().add(playerId);
+    System.out.println("removed model " + playerId.getValue());
   }
+
 
   @Override
   public Entity getEntity(CoreGame game) {

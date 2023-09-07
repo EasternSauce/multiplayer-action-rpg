@@ -58,11 +58,11 @@ public class Skill {
   public boolean canPerform(CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
-    boolean allowedToPerformSkill = creature != null && creature.canPerformSkill(this, game);
+    boolean allowedToPerformSkill = creature.canPerformSkill(this, game);
     boolean skillNotOnLocalCooldown = performTimer.getTime() > cooldown;
-    boolean skillNotOnGlobalCooldown = !skillType.getDamaging() || creature != null &&
+    boolean skillNotOnGlobalCooldown = !skillType.getDamaging() ||
       creature.getParams().getGlobalSkillPerformCooldownTimer().getTime() > Constants.GLOBAL_SKILL_PERFORM_COOLDOWN;
-    boolean creatureNotStunned = creature != null && !creature.isStunned(game);
+    boolean creatureNotStunned = !creature.isStunned(game);
 
     return allowedToPerformSkill && skillNotOnLocalCooldown && skillNotOnGlobalCooldown && creatureNotStunned;
   }

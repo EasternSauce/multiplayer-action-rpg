@@ -50,9 +50,7 @@ public class MageTeleportCombo extends Ability {
     float[] fireRingProcTimes = {0.25f, 1.25f, 2f, 2.6f, 3.2f};
     float[] fireRingScales = {1f, 1.2f, 1.5f, 2f, 3f};
 
-    Creature creature = game.getCreature(getParams().getCreatureId());
-
-    if (creature != null && currentFireRingToProc < fireRingProcTimes.length &&
+    if (currentFireRingToProc < fireRingProcTimes.length &&
       getParams().getStateTimer().getTime() > fireRingProcTimes[currentFireRingToProc]) {
       game.chainAnotherAbility(this, AbilityType.RING_OF_FIRE, getParams().getDirVector(),
         ChainAbilityParams.of().setOverrideScale(fireRingScales[currentFireRingToProc]).setOverrideDamage(40f));

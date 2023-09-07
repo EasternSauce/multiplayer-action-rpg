@@ -16,9 +16,7 @@ import java.util.function.Predicate;
 public class EnemyAutoControlsProcessor {
   public void update(CreatureId creatureId, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
-    if (creature == null) {
-      return;
-    }
+
 
     if (creature.isAlive()) {
       if (creature.getParams().getEnemyParams().getAutoControlsStateTimer().getTime() >
@@ -99,9 +97,7 @@ public class EnemyAutoControlsProcessor {
 
   private void processAutoControlsStateChangeLogic(CreatureId creatureId, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
-    if (creature == null) {
-      return;
-    }
+
 
     if (creature.getParams().getEnemyParams().getTargetCreatureId() == null) {
       return;
@@ -176,9 +172,7 @@ public class EnemyAutoControlsProcessor {
 
   private void handleAutoControlsStateTargetDistanceLogic(CreatureId creatureId, Creature potentialTarget, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
-    if (creature == null) {
-      return;
-    }
+
 
     Float distanceToTarget = creature.getParams().getPos().distance(potentialTarget.getParams().getPos());
 
@@ -200,9 +194,7 @@ public class EnemyAutoControlsProcessor {
 
   public void handleNewTarget(CreatureId creatureId, CreatureId potentialTargetId, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
-    if (creature == null) {
-      return;
-    }
+
 
     if (creature.getParams().getEnemyParams().getTargetCreatureId() == null ||
       !creature.getParams().getEnemyParams().getTargetCreatureId().equals(potentialTargetId)) {
@@ -214,9 +206,7 @@ public class EnemyAutoControlsProcessor {
 
   public void handleMovement(CreatureId creatureId, Creature potentialTarget, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
-    if (creature == null) {
-      return;
-    }
+
 
     Float distance = creature.getParams().getPos().distance(potentialTarget.getParams().getPos());
 
@@ -239,18 +229,14 @@ public class EnemyAutoControlsProcessor {
 
   private void handleAimDirectionAdjustment(CreatureId creatureId, Vector2 vectorTowardsTarget, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
-    if (creature == null) {
-      return;
-    }
+
 
     creature.getParams().getMovementParams().setAimDirection(vectorTowardsTarget.normalized());
   }
 
   public void handleUseRandomSkillAtTarget(CreatureId creatureId, Vector2 potentialTargetPos, Vector2 vectorTowardsTarget, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
-    if (creature == null) {
-      return;
-    }
+
 
     if (creature.getParams().getEnemyParams().getAttackCooldownTimer().getTime() >
       Constants.ENEMY_ATTACK_COOLDOWN_TIMER) {
@@ -265,9 +251,7 @@ public class EnemyAutoControlsProcessor {
 
   public void handleTargetLost(CreatureId creatureId, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
-    if (creature == null) {
-      return;
-    }
+
 
     creature.getParams().getEnemyParams().setAggroedCreatureId(null);
     creature.getParams().getEnemyParams().setTargetCreatureId(null);
@@ -280,9 +264,7 @@ public class EnemyAutoControlsProcessor {
 
   private void processPathfinding(CreatureId creatureId, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
-    if (creature == null) {
-      return;
-    }
+
 
     boolean pathfindingAllowed = game.isPathfindingCalculatedForCreature(creature) &&
       creature.getParams().getEnemyParams().getTargetCreatureId() != null &&
@@ -324,9 +306,7 @@ public class EnemyAutoControlsProcessor {
 
   public void goToPos(CreatureId creatureId, Vector2 pos, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
-    if (creature == null) {
-      return;
-    }
+
 
     if (!creature.isStunned(game)) {
       creature.moveTowards(pos);
@@ -335,9 +315,7 @@ public class EnemyAutoControlsProcessor {
 
   private void processAutoControlsStateMovementLogic(CreatureId creatureId, Creature potentialTarget, Float distance, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
-    if (creature == null) {
-      return;
-    }
+
 
     if (creature.getParams().getEnemyParams().getAutoControlsState() == EnemyAutoControlsState.AGGRESSIVE) {
 

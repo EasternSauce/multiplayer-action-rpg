@@ -107,24 +107,24 @@ public abstract class Ability implements Entity {
 
     Creature creature = game.getCreature(getParams().getCreatureId());
 
-    if (creature != null) {
-      if (getParams().getChainToPos() != null) {
-        getParams().setPos(getParams().getChainToPos());
-      } else if (!getParams().getDontOverridePos()) {
-        getParams().setPos(Ability.calculatePosition(creature.getParams().getPos(),
-          // TODO: should be moved to AttachedAbility?
-          getParams().getDirVector(), getParams().getStartingRange()));
-      }
 
-      if (creature.getCurrentWeapon() != null) {
-        getParams().setWeaponDamage((float) creature.getCurrentWeapon().getDamage());
-      }
-      if (creature instanceof Player) {
-        getParams().setPlayerAbility(true);
-      }
-
-      getParams().setRandomGenerator(RandomGenerator.of(creature.getParams().getRandomGenerator().nextInt()));
+    if (getParams().getChainToPos() != null) {
+      getParams().setPos(getParams().getChainToPos());
+    } else if (!getParams().getDontOverridePos()) {
+      getParams().setPos(Ability.calculatePosition(creature.getParams().getPos(),
+        // TODO: should be moved to AttachedAbility?
+        getParams().getDirVector(), getParams().getStartingRange()));
     }
+
+    if (creature.getCurrentWeapon() != null) {
+      getParams().setWeaponDamage((float) creature.getCurrentWeapon().getDamage());
+    }
+    if (creature instanceof Player) {
+      getParams().setPlayerAbility(true);
+    }
+
+    getParams().setRandomGenerator(RandomGenerator.of(creature.getParams().getRandomGenerator().nextInt()));
+
   }
 
   public AbilityAnimationConfig animationConfig() {

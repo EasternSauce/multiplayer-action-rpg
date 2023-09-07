@@ -39,9 +39,6 @@ public class CreatureBody {
 
     Creature creature = game.getCreature(creatureId);
 
-    if (creature == null) {
-      return;
-    }
 
     setSensor(!creature.isAlive());
 

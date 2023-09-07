@@ -4,7 +4,6 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.command.*;
 import com.easternsauce.actionrpg.model.action.PlayerJoinAction;
 import com.easternsauce.actionrpg.model.action.PlayerLeaveAction;
-import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -66,10 +65,9 @@ public class CoreGameServerListener extends Listener {
   }
 
   private void disconnectExistingPlayer(CreatureId playerId, CoreGame game) {
-    Creature creature = game.getCreature(playerId);
-    if (creature != null) {
-      game.forceDisconnectForPlayer(playerId);
-    }
+
+    game.forceDisconnectForPlayer(playerId);
+
   }
 
 }

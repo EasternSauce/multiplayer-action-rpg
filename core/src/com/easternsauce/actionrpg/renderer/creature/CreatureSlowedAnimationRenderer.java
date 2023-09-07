@@ -20,7 +20,7 @@ public class CreatureSlowedAnimationRenderer {
   public void render(CreatureId creatureId, float spriteWidth, RenderingLayer renderingLayer, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
-    if (creature != null && creature.isEffectActive(CreatureEffect.SLOW, game)) {
+    if (creature.isEffectActive(CreatureEffect.SLOW, game)) {
       float posX = creature.getParams().getPos().getX() - 0.5f;
       float posY = LifeBarUtils.getLifeBarPosY(creature, spriteWidth) + 1.5f;
 

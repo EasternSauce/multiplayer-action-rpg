@@ -187,11 +187,9 @@ public class CoreGameServer extends CoreGame {
 
   @Override
   public void forceDisconnectForPlayer(CreatureId creatureId) {
-    Creature creature = getCreature(creatureId);
-
     Integer clientId = MapUtils.getKeyByValue(getClientPlayers(), creatureId);
 
-    if (creature != null && clientId != null) {
+    if (clientId != null) {
       Optional<Connection> maybeConnection = Arrays.stream(getEndPoint().getConnections())
         .filter(connection -> connection.getID() == clientId).findAny();
       maybeConnection.ifPresent(Connection::close);

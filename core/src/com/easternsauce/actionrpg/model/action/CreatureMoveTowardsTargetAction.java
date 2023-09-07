@@ -26,7 +26,7 @@ public class CreatureMoveTowardsTargetAction extends GameStateAction {
   public void applyToGame(CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
-    if (creature != null && creature.isAlive() && !creature.isStunned(game)) {
+    if (creature.isAlive() && !creature.isStunned(game)) {
       Vector2 pos = creature.getParams().getPos();
 
       creature.moveTowards(pos.add(mousePos));

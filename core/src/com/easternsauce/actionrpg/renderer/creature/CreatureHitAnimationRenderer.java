@@ -26,13 +26,12 @@ public class CreatureHitAnimationRenderer {
   public void render(CreatureId creatureId, float timeSinceStarted, Vector2 vectorTowardsContactPoint, RenderingLayer renderingLayer, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
-    if (creature != null) {
-      float posX = creature.getParams().getPos().getX() - animationRenderer.getAnimationSpec().getRealWidth() / 2f +
-        vectorTowardsContactPoint.getX();
-      float posY = creature.getParams().getPos().getY() - animationRenderer.getAnimationSpec().getRealHeight() / 2f +
-        vectorTowardsContactPoint.getY();
+    float posX = creature.getParams().getPos().getX() - animationRenderer.getAnimationSpec().getRealWidth() / 2f +
+      vectorTowardsContactPoint.getX();
+    float posY = creature.getParams().getPos().getY() - animationRenderer.getAnimationSpec().getRealHeight() / 2f +
+      vectorTowardsContactPoint.getY();
 
-      animationRenderer.render(Vector2.of(posX, posY), timeSinceStarted, renderingLayer);
-    }
+    animationRenderer.render(Vector2.of(posX, posY), timeSinceStarted, renderingLayer);
+
   }
 }

@@ -4,7 +4,6 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import com.easternsauce.actionrpg.model.ability.AbilityType;
 import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
-import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -31,9 +30,7 @@ public class EnemyPoisonousCloudControl extends PoisonousCloudControlBase {
 
     float totalDuration = 3.2f;
 
-    Creature creature = game.getCreature(getParams().getCreatureId());
-
-    if (creature != null && currentCloudSet < cloudSetSpawnTimes.length &&
+    if (currentCloudSet < cloudSetSpawnTimes.length &&
       getParams().getStateTimer().getTime() > cloudSetSpawnTimes[currentCloudSet]) {
 
       for (int i = 0; i < cloudSetSpawnCounts[currentCloudSet]; i++) {

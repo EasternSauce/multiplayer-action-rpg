@@ -78,7 +78,7 @@ public class CreatureAccessor {
 
     return getData().getCreatures().keySet().stream().filter(creatureId -> {
       Creature creature = getData().getCreatures().get(creatureId);
-      if (creature != null && creature.isCurrentlyActive(game)) {
+      if (creature.isCurrentlyActive(game)) {
         return player.getParams().getAreaId().equals(creature.getParams().getAreaId()) &&
           creature.getParams().getPos().distance(player.getParams().getPos()) < Constants.CLIENT_GAME_UPDATE_RANGE;
       }

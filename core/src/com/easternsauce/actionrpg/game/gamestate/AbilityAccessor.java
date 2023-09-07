@@ -56,7 +56,7 @@ public class AbilityAccessor {
   public void chainAnotherAbility(Ability chainFromAbility, AbilityType abilityType, Vector2 dirVector, ChainAbilityParams chainAbilityParams, CoreGame game) {
     Creature creature = game.getCreature(chainFromAbility.getParams().getCreatureId());
 
-    if (creature != null && (creature.isAlive() || chainFromAbility.isAbleToChainAfterCreatureDeath())) {
+    if ((creature.isAlive() || chainFromAbility.isAbleToChainAfterCreatureDeath())) {
       AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
 
       Map<CreatureId, Float> creaturesAlreadyHit = new ConcurrentSkipListMap<>(
@@ -84,11 +84,11 @@ public class AbilityAccessor {
   public void spawnAbility(AbilityType abilityType, AbilityParams abilityParams, CoreGame game) {
     Creature creature = gameState.accessCreatures().getCreature(abilityParams.getCreatureId());
 
-    if (creature != null) {
-      Ability ability = abilityType.getFactoryMapping().apply(abilityParams, game);
 
-      initializeAbility(creature, ability, game);
-    }
+    Ability ability = abilityType.getFactoryMapping().apply(abilityParams, game);
+
+    initializeAbility(creature, ability, game);
+
   }
 
   private void initializeAbility(Creature creature, Ability ability, CoreGame game) {

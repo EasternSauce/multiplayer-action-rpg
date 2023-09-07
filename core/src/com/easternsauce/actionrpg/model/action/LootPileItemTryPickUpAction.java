@@ -30,9 +30,6 @@ public class LootPileItemTryPickUpAction extends GameStateAction {
   public void applyToGame(CoreGame game) {
     Creature creature = game.getCreature(playerId);
 
-    if (creature == null) {
-      return;
-    }
 
     Map<Integer, Item> inventoryItems = creature.getParams().getInventoryItems();
 

@@ -38,17 +38,17 @@ public class GameEntityManager {
   public void createCreatureEntity(CreatureId creatureId, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
-    if (creature != null) {
-      if (!gameEntityRenderer.getCreatureRenderers().containsKey(creatureId)) {
-        CreatureRenderer creatureRenderer = CreatureRenderer.of(creatureId);
-        gameEntityRenderer.getCreatureRenderers().put(creatureId, creatureRenderer);
-      }
-      if (!gameEntityPhysics.getCreatureBodies().containsKey(creatureId)) {
-        CreatureBody creatureBody = CreatureBody.of(creatureId);
-        creatureBody.init(creature.getParams().getAreaId(), game);
-        gameEntityPhysics.getCreatureBodies().put(creatureId, creatureBody);
-      }
+
+    if (!gameEntityRenderer.getCreatureRenderers().containsKey(creatureId)) {
+      CreatureRenderer creatureRenderer = CreatureRenderer.of(creatureId);
+      gameEntityRenderer.getCreatureRenderers().put(creatureId, creatureRenderer);
     }
+    if (!gameEntityPhysics.getCreatureBodies().containsKey(creatureId)) {
+      CreatureBody creatureBody = CreatureBody.of(creatureId);
+      creatureBody.init(creature.getParams().getAreaId(), game);
+      gameEntityPhysics.getCreatureBodies().put(creatureId, creatureBody);
+    }
+
   }
 
   public void createAbilityEntity(AbilityId abilityId, TextureAtlas atlas, CoreGame game) {
