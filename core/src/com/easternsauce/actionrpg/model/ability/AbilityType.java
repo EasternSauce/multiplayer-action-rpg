@@ -52,9 +52,12 @@ import java.util.function.BiFunction;
 
 @NoArgsConstructor
 public enum AbilityType {
-  SWORD_SLASH(SwordSlash::of), EMEMY_SWORD_SLASH(EnemySwordSlash::of), BOSS_ENEMY_SWORD_SLASH(BossEnemySwordSlash::of), FIREBALL(Fireball::of), FIREBALL_EXPLOSION(Explosion::of), LIGHTNING_SPARK(LightningSpark::of), LIGHTNING_NODE(LightningNode::of), LIGHTNING_CHAIN(LightningChain::of),
+  SWORD_SLASH(SwordSlash::of), EMEMY_SWORD_SLASH(EnemySwordSlash::of), BOSS_ENEMY_SWORD_SLASH(
+    BossEnemySwordSlash::of), FIREBALL(Fireball::of), FIREBALL_EXPLOSION(Explosion::of), LIGHTNING_SPARK(
+    LightningSpark::of), LIGHTNING_NODE(LightningNode::of), LIGHTNING_CHAIN(LightningChain::of),
 
-  CROSSBOW_BOLT(CrossbowBolt::of), CROSSBOW_SHOT(CrossbowBoltControl::of), ENEMY_CROSSBOW_SHOT(EnemyCrossbowBoltControl::of),
+  CROSSBOW_BOLT(CrossbowBolt::of), CROSSBOW_SHOT(CrossbowBoltControl::of), ENEMY_CROSSBOW_SHOT(
+    EnemyCrossbowBoltControl::of),
 
   MAGIC_ORB(MagicOrb::of), ENEMY_MAGIC_ORB(EnemyMagicOrb::of),
 
@@ -88,13 +91,17 @@ public enum AbilityType {
 
   MAGE_TELEPORT_COMBO(MageTeleportCombo::of),
 
-  POISONOUS_MIXTURE(PoisonousMixture::of), POISONOUS_CLOUD(PoisonousCloud::of), POISONOUS_CLOUD_CONTROL(PoisonousCloudControl::of),
+  POISONOUS_MIXTURE(PoisonousMixture::of), POISONOUS_CLOUD(PoisonousCloud::of), POISONOUS_CLOUD_CONTROL(
+    PoisonousCloudControl::of),
 
-  ENEMY_POISONOUS_MIXTURE(EnemyPoisonousMixture::of), ENEMY_POISONOUS_CLOUD(EnemyPoisonousCloud::of), ENEMY_POISONOUS_CLOUD_CONTROL(EnemyPoisonousCloudControl::of),
+  ENEMY_POISONOUS_MIXTURE(EnemyPoisonousMixture::of), ENEMY_POISONOUS_CLOUD(
+    EnemyPoisonousCloud::of), ENEMY_POISONOUS_CLOUD_CONTROL(EnemyPoisonousCloudControl::of),
 
   PUNCH(Punch::of),
 
-  RING_OF_FIRE(RingOfFire::of), ENEMY_RING_OF_FIRE(EnemyRingOfFire::of), DASH(Dash::of), ICE_SPEAR_RAMPAGE(IceSpearRampage::of), TUNNEL_DIG(TunnelDig::of), DIG_TUNNEL_SPLASH(TunnelDigSplash::of), DIG_TUNNEL_EXPLOSION(TunnelDigExplosion::of),
+  RING_OF_FIRE(RingOfFire::of), ENEMY_RING_OF_FIRE(EnemyRingOfFire::of), DASH(Dash::of), ICE_SPEAR_RAMPAGE(
+    IceSpearRampage::of), TUNNEL_DIG(TunnelDig::of), DIG_TUNNEL_SPLASH(TunnelDigSplash::of), DIG_TUNNEL_EXPLOSION(
+    TunnelDigExplosion::of),
 
   BITE(Bite::of), POISON_BITE(PoisonBite::of),
 

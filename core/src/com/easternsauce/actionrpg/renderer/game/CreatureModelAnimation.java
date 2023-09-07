@@ -25,7 +25,9 @@ public class CreatureModelAnimation {
     List<TextureRegion> facingTextures = new ArrayList<>();
 
     for (int i = 0; i < 4; i++) {
-      facingTextures.add(new TextureRegion(runningAnimationTextureRegion, animationConfig.getNeutralStanceFrame() * animationConfig.getTextureWidth(), i * animationConfig.getTextureHeight(), animationConfig.getTextureWidth(), animationConfig.getTextureHeight()));
+      facingTextures.add(new TextureRegion(runningAnimationTextureRegion,
+        animationConfig.getNeutralStanceFrame() * animationConfig.getTextureWidth(),
+        i * animationConfig.getTextureHeight(), animationConfig.getTextureWidth(), animationConfig.getTextureHeight()));
 
     }
     return facingTextures;
@@ -43,7 +45,9 @@ public class CreatureModelAnimation {
     for (int i = 0; i < 4; i++) {
       TextureRegion[] frames = new TextureRegion[animationConfig.getFrameCount()];
       for (int j = 0; j < animationConfig.getFrameCount(); j++) {
-        frames[j] = new TextureRegion(runningAnimationTextureRegion, j * animationConfig.getTextureWidth(), i * animationConfig.getTextureHeight(), animationConfig.getTextureWidth(), animationConfig.getTextureHeight());
+        frames[j] = new TextureRegion(runningAnimationTextureRegion, j * animationConfig.getTextureWidth(),
+          i * animationConfig.getTextureHeight(), animationConfig.getTextureWidth(),
+          animationConfig.getTextureHeight());
       }
 
       runningAnimations.add(i, new Animation<>(animationConfig.getFrameDuration(), frames));

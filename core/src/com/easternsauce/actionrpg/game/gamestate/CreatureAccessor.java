@@ -33,7 +33,9 @@ public class CreatureAccessor {
   private static SkillType pickRandomSkillToUse(Set<EnemySkillUseEntry> skillUseEntries, Float distanceToTarget, CoreGame game) {
     AtomicReference<Float> totalWeight = new AtomicReference<>((float) 0);
 
-    Set<EnemySkillUseEntry> filteredSkillUseEntries = skillUseEntries.stream().filter(enemySkillUseEntry -> enemySkillUseEntry.getSkillUseRange() > distanceToTarget).collect(Collectors.toSet());
+    Set<EnemySkillUseEntry> filteredSkillUseEntries = skillUseEntries.stream()
+      .filter(enemySkillUseEntry -> enemySkillUseEntry.getSkillUseRange() > distanceToTarget)
+      .collect(Collectors.toSet());
 
     filteredSkillUseEntries.forEach(skillUseEntry -> totalWeight.set(totalWeight.get() + skillUseEntry.getWeight()));
 
@@ -77,7 +79,8 @@ public class CreatureAccessor {
     return getData().getCreatures().keySet().stream().filter(creatureId -> {
       Creature creature = getData().getCreatures().get(creatureId);
       if (creature != null && creature.isCurrentlyActive(game)) {
-        return player.getParams().getAreaId().equals(creature.getParams().getAreaId()) && creature.getParams().getPos().distance(player.getParams().getPos()) < Constants.CLIENT_GAME_UPDATE_RANGE;
+        return player.getParams().getAreaId().equals(creature.getParams().getAreaId()) &&
+          creature.getParams().getPos().distance(player.getParams().getPos()) < Constants.CLIENT_GAME_UPDATE_RANGE;
       }
 
       return false;
@@ -100,7 +103,8 @@ public class CreatureAccessor {
   }
 
   public void forEachDeadCreature(Consumer<Creature> creatureAction) {
-    gameState.accessCreatures().getCreatures().values().stream().filter(creature -> !creature.isAlive()).forEach(creatureAction);
+    gameState.accessCreatures().getCreatures().values().stream().filter(creature -> !creature.isAlive())
+      .forEach(creatureAction);
   }
 
   // TODO: move to enemy?
@@ -109,10 +113,12 @@ public class CreatureAccessor {
 
     SkillType pickedSkillType;
 
-    pickedSkillType = pickRandomSkillToUse(creature.getParams().getEnemyParams().getSkillUses(), distanceToTarget, game);
+    pickedSkillType = pickRandomSkillToUse(creature.getParams().getEnemyParams().getSkillUses(), distanceToTarget,
+      game);
 
     if (pickedSkillType != null) {
-      SkillTryPerformAction action = SkillTryPerformAction.of(creatureId, pickedSkillType, creature.getParams().getPos(), vectorTowardsTarget);
+      SkillTryPerformAction action = SkillTryPerformAction.of(creatureId, pickedSkillType,
+        creature.getParams().getPos(), vectorTowardsTarget);
 
       gameState.scheduleServerSideAction(action);
     }

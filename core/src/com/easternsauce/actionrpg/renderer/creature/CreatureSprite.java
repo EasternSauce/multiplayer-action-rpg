@@ -30,13 +30,17 @@ public class CreatureSprite {
   }
 
   public void updateForAliveCreature(Creature creature, CoreGame game) {
-    CreatureModelAnimation creatureModelAnimation = game.getEntityManager().getGameEntityRenderer().getCreatureModelAnimations().get(creature.getParams().getTextureName());
+    CreatureModelAnimation creatureModelAnimation = game.getEntityManager().getGameEntityRenderer()
+      .getCreatureModelAnimations().get(creature.getParams().getTextureName());
 
     TextureRegion texture;
-    if (!creature.animationConfig().getAlwaysLoop() && (!creature.getParams().getMovementParams().getMoving() || creature.isStunned(game))) {
-      texture = creatureModelAnimation.getFacingTexture(creature.getParams().getTextureName(), creature.facingDirection(game));
+    if (!creature.animationConfig().getAlwaysLoop() &&
+      (!creature.getParams().getMovementParams().getMoving() || creature.isStunned(game))) {
+      texture = creatureModelAnimation.getFacingTexture(creature.getParams().getTextureName(),
+        creature.facingDirection(game));
     } else {
-      texture = creatureModelAnimation.getRunningAnimationFrame(creature.getParams().getTextureName(), creature.facingDirection(game), creature.getParams().getAnimationTimer().getTime());
+      texture = creatureModelAnimation.getRunningAnimationFrame(creature.getParams().getTextureName(),
+        creature.facingDirection(game), creature.getParams().getAnimationTimer().getTime());
     }
 
     sprite.setRotation(0f);
@@ -48,9 +52,11 @@ public class CreatureSprite {
   public void updateForDeadCreature(CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
-    CreatureModelAnimation creatureModelAnimation = game.getEntityManager().getGameEntityRenderer().getCreatureModelAnimations().get(creature.getParams().getTextureName());
+    CreatureModelAnimation creatureModelAnimation = game.getEntityManager().getGameEntityRenderer()
+      .getCreatureModelAnimations().get(creature.getParams().getTextureName());
 
-    TextureRegion texture = creatureModelAnimation.getFacingTexture(creature.getParams().getTextureName(), WorldDirection.RIGHT);
+    TextureRegion texture = creatureModelAnimation.getFacingTexture(creature.getParams().getTextureName(),
+      WorldDirection.RIGHT);
 
     sprite.setOriginCenter();
     sprite.setRotation(90f);

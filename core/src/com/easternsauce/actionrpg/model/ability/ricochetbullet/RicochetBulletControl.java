@@ -41,12 +41,17 @@ public class RicochetBulletControl extends Ability {
 
   @Override
   protected void onCompleted(CoreGame game) {
-    Vector2 leftSidePos = getParams().getPos().add(params.getDirVector().normalized().multiplyBy(1.5f).withRotatedDegAngle(90));
-    Vector2 rightSidePos = getParams().getPos().add(params.getDirVector().normalized().multiplyBy(1.5f).withRotatedDegAngle(-90));
+    Vector2 leftSidePos = getParams().getPos()
+      .add(params.getDirVector().normalized().multiplyBy(1.5f).withRotatedDegAngle(90));
+    Vector2 rightSidePos = getParams().getPos()
+      .add(params.getDirVector().normalized().multiplyBy(1.5f).withRotatedDegAngle(-90));
 
-    game.chainAnotherAbility(this, AbilityType.RICOCHET_BULLET, params.getDirVector(), ChainAbilityParams.of().setChainToPos(getParams().getPos()));
-    game.chainAnotherAbility(this, AbilityType.RICOCHET_BULLET, params.getDirVector(), ChainAbilityParams.of().setChainToPos(leftSidePos));
-    game.chainAnotherAbility(this, AbilityType.RICOCHET_BULLET, params.getDirVector(), ChainAbilityParams.of().setChainToPos(rightSidePos));
+    game.chainAnotherAbility(this, AbilityType.RICOCHET_BULLET, params.getDirVector(),
+      ChainAbilityParams.of().setChainToPos(getParams().getPos()));
+    game.chainAnotherAbility(this, AbilityType.RICOCHET_BULLET, params.getDirVector(),
+      ChainAbilityParams.of().setChainToPos(leftSidePos));
+    game.chainAnotherAbility(this, AbilityType.RICOCHET_BULLET, params.getDirVector(),
+      ChainAbilityParams.of().setChainToPos(rightSidePos));
   }
 
   @Override

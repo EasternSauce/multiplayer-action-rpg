@@ -22,7 +22,9 @@ public class Bite extends AttachedAbility {
 
     Bite ability = Bite.of();
 
-    ability.params = abilityParams.setWidth(1.3f).setHeight(1.3f).setChannelTime(0f).setActiveTime(0.18f).setStartingRange(1.8f).setTextureName("teeth").setBaseDamage(37f).setChannelAnimationLooping(false).setActiveAnimationLooping(false).setFlip(Bite.calculateFlip(flipValue));
+    ability.params = abilityParams.setWidth(1.3f).setHeight(1.3f).setChannelTime(0f).setActiveTime(0.18f)
+      .setStartingRange(1.8f).setTextureName("teeth").setBaseDamage(37f).setChannelAnimationLooping(false)
+      .setActiveAnimationLooping(false).setFlip(Bite.calculateFlip(flipValue));
 
     return ability;
   }

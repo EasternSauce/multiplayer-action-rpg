@@ -19,13 +19,15 @@ public class PotionMenuConsts {
 
   static {
     for (int i = 0; i < PotionMenuConsts.TOTAL_POTION_MENU_SLOTS; i++) {
-      slotRectangles.put(i, Rect.of(getSlotPositionX(i), getSlotPositionY(i), PotionMenuConsts.SLOT_SIZE, PotionMenuConsts.SLOT_SIZE));
+      slotRectangles.put(i,
+        Rect.of(getSlotPositionX(i), getSlotPositionY(i), PotionMenuConsts.SLOT_SIZE, PotionMenuConsts.SLOT_SIZE));
     }
   }
 
   public static float getSlotPositionX(Integer index) {
     int currentColumn = index;
-    return PotionMenuConsts.MENU_POS_X + (PotionMenuConsts.SLOT_SIZE + PotionMenuConsts.SPACE_BETWEEN_SLOTS) * currentColumn;
+    return PotionMenuConsts.MENU_POS_X +
+      (PotionMenuConsts.SLOT_SIZE + PotionMenuConsts.SPACE_BETWEEN_SLOTS) * currentColumn;
   }
 
   public static float getSlotPositionY(@SuppressWarnings("unused") Integer index) {
@@ -33,14 +35,17 @@ public class PotionMenuConsts {
   }
 
   public static boolean isMenuContainsPos(float x, float y) {
-    Rect rect = Rect.of(MENU_POS_X, MENU_POS_Y, (PotionMenuConsts.SLOT_SIZE + PotionMenuConsts.SPACE_BETWEEN_SLOTS) * TOTAL_POTION_MENU_SLOTS, PotionMenuConsts.SLOT_SIZE);
+    Rect rect = Rect.of(MENU_POS_X, MENU_POS_Y,
+      (PotionMenuConsts.SLOT_SIZE + PotionMenuConsts.SPACE_BETWEEN_SLOTS) * TOTAL_POTION_MENU_SLOTS,
+      PotionMenuConsts.SLOT_SIZE);
     return rect.contains(x, y);
   }
 
   public static Integer getPotionMenuClicked(float x, float y) {
     AtomicReference<Integer> atomicPotionMenuSlotClicked = new AtomicReference<>(null);
 
-    PotionMenuConsts.slotRectangles.entrySet().stream().filter(entry -> entry.getValue().contains(x, y)).forEach(entry -> atomicPotionMenuSlotClicked.set(entry.getKey()));
+    PotionMenuConsts.slotRectangles.entrySet().stream().filter(entry -> entry.getValue().contains(x, y))
+      .forEach(entry -> atomicPotionMenuSlotClicked.set(entry.getKey()));
 
     return atomicPotionMenuSlotClicked.get();
   }

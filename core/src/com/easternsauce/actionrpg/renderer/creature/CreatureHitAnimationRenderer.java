@@ -18,15 +18,19 @@ public class CreatureHitAnimationRenderer {
 
   {
     int frameCount = 10;
-    animationRenderer = AnimationRenderer.of(AnimationSpec.of(256, 256, 1.8f, 1.8f, Constants.DAMAGE_ANIMATION_DURATION / frameCount, frameCount, "circle_explosion", false));
+    animationRenderer = AnimationRenderer.of(
+      AnimationSpec.of(256, 256, 1.8f, 1.8f, Constants.DAMAGE_ANIMATION_DURATION / frameCount, frameCount,
+        "circle_explosion", false));
   }
 
   public void render(CreatureId creatureId, float timeSinceStarted, Vector2 vectorTowardsContactPoint, RenderingLayer renderingLayer, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
     if (creature != null) {
-      float posX = creature.getParams().getPos().getX() - animationRenderer.getAnimationSpec().getRealWidth() / 2f + vectorTowardsContactPoint.getX();
-      float posY = creature.getParams().getPos().getY() - animationRenderer.getAnimationSpec().getRealHeight() / 2f + vectorTowardsContactPoint.getY();
+      float posX = creature.getParams().getPos().getX() - animationRenderer.getAnimationSpec().getRealWidth() / 2f +
+        vectorTowardsContactPoint.getX();
+      float posY = creature.getParams().getPos().getY() - animationRenderer.getAnimationSpec().getRealHeight() / 2f +
+        vectorTowardsContactPoint.getY();
 
       animationRenderer.render(Vector2.of(posX, posY), timeSinceStarted, renderingLayer);
     }

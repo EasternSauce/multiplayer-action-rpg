@@ -106,7 +106,8 @@ public class Vector2 {
 
   @SuppressWarnings("unused")
   public Vector2 midpointTowards(Vector2 vector) {
-    return Vector2.of(this.getX() + 0.5f * (vector.getX() - this.getX()), this.getY() + 0.5f * (vector.getY() - this.getY()));
+    return Vector2.of(this.getX() + 0.5f * (vector.getX() - this.getX()),
+      this.getY() + 0.5f * (vector.getY() - this.getY()));
   }
 
   public Vector2 copy() {

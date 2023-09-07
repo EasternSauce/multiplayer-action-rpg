@@ -21,7 +21,8 @@ import java.util.stream.Collectors;
 
 public abstract class CreatureHitAction extends GameStateAction {
   protected void handleCreatureDeath(Creature targetCreature, Creature attackerCreature, CoreGame game) {
-    if (targetCreature.getParams().getStats().getPreviousTickLife() > 0f && targetCreature.getParams().getStats().getLife() <= 0f) {
+    if (targetCreature.getParams().getStats().getPreviousTickLife() > 0f &&
+      targetCreature.getParams().getStats().getLife() <= 0f) {
       onCreatureDeath(targetCreature, attackerCreature, game);
     }
   }
@@ -35,7 +36,8 @@ public abstract class CreatureHitAction extends GameStateAction {
     targetCreature.onDeath(attackerCreature, game);
 
     if (targetCreature.getParams().getEnemyRallyPointId() != null) {
-      EnemyRallyPoint enemyRallyPoint = game.getGameState().getEnemyRallyPoint(targetCreature.getParams().getEnemyRallyPointId());
+      EnemyRallyPoint enemyRallyPoint = game.getGameState()
+        .getEnemyRallyPoint(targetCreature.getParams().getEnemyRallyPointId());
 
       enemyRallyPoint.getRespawnTimer().restart();
     }
@@ -61,7 +63,8 @@ public abstract class CreatureHitAction extends GameStateAction {
 
           entry.getGrantedSkillWeights().forEach((skillType, weight) -> totalWeight.set(totalWeight.get() + weight));
 
-          AtomicReference<Float> randValue = new AtomicReference<>(Math.abs(game.getGameState().getRandomGenerator().nextFloat()) * totalWeight.get());
+          AtomicReference<Float> randValue = new AtomicReference<>(
+            Math.abs(game.getGameState().getRandomGenerator().nextFloat()) * totalWeight.get());
 
           entry.getGrantedSkillWeights().forEach((skillType, weight) -> {
             if (randomSkillType.get() == null && randValue.get() < weight) {
@@ -96,7 +99,8 @@ public abstract class CreatureHitAction extends GameStateAction {
           quality = 0.5f + Math.abs(game.getGameState().getRandomGenerator().nextFloat()) / 2f;
         }
 
-        Item item = Item.of().setTemplate(entry.getTemplate()).setQualityModifier(quality).setGrantedSkills(grantedSkills);
+        Item item = Item.of().setTemplate(entry.getTemplate()).setQualityModifier(quality)
+          .setGrantedSkills(grantedSkills);
 
         items.add(item);
       }
@@ -108,9 +112,13 @@ public abstract class CreatureHitAction extends GameStateAction {
 
     LootPileId lootPileId = LootPileId.of("LootPile_" + (int) (Math.random() * 10000000)); // TODO: use seeded rng
 
-    Set<Item> lootPileItems = items.stream().map(item -> Item.of().setTemplate(item.getTemplate()).setQuantity(item.getQuantity()).setQualityModifier(item.getQualityModifier()).setGrantedSkills(item.getGrantedSkills()).setLootPileId(lootPileId)).collect(Collectors.toCollection(ConcurrentSkipListSet::new));
+    Set<Item> lootPileItems = items.stream().map(
+      item -> Item.of().setTemplate(item.getTemplate()).setQuantity(item.getQuantity())
+        .setQualityModifier(item.getQualityModifier()).setGrantedSkills(item.getGrantedSkills())
+        .setLootPileId(lootPileId)).collect(Collectors.toCollection(ConcurrentSkipListSet::new));
 
-    LootPile lootPile = LootPile.of(lootPileId, creature.getParams().getAreaId(), creature.getParams().getPos(), lootPileItems);
+    LootPile lootPile = LootPile.of(lootPileId, creature.getParams().getAreaId(), creature.getParams().getPos(),
+      lootPileItems);
 
     game.getGameState().getLootPiles().put(lootPile.getParams().getId(), lootPile);
 
@@ -118,7 +126,11 @@ public abstract class CreatureHitAction extends GameStateAction {
   }
 
   private void deactivateCreatureAbilities(Creature targetCreature, CoreGame game) {
-    Set<Ability> creatureActiveAbilities = game.getGameState().accessAbilities().getAbilities().values().stream().filter(ability -> ability.canBeDeactivated() && ability.getParams().getCreatureId().equals(targetCreature.getId()) && (ability.getParams().getState() == AbilityState.CHANNEL || ability.getParams().getState() == AbilityState.ACTIVE)).collect(Collectors.toSet());
+    Set<Ability> creatureActiveAbilities = game.getGameState().accessAbilities().getAbilities().values().stream()
+      .filter(
+        ability -> ability.canBeDeactivated() && ability.getParams().getCreatureId().equals(targetCreature.getId()) &&
+          (ability.getParams().getState() == AbilityState.CHANNEL ||
+            ability.getParams().getState() == AbilityState.ACTIVE)).collect(Collectors.toSet());
 
     creatureActiveAbilities.forEach(Ability::deactivate);
   }

@@ -35,11 +35,13 @@ public class InventorySwapSlotItemsAction extends GameStateAction {
       Creature player = game.getCreature(playerId);
 
       Item itemFrom = player.getParams().getInventoryItems().get(fromSlotIndex);
-      @SuppressWarnings("UnnecessaryLocalVariable") Item itemTo = player.getParams().getInventoryItems().get(toSlotIndex);
+      @SuppressWarnings("UnnecessaryLocalVariable") Item itemTo = player.getParams().getInventoryItems()
+        .get(toSlotIndex);
 
       @SuppressWarnings("UnnecessaryLocalVariable") Item temp = itemTo;
 
-      boolean canStackItems = itemFrom != null && temp != null && itemFrom.getTemplate().getStackable() && temp.getTemplate().getStackable() && itemFrom.getTemplate().getId().equals(temp.getTemplate().getId());
+      boolean canStackItems = itemFrom != null && temp != null && itemFrom.getTemplate().getStackable() &&
+        temp.getTemplate().getStackable() && itemFrom.getTemplate().getId().equals(temp.getTemplate().getId());
 
       if (canStackItems) {
         player.getParams().getInventoryItems().remove(fromSlotIndex);

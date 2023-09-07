@@ -10,7 +10,8 @@ public class ItemPickupMenuConsts {
   public static final float HEIGHT = 20f;
 
   public static Rect getMenuOptionRect(int i) {
-    return Rect.of(ItemPickupMenuConsts.POS_X, ItemPickupMenuConsts.POS_Y + 25f * i, ItemPickupMenuConsts.WIDTH, ItemPickupMenuConsts.HEIGHT);
+    return Rect.of(ItemPickupMenuConsts.POS_X, ItemPickupMenuConsts.POS_Y + 25f * i, ItemPickupMenuConsts.WIDTH,
+      ItemPickupMenuConsts.HEIGHT);
   }
 
 }

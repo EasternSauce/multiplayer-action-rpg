@@ -82,15 +82,21 @@ public class CoreGameClient extends CoreGame {
 
     Creature player = gameState.accessCreatures().getCreature(getGameState().getThisClientPlayerId());
 
-    if (player != null && player.getParams().getMovementParams().getChangeAimDirectionActionsPerSecondLimiterTimer().getTime() > Constants.CHANGE_AIM_DIRECTION_COMMAND_COOLDOWN) {
-      getEndPoint().sendTCP(ActionPerformCommand.of(CreatureChangeAimDirectionAction.of(getGameState().getThisClientPlayerId(), mousePos)));
+    if (player != null &&
+      player.getParams().getMovementParams().getChangeAimDirectionActionsPerSecondLimiterTimer().getTime() >
+        Constants.CHANGE_AIM_DIRECTION_COMMAND_COOLDOWN) {
+      getEndPoint().sendTCP(
+        ActionPerformCommand.of(CreatureChangeAimDirectionAction.of(getGameState().getThisClientPlayerId(), mousePos)));
     }
   }
 
   private void correctPlayerBodyArea() {
     Creature player = gameState.accessCreatures().getCreature(gameState.getThisClientPlayerId());
-    if (player != null && getCreatureBodies().containsKey(gameState.getThisClientPlayerId()) && !Objects.equals(getCreatureBodies().get(gameState.getThisClientPlayerId()).getAreaId().getValue(), player.getParams().getAreaId().getValue())) {
-      addTeleportEvent(TeleportEvent.of(gameState.getThisClientPlayerId(), player.getParams().getPos(), getCreatureBodies().get(gameState.getThisClientPlayerId()).getAreaId(), player.getParams().getAreaId(), false));
+    if (player != null && getCreatureBodies().containsKey(gameState.getThisClientPlayerId()) &&
+      !Objects.equals(getCreatureBodies().get(gameState.getThisClientPlayerId()).getAreaId().getValue(),
+        player.getParams().getAreaId().getValue())) {
+      addTeleportEvent(TeleportEvent.of(gameState.getThisClientPlayerId(), player.getParams().getPos(),
+        getCreatureBodies().get(gameState.getThisClientPlayerId()).getAreaId(), player.getParams().getAreaId(), false));
     }
   }
 
@@ -130,7 +136,8 @@ public class CoreGameClient extends CoreGame {
       @Override
       public boolean keyTyped(char character) {
         char backspaceCharacter = '\b';
-        if (getChat().getTyping() && character != backspaceCharacter && isCharacterNonWhitespaceExcludingSpace(character)) {
+        if (getChat().getTyping() && character != backspaceCharacter &&
+          isCharacterNonWhitespaceExcludingSpace(character)) {
           getChat().setCurrentMessage(getChat().getCurrentMessage() + character);
         }
 

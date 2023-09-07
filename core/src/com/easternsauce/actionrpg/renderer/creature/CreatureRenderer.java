@@ -46,7 +46,8 @@ public class CreatureRenderer {
     Creature creature = game.getCreature(creatureId);
 
     if (creature != null) {
-      float currentLifeBarWidth = LifeBarUtils.LIFE_BAR_WIDTH * creature.getParams().getStats().getLife() / creature.getParams().getStats().getMaxLife();
+      float currentLifeBarWidth = LifeBarUtils.LIFE_BAR_WIDTH * creature.getParams().getStats().getLife() /
+        creature.getParams().getStats().getMaxLife();
       float barPosX = LifeBarUtils.getLifeBarPosX(creature);
       float barPosY = LifeBarUtils.getLifeBarPosY(creature, creatureSprite.getWidth());
 
@@ -64,6 +65,7 @@ public class CreatureRenderer {
     float namePosY = LifeBarUtils.getLifeBarPosY(creature, creatureSprite.getWidth()) + 1f;
 
     // world text viewport is not scaled down! so we scale the values every time
-    Assets.renderMediumFont(renderingLayer, name, Vector2.of(namePosX * Constants.PPM, namePosY * Constants.PPM), Color.RED);
+    Assets.renderMediumFont(renderingLayer, name, Vector2.of(namePosX * Constants.PPM, namePosY * Constants.PPM),
+      Color.RED);
   }
 }

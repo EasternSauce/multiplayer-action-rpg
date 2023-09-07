@@ -37,7 +37,8 @@ public abstract class TeleportSourceBase extends Ability {
 
   @Override
   public void onDelayedAction(CoreGame game) {
-    game.chainAnotherAbility(this, AbilityType.TELEPORT_DESTINATION, getParams().getDirVector(), ChainAbilityParams.of().setChainToPos(getParams().getPos()));
+    game.chainAnotherAbility(this, AbilityType.TELEPORT_DESTINATION, getParams().getDirVector(),
+      ChainAbilityParams.of().setChainToPos(getParams().getPos()));
   }
 
   @Override

@@ -14,7 +14,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 public class CreatureSlowedAnimationRenderer {
   @Getter
-  private final AnimationRenderer animationRenderer = AnimationRenderer.of(AnimationSpec.of(31, 31, 0.8f, 0.8f, 1f, 1, "slowed", true));
+  private final AnimationRenderer animationRenderer = AnimationRenderer.of(
+    AnimationSpec.of(31, 31, 0.8f, 0.8f, 1f, 1, "slowed", true));
 
   public void render(CreatureId creatureId, float spriteWidth, RenderingLayer renderingLayer, CoreGame game) {
     Creature creature = game.getCreature(creatureId);

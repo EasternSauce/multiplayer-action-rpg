@@ -74,8 +74,10 @@ public class GameEntityManager {
   public void activateAbility(AbilityId abilityId, CoreGame game) {
     Ability ability = game.getAbilities().get(abilityId);
 
-    if (ability != null && gameEntityPhysics.getAbilityBodies().containsKey(ability.getParams().getId()) && !gameEntityPhysics.getAbilityBodies().get(ability.getParams().getId()).getBodyInitialized()) {
-      gameEntityPhysics.getAbilityBodies().get(ability.getParams().getId()).activate(ability.getParams().getSkipCreatingBody(), game);
+    if (ability != null && gameEntityPhysics.getAbilityBodies().containsKey(ability.getParams().getId()) &&
+      !gameEntityPhysics.getAbilityBodies().get(ability.getParams().getId()).getBodyInitialized()) {
+      gameEntityPhysics.getAbilityBodies().get(ability.getParams().getId())
+        .activate(ability.getParams().getSkipCreatingBody(), game);
     }
   }
 
@@ -153,18 +155,22 @@ public class GameEntityManager {
 
     // set gamestate position based on b2body position
     creaturesToUpdate.forEach(creatureId -> {
-      if (game.getActiveCreatures().containsKey(creatureId) && getGameEntityPhysics().getCreatureBodies().containsKey(creatureId)) {
+      if (game.getActiveCreatures().containsKey(creatureId) &&
+        getGameEntityPhysics().getCreatureBodies().containsKey(creatureId)) {
 
-        game.getCreature(creatureId).getParams().setPos(getGameEntityPhysics().getCreatureBodies().get(creatureId).getBodyPos());
+        game.getCreature(creatureId).getParams()
+          .setPos(getGameEntityPhysics().getCreatureBodies().get(creatureId).getBodyPos());
 
       }
     });
 
     // if creature is to be updated, then body should be active, otherwise it should be inactive
-    getGameEntityPhysics().getCreatureBodies().forEach((key, value) -> getGameEntityPhysics().getCreatureBodies().get(key).setActive(creaturesToUpdate.contains(key)));
+    getGameEntityPhysics().getCreatureBodies().forEach(
+      (key, value) -> getGameEntityPhysics().getCreatureBodies().get(key).setActive(creaturesToUpdate.contains(key)));
 
     creaturesToUpdate.forEach(creatureId -> {
-      if (game.getActiveCreatures().containsKey(creatureId) && getGameEntityRenderer().getCreatureRenderers().containsKey(creatureId)) {
+      if (game.getActiveCreatures().containsKey(creatureId) &&
+        getGameEntityRenderer().getCreatureRenderers().containsKey(creatureId)) {
         getGameEntityRenderer().getCreatureRenderers().get(creatureId).update(game);
       }
     });
@@ -178,14 +184,16 @@ public class GameEntityManager {
   }
 
   public void updateEnemyRallyPoints(float delta, CoreGame game) {
-    game.getGameState().getEnemyRallyPoints().forEach((enemyRallyPointId, enemyRallyPoint) -> enemyRallyPoint.update(delta, game));
+    game.getGameState().getEnemyRallyPoints()
+      .forEach((enemyRallyPointId, enemyRallyPoint) -> enemyRallyPoint.update(delta, game));
   }
 
   public void updateAbilities(float delta, CoreGame game) {
     Set<AbilityId> abilitiesToUpdate = game.getAbilitiesToUpdate();
 
     abilitiesToUpdate.forEach(abilityId -> {
-      if (abilityId != null && game.getAbilities().containsKey(abilityId) && game.getAbilities().get(abilityId) != null) {
+      if (abilityId != null && game.getAbilities().containsKey(abilityId) &&
+        game.getAbilities().get(abilityId) != null) {
         game.getAbilities().get(abilityId).update(delta, game);
       }
     });
@@ -199,7 +207,8 @@ public class GameEntityManager {
     abilitiesToUpdate.forEach(abilityId -> {
       if (getGameEntityPhysics().getAbilityBodies().containsKey(abilityId)) {
         Ability ability = game.getAbilities().get(abilityId);
-        if (ability != null && !ability.isPositionChangedOnUpdate() && !ability.getParams().getSkipCreatingBody() && getGameEntityPhysics().getAbilityBodies().get(abilityId).getBodyInitialized()) {
+        if (ability != null && !ability.isPositionChangedOnUpdate() && !ability.getParams().getSkipCreatingBody() &&
+          getGameEntityPhysics().getAbilityBodies().get(abilityId).getBodyInitialized()) {
           ability.getParams().setPos(getGameEntityPhysics().getAbilityBodies().get(abilityId).getBodyPos());
         }
       }
@@ -218,8 +227,12 @@ public class GameEntityManager {
 
     creature.getParams().getMovementParams().setDashing(false);
 
-    if (teleportEvent.getCreatureId() != null && !teleportEvent.getUsedGate() && teleportEvent.getToAreaId().getValue().equals(game.getCreature(teleportEvent.getCreatureId()).getParams().getAreaId().getValue()) && teleportEvent.getToAreaId().getValue().equals(game.getCreatureBodies().get(teleportEvent.getCreatureId()).getAreaId().getValue())) {
-      getGameEntityPhysics().getCreatureBodies().get(teleportEvent.getCreatureId()).forceSetTransform(teleportEvent.getPos());
+    if (teleportEvent.getCreatureId() != null && !teleportEvent.getUsedGate() && teleportEvent.getToAreaId().getValue()
+      .equals(game.getCreature(teleportEvent.getCreatureId()).getParams().getAreaId().getValue()) &&
+      teleportEvent.getToAreaId().getValue()
+        .equals(game.getCreatureBodies().get(teleportEvent.getCreatureId()).getAreaId().getValue())) {
+      getGameEntityPhysics().getCreatureBodies().get(teleportEvent.getCreatureId())
+        .forceSetTransform(teleportEvent.getPos());
     } else {
       if (teleportEvent.getCreatureId() != null) {
         creature.getParams().setAreaId(teleportEvent.getToAreaId());
@@ -228,7 +241,8 @@ public class GameEntityManager {
         creature.getParams().getMovementParams().setMovementCommandTargetPos(teleportEvent.getPos());
 
         if (getGameEntityPhysics().getCreatureBodies().containsKey(teleportEvent.getCreatureId())) {
-          getGameEntityPhysics().getCreatureBodies().get(teleportEvent.getCreatureId()).moveBodyToNewArea(teleportEvent.getToAreaId(), game);
+          getGameEntityPhysics().getCreatureBodies().get(teleportEvent.getCreatureId())
+            .moveBodyToNewArea(teleportEvent.getToAreaId(), game);
         } else {
           CreatureBody creatureBody = CreatureBody.of(teleportEvent.getCreatureId());
           creatureBody.init(teleportEvent.getToAreaId(), game);

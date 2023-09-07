@@ -15,10 +15,14 @@ public class TeleportDestination extends TeleportDestinationBase {
   public static TeleportDestinationBase of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
     Creature creature = game.getCreature(abilityParams.getCreatureId());
 
-    Vector2 teleportPos = TeleportDestination.calculatePos(creature.getParams().getPos().add(abilityParams.getDirVector()), creature.getParams().getPos(), creature.getParams().getAreaId(), game);
+    Vector2 teleportPos = TeleportDestination.calculatePos(
+      creature.getParams().getPos().add(abilityParams.getDirVector()), creature.getParams().getPos(),
+      creature.getParams().getAreaId(), game);
 
     TeleportDestination ability = TeleportDestination.of();
-    ability.params = abilityParams.setWidth(4.5f).setHeight(4.5f).setChannelTime(0f).setActiveTime(1f).setTextureName("warp").setBaseDamage(0f).setChannelAnimationLooping(false).setActiveAnimationLooping(false).setPos(teleportPos).setChainToPos(teleportPos);
+    ability.params = abilityParams.setWidth(4.5f).setHeight(4.5f).setChannelTime(0f).setActiveTime(1f)
+      .setTextureName("warp").setBaseDamage(0f).setChannelAnimationLooping(false).setActiveAnimationLooping(false)
+      .setPos(teleportPos).setChainToPos(teleportPos);
 
     return ability;
   }

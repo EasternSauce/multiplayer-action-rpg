@@ -31,7 +31,8 @@ public abstract class CrossbowBoltControlBase extends Ability {
 
     Creature creature = game.getCreature(getParams().getCreatureId());
 
-    if (creature != null && currentBoltToFire < boltFireTimes.length && getParams().getStateTimer().getTime() > boltFireTimes[currentBoltToFire]) {
+    if (creature != null && currentBoltToFire < boltFireTimes.length &&
+      getParams().getStateTimer().getTime() > boltFireTimes[currentBoltToFire]) {
 
       game.chainAnotherAbility(this, AbilityType.CROSSBOW_BOLT, getParams().getDirVector(), ChainAbilityParams.of());
 

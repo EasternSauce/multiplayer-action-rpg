@@ -63,7 +63,8 @@ public class ItemDropOnGroundAction extends GameStateAction {
     Set<Item> lootPileItems = new ConcurrentSkipListSet<>();
     lootPileItems.add(item.copy().setLootPileId(lootPileId));
 
-    LootPile lootPile = LootPile.of(lootPileId, player.getParams().getAreaId(), player.getParams().getPos(), lootPileItems);
+    LootPile lootPile = LootPile.of(lootPileId, player.getParams().getAreaId(), player.getParams().getPos(),
+      lootPileItems);
 
     game.getGameState().getLootPiles().put(lootPile.getParams().getId(), lootPile);
 

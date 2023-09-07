@@ -109,7 +109,8 @@ public abstract class CoreGame extends Game {
   abstract public void performPhysicsWorldStep();
 
   public boolean isLineBetweenPointsUnobstructedByTerrain(AreaId areaId, Vector2 fromPos, Vector2 toPos) {
-    return entityManager.getGameEntityPhysics().getPhysicsWorlds().get(areaId).isLineBetweenPointsUnobstructedByTerrain(fromPos, toPos);
+    return entityManager.getGameEntityPhysics().getPhysicsWorlds().get(areaId)
+      .isLineBetweenPointsUnobstructedByTerrain(fromPos, toPos);
   }
 
   public void updateCameraPositions() {
@@ -156,7 +157,8 @@ public abstract class CoreGame extends Game {
   public abstract Boolean getFirstNonStubBroadcastReceived();
 
   public void chainAnotherAbility(Ability chainFromAbility, AbilityType abilityType, Vector2 dirVector, ChainAbilityParams chainAbilityParams) {
-    getGameState().accessAbilities().chainAnotherAbility(chainFromAbility, abilityType, dirVector, chainAbilityParams, this);
+    getGameState().accessAbilities()
+      .chainAnotherAbility(chainFromAbility, abilityType, dirVector, chainAbilityParams, this);
   }
 
   public abstract GameState getGameState();
@@ -174,7 +176,9 @@ public abstract class CoreGame extends Game {
   }
 
   public Map<CreatureId, Creature> getActiveCreatures() {
-    return getGameState().accessCreatures().getCreatures().entrySet().stream().filter(entry -> entry.getValue().isCurrentlyActive(this)).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    return getGameState().accessCreatures().getCreatures().entrySet().stream()
+      .filter(entry -> entry.getValue().isCurrentlyActive(this))
+      .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
   }
 
   public Creature getCreature(CreatureId creatureId) {

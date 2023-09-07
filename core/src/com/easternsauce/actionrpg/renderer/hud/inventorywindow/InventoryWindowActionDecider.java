@@ -15,27 +15,50 @@ public class InventoryWindowActionDecider {
   static List<InventoryWindowItemMoveStrategy> strategies = new LinkedList<>();
 
   static {
-    InventoryWindowItemMoveStrategy inventoryToInventory = InventoryWindowItemMoveStrategy.of(InventoryWindowActionDecider::isMovingItemFromInventoryToInventory, InventoryWindowActionDecider::getMoveItemFromInventoryToInventoryAction);
+    InventoryWindowItemMoveStrategy inventoryToInventory = InventoryWindowItemMoveStrategy.of(
+      InventoryWindowActionDecider::isMovingItemFromInventoryToInventory,
+      InventoryWindowActionDecider::getMoveItemFromInventoryToInventoryAction);
 
-    InventoryWindowItemMoveStrategy potionMenuToPotionMenu = InventoryWindowItemMoveStrategy.of(InventoryWindowActionDecider::isMovingItemFromPotionMenuToPotionMenu, InventoryWindowActionDecider::getMoveItemFromPotionMenuToPotionMenuAction);
+    InventoryWindowItemMoveStrategy potionMenuToPotionMenu = InventoryWindowItemMoveStrategy.of(
+      InventoryWindowActionDecider::isMovingItemFromPotionMenuToPotionMenu,
+      InventoryWindowActionDecider::getMoveItemFromPotionMenuToPotionMenuAction);
 
-    InventoryWindowItemMoveStrategy inventoryToEquipment = InventoryWindowItemMoveStrategy.of(InventoryWindowActionDecider::isMovingItemFromInventoryToEquipment, InventoryWindowActionDecider::getMoveItemFromInventoryToEquipmentAction);
+    InventoryWindowItemMoveStrategy inventoryToEquipment = InventoryWindowItemMoveStrategy.of(
+      InventoryWindowActionDecider::isMovingItemFromInventoryToEquipment,
+      InventoryWindowActionDecider::getMoveItemFromInventoryToEquipmentAction);
 
-    InventoryWindowItemMoveStrategy equipmentToInventory = InventoryWindowItemMoveStrategy.of(InventoryWindowActionDecider::isMovingItemFromEquipmentToInventory, InventoryWindowActionDecider::getMoveItemFromEquipmentToInventoryAction);
+    InventoryWindowItemMoveStrategy equipmentToInventory = InventoryWindowItemMoveStrategy.of(
+      InventoryWindowActionDecider::isMovingItemFromEquipmentToInventory,
+      InventoryWindowActionDecider::getMoveItemFromEquipmentToInventoryAction);
 
-    InventoryWindowItemMoveStrategy inventoryToPotionMenu = InventoryWindowItemMoveStrategy.of(InventoryWindowActionDecider::isMovingItemFromInventoryToPotionMenu, InventoryWindowActionDecider::getMoveItemFromInventoryToPotionMenuAction);
+    InventoryWindowItemMoveStrategy inventoryToPotionMenu = InventoryWindowItemMoveStrategy.of(
+      InventoryWindowActionDecider::isMovingItemFromInventoryToPotionMenu,
+      InventoryWindowActionDecider::getMoveItemFromInventoryToPotionMenuAction);
 
-    InventoryWindowItemMoveStrategy potionMenuToInventory = InventoryWindowItemMoveStrategy.of(InventoryWindowActionDecider::isMovingItemFromPotionMenuToInventory, InventoryWindowActionDecider::getMoveItemFromPotionMenuToInventoryAction);
+    InventoryWindowItemMoveStrategy potionMenuToInventory = InventoryWindowItemMoveStrategy.of(
+      InventoryWindowActionDecider::isMovingItemFromPotionMenuToInventory,
+      InventoryWindowActionDecider::getMoveItemFromPotionMenuToInventoryAction);
 
-    InventoryWindowItemMoveStrategy equipmentToEquipment = InventoryWindowItemMoveStrategy.of(InventoryWindowActionDecider::isMovingItemFromEquipmentToEquipment, InventoryWindowActionDecider::getMoveCancelAction);
+    InventoryWindowItemMoveStrategy equipmentToEquipment = InventoryWindowItemMoveStrategy.of(
+      InventoryWindowActionDecider::isMovingItemFromEquipmentToEquipment,
+      InventoryWindowActionDecider::getMoveCancelAction);
 
-    InventoryWindowItemMoveStrategy inventoryToCursor = InventoryWindowItemMoveStrategy.of(InventoryWindowActionDecider::isPickingUpItemInsideInventory, InventoryWindowActionDecider::getInventoryItemPutOnCursorAction);
+    InventoryWindowItemMoveStrategy inventoryToCursor = InventoryWindowItemMoveStrategy.of(
+      InventoryWindowActionDecider::isPickingUpItemInsideInventory,
+      InventoryWindowActionDecider::getInventoryItemPutOnCursorAction);
 
-    InventoryWindowItemMoveStrategy equipmentToCursor = InventoryWindowItemMoveStrategy.of(InventoryWindowActionDecider::isPickingUpItemInsideEquipment, InventoryWindowActionDecider::getEquipmentItemPutOnCursorAction);
+    InventoryWindowItemMoveStrategy equipmentToCursor = InventoryWindowItemMoveStrategy.of(
+      InventoryWindowActionDecider::isPickingUpItemInsideEquipment,
+      InventoryWindowActionDecider::getEquipmentItemPutOnCursorAction);
 
-    InventoryWindowItemMoveStrategy potionMenuToCursor = InventoryWindowItemMoveStrategy.of(InventoryWindowActionDecider::isPickingUpItemInsidePotionMenu, InventoryWindowActionDecider::getPotionMenuItemPutOnCursorAction);
+    InventoryWindowItemMoveStrategy potionMenuToCursor = InventoryWindowItemMoveStrategy.of(
+      InventoryWindowActionDecider::isPickingUpItemInsidePotionMenu,
+      InventoryWindowActionDecider::getPotionMenuItemPutOnCursorAction);
 
-    strategies.addAll(Arrays.asList(inventoryToInventory, potionMenuToPotionMenu, inventoryToEquipment, equipmentToInventory, inventoryToPotionMenu, potionMenuToInventory, equipmentToEquipment, inventoryToCursor, equipmentToCursor, potionMenuToCursor));
+    strategies.addAll(
+      Arrays.asList(inventoryToInventory, potionMenuToPotionMenu, inventoryToEquipment, equipmentToInventory,
+        inventoryToPotionMenu, potionMenuToInventory, equipmentToEquipment, inventoryToCursor, equipmentToCursor,
+        potionMenuToCursor));
   }
 
   public static GameStateAction decide(InventoryWindowState inventoryWindowState, CoreGame game) {
@@ -52,39 +75,48 @@ public class InventoryWindowActionDecider {
   }
 
   private static boolean isMovingItemFromInventoryToInventory(InventoryWindowState inventoryWindowState) {
-    return inventoryWindowState.getInventoryItemBeingMoved() != null && inventoryWindowState.getInventorySlotClicked() != null;
+    return inventoryWindowState.getInventoryItemBeingMoved() != null &&
+      inventoryWindowState.getInventorySlotClicked() != null;
   }
 
   private static InventorySwapSlotItemsAction getMoveItemFromInventoryToInventoryAction(InventoryWindowState inventoryWindowState, CoreGame game) {
-    return InventorySwapSlotItemsAction.of(game.getGameState().getThisClientPlayerId(), inventoryWindowState.getInventoryItemBeingMoved(), inventoryWindowState.getInventorySlotClicked());
+    return InventorySwapSlotItemsAction.of(game.getGameState().getThisClientPlayerId(),
+      inventoryWindowState.getInventoryItemBeingMoved(), inventoryWindowState.getInventorySlotClicked());
   }
 
   private static boolean isMovingItemFromPotionMenuToPotionMenu(InventoryWindowState inventoryWindowState) {
-    return inventoryWindowState.getPotionMenuItemBeingMoved() != null && inventoryWindowState.getPotionMenuSlotClicked() != null;
+    return inventoryWindowState.getPotionMenuItemBeingMoved() != null &&
+      inventoryWindowState.getPotionMenuSlotClicked() != null;
   }
 
   private static PotionMenuSwapSlotItemsAction getMoveItemFromPotionMenuToPotionMenuAction(InventoryWindowState inventoryWindowState, CoreGame game) {
-    return PotionMenuSwapSlotItemsAction.of(game.getGameState().getThisClientPlayerId(), inventoryWindowState.getPotionMenuItemBeingMoved(), inventoryWindowState.getPotionMenuSlotClicked());
+    return PotionMenuSwapSlotItemsAction.of(game.getGameState().getThisClientPlayerId(),
+      inventoryWindowState.getPotionMenuItemBeingMoved(), inventoryWindowState.getPotionMenuSlotClicked());
   }
 
   private static boolean isMovingItemFromInventoryToEquipment(InventoryWindowState inventoryWindowState) {
-    return inventoryWindowState.getInventoryItemBeingMoved() != null && inventoryWindowState.getEquipmentSlotClicked() != null;
+    return inventoryWindowState.getInventoryItemBeingMoved() != null &&
+      inventoryWindowState.getEquipmentSlotClicked() != null;
   }
 
   private static InventoryAndEquipmentSwapSlotItemsAction getMoveItemFromInventoryToEquipmentAction(InventoryWindowState inventoryWindowState, CoreGame game) {
-    return InventoryAndEquipmentSwapSlotItemsAction.of(game.getGameState().getThisClientPlayerId(), inventoryWindowState.getInventoryItemBeingMoved(), inventoryWindowState.getEquipmentSlotClicked());
+    return InventoryAndEquipmentSwapSlotItemsAction.of(game.getGameState().getThisClientPlayerId(),
+      inventoryWindowState.getInventoryItemBeingMoved(), inventoryWindowState.getEquipmentSlotClicked());
   }
 
   private static boolean isMovingItemFromEquipmentToInventory(InventoryWindowState inventoryWindowState) {
-    return inventoryWindowState.getEquipmentItemBeingMoved() != null && inventoryWindowState.getInventorySlotClicked() != null;
+    return inventoryWindowState.getEquipmentItemBeingMoved() != null &&
+      inventoryWindowState.getInventorySlotClicked() != null;
   }
 
   private static InventoryAndEquipmentSwapSlotItemsAction getMoveItemFromEquipmentToInventoryAction(InventoryWindowState inventoryWindowState, CoreGame game) {
-    return InventoryAndEquipmentSwapSlotItemsAction.of(game.getGameState().getThisClientPlayerId(), inventoryWindowState.getInventorySlotClicked(), inventoryWindowState.getEquipmentItemBeingMoved());
+    return InventoryAndEquipmentSwapSlotItemsAction.of(game.getGameState().getThisClientPlayerId(),
+      inventoryWindowState.getInventorySlotClicked(), inventoryWindowState.getEquipmentItemBeingMoved());
   }
 
   private static boolean isMovingItemFromInventoryToPotionMenu(InventoryWindowState inventoryWindowState) {
-    return inventoryWindowState.getInventoryItemBeingMoved() != null && inventoryWindowState.getPotionMenuSlotClicked() != null;
+    return inventoryWindowState.getInventoryItemBeingMoved() != null &&
+      inventoryWindowState.getPotionMenuSlotClicked() != null;
   }
 
   private static GameStateAction getMoveItemFromInventoryToPotionMenuAction(InventoryWindowState inventoryWindowState, CoreGame game) {
@@ -94,18 +126,22 @@ public class InventoryWindowActionDecider {
     Item itemTo = player.getParams().getPotionMenuItems().get(inventoryWindowState.getPotionMenuSlotClicked());
 
     if (areItemStackable(itemFrom, itemTo)) {
-      return InventoryToPotionMenuStackItemAction.of(game.getGameState().getThisClientPlayerId(), inventoryWindowState.getInventoryItemBeingMoved(), inventoryWindowState.getPotionMenuSlotClicked());
+      return InventoryToPotionMenuStackItemAction.of(game.getGameState().getThisClientPlayerId(),
+        inventoryWindowState.getInventoryItemBeingMoved(), inventoryWindowState.getPotionMenuSlotClicked());
     } else {
-      return InventoryAndPotionMenuSwapSlotItemsAction.of(game.getGameState().getThisClientPlayerId(), inventoryWindowState.getInventoryItemBeingMoved(), inventoryWindowState.getPotionMenuSlotClicked());
+      return InventoryAndPotionMenuSwapSlotItemsAction.of(game.getGameState().getThisClientPlayerId(),
+        inventoryWindowState.getInventoryItemBeingMoved(), inventoryWindowState.getPotionMenuSlotClicked());
     }
   }
 
   private static boolean areItemStackable(Item itemFrom, Item itemTo) {
-    return itemFrom != null && itemTo != null && itemFrom.getTemplate().getStackable() && itemTo.getTemplate().getStackable() && itemFrom.getTemplate().getId().equals(itemTo.getTemplate().getId());
+    return itemFrom != null && itemTo != null && itemFrom.getTemplate().getStackable() &&
+      itemTo.getTemplate().getStackable() && itemFrom.getTemplate().getId().equals(itemTo.getTemplate().getId());
   }
 
   private static boolean isMovingItemFromPotionMenuToInventory(InventoryWindowState inventoryWindowState) {
-    return inventoryWindowState.getPotionMenuItemBeingMoved() != null && inventoryWindowState.getInventorySlotClicked() != null;
+    return inventoryWindowState.getPotionMenuItemBeingMoved() != null &&
+      inventoryWindowState.getInventorySlotClicked() != null;
   }
 
   private static GameStateAction getMoveItemFromPotionMenuToInventoryAction(InventoryWindowState inventoryWindowState, CoreGame game) {
@@ -123,15 +159,18 @@ public class InventoryWindowActionDecider {
     }
 
     if (areItemStackable(itemFrom, itemTo)) {
-      return PotionMenuToInventoryStackItemAction.of(game.getGameState().getThisClientPlayerId(), inventoryWindowState.getInventorySlotClicked(), inventoryWindowState.getPotionMenuItemBeingMoved());
+      return PotionMenuToInventoryStackItemAction.of(game.getGameState().getThisClientPlayerId(),
+        inventoryWindowState.getInventorySlotClicked(), inventoryWindowState.getPotionMenuItemBeingMoved());
     } else {
-      return InventoryAndPotionMenuSwapSlotItemsAction.of(game.getGameState().getThisClientPlayerId(), inventoryWindowState.getInventorySlotClicked(), inventoryWindowState.getPotionMenuItemBeingMoved());
+      return InventoryAndPotionMenuSwapSlotItemsAction.of(game.getGameState().getThisClientPlayerId(),
+        inventoryWindowState.getInventorySlotClicked(), inventoryWindowState.getPotionMenuItemBeingMoved());
     }
 
   }
 
   private static boolean isMovingItemFromEquipmentToEquipment(InventoryWindowState inventoryWindowState) {
-    return inventoryWindowState.getEquipmentItemBeingMoved() != null && inventoryWindowState.getEquipmentSlotClicked() != null;
+    return inventoryWindowState.getEquipmentItemBeingMoved() != null &&
+      inventoryWindowState.getEquipmentSlotClicked() != null;
   }
 
   private static boolean isPickingUpItemInsideInventory(InventoryWindowState inventoryWindowState) {
@@ -140,7 +179,8 @@ public class InventoryWindowActionDecider {
 
   private static InventoryItemPutOnCursorAction getInventoryItemPutOnCursorAction(InventoryWindowState inventoryWindowState, CoreGame game) {
     if (isClickedNonEmptyInventorySlot(inventoryWindowState, game)) {
-      return InventoryItemPutOnCursorAction.of(game.getGameState().getThisClientPlayerId(), inventoryWindowState.getInventorySlotClicked());
+      return InventoryItemPutOnCursorAction.of(game.getGameState().getThisClientPlayerId(),
+        inventoryWindowState.getInventorySlotClicked());
     } else {
       return null;
     }
@@ -158,7 +198,8 @@ public class InventoryWindowActionDecider {
 
   private static EquipmentItemPutOnCursorAction getEquipmentItemPutOnCursorAction(InventoryWindowState inventoryWindowState, CoreGame game) {
     if (isClickedNonEmptyEquipmentSlot(inventoryWindowState, game)) {
-      return EquipmentItemPutOnCursorAction.of(game.getGameState().getThisClientPlayerId(), inventoryWindowState.getEquipmentSlotClicked());
+      return EquipmentItemPutOnCursorAction.of(game.getGameState().getThisClientPlayerId(),
+        inventoryWindowState.getEquipmentSlotClicked());
     } else {
       return null;
     }
@@ -176,7 +217,8 @@ public class InventoryWindowActionDecider {
 
   private static PotionMenuItemPutOnCursorAction getPotionMenuItemPutOnCursorAction(InventoryWindowState inventoryWindowState, CoreGame game) {
     if (isClickedNonEmptyPotionMenuSlot(inventoryWindowState, game)) {
-      return PotionMenuItemPutOnCursorAction.of(game.getGameState().getThisClientPlayerId(), inventoryWindowState.getPotionMenuSlotClicked());
+      return PotionMenuItemPutOnCursorAction.of(game.getGameState().getThisClientPlayerId(),
+        inventoryWindowState.getPotionMenuSlotClicked());
     } else {
       return null;
     }

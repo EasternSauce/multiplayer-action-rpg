@@ -41,7 +41,8 @@ public class MageTeleportCombo extends Ability {
     creature.applyEffect(CreatureEffect.SELF_STUN, 3.5f, game);
     creature.stopMoving();
 
-    game.chainAnotherAbility(this, AbilityType.ENEMY_TELEPORT_SOURCE, getParams().getDirVector(), ChainAbilityParams.of().setChainToPos(getParams().getPos()));
+    game.chainAnotherAbility(this, AbilityType.ENEMY_TELEPORT_SOURCE, getParams().getDirVector(),
+      ChainAbilityParams.of().setChainToPos(getParams().getPos()));
   }
 
   @Override
@@ -51,8 +52,10 @@ public class MageTeleportCombo extends Ability {
 
     Creature creature = game.getCreature(getParams().getCreatureId());
 
-    if (creature != null && currentFireRingToProc < fireRingProcTimes.length && getParams().getStateTimer().getTime() > fireRingProcTimes[currentFireRingToProc]) {
-      game.chainAnotherAbility(this, AbilityType.RING_OF_FIRE, getParams().getDirVector(), ChainAbilityParams.of().setOverrideScale(fireRingScales[currentFireRingToProc]).setOverrideDamage(40f));
+    if (creature != null && currentFireRingToProc < fireRingProcTimes.length &&
+      getParams().getStateTimer().getTime() > fireRingProcTimes[currentFireRingToProc]) {
+      game.chainAnotherAbility(this, AbilityType.RING_OF_FIRE, getParams().getDirVector(),
+        ChainAbilityParams.of().setOverrideScale(fireRingScales[currentFireRingToProc]).setOverrideDamage(40f));
 
       currentFireRingToProc += 1;
     }

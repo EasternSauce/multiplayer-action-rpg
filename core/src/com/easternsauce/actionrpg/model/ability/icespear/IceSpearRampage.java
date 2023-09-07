@@ -60,7 +60,10 @@ public class IceSpearRampage extends Projectile {
 
     if (currentAbility < times.size() && getParams().getStateTimer().getTime() > times.get(currentAbility)) {
       Vector2 facingVector = creature.getParams().getMovementParams().getFacingVector();
-      game.chainAnotherAbility(this, AbilityType.ICE_SPEAR, facingVector.withSetDegAngle(getParams().getDirVector().angleDeg() + angles.get(currentAbility)), ChainAbilityParams.of().setChainToPos(creature.getParams().getPos()).setOverrideMaximumRange(30f).setOverrideScale(0.8f).setOverrideSpeed(13f).setOverrideStunDuration(0.3f).setOverrideDamage(38f));
+      game.chainAnotherAbility(this, AbilityType.ICE_SPEAR,
+        facingVector.withSetDegAngle(getParams().getDirVector().angleDeg() + angles.get(currentAbility)),
+        ChainAbilityParams.of().setChainToPos(creature.getParams().getPos()).setOverrideMaximumRange(30f)
+          .setOverrideScale(0.8f).setOverrideSpeed(13f).setOverrideStunDuration(0.3f).setOverrideDamage(38f));
 
       currentAbility += 1;
     }

@@ -33,13 +33,18 @@ public class EnemyPoisonousCloudControl extends PoisonousCloudControlBase {
 
     Creature creature = game.getCreature(getParams().getCreatureId());
 
-    if (creature != null && currentCloudSet < cloudSetSpawnTimes.length && getParams().getStateTimer().getTime() > cloudSetSpawnTimes[currentCloudSet]) {
+    if (creature != null && currentCloudSet < cloudSetSpawnTimes.length &&
+      getParams().getStateTimer().getTime() > cloudSetSpawnTimes[currentCloudSet]) {
 
       for (int i = 0; i < cloudSetSpawnCounts[currentCloudSet]; i++) {
-        float x = getParams().getPos().getX() + (float) Math.sin(2 * Math.PI / cloudSetSpawnCounts[currentCloudSet] * i) * cloudSetDistances[currentCloudSet];
-        float y = getParams().getPos().getY() + (float) Math.cos(2 * Math.PI / cloudSetSpawnCounts[currentCloudSet] * i) * cloudSetDistances[currentCloudSet];
+        float x = getParams().getPos().getX() +
+          (float) Math.sin(2 * Math.PI / cloudSetSpawnCounts[currentCloudSet] * i) * cloudSetDistances[currentCloudSet];
+        float y = getParams().getPos().getY() +
+          (float) Math.cos(2 * Math.PI / cloudSetSpawnCounts[currentCloudSet] * i) * cloudSetDistances[currentCloudSet];
 
-        game.chainAnotherAbility(this, AbilityType.POISONOUS_CLOUD, getParams().getDirVector(), ChainAbilityParams.of().setChainToPos(Vector2.of(x, y)).setOverrideDuration(totalDuration - cloudSetSpawnTimes[currentCloudSet]));
+        game.chainAnotherAbility(this, AbilityType.POISONOUS_CLOUD, getParams().getDirVector(),
+          ChainAbilityParams.of().setChainToPos(Vector2.of(x, y))
+            .setOverrideDuration(totalDuration - cloudSetSpawnTimes[currentCloudSet]));
       }
 
       currentCloudSet += 1;

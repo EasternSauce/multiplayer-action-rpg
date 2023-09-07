@@ -16,7 +16,9 @@ import java.util.stream.Collectors;
 public class EnemyMagicOrb extends MagicOrbBase {
   public static EnemyMagicOrb of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
     EnemyMagicOrb ability = EnemyMagicOrb.of();
-    ability.params = abilityParams.setWidth(1.5f).setHeight(1.5f).setChannelTime(0f).setActiveTime(30f).setStartingRange(0.5f).setTextureName("magic_orb").setBaseDamage(40f).setChannelAnimationLooping(false).setActiveAnimationLooping(true).setDelayedActionTime(0.001f).setSpeed(13f);
+    ability.params = abilityParams.setWidth(1.5f).setHeight(1.5f).setChannelTime(0f).setActiveTime(30f)
+      .setStartingRange(0.5f).setTextureName("magic_orb").setBaseDamage(40f).setChannelAnimationLooping(false)
+      .setActiveAnimationLooping(true).setDelayedActionTime(0.001f).setSpeed(13f);
 
     return ability;
   }
@@ -30,7 +32,11 @@ public class EnemyMagicOrb extends MagicOrbBase {
 
     Creature thisCreature = game.getCreature(getParams().getCreatureId());
 
-    for (Creature creature : game.getActiveCreatures().values().stream().filter(targetCreature -> Objects.equals(targetCreature.getParams().getAreaId().getValue(), getParams().getAreaId().getValue()) && !targetCreature.getId().equals(getParams().getCreatureId()) && targetCreature.isAlive() && isTargetingAllowed(thisCreature, targetCreature) && targetCreature.getParams().getPos().distance(getParams().getPos()) < 20f).collect(Collectors.toSet())) {
+    for (Creature creature : game.getActiveCreatures().values().stream().filter(targetCreature ->
+      Objects.equals(targetCreature.getParams().getAreaId().getValue(), getParams().getAreaId().getValue()) &&
+        !targetCreature.getId().equals(getParams().getCreatureId()) && targetCreature.isAlive() &&
+        isTargetingAllowed(thisCreature, targetCreature) &&
+        targetCreature.getParams().getPos().distance(getParams().getPos()) < 20f).collect(Collectors.toSet())) {
       if (creature.getParams().getPos().distance(getParams().getPos()) < minimumDistance) {
         minimumDistanceCreature = creature;
         minimumDistance = creature.getParams().getPos().distance(getParams().getPos());

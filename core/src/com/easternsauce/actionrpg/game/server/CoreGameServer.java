@@ -72,10 +72,12 @@ public class CoreGameServer extends CoreGame {
     for (Connection connection : connections) {
       if (clientIds.contains(connection.getID())) { // don't update until player is initialized
         Map<CreatureId, Creature> creatures = getAllCreatures();
-        if (getClientPlayers().containsKey(connection.getID()) && creatures.containsKey(getClientPlayers().get(connection.getID()))) {
+        if (getClientPlayers().containsKey(connection.getID()) &&
+          creatures.containsKey(getClientPlayers().get(connection.getID()))) {
           Creature player = creatures.get(getClientPlayers().get(connection.getID()));
 
-          List<GameStateAction> personalizedTickActions = onTickActions.stream().filter(action -> isActionRelevantForPlayer(player, action)).collect(Collectors.toList());
+          List<GameStateAction> personalizedTickActions = onTickActions.stream()
+            .filter(action -> isActionRelevantForPlayer(player, action)).collect(Collectors.toList());
           connection.sendTCP(ActionsHolder.of(personalizedTickActions));
         }
       }
@@ -90,7 +92,9 @@ public class CoreGameServer extends CoreGame {
   }
 
   private boolean isActionRelevantForPlayer(Creature player, GameStateAction action) {
-    return action.isActionObjectValid(this) && action.getActionObjectAreaId(this).getValue().equals(player.getParams().getAreaId().getValue()) && action.getActionObjectPos(this).distance(player.getParams().getPos()) < Constants.CLIENT_GAME_UPDATE_RANGE;
+    return action.isActionObjectValid(this) &&
+      action.getActionObjectAreaId(this).getValue().equals(player.getParams().getAreaId().getValue()) &&
+      action.getActionObjectPos(this).distance(player.getParams().getPos()) < Constants.CLIENT_GAME_UPDATE_RANGE;
   }
 
   @Override
@@ -104,7 +108,8 @@ public class CoreGameServer extends CoreGame {
     } else {
       gameState.loadFromJsonFile(fileName);
 
-      getActiveCreatures().forEach((creatureId, creature) -> getEventProcessor().getCreatureModelsToBeCreated().add(creatureId));
+      getActiveCreatures().forEach(
+        (creatureId, creature) -> getEventProcessor().getCreatureModelsToBeCreated().add(creatureId));
 
       gameState.accessAbilities().getAbilities().forEach((abilityId, ability) -> {
         getEventProcessor().getAbilityModelsToBeCreated().add(abilityId);
@@ -113,9 +118,11 @@ public class CoreGameServer extends CoreGame {
         }
       });
 
-      gameState.getLootPiles().forEach((lootPileId, lootPile) -> getEventProcessor().getLootPileModelsToBeCreated().add(lootPileId));
+      gameState.getLootPiles()
+        .forEach((lootPileId, lootPile) -> getEventProcessor().getLootPileModelsToBeCreated().add(lootPileId));
 
-      gameState.getAreaGates().forEach((areaGateId, areaGate) -> getEventProcessor().getAreaGateModelsToBeCreated().add(areaGateId));
+      gameState.getAreaGates()
+        .forEach((areaGateId, areaGate) -> getEventProcessor().getAreaGateModelsToBeCreated().add(areaGateId));
 
     }
 
@@ -185,7 +192,8 @@ public class CoreGameServer extends CoreGame {
     Integer clientId = MapUtils.getKeyByValue(getClientPlayers(), creatureId);
 
     if (creature != null && clientId != null) {
-      Optional<Connection> maybeConnection = Arrays.stream(getEndPoint().getConnections()).filter(connection -> connection.getID() == clientId).findAny();
+      Optional<Connection> maybeConnection = Arrays.stream(getEndPoint().getConnections())
+        .filter(connection -> connection.getID() == clientId).findAny();
       maybeConnection.ifPresent(Connection::close);
     }
   }

@@ -53,7 +53,9 @@ public class CoreGameServerListener extends Listener {
       game.getEndPoint().sendToAllTCP(command);
     } else if (object instanceof EnemySpawnCommand) {
       EnemySpawnCommand command = (EnemySpawnCommand) object;
-      game.getEntityManager().spawnEnemy(command.getCreatureId(), command.getAreaId(), command.getPos(), command.getEnemyTemplate(), game.getGameState().getRandomGenerator().nextInt(), game);
+      game.getEntityManager()
+        .spawnEnemy(command.getCreatureId(), command.getAreaId(), command.getPos(), command.getEnemyTemplate(),
+          game.getGameState().getRandomGenerator().nextInt(), game);
 
       game.getEndPoint().sendToAllTCP(command); // TODO: add to tick actions instead
 

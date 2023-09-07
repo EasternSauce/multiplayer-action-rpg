@@ -72,7 +72,8 @@ public class GameplayScreen implements Screen {
     mapsToLoad.put(AreaId.of("Area2"), "assets/areas/area2");
     mapsToLoad.put(AreaId.of("Area3"), "assets/areas/area3");
 
-    return mapsToLoad.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, entry -> game.getEntityManager().getGameEntityRenderer().loadMap(entry.getValue() + "/tile_map.tmx")));
+    return mapsToLoad.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
+      entry -> game.getEntityManager().getGameEntityRenderer().loadMap(entry.getValue() + "/tile_map.tmx")));
   }
 
   private void initializeRenderingLayers(CoreGame game) {
@@ -96,8 +97,10 @@ public class GameplayScreen implements Screen {
       if (game.getGameState().getThisClientPlayerId() == null) {
         game.renderServerRunningMessage();
       } else {
-        if (game.getEntityManager().getGameEntityRenderer().getAreaRenderers().containsKey(game.getGameState().getCurrentAreaId())) {
-          game.getEntityManager().getGameEntityRenderer().getAreaRenderers().get(game.getGameState().getCurrentAreaId()).setView(game.getViewportsHandler().getWorldCamera());
+        if (game.getEntityManager().getGameEntityRenderer().getAreaRenderers()
+          .containsKey(game.getGameState().getCurrentAreaId())) {
+          game.getEntityManager().getGameEntityRenderer().getAreaRenderers().get(game.getGameState().getCurrentAreaId())
+            .setView(game.getViewportsHandler().getWorldCamera());
         }
 
         setProjectionMatrices(game);
@@ -122,7 +125,8 @@ public class GameplayScreen implements Screen {
 
       game.getEventProcessor().process(game.getEntityManager(), atlas, game);
 
-      game.getEventProcessor().getTeleportEvents().forEach(teleportInfo -> game.getEntityManager().teleportCreature(teleportInfo, game));
+      game.getEventProcessor().getTeleportEvents()
+        .forEach(teleportInfo -> game.getEntityManager().teleportCreature(teleportInfo, game));
       game.getEventProcessor().getTeleportEvents().clear();
 
       game.getGameState().updateGeneralTimer(delta);
@@ -139,7 +143,8 @@ public class GameplayScreen implements Screen {
         game.updateCameraPositions();
       }
 
-      if (!game.getEntityManager().getGameEntityRenderer().getAreasLoaded() && game.getFirstNonStubBroadcastReceived()) {
+      if (!game.getEntityManager().getGameEntityRenderer().getAreasLoaded() &&
+        game.getFirstNonStubBroadcastReceived()) {
         game.getEntityManager().getGameEntityRenderer().loadAreaRenderers(maps, game);
       }
     }
@@ -158,7 +163,9 @@ public class GameplayScreen implements Screen {
       game.setForceUpdateBodyPositions(false);
 
       game.getActiveCreatures().forEach((creatureId, creature) -> {
-        if (game.getCreatureBodies().containsKey(creatureId) && game.getCreatureBodies().get(creatureId).getBodyPos().distance(creature.getParams().getPos()) > Constants.FORCE_UPDATE_MINIMUM_DISTANCE // only setTransform if positions
+        if (game.getCreatureBodies().containsKey(creatureId) &&
+          game.getCreatureBodies().get(creatureId).getBodyPos().distance(creature.getParams().getPos()) >
+            Constants.FORCE_UPDATE_MINIMUM_DISTANCE // only setTransform if positions
           // are far apart
         ) {
           game.getCreatureBodies().get(creatureId).trySetTransform(creature.getParams().getPos());
@@ -167,9 +174,12 @@ public class GameplayScreen implements Screen {
 
       game.getAbilities().forEach((abilityId, ability) -> {
         //noinspection SpellCheckingInspection
-        if (game.getAbilityBodies().containsKey(abilityId) && game.getAbilityBodies().get(abilityId).getBodyInitialized() &&
+        if (game.getAbilityBodies().containsKey(abilityId) &&
+          game.getAbilityBodies().get(abilityId).getBodyInitialized() &&
           // this is needed to fix body created client/server desync
-          !ability.getParams().getSkipCreatingBody() && game.getAbilityBodies().get(abilityId).getBodyPos().distance(ability.getParams().getPos()) > Constants.FORCE_UPDATE_MINIMUM_DISTANCE
+          !ability.getParams().getSkipCreatingBody() &&
+          game.getAbilityBodies().get(abilityId).getBodyPos().distance(ability.getParams().getPos()) >
+            Constants.FORCE_UPDATE_MINIMUM_DISTANCE
           // only setTransform if positions are far apart
         ) {
           game.getAbilityBodies().get(abilityId).trySetTransform(ability.getParams().getPos());

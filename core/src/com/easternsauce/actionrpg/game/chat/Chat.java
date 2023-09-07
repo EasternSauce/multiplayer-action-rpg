@@ -49,9 +49,11 @@ public class Chat {
 
   public void render(RenderingLayer renderingLayer) {
     for (int i = 0; i < Math.min(getMessages().size(), 6); i++) {
-      Assets.renderSmallFont(renderingLayer, getMessages().get(i).getPoster() + ": " + getMessages().get(i).getText(), Vector2.of(30, 220 - 20 * i), Color.PURPLE);
+      Assets.renderSmallFont(renderingLayer, getMessages().get(i).getPoster() + ": " + getMessages().get(i).getText(),
+        Vector2.of(30, 220 - 20 * i), Color.PURPLE);
     }
 
-    Assets.renderSmallFont(renderingLayer, (getTyping() ? "> " : "") + getCurrentMessage(), Vector2.of(30, 70), Color.PURPLE);
+    Assets.renderSmallFont(renderingLayer, (getTyping() ? "> " : "") + getCurrentMessage(), Vector2.of(30, 70),
+      Color.PURPLE);
   }
 }

@@ -22,7 +22,10 @@ public class Dash extends AttachedAbility {
 
     Dash ability = Dash.of();
 
-    ability.params = abilityParams.setWidth(5.5f).setHeight(5.5f).setChannelTime(0f).setActiveTime(0.14f).setTextureName("smoke").setBaseDamage(0f).setChannelAnimationLooping(false).setActiveAnimationLooping(false).setPos(creature.getParams().getPos()).setStartingRange(0.8f).setDirectionalAttachedAbilityRotationShift(180f).setFlip(Dash.calculateFlip(flipValue)).setRotationShift(180f);
+    ability.params = abilityParams.setWidth(5.5f).setHeight(5.5f).setChannelTime(0f).setActiveTime(0.14f)
+      .setTextureName("smoke").setBaseDamage(0f).setChannelAnimationLooping(false).setActiveAnimationLooping(false)
+      .setPos(creature.getParams().getPos()).setStartingRange(0.8f).setDirectionalAttachedAbilityRotationShift(180f)
+      .setFlip(Dash.calculateFlip(flipValue)).setRotationShift(180f);
 
     return ability;
   }

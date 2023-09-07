@@ -59,10 +59,12 @@ public class EntityEventProcessor {
     getAbilityModelsToBeCreated().forEach(abilityId -> gameEntityManager.createAbilityEntity(abilityId, atlas, game));
     getAbilityModelsToBeCreated().clear();
 
-    getLootPileModelsToBeCreated().forEach(lootPileId -> gameEntityManager.createLootPileEntity(lootPileId, atlas, game));
+    getLootPileModelsToBeCreated().forEach(
+      lootPileId -> gameEntityManager.createLootPileEntity(lootPileId, atlas, game));
     getLootPileModelsToBeCreated().clear();
 
-    getAreaGateModelsToBeCreated().forEach(areaGateId -> gameEntityManager.createAreaGateEntity(areaGateId, atlas, game));
+    getAreaGateModelsToBeCreated().forEach(
+      areaGateId -> gameEntityManager.createAreaGateEntity(areaGateId, atlas, game));
     getAreaGateModelsToBeCreated().clear();
 
     getAbilityModelsToBeActivated().forEach(abilityId -> gameEntityManager.activateAbility(abilityId, game));

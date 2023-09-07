@@ -115,9 +115,12 @@ public class CoreGameClientInputHandler {
     } else {
       game.getChat().setTyping(false);
       if (!game.getChat().getCurrentMessage().isEmpty()) {
-        game.getEndPoint().sendTCP(ChatMessageSendCommand.of(game.getGameState().getThisClientPlayerId().getValue(), game.getChat().getCurrentMessage()));
+        game.getEndPoint().sendTCP(ChatMessageSendCommand.of(game.getGameState().getThisClientPlayerId().getValue(),
+          game.getChat().getCurrentMessage()));
 
-        game.getChat().sendMessage(game.getGameState().getThisClientPlayerId().getValue(), game.getChat().getCurrentMessage(), game);
+        game.getChat()
+          .sendMessage(game.getGameState().getThisClientPlayerId().getValue(), game.getChat().getCurrentMessage(),
+            game);
 
         game.getChat().setCurrentMessage("");
       }
@@ -127,14 +130,17 @@ public class CoreGameClientInputHandler {
   private void handleDeleteChatMessageCharacterInput(CoreGameClient game) {
     if (game.getChat().getTyping()) {
       if (game.getChat().getHoldingBackspace()) {
-        if (!game.getChat().getCurrentMessage().isEmpty() && game.getGameState().getTime() > game.getChat().getHoldBackspaceTime() + 0.3f) {
-          game.getChat().setCurrentMessage(game.getChat().getCurrentMessage().substring(0, game.getChat().getCurrentMessage().length() - 1));
+        if (!game.getChat().getCurrentMessage().isEmpty() &&
+          game.getGameState().getTime() > game.getChat().getHoldBackspaceTime() + 0.3f) {
+          game.getChat().setCurrentMessage(
+            game.getChat().getCurrentMessage().substring(0, game.getChat().getCurrentMessage().length() - 1));
         }
       } else {
         game.getChat().setHoldingBackspace(true);
         game.getChat().setHoldBackspaceTime(game.getGameState().getTime());
         if (!game.getChat().getCurrentMessage().isEmpty()) {
-          game.getChat().setCurrentMessage(game.getChat().getCurrentMessage().substring(0, game.getChat().getCurrentMessage().length() - 1));
+          game.getChat().setCurrentMessage(
+            game.getChat().getCurrentMessage().substring(0, game.getChat().getCurrentMessage().length() - 1));
         }
       }
 
@@ -192,15 +198,18 @@ public class CoreGameClientInputHandler {
       Creature player = game.getGameState().accessCreatures().getCreature(game.getGameState().getThisClientPlayerId());
 
       if (player != null) {
-        if (player.getParams().getMovementParams().getMovementActionsPerSecondLimiterTimer().getTime() > Constants.MOVEMENT_COMMAND_COOLDOWN && game.getGameState().getTime() > menuClickTime + 0.1f) {
-          game.getEndPoint().sendTCP(ActionPerformCommand.of(CreatureMoveTowardsTargetAction.of(game.getGameState().getThisClientPlayerId(), mousePos)));
+        if (player.getParams().getMovementParams().getMovementActionsPerSecondLimiterTimer().getTime() >
+          Constants.MOVEMENT_COMMAND_COOLDOWN && game.getGameState().getTime() > menuClickTime + 0.1f) {
+          game.getEndPoint().sendTCP(ActionPerformCommand.of(
+            CreatureMoveTowardsTargetAction.of(game.getGameState().getThisClientPlayerId(), mousePos)));
         }
       }
     }
   }
 
   private void handleDebugInformationQueryInput(CoreGameClient game) {
-    CreatureId creatureId = game.getActiveCreatures().keySet().stream().filter(cId -> cId.getValue().startsWith("kamil")).collect(Collectors.toList()).get(0);
+    CreatureId creatureId = game.getActiveCreatures().keySet().stream()
+      .filter(cId -> cId.getValue().startsWith("kamil")).collect(Collectors.toList()).get(0);
     Vector2 pos = game.getGameState().accessCreatures().getCreature(creatureId).getParams().getPos();
     System.out.println("Vector2.of(" + pos.getX() + "f, " + pos.getY() + "f),");
   }
@@ -232,7 +241,9 @@ public class CoreGameClientInputHandler {
         attackSkill = SkillType.PUNCH;
         weaponDamage = 0f; // weapon damage doesn't apply
       }
-      game.getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(game.getGameState().getThisClientPlayerId(), attackSkill, player.getParams().getPos(), dirVector, weaponDamage)));
+      game.getEndPoint().sendTCP(ActionPerformCommand.of(
+        SkillTryPerformAction.of(game.getGameState().getThisClientPlayerId(), attackSkill, player.getParams().getPos(),
+          dirVector, weaponDamage)));
     }
   }
 
@@ -243,16 +254,20 @@ public class CoreGameClientInputHandler {
 
     if (playerConfig.getSkillMenuSlots().containsKey(abilitySequenceNumber)) {
 
-      game.getEndPoint().sendTCP(ActionPerformCommand.of(SkillTryPerformAction.of(game.getGameState().getThisClientPlayerId(), playerConfig.getSkillMenuSlots().get(abilitySequenceNumber), player.getParams().getPos(), dirVector)));
+      game.getEndPoint().sendTCP(ActionPerformCommand.of(
+        SkillTryPerformAction.of(game.getGameState().getThisClientPlayerId(),
+          playerConfig.getSkillMenuSlots().get(abilitySequenceNumber), player.getParams().getPos(), dirVector)));
     }
   }
 
   private void handleUsePotionMenuItemInput(int potionMenuItemIndex, CoreGameClient game) {
-    game.getEndPoint().sendTCP(ActionPerformCommand.of(PotionMenuItemUseAction.of(game.getGameState().getThisClientPlayerId(), potionMenuItemIndex)));
+    game.getEndPoint().sendTCP(ActionPerformCommand.of(
+      PotionMenuItemUseAction.of(game.getGameState().getThisClientPlayerId(), potionMenuItemIndex)));
 
   }
 
   private void handleInventoryWindowActionInput(CoreGameClient game) {
-    game.getEndPoint().sendTCP(ActionPerformCommand.of(InventoryWindowToggleAction.of(game.getGameState().getThisClientPlayerId())));
+    game.getEndPoint()
+      .sendTCP(ActionPerformCommand.of(InventoryWindowToggleAction.of(game.getGameState().getThisClientPlayerId())));
   }
 }

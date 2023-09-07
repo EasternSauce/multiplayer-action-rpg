@@ -16,7 +16,9 @@ public class Punch extends AttachedAbility {
 
   public static Punch of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
     Punch ability = Punch.of();
-    ability.params = abilityParams.setWidth(1.5f).setHeight(1.5f).setChannelTime(0f).setActiveTime(0.18f).setStartingRange(1.2f).setTextureName("punch").setBaseDamage(10f).setChannelAnimationLooping(false).setActiveAnimationLooping(false);
+    ability.params = abilityParams.setWidth(1.5f).setHeight(1.5f).setChannelTime(0f).setActiveTime(0.18f)
+      .setStartingRange(1.2f).setTextureName("punch").setBaseDamage(10f).setChannelAnimationLooping(false)
+      .setActiveAnimationLooping(false);
     return ability;
   }
 

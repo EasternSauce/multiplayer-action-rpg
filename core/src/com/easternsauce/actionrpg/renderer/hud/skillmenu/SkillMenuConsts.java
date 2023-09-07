@@ -23,13 +23,15 @@ public class SkillMenuConsts {
 
   static {
     for (int i = 0; i < SkillMenuConsts.TOTAL_SKILL_SLOTS; i++) {
-      slotRectangles.put(i, Rect.of(getSkillSlotPositionX(i), getSkillSlotPositionY(i), SkillMenuConsts.SLOT_SIZE, SkillMenuConsts.SLOT_SIZE));
+      slotRectangles.put(i, Rect.of(getSkillSlotPositionX(i), getSkillSlotPositionY(i), SkillMenuConsts.SLOT_SIZE,
+        SkillMenuConsts.SLOT_SIZE));
     }
   }
 
   public static float getSkillSlotPositionX(Integer index) {
     int currentColumn = index;
-    return SkillMenuConsts.SKILL_MENU_POS_X + (SkillMenuConsts.SLOT_SIZE + SkillMenuConsts.SPACE_BETWEEN_SLOTS) * currentColumn;
+    return SkillMenuConsts.SKILL_MENU_POS_X +
+      (SkillMenuConsts.SLOT_SIZE + SkillMenuConsts.SPACE_BETWEEN_SLOTS) * currentColumn;
   }
 
   public static float getSkillSlotPositionY(@SuppressWarnings("unused") Integer index) {
@@ -37,6 +39,7 @@ public class SkillMenuConsts {
   }
 
   public static Rect getSkillPickerRect(int index) {
-    return Rect.of(SkillMenuConsts.SKILL_PICKER_MENU_POS_X, SkillMenuConsts.SKILL_PICKER_MENU_POS_Y + 25f * index, SkillMenuConsts.SKILL_PICKER_MENU_WIDTH, SkillMenuConsts.SKILL_PICKER_MENU_HEIGHT);
+    return Rect.of(SkillMenuConsts.SKILL_PICKER_MENU_POS_X, SkillMenuConsts.SKILL_PICKER_MENU_POS_Y + 25f * index,
+      SkillMenuConsts.SKILL_PICKER_MENU_WIDTH, SkillMenuConsts.SKILL_PICKER_MENU_HEIGHT);
   }
 }

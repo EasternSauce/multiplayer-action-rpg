@@ -36,12 +36,18 @@ public class EnemyRallyPoint {
   public void update(float delta, CoreGame game) {
     respawnTimer.update(delta);
 
-    long enemiesAliveCount = game.getGameState().accessCreatures().getCreatures().values().stream().filter(creature -> creature.getParams().getEnemyRallyPointId() != null && creature.getParams().getEnemyRallyPointId().getValue().equals(id.getValue()) && creature.isAlive()).count();
+    long enemiesAliveCount = game.getGameState().accessCreatures().getCreatures().values().stream().filter(
+      creature -> creature.getParams().getEnemyRallyPointId() != null &&
+        creature.getParams().getEnemyRallyPointId().getValue().equals(id.getValue()) && creature.isAlive()).count();
 
     if (respawnTimer.getTime() > Constants.ENEMY_RESPAWN_TIME) {
       long enemiesToSpawn = rallyPointInfo.getEnemiesTotal() - enemiesAliveCount;
 
-      Set<Creature> playersNearby = game.getActiveCreatures().values().stream().filter(otherCreature -> otherCreature instanceof Player && otherCreature.getParams().getAreaId().getValue().equals(rallyPointInfo.getAreaId().getValue()) && otherCreature.getParams().getPos().distance(rallyPointInfo.getPos()) < Constants.PREVENT_ENEMY_RESPAWN_DISTANCE).collect(Collectors.toSet());
+      Set<Creature> playersNearby = game.getActiveCreatures().values().stream().filter(
+        otherCreature -> otherCreature instanceof Player &&
+          otherCreature.getParams().getAreaId().getValue().equals(rallyPointInfo.getAreaId().getValue()) &&
+          otherCreature.getParams().getPos().distance(rallyPointInfo.getPos()) <
+            Constants.PREVENT_ENEMY_RESPAWN_DISTANCE).collect(Collectors.toSet());
 
       if (playersNearby.isEmpty()) {
         if (enemiesToSpawn > 0) {
@@ -65,9 +71,11 @@ public class EnemyRallyPoint {
 
     AtomicReference<Float> totalWeight = new AtomicReference<>((float) 0);
 
-    rallyPointInfo.getEnemyTemplateWeights().forEach((enemyTemplate, weight) -> totalWeight.set(totalWeight.get() + weight));
+    rallyPointInfo.getEnemyTemplateWeights()
+      .forEach((enemyTemplate, weight) -> totalWeight.set(totalWeight.get() + weight));
 
-    AtomicReference<Float> randValue = new AtomicReference<>(Math.abs(game.getGameState().getRandomGenerator().nextFloat()) * totalWeight.get());
+    AtomicReference<Float> randValue = new AtomicReference<>(
+      Math.abs(game.getGameState().getRandomGenerator().nextFloat()) * totalWeight.get());
 
     rallyPointInfo.getEnemyTemplateWeights().forEach((enemyTemplate, weight) -> {
       if (randomEnemyTemplate.get() == null && randValue.get() < weight) {

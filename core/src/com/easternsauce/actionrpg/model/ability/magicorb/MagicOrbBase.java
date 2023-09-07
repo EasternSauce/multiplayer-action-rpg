@@ -41,7 +41,11 @@ public abstract class MagicOrbBase extends Projectile {
 
     Creature thisCreature = game.getCreature(getParams().getCreatureId());
 
-    for (Creature creature : game.getActiveCreatures().values().stream().filter(targetCreature -> Objects.equals(targetCreature.getParams().getAreaId().getValue(), getParams().getAreaId().getValue()) && !targetCreature.getId().equals(getParams().getCreatureId()) && targetCreature.isAlive() && isTargetingAllowed(thisCreature, targetCreature) && targetCreature.getParams().getPos().distance(getParams().getPos()) < 20f).collect(Collectors.toSet())) {
+    for (Creature creature : game.getActiveCreatures().values().stream().filter(targetCreature ->
+      Objects.equals(targetCreature.getParams().getAreaId().getValue(), getParams().getAreaId().getValue()) &&
+        !targetCreature.getId().equals(getParams().getCreatureId()) && targetCreature.isAlive() &&
+        isTargetingAllowed(thisCreature, targetCreature) &&
+        targetCreature.getParams().getPos().distance(getParams().getPos()) < 20f).collect(Collectors.toSet())) {
       if (creature.getParams().getPos().distance(getParams().getPos()) < minimumDistance) {
         minimumDistanceCreature = creature;
         minimumDistance = creature.getParams().getPos().distance(getParams().getPos());

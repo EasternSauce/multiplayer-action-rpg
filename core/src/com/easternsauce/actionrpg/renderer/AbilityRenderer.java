@@ -50,7 +50,9 @@ public class AbilityRenderer {
     AbilityAnimationConfig animationConfig = ability.animationConfig();
 
     if (animationConfig == null) {
-      throw new RuntimeException("ability was not set up properly: config " + ability.getParams().getTextureName() + " not found for skill " + ability.getParams().getSkillType());
+      throw new RuntimeException(
+        "ability was not set up properly: config " + ability.getParams().getTextureName() + " not found for skill " +
+          ability.getParams().getSkillType());
     }
 
     channelTextureRegion = atlas.findRegion(animationConfig.getChannelSpriteType());
@@ -65,14 +67,16 @@ public class AbilityRenderer {
 
     TextureRegion[] channelFrames = new TextureRegion[animationConfig.getChannelFrameCount()];
     for (int i = 0; i < animationConfig.getChannelFrameCount(); i++) {
-      channelFrames[i] = new TextureRegion(channelTextureRegion, i * animationConfig.getTextureWidth(), 0, animationConfig.getTextureWidth(), animationConfig.getTextureHeight());
+      channelFrames[i] = new TextureRegion(channelTextureRegion, i * animationConfig.getTextureWidth(), 0,
+        animationConfig.getTextureWidth(), animationConfig.getTextureHeight());
     }
 
     channelAnimation = new Animation<>(animationConfig.getChannelFrameDuration(), channelFrames);
 
     TextureRegion[] activeFrames = new TextureRegion[animationConfig.getActiveFrameCount()];
     for (int i = 0; i < animationConfig.getActiveFrameCount(); i++) {
-      activeFrames[i] = new TextureRegion(activeTextureRegion, i * animationConfig.getTextureWidth(), 0, animationConfig.getTextureWidth(), animationConfig.getTextureHeight());
+      activeFrames[i] = new TextureRegion(activeTextureRegion, i * animationConfig.getTextureWidth(), 0,
+        animationConfig.getTextureWidth(), animationConfig.getTextureHeight());
     }
 
     activeAnimation = new Animation<>(animationConfig.getActiveFrameDuration(), activeFrames);
@@ -85,10 +89,12 @@ public class AbilityRenderer {
 
     if (ability != null) {
       if (ability.getParams().getChannelTime() > 0f && ability.getParams().getState() == AbilityState.CHANNEL) {
-        TextureRegion texture = getChannelAnimation().getKeyFrame(ability.getParams().getStateTimer().getTime(), ability.getParams().getChannelAnimationLooping());
+        TextureRegion texture = getChannelAnimation().getKeyFrame(ability.getParams().getStateTimer().getTime(),
+          ability.getParams().getChannelAnimationLooping());
         updateSprite(texture, game);
       } else if (ability.getParams().getActiveTime() > 0f && ability.getParams().getState() == AbilityState.ACTIVE) {
-        TextureRegion texture = getActiveAnimation().getKeyFrame(ability.getParams().getStateTimer().getTime(), ability.getParams().getActiveAnimationLooping());
+        TextureRegion texture = getActiveAnimation().getKeyFrame(ability.getParams().getStateTimer().getTime(),
+          ability.getParams().getActiveAnimationLooping());
         updateSprite(texture, game);
       }
     }
@@ -104,7 +110,8 @@ public class AbilityRenderer {
 
     sprite.setRegion(texture);
     if (ability.getParams().getOverrideScale() != null) {
-      sprite.setSize(ability.getParams().getWidth() * ability.getParams().getOverrideScale(), ability.getParams().getHeight() * ability.getParams().getOverrideScale());
+      sprite.setSize(ability.getParams().getWidth() * ability.getParams().getOverrideScale(),
+        ability.getParams().getHeight() * ability.getParams().getOverrideScale());
     } else {
       sprite.setSize(ability.getParams().getWidth(), ability.getParams().getHeight());
     }

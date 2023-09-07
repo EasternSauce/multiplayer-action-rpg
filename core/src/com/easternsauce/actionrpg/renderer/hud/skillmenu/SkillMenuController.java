@@ -30,7 +30,8 @@ public class SkillMenuController {
       Rect rect = SkillMenuConsts.getSkillPickerRect(i.get());
 
       if (rect.contains(x, y)) {
-        client.sendTCP(ActionPerformCommand.of(SkillPickerMenuSlotChangeAction.of(game.getGameState().getThisClientPlayerId(), skillType)));
+        client.sendTCP(ActionPerformCommand.of(
+          SkillPickerMenuSlotChangeAction.of(game.getGameState().getThisClientPlayerId(), skillType)));
         isSuccessful.set(true);
       }
 
@@ -38,7 +39,8 @@ public class SkillMenuController {
     });
 
     if (!isSuccessful.get()) {
-      client.sendTCP(ActionPerformCommand.of(SkillPickerMenuDeactivateAction.of(game.getGameState().getThisClientPlayerId())));
+      client.sendTCP(
+        ActionPerformCommand.of(SkillPickerMenuDeactivateAction.of(game.getGameState().getThisClientPlayerId())));
     }
 
     return isSuccessful.get();
@@ -52,7 +54,8 @@ public class SkillMenuController {
 
     SkillMenuConsts.slotRectangles.forEach((slotNum, rect) -> {
       if (rect.contains(x, y)) {
-        client.sendTCP(ActionPerformCommand.of(SkillPickerMenuActivateAction.of(game.getGameState().getThisClientPlayerId(), slotNum)));
+        client.sendTCP(ActionPerformCommand.of(
+          SkillPickerMenuActivateAction.of(game.getGameState().getThisClientPlayerId(), slotNum)));
         isSuccessful.set(true);
       }
     });

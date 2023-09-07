@@ -31,7 +31,8 @@ public class AreaGateBody {
     AreaId areaId = areaGate.getAreaId();
     world = game.getEntityManager().getGameEntityPhysics().getPhysicsWorlds().get(areaId);
 
-    b2body = B2BodyFactory.createAreaGateB2body(world, this, areaGate.getPos(), areaGate.getWidth(), areaGate.getHeight());
+    b2body = B2BodyFactory.createAreaGateB2body(world, this, areaGate.getPos(), areaGate.getWidth(),
+      areaGate.getHeight());
   }
 
   public void onRemove() {

@@ -45,7 +45,9 @@ public class Skill {
     Creature creature = game.getCreature(creatureId);
 
     AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
-    AbilityParams abilityParams = AbilityParams.of().setId(abilityId).setAreaId(creature.getParams().getAreaId()).setCreatureId(creatureId).setDirVector(dirVector).setVectorTowardsTarget(dirVector).setSkillStartPos(startingPos).setSkillType(skillType);
+    AbilityParams abilityParams = AbilityParams.of().setId(abilityId).setAreaId(creature.getParams().getAreaId())
+      .setCreatureId(creatureId).setDirVector(dirVector).setVectorTowardsTarget(dirVector).setSkillStartPos(startingPos)
+      .setSkillType(skillType);
 
     game.getGameState().accessAbilities().spawnAbility(startingAbilityType, abilityParams, game);
 
@@ -58,7 +60,8 @@ public class Skill {
 
     boolean allowedToPerformSkill = creature != null && creature.canPerformSkill(this, game);
     boolean skillNotOnLocalCooldown = performTimer.getTime() > cooldown;
-    boolean skillNotOnGlobalCooldown = !skillType.getDamaging() || creature != null && creature.getParams().getGlobalSkillPerformCooldownTimer().getTime() > Constants.GLOBAL_SKILL_PERFORM_COOLDOWN;
+    boolean skillNotOnGlobalCooldown = !skillType.getDamaging() || creature != null &&
+      creature.getParams().getGlobalSkillPerformCooldownTimer().getTime() > Constants.GLOBAL_SKILL_PERFORM_COOLDOWN;
     boolean creatureNotStunned = creature != null && !creature.isStunned(game);
 
     return allowedToPerformSkill && skillNotOnLocalCooldown && skillNotOnGlobalCooldown && creatureNotStunned;

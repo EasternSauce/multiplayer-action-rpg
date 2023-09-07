@@ -35,11 +35,13 @@ public class PotionMenuSwapSlotItemsAction extends GameStateAction {
       Creature player = game.getCreature(playerId);
 
       Item itemFrom = player.getParams().getPotionMenuItems().get(fromSlotIndex);
-      @SuppressWarnings("UnnecessaryLocalVariable") Item itemTo = player.getParams().getPotionMenuItems().get(toSlotIndex);
+      @SuppressWarnings("UnnecessaryLocalVariable") Item itemTo = player.getParams().getPotionMenuItems()
+        .get(toSlotIndex);
 
       @SuppressWarnings("UnnecessaryLocalVariable") Item temp = itemTo;
 
-      boolean canStackItems = itemFrom != null && temp != null && itemFrom.getTemplate().getStackable() && temp.getTemplate().getStackable() && itemFrom.getTemplate().getId().equals(temp.getTemplate().getId());
+      boolean canStackItems = itemFrom != null && temp != null && itemFrom.getTemplate().getStackable() &&
+        temp.getTemplate().getStackable() && itemFrom.getTemplate().getId().equals(temp.getTemplate().getId());
 
       if (canStackItems) {
         player.getParams().getPotionMenuItems().remove(fromSlotIndex);

@@ -22,7 +22,9 @@ public class ShieldGuard extends AttachedAbility {
 
     ShieldGuard ability = ShieldGuard.of();
 
-    ability.params = abilityParams.setWidth(2f).setHeight(2f).setChannelTime(0f).setActiveTime(3f).setStartingRange(1.2f).setTextureName("shield").setBaseDamage(0f).setChannelAnimationLooping(false).setActiveAnimationLooping(false).setFlip(ShieldGuard.calculateFlip(flipValue));
+    ability.params = abilityParams.setWidth(2f).setHeight(2f).setChannelTime(0f).setActiveTime(3f)
+      .setStartingRange(1.2f).setTextureName("shield").setBaseDamage(0f).setChannelAnimationLooping(false)
+      .setActiveAnimationLooping(false).setFlip(ShieldGuard.calculateFlip(flipValue));
 
     return ability;
   }
@@ -71,7 +73,8 @@ public class ShieldGuard extends AttachedAbility {
       Creature creature = game.getCreature(getParams().getCreatureId());
       Creature abilityOwner = game.getCreature(otherAbility.getParams().getCreatureId());
 
-      if ((creature instanceof Player && abilityOwner instanceof Enemy || creature instanceof Enemy && abilityOwner instanceof Player) && otherAbility.isRanged()) {
+      if ((creature instanceof Player && abilityOwner instanceof Enemy ||
+        creature instanceof Enemy && abilityOwner instanceof Player) && otherAbility.isRanged()) {
         if (otherAbility.isBlockable()) {
           otherAbility.getParams().setMarkedAsShielded(true);
         }

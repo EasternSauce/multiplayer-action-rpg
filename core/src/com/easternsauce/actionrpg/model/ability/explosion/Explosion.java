@@ -17,7 +17,9 @@ public class Explosion extends Ability {
 
   public static Explosion of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
     Explosion ability = Explosion.of();
-    ability.params = abilityParams.setWidth(9f).setHeight(9f).setChannelTime(0f).setActiveTime(0.35f).setTextureName("explosion").setBaseDamage(25f).setChannelAnimationLooping(false).setActiveAnimationLooping(false).setAttackWithoutMoving(true).setCreaturesAlreadyHit(new ConcurrentSkipListMap<>());
+    ability.params = abilityParams.setWidth(9f).setHeight(9f).setChannelTime(0f).setActiveTime(0.35f)
+      .setTextureName("explosion").setBaseDamage(25f).setChannelAnimationLooping(false).setActiveAnimationLooping(false)
+      .setAttackWithoutMoving(true).setCreaturesAlreadyHit(new ConcurrentSkipListMap<>());
 
     return ability;
   }

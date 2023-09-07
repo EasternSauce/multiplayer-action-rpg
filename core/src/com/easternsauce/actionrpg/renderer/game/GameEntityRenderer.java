@@ -103,7 +103,8 @@ public class GameEntityRenderer {
   }
 
   private boolean canCreatureBeRendered(Creature creature, CoreGame game) {
-    return creatureRenderers.containsKey(creature.getId()) && isCreatureInCurrentlyVisibleArea(creature, game) && !creature.isEffectActive(CreatureEffect.INVISIBILITY, game);
+    return creatureRenderers.containsKey(creature.getId()) && isCreatureInCurrentlyVisibleArea(creature, game) &&
+      !creature.isEffectActive(CreatureEffect.INVISIBILITY, game);
   }
 
   @SuppressWarnings("unused")
@@ -173,7 +174,9 @@ public class GameEntityRenderer {
   }
 
   public void renderPlayerNames(RenderingLayer worldTextRenderingLayer, CoreGame game) {
-    game.getActiveCreatures().values().stream().filter(creature -> creature.isAlive() && canCreatureBeRendered(creature, game) && creature instanceof Player).forEach(creature -> creatureRenderers.get(creature.getId()).renderCreatureName(worldTextRenderingLayer, game));
+    game.getActiveCreatures().values().stream()
+      .filter(creature -> creature.isAlive() && canCreatureBeRendered(creature, game) && creature instanceof Player)
+      .forEach(creature -> creatureRenderers.get(creature.getId()).renderCreatureName(worldTextRenderingLayer, game));
   }
 
   public TiledMap loadMap(String filePath) {
@@ -181,12 +184,16 @@ public class GameEntityRenderer {
   }
 
   public void updateDamageNumbers(CoreGame game) {
-    Set<DamageNumber> toRemove = damageNumbers.stream().filter(damageNumber -> damageNumber.getDamageTime() + Constants.DAMAGE_NUMBER_SHOW_DURATION < game.getGameState().getTime()).collect(Collectors.toSet());
+    Set<DamageNumber> toRemove = damageNumbers.stream().filter(
+      damageNumber -> damageNumber.getDamageTime() + Constants.DAMAGE_NUMBER_SHOW_DURATION <
+        game.getGameState().getTime()).collect(Collectors.toSet());
     damageNumbers.removeAll(toRemove);
   }
 
   public void updateCreatureHitAnimations(CoreGame game) {
-    Set<CreatureHitAnimation> toRemove = creatureHitAnimations.stream().filter(creatureHitAnimation -> creatureHitAnimation.getHitTime() + Constants.DAMAGE_ANIMATION_DURATION < game.getGameState().getTime()).collect(Collectors.toSet());
+    Set<CreatureHitAnimation> toRemove = creatureHitAnimations.stream().filter(
+      creatureHitAnimation -> creatureHitAnimation.getHitTime() + Constants.DAMAGE_ANIMATION_DURATION <
+        game.getGameState().getTime()).collect(Collectors.toSet());
     creatureHitAnimations.removeAll(toRemove);
   }
 
@@ -196,14 +203,18 @@ public class GameEntityRenderer {
     float xNoise = ((float) Math.random() * 2f - 1f) * 0.7f;
     float yNoise = ((float) Math.random() * 2f - 1f) * 0.7f;
 
-    damageNumbers.add(DamageNumber.of(Vector2.of(pos.getX() + xNoise, pos.getY() + yNoise), areaId, actualDamageTaken, currentTime, Math.abs((float) Math.random()) * 0.3f + 0.7f, Math.abs((float) Math.random()) * 0.6f, Math.abs((float) Math.random()) * 0.6f));
+    damageNumbers.add(
+      DamageNumber.of(Vector2.of(pos.getX() + xNoise, pos.getY() + yNoise), areaId, actualDamageTaken, currentTime,
+        Math.abs((float) Math.random()) * 0.3f + 0.7f, Math.abs((float) Math.random()) * 0.6f,
+        Math.abs((float) Math.random()) * 0.6f));
 
   }
 
   public void startCreatureHitAnimation(CreatureId creatureId, Vector2 vectorTowardsContactPoint, AreaId areaId, CoreGame game) {
     Float currentTime = game.getGameState().getTime();
 
-    CreatureHitAnimation animation = CreatureHitAnimation.of(creatureId, vectorTowardsContactPoint, areaId, currentTime);
+    CreatureHitAnimation animation = CreatureHitAnimation.of(creatureId, vectorTowardsContactPoint, areaId,
+      currentTime);
     creatureHitAnimations.add(animation);
   }
 }

@@ -18,7 +18,9 @@ public class MeteorTarget extends Ability {
     Creature creature = game.getCreature(abilityParams.getCreatureId());
 
     MeteorTarget ability = MeteorTarget.of();
-    ability.params = abilityParams.setWidth(3f).setHeight(3f).setChannelTime(0f).setActiveTime(0.8f).setTextureName("meteor_aim").setBaseDamage(0f).setChannelAnimationLooping(false).setActiveAnimationLooping(false).setPos(creature.getParams().getPos());
+    ability.params = abilityParams.setWidth(3f).setHeight(3f).setChannelTime(0f).setActiveTime(0.8f)
+      .setTextureName("meteor_aim").setBaseDamage(0f).setChannelAnimationLooping(false).setActiveAnimationLooping(false)
+      .setPos(creature.getParams().getPos());
 
     return ability;
   }

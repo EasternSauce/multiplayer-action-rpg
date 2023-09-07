@@ -23,7 +23,9 @@ public class PhysicsEventQueueProcessor {
 
         Creature destinationCreature = game.getCreature(event.getDestinationCreatureId());
 
-        if (game.getGameState().getCreaturesToUpdate(game).contains(event.getDestinationCreatureId()) && game.getAbilitiesToUpdate().contains(event.getAbilityId()) && !destinationCreature.isEffectActive(CreatureEffect.NO_COLLIDE, game)) {
+        if (game.getGameState().getCreaturesToUpdate(game).contains(event.getDestinationCreatureId()) &&
+          game.getAbilitiesToUpdate().contains(event.getAbilityId()) &&
+          !destinationCreature.isEffectActive(CreatureEffect.NO_COLLIDE, game)) {
           if (event.getSourceCreatureId().equals(event.getDestinationCreatureId())) {
             Ability ability = game.getAbility(event.getAbilityId());
             ability.onSelfCreatureHit(game);
@@ -77,7 +79,8 @@ public class PhysicsEventQueueProcessor {
 
         Creature creature = game.getCreature(event.getCreatureId());
 
-        if (creature instanceof Player && creature.getParams().getMovementParams().getStillInsideGateAfterTeleport() && creature.getParams().getMovementParams().getAreaWhenEnteredGate().equals(creature.getParams().getAreaId())) {
+        if (creature instanceof Player && creature.getParams().getMovementParams().getStillInsideGateAfterTeleport() &&
+          creature.getParams().getMovementParams().getAreaWhenEnteredGate().equals(creature.getParams().getAreaId())) {
 
           creature.getParams().getMovementParams().setStillInsideGateAfterTeleport(false);
 
@@ -114,9 +117,12 @@ public class PhysicsEventQueueProcessor {
     if (ability != null && destinationCreature.isAlive()) {
       Vector2 contactPoint = calculateContactPoint(destinationCreature, ability);
 
-      if ((sourceCreature instanceof Player || destinationCreature instanceof Player) && !ability.getParams().getCreaturesAlreadyHit().containsKey(event.getDestinationCreatureId())) {
+      if ((sourceCreature instanceof Player || destinationCreature instanceof Player) &&
+        !ability.getParams().getCreaturesAlreadyHit().containsKey(event.getDestinationCreatureId())) {
 
-        game.getGameState().accessAbilities().onAbilityHitsCreature(event.getSourceCreatureId(), event.getDestinationCreatureId(), ability.getParams().getId(), contactPoint, game);
+        game.getGameState().accessAbilities()
+          .onAbilityHitsCreature(event.getSourceCreatureId(), event.getDestinationCreatureId(),
+            ability.getParams().getId(), contactPoint, game);
       }
 
     }

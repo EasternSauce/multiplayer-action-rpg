@@ -27,10 +27,13 @@ public class Meteor extends Projectile {
 
     Meteor ability = Meteor.of();
 
-    ability.destinationPos = Meteor.calculatePos(creature.getParams().getPos().add(abilityParams.getDirVector()), creature.getParams().getPos(), creature.getParams().getAreaId(), game);
+    ability.destinationPos = Meteor.calculatePos(creature.getParams().getPos().add(abilityParams.getDirVector()),
+      creature.getParams().getPos(), creature.getParams().getAreaId(), game);
     ability.startingPos = Vector2.of(ability.destinationPos.getX() + 12f, ability.destinationPos.getY() + 12f);
 
-    ability.params = abilityParams.setWidth(2.474f).setHeight(2f).setChannelTime(0f).setActiveTime(5f).setTextureName("meteor").setBaseDamage(0f).setChannelAnimationLooping(false).setActiveAnimationLooping(false).setPos(ability.startingPos).setDontOverridePos(true).setDirVector(Vector2.of(-1, -1));
+    ability.params = abilityParams.setWidth(2.474f).setHeight(2f).setChannelTime(0f).setActiveTime(5f)
+      .setTextureName("meteor").setBaseDamage(0f).setChannelAnimationLooping(false).setActiveAnimationLooping(false)
+      .setPos(ability.startingPos).setDontOverridePos(true).setDirVector(Vector2.of(-1, -1));
 
     return ability;
   }
@@ -70,7 +73,8 @@ public class Meteor extends Projectile {
     creature.applyEffect(CreatureEffect.SELF_STUN, 0.2f, game);
     creature.stopMoving();
 
-    game.chainAnotherAbility(this, AbilityType.METEOR_TARGET, getParams().getDirVector(), ChainAbilityParams.of().setChainToPos(destinationPos));
+    game.chainAnotherAbility(this, AbilityType.METEOR_TARGET, getParams().getDirVector(),
+      ChainAbilityParams.of().setChainToPos(destinationPos));
   }
 
   @Override
@@ -92,7 +96,9 @@ public class Meteor extends Projectile {
 
   @Override
   protected void onCompleted(CoreGame game) {
-    game.chainAnotherAbility(this, AbilityType.FIREBALL_EXPLOSION, getParams().getDirVector(), ChainAbilityParams.of().setChainToPos(getParams().getPos()).setOverrideStunDuration(0.05f).setOverrideScale(0.8f));
+    game.chainAnotherAbility(this, AbilityType.FIREBALL_EXPLOSION, getParams().getDirVector(),
+      ChainAbilityParams.of().setChainToPos(getParams().getPos()).setOverrideStunDuration(0.05f)
+        .setOverrideScale(0.8f));
   }
 
   @Override

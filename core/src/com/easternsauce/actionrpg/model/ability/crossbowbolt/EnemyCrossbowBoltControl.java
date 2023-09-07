@@ -36,10 +36,12 @@ public class EnemyCrossbowBoltControl extends CrossbowBoltControlBase {
 
     Creature creature = game.getCreature(getParams().getCreatureId());
 
-    if (creature != null && currentBoltToFire < boltFireTimes.length && getParams().getStateTimer().getTime() > boltFireTimes[currentBoltToFire]) {
+    if (creature != null && currentBoltToFire < boltFireTimes.length &&
+      getParams().getStateTimer().getTime() > boltFireTimes[currentBoltToFire]) {
       Vector2 aimDirection = creature.getParams().getMovementParams().getAimDirection();
 
-      float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(currentDirVector.angleDeg(), aimDirection.angleDeg());
+      float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(currentDirVector.angleDeg(),
+        aimDirection.angleDeg());
 
       float turningSpeed = 1.5f;
       float incrementFactor = 330f;
@@ -53,7 +55,8 @@ public class EnemyCrossbowBoltControl extends CrossbowBoltControlBase {
       }
       float increment = baseIncrement * delta;
 
-      Vector2 chainedDirVector = calculateShootingVectorForNextBolt(currentDirVector, aimDirection, shortestAngleRotation, increment, game);
+      Vector2 chainedDirVector = calculateShootingVectorForNextBolt(currentDirVector, aimDirection,
+        shortestAngleRotation, increment, game);
 
       game.chainAnotherAbility(this, AbilityType.CROSSBOW_BOLT, chainedDirVector, ChainAbilityParams.of());
 

@@ -20,7 +20,9 @@ public class Boomerang extends Projectile {
 
   public static Boomerang of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
     Boomerang ability = Boomerang.of();
-    ability.params = abilityParams.setWidth(1.3f).setHeight(1.3f).setChannelTime(0f).setActiveTime(10f).setStartingRange(0.5f).setTextureName("boomerang").setBaseDamage(22f).setChannelAnimationLooping(true).setActiveAnimationLooping(true).setSpeed(22f);
+    ability.params = abilityParams.setWidth(1.3f).setHeight(1.3f).setChannelTime(0f).setActiveTime(10f)
+      .setStartingRange(0.5f).setTextureName("boomerang").setBaseDamage(22f).setChannelAnimationLooping(true)
+      .setActiveAnimationLooping(true).setSpeed(22f);
 
     return ability;
   }

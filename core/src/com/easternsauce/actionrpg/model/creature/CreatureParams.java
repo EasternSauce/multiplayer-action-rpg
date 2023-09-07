@@ -104,12 +104,14 @@ public class CreatureParams implements EntityParams {
     params.initialAreaId = areaId;
     params.textureName = textureName;
 
-    Map<SkillType, Skill> allPossibleSkills = Arrays.stream(SkillType.values()).collect(Collectors.toMap(Function.identity(), skillType -> Skill.of(skillType, creatureId)));
+    Map<SkillType, Skill> allPossibleSkills = Arrays.stream(SkillType.values())
+      .collect(Collectors.toMap(Function.identity(), skillType -> Skill.of(skillType, creatureId)));
 
     // TODO: should we restrict which creature can perform which skill?
     params.skills = new ConcurrentSkipListMap<>(allPossibleSkills);
 
-    Map<CreatureEffect, CreatureEffectState> allPossibleEffects = Arrays.stream(CreatureEffect.values()).collect(Collectors.toMap(effect -> effect, effect -> CreatureEffectState.of()));
+    Map<CreatureEffect, CreatureEffectState> allPossibleEffects = Arrays.stream(CreatureEffect.values())
+      .collect(Collectors.toMap(effect -> effect, effect -> CreatureEffectState.of()));
 
     params.getEffectParams().setEffects(new ConcurrentSkipListMap<>(allPossibleEffects));
 
@@ -126,9 +128,12 @@ public class CreatureParams implements EntityParams {
 
     Map<Integer, Item> inventoryItems = new ConcurrentSkipListMap<>();
     inventoryItems.put(2, Item.of().setTemplate(ItemTemplate.templates.get("lifePotion")));
-    inventoryItems.put(7, Item.of().setTemplate(ItemTemplate.templates.get("hideGloves")).setGrantedSkills(Stream.of(new AbstractMap.SimpleEntry<>(SkillType.METEOR, 1)).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue))));
+    inventoryItems.put(7, Item.of().setTemplate(ItemTemplate.templates.get("hideGloves")).setGrantedSkills(
+      Stream.of(new AbstractMap.SimpleEntry<>(SkillType.METEOR, 1))
+        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue))));
     // TODO
 
-    return produceCreatureParams(creatureId, areaId, pos, textureName, rngSeed).setPotionMenuItems(potionMenuItems).setInventoryItems(inventoryItems);
+    return produceCreatureParams(creatureId, areaId, pos, textureName, rngSeed).setPotionMenuItems(potionMenuItems)
+      .setInventoryItems(inventoryItems);
   }
 }

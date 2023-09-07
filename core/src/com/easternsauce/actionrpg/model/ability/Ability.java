@@ -50,7 +50,8 @@ public abstract class Ability implements Entity {
     } else if (state == AbilityState.ACTIVE) {
       onActiveUpdate(delta, game);
 
-      if (!getParams().getDelayedActionCompleted() && getParams().getDelayedActionTime() != null && getParams().getStateTimer().getTime() > getParams().getDelayedActionTime()) {
+      if (!getParams().getDelayedActionCompleted() && getParams().getDelayedActionTime() != null &&
+        getParams().getStateTimer().getTime() > getParams().getDelayedActionTime()) {
         getParams().setDelayedActionCompleted(true);
         onDelayedAction(game);
       }

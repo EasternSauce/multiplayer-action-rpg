@@ -14,10 +14,14 @@ public class EnemyTeleportDestination extends TeleportDestinationBase {
   public static EnemyTeleportDestination of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
     Creature creature = game.getCreature(abilityParams.getCreatureId());
 
-    Vector2 teleportPos = EnemyTeleportDestination.calculatePos(creature.getParams().getPos().add(abilityParams.getDirVector()), creature.getParams().getPos(), creature.getParams().getAreaId(), game);
+    Vector2 teleportPos = EnemyTeleportDestination.calculatePos(
+      creature.getParams().getPos().add(abilityParams.getDirVector()), creature.getParams().getPos(),
+      creature.getParams().getAreaId(), game);
 
     EnemyTeleportDestination ability = EnemyTeleportDestination.of();
-    ability.params = abilityParams.setWidth(4.5f).setHeight(4.5f).setChannelTime(0f).setActiveTime(1f).setTextureName("warp").setBaseDamage(0f).setChannelAnimationLooping(false).setActiveAnimationLooping(false).setPos(teleportPos).setChainToPos(teleportPos);
+    ability.params = abilityParams.setWidth(4.5f).setHeight(4.5f).setChannelTime(0f).setActiveTime(1f)
+      .setTextureName("warp").setBaseDamage(0f).setChannelAnimationLooping(false).setActiveAnimationLooping(false)
+      .setPos(teleportPos).setChainToPos(teleportPos);
 
     return ability;
   }

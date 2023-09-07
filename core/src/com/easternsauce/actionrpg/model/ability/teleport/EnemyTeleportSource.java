@@ -21,7 +21,9 @@ public class EnemyTeleportSource extends Ability {
     Creature creature = game.getCreature(abilityParams.getCreatureId());
 
     EnemyTeleportSource ability = EnemyTeleportSource.of();
-    ability.params = abilityParams.setWidth(4.5f).setHeight(4.5f).setChannelTime(0f).setActiveTime(1f).setTextureName("warp").setBaseDamage(0f).setChannelAnimationLooping(false).setActiveAnimationLooping(false).setPos(creature.getParams().getPos()).setDelayedActionTime(0.3f);
+    ability.params = abilityParams.setWidth(4.5f).setHeight(4.5f).setChannelTime(0f).setActiveTime(1f)
+      .setTextureName("warp").setBaseDamage(0f).setChannelAnimationLooping(false).setActiveAnimationLooping(false)
+      .setPos(creature.getParams().getPos()).setDelayedActionTime(0.3f);
 
     return ability;
   }
@@ -50,7 +52,8 @@ public class EnemyTeleportSource extends Ability {
 
   @Override
   public void onDelayedAction(CoreGame game) {
-    game.chainAnotherAbility(this, AbilityType.ENEMY_TELEPORT_DESTINATION, getParams().getDirVector(), ChainAbilityParams.of().setChainToPos(getParams().getPos()));
+    game.chainAnotherAbility(this, AbilityType.ENEMY_TELEPORT_DESTINATION, getParams().getDirVector(),
+      ChainAbilityParams.of().setChainToPos(getParams().getPos()));
   }
 
   @Override

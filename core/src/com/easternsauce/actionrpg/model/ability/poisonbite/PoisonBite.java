@@ -22,7 +22,9 @@ public class PoisonBite extends AttachedAbility {
 
     PoisonBite ability = PoisonBite.of();
 
-    ability.params = abilityParams.setWidth(1.3f).setHeight(1.3f).setChannelTime(0f).setActiveTime(0.18f).setStartingRange(1.8f).setTextureName("teeth").setBaseDamage(30f).setChannelAnimationLooping(false).setActiveAnimationLooping(false).setFlip(PoisonBite.calculateFlip(flipValue));
+    ability.params = abilityParams.setWidth(1.3f).setHeight(1.3f).setChannelTime(0f).setActiveTime(0.18f)
+      .setStartingRange(1.8f).setTextureName("teeth").setBaseDamage(30f).setChannelAnimationLooping(false)
+      .setActiveAnimationLooping(false).setFlip(PoisonBite.calculateFlip(flipValue));
 
     return ability;
   }

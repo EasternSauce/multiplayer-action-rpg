@@ -18,7 +18,9 @@ public class TunnelDigSplash extends Ability {
 
   public static TunnelDigSplash of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
     TunnelDigSplash ability = TunnelDigSplash.of();
-    ability.params = abilityParams.setWidth(2.5f).setHeight(2.5f).setChannelTime(0f).setActiveTime(0.5f).setTextureName("dig").setBaseDamage(0f).setChannelAnimationLooping(false).setActiveAnimationLooping(false).setDelayedActionTime(0.3f);
+    ability.params = abilityParams.setWidth(2.5f).setHeight(2.5f).setChannelTime(0f).setActiveTime(0.5f)
+      .setTextureName("dig").setBaseDamage(0f).setChannelAnimationLooping(false).setActiveAnimationLooping(false)
+      .setDelayedActionTime(0.3f);
 
     return ability;
   }
@@ -39,7 +41,8 @@ public class TunnelDigSplash extends Ability {
     creature.applyEffect(CreatureEffect.SELF_STUN, 0.3f, game);
     creature.applyEffect(CreatureEffect.INVISIBILITY, 0.3f, game);
     creature.applyEffect(CreatureEffect.NO_COLLIDE, 0.3f, game);
-    game.addTeleportEvent(TeleportEvent.of(getParams().getCreatureId(), getParams().getPos(), getParams().getAreaId(), getParams().getAreaId(), false));
+    game.addTeleportEvent(TeleportEvent.of(getParams().getCreatureId(), getParams().getPos(), getParams().getAreaId(),
+      getParams().getAreaId(), false));
   }
 
   @Override

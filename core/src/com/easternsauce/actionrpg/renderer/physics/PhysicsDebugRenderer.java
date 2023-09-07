@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 public class PhysicsDebugRenderer {
   public void render(CoreGame game) {
     if (game.isDebugEnabled()) {
-      game.getEntityManager().getGameEntityPhysics().getDebugRenderer().render(game.getEntityManager().getGameEntityPhysics().getPhysicsWorlds().get(game.getCurrentAreaId()).getB2world(), game.getViewportsHandler().getWorldCameraCombinedProjectionMatrix());
+      game.getEntityManager().getGameEntityPhysics().getDebugRenderer().render(
+        game.getEntityManager().getGameEntityPhysics().getPhysicsWorlds().get(game.getCurrentAreaId()).getB2world(),
+        game.getViewportsHandler().getWorldCameraCombinedProjectionMatrix());
     }
   }
 }

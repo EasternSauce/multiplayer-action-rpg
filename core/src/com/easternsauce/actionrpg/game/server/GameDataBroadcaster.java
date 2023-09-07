@@ -33,7 +33,8 @@ public class GameDataBroadcaster {
   }
 
   public void broadcastToConnection(Connection connection, CoreGameServer game) {
-    if (!game.getClientPlayers().containsKey(connection.getID()) || !game.getAllCreatures().containsKey(game.getClientPlayers().get(connection.getID()))) {
+    if (!game.getClientPlayers().containsKey(connection.getID()) ||
+      !game.getAllCreatures().containsKey(game.getClientPlayers().get(connection.getID()))) {
       game.getGameState().sendStubGameData(connection);
     } else {
       game.getGameState().sendGameDataPersonalizedForPlayer(connection, game);

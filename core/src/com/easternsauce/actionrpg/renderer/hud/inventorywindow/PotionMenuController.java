@@ -21,7 +21,8 @@ public class PotionMenuController {
   }
 
   public void sendUseItemAction(Integer potionMenuSlotClicked, Client client, CoreGame game) {
-    GameStateAction action = PotionMenuItemUseAction.of(game.getGameState().getThisClientPlayerId(), potionMenuSlotClicked);
+    GameStateAction action = PotionMenuItemUseAction.of(game.getGameState().getThisClientPlayerId(),
+      potionMenuSlotClicked);
 
     client.sendTCP(ActionPerformCommand.of(action));
   }

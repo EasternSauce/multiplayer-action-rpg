@@ -13,7 +13,10 @@ public class EnemyPoisonousMixture extends PoisonousMixtureBase {
     Creature creature = game.getCreature(abilityParams.getCreatureId());
 
     EnemyPoisonousMixture ability = EnemyPoisonousMixture.of();
-    ability.params = abilityParams.setWidth(1.5f).setHeight(1.5f).setChannelTime(0f).setActiveTime(30f).setTextureName("green_potion_throw").setBaseDamage(22f).setChannelAnimationLooping(false).setActiveAnimationLooping(true).setDelayedActionTime(0.001f).setPos(creature.getParams().getPos()).setMaximumRange(18f);
+    ability.params = abilityParams.setWidth(1.5f).setHeight(1.5f).setChannelTime(0f).setActiveTime(30f)
+      .setTextureName("green_potion_throw").setBaseDamage(22f).setChannelAnimationLooping(false)
+      .setActiveAnimationLooping(true).setDelayedActionTime(0.001f).setPos(creature.getParams().getPos())
+      .setMaximumRange(18f);
 
     return ability;
   }

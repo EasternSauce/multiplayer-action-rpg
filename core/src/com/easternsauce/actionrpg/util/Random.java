@@ -85,7 +85,9 @@ public abstract class Random implements java.io.Serializable {
    * @serialField haveNextNextGaussian boolean
    * nextNextGaussian is valid
    */
-  private static final ObjectStreamField[] serialPersistentFields = {new ObjectStreamField("seed", Long.TYPE), new ObjectStreamField("nextNextGaussian", Double.TYPE), new ObjectStreamField("haveNextNextGaussian", Boolean.TYPE)};
+  private static final ObjectStreamField[] serialPersistentFields = {new ObjectStreamField("seed",
+    Long.TYPE), new ObjectStreamField("nextNextGaussian", Double.TYPE), new ObjectStreamField("haveNextNextGaussian",
+    Boolean.TYPE)};
   /**
    * The internal state associated with this pseudorandom number generator.
    * (The specs for the methods in this class describe the ongoing

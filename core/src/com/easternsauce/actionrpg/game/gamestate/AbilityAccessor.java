@@ -28,7 +28,9 @@ public class AbilityAccessor {
   private GameStateDataHolder dataHolder;
 
   public Ability getAbilityBySkillType(CreatureId creatureId, SkillType skillType) {
-    Optional<Ability> first = getData().getAbilities().values().stream().filter(ability -> ability.getParams().getCreatureId().equals(creatureId) && ability.getParams().getSkillType() == skillType).findFirst();
+    Optional<Ability> first = getData().getAbilities().values().stream().filter(
+      ability -> ability.getParams().getCreatureId().equals(creatureId) &&
+        ability.getParams().getSkillType() == skillType).findFirst();
 
     return first.orElse(null);
   }
@@ -57,11 +59,23 @@ public class AbilityAccessor {
     if (creature != null && (creature.isAlive() || chainFromAbility.isAbleToChainAfterCreatureDeath())) {
       AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
 
-      Map<CreatureId, Float> creaturesAlreadyHit = new ConcurrentSkipListMap<>(chainFromAbility.getParams().getCreaturesAlreadyHit());
+      Map<CreatureId, Float> creaturesAlreadyHit = new ConcurrentSkipListMap<>(
+        chainFromAbility.getParams().getCreaturesAlreadyHit());
 
       Vector2 chainFromPos = chainFromAbility.getParams().getPos();
 
-      AbilityParams abilityParams = AbilityParams.of().setId(abilityId).setAreaId(chainFromAbility.getParams().getAreaId()).setCreatureId(chainFromAbility.getParams().getCreatureId()).setCreaturesAlreadyHit(creaturesAlreadyHit).setChainFromPos(chainFromPos).setChainToPos(chainAbilityParams.getChainToPos()).setDirVector(dirVector).setVectorTowardsTarget(dirVector).setOverrideScale(chainAbilityParams.getOverrideScale()).setOverrideDuration(chainAbilityParams.getOverrideDuration()).setOverrideDamage(chainAbilityParams.getOverrideDamage()).setOverrideMaximumRange(chainAbilityParams.getOverrideMaximumRange()).setOverrideSpeed(chainAbilityParams.getOverrideSpeed()).setOverrideStunDuration(chainAbilityParams.getOverrideStunDuration()).setSkillType(chainFromAbility.getParams().getSkillType()).setSkillStartPos(chainFromPos).setDamagingHitCreaturesHitCounter(chainFromAbility.getParams().getDamagingHitCreaturesHitCounter());
+      AbilityParams abilityParams = AbilityParams.of().setId(abilityId)
+        .setAreaId(chainFromAbility.getParams().getAreaId()).setCreatureId(chainFromAbility.getParams().getCreatureId())
+        .setCreaturesAlreadyHit(creaturesAlreadyHit).setChainFromPos(chainFromPos)
+        .setChainToPos(chainAbilityParams.getChainToPos()).setDirVector(dirVector).setVectorTowardsTarget(dirVector)
+        .setOverrideScale(chainAbilityParams.getOverrideScale())
+        .setOverrideDuration(chainAbilityParams.getOverrideDuration())
+        .setOverrideDamage(chainAbilityParams.getOverrideDamage())
+        .setOverrideMaximumRange(chainAbilityParams.getOverrideMaximumRange())
+        .setOverrideSpeed(chainAbilityParams.getOverrideSpeed())
+        .setOverrideStunDuration(chainAbilityParams.getOverrideStunDuration())
+        .setSkillType(chainFromAbility.getParams().getSkillType()).setSkillStartPos(chainFromPos)
+        .setDamagingHitCreaturesHitCounter(chainFromAbility.getParams().getDamagingHitCreaturesHitCounter());
 
       spawnAbility(abilityType, abilityParams, game);
     }
@@ -96,7 +110,8 @@ public class AbilityAccessor {
 
     ability.getParams().getDamagingHitCreaturesHitCounter().incrementForCreature(targetId);
 
-    CreatureHitByAbilityAction action = CreatureHitByAbilityAction.of(attackerId, targetId, ability, ability.getParams().getDamagingHitCreaturesHitCounter().getCount(targetId), contactPoint);
+    CreatureHitByAbilityAction action = CreatureHitByAbilityAction.of(attackerId, targetId, ability,
+      ability.getParams().getDamagingHitCreaturesHitCounter().getCount(targetId), contactPoint);
     gameState.scheduleServerSideAction(action);
   }
 

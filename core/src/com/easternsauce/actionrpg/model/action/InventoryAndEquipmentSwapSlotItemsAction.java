@@ -51,7 +51,8 @@ public class InventoryAndEquipmentSwapSlotItemsAction extends GameStateAction {
   }
 
   private boolean checkInventoryItemSlotTypeMatchesEquipmentSlot(Item inventoryItem) {
-    return inventoryItem == null || inventoryItem.getTemplate().getEquipmentSlotType() == EquipmentSlotType.equipmentSlotTypes.get(equipmentIndex);
+    return inventoryItem == null ||
+      inventoryItem.getTemplate().getEquipmentSlotType() == EquipmentSlotType.equipmentSlotTypes.get(equipmentIndex);
   }
 
   private void handleSwapInInventory(Creature player, Item equipmentItem) {

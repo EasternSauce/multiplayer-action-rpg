@@ -19,7 +19,10 @@ public class TunnelDigExplosion extends Ability {
   public static TunnelDigExplosion of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
     TunnelDigExplosion ability = TunnelDigExplosion.of();
 
-    ability.params = abilityParams.setWidth(10f).setHeight(10f).setChannelTime(0.17f).setActiveTime(0.306f).setBaseDamage(45f).setTextureName("holy_explosion").setChannelAnimationLooping(false).setActiveAnimationLooping(false).setAttackWithoutMoving(true).setCreaturesAlreadyHit(new ConcurrentSkipListMap<>());
+    ability.params = abilityParams.setWidth(10f).setHeight(10f).setChannelTime(0.17f).setActiveTime(0.306f)
+      .setBaseDamage(45f).setTextureName("holy_explosion").setChannelAnimationLooping(false)
+      .setActiveAnimationLooping(false).setAttackWithoutMoving(true)
+      .setCreaturesAlreadyHit(new ConcurrentSkipListMap<>());
 
     return ability;
   }

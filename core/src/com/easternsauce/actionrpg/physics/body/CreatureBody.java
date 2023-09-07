@@ -52,8 +52,10 @@ public class CreatureBody {
         if (creature.getParams().getMovementParams().getMoving()) {
           Vector2 normalizedMovingVector;
 
-          if (creature.isEffectActive(CreatureEffect.SLOW, game) || creature.isEffectActive(CreatureEffect.SELF_SLOW, game)) {
-            normalizedMovingVector = creature.getParams().getMovementParams().getMovingVector().normalized().multiplyBy(1f - creature.getParams().getEffectParams().getCurrentSlowMagnitude());
+          if (creature.isEffectActive(CreatureEffect.SLOW, game) ||
+            creature.isEffectActive(CreatureEffect.SELF_SLOW, game)) {
+            normalizedMovingVector = creature.getParams().getMovementParams().getMovingVector().normalized()
+              .multiplyBy(1f - creature.getParams().getEffectParams().getCurrentSlowMagnitude());
           } else {
             normalizedMovingVector = creature.getParams().getMovementParams().getMovingVector().normalized();
           }

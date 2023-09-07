@@ -17,7 +17,14 @@ public class LightningChain extends Ability {
 
   public static LightningChain of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
     LightningChain ability = LightningChain.of();
-    ability.params = abilityParams.setWidth(1f).setHeight(abilityParams.getChainFromPos().distance(abilityParams.getChainToPos())).setChannelTime(0f).setActiveTime(0.4f).setTextureName("lightning_chain").setBaseDamage(0f).setActiveAnimationLooping(true).setAttackWithoutMoving(true).setPos(LightningChain.calculatePos(abilityParams.getChainToPos(), abilityParams.getChainFromPos())).setRotationAngle(LightningChain.calculateRotationAngle(abilityParams.getChainToPos(), abilityParams.getChainFromPos())).setSkipCreatingBody(true).setRotationShift(90f);
+    ability.params = abilityParams.setWidth(1f)
+      .setHeight(abilityParams.getChainFromPos().distance(abilityParams.getChainToPos())).setChannelTime(0f)
+      .setActiveTime(0.4f).setTextureName("lightning_chain").setBaseDamage(0f).setActiveAnimationLooping(true)
+      .setAttackWithoutMoving(true)
+      .setPos(LightningChain.calculatePos(abilityParams.getChainToPos(), abilityParams.getChainFromPos()))
+      .setRotationAngle(
+        LightningChain.calculateRotationAngle(abilityParams.getChainToPos(), abilityParams.getChainFromPos()))
+      .setSkipCreatingBody(true).setRotationShift(90f);
 
     return ability;
   }

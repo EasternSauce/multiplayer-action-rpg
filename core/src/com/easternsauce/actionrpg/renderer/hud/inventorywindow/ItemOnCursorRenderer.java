@@ -31,15 +31,21 @@ public class ItemOnCursorRenderer {
     float mouseX = game.hudMousePos().getX();
     float mouseY = game.hudMousePos().getY();
 
-    if (playerConfig.getInventoryItemBeingMoved() != null && inventoryItems.containsKey(playerConfig.getInventoryItemBeingMoved())) {
+    if (playerConfig.getInventoryItemBeingMoved() != null &&
+      inventoryItems.containsKey(playerConfig.getInventoryItemBeingMoved())) {
 
-      renderInventoryItemBeingMovedOnCursor(mouseX, mouseY, inventoryItems, iconRetriever, playerConfig, renderingLayer);
+      renderInventoryItemBeingMovedOnCursor(mouseX, mouseY, inventoryItems, iconRetriever, playerConfig,
+        renderingLayer);
     }
-    if (playerConfig.getEquipmentItemBeingMoved() != null && equipmentItems.containsKey(playerConfig.getEquipmentItemBeingMoved())) {
-      renderEquipmentItemBeingMovedOnCursor(mouseX, mouseY, equipmentItems, iconRetriever, playerConfig, renderingLayer);
+    if (playerConfig.getEquipmentItemBeingMoved() != null &&
+      equipmentItems.containsKey(playerConfig.getEquipmentItemBeingMoved())) {
+      renderEquipmentItemBeingMovedOnCursor(mouseX, mouseY, equipmentItems, iconRetriever, playerConfig,
+        renderingLayer);
     }
-    if (playerConfig.getPotionMenuItemBeingMoved() != null && potionMenuItems.containsKey(playerConfig.getPotionMenuItemBeingMoved())) {
-      renderPotionMenuItemBeingMovedOnCursor(mouseX, mouseY, potionMenuItems, iconRetriever, playerConfig, renderingLayer);
+    if (playerConfig.getPotionMenuItemBeingMoved() != null &&
+      potionMenuItems.containsKey(playerConfig.getPotionMenuItemBeingMoved())) {
+      renderPotionMenuItemBeingMovedOnCursor(mouseX, mouseY, potionMenuItems, iconRetriever, playerConfig,
+        renderingLayer);
     }
   }
 
@@ -49,19 +55,28 @@ public class ItemOnCursorRenderer {
 
       Vector2Int iconPos = item.getTemplate().getIconPos();
 
-      renderingLayer.getSpriteBatch().draw(iconRetriever.getIcon(iconPos.getX(), iconPos.getY()), mouseX - InventoryWindowConsts.SLOT_SIZE / 2f, mouseY - InventoryWindowConsts.SLOT_SIZE / 2f, InventoryWindowConsts.SLOT_SIZE, InventoryWindowConsts.SLOT_SIZE);
+      renderingLayer.getSpriteBatch()
+        .draw(iconRetriever.getIcon(iconPos.getX(), iconPos.getY()), mouseX - InventoryWindowConsts.SLOT_SIZE / 2f,
+          mouseY - InventoryWindowConsts.SLOT_SIZE / 2f, InventoryWindowConsts.SLOT_SIZE,
+          InventoryWindowConsts.SLOT_SIZE);
     }
   }
 
   private static void renderEquipmentItemBeingMovedOnCursor(float mouseX, float mouseY, Map<Integer, Item> equipmentItems, IconRetriever iconRetriever, PlayerConfig playerConfig, RenderingLayer renderingLayer) {
     Vector2Int iconPos = equipmentItems.get(playerConfig.getEquipmentItemBeingMoved()).getTemplate().getIconPos();
 
-    renderingLayer.getSpriteBatch().draw(iconRetriever.getIcon(iconPos.getX(), iconPos.getY()), mouseX - InventoryWindowConsts.SLOT_SIZE / 2f, mouseY - InventoryWindowConsts.SLOT_SIZE / 2f, InventoryWindowConsts.SLOT_SIZE, InventoryWindowConsts.SLOT_SIZE);
+    renderingLayer.getSpriteBatch()
+      .draw(iconRetriever.getIcon(iconPos.getX(), iconPos.getY()), mouseX - InventoryWindowConsts.SLOT_SIZE / 2f,
+        mouseY - InventoryWindowConsts.SLOT_SIZE / 2f, InventoryWindowConsts.SLOT_SIZE,
+        InventoryWindowConsts.SLOT_SIZE);
   }
 
   private static void renderPotionMenuItemBeingMovedOnCursor(float mouseX, float mouseY, Map<Integer, Item> potionMenuItems, IconRetriever iconRetriever, PlayerConfig playerConfig, RenderingLayer renderingLayer) {
     Vector2Int iconPos = potionMenuItems.get(playerConfig.getPotionMenuItemBeingMoved()).getTemplate().getIconPos();
 
-    renderingLayer.getSpriteBatch().draw(iconRetriever.getIcon(iconPos.getX(), iconPos.getY()), mouseX - InventoryWindowConsts.SLOT_SIZE / 2f, mouseY - InventoryWindowConsts.SLOT_SIZE / 2f, InventoryWindowConsts.SLOT_SIZE, InventoryWindowConsts.SLOT_SIZE);
+    renderingLayer.getSpriteBatch()
+      .draw(iconRetriever.getIcon(iconPos.getX(), iconPos.getY()), mouseX - InventoryWindowConsts.SLOT_SIZE / 2f,
+        mouseY - InventoryWindowConsts.SLOT_SIZE / 2f, InventoryWindowConsts.SLOT_SIZE,
+        InventoryWindowConsts.SLOT_SIZE);
   }
 }

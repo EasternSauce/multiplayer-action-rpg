@@ -37,7 +37,8 @@ public class PotionMenuToInventoryStackItemAction extends GameStateAction {
       Item itemFrom = player.getParams().getPotionMenuItems().get(potionMenuIndex);
       Item itemTo = player.getParams().getInventoryItems().get(inventoryIndex);
 
-      boolean isCanStackItems = itemFrom != null && itemTo != null && itemFrom.getTemplate().getStackable() && itemTo.getTemplate().getStackable() && itemFrom.getTemplate().getId().equals(itemTo.getTemplate().getId());
+      boolean isCanStackItems = itemFrom != null && itemTo != null && itemFrom.getTemplate().getStackable() &&
+        itemTo.getTemplate().getStackable() && itemFrom.getTemplate().getId().equals(itemTo.getTemplate().getId());
 
       if (isCanStackItems) {
         player.getParams().getPotionMenuItems().remove(potionMenuIndex);

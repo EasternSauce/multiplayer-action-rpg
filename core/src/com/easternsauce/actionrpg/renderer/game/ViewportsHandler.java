@@ -21,11 +21,13 @@ public class ViewportsHandler {
   private Viewport worldTextViewport;
 
   public void initViewports() {
-    worldViewport = new FitViewport(Constants.VIEWPOINT_WORLD_WIDTH / Constants.PPM, Constants.VIEWPOINT_WORLD_HEIGHT / Constants.PPM, worldCamera);
+    worldViewport = new FitViewport(Constants.VIEWPOINT_WORLD_WIDTH / Constants.PPM,
+      Constants.VIEWPOINT_WORLD_HEIGHT / Constants.PPM, worldCamera);
 
     hudViewport = new FitViewport((float) Constants.WINDOW_WIDTH, (float) Constants.WINDOW_HEIGHT, hudCamera);
 
-    worldTextViewport = new FitViewport(Constants.VIEWPOINT_WORLD_WIDTH, Constants.VIEWPOINT_WORLD_HEIGHT, worldTextCamera);
+    worldTextViewport = new FitViewport(Constants.VIEWPOINT_WORLD_WIDTH, Constants.VIEWPOINT_WORLD_HEIGHT,
+      worldTextCamera);
 
     setHudCameraPosition(Constants.WINDOW_WIDTH / 2f, Constants.WINDOW_HEIGHT / 2f);
   }

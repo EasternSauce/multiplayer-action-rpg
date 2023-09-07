@@ -40,9 +40,12 @@ public class PlayfulGhostControl extends Ability {
   @Override
   protected void onCompleted(CoreGame game) {
     float baseAngle = getParams().getDirVector().angleDeg();
-    game.chainAnotherAbility(this, AbilityType.PLAYFUL_GHOST, params.getDirVector(), ChainAbilityParams.of().setChainToPos(getParams().getPos()));
-    game.chainAnotherAbility(this, AbilityType.PLAYFUL_GHOST, params.getDirVector().withSetDegAngle(baseAngle - 30f), ChainAbilityParams.of().setChainToPos(getParams().getPos()));
-    game.chainAnotherAbility(this, AbilityType.PLAYFUL_GHOST, params.getDirVector().withSetDegAngle(baseAngle + 30f), ChainAbilityParams.of().setChainToPos(getParams().getPos()));
+    game.chainAnotherAbility(this, AbilityType.PLAYFUL_GHOST, params.getDirVector(),
+      ChainAbilityParams.of().setChainToPos(getParams().getPos()));
+    game.chainAnotherAbility(this, AbilityType.PLAYFUL_GHOST, params.getDirVector().withSetDegAngle(baseAngle - 30f),
+      ChainAbilityParams.of().setChainToPos(getParams().getPos()));
+    game.chainAnotherAbility(this, AbilityType.PLAYFUL_GHOST, params.getDirVector().withSetDegAngle(baseAngle + 30f),
+      ChainAbilityParams.of().setChainToPos(getParams().getPos()));
   }
 
   @Override

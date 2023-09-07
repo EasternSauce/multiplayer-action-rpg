@@ -15,7 +15,10 @@ import java.util.concurrent.ConcurrentSkipListMap;
 public class EnemyPoisonousCloud extends PoisonousCloudBase {
   public static EnemyPoisonousCloud of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
     EnemyPoisonousCloud ability = EnemyPoisonousCloud.of();
-    ability.params = abilityParams.setWidth(9f).setHeight(9f).setChannelTime(0f).setActiveTime(8f).setTextureName("poison_cloud").setBaseDamage(0f).setChannelAnimationLooping(false).setActiveAnimationLooping(true).setAttackWithoutMoving(true).setCreaturesAlreadyHit(new ConcurrentSkipListMap<>());
+    ability.params = abilityParams.setWidth(9f).setHeight(9f).setChannelTime(0f).setActiveTime(8f)
+      .setTextureName("poison_cloud").setBaseDamage(0f).setChannelAnimationLooping(false)
+      .setActiveAnimationLooping(true).setAttackWithoutMoving(true)
+      .setCreaturesAlreadyHit(new ConcurrentSkipListMap<>());
 
     return ability;
   }

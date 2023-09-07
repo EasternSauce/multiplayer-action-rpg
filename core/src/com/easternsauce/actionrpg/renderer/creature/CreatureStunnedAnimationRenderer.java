@@ -14,7 +14,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 public class CreatureStunnedAnimationRenderer {
   @Getter
-  private final AnimationRenderer animationRenderer = AnimationRenderer.of(AnimationSpec.of(60, 30, 3f, 1.5f, 0.045f, 8, "stunned", true));
+  private final AnimationRenderer animationRenderer = AnimationRenderer.of(
+    AnimationSpec.of(60, 30, 3f, 1.5f, 0.045f, 8, "stunned", true));
 
   public void render(CreatureId creatureId, float spriteWidth, RenderingLayer renderingLayer, CoreGame game) {
     Creature creature = game.getCreature(creatureId);

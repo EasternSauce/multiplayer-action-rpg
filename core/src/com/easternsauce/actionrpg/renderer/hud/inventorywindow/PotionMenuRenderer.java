@@ -22,12 +22,16 @@ import java.util.concurrent.atomic.AtomicInteger;
 @NoArgsConstructor(staticName = "of")
 public class PotionMenuRenderer {
   private static void renderSlot(RenderingLayer renderingLayer, Rect rect) {
-    renderingLayer.getShapeDrawer().filledRectangle(rect.getX() - 3, rect.getY() - 3, rect.getWidth() + 6, rect.getHeight() + 6, Color.WHITE);
-    renderingLayer.getShapeDrawer().filledRectangle(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(), Color.BLACK);
+    renderingLayer.getShapeDrawer()
+      .filledRectangle(rect.getX() - 3, rect.getY() - 3, rect.getWidth() + 6, rect.getHeight() + 6, Color.WHITE);
+    renderingLayer.getShapeDrawer()
+      .filledRectangle(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(), Color.BLACK);
   }
 
   private static void renderSlotIndex(RenderingLayer renderingLayer, Map<Integer, String> keys, AtomicInteger i, Rect rect) {
-    Assets.renderVerySmallFont(renderingLayer, keys.get(i.get()), Vector2.of(rect.getX() + PotionMenuConsts.SLOT_SIZE - 14f, rect.getY() + PotionMenuConsts.SLOT_SIZE - 5f), Color.CYAN);
+    Assets.renderVerySmallFont(renderingLayer, keys.get(i.get()),
+      Vector2.of(rect.getX() + PotionMenuConsts.SLOT_SIZE - 14f, rect.getY() + PotionMenuConsts.SLOT_SIZE - 5f),
+      Color.CYAN);
   }
 
   public void renderMenu(RenderingLayer renderingLayer, CoreGame game) {
@@ -81,7 +85,8 @@ public class PotionMenuRenderer {
     Vector2Int iconPos = item.getTemplate().getIconPos();
     TextureRegion textureRegion = iconRetriever.getIcon(iconPos.getX(), iconPos.getY());
 
-    renderingLayer.getSpriteBatch().draw(textureRegion, rect.getX(), rect.getY(), PotionMenuConsts.SLOT_SIZE, PotionMenuConsts.SLOT_SIZE);
+    renderingLayer.getSpriteBatch()
+      .draw(textureRegion, rect.getX(), rect.getY(), PotionMenuConsts.SLOT_SIZE, PotionMenuConsts.SLOT_SIZE);
 
     if (item.getQuantity() > 1) {
       renderItemQuantity(item, rect.getX(), rect.getY(), renderingLayer);

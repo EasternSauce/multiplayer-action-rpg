@@ -28,7 +28,9 @@ public class TunnelDig extends Projectile {
 
   public static TunnelDig of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
     TunnelDig ability = TunnelDig.of();
-    ability.params = abilityParams.setNoTexture(true).setWidth(1.5f).setHeight(1.5f).setChannelTime(0f).setActiveTime(30f).setBaseDamage(0f).setStartingRange(0.5f).setChannelAnimationLooping(false).setActiveAnimationLooping(true).setDelayedActionTime(0.001f).setSpeed(9f).setMaximumRange(30f);
+    ability.params = abilityParams.setNoTexture(true).setWidth(1.5f).setHeight(1.5f).setChannelTime(0f)
+      .setActiveTime(30f).setBaseDamage(0f).setStartingRange(0.5f).setChannelAnimationLooping(false)
+      .setActiveAnimationLooping(true).setDelayedActionTime(0.001f).setSpeed(9f).setMaximumRange(30f);
 
     return ability;
   }
@@ -52,7 +54,11 @@ public class TunnelDig extends Projectile {
 
     Creature thisCreature = game.getCreature(getParams().getCreatureId());
 
-    for (Creature creature : game.getActiveCreatures().values().stream().filter(targetCreature -> Objects.equals(targetCreature.getParams().getAreaId().getValue(), getParams().getAreaId().getValue()) && !targetCreature.getId().equals(getParams().getCreatureId()) && targetCreature.isAlive() && isTargetingAllowed(thisCreature, targetCreature) && targetCreature.getParams().getPos().distance(getParams().getPos()) < 20f).collect(Collectors.toSet())) {
+    for (Creature creature : game.getActiveCreatures().values().stream().filter(targetCreature ->
+      Objects.equals(targetCreature.getParams().getAreaId().getValue(), getParams().getAreaId().getValue()) &&
+        !targetCreature.getId().equals(getParams().getCreatureId()) && targetCreature.isAlive() &&
+        isTargetingAllowed(thisCreature, targetCreature) &&
+        targetCreature.getParams().getPos().distance(getParams().getPos()) < 20f).collect(Collectors.toSet())) {
       if (creature.getParams().getPos().distance(getParams().getPos()) < minimumDistance) {
         minimumDistanceCreature = creature;
         minimumDistance = creature.getParams().getPos().distance(getParams().getPos());
@@ -88,7 +94,9 @@ public class TunnelDig extends Projectile {
     }
 
     if (getParams().getStateTimer().getTime() > currentSplash * 0.2f) {
-      game.chainAnotherAbility(this, AbilityType.DIG_TUNNEL_SPLASH, thisCreature.getParams().getMovementParams().getFacingVector(), ChainAbilityParams.of().setChainToPos(getParams().getPos()));
+      game.chainAnotherAbility(this, AbilityType.DIG_TUNNEL_SPLASH,
+        thisCreature.getParams().getMovementParams().getFacingVector(),
+        ChainAbilityParams.of().setChainToPos(getParams().getPos()));
       currentSplash += 1;
     }
 
@@ -109,7 +117,9 @@ public class TunnelDig extends Projectile {
   protected void onCompleted(CoreGame game) {
     Creature creature = game.getCreature(getParams().getCreatureId());
 
-    game.chainAnotherAbility(this, AbilityType.DIG_TUNNEL_EXPLOSION, creature.getParams().getMovementParams().getFacingVector(), ChainAbilityParams.of().setChainToPos(getParams().getPos()));
+    game.chainAnotherAbility(this, AbilityType.DIG_TUNNEL_EXPLOSION,
+      creature.getParams().getMovementParams().getFacingVector(),
+      ChainAbilityParams.of().setChainToPos(getParams().getPos()));
   }
 
   @Override

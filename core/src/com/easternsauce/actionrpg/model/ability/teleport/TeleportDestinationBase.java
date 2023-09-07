@@ -26,7 +26,8 @@ public abstract class TeleportDestinationBase extends Ability {
   public void onStarted(CoreGame game) {
     Creature creature = game.getCreature(getParams().getCreatureId());
     creature.applyEffect(CreatureEffect.SELF_STUN, 0.3f, game);
-    game.addTeleportEvent(TeleportEvent.of(getParams().getCreatureId(), getParams().getPos(), getParams().getAreaId(), getParams().getAreaId(), false));
+    game.addTeleportEvent(TeleportEvent.of(getParams().getCreatureId(), getParams().getPos(), getParams().getAreaId(),
+      getParams().getAreaId(), false));
   }
 
   @Override
