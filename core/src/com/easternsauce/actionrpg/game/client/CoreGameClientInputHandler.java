@@ -197,13 +197,12 @@ public class CoreGameClientInputHandler {
 
       Creature player = game.getGameState().accessCreatures().getCreature(game.getGameState().getThisClientPlayerId());
 
-      if (player != null) {
-        if (player.getParams().getMovementParams().getMovementActionsPerSecondLimiterTimer().getTime() >
-          Constants.MOVEMENT_COMMAND_COOLDOWN && game.getGameState().getTime() > menuClickTime + 0.1f) {
-          game.getEndPoint().sendTCP(ActionPerformCommand.of(
-            CreatureMoveTowardsTargetAction.of(game.getGameState().getThisClientPlayerId(), mousePos)));
-        }
+      if (player.getParams().getMovementParams().getMovementActionsPerSecondLimiterTimer().getTime() >
+        Constants.MOVEMENT_COMMAND_COOLDOWN && game.getGameState().getTime() > menuClickTime + 0.1f) {
+        game.getEndPoint().sendTCP(ActionPerformCommand.of(
+          CreatureMoveTowardsTargetAction.of(game.getGameState().getThisClientPlayerId(), mousePos)));
       }
+
     }
   }
 

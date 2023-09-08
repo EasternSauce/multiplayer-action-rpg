@@ -82,7 +82,7 @@ public class CoreGameClient extends CoreGame {
 
     Creature player = gameState.accessCreatures().getCreature(getGameState().getThisClientPlayerId());
 
-    if (player != null &&
+    if (
       player.getParams().getMovementParams().getChangeAimDirectionActionsPerSecondLimiterTimer().getTime() >
         Constants.CHANGE_AIM_DIRECTION_COMMAND_COOLDOWN) {
       getEndPoint().sendTCP(
@@ -92,7 +92,7 @@ public class CoreGameClient extends CoreGame {
 
   private void correctPlayerBodyArea() {
     Creature player = gameState.accessCreatures().getCreature(gameState.getThisClientPlayerId());
-    if (player != null && getCreatureBodies().containsKey(gameState.getThisClientPlayerId()) &&
+    if (getCreatureBodies().containsKey(gameState.getThisClientPlayerId()) &&
       !Objects.equals(getCreatureBodies().get(gameState.getThisClientPlayerId()).getAreaId().getValue(),
         player.getParams().getAreaId().getValue())) {
       addTeleportEvent(TeleportEvent.of(gameState.getThisClientPlayerId(), player.getParams().getPos(),

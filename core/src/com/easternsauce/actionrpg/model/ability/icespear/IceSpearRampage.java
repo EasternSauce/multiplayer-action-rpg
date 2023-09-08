@@ -76,6 +76,11 @@ public class IceSpearRampage extends Projectile {
   }
 
   @Override
+  public boolean isAbleToChainAfterCreatureDeath() {
+    return false;
+  }
+
+  @Override
   public boolean usesEntityModel() {
     return false;
   }

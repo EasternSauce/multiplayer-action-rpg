@@ -39,7 +39,7 @@ public class PhysicsEventQueueProcessor {
 
         Ability ability = game.getAbility(event.getAbilityId());
 
-        if (ability != null && ability.getParams().getState() == AbilityState.ACTIVE) {
+        if (ability.getParams().getState() == AbilityState.ACTIVE) {
           ability.onTerrainHit(event.getAbilityPos(), event.getTilePos());
         }
 
@@ -114,7 +114,7 @@ public class PhysicsEventQueueProcessor {
     Creature destinationCreature = game.getGameState().accessCreatures().getCreature(event.getDestinationCreatureId());
     Ability ability = game.getAbility(event.getAbilityId());
 
-    if (ability != null && destinationCreature.isAlive()) {
+    if (destinationCreature.isAlive()) {
       Vector2 contactPoint = calculateContactPoint(destinationCreature, ability);
 
       if ((sourceCreature instanceof Player || destinationCreature instanceof Player) &&

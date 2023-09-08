@@ -41,7 +41,7 @@ public class AbilityRenderer {
   public void init(TextureAtlas atlas, CoreGame game) {
     sprite = new Sprite();
 
-    Ability ability = game.getAbilities().get(abilityId);
+    Ability ability = game.getAbility(abilityId);
 
     if (ability == null) {
       return;
@@ -85,25 +85,24 @@ public class AbilityRenderer {
 
   public void update(CoreGame game) {
 
-    Ability ability = game.getAbilities().get(abilityId);
+    Ability ability = game.getAbility(abilityId);
 
-    if (ability != null) {
-      if (ability.getParams().getChannelTime() > 0f && ability.getParams().getState() == AbilityState.CHANNEL) {
-        TextureRegion texture = getChannelAnimation().getKeyFrame(ability.getParams().getStateTimer().getTime(),
-          ability.getParams().getChannelAnimationLooping());
-        updateSprite(texture, game);
-      } else if (ability.getParams().getActiveTime() > 0f && ability.getParams().getState() == AbilityState.ACTIVE) {
-        TextureRegion texture = getActiveAnimation().getKeyFrame(ability.getParams().getStateTimer().getTime(),
-          ability.getParams().getActiveAnimationLooping());
-        updateSprite(texture, game);
-      }
+    if (ability.getParams().getChannelTime() > 0f && ability.getParams().getState() == AbilityState.CHANNEL) {
+      TextureRegion texture = getChannelAnimation().getKeyFrame(ability.getParams().getStateTimer().getTime(),
+        ability.getParams().getChannelAnimationLooping());
+      updateSprite(texture, game);
+    } else if (ability.getParams().getActiveTime() > 0f && ability.getParams().getState() == AbilityState.ACTIVE) {
+      TextureRegion texture = getActiveAnimation().getKeyFrame(ability.getParams().getStateTimer().getTime(),
+        ability.getParams().getActiveAnimationLooping());
+      updateSprite(texture, game);
     }
+
 
   }
 
   private void updateSprite(TextureRegion texture, CoreGame game) {
 
-    Ability ability = game.getAbilities().get(abilityId);
+    Ability ability = game.getAbility(abilityId);
     if (ability == null) {
       return;
     }
@@ -125,17 +124,15 @@ public class AbilityRenderer {
   public void render(RenderingLayer renderingLayer, CoreGame game) {
     Ability ability = game.getAbility(abilityId);
 
-    if (ability != null) {
-      if (sprite.getTexture() != null) {
-        if (ability.getParams().getChannelTime() > 0f && ability.getParams().getState() == AbilityState.CHANNEL) {
-          sprite.draw(renderingLayer.getSpriteBatch());
-        }
-        if (ability.getParams().getActiveTime() > 0f && ability.getParams().getState() == AbilityState.ACTIVE) {
-          sprite.draw(renderingLayer.getSpriteBatch());
-        }
+    if (sprite.getTexture() != null) {
+      if (ability.getParams().getChannelTime() > 0f && ability.getParams().getState() == AbilityState.CHANNEL) {
+        sprite.draw(renderingLayer.getSpriteBatch());
+      }
+      if (ability.getParams().getActiveTime() > 0f && ability.getParams().getState() == AbilityState.ACTIVE) {
+        sprite.draw(renderingLayer.getSpriteBatch());
       }
     }
-
   }
+
 
 }

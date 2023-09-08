@@ -52,9 +52,9 @@ public class GameEntityManager {
   }
 
   public void createAbilityEntity(AbilityId abilityId, TextureAtlas atlas, CoreGame game) {
-    Ability ability = game.getAbilities().get(abilityId);
+    Ability ability = game.getAbility(abilityId);
 
-    if (ability != null && ability.usesEntityModel()) {
+    if (ability.usesEntityModel()) {
       if (!ability.getParams().getNoTexture() && !gameEntityRenderer.getAbilityRenderers().containsKey(abilityId)) {
         AbilityRenderer abilityRenderer = AbilityRenderer.of(abilityId);
         abilityRenderer.init(atlas, game);
@@ -72,9 +72,9 @@ public class GameEntityManager {
   }
 
   public void activateAbility(AbilityId abilityId, CoreGame game) {
-    Ability ability = game.getAbilities().get(abilityId);
+    Ability ability = game.getAbility(abilityId);
 
-    if (ability != null && gameEntityPhysics.getAbilityBodies().containsKey(ability.getParams().getId()) &&
+    if (gameEntityPhysics.getAbilityBodies().containsKey(ability.getParams().getId()) &&
       !gameEntityPhysics.getAbilityBodies().get(ability.getParams().getId()).getBodyInitialized()) {
       gameEntityPhysics.getAbilityBodies().get(ability.getParams().getId())
         .activate(ability.getParams().getSkipCreatingBody(), game);
@@ -193,8 +193,8 @@ public class GameEntityManager {
 
     abilitiesToUpdate.forEach(abilityId -> {
       if (abilityId != null && game.getAbilities().containsKey(abilityId) &&
-        game.getAbilities().get(abilityId) != null) {
-        game.getAbilities().get(abilityId).update(delta, game);
+        game.getAbility(abilityId) != null) {
+        game.getAbility(abilityId).update(delta, game);
       }
     });
 
@@ -206,8 +206,8 @@ public class GameEntityManager {
 
     abilitiesToUpdate.forEach(abilityId -> {
       if (getGameEntityPhysics().getAbilityBodies().containsKey(abilityId)) {
-        Ability ability = game.getAbilities().get(abilityId);
-        if (ability != null && !ability.isPositionChangedOnUpdate() && !ability.getParams().getSkipCreatingBody() &&
+        Ability ability = game.getAbility(abilityId);
+        if (!ability.isPositionChangedOnUpdate() && !ability.getParams().getSkipCreatingBody() &&
           getGameEntityPhysics().getAbilityBodies().get(abilityId).getBodyInitialized()) {
           ability.getParams().setPos(getGameEntityPhysics().getAbilityBodies().get(abilityId).getBodyPos());
         }

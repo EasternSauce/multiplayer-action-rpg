@@ -1,5 +1,6 @@
 package com.easternsauce.actionrpg.util;
 
+@SuppressWarnings("SpellCheckingInspection")
 public class Constants {
   public static final int PPM = 32;
 

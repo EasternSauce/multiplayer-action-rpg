@@ -185,11 +185,12 @@ public abstract class CoreGame extends Game {
   public Creature getCreature(CreatureId creatureId) {
     Creature creature = getGameState().accessCreatures().getCreature(creatureId);
 
-    if (creature == null) {
+    if (creatureId == null || creature == null) {
       return NullCreature.of();
+    } else {
+      return creature;
     }
 
-    return creature;
   }
 
   public Vector2 getCreaturePos(CreatureId creatureId) {

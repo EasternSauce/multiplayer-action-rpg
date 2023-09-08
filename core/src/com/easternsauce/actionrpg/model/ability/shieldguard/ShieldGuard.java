@@ -69,29 +69,28 @@ public class ShieldGuard extends AttachedAbility {
   public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
     Ability otherAbility = game.getAbility(otherAbilityId);
 
-    if (otherAbility != null) {
-      Creature creature = game.getCreature(getParams().getCreatureId());
-      Creature abilityOwner = game.getCreature(otherAbility.getParams().getCreatureId());
+    Creature creature = game.getCreature(getParams().getCreatureId());
+    Creature abilityOwner = game.getCreature(otherAbility.getParams().getCreatureId());
 
-      if ((creature instanceof Player && abilityOwner instanceof Enemy ||
-        creature instanceof Enemy && abilityOwner instanceof Player) && otherAbility.isRanged()) {
-        if (otherAbility.isBlockable()) {
-          otherAbility.getParams().setMarkedAsShielded(true);
-        }
-
-        if (otherAbility instanceof RicochetBullet) {
-          otherAbility.onTerrainHit(otherAbility.getParams().getPos(), getParams().getPos());
-
-        } else if (otherAbility instanceof Boomerang) {
-          otherAbility.onCreatureHit(getParams().getCreatureId(), game);
-        } else {
-          if (!(abilityOwner instanceof Player)) {
-            otherAbility.deactivate();
-          }
-        }
-
+    if ((creature instanceof Player && abilityOwner instanceof Enemy ||
+      creature instanceof Enemy && abilityOwner instanceof Player) && otherAbility.isRanged()) {
+      if (otherAbility.isBlockable()) {
+        otherAbility.getParams().setMarkedAsShielded(true);
       }
+
+      if (otherAbility instanceof RicochetBullet) {
+        otherAbility.onTerrainHit(otherAbility.getParams().getPos(), getParams().getPos());
+
+      } else if (otherAbility instanceof Boomerang) {
+        otherAbility.onCreatureHit(getParams().getCreatureId(), game);
+      } else {
+        if (!(abilityOwner instanceof Player)) {
+          otherAbility.deactivate();
+        }
+      }
+
     }
+
   }
 
   @Override

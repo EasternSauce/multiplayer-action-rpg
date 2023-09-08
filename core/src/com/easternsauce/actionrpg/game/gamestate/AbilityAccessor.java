@@ -41,8 +41,8 @@ public class AbilityAccessor {
 
   public Set<AbilityId> getAbilitiesWithinRange(Creature player) {
     return getAbilities().keySet().stream().filter(abilityId -> {
-      Ability ability = getAbilities().get(abilityId);
-      if (ability != null && player.getParams().getPos() != null && ability.getParams().getPos() != null) {
+      Ability ability = getAbility(abilityId);
+      if (player.getParams().getPos() != null && ability.getParams().getPos() != null) {
         return ability.getParams().getPos().distance(player.getParams().getPos()) < Constants.CLIENT_GAME_UPDATE_RANGE;
       }
       return false;
@@ -117,9 +117,10 @@ public class AbilityAccessor {
 
   public Ability getAbility(AbilityId abilityId) {
     if (abilityId == null || !getData().getAbilities().containsKey(abilityId)) {
-      return null;
+      return NullAbility.of();
+    } else {
+      return getData().getAbilities().get(abilityId);
     }
-    return getData().getAbilities().get(abilityId);
   }
 
 }

@@ -46,7 +46,7 @@ public class AbilityBody {
   public void activate(boolean skipCreatingBody, CoreGame game) {
     Ability ability = game.getAbility(abilityId);
 
-    if (!skipCreatingBody && ability != null) {
+    if (!skipCreatingBody) {
       world = game.getPhysicsWorld(ability.getParams().getAreaId());
 
       creatureId = ability.getParams().getCreatureId();
@@ -75,9 +75,9 @@ public class AbilityBody {
   }
 
   public void update(CoreGame game) {
-    Ability ability = game.getAbilities().get(abilityId);
+    Ability ability = game.getAbility(abilityId);
 
-    if (getBodyInitialized() && ability != null && !ability.getParams().getSkipCreatingBody()) {
+    if (getBodyInitialized() && !ability.getParams().getSkipCreatingBody()) {
       if (ability.isPositionChangedOnUpdate()) {
         b2body.setTransform(ability.getParams().getPos().getX(), ability.getParams().getPos().getY(), 0f);
       }
