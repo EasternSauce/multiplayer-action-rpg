@@ -28,6 +28,7 @@ import com.easternsauce.actionrpg.renderer.RenderingLayer;
 import com.easternsauce.actionrpg.renderer.game.ViewportsHandler;
 import com.easternsauce.actionrpg.renderer.hud.HudRenderer;
 import com.easternsauce.actionrpg.renderer.physics.PhysicsDebugRenderer;
+import com.easternsauce.actionrpg.renderer.util.Rect;
 import com.easternsauce.actionrpg.util.Constants;
 import com.esotericsoftware.kryonet.EndPoint;
 import lombok.Getter;
@@ -109,9 +110,14 @@ public abstract class CoreGame extends Game {
 
   abstract public void performPhysicsWorldStep();
 
-  public boolean isLineBetweenPointsUnobstructedByTerrain(AreaId areaId, Vector2 fromPos, Vector2 toPos) {
+  public boolean isLineBetweenPointsObstructedByTerrain(AreaId areaId, Vector2 fromPos, Vector2 toPos) {
     return entityManager.getGameEntityPhysics().getPhysicsWorlds().get(areaId)
-      .isLineBetweenPointsUnobstructedByTerrain(fromPos, toPos);
+      .isLineBetweenPointsObstructedByTerrain(fromPos, toPos);
+  }
+
+  public boolean isRectCollidingWithTerrain(AreaId areaId, Rect rect) {
+    return entityManager.getGameEntityPhysics().getPhysicsWorlds().get(areaId)
+      .isRectCollidingWithTerrain(rect);
   }
 
   public void updateCameraPositions() {

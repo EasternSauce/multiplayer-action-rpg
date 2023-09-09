@@ -74,7 +74,7 @@ public class LightningSpark extends Ability {
       game.getGameState().accessCreatures().getAliveCreatureIdClosestTo(getParams().getPos(), 13f, excluded, game));
 
     if (
-      game.isLineBetweenPointsUnobstructedByTerrain(getParams().getAreaId(), getParams().getPos(),
+      !game.isLineBetweenPointsObstructedByTerrain(getParams().getAreaId(), getParams().getPos(),
         targetCreature.getParams().getPos())) {
 
       game.getGameState().accessAbilities()

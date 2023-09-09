@@ -158,7 +158,7 @@ public class EnemyAutoControlsProcessor {
         otherCreature.getParams().getAreaId().getValue().equals(creature.getParams().getAreaId().getValue()) &&
         otherCreature instanceof Player &&
         otherCreature.getParams().getPos().distance(creature.getParams().getPos()) < Constants.ENEMY_SEARCH_DISTANCE &&
-        game.isLineBetweenPointsUnobstructedByTerrain(creature.getParams().getAreaId(), creature.getParams().getPos(),
+        !game.isLineBetweenPointsObstructedByTerrain(creature.getParams().getAreaId(), creature.getParams().getPos(),
           otherCreature.getParams().getPos());
 
       if (condition && creature.getParams().getPos().distance(otherCreature.getParams().getPos()) < minDistance) {
@@ -276,7 +276,7 @@ public class EnemyAutoControlsProcessor {
       Creature target = game.getCreature(creature.getParams().getEnemyParams().getTargetCreatureId());
 
       if (target != null &&
-        !game.isLineBetweenPointsUnobstructedByTerrain(creature.getParams().getAreaId(), creature.getParams().getPos(),
+        game.isLineBetweenPointsObstructedByTerrain(creature.getParams().getAreaId(), creature.getParams().getPos(),
           target.getParams().getPos())) {
         List<Vector2> mirroredPath = mirrorPathFromNearbyCreature(creatureId,
           creature.getParams().getEnemyParams().getTargetCreatureId(), game);

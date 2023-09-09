@@ -12,6 +12,7 @@ import com.easternsauce.actionrpg.model.skill.SkillType;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.model.util.WorldDirection;
 import com.easternsauce.actionrpg.renderer.animationconfig.CreatureAnimationConfig;
+import com.easternsauce.actionrpg.renderer.util.Rect;
 
 import java.util.Map;
 import java.util.Set;
@@ -230,8 +231,11 @@ public abstract class Creature implements Entity {
         CreatureId enemyId = CreatureId.of(
           "Enemy_" + (int) (Math.abs(game.getGameState().getRandomGenerator().nextFloat()) * 10000000));
 
-        game.getEntityManager().spawnEnemy(enemyId, areaId, Vector2.of(x, y), EnemyTemplate.babySpider,
-          game.getGameState().getRandomGenerator().nextInt(), game);
+        if (!game.isRectCollidingWithTerrain(getParams().getAreaId(), Rect.of(x, y, 1f, 1f))) {
+          game.getEntityManager().spawnEnemy(enemyId, areaId, Vector2.of(x, y), EnemyTemplate.babySpider,
+            game.getGameState().getRandomGenerator().nextInt(), game);
+        }
+
       }
     }
   }

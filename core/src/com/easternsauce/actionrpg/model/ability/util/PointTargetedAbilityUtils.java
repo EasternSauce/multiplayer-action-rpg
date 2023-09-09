@@ -18,7 +18,7 @@ public class PointTargetedAbilityUtils {
         Vector2 vector = vectorTowards.multiplyBy((float) i / parts);
         Vector2 point = creaturePos.add(vector);
 
-        if (game.isLineBetweenPointsUnobstructedByTerrain(areaId, creaturePos, point)) {
+        if (!game.isLineBetweenPointsObstructedByTerrain(areaId, creaturePos, point)) {
           destinationPos = point;
         } else {
           obstructed = true;

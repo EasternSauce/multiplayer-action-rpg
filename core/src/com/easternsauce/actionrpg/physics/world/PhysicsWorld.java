@@ -10,6 +10,7 @@ import com.easternsauce.actionrpg.model.util.Vector2Int;
 import com.easternsauce.actionrpg.physics.body.TerrainTileBody;
 import com.easternsauce.actionrpg.physics.pathing.Astar;
 import com.easternsauce.actionrpg.physics.pathing.PathingNode;
+import com.easternsauce.actionrpg.renderer.util.Rect;
 import com.easternsauce.actionrpg.util.Constants;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -235,7 +236,7 @@ public class PhysicsWorld {
     b2world.step(Math.min(Gdx.graphics.getDeltaTime(), 0.15f), 6, 2);
   }
 
-  public Boolean isLineBetweenPointsUnobstructedByTerrain(Vector2 fromPos, Vector2 toPos) {
+  public Boolean isLineBetweenPointsObstructedByTerrain(Vector2 fromPos, Vector2 toPos) {
     float lineWidth = 0.3f;
     com.badlogic.gdx.math.Polygon lineRect = new com.badlogic.gdx.math.Polygon(
       new float[]{fromPos.getX(), fromPos.getY(),
@@ -251,16 +252,49 @@ public class PhysicsWorld {
     // TODO: maybe check nearby tiles only?
     for (com.badlogic.gdx.math.Polygon polygon : terrainPolygons) {
       if (Intersector.overlapConvexPolygons(polygon, lineRect)) {
-        return false;
+        return true;
       }
     }
 
     for (com.badlogic.gdx.math.Polygon polygon : borderPolygons) {
       if (Intersector.overlapConvexPolygons(polygon, lineRect)) {
-        return false;
+        return true;
       }
     }
 
-    return true;
+    return false;
+  }
+
+  public Boolean isRectCollidingWithTerrain(Rect rect) {
+    com.badlogic.gdx.math.Polygon rectPolygon = new com.badlogic.gdx.math.Polygon(
+      new float[]{rect.getX(),
+        rect.getY(),
+        rect.getX(),
+        rect.getY() + rect.getHeight(),
+        rect.getX() + rect.getWidth(),
+        rect.getY() + rect.getHeight(),
+        rect.getX() + rect.getWidth(),
+        rect.getY()});
+
+    List<com.badlogic.gdx.math.Polygon> terrainPolygons = terrainTiles.stream().map(TerrainTileBody::getPolygon)
+      .collect(Collectors.toList());
+
+    List<com.badlogic.gdx.math.Polygon> borderPolygons = terrainBorders.stream().map(TerrainTileBody::getPolygon)
+      .collect(Collectors.toList());
+
+    // TODO: maybe check nearby tiles only?
+    for (com.badlogic.gdx.math.Polygon polygon : terrainPolygons) {
+      if (Intersector.overlapConvexPolygons(polygon, rectPolygon)) {
+        return true;
+      }
+    }
+
+    for (com.badlogic.gdx.math.Polygon polygon : borderPolygons) {
+      if (Intersector.overlapConvexPolygons(polygon, rectPolygon)) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }

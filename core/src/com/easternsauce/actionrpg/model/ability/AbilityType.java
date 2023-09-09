@@ -53,7 +53,7 @@ import java.util.function.BiFunction;
 
 @NoArgsConstructor
 public enum AbilityType {
-  SWORD_SLASH(SwordSlash::of), EMEMY_SWORD_SLASH(EnemySwordSlash::of), BOSS_ENEMY_SWORD_SLASH(
+  SWORD_SLASH(SwordSlash::of), ENEMY_SWORD_SLASH(EnemySwordSlash::of), BOSS_ENEMY_SWORD_SLASH(
     BossEnemySwordSlash::of), FIREBALL(Fireball::of), FIREBALL_EXPLOSION(Explosion::of), LIGHTNING_SPARK(
     LightningSpark::of), LIGHTNING_NODE(LightningNode::of), LIGHTNING_CHAIN(LightningChain::of),
 
