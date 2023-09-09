@@ -12,7 +12,7 @@ import lombok.Getter;
 public abstract class CrossbowBoltControlBase extends Ability {
   @Getter
   protected AbilityParams params;
-  int currentBoltToFire = 0;
+  protected int currentBoltToFire = 0;
 
   @Override
   public Boolean isRanged() {

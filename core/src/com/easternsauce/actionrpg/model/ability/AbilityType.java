@@ -77,6 +77,7 @@ public enum AbilityType {
   BOOMERANG(Boomerang::of),
 
   SHIELD_GUARD(ShieldGuard::of),
+  ENEMY_SHIELD_GUARD(ShieldGuard::of),
 
   SWORD_SPIN(SwordSpin::of),
 

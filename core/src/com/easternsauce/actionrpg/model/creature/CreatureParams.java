@@ -129,7 +129,7 @@ public class CreatureParams implements EntityParams {
     Map<Integer, Item> inventoryItems = new ConcurrentSkipListMap<>();
     inventoryItems.put(2, Item.of().setTemplate(ItemTemplate.templates.get("lifePotion")));
     inventoryItems.put(7, Item.of().setTemplate(ItemTemplate.templates.get("hideGloves")).setGrantedSkills(
-      Stream.of(new AbstractMap.SimpleEntry<>(SkillType.METEOR, 1))
+      Stream.of(new AbstractMap.SimpleEntry<>(SkillType.LIGHTNING, 1))
         .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue))));
     // TODO
 

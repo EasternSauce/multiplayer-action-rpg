@@ -58,15 +58,17 @@ public abstract class CreatureHitAction extends GameStateAction {
       if (Math.abs(game.getGameState().getRandomGenerator().nextFloat()) < entry.getDropChance()) {
         AtomicReference<SkillType> randomSkillType = new AtomicReference<>(null);
 
-        if (Math.abs(game.getGameState().getRandomGenerator().nextFloat()) < entry.getGrantedSkillChance()) {
+        if (Math.abs(game.getGameState().getRandomGenerator().nextFloat()) <
+          entry.getItemDrop().getGrantedSkillChance()) {
           AtomicReference<Float> totalWeight = new AtomicReference<>((float) 0);
 
-          entry.getGrantedSkillWeights().forEach((skillType, weight) -> totalWeight.set(totalWeight.get() + weight));
+          entry.getItemDrop().getGrantedSkillWeights()
+            .forEach((skillType, weight) -> totalWeight.set(totalWeight.get() + weight));
 
           AtomicReference<Float> randValue = new AtomicReference<>(
             Math.abs(game.getGameState().getRandomGenerator().nextFloat()) * totalWeight.get());
 
-          entry.getGrantedSkillWeights().forEach((skillType, weight) -> {
+          entry.getItemDrop().getGrantedSkillWeights().forEach((skillType, weight) -> {
             if (randomSkillType.get() == null && randValue.get() < weight) {
               randomSkillType.set(skillType);
             }
@@ -93,13 +95,13 @@ public abstract class CreatureHitAction extends GameStateAction {
         }
 
         float quality;
-        if (entry.getTemplate().getQualityNonApplicable()) {
+        if (entry.getItemDrop().getTemplate().getQualityNonApplicable()) {
           quality = 1f;
         } else {
           quality = 0.5f + Math.abs(game.getGameState().getRandomGenerator().nextFloat()) / 2f;
         }
 
-        Item item = Item.of().setTemplate(entry.getTemplate()).setQualityModifier(quality)
+        Item item = Item.of().setTemplate(entry.getItemDrop().getTemplate()).setQualityModifier(quality)
           .setGrantedSkills(grantedSkills);
 
         items.add(item);

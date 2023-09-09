@@ -28,6 +28,7 @@ public enum SkillType {
   BOOMERANG("Boomerang", true, AbilityType.BOOMERANG, 6f, 30f, 0f),
 
   SHIELD_GUARD("Shield Guard", false, AbilityType.SHIELD_GUARD, 6f, 25f, 0f),
+  ENEMY_SHIELD_GUARD("Shield Guard (mob only)", false, AbilityType.ENEMY_SHIELD_GUARD, 10f, 25f, 0f),
 
   SWORD_SPIN("Sword Spin", true, AbilityType.SWORD_SPIN, 4f, 30f, 0f),
 
@@ -35,7 +36,7 @@ public enum SkillType {
 
   TELEPORT("Teleport", false, AbilityType.TELEPORT_SOURCE, 1.5f, 10f, 9f),
 
-  MAGE_TELEPORT_COMBO("Mage Teleport Combo (mob only)", true, AbilityType.MAGE_TELEPORT_COMBO, 1.5f, 10f, 9f),
+  MAGE_TELEPORT_COMBO("Mage Teleport Combo (mob only)", true, AbilityType.MAGE_TELEPORT_COMBO, 9f, 10f, 9f),
 
   ENEMY_TELEPORT("Teleport (mob only)", false, AbilityType.TELEPORT_SOURCE, 1.5f, 10f, 9f),
 

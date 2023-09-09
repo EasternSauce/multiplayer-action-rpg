@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class EnemyCrossbowBoltControl extends CrossbowBoltControlBase {
-  int currentBoltToFire = 0;
   Vector2 previousDirVector = null;
 
   public static EnemyCrossbowBoltControl of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
