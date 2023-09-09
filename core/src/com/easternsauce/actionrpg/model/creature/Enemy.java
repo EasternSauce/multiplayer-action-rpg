@@ -56,7 +56,7 @@ public class Enemy extends Creature {
     getParams().getEnemyParams().getAggroTimer().update(delta);
     getParams().getEnemyParams().getFindTargetTimer().update(delta);
     getParams().getEnemyParams().getAutoControlsStateTimer().update(delta);
-    getParams().getEnemyParams().getAttackCooldownTimer().update(delta);
+    getParams().getEnemyParams().getUseAbilityCooldownTimer().update(delta);
     getParams().getEnemyParams().getJustAttackedFromRangeTimer().update(delta);
   }
 

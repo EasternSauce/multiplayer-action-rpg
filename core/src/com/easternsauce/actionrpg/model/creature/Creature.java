@@ -137,7 +137,7 @@ public abstract class Creature implements Entity {
     getParams().getTimeSinceDeathTimer().update(delta);
     getParams().getEffectParams().getStaminaRegenerationTimer().update(delta);
     getParams().getMovementParams().getGateTeleportCooldownTimer().update(delta);
-    getParams().getGlobalSkillPerformCooldownTimer().update(delta);
+    getParams().getMinimumSkillPerformCooldownTimer().update(delta);
     getParams().getEffectParams().getDamageOverTimeTimer().update(delta);
     getParams().getEffectParams().getLifeRegenerationOverTimeTimer().update(delta);
     getParams().getEffectParams().getManaRegenerationOverTimeTimer().update(delta);
@@ -299,7 +299,7 @@ public abstract class Creature implements Entity {
     takeManaDamage(skill.getManaCost());
 
     if (skill.getSkillType().getDamaging()) {
-      getParams().getGlobalSkillPerformCooldownTimer().restart();
+      getParams().getMinimumSkillPerformCooldownTimer().restart();
     }
 
     onAfterPerformSkill();

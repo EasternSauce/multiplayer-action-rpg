@@ -83,7 +83,7 @@ public class CreatureParams implements EntityParams {
   private Float dropRngSeed = (float) Math.random(); // TODO: use random generator
 
   @NonNull
-  private SimpleTimer globalSkillPerformCooldownTimer = SimpleTimer.getExpiredTimer();
+  private SimpleTimer minimumSkillPerformCooldownTimer = SimpleTimer.getExpiredTimer();
 
   private EnemyRallyPointId enemyRallyPointId; // TODO: move to enemy params?
 

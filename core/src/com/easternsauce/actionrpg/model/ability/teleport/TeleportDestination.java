@@ -2,7 +2,7 @@ package com.easternsauce.actionrpg.model.ability.teleport;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.AbilityParams;
-import com.easternsauce.actionrpg.model.area.AreaId;
+import com.easternsauce.actionrpg.model.ability.util.PointTargetedAbilityUtils;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.EqualsAndHashCode;
@@ -15,9 +15,9 @@ public class TeleportDestination extends TeleportDestinationBase {
   public static TeleportDestinationBase of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
     Creature creature = game.getCreature(abilityParams.getCreatureId());
 
-    Vector2 teleportPos = TeleportDestination.calculatePos(
+    Vector2 teleportPos = PointTargetedAbilityUtils.calculatePos(
       creature.getParams().getPos().add(abilityParams.getDirVector()), creature.getParams().getPos(),
-      creature.getParams().getAreaId(), game);
+      creature.getParams().getAreaId(), 17f, game);
 
     TeleportDestination ability = TeleportDestination.of();
     ability.params = abilityParams.setWidth(4.5f).setHeight(4.5f).setChannelTime(0f).setActiveTime(1f)
@@ -25,23 +25,5 @@ public class TeleportDestination extends TeleportDestinationBase {
       .setPos(teleportPos).setChainToPos(teleportPos);
 
     return ability;
-  }
-
-  private static Vector2 calculatePos(Vector2 pos, Vector2 creaturePos, AreaId areaId, CoreGame game) {
-    Vector2 vectorTowards = creaturePos.vectorTowards(pos);
-
-    float maxRange = 17f;
-    Vector2 destinationPos;
-    if (vectorTowards.len() > maxRange) {
-      destinationPos = creaturePos.add(vectorTowards.normalized().multiplyBy(maxRange));
-    } else {
-      destinationPos = pos;
-    }
-
-    if (!game.isLineBetweenPointsUnobstructedByTerrain(areaId, creaturePos, destinationPos)) {
-      return creaturePos;
-    }
-
-    return destinationPos;
   }
 }

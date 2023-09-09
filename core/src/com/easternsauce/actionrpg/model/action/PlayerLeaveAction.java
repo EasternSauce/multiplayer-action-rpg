@@ -22,7 +22,6 @@ public class PlayerLeaveAction extends GameStateAction {
     game.getGameState().accessCreatures().getActiveCreatureIds().remove(playerId);
 
     game.getEventProcessor().getCreatureModelsToBeRemoved().add(playerId);
-    System.out.println("removed model " + playerId.getValue());
   }
 
 

@@ -33,9 +33,13 @@ public abstract class PoisonousCloudBase extends Ability {
 
     creature.applyEffect(CreatureEffect.SLOW, 1.3f, game);
     creature.getParams().getEffectParams().setCurrentSlowMagnitude(0.5f);
-    creature.applyEffect(CreatureEffect.POISON, 10f, game);
-    creature.getParams().getEffectParams().setCurrentDamageOverTimeTaken(8f);
-    creature.getParams().getEffectParams().setCurrentDamageOverTimeDealerCreatureId(getParams().getCreatureId());
+
+    if (!creature.isEffectActive(CreatureEffect.POISON, game)) {
+      creature.applyEffect(CreatureEffect.POISON, 10f, game);
+      creature.getParams().getEffectParams().setCurrentDamageOverTimeTaken(8f);
+      creature.getParams().getEffectParams().setCurrentDamageOverTimeDealerCreatureId(getParams().getCreatureId());
+    }
+
   }
 
   @Override

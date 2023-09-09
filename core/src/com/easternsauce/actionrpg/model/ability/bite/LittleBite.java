@@ -1,4 +1,4 @@
-package com.easternsauce.actionrpg.model.ability.poisonbite;
+package com.easternsauce.actionrpg.model.ability.bite;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.AbilityParams;
@@ -13,18 +13,18 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-public class PoisonBite extends AttachedAbility {
+public class LittleBite extends AttachedAbility {
   @Getter
   protected AbilityParams params;
 
-  public static PoisonBite of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+  public static LittleBite of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
     float flipValue = abilityParams.getDirVector().angleDeg();
 
-    PoisonBite ability = PoisonBite.of();
+    LittleBite ability = LittleBite.of();
 
-    ability.params = abilityParams.setWidth(1.3f).setHeight(1.3f).setChannelTime(0f).setActiveTime(0.18f)
-      .setStartingRange(1.8f).setTextureName("teeth").setBaseDamage(30f).setChannelAnimationLooping(false)
-      .setActiveAnimationLooping(false).setFlip(PoisonBite.calculateFlip(flipValue));
+    ability.params = abilityParams.setWidth(0.9f).setHeight(0.9f).setChannelTime(0f).setActiveTime(0.18f)
+      .setStartingRange(1.2f).setTextureName("teeth").setBaseDamage(37f).setChannelAnimationLooping(false)
+      .setActiveAnimationLooping(false).setFlip(LittleBite.calculateFlip(flipValue));
 
     return ability;
   }
@@ -67,12 +67,6 @@ public class PoisonBite extends AttachedAbility {
 
     creature.applyEffect(CreatureEffect.SLOW, 0.75f, game);
     creature.getParams().getEffectParams().setCurrentSlowMagnitude(0.3f);
-
-    if (!creature.isEffectActive(CreatureEffect.POISON, game)) {
-      creature.applyEffect(CreatureEffect.POISON, 10f, game);
-      creature.getParams().getEffectParams().setCurrentDamageOverTimeTaken(18f);
-      creature.getParams().getEffectParams().setCurrentDamageOverTimeDealerCreatureId(getParams().getCreatureId());
-    }
   }
 
   @Override

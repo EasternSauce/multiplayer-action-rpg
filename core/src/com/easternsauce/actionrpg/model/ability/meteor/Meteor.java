@@ -5,7 +5,7 @@ import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import com.easternsauce.actionrpg.model.ability.AbilityType;
 import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
 import com.easternsauce.actionrpg.model.ability.Projectile;
-import com.easternsauce.actionrpg.model.area.AreaId;
+import com.easternsauce.actionrpg.model.ability.util.PointTargetedAbilityUtils;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
 import com.easternsauce.actionrpg.model.util.Vector2;
@@ -27,8 +27,9 @@ public class Meteor extends Projectile {
 
     Meteor ability = Meteor.of();
 
-    ability.destinationPos = Meteor.calculatePos(creature.getParams().getPos().add(abilityParams.getDirVector()),
-      creature.getParams().getPos(), creature.getParams().getAreaId(), game);
+    ability.destinationPos = PointTargetedAbilityUtils.calculatePos(
+      creature.getParams().getPos().add(abilityParams.getDirVector()),
+      creature.getParams().getPos(), creature.getParams().getAreaId(), 17f, game);
     ability.startingPos = Vector2.of(ability.destinationPos.getX() + 12f, ability.destinationPos.getY() + 12f);
 
     ability.params = abilityParams.setWidth(2.474f).setHeight(2f).setChannelTime(0f).setActiveTime(5f)
@@ -36,25 +37,6 @@ public class Meteor extends Projectile {
       .setPos(ability.startingPos).setDontOverridePos(true).setDirVector(Vector2.of(-1, -1));
 
     return ability;
-  }
-
-  private static Vector2 calculatePos(Vector2 pos, Vector2 creaturePos, AreaId areaId, CoreGame game) {
-    Vector2 vectorTowards = creaturePos.vectorTowards(pos);
-
-    Vector2 destinationPos;
-
-    float maxRange = 20f;
-    if (vectorTowards.len() > maxRange) {
-      destinationPos = creaturePos.add(vectorTowards.normalized().multiplyBy(maxRange));
-    } else {
-      destinationPos = pos;
-    }
-
-    if (!game.isLineBetweenPointsUnobstructedByTerrain(areaId, creaturePos, destinationPos)) {
-      destinationPos = creaturePos;
-    }
-
-    return destinationPos;
   }
 
   @Override

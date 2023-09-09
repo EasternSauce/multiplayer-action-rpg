@@ -238,14 +238,14 @@ public class EnemyAutoControlsProcessor {
     Creature creature = game.getCreature(creatureId);
 
 
-    if (creature.getParams().getEnemyParams().getAttackCooldownTimer().getTime() >
-      Constants.ENEMY_ATTACK_COOLDOWN_TIMER) {
+    if (creature.getParams().getEnemyParams().getUseAbilityCooldownTimer().getTime() >
+      Constants.ENEMY_USE_ABILITY_COOLDOWN_TIMER) {
       Float distanceToTarget = potentialTargetPos.distance(creature.getParams().getPos());
 
       game.getGameState().accessCreatures()
         .handleCreatureUseRandomSkillAtTarget(creature.getParams().getId(), vectorTowardsTarget, distanceToTarget,
           game);
-      creature.getParams().getEnemyParams().getAttackCooldownTimer().restart();
+      creature.getParams().getEnemyParams().getUseAbilityCooldownTimer().restart();
     }
   }
 

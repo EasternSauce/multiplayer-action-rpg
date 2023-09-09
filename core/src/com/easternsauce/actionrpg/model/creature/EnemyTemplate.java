@@ -83,7 +83,8 @@ public class EnemyTemplate {
   public static EnemyTemplate babySpider = EnemyTemplate.of(EnemyType.BABY_SPIDER, 150f, 4f, 13f,
     new ConcurrentSkipListSet<>(
       Arrays.asList(DropTableEntry.unlikelyLifePotionDrop, DropTableEntry.unlikelyManaPotionDrop)),
-    new ConcurrentSkipListSet<>(Collections.singletonList(EnemySkillUseEntry.of(SkillType.BITE, 6f, 300f))), null);
+    new ConcurrentSkipListSet<>(Collections.singletonList(EnemySkillUseEntry.of(SkillType.LITTLE_BITE, 6f, 300f))),
+    null);
 
   @Getter
   private EnemyType enemyType;

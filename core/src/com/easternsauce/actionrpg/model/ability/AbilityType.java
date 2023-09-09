@@ -2,6 +2,7 @@ package com.easternsauce.actionrpg.model.ability;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.bite.Bite;
+import com.easternsauce.actionrpg.model.ability.bite.LittleBite;
 import com.easternsauce.actionrpg.model.ability.boomerang.Boomerang;
 import com.easternsauce.actionrpg.model.ability.crossbowbolt.CrossbowBolt;
 import com.easternsauce.actionrpg.model.ability.crossbowbolt.CrossbowBoltControl;
@@ -103,7 +104,7 @@ public enum AbilityType {
     IceSpearRampage::of), TUNNEL_DIG(TunnelDig::of), DIG_TUNNEL_SPLASH(TunnelDigSplash::of), DIG_TUNNEL_EXPLOSION(
     TunnelDigExplosion::of),
 
-  BITE(Bite::of), POISON_BITE(PoisonBite::of),
+  LITTLE_BITE(LittleBite::of), BITE(Bite::of), POISON_BITE(PoisonBite::of),
 
   EMERALD_SPIN(EmeraldSpin::of), EMERALD_SPIN_CONTROL(EmeraldSpinControl::of),
 

@@ -25,8 +25,8 @@ public class Constants {
 
   public static final float ENEMY_SEARCH_DISTANCE = 22f;
   public static final float PREVENT_ENEMY_RESPAWN_DISTANCE = 32f;
-  public static final float ENEMY_ATTACK_COOLDOWN_TIMER = 2.5f;
-  public static final float GLOBAL_SKILL_PERFORM_COOLDOWN = 0.3f;
+  public static final float ENEMY_USE_ABILITY_COOLDOWN_TIMER = 0.1f;
+  public static final float MINIMUM_SKILL_PERFORM_COOLDOWN = 0.1f;
   public static final float DAMAGE_NUMBER_SHOW_DURATION = 1.5f;
   public static final float DAMAGE_ANIMATION_DURATION = 0.35f;
   public static final float ENEMY_RESPAWN_TIME = 120f;

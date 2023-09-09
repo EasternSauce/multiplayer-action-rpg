@@ -54,11 +54,13 @@ public enum SkillType {
 
   BITE("Bite (mob only)", true, AbilityType.BITE, 2f, 15f, 0f),
 
+  LITTLE_BITE("Little Bite (mob only)", true, AbilityType.LITTLE_BITE, 2f, 15f, 0f),
+
   POISON_BITE("Poison Bite (mob only)", true, AbilityType.POISON_BITE, 2f, 15f, 0f),
 
   EMERALD_SPIN("Emerald Spin", true, AbilityType.EMERALD_SPIN_CONTROL, 0.5f, 7f, 7f),
 
-  METEOR("Meteor", true, AbilityType.METEOR, 0.5f, 7f, 7f);
+  METEOR("Meteor", true, AbilityType.METEOR, 0.8f, 7f, 7f);
 
   @Getter
   Float cooldown;

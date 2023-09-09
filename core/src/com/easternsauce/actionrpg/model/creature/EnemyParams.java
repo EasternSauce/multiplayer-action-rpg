@@ -43,7 +43,7 @@ public class EnemyParams {
   private Float walkUpRange;
 
   @NonNull
-  private SimpleTimer attackCooldownTimer = SimpleTimer.getExpiredTimer();
+  private SimpleTimer useAbilityCooldownTimer = SimpleTimer.getExpiredTimer();
   @NonNull
   private Float skillUseRngSeed = (float) Math.random();
   @NonNull

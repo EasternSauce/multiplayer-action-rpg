@@ -237,7 +237,7 @@ public class PhysicsWorld {
 
   public Boolean isLineBetweenPointsUnobstructedByTerrain(Vector2 fromPos, Vector2 toPos) {
     float lineWidth = 0.3f;
-    com.badlogic.gdx.math.Polygon lineOfSightRect = new com.badlogic.gdx.math.Polygon(
+    com.badlogic.gdx.math.Polygon lineRect = new com.badlogic.gdx.math.Polygon(
       new float[]{fromPos.getX(), fromPos.getY(),
         fromPos.getX() + lineWidth,
         fromPos.getY() + lineWidth, toPos.getX() + lineWidth, toPos.getY() + lineWidth, toPos.getX(), toPos.getY()});
@@ -250,13 +250,13 @@ public class PhysicsWorld {
 
     // TODO: maybe check nearby tiles only?
     for (com.badlogic.gdx.math.Polygon polygon : terrainPolygons) {
-      if (Intersector.overlapConvexPolygons(polygon, lineOfSightRect)) {
+      if (Intersector.overlapConvexPolygons(polygon, lineRect)) {
         return false;
       }
     }
 
     for (com.badlogic.gdx.math.Polygon polygon : borderPolygons) {
-      if (Intersector.overlapConvexPolygons(polygon, lineOfSightRect)) {
+      if (Intersector.overlapConvexPolygons(polygon, lineRect)) {
         return false;
       }
     }
