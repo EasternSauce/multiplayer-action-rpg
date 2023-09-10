@@ -57,7 +57,6 @@ public class EnemyParams {
 
   @NonNull
   private SimpleTimer movingTowardsSpawnPointPathCalculationTimer = SimpleTimer.getExpiredTimer();
-  @NonNull
   private float timeBetweenMovingTowardsSpawnPointPathCalculation = 10f;
 
 }

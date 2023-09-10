@@ -57,7 +57,7 @@ public class B2BodyFactory {
 
   public static Body createCreatureB2Body(PhysicsWorld world, CreatureBody creatureBody, Creature creature) {
     return createB2Body(world, creature.getParams().getPos(), BodyType.DynamicBody, creatureBody,
-      Circle.of(creature.animationConfig().getSpriteWidth() / 2f), false, false, 10f, 1000f);
+      Circle.of(creature.getAnimationConfig().getSpriteWidth() / 2f), false, false, 10f, 1000f);
   }
 
   public static Body createAbilityB2Body(PhysicsWorld world, AbilityBody abilityBody, Vector2 pos, float[] vertices) {

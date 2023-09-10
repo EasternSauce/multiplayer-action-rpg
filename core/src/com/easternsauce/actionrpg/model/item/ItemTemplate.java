@@ -1,17 +1,20 @@
 package com.easternsauce.actionrpg.model.item;
 
+import com.easternsauce.actionrpg.model.creature.CreatureConstantEffect;
 import com.easternsauce.actionrpg.model.skill.SkillType;
 import com.easternsauce.actionrpg.model.util.Vector2Int;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static com.easternsauce.actionrpg.model.creature.CreatureConstantEffect.LIFE_RECOVERY_ON_KILL;
+import static com.easternsauce.actionrpg.model.creature.CreatureConstantEffect.MANA_RECOVERY_ON_KILL;
 
 @SuppressWarnings("SpellCheckingInspection")
 @NoArgsConstructor(staticName = "of")
@@ -53,8 +56,20 @@ public class ItemTemplate {
     ItemTemplate manaPotion = ItemTemplate.of("manaPotion", "Mana Potion", "-", Vector2Int.of(1, 9)).setWorth(600)
       .setConsumable(true).setStackable(true).setQualityNonApplicable(true);
 
+    ItemTemplate topazRing = ItemTemplate.of("topazRing", "Topaz Ring", "Provides mana recovery on kill",
+        Vector2Int.of(5, 8)).setWorth(1000)
+      .setEquipable(true).setQualityNonApplicable(true).setEquipmentSlotType(EquipmentSlotType.RING).setConstantEffects(
+        Stream.of(MANA_RECOVERY_ON_KILL)
+          .collect(Collectors.toCollection(ConcurrentSkipListSet::new)));
+
+    ItemTemplate rubyRing = ItemTemplate.of("rubyRing", "Ruby Ring", "Provides life recovery on kill",
+        Vector2Int.of(5, 8)).setWorth(2000)
+      .setEquipable(true).setQualityNonApplicable(true).setEquipmentSlotType(EquipmentSlotType.RING)
+      .setConstantEffects(Stream.of(LIFE_RECOVERY_ON_KILL)
+        .collect(Collectors.toCollection(ConcurrentSkipListSet::new)));
+
     List<ItemTemplate> templates = Arrays.asList(leatherArmor, ringmailGreaves, hideGloves, boomerang, woodenSword,
-      ironSword, woodenShield, crossbow, lifePotion, manaPotion);
+      ironSword, woodenShield, crossbow, lifePotion, manaPotion, topazRing, rubyRing);
 
     List<ItemTemplate> list = new ArrayList<>(templates);
     ItemTemplate.templates = new ConcurrentSkipListMap<>(
@@ -74,6 +89,7 @@ public class ItemTemplate {
   private Float damage;
   private Integer armor;
   private SkillType attackSkill;
+  private Set<CreatureConstantEffect> constantEffects = new ConcurrentSkipListSet<>();
 
   public static ItemTemplate of(String id, String name, String description, Vector2Int iconPos) {
     ItemTemplate itemTemplate = ItemTemplate.of();

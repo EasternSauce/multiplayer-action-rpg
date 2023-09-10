@@ -36,17 +36,17 @@ public class NullCreature extends Creature {
   }
 
   @Override
-  public WorldDirection facingDirection(CoreGame game) {
+  public WorldDirection getFacingDirection(CoreGame game) {
     return WorldDirection.RIGHT;
   }
 
   @Override
-  public Integer capability() {
+  public Integer getCapability() {
     return 1;
   }
 
   @Override
-  public CreatureAnimationConfig animationConfig() {
+  public CreatureAnimationConfig getAnimationConfig() {
     return CreatureAnimationConfig.of();
   }
 

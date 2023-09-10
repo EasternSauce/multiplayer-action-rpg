@@ -64,7 +64,7 @@ public class Enemy extends Creature {
   }
 
   @Override
-  public WorldDirection facingDirection(CoreGame game) {
+  public WorldDirection getFacingDirection(CoreGame game) {
     float deg;
     if (getParams().getEnemyParams().getTargetCreatureId() != null) {
       Vector2 targetPos = game.getCreaturePos(getParams().getEnemyParams().getTargetCreatureId());
@@ -131,6 +131,24 @@ public class Enemy extends Creature {
         if (aggroedCreature != null && aggroedCreature.isCurrentlyActive(game)) {
           makeAggressiveAfterHitByAbility(ability);
         }
+      }
+    }
+  }
+
+  @Override
+  protected void processRegenerationOverTime(CoreGame game) {
+    if (getParams().getEnemyParams().getTargetCreatureId() == null) {
+      if (getParams().getEffectParams().getLifeRegenerationOverTimeTimer().getTime() > 0.333f) {
+        regenerateLife(getParams().getStats().getMaxLife() / 30f);
+      }
+    } else if (isEffectActive(CreatureEffect.LIFE_REGENERATION, game)) {
+      if (getParams().getEffectParams().getLifeRegenerationOverTimeTimer().getTime() > 0.333f) {
+        regenerateLife(8f);
+      }
+    }
+    if (isEffectActive(CreatureEffect.MANA_REGENERATION, game)) {
+      if (getParams().getEffectParams().getManaRegenerationOverTimeTimer().getTime() > 0.333f) {
+        regenerateMana(8f);
       }
     }
   }

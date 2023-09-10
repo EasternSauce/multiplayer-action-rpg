@@ -26,7 +26,7 @@ public class CreatureSprite {
   }
 
   public void updateSize(Creature creature) {
-    sprite.setSize(creature.animationConfig().getSpriteWidth(), creature.animationConfig().getSpriteHeight());
+    sprite.setSize(creature.getAnimationConfig().getSpriteWidth(), creature.getAnimationConfig().getSpriteHeight());
   }
 
   public void updateForAliveCreature(Creature creature, CoreGame game) {
@@ -34,13 +34,13 @@ public class CreatureSprite {
       .getCreatureModelAnimations().get(creature.getParams().getTextureName());
 
     TextureRegion texture;
-    if (!creature.animationConfig().getAlwaysLoop() &&
+    if (!creature.getAnimationConfig().getAlwaysLoop() &&
       (!creature.getParams().getMovementParams().getMoving() || creature.isStunned(game))) {
       texture = creatureModelAnimation.getFacingTexture(creature.getParams().getTextureName(),
-        creature.facingDirection(game));
+        creature.getFacingDirection(game));
     } else {
       texture = creatureModelAnimation.getRunningAnimationFrame(creature.getParams().getTextureName(),
-        creature.facingDirection(game), creature.getParams().getAnimationTimer().getTime());
+        creature.getFacingDirection(game), creature.getParams().getAnimationTimer().getTime());
     }
 
     sprite.setRotation(0f);

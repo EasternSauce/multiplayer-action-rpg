@@ -108,6 +108,10 @@ public class ItemDrop {
   public static ItemDrop tierOneMagicIronSwordDrop = ItemDrop.of(
     ItemTemplate.templates.get("ironSword"), 1f, Stream.of(new AbstractMap.SimpleEntry<>(SkillType.SWORD_SPIN, 100))
       .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)));
+  public static ItemDrop topazRingDrop = ItemDrop.of(
+    ItemTemplate.templates.get("topazRing"), 0f, new ConcurrentSkipListMap<>());
+  public static ItemDrop rubyRingDrop = ItemDrop.of(
+    ItemTemplate.templates.get("rubyRing"), 0f, new ConcurrentSkipListMap<>());
 
   @Getter
   ItemTemplate template;

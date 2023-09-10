@@ -17,6 +17,7 @@ import com.easternsauce.actionrpg.renderer.util.Rect;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.stream.Collectors;
 
 public abstract class Creature implements Entity {
@@ -55,32 +56,37 @@ public abstract class Creature implements Entity {
 
   }
 
-  private void processRegenerationOverTime(CoreGame game) {
+  protected void processRegenerationOverTime(CoreGame game) {
     if (isEffectActive(CreatureEffect.LIFE_REGENERATION, game)) {
-      float lifeRegen = 14f;
       if (getParams().getEffectParams().getLifeRegenerationOverTimeTimer().getTime() > 0.333f) {
-        if (getParams().getStats().getLife() + lifeRegen < getParams().getStats().getMaxLife()) {
-          getParams().getStats().setLife(getParams().getStats().getLife() + lifeRegen);
-        } else {
-          getParams().getStats().setLife(getParams().getStats().getMaxLife());
-        }
-
-        getParams().getEffectParams().getLifeRegenerationOverTimeTimer().restart();
+        regenerateLife(8f);
       }
     }
     if (isEffectActive(CreatureEffect.MANA_REGENERATION, game)) {
-      float manaRegen = 14f;
       if (getParams().getEffectParams().getManaRegenerationOverTimeTimer().getTime() > 0.333f) {
-        if (getParams().getStats().getMana() + manaRegen < getParams().getStats().getMaxMana()) {
-          getParams().getStats().setMana(getParams().getStats().getMana() + manaRegen);
-        } else {
-          getParams().getStats().setMana(getParams().getStats().getMaxMana());
-        }
-
-        getParams().getEffectParams().getManaRegenerationOverTimeTimer().restart();
+        regenerateMana(8f);
       }
-
     }
+  }
+
+  protected void regenerateMana(float manaRegen) {
+    if (getParams().getStats().getMana() + manaRegen < getParams().getStats().getMaxMana()) {
+      getParams().getStats().setMana(getParams().getStats().getMana() + manaRegen);
+    } else {
+      getParams().getStats().setMana(getParams().getStats().getMaxMana());
+    }
+
+    getParams().getEffectParams().getManaRegenerationOverTimeTimer().restart();
+  }
+
+  protected void regenerateLife(float lifeRegen) {
+    if (getParams().getStats().getLife() + lifeRegen < getParams().getStats().getMaxLife()) {
+      getParams().getStats().setLife(getParams().getStats().getLife() + lifeRegen);
+    } else {
+      getParams().getStats().setLife(getParams().getStats().getMaxLife());
+    }
+
+    getParams().getEffectParams().getLifeRegenerationOverTimeTimer().restart();
   }
 
   private void processDamageOverTime(CoreGame game) {
@@ -147,7 +153,7 @@ public abstract class Creature implements Entity {
     // add other timers here...
   }
 
-  public WorldDirection facingDirection(CoreGame game) {
+  public WorldDirection getFacingDirection(CoreGame game) {
     float deg = getParams().getMovementParams().getFacingVector().angleDeg();
 
     if (deg >= 45 && deg < 135) {
@@ -164,8 +170,8 @@ public abstract class Creature implements Entity {
 
   public abstract CreatureParams getParams();
 
-  public Integer capability() {
-    Float width = animationConfig().getSpriteWidth();
+  public Integer getCapability() {
+    Float width = getAnimationConfig().getSpriteWidth();
     if (width >= 0 && width < 3) {
       return 1;
     } else if (width >= 3 && width <= 6) {
@@ -176,7 +182,7 @@ public abstract class Creature implements Entity {
     return 4;
   }
 
-  public CreatureAnimationConfig animationConfig() {
+  public CreatureAnimationConfig getAnimationConfig() {
     return CreatureAnimationConfig.configs.get(getParams().getTextureName());
   }
 
@@ -196,7 +202,7 @@ public abstract class Creature implements Entity {
   public void takeLifeDamage(float damage, Vector2 contactPoint, CoreGame game) {
     getParams().getStats().setPreviousTickLife(getParams().getStats().getLife());
 
-    float actualDamageTaken = damage * 100f / (100f + totalArmor());
+    float actualDamageTaken = damage * 100f / (100f + getTotalArmor());
 
     if (getParams().getStats().getLife() - actualDamageTaken > 0) {
       getParams().getStats().setLife(getParams().getStats().getLife() - actualDamageTaken);
@@ -212,9 +218,19 @@ public abstract class Creature implements Entity {
         getParams().getAreaId(), game);
   }
 
-  private float totalArmor() {
+  private float getTotalArmor() {
     return getParams().getEquipmentItems().values().stream().filter(item -> item.getTemplate().getArmor() != null)
       .reduce(0, ((acc, item) -> acc + item.getArmor()), Integer::sum);
+  }
+
+  private Set<CreatureConstantEffect> getConstantEffects() {
+    Set<CreatureConstantEffect> constantEffects = new ConcurrentSkipListSet<>();
+
+    getParams().getEquipmentItems().values().forEach(item -> {
+      constantEffects.addAll(item.getTemplate().getConstantEffects());
+    });
+
+    return constantEffects;
   }
 
   public void onDeath(@SuppressWarnings("unused") Creature attackerCreature, CoreGame game) {
@@ -343,24 +359,37 @@ public abstract class Creature implements Entity {
   }
 
   public void onKillEffect() {
-    float missingManaPercent = 1f - getParams().getStats().getMana() / getParams().getStats().getMaxMana();
-
-    float manaAfterOnKillRecovery = getParams().getStats().getMana() + missingManaPercent * 110;
-
-    if (manaAfterOnKillRecovery > getParams().getStats().getMaxMana()) {
-      getParams().getStats().setMana(getParams().getStats().getMaxMana());
-    } else {
-      getParams().getStats().setMana(manaAfterOnKillRecovery);
+    if (getConstantEffects().contains(CreatureConstantEffect.LIFE_RECOVERY_ON_KILL)) {
+      recoverLifeOnKill();
     }
+    if (getConstantEffects().contains(CreatureConstantEffect.MANA_RECOVERY_ON_KILL)) {
+      recoverManaOnKill();
+    }
+  }
 
+  private void recoverLifeOnKill() {
     float missingLifePercent = 1f - getParams().getStats().getLife() / getParams().getStats().getMaxLife();
 
-    float lifeAfterOnKillRecovery = getParams().getStats().getLife() + missingLifePercent * 100;
+    float lifeAfterOnKillRecovery =
+      getParams().getStats().getLife() + missingLifePercent * getParams().getStats().getMaxLife() * 0.3f;
 
     if (lifeAfterOnKillRecovery > getParams().getStats().getMaxLife()) {
       getParams().getStats().setLife(getParams().getStats().getMaxLife());
     } else {
       getParams().getStats().setLife(lifeAfterOnKillRecovery);
+    }
+  }
+
+  private void recoverManaOnKill() {
+    float missingManaPercent = 1f - getParams().getStats().getMana() / getParams().getStats().getMaxMana();
+
+    float manaAfterOnKillRecovery =
+      getParams().getStats().getMana() + missingManaPercent * getParams().getStats().getMaxMana() * 0.3f;
+
+    if (manaAfterOnKillRecovery > getParams().getStats().getMaxMana()) {
+      getParams().getStats().setMana(getParams().getStats().getMaxMana());
+    } else {
+      getParams().getStats().setMana(manaAfterOnKillRecovery);
     }
   }
 

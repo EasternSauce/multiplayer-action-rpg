@@ -91,7 +91,9 @@ public class CreatureParams implements EntityParams {
 
   private OnDeathAction onDeathAction;
 
+  @NonNull
   private Float lastTimeMoved = -Float.MAX_VALUE;
+  @NonNull
   private Float lastTimeUsedSkill = -Float.MAX_VALUE;
 
   public static CreatureParams of(CreatureId creatureId, AreaId areaId, Vector2 pos, EnemyTemplate enemyTemplate, int rngSeed) {
@@ -131,8 +133,10 @@ public class CreatureParams implements EntityParams {
 
     Map<Integer, Item> inventoryItems = new ConcurrentSkipListMap<>();
     inventoryItems.put(2, Item.of().setTemplate(ItemTemplate.templates.get("lifePotion")));
+    inventoryItems.put(4, Item.of().setTemplate(ItemTemplate.templates.get("topazRing")));
+    inventoryItems.put(5, Item.of().setTemplate(ItemTemplate.templates.get("rubyRing")));
     inventoryItems.put(7, Item.of().setTemplate(ItemTemplate.templates.get("hideGloves")).setGrantedSkills(
-      Stream.of(new AbstractMap.SimpleEntry<>(SkillType.LIGHTNING, 1))
+      Stream.of(new AbstractMap.SimpleEntry<>(SkillType.EMERALD_SPIN, 1))
         .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue))));
     // TODO
 

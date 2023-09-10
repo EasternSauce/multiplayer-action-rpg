@@ -131,7 +131,7 @@ public class PhysicsEventQueueProcessor {
   private Vector2 calculateContactPoint(Creature destinationCreature, Ability ability) {
     Vector2 creaturePos = destinationCreature.getParams().getPos();
     Vector2 abilityPos = ability.getParams().getPos();
-    Float creatureRadius = destinationCreature.animationConfig().getSpriteWidth();
+    Float creatureRadius = destinationCreature.getAnimationConfig().getSpriteWidth();
 
     Vector2 contactPoint;
     if (creaturePos.distance(abilityPos) < creatureRadius) {

@@ -42,9 +42,9 @@ public class EmeraldSpinControl extends Ability {
     float baseAngle = getParams().getDirVector().angleDeg();
     game.chainAnotherAbility(this, AbilityType.EMERALD_SPIN, params.getDirVector(),
       ChainAbilityParams.of().setChainToPos(getParams().getPos()));
-    game.chainAnotherAbility(this, AbilityType.EMERALD_SPIN, params.getDirVector().withSetDegAngle(baseAngle - 15f),
+    game.chainAnotherAbility(this, AbilityType.EMERALD_SPIN, params.getDirVector().withSetDegAngle(baseAngle - 10f),
       ChainAbilityParams.of().setChainToPos(getParams().getPos()));
-    game.chainAnotherAbility(this, AbilityType.EMERALD_SPIN, params.getDirVector().withSetDegAngle(baseAngle + 15f),
+    game.chainAnotherAbility(this, AbilityType.EMERALD_SPIN, params.getDirVector().withSetDegAngle(baseAngle + 10f),
       ChainAbilityParams.of().setChainToPos(getParams().getPos()));
   }
 

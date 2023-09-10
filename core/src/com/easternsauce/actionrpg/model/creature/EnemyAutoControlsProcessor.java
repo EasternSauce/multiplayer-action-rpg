@@ -302,7 +302,7 @@ public class EnemyAutoControlsProcessor {
             creature.getParams().getEnemyParams().setPathMirrored(true);
           } else {
             AstarResult result = Astar.findPath(game.getPhysicsWorld(creature.getParams().getAreaId()),
-              creature.getParams().getPos(), target.getParams().getPos(), creature.capability(), true);
+              creature.getParams().getPos(), target.getParams().getPos(), creature.getCapability(), true);
             path = result.getPath();
 
             creature.getParams().getEnemyParams().setPathMirrored(false);
@@ -323,7 +323,8 @@ public class EnemyAutoControlsProcessor {
         creature.getParams().getEnemyParams().getMovingTowardsSpawnPointPathCalculationTimer().restart();
 
         AstarResult result = Astar.findPath(game.getPhysicsWorld(creature.getParams().getAreaId()),
-          creature.getParams().getPos(), creature.getParams().getEnemyParams().getSpawnedPos(), creature.capability(),
+          creature.getParams().getPos(), creature.getParams().getEnemyParams().getSpawnedPos(),
+          creature.getCapability(),
           false);
         List<Vector2> path = result.getPath();
 
