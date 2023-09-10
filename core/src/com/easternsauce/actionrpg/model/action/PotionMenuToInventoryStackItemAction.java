@@ -19,9 +19,9 @@ public class PotionMenuToInventoryStackItemAction extends GameStateAction {
   private Integer inventoryIndex;
   private Integer potionMenuIndex;
 
-  public static PotionMenuToInventoryStackItemAction of(CreatureId creatureId, Integer inventoryIndex, Integer potionMenuIndex) {
+  public static PotionMenuToInventoryStackItemAction of(CreatureId playerId, Integer inventoryIndex, Integer potionMenuIndex) {
     PotionMenuToInventoryStackItemAction action = PotionMenuToInventoryStackItemAction.of();
-    action.playerId = creatureId;
+    action.playerId = playerId;
     action.inventoryIndex = inventoryIndex;
     action.potionMenuIndex = potionMenuIndex;
     return action;

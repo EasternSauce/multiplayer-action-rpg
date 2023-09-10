@@ -194,7 +194,7 @@ public class InventoryWindowRenderer {
   }
 
   private void renderMouseoverItemDescription(RenderingLayer renderingLayer, Item mouseOverItem) {
-    Assets.renderSmallFont(renderingLayer, mouseOverItem.getDescription(),
+    Assets.renderSmallFont(renderingLayer, mouseOverItem.getInfoText(),
       Vector2.of(InventoryWindowConsts.backgroundInnerRect.getX() + InventoryWindowConsts.MARGIN,
         InventoryWindowConsts.backgroundInnerRect.getY() + InventoryWindowConsts.backgroundInnerRect.getHeight() -
           (InventoryWindowConsts.INVENTORY_HEIGHT + 35)), Color.DARK_GRAY);

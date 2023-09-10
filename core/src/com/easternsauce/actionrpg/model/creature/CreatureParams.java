@@ -136,7 +136,7 @@ public class CreatureParams implements EntityParams {
     inventoryItems.put(4, Item.of().setTemplate(ItemTemplate.templates.get("topazRing")));
     inventoryItems.put(5, Item.of().setTemplate(ItemTemplate.templates.get("rubyRing")));
     inventoryItems.put(7, Item.of().setTemplate(ItemTemplate.templates.get("hideGloves")).setGrantedSkills(
-      Stream.of(new AbstractMap.SimpleEntry<>(SkillType.EMERALD_SPIN, 1))
+      Stream.of(new AbstractMap.SimpleEntry<>(SkillType.VOLATILE_BUBBLE, 1))
         .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue))));
     // TODO
 

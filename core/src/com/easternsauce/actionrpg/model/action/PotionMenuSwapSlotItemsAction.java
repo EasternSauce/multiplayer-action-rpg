@@ -19,9 +19,9 @@ public class PotionMenuSwapSlotItemsAction extends GameStateAction {
   private Integer fromSlotIndex;
   private Integer toSlotIndex;
 
-  public static PotionMenuSwapSlotItemsAction of(CreatureId creatureId, Integer fromSlotIndex, Integer toSlotIndex) {
+  public static PotionMenuSwapSlotItemsAction of(CreatureId playerId, Integer fromSlotIndex, Integer toSlotIndex) {
     PotionMenuSwapSlotItemsAction action = PotionMenuSwapSlotItemsAction.of();
-    action.playerId = creatureId;
+    action.playerId = playerId;
     action.fromSlotIndex = fromSlotIndex;
     action.toSlotIndex = toSlotIndex;
     return action;

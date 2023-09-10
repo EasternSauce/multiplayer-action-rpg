@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 public class InventoryPutOnCursorCancelAction extends GameStateAction {
   private CreatureId playerId;
 
-  public static InventoryPutOnCursorCancelAction of(CreatureId creatureId) {
+  public static InventoryPutOnCursorCancelAction of(CreatureId playerId) {
     InventoryPutOnCursorCancelAction action = InventoryPutOnCursorCancelAction.of();
-    action.playerId = creatureId;
+    action.playerId = playerId;
     return action;
   }
 

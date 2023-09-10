@@ -17,9 +17,9 @@ public class PotionMenuItemUseAction extends GameStateAction {
 
   private Integer slotIndex;
 
-  public static PotionMenuItemUseAction of(CreatureId creatureId, Integer slotIndex) {
+  public static PotionMenuItemUseAction of(CreatureId playerId, Integer slotIndex) {
     PotionMenuItemUseAction action = PotionMenuItemUseAction.of();
-    action.playerId = creatureId;
+    action.playerId = playerId;
     action.slotIndex = slotIndex;
     return action;
   }

@@ -152,4 +152,9 @@ public class NullCreature extends Creature {
   public boolean isCurrentlyActive(CoreGame game) {
     return false;
   }
+
+  @Override
+  public int getNextRandom() {
+    return 0;
+  }
 }

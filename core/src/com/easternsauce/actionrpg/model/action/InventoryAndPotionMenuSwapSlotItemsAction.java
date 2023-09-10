@@ -20,9 +20,9 @@ public class InventoryAndPotionMenuSwapSlotItemsAction extends GameStateAction {
   private Integer inventoryIndex;
   private Integer potionMenuIndex;
 
-  public static InventoryAndPotionMenuSwapSlotItemsAction of(CreatureId creatureId, Integer inventoryIndex, Integer potionMenuIndex) {
+  public static InventoryAndPotionMenuSwapSlotItemsAction of(CreatureId playerId, Integer inventoryIndex, Integer potionMenuIndex) {
     InventoryAndPotionMenuSwapSlotItemsAction action = InventoryAndPotionMenuSwapSlotItemsAction.of();
-    action.playerId = creatureId;
+    action.playerId = playerId;
     action.inventoryIndex = inventoryIndex;
     action.potionMenuIndex = potionMenuIndex;
     return action;

@@ -28,23 +28,25 @@ public abstract class CreatureHitAction extends GameStateAction {
   }
 
   private void onCreatureDeath(Creature targetCreature, Creature attackerCreature, CoreGame game) {
-    targetCreature.getParams().getStats().setLife(0f); // just to make sure its dead on client side
-    targetCreature.getParams().setDead(true);
-    targetCreature.getParams().getTimeSinceDeathTimer().restart();
-    targetCreature.getParams().setAwaitingRespawn(true);
-    attackerCreature.onKillEffect();
-    targetCreature.onDeath(attackerCreature, game);
+    if (!targetCreature.getParams().getDead()) {
+      targetCreature.getParams().getStats().setLife(0f); // just to make sure its dead on client side
+      targetCreature.getParams().setDead(true);
+      targetCreature.getParams().getTimeSinceDeathTimer().restart();
+      targetCreature.getParams().setAwaitingRespawn(true);
+      attackerCreature.onKillEffect();
+      targetCreature.onDeath(attackerCreature, game);
 
-    if (targetCreature.getParams().getEnemyRallyPointId() != null) {
-      EnemyRallyPoint enemyRallyPoint = game.getGameState()
-        .getEnemyRallyPoint(targetCreature.getParams().getEnemyRallyPointId());
+      if (targetCreature.getParams().getEnemyRallyPointId() != null) {
+        EnemyRallyPoint enemyRallyPoint = game.getGameState()
+          .getEnemyRallyPoint(targetCreature.getParams().getEnemyRallyPointId());
 
-      enemyRallyPoint.getRespawnTimer().restart();
+        enemyRallyPoint.getRespawnTimer().restart();
+      }
+
+      spawnDrops(targetCreature.getId(), game);
+
+      deactivateCreatureAbilities(targetCreature, game);
     }
-
-    spawnDrops(targetCreature.getId(), game);
-
-    deactivateCreatureAbilities(targetCreature, game);
   }
 
   private void spawnDrops(CreatureId targetId, CoreGame game) {

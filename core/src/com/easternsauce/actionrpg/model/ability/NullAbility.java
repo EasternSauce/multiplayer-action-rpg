@@ -28,7 +28,7 @@ public class NullAbility extends Ability {
 
   @Override
   public AbilityParams getParams() {
-    return AbilityParams.of().setChannelTime(0f).setActiveTime(0f);
+    return AbilityParams.of().setChannelTime(0f).setActiveTime(0f).setWidth(0f).setHeight(0f);
   }
 
   @Override

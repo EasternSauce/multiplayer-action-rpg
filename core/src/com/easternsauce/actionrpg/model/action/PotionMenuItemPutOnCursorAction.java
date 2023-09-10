@@ -14,9 +14,9 @@ public class PotionMenuItemPutOnCursorAction extends GameStateAction {
 
   private Integer slotIndex;
 
-  public static PotionMenuItemPutOnCursorAction of(CreatureId creatureId, Integer slotIndex) {
+  public static PotionMenuItemPutOnCursorAction of(CreatureId playerId, Integer slotIndex) {
     PotionMenuItemPutOnCursorAction action = PotionMenuItemPutOnCursorAction.of();
-    action.playerId = creatureId;
+    action.playerId = playerId;
     action.slotIndex = slotIndex;
     return action;
   }

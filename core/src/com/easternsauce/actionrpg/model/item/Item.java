@@ -19,8 +19,9 @@ public class Item implements Comparable<Item> {
   private LootPileId lootPileId;
 
   @SuppressWarnings("StringConcatenationInsideStringBufferAppend")
-  public String getDescription() {
+  public String getInfoText() {
     StringBuilder builder = new StringBuilder();
+    builder.append(getDescription() + "\n\n");
     if (template.getDamage() != null) {
       builder.append("Damage: " + getDamage() + "\n");
     }
@@ -28,7 +29,7 @@ public class Item implements Comparable<Item> {
       builder.append("Armor: " + getArmor() + "\n");
     }
     grantedSkills.forEach(
-      (skillType, level) -> builder.append("Grants Level " + level + " " + skillType.getPrettyName() + "\n"));
+      (skillType, level) -> builder.append("Grants Skill: Level " + level + " " + skillType.getPrettyName() + "\n"));
     if (template.getWorth() != null) {
       builder.append("Worth: " + getWorth() + "\n");
     }
@@ -41,6 +42,10 @@ public class Item implements Comparable<Item> {
 
   public Integer getArmor() {
     return (int) (template.getArmor() * qualityModifier);
+  }
+
+  public String getDescription() {
+    return template.getDescription();
   }
 
   public Integer getWorth() {

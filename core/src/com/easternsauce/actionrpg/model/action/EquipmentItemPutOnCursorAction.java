@@ -14,9 +14,9 @@ public class EquipmentItemPutOnCursorAction extends GameStateAction {
 
   private Integer slotIndex;
 
-  public static EquipmentItemPutOnCursorAction of(CreatureId creatureId, Integer slotIndex) {
+  public static EquipmentItemPutOnCursorAction of(CreatureId playerId, Integer slotIndex) {
     EquipmentItemPutOnCursorAction action = EquipmentItemPutOnCursorAction.of();
-    action.playerId = creatureId;
+    action.playerId = playerId;
     action.slotIndex = slotIndex;
     return action;
   }

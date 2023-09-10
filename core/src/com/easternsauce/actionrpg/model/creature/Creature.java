@@ -69,7 +69,7 @@ public abstract class Creature implements Entity {
     }
   }
 
-  protected void regenerateMana(float manaRegen) {
+  protected void regenerateMana(@SuppressWarnings("SameParameterValue") float manaRegen) {
     if (getParams().getStats().getMana() + manaRegen < getParams().getStats().getMaxMana()) {
       getParams().getStats().setMana(getParams().getStats().getMana() + manaRegen);
     } else {
@@ -226,9 +226,8 @@ public abstract class Creature implements Entity {
   private Set<CreatureConstantEffect> getConstantEffects() {
     Set<CreatureConstantEffect> constantEffects = new ConcurrentSkipListSet<>();
 
-    getParams().getEquipmentItems().values().forEach(item -> {
-      constantEffects.addAll(item.getTemplate().getConstantEffects());
-    });
+    getParams().getEquipmentItems().values()
+      .forEach(item -> constantEffects.addAll(item.getTemplate().getConstantEffects()));
 
     return constantEffects;
   }
@@ -371,7 +370,7 @@ public abstract class Creature implements Entity {
     float missingLifePercent = 1f - getParams().getStats().getLife() / getParams().getStats().getMaxLife();
 
     float lifeAfterOnKillRecovery =
-      getParams().getStats().getLife() + missingLifePercent * getParams().getStats().getMaxLife() * 0.3f;
+      getParams().getStats().getLife() + missingLifePercent * getParams().getStats().getMaxLife() * 0.4f;
 
     if (lifeAfterOnKillRecovery > getParams().getStats().getMaxLife()) {
       getParams().getStats().setLife(getParams().getStats().getMaxLife());
@@ -384,7 +383,7 @@ public abstract class Creature implements Entity {
     float missingManaPercent = 1f - getParams().getStats().getMana() / getParams().getStats().getMaxMana();
 
     float manaAfterOnKillRecovery =
-      getParams().getStats().getMana() + missingManaPercent * getParams().getStats().getMaxMana() * 0.3f;
+      getParams().getStats().getMana() + missingManaPercent * getParams().getStats().getMaxMana() * 0.4f;
 
     if (manaAfterOnKillRecovery > getParams().getStats().getMaxMana()) {
       getParams().getStats().setMana(getParams().getStats().getMaxMana());
@@ -413,5 +412,9 @@ public abstract class Creature implements Entity {
 
   public boolean isCurrentlyActive(CoreGame game) {
     return true;
+  }
+
+  public int getNextRandom() {
+    return getParams().getRandomGenerator().nextInt();
   }
 }

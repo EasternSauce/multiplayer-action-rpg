@@ -17,7 +17,6 @@ import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
-import com.easternsauce.actionrpg.model.creature.NullCreature;
 import com.easternsauce.actionrpg.model.util.TeleportEvent;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.physics.body.AbilityBody;
@@ -189,14 +188,7 @@ public abstract class CoreGame extends Game {
   }
 
   public Creature getCreature(CreatureId creatureId) {
-    Creature creature = getGameState().accessCreatures().getCreature(creatureId);
-
-    if (creatureId == null || creature == null) {
-      return NullCreature.of();
-    } else {
-      return creature;
-    }
-
+    return getGameState().accessCreatures().getCreature(creatureId);
   }
 
   public Vector2 getCreaturePos(CreatureId creatureId) {

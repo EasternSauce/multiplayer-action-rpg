@@ -123,7 +123,7 @@ public abstract class Ability implements Entity {
       getParams().setPlayerAbility(true);
     }
 
-    getParams().setRandomGenerator(RandomGenerator.of(creature.getParams().getRandomGenerator().nextInt()));
+    getParams().setRandomGenerator(RandomGenerator.of(creature.getNextRandom()));
 
   }
 

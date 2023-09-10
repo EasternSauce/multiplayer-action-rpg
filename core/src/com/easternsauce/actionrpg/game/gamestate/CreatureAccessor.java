@@ -8,6 +8,7 @@ import com.easternsauce.actionrpg.model.action.SkillTryPerformAction;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.creature.EnemySkillUseEntry;
+import com.easternsauce.actionrpg.model.creature.NullCreature;
 import com.easternsauce.actionrpg.model.skill.SkillType;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.util.Constants;
@@ -77,7 +78,7 @@ public class CreatureAccessor {
     }
 
     return getData().getCreatures().keySet().stream().filter(creatureId -> {
-      Creature creature = getData().getCreatures().get(creatureId);
+      Creature creature = getCreature(creatureId);
       if (creature.isCurrentlyActive(game)) {
         return player.getParams().getAreaId().equals(creature.getParams().getAreaId()) &&
           creature.getParams().getPos().distance(player.getParams().getPos()) < Constants.CLIENT_GAME_UPDATE_RANGE;
@@ -126,7 +127,7 @@ public class CreatureAccessor {
 
   public Creature getCreature(CreatureId creatureId) {
     if (creatureId == null || !getData().getCreatures().containsKey(creatureId)) {
-      return null;
+      return NullCreature.of();
     }
     return getData().getCreatures().get(creatureId);
   }

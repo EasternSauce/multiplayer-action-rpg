@@ -14,9 +14,9 @@ public class InventoryItemPutOnCursorAction extends GameStateAction {
 
   private Integer slotIndex;
 
-  public static InventoryItemPutOnCursorAction of(CreatureId creatureId, Integer slotIndex) {
+  public static InventoryItemPutOnCursorAction of(CreatureId playerId, Integer slotIndex) {
     InventoryItemPutOnCursorAction action = InventoryItemPutOnCursorAction.of();
-    action.playerId = creatureId;
+    action.playerId = playerId;
     action.slotIndex = slotIndex;
     return action;
   }

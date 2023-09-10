@@ -17,9 +17,9 @@ public class InventoryItemUseAction extends GameStateAction {
 
   private Integer slotIndex;
 
-  public static InventoryItemUseAction of(CreatureId creatureId, Integer slotIndex) {
+  public static InventoryItemUseAction of(CreatureId playerId, Integer slotIndex) {
     InventoryItemUseAction action = InventoryItemUseAction.of();
-    action.playerId = creatureId;
+    action.playerId = playerId;
     action.slotIndex = slotIndex;
     return action;
   }

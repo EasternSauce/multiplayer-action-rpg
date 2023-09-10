@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 public class InventoryWindowToggleAction extends GameStateAction {
   private CreatureId playerId;
 
-  public static InventoryWindowToggleAction of(CreatureId creatureId) {
+  public static InventoryWindowToggleAction of(CreatureId playerId) {
     InventoryWindowToggleAction action = InventoryWindowToggleAction.of();
-    action.playerId = creatureId;
+    action.playerId = playerId;
     return action;
   }
 

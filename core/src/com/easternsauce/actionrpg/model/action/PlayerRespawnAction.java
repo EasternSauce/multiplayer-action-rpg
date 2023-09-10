@@ -12,14 +12,14 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-public class CreatureRespawnAction extends GameStateAction {
-  private CreatureId creatureId;
+public class PlayerRespawnAction extends GameStateAction {
+  private CreatureId playerId;
   private Vector2 pos;
   private AreaId areaId;
 
-  public static CreatureRespawnAction of(CreatureId creatureId, Vector2 pos, AreaId areaId) {
-    CreatureRespawnAction action = CreatureRespawnAction.of();
-    action.creatureId = creatureId;
+  public static PlayerRespawnAction of(CreatureId playerId, Vector2 pos, AreaId areaId) {
+    PlayerRespawnAction action = PlayerRespawnAction.of();
+    action.playerId = playerId;
     action.pos = pos;
     action.areaId = areaId;
     return action;
@@ -27,7 +27,7 @@ public class CreatureRespawnAction extends GameStateAction {
 
   public void applyToGame(CoreGame game) {
 
-    Creature creature = game.getCreature(creatureId);
+    Creature creature = game.getCreature(playerId);
 
 
     creature.getParams().setAwaitingRespawn(false);
@@ -40,13 +40,11 @@ public class CreatureRespawnAction extends GameStateAction {
       .forEach((creatureEffect, creatureEffectState) -> creatureEffectState.terminateEffect());
 
     creature.getParams().setPos(pos);
-    game.addTeleportEvent(TeleportEvent.of(creatureId, pos, creature.getParams().getAreaId(), areaId, false));
-
-
+    game.addTeleportEvent(TeleportEvent.of(playerId, pos, creature.getParams().getAreaId(), areaId, false));
   }
 
   @Override
   public Entity getEntity(CoreGame game) {
-    return game.getCreature(creatureId);
+    return game.getCreature(playerId);
   }
 }

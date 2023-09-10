@@ -5,9 +5,9 @@ import com.easternsauce.actionrpg.game.marshaling.InterfaceAdapter;
 import com.easternsauce.actionrpg.model.GameStateData;
 import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.ability.AbilityId;
-import com.easternsauce.actionrpg.model.action.CreatureRespawnAction;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
 import com.easternsauce.actionrpg.model.action.LootPileDespawnAction;
+import com.easternsauce.actionrpg.model.action.PlayerRespawnAction;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.area.LootPile;
 import com.easternsauce.actionrpg.model.area.LootPileId;
@@ -130,7 +130,7 @@ public class ServerGameState extends GameState {
         if (creature instanceof Player) {
           Vector2 pos = Vector2.of((float) ((Math.random() * (28 - 18)) + 18), // TODO: use random generator
             (float) ((Math.random() * (12 - 6)) + 6));
-          CreatureRespawnAction action = CreatureRespawnAction.of(creatureId, pos,
+          PlayerRespawnAction action = PlayerRespawnAction.of(creatureId, pos,
             AreaId.of("Area1")); // TODO: respawns
 
           scheduleServerSideAction(action);

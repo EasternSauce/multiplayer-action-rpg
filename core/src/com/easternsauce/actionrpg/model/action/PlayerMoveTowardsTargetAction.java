@@ -15,9 +15,9 @@ public class PlayerMoveTowardsTargetAction extends GameStateAction {
 
   private Vector2 mousePos;
 
-  public static PlayerMoveTowardsTargetAction of(CreatureId creatureId, Vector2 mousePos) {
+  public static PlayerMoveTowardsTargetAction of(CreatureId playerId, Vector2 mousePos) {
     PlayerMoveTowardsTargetAction action = PlayerMoveTowardsTargetAction.of();
-    action.playerId = creatureId;
+    action.playerId = playerId;
     action.mousePos = mousePos;
     return action;
   }
