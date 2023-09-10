@@ -65,7 +65,7 @@ public class Astar {
     }
   }
 
-  public static AstarState traverse(AstarState astarState, Vector2Int finishTilePos, PhysicsWorld world, Integer capability) {
+  public static AstarState traverse(AstarState astarState, Vector2Int finishTilePos, PhysicsWorld world, Integer capability, boolean limitTiles) {
     while (!astarState.getGaveUp() && !astarState.getOpenSet().isEmpty() && !astarState.getFoundPath()) {
       AstarState finalAstarState = astarState;
       Vector2Int minimumTile = Collections.min(astarState.getOpenSet(), (o1, o2) -> {
@@ -83,7 +83,8 @@ public class Astar {
       AstarState resultingAstarState = AstarState.of(astarState.getAstarGraph(), astarState.getOpenSet(),
         astarState.getClosedSet(), astarState.getFinishPos(), astarState.getFoundPath(), false);
 
-      if (astarState.getClosedSet().size() > 80) { // give up once you process enough tiles [PERFORMANCE SAVER]
+      if (limitTiles &&
+        astarState.getClosedSet().size() > 80) { // give up once you process enough tiles [PERFORMANCE SAVER]
         resultingAstarState.setGaveUp(true);
       }
 
@@ -178,7 +179,7 @@ public class Astar {
 
   }
 
-  public static AstarResult findPath(PhysicsWorld world, Vector2 startPos, Vector2 finishPos, Integer capability) {
+  public static AstarResult findPath(PhysicsWorld world, Vector2 startPos, Vector2 finishPos, Integer capability, boolean limitTiles) {
     Vector2Int startTilePos = world.getClosestTile(startPos);
     Vector2Int finishTilePos = world.getClosestTile(finishPos);
 
@@ -188,7 +189,7 @@ public class Astar {
     AstarState astarState = AstarState.of(freshAstarGraph, new HashSet<>(Collections.singletonList(startTilePos)),
       new HashSet<>(), finishTilePos, false, false);
 
-    AstarState result = traverse(astarState, finishTilePos, world, capability);
+    AstarState result = traverse(astarState, finishTilePos, world, capability, limitTiles);
 
     AstarNode lastNode = result.getAstarGraph().get(result.getFinishPos());
 

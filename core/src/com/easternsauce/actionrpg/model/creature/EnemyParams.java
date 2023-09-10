@@ -52,4 +52,12 @@ public class EnemyParams {
   private Boolean pathMirrored = false;
   private List<Vector2> pathTowardsTarget = null;
 
+  @NonNull
+  private Vector2 spawnedPos;
+
+  @NonNull
+  private SimpleTimer movingTowardsSpawnPointPathCalculationTimer = SimpleTimer.getExpiredTimer();
+  @NonNull
+  private float timeBetweenMovingTowardsSpawnPointPathCalculation = 10f;
+
 }

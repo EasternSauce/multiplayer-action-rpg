@@ -45,6 +45,8 @@ public class Enemy extends Creature {
 
     params.setOnDeathAction(enemyTemplate.getOnDeathAction());
 
+    params.getEnemyParams().setSpawnedPos(pos);
+
     Enemy enemy = Enemy.of();
     enemy.params = params;
     return enemy;
@@ -58,6 +60,7 @@ public class Enemy extends Creature {
     getParams().getEnemyParams().getAutoControlsStateTimer().update(delta);
     getParams().getEnemyParams().getUseAbilityCooldownTimer().update(delta);
     getParams().getEnemyParams().getJustAttackedFromRangeTimer().update(delta);
+    getParams().getEnemyParams().getMovingTowardsSpawnPointPathCalculationTimer().update(delta);
   }
 
   @Override

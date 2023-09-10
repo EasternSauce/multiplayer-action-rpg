@@ -87,8 +87,9 @@ public class EnemyAutoControlsProcessor {
       } else { // if aggro timed out and out of range
         if (potentialTarget != null) {
           handleTargetLost(creatureId, game);
+        } else {
+          followCurrentPath(creatureId, game);
         }
-
       }
 
       processPathfinding(creatureId, game); // set path towards creature target
@@ -207,24 +208,36 @@ public class EnemyAutoControlsProcessor {
   public void handleMovement(CreatureId creatureId, Creature potentialTarget, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
-
     Float distance = creature.getParams().getPos().distance(potentialTarget.getParams().getPos());
 
     if (creature.getParams().getEnemyParams().getPathTowardsTarget() != null &&
       !creature.getParams().getEnemyParams().getPathTowardsTarget().isEmpty()) { // path is available
-      List<Vector2> path = creature.getParams().getEnemyParams().getPathTowardsTarget();
-      Vector2 nextNodeOnPath = path.get(0);
-      if (creature.getParams().getPos().distance(nextNodeOnPath) < 1f) {
-        List<Vector2> changedPath = new LinkedList<>(path);
-        changedPath.remove(0);
-        creature.getParams().getEnemyParams().setPathTowardsTarget(changedPath);
-      } else {
-        goToPos(creatureId, nextNodeOnPath, game); // TODO casting?
-      }
+      followPathToTarget(creatureId, game, creature);
     } else {
       processAutoControlsStateMovementLogic(creatureId, potentialTarget, distance, game);
     }
 
+  }
+
+  public void followCurrentPath(CreatureId creatureId, CoreGame game) {
+    Creature creature = game.getCreature(creatureId);
+
+    if (creature.getParams().getEnemyParams().getPathTowardsTarget() != null &&
+      !creature.getParams().getEnemyParams().getPathTowardsTarget().isEmpty()) { // path is available
+      followPathToTarget(creatureId, game, creature);
+    }
+  }
+
+  private void followPathToTarget(CreatureId creatureId, CoreGame game, Creature creature) {
+    List<Vector2> path = creature.getParams().getEnemyParams().getPathTowardsTarget();
+    Vector2 nextNodeOnPath = path.get(0);
+    if (creature.getParams().getPos().distance(nextNodeOnPath) < 1f) {
+      List<Vector2> changedPath = new LinkedList<>(path);
+      changedPath.remove(0);
+      creature.getParams().getEnemyParams().setPathTowardsTarget(changedPath);
+    } else {
+      goToPos(creatureId, nextNodeOnPath, game); // TODO casting?
+    }
   }
 
   private void handleAimDirectionAdjustment(CreatureId creatureId, Vector2 vectorTowardsTarget, CoreGame game) {
@@ -255,7 +268,6 @@ public class EnemyAutoControlsProcessor {
   public void handleTargetLost(CreatureId creatureId, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
-
     creature.getParams().getEnemyParams().setAggroedCreatureId(null);
     creature.getParams().getEnemyParams().setTargetCreatureId(null);
     creature.getParams().getEnemyParams().setJustAttackedByCreatureId(null);
@@ -268,43 +280,58 @@ public class EnemyAutoControlsProcessor {
   private void processPathfinding(CreatureId creatureId, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
+    if (creature.getParams().getEnemyParams().getTargetCreatureId() != null) {
+      boolean creaturePathfindingAllowed = game.isPathfindingCalculatedForCreature(creature) &&
+        (creature.getParams().getEnemyParams().getForcePathCalculation() ||
+          creature.getParams().getEnemyParams().getPathCalculationCooldownTimer().getTime() >
+            creature.getParams().getEnemyParams().getPathCalculationCooldown());
 
-    boolean pathfindingAllowed = game.isPathfindingCalculatedForCreature(creature) &&
-      creature.getParams().getEnemyParams().getTargetCreatureId() != null &&
-      (creature.getParams().getEnemyParams().getForcePathCalculation() ||
-        creature.getParams().getEnemyParams().getPathCalculationCooldownTimer().getTime() >
-          creature.getParams().getEnemyParams().getPathCalculationCooldown());
+      if (creaturePathfindingAllowed) {
+        Creature target = game.getCreature(creature.getParams().getEnemyParams().getTargetCreatureId());
 
-    if (pathfindingAllowed) {
-      Creature target = game.getCreature(creature.getParams().getEnemyParams().getTargetCreatureId());
+        if (target != null &&
+          game.isLineBetweenPointsObstructedByTerrain(creature.getParams().getAreaId(), creature.getParams().getPos(),
+            target.getParams().getPos())) {
+          List<Vector2> mirroredPath = mirrorPathFromNearbyCreature(creatureId,
+            creature.getParams().getEnemyParams().getTargetCreatureId(), game);
 
-      if (target != null &&
-        game.isLineBetweenPointsObstructedByTerrain(creature.getParams().getAreaId(), creature.getParams().getPos(),
-          target.getParams().getPos())) {
-        List<Vector2> mirroredPath = mirrorPathFromNearbyCreature(creatureId,
-          creature.getParams().getEnemyParams().getTargetCreatureId(), game);
+          List<Vector2> path;
 
-        List<Vector2> path;
+          if (mirroredPath != null) {
+            path = mirroredPath;
+            creature.getParams().getEnemyParams().setPathMirrored(true);
+          } else {
+            AstarResult result = Astar.findPath(game.getPhysicsWorld(creature.getParams().getAreaId()),
+              creature.getParams().getPos(), target.getParams().getPos(), creature.capability(), true);
+            path = result.getPath();
 
-        if (mirroredPath != null) {
-          path = mirroredPath;
-          creature.getParams().getEnemyParams().setPathMirrored(true);
+            creature.getParams().getEnemyParams().setPathMirrored(false);
+          }
+
+          creature.getParams().getEnemyParams().setPathTowardsTarget(path);
+
+          creature.getParams().getEnemyParams().getPathCalculationCooldownTimer().restart();
+          creature.getParams().getEnemyParams().setForcePathCalculation(false);
         } else {
-          AstarResult result = Astar.findPath(game.getPhysicsWorld(creature.getParams().getAreaId()),
-            creature.getParams().getPos(), target.getParams().getPos(), creature.capability());
-          path = result.getPath();
-
-          creature.getParams().getEnemyParams().setPathMirrored(false);
+          creature.getParams().getEnemyParams().setPathTowardsTarget(null);
         }
+      }
+
+    } else {
+      if (creature.getParams().getEnemyParams().getMovingTowardsSpawnPointPathCalculationTimer().getTime() >
+        creature.getParams().getEnemyParams().getTimeBetweenMovingTowardsSpawnPointPathCalculation()) {
+        creature.getParams().getEnemyParams().getMovingTowardsSpawnPointPathCalculationTimer().restart();
+
+        AstarResult result = Astar.findPath(game.getPhysicsWorld(creature.getParams().getAreaId()),
+          creature.getParams().getPos(), creature.getParams().getEnemyParams().getSpawnedPos(), creature.capability(),
+          false);
+        List<Vector2> path = result.getPath();
 
         creature.getParams().getEnemyParams().setPathTowardsTarget(path);
-
-        creature.getParams().getEnemyParams().getPathCalculationCooldownTimer().restart();
-        creature.getParams().getEnemyParams().setForcePathCalculation(false);
-      } else {
-        creature.getParams().getEnemyParams().setPathTowardsTarget(null);
       }
+
     }
+
   }
 
   public void goToPos(CreatureId creatureId, Vector2 pos, CoreGame game) {
