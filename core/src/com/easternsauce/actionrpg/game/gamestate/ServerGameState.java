@@ -52,6 +52,15 @@ public class ServerGameState extends GameState {
       creaturesToUpdate.addAll(creaturesToAdd);
     }
 
+    for (Creature creature : game.getAllCreatures().values()) {
+      if (creature.getParams().getLastTimeMoved() + Constants.KEEP_UPDATING_CREATURE_AFTER_INACTIVITY_TIME >
+        game.getGameState().getTime() ||
+        creature.getParams().getLastTimeUsedSkill() + Constants.KEEP_UPDATING_CREATURE_AFTER_INACTIVITY_TIME >
+          game.getGameState().getTime()) {
+        creaturesToUpdate.add(creature.getId());
+      }
+    }
+
     return creaturesToUpdate;
   }
 

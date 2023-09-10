@@ -34,4 +34,5 @@ public class Constants {
   public static final boolean DEBUG_ENABLED = false;
   public static final float TIME_BETWEEN_GAMESTATE_BROADCASTS = 1f;
   public static final float TIME_BETWEEN_GAMESTATE_SNAPSHOTS = 5f;
+  public static final float KEEP_UPDATING_CREATURE_AFTER_INACTIVITY_TIME = 20f;
 }

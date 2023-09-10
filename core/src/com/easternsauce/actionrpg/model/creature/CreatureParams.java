@@ -91,6 +91,9 @@ public class CreatureParams implements EntityParams {
 
   private OnDeathAction onDeathAction;
 
+  private Float lastTimeMoved = -Float.MAX_VALUE;
+  private Float lastTimeUsedSkill = -Float.MAX_VALUE;
+
   public static CreatureParams of(CreatureId creatureId, AreaId areaId, Vector2 pos, EnemyTemplate enemyTemplate, int rngSeed) {
     return produceCreatureParams(creatureId, areaId, pos, enemyTemplate.getEnemyType().textureName, rngSeed);
   }

@@ -10,7 +10,7 @@ public enum SkillType {
   ENEMY_SWORD_SLASH("Sword Slash (mob only)", true, AbilityType.ENEMY_SWORD_SLASH, 0.8f, 20f, 0f),
   BOSS_ENEMY_SWORD_SLASH("Sword Slash (boss only)", true, AbilityType.BOSS_ENEMY_SWORD_SLASH, 0.6f, 20f, 0f),
   FIREBALL("Fireball", true, AbilityType.FIREBALL, 1.5f, 30f, 20f),
-  LIGHTNING("Lightning", true, AbilityType.LIGHTNING_SPARK, 2f, 20f, 26f),
+  LIGHTNING("Lightning", true, AbilityType.LIGHTNING_SPARK, 0.35f, 5f, 4f),
   CROSSBOW_SHOT("Crossbow Shot", true, AbilityType.CROSSBOW_SHOT, 2f, 25f, 0f),
   ENEMY_CROSSBOW_SHOT("Crossbow Shot (mob only)", true, AbilityType.ENEMY_CROSSBOW_SHOT, 2f, 25f, 0f),
 

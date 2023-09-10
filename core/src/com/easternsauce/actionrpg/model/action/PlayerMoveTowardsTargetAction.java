@@ -10,21 +10,23 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-public class CreatureMoveTowardsTargetAction extends GameStateAction {
-  private CreatureId creatureId;
+public class PlayerMoveTowardsTargetAction extends GameStateAction {
+  private CreatureId playerId;
 
   private Vector2 mousePos;
 
-  public static CreatureMoveTowardsTargetAction of(CreatureId creatureId, Vector2 mousePos) {
-    CreatureMoveTowardsTargetAction action = CreatureMoveTowardsTargetAction.of();
-    action.creatureId = creatureId;
+  public static PlayerMoveTowardsTargetAction of(CreatureId creatureId, Vector2 mousePos) {
+    PlayerMoveTowardsTargetAction action = PlayerMoveTowardsTargetAction.of();
+    action.playerId = creatureId;
     action.mousePos = mousePos;
     return action;
   }
 
   @Override
   public void applyToGame(CoreGame game) {
-    Creature creature = game.getCreature(creatureId);
+    Creature creature = game.getCreature(playerId);
+
+    creature.getParams().setLastTimeMoved(game.getGameState().getTime());
 
     if (creature.isAlive() && !creature.isStunned(game)) {
       Vector2 pos = creature.getParams().getPos();
@@ -38,6 +40,6 @@ public class CreatureMoveTowardsTargetAction extends GameStateAction {
 
   @Override
   public Entity getEntity(CoreGame game) {
-    return game.getCreature(creatureId);
+    return game.getCreature(playerId);
   }
 }

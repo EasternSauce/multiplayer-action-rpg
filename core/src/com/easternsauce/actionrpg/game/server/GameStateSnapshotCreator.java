@@ -28,15 +28,11 @@ public class GameStateSnapshotCreator {
           String fileName = "./gamestate.json";
           game.getGameState().saveToJsonFile(fileName + ".temp");
 
-          System.out.println("saving to json.temp...");
-
           Path source = Paths.get(fileName + ".temp");
           Path dest = Paths.get(fileName);
           Files.copy(source, dest, StandardCopyOption.REPLACE_EXISTING);
 
           Files.deleteIfExists(source);
-
-          System.out.println("replaced .json with json.temp...");
         }
       } catch (InterruptedException e) {
         // do nothing

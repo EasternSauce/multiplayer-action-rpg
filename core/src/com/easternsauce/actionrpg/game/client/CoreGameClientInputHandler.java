@@ -4,8 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.easternsauce.actionrpg.game.command.ActionPerformCommand;
 import com.easternsauce.actionrpg.game.command.ChatMessageSendCommand;
-import com.easternsauce.actionrpg.model.action.CreatureMoveTowardsTargetAction;
 import com.easternsauce.actionrpg.model.action.InventoryWindowToggleAction;
+import com.easternsauce.actionrpg.model.action.PlayerMoveTowardsTargetAction;
 import com.easternsauce.actionrpg.model.action.PotionMenuItemUseAction;
 import com.easternsauce.actionrpg.model.action.SkillTryPerformAction;
 import com.easternsauce.actionrpg.model.creature.Creature;
@@ -200,7 +200,7 @@ public class CoreGameClientInputHandler {
       if (player.getParams().getMovementParams().getMovementActionsPerSecondLimiterTimer().getTime() >
         Constants.MOVEMENT_COMMAND_COOLDOWN && game.getGameState().getTime() > menuClickTime + 0.1f) {
         game.getEndPoint().sendTCP(ActionPerformCommand.of(
-          CreatureMoveTowardsTargetAction.of(game.getGameState().getThisClientPlayerId(), mousePos)));
+          PlayerMoveTowardsTargetAction.of(game.getGameState().getThisClientPlayerId(), mousePos)));
       }
 
     }

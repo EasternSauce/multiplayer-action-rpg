@@ -9,6 +9,7 @@ import com.easternsauce.actionrpg.model.ability.util.PointTargetedAbilityUtils;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
+import com.easternsauce.actionrpg.model.creature.NullCreature;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -33,10 +34,10 @@ public class LightningSpark extends Ability {
 
     Vector2 pos = PointTargetedAbilityUtils.calculatePos(
       creature.getParams().getPos().add(abilityParams.getDirVector()),
-      creature.getParams().getPos(), creature.getParams().getAreaId(), 20f, game);
+      creature.getParams().getPos(), creature.getParams().getAreaId(), 7f, game);
 
     ability.params = abilityParams.setWidth(3f).setHeight(3f).setChannelTime(0f).setActiveTime(0.4f)
-      .setTextureName("lightning").setBaseDamage(15f).setActiveAnimationLooping(true).setAttackWithoutMoving(true)
+      .setTextureName("lightning").setBaseDamage(11f).setActiveAnimationLooping(true).setAttackWithoutMoving(true)
       .setSkipCreatingBody(true).setDelayedActionTime(0.001f).setPos(pos).setDontOverridePos(true);
 
     return ability;
@@ -73,24 +74,31 @@ public class LightningSpark extends Ability {
     Creature targetCreature = game.getCreature(
       game.getGameState().accessCreatures().getAliveCreatureIdClosestTo(getParams().getPos(), 13f, excluded, game));
 
-    if (
-      !game.isLineBetweenPointsObstructedByTerrain(getParams().getAreaId(), getParams().getPos(),
-        targetCreature.getParams().getPos())) {
+    if (!(targetCreature instanceof NullCreature)) {
+      Vector2 pos = getParams().getPos();
+      Vector2 pos1 = targetCreature.getParams().getPos();
 
-      game.getGameState().accessAbilities()
-        .onAbilityHitsCreature(getParams().getCreatureId(), targetCreature.getId(), getParams().getId(),
-          targetCreature.getParams().getPos(), game);
 
-      getParams().getCreaturesAlreadyHit().put(targetCreature.getId(), getParams().getStateTimer().getTime());
+      if (
+        !game.isLineBetweenPointsObstructedByTerrain(getParams().getAreaId(), pos,
+          pos1)) {
 
-      game.chainAnotherAbility(this, AbilityType.LIGHTNING_CHAIN, params.getDirVector(),
-        ChainAbilityParams.of().setChainToPos(targetCreature.getParams().getPos())
-        // this pos is later changed, TODO: move it to other param?
-      );
+        game.getGameState().accessAbilities()
+          .onAbilityHitsCreature(getParams().getCreatureId(), targetCreature.getId(), getParams().getId(),
+            targetCreature.getParams().getPos(), game);
 
-      game.chainAnotherAbility(this, AbilityType.LIGHTNING_NODE, params.getDirVector(),
-        ChainAbilityParams.of().setChainToPos(targetCreature.getParams().getPos()));
+        getParams().getCreaturesAlreadyHit().put(targetCreature.getId(), getParams().getStateTimer().getTime());
+
+        game.chainAnotherAbility(this, AbilityType.LIGHTNING_CHAIN, params.getDirVector(),
+          ChainAbilityParams.of().setChainToPos(targetCreature.getParams().getPos())
+          // this pos is later changed, TODO: move it to other param?
+        );
+
+        game.chainAnotherAbility(this, AbilityType.LIGHTNING_NODE, params.getDirVector(),
+          ChainAbilityParams.of().setChainToPos(targetCreature.getParams().getPos()));
+      }
     }
+
   }
 
   @Override
@@ -105,5 +113,10 @@ public class LightningSpark extends Ability {
     scalings.put(2, 1.1f);
     scalings.put(3, 1.2f);
     return scalings;
+  }
+
+  @Override
+  public Float getStunDuration() {
+    return 0.05f;
   }
 }

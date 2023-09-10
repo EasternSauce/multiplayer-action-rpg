@@ -240,6 +240,9 @@ public class EnemyAutoControlsProcessor {
 
     if (creature.getParams().getEnemyParams().getUseAbilityCooldownTimer().getTime() >
       Constants.ENEMY_USE_ABILITY_COOLDOWN_TIMER) {
+
+      creature.getParams().setLastTimeUsedSkill(game.getGameState().getTime());
+
       Float distanceToTarget = potentialTargetPos.distance(creature.getParams().getPos());
 
       game.getGameState().accessCreatures()
@@ -307,6 +310,7 @@ public class EnemyAutoControlsProcessor {
   public void goToPos(CreatureId creatureId, Vector2 pos, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
+    creature.getParams().setLastTimeMoved(game.getGameState().getTime());
 
     if (!creature.isStunned(game)) {
       creature.moveTowards(pos);

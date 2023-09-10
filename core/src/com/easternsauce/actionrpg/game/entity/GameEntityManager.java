@@ -36,19 +36,19 @@ public class GameEntityManager {
   private final GameEntityPhysics gameEntityPhysics = GameEntityPhysics.of();
 
   public void createCreatureEntity(CreatureId creatureId, CoreGame game) {
-    Creature creature = game.getCreature(creatureId);
+    if (creatureId != null) {
+      Creature creature = game.getCreature(creatureId);
 
-
-    if (!gameEntityRenderer.getCreatureRenderers().containsKey(creatureId)) {
-      CreatureRenderer creatureRenderer = CreatureRenderer.of(creatureId);
-      gameEntityRenderer.getCreatureRenderers().put(creatureId, creatureRenderer);
+      if (!gameEntityRenderer.getCreatureRenderers().containsKey(creatureId)) {
+        CreatureRenderer creatureRenderer = CreatureRenderer.of(creatureId);
+        gameEntityRenderer.getCreatureRenderers().put(creatureId, creatureRenderer);
+      }
+      if (!gameEntityPhysics.getCreatureBodies().containsKey(creatureId)) {
+        CreatureBody creatureBody = CreatureBody.of(creatureId);
+        creatureBody.init(creature.getParams().getAreaId(), game);
+        gameEntityPhysics.getCreatureBodies().put(creatureId, creatureBody);
+      }
     }
-    if (!gameEntityPhysics.getCreatureBodies().containsKey(creatureId)) {
-      CreatureBody creatureBody = CreatureBody.of(creatureId);
-      creatureBody.init(creature.getParams().getAreaId(), game);
-      gameEntityPhysics.getCreatureBodies().put(creatureId, creatureBody);
-    }
-
   }
 
   public void createAbilityEntity(AbilityId abilityId, TextureAtlas atlas, CoreGame game) {

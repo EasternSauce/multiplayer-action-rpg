@@ -7,6 +7,7 @@ import com.easternsauce.actionrpg.model.ability.AbilityType;
 import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
+import com.easternsauce.actionrpg.model.creature.NullCreature;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,7 +27,7 @@ public class LightningNode extends Ability {
   public static LightningNode of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
     LightningNode ability = LightningNode.of();
     ability.params = abilityParams.setWidth(3f).setHeight(3f).setChannelTime(0f).setActiveTime(0.4f)
-      .setTextureName("lightning").setBaseDamage(15f).setActiveAnimationLooping(true).setAttackWithoutMoving(true)
+      .setTextureName("lightning").setBaseDamage(11f).setActiveAnimationLooping(true).setAttackWithoutMoving(true)
       .setSkipCreatingBody(true).setDelayedActionTime(0.05f);
 
     return ability;
@@ -56,23 +57,26 @@ public class LightningNode extends Ability {
     Creature targetCreature = game.getCreature(
       game.getGameState().accessCreatures().getAliveCreatureIdClosestTo(getParams().getPos(), 13f, excluded, game));
 
-    if (getParams().getCreaturesAlreadyHit().size() <= 10 &&
-      !game.isLineBetweenPointsObstructedByTerrain(getParams().getAreaId(), getParams().getPos(),
-        targetCreature.getParams().getPos())) {
+    if (!(targetCreature instanceof NullCreature)) {
 
-      game.getGameState().accessAbilities()
-        .onAbilityHitsCreature(getParams().getCreatureId(), targetCreature.getId(), getParams().getId(),
-          targetCreature.getParams().getPos(), game);
+      if (getParams().getCreaturesAlreadyHit().size() <= 10 &&
+        !game.isLineBetweenPointsObstructedByTerrain(getParams().getAreaId(), getParams().getPos(),
+          targetCreature.getParams().getPos())) {
 
-      getParams().getCreaturesAlreadyHit().put(targetCreature.getId(), getParams().getStateTimer().getTime());
+        game.getGameState().accessAbilities()
+          .onAbilityHitsCreature(getParams().getCreatureId(), targetCreature.getId(), getParams().getId(),
+            targetCreature.getParams().getPos(), game);
 
-      game.chainAnotherAbility(this, AbilityType.LIGHTNING_CHAIN, params.getDirVector(),
-        ChainAbilityParams.of().setChainToPos(targetCreature.getParams().getPos())
-        // TODO: this pos is later changed, move it to other param?
-      );
+        getParams().getCreaturesAlreadyHit().put(targetCreature.getId(), getParams().getStateTimer().getTime());
 
-      game.chainAnotherAbility(this, AbilityType.LIGHTNING_NODE, params.getDirVector(),
-        ChainAbilityParams.of().setChainToPos(targetCreature.getParams().getPos()));
+        game.chainAnotherAbility(this, AbilityType.LIGHTNING_CHAIN, params.getDirVector(),
+          ChainAbilityParams.of().setChainToPos(targetCreature.getParams().getPos())
+          // TODO: this pos is later changed, move it to other param?
+        );
+
+        game.chainAnotherAbility(this, AbilityType.LIGHTNING_NODE, params.getDirVector(),
+          ChainAbilityParams.of().setChainToPos(targetCreature.getParams().getPos()));
+      }
     }
   }
 
@@ -88,5 +92,10 @@ public class LightningNode extends Ability {
     scalings.put(2, 1.1f);
     scalings.put(3, 1.2f);
     return scalings;
+  }
+
+  @Override
+  public Float getStunDuration() {
+    return 0.05f;
   }
 }
