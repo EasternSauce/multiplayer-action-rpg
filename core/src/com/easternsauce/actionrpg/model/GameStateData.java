@@ -37,19 +37,22 @@ public class GameStateData {
 
   private Map<AreaGateId, AreaGate> areaGates = new ConcurrentSkipListMap<>();
 
+  private Map<CheckpointId, Checkpoint> checkpoints = new ConcurrentSkipListMap<>();
+
   private Map<EnemyRallyPointId, EnemyRallyPoint> enemyRallyPoints = new ConcurrentSkipListMap<>();
 
   private RandomGenerator randomGenerator;
 
   private boolean isStub = false;
 
-  public static GameStateData of(GameStateData gameStateData, Map<CreatureId, Creature> creatures, Map<AbilityId, Ability> abilities, Map<LootPileId, LootPile> lootPiles, Map<AreaGateId, AreaGate> areaGates) {
+  public static GameStateData of(GameStateData gameStateData, Map<CreatureId, Creature> creatures, Map<AbilityId, Ability> abilities, Map<LootPileId, LootPile> lootPiles, Map<AreaGateId, AreaGate> areaGates, Map<CheckpointId, Checkpoint> checkpoints) {
     GameStateData newGameStateData = GameStateData.of();
     newGameStateData.setCreatures(creatures);
     newGameStateData.setActiveCreatureIds(new ConcurrentSkipListSet<>(gameStateData.getActiveCreatureIds()));
     newGameStateData.setAbilities(abilities);
     newGameStateData.setLootPiles(lootPiles);
     newGameStateData.setAreaGates(areaGates);
+    newGameStateData.setCheckpoints(checkpoints);
     newGameStateData.setAreas(new ConcurrentSkipListMap<>(gameStateData.getAreas()));
     newGameStateData.setDefaultAreaId(gameStateData.getDefaultAreaId());
     newGameStateData.setGeneralTimer(gameStateData.getGeneralTimer());
@@ -67,6 +70,7 @@ public class GameStateData {
     newGameStateData.setAbilities(new ConcurrentSkipListMap<>());
     newGameStateData.setLootPiles(new ConcurrentSkipListMap<>());
     newGameStateData.setAreaGates(new ConcurrentSkipListMap<>());
+    newGameStateData.setCheckpoints(new ConcurrentSkipListMap<>());
     newGameStateData.setAreas(new ConcurrentSkipListMap<>(gameStateData.getAreas()));
     newGameStateData.setDefaultAreaId(gameStateData.getDefaultAreaId());
     newGameStateData.setGeneralTimer(gameStateData.getGeneralTimer());

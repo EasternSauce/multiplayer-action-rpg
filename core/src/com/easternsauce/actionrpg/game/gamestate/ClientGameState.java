@@ -7,6 +7,7 @@ import com.easternsauce.actionrpg.model.ability.AbilityId;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
 import com.easternsauce.actionrpg.model.area.AreaGateId;
 import com.easternsauce.actionrpg.model.area.AreaId;
+import com.easternsauce.actionrpg.model.area.CheckpointId;
 import com.easternsauce.actionrpg.model.area.LootPileId;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import lombok.Getter;
@@ -52,6 +53,8 @@ public class ClientGameState extends GameState {
     Set<LootPileId> newLootPileIds = newGameStateData.getLootPiles().keySet();
     Set<AreaGateId> oldAreaGateIds = oldGameStateData.getAreaGates().keySet();
     Set<AreaGateId> newAreaGateIds = newGameStateData.getAreaGates().keySet();
+    Set<CheckpointId> oldCheckpointIds = oldGameStateData.getCheckpoints().keySet();
+    Set<CheckpointId> newCheckpointIds = newGameStateData.getCheckpoints().keySet();
 
     Set<CreatureId> creaturesAddedSinceLastUpdate = new HashSet<>(newCreatureIds);
     creaturesAddedSinceLastUpdate.removeAll(oldCreatureIds);
@@ -77,6 +80,12 @@ public class ClientGameState extends GameState {
     Set<AreaGateId> areaGatesRemovedSinceLastUpdate = new HashSet<>(oldAreaGateIds);
     areaGatesRemovedSinceLastUpdate.removeAll(newAreaGateIds);
 
+    Set<CheckpointId> checkpointsAddedSinceLastUpdate = new HashSet<>(newCheckpointIds);
+    checkpointsAddedSinceLastUpdate.removeAll(oldCheckpointIds);
+
+    Set<CheckpointId> checkpointsRemovedSinceLastUpdate = new HashSet<>(oldCheckpointIds);
+    checkpointsRemovedSinceLastUpdate.removeAll(newCheckpointIds);
+
     eventProcessor.getCreatureModelsToBeCreated().addAll(creaturesAddedSinceLastUpdate);
     eventProcessor.getCreatureModelsToBeRemoved().addAll(creaturesRemovedSinceLastUpdate);
     eventProcessor.getAbilityModelsToBeCreated().addAll(abilitiesAddedSinceLastUpdate);
@@ -85,6 +94,8 @@ public class ClientGameState extends GameState {
     eventProcessor.getLootPileModelsToBeRemoved().addAll(lootPilesRemovedSinceLastUpdate);
     eventProcessor.getAreaGateModelsToBeCreated().addAll(areaGatesAddedSinceLastUpdate);
     eventProcessor.getAreaGateModelsToBeRemoved().addAll(areaGatesRemovedSinceLastUpdate);
+    eventProcessor.getCheckpointModelsToBeCreated().addAll(checkpointsAddedSinceLastUpdate);
+    eventProcessor.getCheckpointModelsToBeRemoved().addAll(checkpointsRemovedSinceLastUpdate);
   }
 
   public void setNewGameState(GameStateData receivedGameStateData) {

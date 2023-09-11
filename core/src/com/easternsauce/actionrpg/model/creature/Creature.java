@@ -244,7 +244,8 @@ public abstract class Creature implements Entity {
         float y = pos.getY() + (float) Math.cos(Math.PI / 3 * i) * 3f;
 
         CreatureId enemyId = CreatureId.of(
-          "Enemy_" + (int) (Math.abs(game.getGameState().getRandomGenerator().nextFloat()) * 10000000));
+          "Enemy_" + (int) (Math.abs(game.getGameState().getRandomGenerator().nextFloat()) *
+            10000000)); // TODO: move to enemy spawn method?
 
         if (!game.isRectCollidingWithTerrain(getParams().getAreaId(), Rect.of(x, y, 1f, 1f))) {
           game.getEntityManager().spawnEnemy(enemyId, areaId, Vector2.of(x, y), EnemyTemplate.babySpider,

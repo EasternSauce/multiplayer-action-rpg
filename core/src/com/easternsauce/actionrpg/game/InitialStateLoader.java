@@ -1,8 +1,6 @@
 package com.easternsauce.actionrpg.game;
 
-import com.easternsauce.actionrpg.model.area.AreaGate;
-import com.easternsauce.actionrpg.model.area.AreaGateId;
-import com.easternsauce.actionrpg.model.area.AreaId;
+import com.easternsauce.actionrpg.model.area.*;
 import com.easternsauce.actionrpg.model.creature.EnemyTemplate;
 import com.easternsauce.actionrpg.model.enemyrallypoint.EnemyRallyPoint;
 import com.easternsauce.actionrpg.model.enemyrallypoint.EnemyRallyPointId;
@@ -64,6 +62,12 @@ public class InitialStateLoader {
       .put(area1ToArea2, AreaGate.of(area1ToArea2, 1.5f, 1.5f, Vector2.of(2f, 63f), AreaId.of("Area1"), area2ToArea1));
     game.getGameState().getAreaGates()
       .put(area2ToArea1, AreaGate.of(area2ToArea1, 1.5f, 1.5f, Vector2.of(58f, 9f), AreaId.of("Area2"), area1ToArea2));
+
+    game.getGameState().getCheckpoints().clear();
+
+    game.getGameState().getCheckpoints()
+      .put(CheckpointId.of("Checkpoint1"),
+        Checkpoint.of(CheckpointId.of("Checkpoint1"), AreaId.of("Area1"), Vector2.of(20.871206f, 9.623786f)));
 
     Map<EnemyRallyPointId, EnemyRallyPoint> enemyRallyPoints = game.getGameState().getEnemyRallyPoints();
 

@@ -54,6 +54,14 @@ public abstract class GameState {
     return getData().getAreaGates();
   }
 
+  public Checkpoint getCheckpoint(CheckpointId checkpointId) {
+    return getData().getCheckpoints().get(checkpointId);
+  }
+
+  public Map<CheckpointId, Checkpoint> getCheckpoints() {
+    return getData().getCheckpoints();
+  }
+
   public AbilityAccessor accessAbilities() {
     return abilityAccessor;
   }

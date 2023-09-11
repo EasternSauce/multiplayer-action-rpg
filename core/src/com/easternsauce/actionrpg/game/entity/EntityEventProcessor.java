@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.AbilityId;
 import com.easternsauce.actionrpg.model.area.AreaGateId;
+import com.easternsauce.actionrpg.model.area.CheckpointId;
 import com.easternsauce.actionrpg.model.area.LootPileId;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.util.TeleportEvent;
@@ -24,6 +25,8 @@ public class EntityEventProcessor {
   private final List<LootPileId> lootPileModelsToBeRemoved = Collections.synchronizedList(new ArrayList<>());
   @Getter
   private final List<AreaGateId> areaGateModelsToBeRemoved = Collections.synchronizedList(new ArrayList<>());
+  @Getter
+  private final List<CheckpointId> checkpointModelsToBeRemoved = Collections.synchronizedList(new ArrayList<>());
 
   @Getter
   private final List<CreatureId> creatureModelsToBeCreated = Collections.synchronizedList(new ArrayList<>());
@@ -33,6 +36,8 @@ public class EntityEventProcessor {
   private final List<LootPileId> lootPileModelsToBeCreated = Collections.synchronizedList(new ArrayList<>());
   @Getter
   private final List<AreaGateId> areaGateModelsToBeCreated = Collections.synchronizedList(new ArrayList<>());
+  @Getter
+  private final List<CheckpointId> checkpointModelsToBeCreated = Collections.synchronizedList(new ArrayList<>());
 
   @Getter
   private final List<AbilityId> abilityModelsToBeActivated = Collections.synchronizedList(new ArrayList<>());
@@ -53,6 +58,10 @@ public class EntityEventProcessor {
     getAreaGateModelsToBeRemoved().forEach(areaGateId -> gameEntityManager.removeAreaGateEntity(areaGateId, game));
     getAreaGateModelsToBeRemoved().clear();
 
+    getCheckpointModelsToBeRemoved().forEach(
+      checkpointId -> gameEntityManager.removeCheckpointEntity(checkpointId, game));
+    getCheckpointModelsToBeRemoved().clear();
+
     getCreatureModelsToBeCreated().forEach(creatureId -> gameEntityManager.createCreatureEntity(creatureId, game));
     getCreatureModelsToBeCreated().clear();
 
@@ -66,6 +75,10 @@ public class EntityEventProcessor {
     getAreaGateModelsToBeCreated().forEach(
       areaGateId -> gameEntityManager.createAreaGateEntity(areaGateId, atlas, game));
     getAreaGateModelsToBeCreated().clear();
+
+    getCheckpointModelsToBeCreated().forEach(
+      checkpointId -> gameEntityManager.createCheckpointEntity(checkpointId, atlas, game));
+    getCheckpointModelsToBeCreated().clear();
 
     getAbilityModelsToBeActivated().forEach(abilityId -> gameEntityManager.activateAbility(abilityId, game));
     getAbilityModelsToBeActivated().clear();

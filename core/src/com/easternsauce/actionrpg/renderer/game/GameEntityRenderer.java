@@ -8,6 +8,7 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.AbilityId;
 import com.easternsauce.actionrpg.model.area.AreaGateId;
 import com.easternsauce.actionrpg.model.area.AreaId;
+import com.easternsauce.actionrpg.model.area.CheckpointId;
 import com.easternsauce.actionrpg.model.area.LootPileId;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
@@ -37,6 +38,8 @@ public class GameEntityRenderer {
   private final Map<AbilityId, AbilityRenderer> abilityRenderers = new HashMap<>();
   @Getter
   private final Map<AreaGateId, AreaGateRenderer> areaGateRenderers = new HashMap<>();
+  @Getter
+  private final Map<CheckpointId, CheckpointRenderer> checkpointRenderers = new HashMap<>();
   @Getter
   private final Map<LootPileId, LootPileRenderer> lootPileRenderers = new HashMap<>();
   @Getter
@@ -167,6 +170,10 @@ public class GameEntityRenderer {
 
   public void renderAreaGates(RenderingLayer renderingLayer, CoreGame game) {
     areaGateRenderers.values().forEach(areaGateRenderer -> areaGateRenderer.render(renderingLayer, game));
+  }
+
+  public void renderCheckpoints(RenderingLayer renderingLayer, CoreGame game) {
+    checkpointRenderers.values().forEach(checkpointRenderer -> checkpointRenderer.render(renderingLayer, game));
   }
 
   public void renderLootPiles(RenderingLayer renderingLayer, CoreGame game) {

@@ -49,6 +49,7 @@ public class GameplayRenderer {
     worldElementsRenderingLayer.getSpriteBatch().begin();
 
     renderer.renderAreaGates(worldElementsRenderingLayer, game);
+    renderer.renderCheckpoints(worldElementsRenderingLayer, game);
     renderer.renderDeadCreatures(worldElementsRenderingLayer, game);
     renderer.renderLootPiles(worldElementsRenderingLayer, game);
     renderer.renderAliveCreatures(worldElementsRenderingLayer, game);

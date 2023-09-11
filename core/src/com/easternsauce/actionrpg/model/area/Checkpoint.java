@@ -2,22 +2,22 @@ package com.easternsauce.actionrpg.model.area;
 
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
-public class AreaGate {
+@Data
+public class Checkpoint {
   @Getter
-  private AreaGateId areaGateId;
+  private final Float width = 2f;
   @Getter
-  private Float width;
+  private final Float height = 2f;
   @Getter
-  private Float height;
-  @Getter
-  private Vector2 pos;
+  private CheckpointId checkpointId;
   @Getter
   private AreaId areaId;
   @Getter
-  private AreaGateId leadingToAreaGateId;
+  private Vector2 pos;
 }

@@ -109,7 +109,7 @@ public class ServerGameState extends GameState {
         .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
 
     GameStateData personalizedGameStateData = GameStateData.of(dataHolder.getData(), personalizedCreatures,
-      personalizedAbilities, personalizedLootPiles, getAreaGates());
+      personalizedAbilities, personalizedLootPiles, getAreaGates(), getCheckpoints());
 
     connection.sendTCP(GameStateBroadcast.of(personalizedGameStateData));
   }

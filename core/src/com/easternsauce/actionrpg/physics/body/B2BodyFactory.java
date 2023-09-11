@@ -69,6 +69,11 @@ public class B2BodyFactory {
       null);
   }
 
+  public static Body createCheckpointB2body(PhysicsWorld world, CheckpointBody checkpointBody, Vector2 pos, float width, float height) {
+    return createB2Body(world, pos, BodyType.StaticBody, checkpointBody, Rectangle.of(width, height), true, false, null,
+      null);
+  }
+
   public static Body createLootPileB2body(PhysicsWorld world, LootPileBody areaGateBody, Vector2 pos, float width, float height) {
     return createB2Body(world, pos, BodyType.StaticBody, areaGateBody, Rectangle.of(width, height), true, false, null,
       null);

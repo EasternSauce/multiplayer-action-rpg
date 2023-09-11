@@ -13,12 +13,10 @@ import com.easternsauce.actionrpg.model.creature.EnemyTemplate;
 import com.easternsauce.actionrpg.model.util.TeleportEvent;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.physics.GameEntityPhysics;
-import com.easternsauce.actionrpg.physics.body.AbilityBody;
-import com.easternsauce.actionrpg.physics.body.AreaGateBody;
-import com.easternsauce.actionrpg.physics.body.CreatureBody;
-import com.easternsauce.actionrpg.physics.body.LootPileBody;
+import com.easternsauce.actionrpg.physics.body.*;
 import com.easternsauce.actionrpg.renderer.AbilityRenderer;
 import com.easternsauce.actionrpg.renderer.AreaGateRenderer;
+import com.easternsauce.actionrpg.renderer.CheckpointRenderer;
 import com.easternsauce.actionrpg.renderer.LootPileRenderer;
 import com.easternsauce.actionrpg.renderer.creature.CreatureRenderer;
 import com.easternsauce.actionrpg.renderer.game.GameEntityRenderer;
@@ -284,6 +282,36 @@ public class GameEntityManager {
       if (gameEntityPhysics.getAreaGateBodies().containsKey(areaGateId)) {
         gameEntityPhysics.getAreaGateBodies().get(areaGateId).onRemove();
         gameEntityPhysics.getAreaGateBodies().remove(areaGateId);
+      }
+    }
+  }
+
+  public void createCheckpointEntity(CheckpointId checkpointId, TextureAtlas atlas, CoreGame game) {
+    Checkpoint checkpoint = game.getGameState().getCheckpoint(checkpointId);
+
+    if (checkpoint != null) {
+      if (!gameEntityRenderer.getCheckpointRenderers().containsKey(checkpointId)) {
+        CheckpointRenderer checkpointRenderer = CheckpointRenderer.of(checkpointId);
+        checkpointRenderer.init(atlas, game);
+        gameEntityRenderer.getCheckpointRenderers().put(checkpointId, checkpointRenderer);
+      }
+      if (!gameEntityPhysics.getCheckpointBodies().containsKey(checkpointId)) {
+        CheckpointBody checkpointBody = CheckpointBody.of(checkpointId);
+        checkpointBody.init(game);
+        gameEntityPhysics.getCheckpointBodies().put(checkpointId, checkpointBody);
+      }
+    }
+  }
+
+  public void removeCheckpointEntity(CheckpointId checkpointId, CoreGame game) {
+    if (checkpointId != null) {
+      game.getGameState().getCheckpoints().remove(checkpointId);
+
+      getGameEntityRenderer().getCheckpointRenderers().remove(checkpointId);
+
+      if (gameEntityPhysics.getCheckpointBodies().containsKey(checkpointId)) {
+        gameEntityPhysics.getCheckpointBodies().get(checkpointId).onRemove();
+        gameEntityPhysics.getCheckpointBodies().remove(checkpointId);
       }
     }
   }

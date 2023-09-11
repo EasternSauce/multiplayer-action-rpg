@@ -6,6 +6,7 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.AbilityId;
 import com.easternsauce.actionrpg.model.area.AreaGateId;
 import com.easternsauce.actionrpg.model.area.AreaId;
+import com.easternsauce.actionrpg.model.area.CheckpointId;
 import com.easternsauce.actionrpg.model.area.LootPileId;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.util.Vector2;
@@ -33,6 +34,8 @@ public class GameEntityPhysics {
   private Map<AbilityId, AbilityBody> abilityBodies = new HashMap<>();
   @Getter
   private Map<AreaGateId, AreaGateBody> areaGateBodies = new HashMap<>();
+  @Getter
+  private Map<CheckpointId, CheckpointBody> checkpointBodies = new HashMap<>();
 
   @Getter
   private Map<LootPileId, LootPileBody> lootPileBodies = new HashMap<>();
