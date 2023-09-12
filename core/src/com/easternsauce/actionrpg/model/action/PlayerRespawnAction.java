@@ -26,9 +26,7 @@ public class PlayerRespawnAction extends GameStateAction {
   }
 
   public void applyToGame(CoreGame game) {
-
     Creature creature = game.getCreature(playerId);
-
 
     creature.getParams().setAwaitingRespawn(false);
     creature.getParams().setDead(false);

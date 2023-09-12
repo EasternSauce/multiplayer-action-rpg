@@ -34,7 +34,7 @@ public class PotionMenuRenderer {
       Color.CYAN);
   }
 
-  public void renderMenu(RenderingLayer renderingLayer, CoreGame game) {
+  public void render(RenderingLayer renderingLayer, CoreGame game) {
 
     Creature player = game.getCreature(game.getGameState().getThisClientPlayerId());
 

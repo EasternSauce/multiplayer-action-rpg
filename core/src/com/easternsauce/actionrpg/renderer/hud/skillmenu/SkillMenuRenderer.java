@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 
 @NoArgsConstructor(staticName = "of")
 public class SkillMenuRenderer {
-  public void renderMenu(RenderingLayer renderingLayer, CoreGame game) {
+  private void renderMenu(RenderingLayer renderingLayer, CoreGame game) {
     PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
 
     if (playerConfig == null) {
@@ -42,7 +42,7 @@ public class SkillMenuRenderer {
       SkillType skillType = playerConfig.getSkillMenuSlots().get(i.get());
 
       if (skillType != null) {
-        Assets.renderMediumFont(renderingLayer, getInitials(skillType.getPrettyName()),
+        Assets.renderMediumFont(renderingLayer, getSkillNameInitials(skillType.getPrettyName()),
           Vector2.of(rect.getX() + 5f, rect.getY() + 24f), Color.GOLD);
       }
       Assets.renderVerySmallFont(renderingLayer, keys.get(i.get()),
@@ -53,7 +53,7 @@ public class SkillMenuRenderer {
     });
   }
 
-  private String getInitials(String input) {
+  private String getSkillNameInitials(String input) {
     Pattern p = Pattern.compile("((^| )[A-Za-z])");
     Matcher m = p.matcher(input);
     StringBuilder initials = new StringBuilder();
@@ -63,7 +63,9 @@ public class SkillMenuRenderer {
     return initials.toString().toUpperCase();
   }
 
-  public void renderPicker(Creature player, RenderingLayer renderingLayer, CoreGame game) {
+  private void renderPicker(RenderingLayer renderingLayer, CoreGame game) {
+    Creature player = game.getCreature(game.getGameState().getThisClientPlayerId());
+
     PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
 
     if (playerConfig == null || playerConfig.getInventoryVisible() ||
@@ -80,11 +82,11 @@ public class SkillMenuRenderer {
       .forEach((skillType, level) -> renderPickerOption(renderingLayer, x, y, i, skillType.getPrettyName()));
   }
 
-  public void renderPickerOption(RenderingLayer renderingLayer, float x, float y, AtomicInteger i, String skillName) {
+  public void renderPickerOption(RenderingLayer renderingLayer, float mouseX, float mouseY, AtomicInteger i, String skillName) {
     Rect rect = SkillMenuConsts.getSkillPickerRect(i.get());
     renderingLayer.getShapeDrawer().filledRectangle(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(),
       Color.DARK_GRAY.cpy().sub(0, 0, 0, 0.3f));
-    if (rect.contains(x, y)) {
+    if (rect.contains(mouseX, mouseY)) {
       renderingLayer.getShapeDrawer()
         .rectangle(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(), Color.ORANGE);
     }
@@ -93,4 +95,8 @@ public class SkillMenuRenderer {
     i.getAndIncrement();
   }
 
+  public void render(RenderingLayer renderingLayer, CoreGame game) {
+    renderMenu(renderingLayer, game);
+    renderPicker(renderingLayer, game);
+  }
 }

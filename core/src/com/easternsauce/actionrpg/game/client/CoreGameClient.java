@@ -31,6 +31,7 @@ public class CoreGameClient extends CoreGame {
   private final CoreGameClientListener clientListener = CoreGameClientListener.of(this);
   private final ClientConnectionEstablisher clientConnectionEstablisher = ClientConnectionEstablisher.of();
 
+  @Getter
   private final CoreGameClientInputHandler inputHandler = CoreGameClientInputHandler.of();
 
   @Getter

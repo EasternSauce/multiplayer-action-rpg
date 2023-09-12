@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
+import com.easternsauce.actionrpg.renderer.hud.checkpointmenu.CheckpointMenuRenderer;
 import com.easternsauce.actionrpg.renderer.hud.inventorywindow.InventoryWindowRenderer;
 import com.easternsauce.actionrpg.renderer.hud.inventorywindow.ItemOnCursorRenderer;
 import com.easternsauce.actionrpg.renderer.hud.inventorywindow.PotionMenuRenderer;
@@ -29,6 +30,8 @@ public class HudRenderer {
   @Getter
   private final ItemPickupMenuRenderer pickUpMenuRenderer = ItemPickupMenuRenderer.of();
   @Getter
+  private final CheckpointMenuRenderer checkpointMenuRenderer = CheckpointMenuRenderer.of();
+  @Getter
   private final PotionMenuRenderer potionMenuRenderer = PotionMenuRenderer.of();
 
   public void init(TextureAtlas atlas) {
@@ -47,19 +50,18 @@ public class HudRenderer {
     if (game.getGameState().getThisClientPlayerId() != null) {
       Creature player = game.getCreature(game.getGameState().getThisClientPlayerId());
 
-      skillMenuRenderer.renderMenu(renderingLayer, game);
-
-      skillMenuRenderer.renderPicker(player, renderingLayer, game);
+      skillMenuRenderer.render(renderingLayer, game);
 
       respawnMessageRenderer.render(player, renderingLayer);
 
       playerStatBarsRenderer.render(player, renderingLayer);
-
     }
 
     pickUpMenuRenderer.render(renderingLayer, game);
 
-    potionMenuRenderer.renderMenu(renderingLayer, game);
+    checkpointMenuRenderer.render(renderingLayer, game);
+
+    potionMenuRenderer.render(renderingLayer, game);
 
     inventoryWindowRenderer.render(renderingLayer, game);
 

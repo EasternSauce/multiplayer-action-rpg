@@ -62,6 +62,12 @@ public class GameEntityPhysics {
 
     this.areaGateBodies.values().forEach(areaGateBody -> areaGateBody.init(game));
 
+    this.checkpointBodies = game
+      .getGameState().getCheckpoints().keySet().stream()
+      .collect(Collectors.toMap(checkpointId -> checkpointId, CheckpointBody::of));
+
+    this.checkpointBodies.values().forEach(checkpointBody -> checkpointBody.init(game));
+
   }
 
   private void createContactListener(PhysicsWorld physicsWorld) {
@@ -139,6 +145,13 @@ public class GameEntityPhysics {
 
       physicsEventQueue.add(CreatureHitsLootPileEvent.of(creatureBody.getCreatureId(), lootPileBody.getLootPileId()));
 
+    } else if (objA instanceof CreatureBody && objB instanceof CheckpointBody) {
+      CreatureBody creatureBody = (CreatureBody) objA;
+      CheckpointBody checkpointBody = (CheckpointBody) objB;
+
+      physicsEventQueue.add(
+        CreatureHitsCheckpointEvent.of(creatureBody.getCreatureId(), checkpointBody.getCheckpointId()));
+
     }
   }
 
@@ -151,6 +164,11 @@ public class GameEntityPhysics {
       CreatureBody creatureBody = (CreatureBody) objA;
       LootPileBody lootPileBody = (LootPileBody) objB;
       physicsEventQueue.add(CreatureLeavesLootPileEvent.of(creatureBody.getCreatureId(), lootPileBody.getLootPileId()));
+    } else if (objA instanceof CreatureBody && objB instanceof CheckpointBody) {
+      CreatureBody creatureBody = (CreatureBody) objA;
+      CheckpointBody checkpointBody = (CheckpointBody) objB;
+      physicsEventQueue.add(
+        CreatureLeavesCheckpointEvent.of(creatureBody.getCreatureId(), checkpointBody.getCheckpointId()));
     }
   }
 }

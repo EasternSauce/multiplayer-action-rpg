@@ -1,5 +1,6 @@
 package com.easternsauce.actionrpg.model.util;
 
+import com.easternsauce.actionrpg.model.area.CheckpointId;
 import com.easternsauce.actionrpg.model.area.LootPileId;
 import com.easternsauce.actionrpg.model.skill.SkillType;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,7 @@ public class PlayerConfig {
   private Integer equipmentItemBeingMoved;
   private Integer potionMenuItemBeingMoved;
   private Set<LootPileId> itemPickupMenuLootPiles = new ConcurrentSkipListSet<>();
+  private Set<CheckpointId> checkpointMenuCheckpoints = new ConcurrentSkipListSet<>();
   private Integer skillMenuPickerSlotBeingChanged;
   private Map<Integer, SkillType> skillMenuSlots = new ConcurrentSkipListMap<>();
   private Boolean areAreasLoaded = false;

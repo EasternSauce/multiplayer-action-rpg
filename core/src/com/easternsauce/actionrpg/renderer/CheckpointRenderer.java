@@ -8,6 +8,7 @@ import com.easternsauce.actionrpg.model.area.Checkpoint;
 import com.easternsauce.actionrpg.model.area.CheckpointId;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @NoArgsConstructor(staticName = "of")
 public class CheckpointRenderer {
@@ -15,10 +16,15 @@ public class CheckpointRenderer {
   private CheckpointId checkpointId;
 
   @Getter
-  private Sprite sprite;
+  private Sprite regularSprite;
+
+  @Getter
+  private Sprite litSprite;
+
+  @Setter
+  private float lastCheckpointSetTime;
 
   public static CheckpointRenderer of(CheckpointId checkpointId) {
-
     CheckpointRenderer checkpointRenderer = CheckpointRenderer.of();
     checkpointRenderer.checkpointId = checkpointId;
     return checkpointRenderer;
@@ -26,13 +32,19 @@ public class CheckpointRenderer {
   }
 
   public void init(TextureAtlas atlas, CoreGame game) {
-    sprite = new Sprite();
-    sprite.setRegion(atlas.findRegion("goblet"));
+    regularSprite = new Sprite();
+    regularSprite.setRegion(atlas.findRegion("goblet"));
+
+    litSprite = new Sprite();
+    litSprite.setRegion(atlas.findRegion("goblet_lit"));
 
     Checkpoint checkpoint = game.getGameState().getCheckpoint(checkpointId);
 
-    sprite.setSize(checkpoint.getWidth(), checkpoint.getHeight());
-    sprite.setCenter(checkpoint.getPos().getX(), checkpoint.getPos().getY());
+    regularSprite.setSize(checkpoint.getWidth(), checkpoint.getHeight());
+    regularSprite.setCenter(checkpoint.getPos().getX(), checkpoint.getPos().getY());
+
+    litSprite.setSize(checkpoint.getWidth(), checkpoint.getHeight());
+    litSprite.setCenter(checkpoint.getPos().getX(), checkpoint.getPos().getY());
 
   }
 
@@ -41,8 +53,13 @@ public class CheckpointRenderer {
 
     Checkpoint checkpoint = game.getGameState().getCheckpoint(checkpointId);
 
+
     if (currentAreaId.equals(checkpoint.getAreaId())) {
-      sprite.draw(renderingLayer.getSpriteBatch());
+      if (lastCheckpointSetTime + 5f > game.getGameState().getTime()) {
+        litSprite.draw(renderingLayer.getSpriteBatch());
+      } else {
+        regularSprite.draw(renderingLayer.getSpriteBatch());
+      }
     }
   }
 }

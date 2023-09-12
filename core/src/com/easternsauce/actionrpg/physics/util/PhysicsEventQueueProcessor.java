@@ -93,7 +93,6 @@ public class PhysicsEventQueueProcessor {
         if (playerConfig != null) {
           playerConfig.getItemPickupMenuLootPiles().add(event.getLootPileId());
         }
-
       } else if (physicsEvent instanceof CreatureLeavesLootPileEvent) {
         CreatureLeavesLootPileEvent event = (CreatureLeavesLootPileEvent) physicsEvent;
 
@@ -101,6 +100,23 @@ public class PhysicsEventQueueProcessor {
 
         if (playerConfig != null) {
           playerConfig.getItemPickupMenuLootPiles().remove(event.getLootPileId());
+        }
+      } else if (physicsEvent instanceof CreatureHitsCheckpointEvent) {
+        CreatureHitsCheckpointEvent event = (CreatureHitsCheckpointEvent) physicsEvent;
+
+        PlayerConfig playerConfig = game.getGameState().getPlayerConfig(event.getCreatureId());
+
+        if (playerConfig != null) {
+          playerConfig.getCheckpointMenuCheckpoints().add(event.getCheckpointId());
+        }
+
+      } else if (physicsEvent instanceof CreatureLeavesCheckpointEvent) {
+        CreatureLeavesCheckpointEvent event = (CreatureLeavesCheckpointEvent) physicsEvent;
+
+        PlayerConfig playerConfig = game.getGameState().getPlayerConfig(event.getCreatureId());
+
+        if (playerConfig != null) {
+          playerConfig.getCheckpointMenuCheckpoints().remove(event.getCheckpointId());
         }
 
       }

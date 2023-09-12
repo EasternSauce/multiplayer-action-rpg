@@ -9,13 +9,13 @@ import com.easternsauce.actionrpg.model.action.GameStateAction;
 import com.easternsauce.actionrpg.model.action.LootPileDespawnAction;
 import com.easternsauce.actionrpg.model.action.PlayerRespawnAction;
 import com.easternsauce.actionrpg.model.area.AreaId;
+import com.easternsauce.actionrpg.model.area.Checkpoint;
 import com.easternsauce.actionrpg.model.area.LootPile;
 import com.easternsauce.actionrpg.model.area.LootPileId;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.creature.Player;
 import com.easternsauce.actionrpg.model.util.GameStateBroadcast;
-import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.util.Constants;
 import com.esotericsoftware.kryonet.Connection;
 import com.google.gson.Gson;
@@ -128,10 +128,9 @@ public class ServerGameState extends GameState {
         // handle respawns server side
         creature.getParams().getTimeSinceDeathTimer().getTime() > creature.getParams().getRespawnTime()) {
         if (creature instanceof Player) {
-          Vector2 pos = Vector2.of((float) ((Math.random() * (28 - 18)) + 18), // TODO: use random generator
-            (float) ((Math.random() * (12 - 6)) + 6));
-          PlayerRespawnAction action = PlayerRespawnAction.of(creatureId, pos,
-            AreaId.of("Area1")); // TODO: respawns
+          Checkpoint checkpoint = getCheckpoints().get(creature.getParams().getCurrentCheckpointId());
+
+          PlayerRespawnAction action = PlayerRespawnAction.of(creatureId, checkpoint.getPos(), checkpoint.getAreaId());
 
           scheduleServerSideAction(action);
         }

@@ -35,11 +35,11 @@ public class ItemPickupMenuRenderer {
       .forEach(item -> renderMenuOption(renderingLayer, iconRetriever, x, y, i, item));
   }
 
-  private void renderMenuOption(RenderingLayer renderingLayer, IconRetriever iconRetriever, float x, float y, AtomicInteger i, Item item) {
+  private void renderMenuOption(RenderingLayer renderingLayer, IconRetriever iconRetriever, float mouseX, float mouseY, AtomicInteger i, Item item) {
     Rect rect = ItemPickupMenuConsts.getMenuOptionRect(i.get());
     renderingLayer.getShapeDrawer().filledRectangle(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(),
       Color.DARK_GRAY.cpy().sub(0, 0, 0, 0.3f));
-    if (rect.contains(x, y)) {
+    if (rect.contains(mouseX, mouseY)) {
       renderingLayer.getShapeDrawer()
         .rectangle(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(), Color.ORANGE);
     }

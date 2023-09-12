@@ -2,6 +2,7 @@ package com.easternsauce.actionrpg.model.creature;
 
 import com.easternsauce.actionrpg.game.entity.EntityParams;
 import com.easternsauce.actionrpg.model.area.AreaId;
+import com.easternsauce.actionrpg.model.area.CheckpointId;
 import com.easternsauce.actionrpg.model.enemyrallypoint.EnemyRallyPointId;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.item.ItemTemplate;
@@ -95,6 +96,9 @@ public class CreatureParams implements EntityParams {
   private Float lastTimeMoved = -Float.MAX_VALUE;
   @NonNull
   private Float lastTimeUsedSkill = -Float.MAX_VALUE;
+
+  @NonNull
+  private CheckpointId currentCheckpointId = CheckpointId.of("Area1Checkpoint1");
 
   public static CreatureParams of(CreatureId creatureId, AreaId areaId, Vector2 pos, EnemyTemplate enemyTemplate, int rngSeed) {
     return produceCreatureParams(creatureId, areaId, pos, enemyTemplate.getEnemyType().textureName, rngSeed);

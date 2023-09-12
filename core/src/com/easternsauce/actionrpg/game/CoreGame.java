@@ -70,6 +70,7 @@ public abstract class CoreGame extends Game {
   @Setter
   private RenderingLayer worldTextRenderingLayer;
 
+
   public void addTeleportEvent(TeleportEvent teleportEvent) {
     eventProcessor.getTeleportEvents().add(teleportEvent);
   }

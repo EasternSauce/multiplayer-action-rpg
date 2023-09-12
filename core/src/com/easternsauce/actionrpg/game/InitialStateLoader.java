@@ -66,8 +66,12 @@ public class InitialStateLoader {
     game.getGameState().getCheckpoints().clear();
 
     game.getGameState().getCheckpoints()
-      .put(CheckpointId.of("Checkpoint1"),
-        Checkpoint.of(CheckpointId.of("Checkpoint1"), AreaId.of("Area1"), Vector2.of(20.871206f, 9.623786f)));
+      .put(CheckpointId.of("Area1Checkpoint1"),
+        Checkpoint.of(CheckpointId.of("Area1Checkpoint1"), AreaId.of("Area1"), Vector2.of(20.871206f, 9.623786f)));
+
+    game.getGameState().getCheckpoints()
+      .put(CheckpointId.of("Area1Checkpoint2"),
+        Checkpoint.of(CheckpointId.of("Area1Checkpoint2"), AreaId.of("Area1"), Vector2.of(48.680607f, 16.780628f)));
 
     Map<EnemyRallyPointId, EnemyRallyPoint> enemyRallyPoints = game.getGameState().getEnemyRallyPoints();
 
