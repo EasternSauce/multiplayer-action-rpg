@@ -29,7 +29,7 @@ public class CheckpointMenuRenderer {
     playerConfig.getCheckpointMenuCheckpoints().stream()
       .filter(checkpointId -> {
         creature.getParams();
-        return !Objects.equals(checkpointId.getValue(),
+        return creature.getParams().getCurrentCheckpointId() == null || !Objects.equals(checkpointId.getValue(),
           creature.getParams().getCurrentCheckpointId().getValue());
       })
       .findAny()

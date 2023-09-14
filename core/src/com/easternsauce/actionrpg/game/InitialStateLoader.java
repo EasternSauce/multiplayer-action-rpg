@@ -67,15 +67,19 @@ public class InitialStateLoader {
 
     game.getGameState().getCheckpoints()
       .put(CheckpointId.of("Area1Checkpoint1"),
-        Checkpoint.of(CheckpointId.of("Area1Checkpoint1"), AreaId.of("Area1"), Vector2.of(20.871206f, 9.623786f)));
-
-    game.getGameState().getCheckpoints()
-      .put(CheckpointId.of("Area1Checkpoint2"),
-        Checkpoint.of(CheckpointId.of("Area1Checkpoint2"), AreaId.of("Area1"), Vector2.of(48.680607f, 16.780628f)));
+        Checkpoint.of(CheckpointId.of("Area1Checkpoint1"), AreaId.of("Area1"), Vector2.of(44.680607f, 14.780628f)));
 
     game.getGameState().getCheckpoints()
       .put(CheckpointId.of("Area2Checkpoint1"),
         Checkpoint.of(CheckpointId.of("Area2Checkpoint1"), AreaId.of("Area2"), Vector2.of(25.510015f, 15.345517f)));
+
+    game.getGameState().getCheckpoints()
+      .put(CheckpointId.of("Area3Checkpoint1"),
+        Checkpoint.of(CheckpointId.of("Area3Checkpoint1"), AreaId.of("Area3"), Vector2.of(52.294518f, 18.740194f)));
+
+    game.getGameState().getCheckpoints()
+      .put(CheckpointId.of("Area3Checkpoint2"),
+        Checkpoint.of(CheckpointId.of("Area3Checkpoint2"), AreaId.of("Area3"), Vector2.of(85.67888f, 189.58704f)));
 
     Map<EnemyRallyPointId, EnemyRallyPoint> enemyRallyPoints = game.getGameState().getEnemyRallyPoints();
 
@@ -86,96 +90,96 @@ public class InitialStateLoader {
     addEnemyRallyPoint(enemyRallyPoints, AreaId.of("Area1"), Vector2.of(34.088314f, 51.699497f),
       Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.skeleton, 100),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.archer, 100))
-        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 2);
+        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 1);
 
     addEnemyRallyPoint(enemyRallyPoints, AreaId.of("Area1"), Vector2.of(5.743255f, 33.62826f),
-      Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.spider, 100)
+      Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.mage, 100)
         //                new AbstractMap.SimpleEntry<>(EnemyTemplate.spider, 100)
-      ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 3);
+      ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 1);
 
     addEnemyRallyPoint(enemyRallyPoints, AreaId.of("Area1"), Vector2.of(18.355146f, 102.16021f),
-      Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.spider, 300)
+      Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.archer, 300)
         //                new AbstractMap.SimpleEntry<>(EnemyTemplate.spider, 100)
-      ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 6);
+      ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 2);
 
     addEnemyRallyPoint(enemyRallyPoints, AreaId.of("Area1"), Vector2.of(53.2744f, 84.06082f),
       Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.skeleton, 300),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.archer, 100),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.wolf, 100))
-        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 4);
+        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 2);
 
     addEnemyRallyPoint(enemyRallyPoints, AreaId.of("Area1"), Vector2.of(71.45329f, 69.61391f),
       Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.skeleton, 100),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.archer, 300))
-        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 4);
+        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 2);
 
     addEnemyRallyPoint(enemyRallyPoints, AreaId.of("Area1"), Vector2.of(54.74892f, 114.00807f),
       Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.skeleton, 200),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.archer, 300),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.mage, 100))
-        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 7);
+        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 4);
 
     addEnemyRallyPoint(enemyRallyPoints, AreaId.of("Area1"), Vector2.of(50.533447f, 150.28108f),
       Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.skeleton, 200),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.mage, 100))
-        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 5);
+        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 3);
 
     addEnemyRallyPoint(enemyRallyPoints, AreaId.of("Area1"), Vector2.of(3.3964655f, 127.868256f),
       Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.skeleton, 200),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.archer, 200),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.mage, 200), new AbstractMap.SimpleEntry<>(EnemyTemplate.wolf, 100),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.serpent, 50))
-        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 5);
+        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 3);
 
     addEnemyRallyPoint(enemyRallyPoints, AreaId.of("Area1"), Vector2.of(22.922045f, 180.38924f),
       Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.skeleton, 200),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.archer, 200),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.mage, 200),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.serpent, 50))
-        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 9);
+        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 5);
 
     addEnemyRallyPoint(enemyRallyPoints, AreaId.of("Area1"), Vector2.of(72.00597f, 185.74562f),
       Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.skeleton, 200),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.archer, 200),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.mage, 200), new AbstractMap.SimpleEntry<>(EnemyTemplate.wolf, 100),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.serpent, 100))
-        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 11);
+        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 5);
 
     addEnemyRallyPoint(enemyRallyPoints, AreaId.of("Area1"), Vector2.of(120.66566f, 61.488186f),
       Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.skeleton, 200),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.archer, 200),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.mage, 200),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.serpent, 200))
-        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 5);
+        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 2);
 
     addEnemyRallyPoint(enemyRallyPoints, AreaId.of("Area1"), Vector2.of(107.045654f, 109.50901f),
       Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.skeleton, 200),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.archer, 200),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.mage, 200),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.serpent, 200))
-        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 8);
+        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 5);
 
     addEnemyRallyPoint(enemyRallyPoints, AreaId.of("Area1"), Vector2.of(90.433754f, 149.47726f),
       Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.skeleton, 200),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.archer, 200),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.mage, 200),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.serpent, 100))
-        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 9);
+        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 5);
 
     addEnemyRallyPoint(enemyRallyPoints, AreaId.of("Area1"), Vector2.of(143.88635f, 144.49992f),
       Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.mage, 200),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.wolf, 100),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.serpent, 40))
-        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 9);
+        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 5);
 
     addEnemyRallyPoint(enemyRallyPoints, AreaId.of("Area1"), Vector2.of(194.33566f, 161.41022f),
       Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.archer, 200),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.wolf, 70), new AbstractMap.SimpleEntry<>(EnemyTemplate.serpent, 40))
-        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 7);
+        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 4);
 
     addEnemyRallyPoint(enemyRallyPoints, AreaId.of("Area1"), Vector2.of(180.13132f, 189.53963f),
       Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.serpent, 100))
-        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 5);
+        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 3);
 
     addEnemyRallyPoint(enemyRallyPoints, AreaId.of("Area1"), Vector2.of(194.17567f, 130.81833f),
       Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.spider, 100))
@@ -185,13 +189,13 @@ public class InitialStateLoader {
       Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.archer, 200),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.mage, 200),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.serpent, 70))
-        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 5);
+        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 2);
 
     addEnemyRallyPoint(enemyRallyPoints, AreaId.of("Area1"), Vector2.of(149.25409f, 59.35056f),
       Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.skeleton, 200),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.mage, 200),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.serpent, 100))
-        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 4);
+        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 2);
 
     addEnemyRallyPoint(enemyRallyPoints, AreaId.of("Area1"), Vector2.of(189.71574f, 50.233543f),
       Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.rat, 200))
@@ -203,27 +207,22 @@ public class InitialStateLoader {
 
     addEnemyRallyPoint(enemyRallyPoints, AreaId.of("Area1"), Vector2.of(134.38565f, 33.810173f),
       Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.rat, 200))
-        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 5);
-
-    addEnemyRallyPoint(enemyRallyPoints, AreaId.of("Area3"), Vector2.of(54.546818f, 17.866678f),
-      Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.rat, 200),
-          new AbstractMap.SimpleEntry<>(EnemyTemplate.wolf, 50))
         .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 2);
 
     addEnemyRallyPoint(enemyRallyPoints, AreaId.of("Area3"), Vector2.of(45.149673f, 42.696243f),
       Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.rat, 200),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.wolf, 100))
-        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 3);
+        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 1);
 
     addEnemyRallyPoint(enemyRallyPoints, AreaId.of("Area3"), Vector2.of(9.14936f, 85.46421f),
       Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.rat, 200),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.mage, 100), new AbstractMap.SimpleEntry<>(EnemyTemplate.wolf, 70))
-        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 5);
+        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 2);
 
     addEnemyRallyPoint(enemyRallyPoints, AreaId.of("Area3"), Vector2.of(77.41629f, 63.43089f),
       Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.rat, 200),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.mage, 100))
-        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 5);
+        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 2);
 
     addEnemyRallyPoint(enemyRallyPoints, AreaId.of("Area3"), Vector2.of(8.524707f, 50.28812f),
       Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.minos, 150),
@@ -236,12 +235,12 @@ public class InitialStateLoader {
           new AbstractMap.SimpleEntry<>(EnemyTemplate.spider, 100),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.serpent, 80),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.mage, 200), new AbstractMap.SimpleEntry<>(EnemyTemplate.wolf, 100))
-        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 10);
+        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 5);
 
     addEnemyRallyPoint(enemyRallyPoints, AreaId.of("Area3"), Vector2.of(53.30063f, 115.123146f),
       Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.minos, 50),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.rat, 300), new AbstractMap.SimpleEntry<>(EnemyTemplate.spider, 100))
-        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 7);
+        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 4);
 
     addEnemyRallyPoint(enemyRallyPoints, AreaId.of("Area3"), Vector2.of(46.327713f, 152.19821f),
       Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.minos, 50),
@@ -249,29 +248,24 @@ public class InitialStateLoader {
           new AbstractMap.SimpleEntry<>(EnemyTemplate.sludge, 100),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.spider, 100),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.wolf, 100))
-        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 8);
+        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 4);
 
     addEnemyRallyPoint(enemyRallyPoints, AreaId.of("Area3"), Vector2.of(94.59606f, 141.75322f),
       Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.rat, 100),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.sludge, 300),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.spider, 100),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.wolf, 100))
-        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 5);
-
-    addEnemyRallyPoint(enemyRallyPoints, AreaId.of("Area3"), Vector2.of(87.213615f, 186.61588f),
-      Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.minos, 100),
-          new AbstractMap.SimpleEntry<>(EnemyTemplate.spider, 200))
-        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 5);
+        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 2);
 
     addEnemyRallyPoint(enemyRallyPoints, AreaId.of("Area3"), Vector2.of(123.96952f, 176.52777f),
       Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.rat, 100),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.sludge, 200))
-        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 4);
+        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 2);
 
     addEnemyRallyPoint(enemyRallyPoints, AreaId.of("Area3"), Vector2.of(164.68907f, 138.92996f),
       Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.sludge, 100),
           new AbstractMap.SimpleEntry<>(EnemyTemplate.archer, 100))
-        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 7);
+        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 3);
 
     addEnemyRallyPoint(enemyRallyPoints, AreaId.of("Area3"), Vector2.of(186.80959f, 142.67236f),
       Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.sludge, 100),
@@ -279,14 +273,14 @@ public class InitialStateLoader {
         new AbstractMap.SimpleEntry<>(EnemyTemplate.skeleton, 100),
         new AbstractMap.SimpleEntry<>(EnemyTemplate.serpent, 70)
 
-      ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 7);
+      ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 3);
 
     addEnemyRallyPoint(enemyRallyPoints, AreaId.of("Area3"), Vector2.of(158.88972f, 184.15317f),
       Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.spider, 100),
         new AbstractMap.SimpleEntry<>(EnemyTemplate.minos, 100),
         new AbstractMap.SimpleEntry<>(EnemyTemplate.serpent, 100)
 
-      ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 6);
+      ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 3);
 
     addEnemyRallyPoint(enemyRallyPoints, AreaId.of("Area3"), Vector2.of(164.75897f, 85.33934f),
       Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.spider, 100),
@@ -294,7 +288,7 @@ public class InitialStateLoader {
         new AbstractMap.SimpleEntry<>(EnemyTemplate.serpent, 100),
         new AbstractMap.SimpleEntry<>(EnemyTemplate.sludge, 100), new AbstractMap.SimpleEntry<>(EnemyTemplate.rat, 300)
 
-      ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 12);
+      ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 5);
 
   }
 }

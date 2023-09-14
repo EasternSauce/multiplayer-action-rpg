@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 public class NullCreature extends Creature {
   @Override
   public CreatureParams getParams() {
-    return CreatureParams.of().setEnemyParams(EnemyParams.of());
+    return CreatureParams.of().setEnemyParams(EnemyParams.of()).setPos(Vector2.of(0, 0));
   }
 
   @Override

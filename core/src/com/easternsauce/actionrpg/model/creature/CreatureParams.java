@@ -97,8 +97,7 @@ public class CreatureParams implements EntityParams {
   @NonNull
   private Float lastTimeUsedSkill = -Float.MAX_VALUE;
 
-  @NonNull
-  private CheckpointId currentCheckpointId = CheckpointId.of("Area1Checkpoint1");
+  private CheckpointId currentCheckpointId = null;
 
   private Integer stunResistance = 0;
   private SimpleTimer stunResistanceReductionTimer = SimpleTimer.getExpiredTimer();

@@ -51,8 +51,7 @@ public class PlayerJoinAction extends GameStateAction {
   private Creature createNewPlayer(CoreGame game) {
     String[] textures = new String[]{"male1", "male2", "female1"};
 
-    Vector2 pos = Vector2.of((Math.abs(game.getGameState().getRandomGenerator().nextFloat()) * (28 - 18)) + 18,
-      (Math.abs(game.getGameState().getRandomGenerator().nextFloat()) * (12 - 6)) + 6);
+    Vector2 pos = Vector2.of(28f, 12f);
 
     String textureName = textures[((int) (Math.abs(game.getGameState().getRandomGenerator().nextFloat()) * 100) % 3)];
 
