@@ -26,6 +26,7 @@ public abstract class Creature implements Entity {
       regenerateStamina();
       processRegenerationOverTime(game);
       processDamageOverTime(game);
+      processStunResistanceReduction();
     }
 
     if (!getParams().getMovementParams().getReachedTargetPos()) {
@@ -100,6 +101,15 @@ public abstract class Creature implements Entity {
     }
   }
 
+  private void processStunResistanceReduction() {
+    if (getParams().getStunResistanceReductionTimer().getTime() > 0.75f) {
+      if (getParams().getStunResistance() > 0) {
+        getParams().setStunResistance(getParams().getStunResistance() - 1);
+      }
+      getParams().getStunResistanceReductionTimer().restart();
+    }
+  }
+
   private void regenerateStamina() {
     if (getParams().getEffectParams().getStaminaRegenerationTimer().getTime() >
       getParams().getEffectParams().getStaminaRegenerationTickTime() && isAlive()) {
@@ -148,6 +158,7 @@ public abstract class Creature implements Entity {
     getParams().getEffectParams().getDamageOverTimeTimer().update(delta);
     getParams().getEffectParams().getLifeRegenerationOverTimeTimer().update(delta);
     getParams().getEffectParams().getManaRegenerationOverTimeTimer().update(delta);
+    getParams().getStunResistanceReductionTimer().update(delta);
 
     getParams().getSkills().forEach((skillType, skill) -> skill.getPerformTimer().update(delta));
     // add other timers here...

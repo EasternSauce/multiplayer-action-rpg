@@ -73,6 +73,10 @@ public class InitialStateLoader {
       .put(CheckpointId.of("Area1Checkpoint2"),
         Checkpoint.of(CheckpointId.of("Area1Checkpoint2"), AreaId.of("Area1"), Vector2.of(48.680607f, 16.780628f)));
 
+    game.getGameState().getCheckpoints()
+      .put(CheckpointId.of("Area2Checkpoint1"),
+        Checkpoint.of(CheckpointId.of("Area2Checkpoint1"), AreaId.of("Area2"), Vector2.of(25.510015f, 15.345517f)));
+
     Map<EnemyRallyPointId, EnemyRallyPoint> enemyRallyPoints = game.getGameState().getEnemyRallyPoints();
 
     addEnemyRallyPoint(enemyRallyPoints, AreaId.of("Area1"), Vector2.of(72.04751f, 25.991135f),

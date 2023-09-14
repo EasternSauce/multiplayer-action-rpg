@@ -71,6 +71,7 @@ public class GameplayScreen implements Screen {
     mapsToLoad.put(AreaId.of("Area1"), "assets/areas/area1");
     mapsToLoad.put(AreaId.of("Area2"), "assets/areas/area2");
     mapsToLoad.put(AreaId.of("Area3"), "assets/areas/area3");
+    mapsToLoad.put(AreaId.of("Area4"), "assets/areas/area4");
 
     return mapsToLoad.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
       entry -> game.getEntityManager().getGameEntityRenderer().loadMap(entry.getValue() + "/tile_map.tmx")));

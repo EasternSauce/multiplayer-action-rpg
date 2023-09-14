@@ -66,7 +66,12 @@ public class CreatureHitByAbilityAction extends CreatureHitAction {
           stunDuration = ability.getStunDuration();
         }
 
-        targetCreature.applyEffect(CreatureEffect.STUN, stunDuration, game);
+        targetCreature.applyEffect(CreatureEffect.STUN,
+          stunDuration * (1f - targetCreature.getParams().getStunResistance() / 20f), game);
+
+        if (targetCreature.getParams().getStunResistance() < 12) {
+          targetCreature.getParams().setStunResistance(targetCreature.getParams().getStunResistance() + 1);
+        }
       }
 
       targetCreature.onBeingHit(ability, game);

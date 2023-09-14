@@ -100,6 +100,9 @@ public class CreatureParams implements EntityParams {
   @NonNull
   private CheckpointId currentCheckpointId = CheckpointId.of("Area1Checkpoint1");
 
+  private Integer stunResistance = 0;
+  private SimpleTimer stunResistanceReductionTimer = SimpleTimer.getExpiredTimer();
+
   public static CreatureParams of(CreatureId creatureId, AreaId areaId, Vector2 pos, EnemyTemplate enemyTemplate, int rngSeed) {
     return produceCreatureParams(creatureId, areaId, pos, enemyTemplate.getEnemyType().textureName, rngSeed);
   }
