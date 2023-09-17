@@ -1,4 +1,4 @@
-package com.easternsauce.actionrpg.model.ability.tunneldig;
+package com.easternsauce.actionrpg.model.ability.shockwave;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.Ability;
@@ -12,12 +12,12 @@ import java.util.concurrent.ConcurrentSkipListMap;
 @SuppressWarnings("SpellCheckingInspection")
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-public class TunnelDigExplosion extends Ability {
+public class Shockwave extends Ability {
   @Getter
   protected AbilityParams params;
 
-  public static TunnelDigExplosion of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-    TunnelDigExplosion ability = TunnelDigExplosion.of();
+  public static Shockwave of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+    Shockwave ability = Shockwave.of();
 
     ability.params = abilityParams.setWidth(10f).setHeight(10f).setChannelTime(0.17f).setActiveTime(0.306f)
       .setBaseDamage(45f).setTextureName("holy_explosion").setChannelAnimationLooping(false)

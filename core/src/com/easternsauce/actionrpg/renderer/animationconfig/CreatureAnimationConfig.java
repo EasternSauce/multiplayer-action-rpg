@@ -45,6 +45,9 @@ public class CreatureAnimationConfig {
     configs.put("baby_spider",
       CreatureAnimationConfig.of("spider", 1, 1f, 1f, 32, 32, 3, 0.1f, textureDirMap(3, 0, 1, 2), false));
 
+    configs.put("taurus",
+      CreatureAnimationConfig.of("taurus", 1, 5f, 5f, 80, 80, 4, 0.25f, textureDirMap(3, 0, 1, 2), false));
+
   }
 
   private String textureName;

@@ -43,6 +43,8 @@ public class AbilityParams implements EntityParams {
   @NonNull
   private Float rotationAngle = 0f;
   @NonNull
+  private Boolean rotationAllowed = true;
+  @NonNull
   private Boolean channelAnimationLooping;
   @NonNull
   private Boolean activeAnimationLooping;
@@ -80,7 +82,9 @@ public class AbilityParams implements EntityParams {
   @NonNull
   private Float rotationShift = 0f;
   @NonNull
-  private Boolean flip = false;
+  private Boolean flipX = false;
+  @NonNull
+  private Boolean flipY = false;
   @NonNull
   private SimpleTimer changeDirectionTimer = SimpleTimer.getStartedTimer();
   @NonNull
@@ -118,5 +122,6 @@ public class AbilityParams implements EntityParams {
   private Boolean noTexture = false;
 
   private Boolean dontOverridePos = false;
+
 
 }

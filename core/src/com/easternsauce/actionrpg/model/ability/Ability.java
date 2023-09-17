@@ -101,12 +101,10 @@ public abstract class Ability implements Entity {
   }
 
   public void init(CoreGame game) {
-
     getParams().setState(AbilityState.CHANNEL);
     getParams().getStateTimer().restart();
 
     Creature creature = game.getCreature(getParams().getCreatureId());
-
 
     if (getParams().getChainToPos() != null) {
       getParams().setPos(getParams().getChainToPos());
@@ -115,6 +113,8 @@ public abstract class Ability implements Entity {
         // TODO: should be moved to AttachedAbility?
         getParams().getDirVector(), getParams().getStartingRange()));
     }
+
+    System.out.println("initing " + this.getClass() + " to " + getParams().getPos());
 
     if (creature.getCurrentWeapon() != null) {
       getParams().setWeaponDamage((float) creature.getCurrentWeapon().getDamage());

@@ -1,4 +1,4 @@
-package com.easternsauce.actionrpg.model.ability.meteor;
+package com.easternsauce.actionrpg.model.ability.target;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.Ability;
@@ -10,14 +10,14 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-public class MeteorTarget extends Ability {
+public class VisualTarget extends Ability {
   @Getter
   protected AbilityParams params;
 
-  public static MeteorTarget of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+  public static VisualTarget of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
     Creature creature = game.getCreature(abilityParams.getCreatureId());
 
-    MeteorTarget ability = MeteorTarget.of();
+    VisualTarget ability = VisualTarget.of();
     ability.params = abilityParams.setWidth(3f).setHeight(3f).setChannelTime(0f).setActiveTime(0.8f)
       .setTextureName("meteor_aim").setBaseDamage(0f).setChannelAnimationLooping(false).setActiveAnimationLooping(false)
       .setPos(creature.getParams().getPos());

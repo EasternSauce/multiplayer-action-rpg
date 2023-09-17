@@ -11,7 +11,12 @@ public abstract class Projectile extends Ability {
     }
 
     getParams().setVelocity(getParams().getDirVector().normalized().multiplyBy(speed));
-    getParams().setRotationAngle(getParams().getDirVector().angleDeg());
+
+    if (getParams().getRotationAllowed()) {
+      getParams().setRotationAngle(getParams().getDirVector().angleDeg());
+    } else {
+      getParams().setRotationAngle(0f);
+    }
 
     Float maximumRange;
 

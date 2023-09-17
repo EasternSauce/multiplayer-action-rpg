@@ -51,6 +51,8 @@ public class InitialStateLoader {
     AreaGateId area3ToArea1 = AreaGateId.of("Area3ToArea1_" + (int) (Math.random() * 10000000));
     AreaGateId area1ToArea2 = AreaGateId.of("Area1ToArea2_" + (int) (Math.random() * 10000000));
     AreaGateId area2ToArea1 = AreaGateId.of("Area2ToArea1_" + (int) (Math.random() * 10000000));
+    AreaGateId area3ToArea4 = AreaGateId.of("Area3ToArea4_" + (int) (Math.random() * 10000000));
+    AreaGateId area4ToArea3 = AreaGateId.of("Area3ToArea4_" + (int) (Math.random() * 10000000));
 
     game.getGameState().getAreaGates().clear();
 
@@ -62,6 +64,12 @@ public class InitialStateLoader {
       .put(area1ToArea2, AreaGate.of(area1ToArea2, 1.5f, 1.5f, Vector2.of(2f, 63f), AreaId.of("Area1"), area2ToArea1));
     game.getGameState().getAreaGates()
       .put(area2ToArea1, AreaGate.of(area2ToArea1, 1.5f, 1.5f, Vector2.of(58f, 9f), AreaId.of("Area2"), area1ToArea2));
+    game.getGameState().getAreaGates()
+      .put(area3ToArea4,
+        AreaGate.of(area3ToArea4, 1.5f, 1.5f, Vector2.of(162.86261f, 138.66278f), AreaId.of("Area3"), area4ToArea3));
+    game.getGameState().getAreaGates()
+      .put(area4ToArea3,
+        AreaGate.of(area3ToArea4, 1.5f, 1.5f, Vector2.of(50.926105f, 92.75383f), AreaId.of("Area4"), area3ToArea4));
 
     game.getGameState().getCheckpoints().clear();
 
@@ -289,6 +297,11 @@ public class InitialStateLoader {
         new AbstractMap.SimpleEntry<>(EnemyTemplate.sludge, 100), new AbstractMap.SimpleEntry<>(EnemyTemplate.rat, 300)
 
       ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 5);
+
+    addEnemyRallyPoint(enemyRallyPoints, AreaId.of("Area4"), Vector2.of(53.219776f, 52.394897f),
+      Stream.of(new AbstractMap.SimpleEntry<>(EnemyTemplate.taurus, 100)
+
+      ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 1);
 
   }
 }

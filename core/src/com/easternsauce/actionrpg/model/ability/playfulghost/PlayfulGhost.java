@@ -43,7 +43,7 @@ public class PlayfulGhost extends Projectile {
   @Override
   protected void onActiveUpdate(float delta, CoreGame game) {
     onProjectileTravelUpdate();
-    getParams().setFlip(getParams().getRotationAngle() >= 90 && getParams().getRotationAngle() < 270);
+    getParams().setFlipY(getParams().getRotationAngle() >= 90 && getParams().getRotationAngle() < 270);
 
     Creature minCreature = null;
     float minDistance = Float.MAX_VALUE;

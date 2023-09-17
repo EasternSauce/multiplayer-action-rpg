@@ -117,7 +117,7 @@ public class TunnelDig extends Projectile {
   protected void onCompleted(CoreGame game) {
     Creature creature = game.getCreature(getParams().getCreatureId());
 
-    game.chainAnotherAbility(this, AbilityType.DIG_TUNNEL_EXPLOSION,
+    game.chainAnotherAbility(this, AbilityType.SHOCKWAVE,
       creature.getParams().getMovementParams().getFacingVector(),
       ChainAbilityParams.of().setChainToPos(getParams().getPos()));
   }

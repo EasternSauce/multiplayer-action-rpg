@@ -74,6 +74,8 @@ public class AbilityAnimationConfig {
 
     configs.put("meteor_aim", AbilityAnimationConfig.of(256, 256, "meteor_aim", "meteor_aim", 0, 1, 0f, 1f, 1f));
 
+    configs.put("fist_slam", AbilityAnimationConfig.of(40, 40, "fist_slam", "fist_slam", 0, 1, 0f, 1f, 1f));
+
   }
 
   private Integer textureWidth;

@@ -117,7 +117,7 @@ public class AbilityRenderer {
     sprite.setCenter(ability.getParams().getPos().getX(), ability.getParams().getPos().getY());
     sprite.setOriginCenter();
     sprite.setRotation(ability.getParams().getRotationAngle() + ability.getParams().getRotationShift());
-    sprite.setFlip(false, ability.getParams().getFlip());
+    sprite.setFlip(ability.getParams().getFlipX(), ability.getParams().getFlipY());
 
   }
 

@@ -34,7 +34,7 @@ bag
   index: -1
 black_mage
   rotate: false
-  xy: 5446, 234
+  xy: 5446, 104
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
@@ -76,7 +76,7 @@ circle_explosion
   index: -1
 cursor
   rotate: false
-  xy: 5446, 200
+  xy: 7239, 662
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -90,14 +90,14 @@ dig
   index: -1
 downarrow
   rotate: false
-  xy: 926, 83
+  xy: 7349, 892
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 evil_ninja
   rotate: false
-  xy: 5348, 98
+  xy: 5446, 234
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
@@ -118,7 +118,7 @@ explosion_windup
   index: -1
 female1
   rotate: false
-  xy: 5348, 228
+  xy: 5446, 364
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
@@ -132,9 +132,9 @@ fireball
   index: -1
 fist_slam
   rotate: false
-  xy: 2200, 341
-  size: 200, 80
-  orig: 200, 80
+  xy: 2520, 658
+  size: 40, 40
+  orig: 40, 40
   offset: 0, 0
   index: -1
 fist_slam_windup
@@ -146,35 +146,35 @@ fist_slam_windup
   index: -1
 ghost
   rotate: false
-  xy: 5446, 364
+  xy: 5544, 364
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: -1
 goblet
   rotate: false
-  xy: 5348, 32
+  xy: 1732, 302
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 goblet_lit
   rotate: false
-  xy: 1732, 302
+  xy: 7285, 826
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 goblin
   rotate: false
-  xy: 5544, 364
+  xy: 5544, 234
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: -1
 green_potion_throw
   rotate: false
-  xy: 2006, 349
+  xy: 2564, 940
   size: 192, 16
   orig: 192, 16
   offset: 0, 0
@@ -209,7 +209,7 @@ ice_shard
   index: -1
 jawa
   rotate: false
-  xy: 7207, 566
+  xy: 5348, 228
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
@@ -237,14 +237,14 @@ magic_orb
   index: -1
 male1
   rotate: false
-  xy: 5348, 358
+  xy: 5348, 98
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: -1
 male2
   rotate: false
-  xy: 7109, 696
+  xy: 2402, 376
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
@@ -349,7 +349,7 @@ serpent
   index: -1
 shield
   rotate: false
-  xy: 2520, 664
+  xy: 926, 81
   size: 32, 34
   orig: 32, 34
   offset: 0, 0
@@ -419,7 +419,7 @@ slash_windup3
   index: -1
 slowed
   rotate: false
-  xy: 5544, 331
+  xy: 5348, 65
   size: 31, 31
   orig: 31, 31
   offset: 0, 0
@@ -440,7 +440,7 @@ smoke
   index: -1
 spider
   rotate: false
-  xy: 7207, 696
+  xy: 7239, 696
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
@@ -482,7 +482,7 @@ teeth
   index: -1
 treasure
   rotate: false
-  xy: 7285, 858
+  xy: 2200, 389
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -503,7 +503,7 @@ trident_thrust_windup
   index: -1
 undead_adventurer
   rotate: false
-  xy: 2402, 312
+  xy: 7109, 632
   size: 128, 192
   orig: 128, 192
   offset: 0, 0
@@ -524,7 +524,7 @@ undead_lancer
   index: -1
 undead_ninja
   rotate: false
-  xy: 7109, 566
+  xy: 5348, 358
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
