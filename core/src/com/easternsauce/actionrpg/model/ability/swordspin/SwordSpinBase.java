@@ -32,7 +32,7 @@ public abstract class SwordSpinBase extends AttachedAbility {
   protected void updateSpinningSword(CoreGame game) {
     updateAttachedAbilityPosition(game);
 
-    if (getParams().getTickActionTimer().getTime() > 0.02f) {
+    if (getParams().getTickActionTimer().getTime() > 0.01f) {
       getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(-10));
       getParams().getTickActionTimer().restart();
     }
