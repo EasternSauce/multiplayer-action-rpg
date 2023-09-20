@@ -163,9 +163,9 @@ public abstract class CoreGame extends Game {
   @SuppressWarnings("SameReturnValue")
   public abstract Boolean getFirstNonStubBroadcastReceived();
 
-  public void chainAnotherAbility(Ability chainFromAbility, AbilityType abilityType, Vector2 dirVector, ChainAbilityParams chainAbilityParams) {
+  public void chainAnotherAbility(Ability chainSource, AbilityType abilityType, Vector2 dirVector, ChainAbilityParams chainAbilityParams) {
     getGameState().accessAbilities()
-      .chainAnotherAbility(chainFromAbility, abilityType, dirVector, chainAbilityParams, this);
+      .chainAnotherAbility(chainSource, abilityType, dirVector, chainAbilityParams, this);
   }
 
   public abstract GameState getGameState();

@@ -124,4 +124,6 @@ public class AbilityParams implements EntityParams {
   private Boolean dontOverridePos = false;
 
 
+  private SimpleTimer tickActionTimer = SimpleTimer.getExpiredTimer();
+
 }

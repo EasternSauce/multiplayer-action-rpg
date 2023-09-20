@@ -2,12 +2,8 @@ package com.easternsauce.actionrpg.model.ability.swordspin;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.AbilityParams;
-import com.easternsauce.actionrpg.model.creature.CreatureId;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
@@ -22,19 +18,7 @@ public class BossEnemySwordSpin extends SwordSpinBase {
 
   @Override
   protected void onActiveUpdate(float delta, CoreGame game) {
-    updateAttachedAbilityPosition(game);
-
-    getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(-10));
-
-    Set<CreatureId> creaturesHitRemove = new HashSet<>();
-
-    getParams().getCreaturesAlreadyHit().forEach((creatureId, time) -> {
-      if (time < getParams().getStateTimer().getTime() - 0.4f) {
-        creaturesHitRemove.add(creatureId);
-      }
-    });
-
-    creaturesHitRemove.forEach(creatureId -> getParams().getCreaturesAlreadyHit().remove(creatureId));
+    updateSpinningSword(game);
   }
 
   @Override

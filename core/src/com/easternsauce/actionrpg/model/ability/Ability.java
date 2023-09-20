@@ -98,11 +98,13 @@ public abstract class Ability implements Entity {
   public void updateTimers(float delta) {
     getParams().getStateTimer().update(delta);
     getParams().getChangeDirectionTimer().update(delta);
+    getParams().getTickActionTimer().update(delta);
   }
 
   public void init(CoreGame game) {
     getParams().setState(AbilityState.CHANNEL);
     getParams().getStateTimer().restart();
+    getParams().getTickActionTimer().restart();
 
     Creature creature = game.getCreature(getParams().getCreatureId());
 
@@ -113,8 +115,6 @@ public abstract class Ability implements Entity {
         // TODO: should be moved to AttachedAbility?
         getParams().getDirVector(), getParams().getStartingRange()));
     }
-
-    System.out.println("initing " + this.getClass() + " to " + getParams().getPos());
 
     if (creature.getCurrentWeapon() != null) {
       getParams().setWeaponDamage((float) creature.getCurrentWeapon().getDamage());

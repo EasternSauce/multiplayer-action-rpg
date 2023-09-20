@@ -49,21 +49,26 @@ public class Boomerang extends Projectile {
       getParams().setSpeed(20f);
     }
 
-    if (getParams().getComingBack()) {
-      Vector2 vectorTowards = getParams().getPos().vectorTowards(creature.getParams().getPos());
-      float targetAngleDeg = vectorTowards.angleDeg();
-      float currentAngleDeg = getParams().getDirVector().angleDeg();
+    if (getParams().getTickActionTimer().getTime() > 0.02f) {
+      if (getParams().getComingBack()) {
+        Vector2 vectorTowards = getParams().getPos().vectorTowards(creature.getParams().getPos());
+        float targetAngleDeg = vectorTowards.angleDeg();
+        float currentAngleDeg = getParams().getDirVector().angleDeg();
 
-      float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(currentAngleDeg, targetAngleDeg);
+        float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(currentAngleDeg, targetAngleDeg);
 
-      float incrementFactor = 330f;
-      float increment = incrementFactor * delta;
+        float incrementFactor = 330f;
+        float increment = incrementFactor * delta;
 
-      if (shortestAngleRotation > increment || shortestAngleRotation < -increment) {
-        getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(increment));
-      } else {
-        getParams().setDirVector(getParams().getDirVector().withSetDegAngle(targetAngleDeg));
+        if (shortestAngleRotation > increment || shortestAngleRotation < -increment) {
+          getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(increment));
+        } else {
+          getParams().setDirVector(getParams().getDirVector().withSetDegAngle(targetAngleDeg));
+        }
+
+
       }
+      getParams().getTickActionTimer().restart();
     }
 
 

@@ -64,30 +64,33 @@ public class PlayfulGhost extends Projectile {
 
     }
 
-    if (minCreature != null) {
-      Vector2 vectorTowards = getParams().getPos().vectorTowards(minCreature.getParams().getPos());
-      float targetAngleDeg = vectorTowards.angleDeg();
-      float currentAngleDeg = getParams().getDirVector().angleDeg();
+    if (getParams().getTickActionTimer().getTime() > 0.02f) {
+      if (minCreature != null) {
+        Vector2 vectorTowards = getParams().getPos().vectorTowards(minCreature.getParams().getPos());
+        float targetAngleDeg = vectorTowards.angleDeg();
+        float currentAngleDeg = getParams().getDirVector().angleDeg();
 
-      float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(currentAngleDeg, targetAngleDeg);
+        float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(currentAngleDeg, targetAngleDeg);
 
-      float incrementFactor = 50f;
-      float increment = incrementFactor * delta;
+        float incrementFactor = 50f;
+        float increment = incrementFactor * delta;
 
-      if (shortestAngleRotation > increment) {
-        getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(increment));
-      } else if (shortestAngleRotation < -increment) {
-        getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(-increment));
+        if (shortestAngleRotation > increment) {
+          getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(increment));
+        } else if (shortestAngleRotation < -increment) {
+          getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(-increment));
+        } else {
+          getParams().setDirVector(getParams().getDirVector().withSetDegAngle(targetAngleDeg));
+        }
+
       } else {
-        getParams().setDirVector(getParams().getDirVector().withSetDegAngle(targetAngleDeg));
+        if (getParams().getChangeDirectionTimer().getTime() > 1f) {
+          getParams().getChangeDirectionTimer().restart();
+          getParams().setDirVector(
+            getParams().getDirVector().withRotatedDegAngle(game.getGameState().getRandomGenerator().nextFloat() * 20f));
+        }
       }
-
-    } else {
-      if (getParams().getChangeDirectionTimer().getTime() > 1f) {
-        getParams().getChangeDirectionTimer().restart();
-        getParams().setDirVector(
-          getParams().getDirVector().withRotatedDegAngle(game.getGameState().getRandomGenerator().nextFloat() * 20f));
-      }
+      getParams().getTickActionTimer().restart();
     }
   }
 

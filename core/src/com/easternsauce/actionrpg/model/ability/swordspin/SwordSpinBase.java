@@ -4,8 +4,6 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import com.easternsauce.actionrpg.model.ability.AbilityState;
 import com.easternsauce.actionrpg.model.ability.AttachedAbility;
-import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.creature.CreatureEffect;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
 import lombok.Getter;
 
@@ -31,11 +29,13 @@ public abstract class SwordSpinBase extends AttachedAbility {
     updateAttachedAbilityPosition(game);
   }
 
-  @Override
-  protected void onActiveUpdate(float delta, CoreGame game) {
+  protected void updateSpinningSword(CoreGame game) {
     updateAttachedAbilityPosition(game);
 
-    getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(-10));
+    if (getParams().getTickActionTimer().getTime() > 0.02f) {
+      getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(-10));
+      getParams().getTickActionTimer().restart();
+    }
 
     Set<CreatureId> creaturesHitRemove = new HashSet<>();
 
@@ -46,10 +46,6 @@ public abstract class SwordSpinBase extends AttachedAbility {
     });
 
     creaturesHitRemove.forEach(creatureId -> getParams().getCreaturesAlreadyHit().remove(creatureId));
-
-    Creature creature = game.getCreature(getParams().getCreatureId());
-    creature.applyEffect(CreatureEffect.SELF_SLOW, 0.1f, game);
-    creature.getParams().getEffectParams().setCurrentSlowMagnitude(0.3f);
   }
 
   @Override
