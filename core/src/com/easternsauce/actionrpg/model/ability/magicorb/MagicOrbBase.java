@@ -36,7 +36,7 @@ public abstract class MagicOrbBase extends Projectile {
   protected void onActiveUpdate(float delta, CoreGame game) {
     onProjectileTravelUpdate();
 
-    if (getParams().getTickActionTimer().getTime() > 0.02f) {
+    if (getParams().getTickActionTimer().getTime() > 0.015f) {
       Creature minimumDistanceCreature = null;
       float minimumDistance = Float.MAX_VALUE;
 

@@ -51,7 +51,7 @@ public class TunnelDig extends Projectile {
 
     Creature thisCreature = game.getCreature(getParams().getCreatureId());
 
-    if (getParams().getTickActionTimer().getTime() > 0.02f) {
+    if (getParams().getTickActionTimer().getTime() > 0.015f) {
       Creature minimumDistanceCreature = null;
       float minimumDistance = Float.MAX_VALUE;
 

@@ -129,12 +129,12 @@ public class ServerGameState extends GameState {
         // handle respawns server side
         creature.getParams().getTimeSinceDeathTimer().getTime() > creature.getParams().getRespawnTime()) {
         if (creature instanceof Player) {
-          Checkpoint checkpoint = getCheckpoints().get(creature.getParams().getCurrentCheckpointId());
 
           PlayerRespawnAction action;
-          if (checkpoint == null) {
+          if (creature.getParams().getCurrentCheckpointId() == null) {
             action = PlayerRespawnAction.of(creatureId, Vector2.of(28f, 12f), AreaId.of("Area1"));
           } else {
+            Checkpoint checkpoint = getCheckpoints().get(creature.getParams().getCurrentCheckpointId());
             action = PlayerRespawnAction.of(creatureId, checkpoint.getPos(), checkpoint.getAreaId());
           }
 

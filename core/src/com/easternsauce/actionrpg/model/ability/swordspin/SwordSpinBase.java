@@ -32,8 +32,8 @@ public abstract class SwordSpinBase extends AttachedAbility {
   protected void updateSpinningSword(CoreGame game) {
     updateAttachedAbilityPosition(game);
 
-    if (getParams().getTickActionTimer().getTime() > 0.01f) {
-      getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(-10));
+    if (getParams().getTickActionTimer().getTime() > 0.015f) {
+      getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(-13));
       getParams().getTickActionTimer().restart();
     }
 
@@ -64,7 +64,7 @@ public abstract class SwordSpinBase extends AttachedAbility {
 
   @Override
   public Float getStunDuration() {
-    return 0.05f;
+    return 0.2f;
   }
 
   @Override

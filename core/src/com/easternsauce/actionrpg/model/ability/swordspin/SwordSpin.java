@@ -13,8 +13,8 @@ public class SwordSpin extends SwordSpinBase {
 
   public static SwordSpinBase of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
     SwordSpin ability = SwordSpin.of();
-    ability.params = abilityParams.setWidth(2.8f).setHeight(2.8f).setChannelTime(0f).setActiveTime(3f)
-      .setStartingRange(2f).setTextureName("sword").setBaseDamage(10f).setChannelAnimationLooping(false)
+    ability.params = abilityParams.setWidth(3.5f).setHeight(3.5f).setChannelTime(0f).setActiveTime(3f)
+      .setStartingRange(2f).setTextureName("sword").setBaseDamage(23f).setChannelAnimationLooping(false)
       .setActiveAnimationLooping(false).setDirVector(abilityParams.getDirVector().withRotatedDegAngle(90));
     return ability;
   }
@@ -25,6 +25,7 @@ public class SwordSpin extends SwordSpinBase {
 
     Creature creature = game.getCreature(getParams().getCreatureId());
     creature.applyEffect(CreatureEffect.SELF_SLOW, 0.1f, game);
-    creature.getParams().getEffectParams().setCurrentSlowMagnitude(0.3f);
+    creature.getParams().getEffectParams().setCurrentSlowMagnitude(0.15f);
+    creature.applyEffect(CreatureEffect.STUN_IMMUNE, 0.1f, game);
   }
 }

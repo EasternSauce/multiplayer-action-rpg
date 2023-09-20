@@ -49,7 +49,7 @@ public class Boomerang extends Projectile {
       getParams().setSpeed(20f);
     }
 
-    if (getParams().getTickActionTimer().getTime() > 0.02f) {
+    if (getParams().getTickActionTimer().getTime() > 0.015f) {
       if (getParams().getComingBack()) {
         Vector2 vectorTowards = getParams().getPos().vectorTowards(creature.getParams().getPos());
         float targetAngleDeg = vectorTowards.angleDeg();
