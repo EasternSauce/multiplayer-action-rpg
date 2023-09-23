@@ -17,7 +17,6 @@ public class EnemyAutoControlsProcessor {
   public void update(CreatureId creatureId, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
-
     if (creature.isAlive()) {
       if (creature.getParams().getEnemyParams().getAutoControlsStateTimer().getTime() >
         creature.getParams().getEnemyParams().getAutoControlsStateTime()) {
@@ -48,7 +47,12 @@ public class EnemyAutoControlsProcessor {
         if (foundTargetId != null) {
           if (creature.getParams().getEnemyParams().getLastFoundTargetId() == null ||
             !creature.getParams().getEnemyParams().getLastFoundTargetId().equals(foundTargetId)) {
-            creature.getParams().getEnemyParams().setAutoControlsState(EnemyAutoControlsState.ALERTED);
+            if (creature.getParams().getEnemyParams().isBossEnemy()) {
+              creature.getParams().getEnemyParams().setAutoControlsState(EnemyAutoControlsState.AGGRESSIVE);
+            } else {
+              creature.getParams().getEnemyParams().setAutoControlsState(EnemyAutoControlsState.ALERTED);
+            }
+
             creature.getParams().getEnemyParams().setAggroedCreatureId(foundTargetId);
             creature.getParams().getEnemyParams().setLastFoundTargetId(foundTargetId);
           }
@@ -120,7 +124,8 @@ public class EnemyAutoControlsProcessor {
         creature.getParams().getEnemyParams().setAutoControlsState(EnemyAutoControlsState.AGGRESSIVE);
       }
     } else if (creature.getParams().getEnemyParams().getAutoControlsState() == EnemyAutoControlsState.AGGRESSIVE) {
-      if (Math.abs(creature.getParams().getRandomGenerator().nextFloat()) < 0.35f) {
+      if (!creature.getParams().getEnemyParams().isBossEnemy() &&
+        Math.abs(creature.getParams().getRandomGenerator().nextFloat()) < 0.35f) {
         creature.getParams().getEnemyParams().setAutoControlsState(EnemyAutoControlsState.KEEPING_DISTANCE);
 
       }
@@ -182,7 +187,12 @@ public class EnemyAutoControlsProcessor {
       if ((creature.getParams().getEnemyParams().getAutoControlsState() == EnemyAutoControlsState.AGGRESSIVE ||
         creature.getParams().getEnemyParams().getAutoControlsState() == EnemyAutoControlsState.KEEPING_DISTANCE) &&
         distanceToTarget > Constants.TURN_ALERTED_DISTANCE) {
-        creature.getParams().getEnemyParams().setAutoControlsState(EnemyAutoControlsState.ALERTED);
+        if (creature.getParams().getEnemyParams().isBossEnemy()) {
+          creature.getParams().getEnemyParams().setAutoControlsState(EnemyAutoControlsState.AGGRESSIVE);
+        } else {
+          creature.getParams().getEnemyParams().setAutoControlsState(EnemyAutoControlsState.ALERTED);
+        }
+
 
       } else if (creature.getParams().getEnemyParams().getAutoControlsState() == EnemyAutoControlsState.ALERTED &&
         distanceToTarget < Constants.TURN_AGGRESSIVE_DISTANCE) {

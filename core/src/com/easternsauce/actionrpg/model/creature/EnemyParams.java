@@ -59,4 +59,6 @@ public class EnemyParams {
   private SimpleTimer movingTowardsSpawnPointPathCalculationTimer = SimpleTimer.getExpiredTimer();
   private float timeBetweenMovingTowardsSpawnPointPathCalculation = 10f;
 
+  private boolean bossEnemy = false;
+
 }

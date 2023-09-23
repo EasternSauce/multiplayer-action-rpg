@@ -19,10 +19,11 @@ public class FistSlamCombo extends Ability {
   @Getter
   protected AbilityParams params;
   int currentSlam = 0;
+  float lastSlamRotationAngle = 0f;
 
   public static FistSlamCombo of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
     FistSlamCombo ability = FistSlamCombo.of();
-    ability.params = abilityParams.setChannelTime(0f).setActiveTime(10f);
+    ability.params = abilityParams.setChannelTime(0f).setActiveTime(7f);
 
     return ability;
   }
@@ -40,27 +41,42 @@ public class FistSlamCombo extends Ability {
   @Override
   public void onStarted(CoreGame game) {
     Creature creature = game.getCreature(getParams().getCreatureId());
-    creature.applyEffect(CreatureEffect.SELF_SLOW, 6f, game);
+    creature.applyEffect(CreatureEffect.SELF_SLOW, 7f, game);
     creature.getParams().getEffectParams().setCurrentSlowMagnitude(0.6f);
+
+    lastSlamRotationAngle = getParams().getDirVector().angleDeg();
   }
 
   @Override
   protected void onActiveUpdate(float delta, CoreGame game) {
     float[] slamTimes = {0.5f, 1f, 1.5f, 2.25f, 2.75f, 3.25f, 3.75f, 4.5f, 5f, 5.75f};
     float[] slamShifts = {-15f, 15f, -15f, 15f, -15f, 15f, -15f, 0f, 0f, 0f};
+    float[] slamScales = {1f, 1f, 1f, 1f, 1f, 1f, 1f, 1.4f, 1.6f, 1.8f};
 
     Creature creature = game.getCreature(getParams().getCreatureId());
 
+    Creature targetCreature = null;
+
     if (creature.getParams().getEnemyParams() != null) {
       creature.getParams().getEnemyParams().setAutoControlsState(EnemyAutoControlsState.AGGRESSIVE);
+
+      if (creature.getParams().getEnemyParams().getTargetCreatureId() != null) {
+        targetCreature = game.getCreature(creature.getParams().getEnemyParams().getTargetCreatureId());
+      }
     }
 
     if (currentSlam < slamTimes.length &&
       getParams().getStateTimer().getTime() > slamTimes[currentSlam]) {
-      Vector2 dirVector = creature.getParams().getMovementParams().getFacingVector().normalized()
-        .multiplyBy(getParams().getDirVector().len());
+
+      Vector2 dirVector;
+      if (targetCreature != null) {
+        dirVector = creature.getParams().getPos().vectorTowards(targetCreature.getParams().getPos());
+      } else {
+        dirVector = getParams().getDirVector();
+      }
+
       game.chainAnotherAbility(this, AbilityType.FIST_SLAM, dirVector.rotateDeg(slamShifts[currentSlam]),
-        ChainAbilityParams.of().setOverrideDamage(40f));
+        ChainAbilityParams.of().setOverrideDamage(40f).setOverrideScale(slamScales[currentSlam]));
 
       currentSlam += 1;
     }

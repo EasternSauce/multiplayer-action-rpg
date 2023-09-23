@@ -47,6 +47,8 @@ public class Enemy extends Creature {
 
     params.getEnemyParams().setSpawnedPos(pos);
 
+    params.getEnemyParams().setBossEnemy(enemyTemplate.getBossEnemy());
+
     Enemy enemy = Enemy.of();
     enemy.params = params;
     return enemy;

@@ -28,7 +28,7 @@ public class FistSlam extends Projectile {
 
     ability.destinationPos = PointTargetedAbilityUtils.calculatePos(
       creature.getParams().getPos().add(abilityParams.getDirVector()),
-      creature.getParams().getPos(), creature.getParams().getAreaId(), 11f, game);
+      creature.getParams().getPos(), creature.getParams().getAreaId(), 8f, game);
     ability.startingPos = Vector2.of(ability.destinationPos.getX(), ability.destinationPos.getY() + 4f);
 
     float flipValue = abilityParams.getDirVector().angleDeg();
@@ -59,7 +59,8 @@ public class FistSlam extends Projectile {
   @Override
   public void onStarted(CoreGame game) {
     game.chainAnotherAbility(this, AbilityType.VISUAL_TARGET, getParams().getDirVector(),
-      ChainAbilityParams.of().setChainToPos(destinationPos).setOverrideScale(1.1f).setOverrideDuration(0.6f));
+      ChainAbilityParams.of().setChainToPos(destinationPos).setOverrideScale(1.2f * getParams().getOverrideScale())
+        .setOverrideDuration(0.6f));
   }
 
   @Override
@@ -75,7 +76,7 @@ public class FistSlam extends Projectile {
   protected void onCompleted(CoreGame game) {
     game.chainAnotherAbility(this, AbilityType.SHOCKWAVE, getParams().getDirVector(),
       ChainAbilityParams.of().setChainToPos(getParams().getPos()).setOverrideStunDuration(0.05f)
-        .setOverrideScale(0.9f).setOverrideDamage(40f));
+        .setOverrideScale(0.4f * getParams().getOverrideScale()).setOverrideDamage(40f));
   }
 
   @Override
