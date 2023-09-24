@@ -8,6 +8,7 @@ import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
 import com.easternsauce.actionrpg.model.creature.EnemyAutoControlsState;
+import com.easternsauce.actionrpg.model.util.MathHelper;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -19,7 +20,7 @@ public class FistSlamCombo extends Ability {
   @Getter
   protected AbilityParams params;
   int currentSlam = 0;
-  float lastSlamRotationAngle = 0f;
+  Vector2 lastSlamDirVector;
 
   public static FistSlamCombo of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
     FistSlamCombo ability = FistSlamCombo.of();
@@ -42,9 +43,9 @@ public class FistSlamCombo extends Ability {
   public void onStarted(CoreGame game) {
     Creature creature = game.getCreature(getParams().getCreatureId());
     creature.applyEffect(CreatureEffect.SELF_SLOW, 7f, game);
-    creature.getParams().getEffectParams().setCurrentSlowMagnitude(0.6f);
+    creature.getParams().getEffectParams().setCurrentSlowMagnitude(0.5f);
 
-    lastSlamRotationAngle = getParams().getDirVector().angleDeg();
+    lastSlamDirVector = getParams().getDirVector();
   }
 
   @Override
@@ -70,11 +71,27 @@ public class FistSlamCombo extends Ability {
 
       Vector2 dirVector;
       if (targetCreature != null) {
-        dirVector = creature.getParams().getPos().vectorTowards(targetCreature.getParams().getPos());
+        Vector2 vectorTowardsTarget = creature.getParams().getPos().vectorTowards(targetCreature.getParams().getPos());
+
+        float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(lastSlamDirVector.angleDeg(),
+          vectorTowardsTarget.angleDeg());
+
+        float increment = 15f;
+
+        if (shortestAngleRotation > increment) {
+          dirVector = lastSlamDirVector.withRotatedDegAngle(increment);
+        } else if (shortestAngleRotation < -increment) {
+          dirVector = lastSlamDirVector.withRotatedDegAngle(-increment);
+        } else {
+          dirVector = lastSlamDirVector.withSetDegAngle(vectorTowardsTarget.angleDeg());
+        }
       } else {
         dirVector = getParams().getDirVector();
       }
 
+      lastSlamDirVector = dirVector;
+
+      System.out.println("chaining");
       game.chainAnotherAbility(this, AbilityType.FIST_SLAM, dirVector.rotateDeg(slamShifts[currentSlam]),
         ChainAbilityParams.of().setOverrideDamage(40f).setOverrideScale(slamScales[currentSlam]));
 
