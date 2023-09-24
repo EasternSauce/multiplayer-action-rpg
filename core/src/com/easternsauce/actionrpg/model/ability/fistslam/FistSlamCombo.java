@@ -85,13 +85,16 @@ public class FistSlamCombo extends Ability {
         } else {
           dirVector = lastSlamDirVector.withSetDegAngle(vectorTowardsTarget.angleDeg());
         }
+
+        dirVector = dirVector.normalized().multiplyBy(vectorTowardsTarget.len());
       } else {
         dirVector = getParams().getDirVector();
       }
 
       lastSlamDirVector = dirVector;
 
-      System.out.println("chaining");
+      System.out.println("time is = " + getParams().getStateTimer().getTime());
+      System.out.println("chaining " + currentSlam + " " + getParams().getId().getValue());
       game.chainAnotherAbility(this, AbilityType.FIST_SLAM, dirVector.rotateDeg(slamShifts[currentSlam]),
         ChainAbilityParams.of().setOverrideDamage(40f).setOverrideScale(slamScales[currentSlam]));
 
@@ -99,6 +102,7 @@ public class FistSlamCombo extends Ability {
     }
 
     if (currentSlam >= slamTimes.length) {
+      System.out.println(getParams().getId().getValue() + " done");
       deactivate();
     }
   }

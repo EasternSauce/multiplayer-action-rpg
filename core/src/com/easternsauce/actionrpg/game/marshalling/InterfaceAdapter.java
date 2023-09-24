@@ -1,4 +1,4 @@
-package com.easternsauce.actionrpg.game.marshaling;
+package com.easternsauce.actionrpg.game.marshalling;
 
 import com.google.gson.*;
 

@@ -57,8 +57,8 @@ public abstract class Ability implements Entity {
       }
 
       float activeDuration;
-      if (getParams().getOverrideDuration() != null) {
-        activeDuration = getParams().getOverrideDuration();
+      if (getParams().getOverrideActiveDuration() != null) {
+        activeDuration = getParams().getOverrideActiveDuration();
       } else {
         activeDuration = getParams().getActiveTime();
       }
@@ -135,8 +135,8 @@ public abstract class Ability implements Entity {
     getParams().setState(AbilityState.ACTIVE);
 
     float activeDuration;
-    if (getParams().getOverrideDuration() != null) {
-      activeDuration = getParams().getOverrideDuration();
+    if (getParams().getOverrideActiveDuration() != null) {
+      activeDuration = getParams().getOverrideActiveDuration();
     } else {
       activeDuration = getParams().getActiveTime();
     }

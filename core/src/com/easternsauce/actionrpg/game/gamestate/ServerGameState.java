@@ -1,7 +1,7 @@
 package com.easternsauce.actionrpg.game.gamestate;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.game.marshaling.InterfaceAdapter;
+import com.easternsauce.actionrpg.game.marshalling.InterfaceAdapter;
 import com.easternsauce.actionrpg.model.GameStateData;
 import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.ability.AbilityId;
