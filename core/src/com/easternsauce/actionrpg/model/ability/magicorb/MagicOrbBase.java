@@ -61,15 +61,15 @@ public abstract class MagicOrbBase extends Projectile {
         float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(currentAngleDeg, targetAngleDeg);
 
         float incrementFactor = getIncrementFactor();
-        float baseIncrement = incrementFactor;
 
+        float increment;
         if (getParams().getStateTimer().getTime() > 0.5f && getParams().getStateTimer().getTime() < 2f) {
-          baseIncrement = incrementFactor - (getParams().getStateTimer().getTime() - 0.5f) / 1.5f * incrementFactor;
+          increment = incrementFactor - (getParams().getStateTimer().getTime() - 0.5f) / 1.5f * incrementFactor;
         } else if (getParams().getStateTimer().getTime() >= 2f) {
-          baseIncrement = 0f;
+          increment = 0f;
+        } else {
+          increment = incrementFactor;
         }
-
-        float increment = baseIncrement * delta;
 
         if (shortestAngleRotation > increment) {
           getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(increment));
@@ -119,6 +119,6 @@ public abstract class MagicOrbBase extends Projectile {
   }
 
   protected float getIncrementFactor() {
-    return 60f;
+    return 1f;
   }
 }

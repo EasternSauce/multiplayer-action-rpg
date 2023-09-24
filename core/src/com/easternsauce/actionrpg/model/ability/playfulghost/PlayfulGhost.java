@@ -72,9 +72,7 @@ public class PlayfulGhost extends Projectile {
 
         float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(currentAngleDeg, targetAngleDeg);
 
-        float incrementFactor = 50f;
-        float increment = incrementFactor * delta;
-
+        float increment = 1f;
         if (shortestAngleRotation > increment) {
           getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(increment));
         } else if (shortestAngleRotation < -increment) {

@@ -43,16 +43,15 @@ public class EnemyCrossbowBoltControl extends CrossbowBoltControlBase {
         aimDirection.angleDeg());
 
       float turningSpeed = 1.5f;
-      float incrementFactor = 330f;
-      float baseIncrement;
+      float incrementFactor = 5.6f;
+      float increment;
       if (currentBoltToFire < 2) {
-        baseIncrement = incrementFactor * 2f * turningSpeed;
+        increment = incrementFactor * 2f * turningSpeed;
       } else if (currentBoltToFire == 2) {
-        baseIncrement = incrementFactor * 3f * turningSpeed;
+        increment = incrementFactor * 3f * turningSpeed;
       } else {
-        baseIncrement = incrementFactor * turningSpeed;
+        increment = incrementFactor * turningSpeed;
       }
-      float increment = baseIncrement * delta;
 
       Vector2 chainedDirVector = calculateShootingVectorForNextBolt(currentDirVector, aimDirection,
         shortestAngleRotation, increment, game);

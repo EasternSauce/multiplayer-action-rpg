@@ -57,8 +57,7 @@ public class Boomerang extends Projectile {
 
         float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(currentAngleDeg, targetAngleDeg);
 
-        float incrementFactor = 330f;
-        float increment = incrementFactor * delta;
+        float increment = 5.6f;
 
         if (shortestAngleRotation > increment || shortestAngleRotation < -increment) {
           getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(increment));

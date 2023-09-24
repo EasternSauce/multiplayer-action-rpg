@@ -73,16 +73,16 @@ public class TunnelDig extends Projectile {
 
         float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(currentAngleDeg, targetAngleDeg);
 
-        float incrementFactor = 120f;
-        float baseIncrement = incrementFactor;
+        float incrementFactor = 2f;
 
+        float increment;
         if (getParams().getStateTimer().getTime() > 0.5f && getParams().getStateTimer().getTime() < 6f) {
-          baseIncrement = incrementFactor - (getParams().getStateTimer().getTime() - 0.5f) / 5.5f * incrementFactor;
+          increment = incrementFactor - (getParams().getStateTimer().getTime() - 0.5f) / 5.5f * incrementFactor;
         } else if (getParams().getStateTimer().getTime() >= 6f) {
-          baseIncrement = 0f;
+          increment = 0f;
+        } else {
+          increment = incrementFactor;
         }
-
-        float increment = baseIncrement * delta;
 
         if (shortestAngleRotation > increment) {
           getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(increment));

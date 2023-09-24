@@ -27,48 +27,51 @@ public class EnemyMagicOrb extends MagicOrbBase {
   protected void onActiveUpdate(float delta, CoreGame game) {
     onProjectileTravelUpdate();
 
-    Creature minimumDistanceCreature = null;
-    float minimumDistance = Float.MAX_VALUE;
+    if (getParams().getTickActionTimer().getTime() > 0.015f) {
+      Creature minimumDistanceCreature = null;
+      float minimumDistance = Float.MAX_VALUE;
 
-    Creature thisCreature = game.getCreature(getParams().getCreatureId());
+      Creature thisCreature = game.getCreature(getParams().getCreatureId());
 
-    for (Creature creature : game.getActiveCreatures().values().stream().filter(targetCreature ->
-      Objects.equals(targetCreature.getParams().getAreaId().getValue(), getParams().getAreaId().getValue()) &&
-        !targetCreature.getId().equals(getParams().getCreatureId()) && targetCreature.isAlive() &&
-        isTargetingAllowed(thisCreature, targetCreature) &&
-        targetCreature.getParams().getPos().distance(getParams().getPos()) < 20f).collect(Collectors.toSet())) {
-      if (creature.getParams().getPos().distance(getParams().getPos()) < minimumDistance) {
-        minimumDistanceCreature = creature;
-        minimumDistance = creature.getParams().getPos().distance(getParams().getPos());
-      }
-    }
-
-    if (minimumDistanceCreature != null) {
-      Vector2 vectorTowards = getParams().getPos().vectorTowards(minimumDistanceCreature.getParams().getPos());
-      float targetAngleDeg = vectorTowards.angleDeg();
-      float currentAngleDeg = getParams().getDirVector().angleDeg();
-
-      float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(currentAngleDeg, targetAngleDeg);
-
-      float incrementFactor = 65f;
-      float baseIncrement = incrementFactor;
-
-      if (getParams().getStateTimer().getTime() > 0.5f && getParams().getStateTimer().getTime() < 2f) {
-        baseIncrement = incrementFactor - (getParams().getStateTimer().getTime() - 0.5f) / 1.5f * incrementFactor;
-      } else if (getParams().getStateTimer().getTime() >= 2f) {
-        baseIncrement = 0f;
+      for (Creature creature : game.getActiveCreatures().values().stream().filter(targetCreature ->
+        Objects.equals(targetCreature.getParams().getAreaId().getValue(), getParams().getAreaId().getValue()) &&
+          !targetCreature.getId().equals(getParams().getCreatureId()) && targetCreature.isAlive() &&
+          isTargetingAllowed(thisCreature, targetCreature) &&
+          targetCreature.getParams().getPos().distance(getParams().getPos()) < 20f).collect(Collectors.toSet())) {
+        if (creature.getParams().getPos().distance(getParams().getPos()) < minimumDistance) {
+          minimumDistanceCreature = creature;
+          minimumDistance = creature.getParams().getPos().distance(getParams().getPos());
+        }
       }
 
-      float increment = baseIncrement * delta;
+      if (minimumDistanceCreature != null) {
+        Vector2 vectorTowards = getParams().getPos().vectorTowards(minimumDistanceCreature.getParams().getPos());
+        float targetAngleDeg = vectorTowards.angleDeg();
+        float currentAngleDeg = getParams().getDirVector().angleDeg();
 
-      if (shortestAngleRotation > increment) {
-        getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(increment));
-      } else if (shortestAngleRotation < -increment) {
-        getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(-increment));
-      } else {
-        getParams().setDirVector(getParams().getDirVector().withSetDegAngle(targetAngleDeg));
+        float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(currentAngleDeg, targetAngleDeg);
+
+        float incrementFactor = 1f;
+
+        float increment;
+        if (getParams().getStateTimer().getTime() > 0.5f && getParams().getStateTimer().getTime() < 2f) {
+          increment = incrementFactor - (getParams().getStateTimer().getTime() - 0.5f) / 1.5f * incrementFactor;
+        } else if (getParams().getStateTimer().getTime() >= 2f) {
+          increment = 0f;
+        } else {
+          increment = incrementFactor;
+        }
+
+        if (shortestAngleRotation > increment) {
+          getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(increment));
+        } else if (shortestAngleRotation < -increment) {
+          getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(-increment));
+        } else {
+          getParams().setDirVector(getParams().getDirVector().withSetDegAngle(targetAngleDeg));
+        }
+
       }
-
+      getParams().getTickActionTimer().restart();
     }
 
   }
