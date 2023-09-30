@@ -1,9 +1,11 @@
 package com.easternsauce.actionrpg.model.ability.crossbowbolt;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import com.easternsauce.actionrpg.model.ability.AbilityType;
 import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
+import com.easternsauce.actionrpg.model.ability.util.AbilityRotationUtils;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.util.MathHelper;
 import com.easternsauce.actionrpg.model.util.Vector2;
@@ -53,8 +55,8 @@ public class EnemyCrossbowBoltControl extends CrossbowBoltControlBase {
         increment = incrementFactor * turningSpeed;
       }
 
-      Vector2 chainedDirVector = calculateShootingVectorForNextBolt(currentDirVector, aimDirection,
-        shortestAngleRotation, increment, game);
+      Vector2 chainedDirVector = calculateShootingVectorForNextBolt(this, shortestAngleRotation,
+        increment, game);
 
       game.chainAnotherAbility(this, AbilityType.CROSSBOW_BOLT, chainedDirVector, ChainAbilityParams.of());
 
@@ -67,16 +69,19 @@ public class EnemyCrossbowBoltControl extends CrossbowBoltControlBase {
     }
   }
 
-  private Vector2 calculateShootingVectorForNextBolt(Vector2 currentDirVector, Vector2 aimDirection, float shortestAngleRotation, float increment, @SuppressWarnings("unused") CoreGame game) {
+  private Vector2 calculateShootingVectorForNextBolt(Ability ability, float targetAngleDeg, float increment, @SuppressWarnings("unused") CoreGame game) {
     float aimDirectionMaximumAngle = 60;
+
+    Vector2 currentDirVector = ability.getParams().getDirVector();
+
+    float currentAngleDeg = currentDirVector.angleDeg();
+
+    float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(currentAngleDeg, targetAngleDeg);
+
     if (shortestAngleRotation < -aimDirectionMaximumAngle || shortestAngleRotation > aimDirectionMaximumAngle) {
       return currentDirVector.copy();
-    } else if (shortestAngleRotation > increment) {
-      return currentDirVector.withRotatedDegAngle(increment);
-    } else if (shortestAngleRotation < -increment) {
-      return currentDirVector.withRotatedDegAngle(-increment);
     } else {
-      return currentDirVector.withSetDegAngle(aimDirection.angleDeg());
+      return AbilityRotationUtils.getAbilityVectorRotatedByIncrement(currentDirVector, increment, targetAngleDeg);
     }
   }
 }

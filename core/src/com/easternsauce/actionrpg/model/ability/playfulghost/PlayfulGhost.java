@@ -3,10 +3,10 @@ package com.easternsauce.actionrpg.model.ability.playfulghost;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import com.easternsauce.actionrpg.model.ability.Projectile;
+import com.easternsauce.actionrpg.model.ability.util.AbilityRotationUtils;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.Enemy;
 import com.easternsauce.actionrpg.model.creature.Player;
-import com.easternsauce.actionrpg.model.util.MathHelper;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -68,19 +68,13 @@ public class PlayfulGhost extends Projectile {
       if (minCreature != null) {
         Vector2 vectorTowards = getParams().getPos().vectorTowards(minCreature.getParams().getPos());
         float targetAngleDeg = vectorTowards.angleDeg();
-        float currentAngleDeg = getParams().getDirVector().angleDeg();
-
-        float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(currentAngleDeg, targetAngleDeg);
 
         float increment = 1f;
-        if (shortestAngleRotation > increment) {
-          getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(increment));
-        } else if (shortestAngleRotation < -increment) {
-          getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(-increment));
-        } else {
-          getParams().setDirVector(getParams().getDirVector().withSetDegAngle(targetAngleDeg));
-        }
 
+        Vector2 rotatedVector = AbilityRotationUtils.getAbilityVectorRotatedByIncrement(getParams().getDirVector(),
+          increment, targetAngleDeg);
+
+        getParams().setDirVector(rotatedVector);
       } else {
         if (getParams().getChangeDirectionTimer().getTime() > 1f) {
           getParams().getChangeDirectionTimer().restart();

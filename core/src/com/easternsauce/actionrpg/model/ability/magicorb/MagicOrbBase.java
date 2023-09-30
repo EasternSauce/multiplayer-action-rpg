@@ -3,8 +3,8 @@ package com.easternsauce.actionrpg.model.ability.magicorb;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import com.easternsauce.actionrpg.model.ability.Projectile;
+import com.easternsauce.actionrpg.model.ability.util.AbilityRotationUtils;
 import com.easternsauce.actionrpg.model.creature.*;
-import com.easternsauce.actionrpg.model.util.MathHelper;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Getter;
 
@@ -56,9 +56,6 @@ public abstract class MagicOrbBase extends Projectile {
       if (minimumDistanceCreature != null) {
         Vector2 vectorTowards = getParams().getPos().vectorTowards(minimumDistanceCreature.getParams().getPos());
         float targetAngleDeg = vectorTowards.angleDeg();
-        float currentAngleDeg = getParams().getDirVector().angleDeg();
-
-        float shortestAngleRotation = MathHelper.findShortestDegAngleRotation(currentAngleDeg, targetAngleDeg);
 
         float incrementFactor = getIncrementFactor();
 
@@ -71,14 +68,10 @@ public abstract class MagicOrbBase extends Projectile {
           increment = incrementFactor;
         }
 
-        if (shortestAngleRotation > increment) {
-          getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(increment));
-        } else if (shortestAngleRotation < -increment) {
-          getParams().setDirVector(getParams().getDirVector().withRotatedDegAngle(-increment));
-        } else {
-          getParams().setDirVector(getParams().getDirVector().withSetDegAngle(targetAngleDeg));
-        }
+        Vector2 rotatedVector = AbilityRotationUtils.getAbilityVectorRotatedByIncrement(getParams().getDirVector(),
+          increment, targetAngleDeg);
 
+        getParams().setDirVector(rotatedVector);
       }
       getParams().getTickActionTimer().restart();
     }

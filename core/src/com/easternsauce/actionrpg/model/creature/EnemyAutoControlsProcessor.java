@@ -253,7 +253,6 @@ public class EnemyAutoControlsProcessor {
   private void handleAimDirectionAdjustment(CreatureId creatureId, Vector2 vectorTowardsTarget, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
-
     creature.getParams().getMovementParams().setAimDirection(vectorTowardsTarget.normalized());
   }
 
