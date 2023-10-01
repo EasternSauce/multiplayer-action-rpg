@@ -36,11 +36,11 @@ public class RicochetBulletControl extends Ability {
 
   @Override
   protected void onActiveUpdate(float delta, CoreGame game) {
-
+    centerPositionOnPlayer(game);
   }
 
   @Override
-  protected void onCompleted(CoreGame game) {
+  public void onCompleted(CoreGame game) {
     Vector2 leftSidePos = getParams().getPos()
       .add(params.getDirVector().normalized().multiplyBy(1.5f).withRotatedDegAngle(90));
     Vector2 rightSidePos = getParams().getPos()

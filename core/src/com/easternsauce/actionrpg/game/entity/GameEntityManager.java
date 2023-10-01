@@ -192,7 +192,16 @@ public class GameEntityManager {
     abilitiesToUpdate.forEach(abilityId -> {
       if (abilityId != null && game.getAbilities().containsKey(abilityId) &&
         game.getAbility(abilityId) != null) {
-        game.getAbility(abilityId).update(delta, game);
+        Ability ability = game.getAbility(abilityId);
+
+        ability.onUpdateState(delta, game);
+      }
+    });
+
+    game.getAbilities().forEach((abilityId, ability) -> {
+      if (abilityId != null && game.getAbilities().containsKey(abilityId) &&
+        game.getAbility(abilityId) != null) {
+        ability.update(delta, game);
       }
     });
 

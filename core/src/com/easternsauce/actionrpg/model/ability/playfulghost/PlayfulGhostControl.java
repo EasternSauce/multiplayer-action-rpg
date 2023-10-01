@@ -34,11 +34,12 @@ public class PlayfulGhostControl extends Ability {
 
   @Override
   protected void onActiveUpdate(float delta, CoreGame game) {
+    centerPositionOnPlayer(game);
 
   }
 
   @Override
-  protected void onCompleted(CoreGame game) {
+  public void onCompleted(CoreGame game) {
     float baseAngle = getParams().getDirVector().angleDeg();
     game.chainAnotherAbility(this, AbilityType.PLAYFUL_GHOST, params.getDirVector(),
       ChainAbilityParams.of().setChainToPos(getParams().getPos()));

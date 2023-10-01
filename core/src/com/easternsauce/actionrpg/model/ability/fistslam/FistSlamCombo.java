@@ -24,7 +24,7 @@ public class FistSlamCombo extends Ability {
 
   public static FistSlamCombo of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
     FistSlamCombo ability = FistSlamCombo.of();
-    ability.params = abilityParams.setChannelTime(0f).setActiveTime(7f);
+    ability.params = abilityParams.setChannelTime(0f).setActiveTime(10f);
 
     return ability;
   }

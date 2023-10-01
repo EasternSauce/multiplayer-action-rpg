@@ -131,18 +131,7 @@ public class CoreGameServer extends CoreGame {
 
   @Override
   public Set<AbilityId> getAbilitiesToUpdate() {
-    Set<AbilityId> abilitiesToUpdate = new HashSet<>();
-
-    for (CreatureId clientCreatureId : getClientPlayers().values()) {
-      Creature player = getCreature(clientCreatureId);
-      if (player == null) {
-        continue;
-      }
-
-      abilitiesToUpdate.addAll(getGameState().accessAbilities().getAbilitiesWithinRange(player));
-    }
-
-    return abilitiesToUpdate;
+    return getGameState().accessAbilities().getAbilities().keySet();
   }
 
   @Override

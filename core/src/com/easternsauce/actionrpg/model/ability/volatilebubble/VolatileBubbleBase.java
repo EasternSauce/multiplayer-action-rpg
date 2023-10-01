@@ -38,7 +38,7 @@ public abstract class VolatileBubbleBase extends Projectile {
   }
 
   @Override
-  protected void onCompleted(CoreGame game) {
+  public void onCompleted(CoreGame game) {
     float baseAngle = getParams().getDirVector().angleDeg();
 
     float[] angles = {0f, 22.5f, 45f, 67.5f, 90f, 112.5f, 135f, 157.5f, 180f, 202.5f, 225f, 247.5f, 270f, 292.5f, 315f, 337.5f};

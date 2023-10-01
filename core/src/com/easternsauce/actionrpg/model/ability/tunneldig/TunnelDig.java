@@ -112,7 +112,7 @@ public class TunnelDig extends Projectile {
   }
 
   @Override
-  protected void onCompleted(CoreGame game) {
+  public void onCompleted(CoreGame game) {
     Creature creature = game.getCreature(getParams().getCreatureId());
 
     game.chainAnotherAbility(this, AbilityType.SHOCKWAVE,

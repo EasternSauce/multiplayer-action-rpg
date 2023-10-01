@@ -112,7 +112,7 @@ public class EnemyTemplate {
         DropTableEntry.of(ItemDrop.manaPotionDrop, 0.5f))),
     new ConcurrentSkipListSet<>(Collections.singletonList(EnemySkillUseEntry.of(SkillType.LITTLE_BITE, 6f, 300f))),
     null);
-  public static EnemyTemplate taurus = EnemyTemplate.of(EnemyType.TAURUS, true, 5000f, 5f, 16f,
+  public static EnemyTemplate taurus = EnemyTemplate.of(EnemyType.TAURUS, true, 5000f, 5f, 12f,
     new ConcurrentSkipListSet<>(
       Arrays.asList(DropTableEntry.of(ItemDrop.lifePotionDrop, 0.5f),
         DropTableEntry.of(ItemDrop.manaPotionDrop, 0.5f))),

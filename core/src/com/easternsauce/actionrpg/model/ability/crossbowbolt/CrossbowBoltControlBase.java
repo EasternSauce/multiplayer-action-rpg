@@ -26,6 +26,8 @@ public abstract class CrossbowBoltControlBase extends Ability {
 
   @Override
   protected void onActiveUpdate(float delta, CoreGame game) {
+    centerPositionOnPlayer(game);
+
     float[] boltFireTimes = {0f, 0.4f, 1f, 1.2f, 1.4f};
 
     if (currentBoltToFire < boltFireTimes.length &&

@@ -32,7 +32,7 @@ public abstract class Ability implements Entity {
 
   public abstract Boolean isRanged();
 
-  public void update(Float delta, CoreGame game) {
+  public void onUpdateState(Float delta, CoreGame game) {
     AbilityState state = getParams().getState();
 
     if (state == AbilityState.CHANNEL) {
@@ -55,7 +55,13 @@ public abstract class Ability implements Entity {
         getParams().setDelayedActionCompleted(true);
         onDelayedAction(game);
       }
+    }
+  }
 
+  public void update(Float delta, CoreGame game) {
+    AbilityState state = getParams().getState();
+
+    if (state == AbilityState.ACTIVE) {
       float activeDuration;
       if (getParams().getOverrideActiveDuration() != null) {
         activeDuration = getParams().getOverrideActiveDuration();
@@ -92,7 +98,7 @@ public abstract class Ability implements Entity {
 
   }
 
-  protected void onCompleted(CoreGame game) {
+  public void onCompleted(CoreGame game) {
   }
 
   public void updateTimers(float delta) {
@@ -223,5 +229,13 @@ public abstract class Ability implements Entity {
 
   public int maximumCreatureHitCount(CreatureId creatureId, CoreGame game) {
     return Integer.MAX_VALUE;
+  }
+
+  protected void centerPositionOnPlayer(CoreGame game) {
+    Vector2 pos = game.getCreaturePos(getParams().getCreatureId());
+
+    if (pos != null) {
+      getParams().setPos(pos.copy());
+    }
   }
 }

@@ -64,7 +64,7 @@ public class Dash extends AttachedAbility {
   }
 
   @Override
-  protected void onCompleted(CoreGame game) {
+  public void onCompleted(CoreGame game) {
     Creature creature = game.getCreature(getParams().getCreatureId());
 
     creature.getParams().getMovementParams().setDashing(false);

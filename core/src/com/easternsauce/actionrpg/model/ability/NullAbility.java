@@ -22,7 +22,7 @@ public class NullAbility extends Ability {
   }
 
   @Override
-  public void update(Float delta, CoreGame game) {
+  public void onUpdateState(Float delta, CoreGame game) {
 
   }
 
@@ -53,7 +53,7 @@ public class NullAbility extends Ability {
   }
 
   @Override
-  protected void onCompleted(CoreGame game) {
+  public void onCompleted(CoreGame game) {
 
   }
 
