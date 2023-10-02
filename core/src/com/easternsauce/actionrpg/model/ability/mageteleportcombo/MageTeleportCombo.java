@@ -47,6 +47,8 @@ public class MageTeleportCombo extends Ability {
 
   @Override
   protected void onActiveUpdate(float delta, CoreGame game) {
+    centerPositionOnPlayer(game);
+
     float[] fireRingProcTimes = {0.25f, 1.25f, 2f, 2.6f, 3.2f};
     float[] fireRingScales = {1f, 1.2f, 1.5f, 2f, 3f};
 

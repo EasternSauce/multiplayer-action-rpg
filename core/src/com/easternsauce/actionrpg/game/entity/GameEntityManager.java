@@ -23,7 +23,10 @@ import com.easternsauce.actionrpg.renderer.game.GameEntityRenderer;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 @SuppressWarnings({"GrazieInspection", "SpellCheckingInspection"})
 @NoArgsConstructor(staticName = "of")
@@ -187,7 +190,7 @@ public class GameEntityManager {
   }
 
   public void updateAbilities(float delta, CoreGame game) {
-    Set<AbilityId> abilitiesToUpdate = game.getAbilitiesToUpdate();
+    Set<AbilityId> abilitiesToUpdate = new ConcurrentSkipListSet<>(game.getAbilitiesToUpdate());
 
     abilitiesToUpdate.forEach(abilityId -> {
       if (abilityId != null && game.getAbilities().containsKey(abilityId) &&
@@ -198,8 +201,10 @@ public class GameEntityManager {
       }
     });
 
-    game.getAbilities().forEach((abilityId, ability) -> {
-      if (abilityId != null && game.getAbilities().containsKey(abilityId) &&
+    Map<AbilityId, Ability> abilities = new ConcurrentSkipListMap<>(game.getAbilities());
+
+    abilities.forEach((abilityId, ability) -> {
+      if (abilityId != null && abilities.containsKey(abilityId) &&
         game.getAbility(abilityId) != null) {
         ability.update(delta, game);
       }

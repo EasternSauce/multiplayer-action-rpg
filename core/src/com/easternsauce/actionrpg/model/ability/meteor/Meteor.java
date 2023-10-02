@@ -77,7 +77,7 @@ public class Meteor extends Projectile {
 
   @Override
   public void onCompleted(CoreGame game) {
-    game.chainAnotherAbility(this, AbilityType.FIREBALL_EXPLOSION, getParams().getDirVector(),
+    game.chainAnotherAbility(this, AbilityType.EXPLOSION, getParams().getDirVector(),
       ChainAbilityParams.of().setChainToPos(getParams().getPos()).setOverrideStunDuration(0.05f)
         .setOverrideScale(0.8f).setOverrideDamage(30f));
   }

@@ -3,7 +3,6 @@ package com.easternsauce.actionrpg.game.gamestate;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.GameStateData;
 import com.easternsauce.actionrpg.model.ability.*;
-import com.easternsauce.actionrpg.model.ability.fistslam.FistSlamCombo;
 import com.easternsauce.actionrpg.model.action.CreatureHitByAbilityAction;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureId;
@@ -42,25 +41,9 @@ public class AbilityAccessor {
 
   public Set<AbilityId> getAbilitiesWithinRange(Creature player) {
     return getAbilities().keySet().stream().filter(abilityId -> {
-      if (getAbility(abilityId) instanceof FistSlamCombo) {
-        System.out.println("considering");
-      }
       Ability ability = getAbility(abilityId);
       if (player.getParams().getPos() != null && ability.getParams().getPos() != null) {
-        boolean withinRange =
-          ability.getParams().getPos().distance(player.getParams().getPos()) < Constants.CLIENT_GAME_UPDATE_RANGE;
-
-        if (getAbility(abilityId) instanceof FistSlamCombo) {
-          if (withinRange) {
-            System.out.println("adding");
-          } else {
-            System.out.println(
-              "not adding, reason: " + ability.getParams().getPos().distance(player.getParams().getPos()) + " >= " +
-                Constants.CLIENT_GAME_UPDATE_RANGE);
-          }
-        }
-
-        return withinRange;
+        return ability.getParams().getPos().distance(player.getParams().getPos()) < Constants.CLIENT_GAME_UPDATE_RANGE;
       }
       return false;
     }).collect(Collectors.toSet());

@@ -50,6 +50,8 @@ public class FistSlamCombo extends Ability {
 
   @Override
   protected void onActiveUpdate(float delta, CoreGame game) {
+    centerPositionOnPlayer(game);
+
     float[] slamTimes = {0.5f, 1f, 1.5f, 2.25f, 2.75f, 3.25f, 3.75f, 4.5f, 5f, 5.75f};
     float[] slamShifts = {-15f, 15f, -15f, 15f, -15f, 15f, -15f, 0f, 0f, 0f};
     float[] slamScales = {1f, 1f, 1f, 1f, 1f, 1f, 1f, 1.4f, 1.6f, 1.8f};
@@ -73,7 +75,7 @@ public class FistSlamCombo extends Ability {
       if (targetCreature != null) {
         Vector2 vectorTowardsTarget = creature.getParams().getPos().vectorTowards(targetCreature.getParams().getPos());
 
-        float increment = 15f;
+        float increment = 25f;
 
         dirVector = AbilityRotationUtils.getAbilityVectorRotatedByIncrement(lastSlamDirVector, increment,
           vectorTowardsTarget.angleDeg()).normalized().multiplyBy(vectorTowardsTarget.len());
@@ -108,5 +110,10 @@ public class FistSlamCombo extends Ability {
   @Override
   public boolean isAbleToChainAfterCreatureDeath() {
     return false;
+  }
+
+  @Override
+  public boolean isDamagingSkillNotAllowedWhenActive() {
+    return true;
   }
 }

@@ -4,6 +4,8 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.bite.Bite;
 import com.easternsauce.actionrpg.model.ability.bite.LittleBite;
 import com.easternsauce.actionrpg.model.ability.boomerang.Boomerang;
+import com.easternsauce.actionrpg.model.ability.charge.Charge;
+import com.easternsauce.actionrpg.model.ability.charge.ChargeBody;
 import com.easternsauce.actionrpg.model.ability.crossbowbolt.CrossbowBolt;
 import com.easternsauce.actionrpg.model.ability.crossbowbolt.CrossbowBoltControl;
 import com.easternsauce.actionrpg.model.ability.crossbowbolt.EnemyCrossbowBoltControl;
@@ -56,7 +58,7 @@ import java.util.function.BiFunction;
 @NoArgsConstructor
 public enum AbilityType {
   SWORD_SLASH(SwordSlash::of), ENEMY_SWORD_SLASH(EnemySwordSlash::of), BOSS_ENEMY_SWORD_SLASH(
-    BossEnemySwordSlash::of), FIREBALL(Fireball::of), FIREBALL_EXPLOSION(Explosion::of), LIGHTNING_SPARK(
+    BossEnemySwordSlash::of), FIREBALL(Fireball::of), EXPLOSION(Explosion::of), LIGHTNING_SPARK(
     LightningSpark::of), LIGHTNING_NODE(LightningNode::of), LIGHTNING_CHAIN(LightningChain::of),
 
   CROSSBOW_BOLT(CrossbowBolt::of), CROSSBOW_SHOT(CrossbowBoltControl::of), ENEMY_CROSSBOW_SHOT(
@@ -113,7 +115,9 @@ public enum AbilityType {
 
   METEOR(Meteor::of), VISUAL_TARGET(VisualTarget::of),
 
-  FIST_SLAM(FistSlam::of), FIST_SLAM_COMBO(FistSlamCombo::of);
+  FIST_SLAM(FistSlam::of), FIST_SLAM_COMBO(FistSlamCombo::of),
+
+  CHARGE(Charge::of), CHARGE_BODY(ChargeBody::of);
 
 
   @Getter

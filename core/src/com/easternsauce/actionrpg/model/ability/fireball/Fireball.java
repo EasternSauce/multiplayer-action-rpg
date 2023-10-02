@@ -57,7 +57,7 @@ public class Fireball extends Projectile {
 
   @Override
   public void onCompleted(CoreGame game) {
-    game.chainAnotherAbility(this, AbilityType.FIREBALL_EXPLOSION, params.getDirVector(),
+    game.chainAnotherAbility(this, AbilityType.EXPLOSION, params.getDirVector(),
       ChainAbilityParams.of().setChainToPos(getParams().getPos()));
   }
 

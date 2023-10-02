@@ -65,7 +65,9 @@ public enum SkillType {
 
   METEOR("Meteor", true, AbilityType.METEOR, 0.8f, 7f, 7f),
 
-  FIST_SLAM_COMBO("Fist Slam Combo", true, AbilityType.FIST_SLAM_COMBO, 30f, 7f, 0f);
+  FIST_SLAM_COMBO("Fist Slam Combo", true, AbilityType.FIST_SLAM_COMBO, 12f, 7f, 0f),
+  CHARGE("Charge", true, AbilityType.CHARGE, 6f, 7f, 0f),
+  ;
 
   @Getter
   Float cooldown;
