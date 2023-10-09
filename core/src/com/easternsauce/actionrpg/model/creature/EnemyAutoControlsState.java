@@ -4,5 +4,5 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 public enum EnemyAutoControlsState {
-  RESTING, ALERTED, AGGRESSIVE, KEEPING_DISTANCE
+  RESTING, ALERTED, AGGRESSIVE, KEEP_DISTANCE
 }
