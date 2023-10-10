@@ -1,5 +1,7 @@
-package com.easternsauce.actionrpg.model.creature;
+package com.easternsauce.actionrpg.model.creature.enemy;
 
+import com.easternsauce.actionrpg.model.creature.CreatureId;
+import com.easternsauce.actionrpg.model.creature.enemy.autocontrols.EnemyAutoControlsState;
 import com.easternsauce.actionrpg.model.util.SimpleTimer;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Data;

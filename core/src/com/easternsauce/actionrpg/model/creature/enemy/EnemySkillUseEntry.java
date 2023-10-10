@@ -1,4 +1,4 @@
-package com.easternsauce.actionrpg.model.creature;
+package com.easternsauce.actionrpg.model.creature.enemy;
 
 import com.easternsauce.actionrpg.model.skill.SkillType;
 import lombok.AllArgsConstructor;

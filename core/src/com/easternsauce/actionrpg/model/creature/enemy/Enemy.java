@@ -1,9 +1,15 @@
-package com.easternsauce.actionrpg.model.creature;
+package com.easternsauce.actionrpg.model.creature.enemy;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.ability.AbilityState;
 import com.easternsauce.actionrpg.model.area.AreaId;
+import com.easternsauce.actionrpg.model.creature.Creature;
+import com.easternsauce.actionrpg.model.creature.CreatureEffect;
+import com.easternsauce.actionrpg.model.creature.CreatureId;
+import com.easternsauce.actionrpg.model.creature.CreatureParams;
+import com.easternsauce.actionrpg.model.creature.enemy.autocontrols.EnemyAutoControlsState;
+import com.easternsauce.actionrpg.model.creature.enemy.autocontrols.EnemyAutoControlsUpdater;
 import com.easternsauce.actionrpg.model.enemyrallypoint.EnemyRallyPointId;
 import com.easternsauce.actionrpg.model.skill.Skill;
 import com.easternsauce.actionrpg.model.util.Vector2;
@@ -18,7 +24,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class Enemy extends Creature {
-  private final EnemyAutoControlsProcessor autoControlsProcessor = EnemyAutoControlsProcessor.of();
+  private final EnemyAutoControlsUpdater autoControlsUpdater = EnemyAutoControlsUpdater.of();
   @Getter
   private CreatureParams params;
 
@@ -94,7 +100,7 @@ public class Enemy extends Creature {
 
   @Override
   public void updateAutoControls(CoreGame game) {
-    autoControlsProcessor.update(getId(), game);
+    autoControlsUpdater.update(getId(), game);
   }
 
   @Override

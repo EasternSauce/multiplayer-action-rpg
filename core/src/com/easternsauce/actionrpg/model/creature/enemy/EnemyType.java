@@ -1,4 +1,4 @@
-package com.easternsauce.actionrpg.model.creature;
+package com.easternsauce.actionrpg.model.creature.enemy;
 
 import lombok.NoArgsConstructor;
 
