@@ -114,7 +114,7 @@ public class CreatureAccessor {
 
     SkillType pickedSkillType;
 
-    pickedSkillType = pickRandomSkillToUse(creature.getParams().getEnemyParams().getSkillUses(), distanceToTarget,
+    pickedSkillType = pickRandomSkillToUse(creature.getEnemyParams().getSkillUses(), distanceToTarget,
       game);
 
     if (pickedSkillType != null) {

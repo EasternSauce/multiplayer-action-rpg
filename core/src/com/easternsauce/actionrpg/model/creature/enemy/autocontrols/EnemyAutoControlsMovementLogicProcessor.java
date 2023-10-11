@@ -12,7 +12,7 @@ public class EnemyAutoControlsMovementLogicProcessor {
   public void process(CreatureId creatureId, Creature potentialTarget, Float distance, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
-    EnemyParams enemyParams = creature.getParams().getEnemyParams();
+    EnemyParams enemyParams = creature.getEnemyParams();
     if (enemyParams.getAutoControlsState() == EnemyAutoControlsState.AGGRESSIVE) {
       processAggressive(creatureId, potentialTarget, distance, game, creature, enemyParams);
     } else if (enemyParams.getAutoControlsState() == EnemyAutoControlsState.ALERTED) {

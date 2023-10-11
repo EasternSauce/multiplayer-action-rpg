@@ -35,9 +35,9 @@ public class EnemyParams {
   @NonNull
   private EnemyAutoControlsState autoControlsState;
   @NonNull
-  private SimpleTimer autoControlsStateTimer = SimpleTimer.getExpiredTimer();
+  private SimpleTimer autoControlsStateProcessorTimer = SimpleTimer.getExpiredTimer();
   @NonNull
-  private Float autoControlsStateTime;
+  private Float autoControlsStateProcessorTime;
   private Vector2 currentDefensivePos;
   @NonNull
   private SimpleTimer justAttackedFromRangeTimer = SimpleTimer.getExpiredTimer();

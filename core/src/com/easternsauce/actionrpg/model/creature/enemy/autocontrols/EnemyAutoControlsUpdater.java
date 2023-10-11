@@ -21,64 +21,66 @@ public class EnemyAutoControlsUpdater {
     Creature creature = game.getCreature(creatureId);
 
     if (creature.isAlive()) {
-      if (creature.getParams().getEnemyParams().getAutoControlsStateTimer().getTime() >
-        creature.getParams().getEnemyParams().getAutoControlsStateTime()) {
+      if (creature.getEnemyParams().getAutoControlsStateProcessorTimer().getTime() >
+        creature.getEnemyParams().getAutoControlsStateProcessorTime()) {
 
-        creature.getParams().getEnemyParams().getAutoControlsStateTimer().restart();
+        creature.getEnemyParams().getAutoControlsStateProcessorTimer().restart();
 
         stateLogicProcessor.processStateLogic(creatureId, game);
 
-        creature.getParams().getEnemyParams()
-          .setAutoControlsStateTime(1f + Math.abs(creature.getParams().getRandomGenerator().nextFloat()));
+        float randomTime = 1f + Math.abs(creature.getParams().getRandomGenerator().nextFloat());
+        creature.getEnemyParams().setAutoControlsStateProcessorTime(randomTime);
       }
 
-      if (creature.getParams().getEnemyParams().getJustAttackedByCreatureId() != null && game.getCreature(
-        creature.getParams().getEnemyParams()
-          .getJustAttackedByCreatureId()) instanceof Player) { // if attacked by player,
-        // aggro no matter what
-        creature.getParams().getEnemyParams()
-          .setAggroedCreatureId(creature.getParams().getEnemyParams().getJustAttackedByCreatureId());
-      } else { // if not attacked, search around for targets
-        CreatureId foundTargetId = creature.getParams().getEnemyParams().getLastFoundTargetId();
+      CreatureId justAttackedByCreatureId = creature.getEnemyParams().getJustAttackedByCreatureId();
 
-        if (creature.getParams().getEnemyParams().getFindTargetTimer().getTime() >
-          creature.getParams().getEnemyParams().getFindTargetCooldown()) {
+      boolean justAttackedByPlayer = justAttackedByCreatureId != null &&
+        game.getCreature(justAttackedByCreatureId) instanceof Player;
+
+      if (justAttackedByPlayer) {
+        creature.getEnemyParams().setAggroedCreatureId(justAttackedByCreatureId);
+      } else { // if not attacked, search around for targets
+        CreatureId foundTargetId;
+        if (creature.getEnemyParams().getFindTargetTimer().getTime() >
+          creature.getEnemyParams().getFindTargetCooldown()) {
           foundTargetId = findTarget(creatureId, game);
-          creature.getParams().getEnemyParams().getFindTargetTimer().restart();
+          creature.getEnemyParams().getFindTargetTimer().restart();
+        } else {
+          foundTargetId = creature.getEnemyParams().getLastFoundTargetId();
         }
 
         if (foundTargetId != null) {
-          if (creature.getParams().getEnemyParams().getLastFoundTargetId() == null ||
-            !creature.getParams().getEnemyParams().getLastFoundTargetId().equals(foundTargetId)) {
-            if (creature.getParams().getEnemyParams().isBossEnemy()) {
-              creature.getParams().getEnemyParams().setAutoControlsState(EnemyAutoControlsState.AGGRESSIVE);
+          if (creature.getEnemyParams().getLastFoundTargetId() == null ||
+            !creature.getEnemyParams().getLastFoundTargetId().equals(foundTargetId)) {
+            if (creature.getEnemyParams().isBossEnemy()) {
+              creature.getEnemyParams().setAutoControlsState(EnemyAutoControlsState.AGGRESSIVE);
             } else {
-              creature.getParams().getEnemyParams().setAutoControlsState(EnemyAutoControlsState.ALERTED);
+              creature.getEnemyParams().setAutoControlsState(EnemyAutoControlsState.ALERTED);
             }
 
-            creature.getParams().getEnemyParams().setAggroedCreatureId(foundTargetId);
-            creature.getParams().getEnemyParams().setLastFoundTargetId(foundTargetId);
+            creature.getEnemyParams().setAggroedCreatureId(foundTargetId);
+            creature.getEnemyParams().setLastFoundTargetId(foundTargetId);
           }
 
         }
       }
 
       Creature potentialTarget = null;
-      if (creature.getParams().getEnemyParams().getAggroedCreatureId() != null) {
-        potentialTarget = game.getCreature(creature.getParams().getEnemyParams().getAggroedCreatureId());
+      if (creature.getEnemyParams().getAggroedCreatureId() != null) {
+        potentialTarget = game.getCreature(creature.getEnemyParams().getAggroedCreatureId());
 
         if (potentialTarget != null && potentialTarget.isCurrentlyActive(game)) {
           Float distance = creature.getParams().getPos().distance(potentialTarget.getParams().getPos());
 
           if (distance < Constants.LOSE_AGGRO_DISTANCE) {
-            creature.getParams().getEnemyParams().getAggroTimer().restart();
+            creature.getEnemyParams().getAggroTimer().restart();
           }
         }
 
       }
 
-      if (creature.getParams().getEnemyParams().getAggroTimer().getTime() <
-        creature.getParams().getEnemyParams().getLoseAggroTime() && potentialTarget != null &&
+      if (creature.getEnemyParams().getAggroTimer().getTime() <
+        creature.getEnemyParams().getLoseAggroTime() && potentialTarget != null &&
         potentialTarget.isAlive() && creature.isAlive()) { // if aggro not timed
         // out and potential target is found
 
@@ -107,37 +109,35 @@ public class EnemyAutoControlsUpdater {
     Creature creature = game.getCreature(creatureId);
     if (creature == null) {
       return null;
-    }
+    } else {
+      Float minDistance = Float.MAX_VALUE;
+      CreatureId minCreatureId = null;
+      for (Creature otherCreature : game.getActiveCreatures().values()) {
+        boolean condition = otherCreature.isAlive() &&
+          otherCreature.getParams().getAreaId().getValue().equals(creature.getParams().getAreaId().getValue()) &&
+          otherCreature instanceof Player &&
+          otherCreature.getParams().getPos().distance(creature.getParams().getPos()) <
+            Constants.ENEMY_SEARCH_DISTANCE &&
+          !game.isLineBetweenPointsObstructedByTerrain(creature.getParams().getAreaId(), creature.getParams().getPos(),
+            otherCreature.getParams().getPos());
 
-    Float minDistance = Float.MAX_VALUE;
-    CreatureId minCreatureId = null;
-    for (Creature otherCreature : game.getActiveCreatures().values()) {
-      boolean condition = otherCreature.isAlive() &&
-        otherCreature.getParams().getAreaId().getValue().equals(creature.getParams().getAreaId().getValue()) &&
-        otherCreature instanceof Player &&
-        otherCreature.getParams().getPos().distance(creature.getParams().getPos()) < Constants.ENEMY_SEARCH_DISTANCE &&
-        !game.isLineBetweenPointsObstructedByTerrain(creature.getParams().getAreaId(), creature.getParams().getPos(),
-          otherCreature.getParams().getPos());
-
-      if (condition && creature.getParams().getPos().distance(otherCreature.getParams().getPos()) < minDistance) {
-        minCreatureId = otherCreature.getId();
-        minDistance = creature.getParams().getPos().distance(otherCreature.getParams().getPos());
+        if (condition && creature.getParams().getPos().distance(otherCreature.getParams().getPos()) < minDistance) {
+          minCreatureId = otherCreature.getId();
+          minDistance = creature.getParams().getPos().distance(otherCreature.getParams().getPos());
+        }
       }
+      return minCreatureId;
     }
-    return minCreatureId;
-
   }
-
-
 
   public void handleNewTarget(CreatureId creatureId, CreatureId potentialTargetId, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
-    if (creature.getParams().getEnemyParams().getTargetCreatureId() == null ||
-      !creature.getParams().getEnemyParams().getTargetCreatureId().equals(potentialTargetId)) {
-      creature.getParams().getEnemyParams().setForcePathCalculation(true);
-      creature.getParams().getEnemyParams().setTargetCreatureId(potentialTargetId);
-      creature.getParams().getEnemyParams().setPathTowardsTarget(null);
+    if (creature.getEnemyParams().getTargetCreatureId() == null ||
+      !creature.getEnemyParams().getTargetCreatureId().equals(potentialTargetId)) {
+      creature.getEnemyParams().setForcePathCalculation(true);
+      creature.getEnemyParams().setTargetCreatureId(potentialTargetId);
+      creature.getEnemyParams().setPathTowardsTarget(null);
     }
   }
 
@@ -146,8 +146,8 @@ public class EnemyAutoControlsUpdater {
 
     Float distance = creature.getParams().getPos().distance(potentialTarget.getParams().getPos());
 
-    if (creature.getParams().getEnemyParams().getPathTowardsTarget() != null &&
-      !creature.getParams().getEnemyParams().getPathTowardsTarget().isEmpty()) { // path is available
+    if (creature.getEnemyParams().getPathTowardsTarget() != null &&
+      !creature.getEnemyParams().getPathTowardsTarget().isEmpty()) { // path is available
       followPathToTarget(creatureId, game, creature);
     } else {
       movementLogicProcessor.process(creatureId, potentialTarget, distance, game);
@@ -157,21 +157,21 @@ public class EnemyAutoControlsUpdater {
   public void followCurrentPath(CreatureId creatureId, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
-    if (creature.getParams().getEnemyParams().getPathTowardsTarget() != null &&
-      !creature.getParams().getEnemyParams().getPathTowardsTarget().isEmpty()) { // path is available
+    if (creature.getEnemyParams().getPathTowardsTarget() != null &&
+      !creature.getEnemyParams().getPathTowardsTarget().isEmpty()) { // path is available
       followPathToTarget(creatureId, game, creature);
     }
   }
 
   private void followPathToTarget(CreatureId creatureId, CoreGame game, Creature creature) {
-    List<Vector2> path = creature.getParams().getEnemyParams().getPathTowardsTarget();
+    List<Vector2> path = creature.getEnemyParams().getPathTowardsTarget();
     Vector2 nextNodeOnPath = path.get(0);
     if (creature.getParams().getPos().distance(nextNodeOnPath) < 1f) {
       List<Vector2> changedPath = new LinkedList<>(path);
       changedPath.remove(0);
-      creature.getParams().getEnemyParams().setPathTowardsTarget(changedPath);
+      creature.getEnemyParams().setPathTowardsTarget(changedPath);
     } else {
-      movementLogicProcessor.goToPos(creatureId, nextNodeOnPath, game); // TODO casting?
+      movementLogicProcessor.goToPos(creatureId, nextNodeOnPath, game);
     }
   }
 
@@ -185,7 +185,7 @@ public class EnemyAutoControlsUpdater {
     Creature creature = game.getCreature(creatureId);
 
 
-    if (creature.getParams().getEnemyParams().getUseAbilityCooldownTimer().getTime() >
+    if (creature.getEnemyParams().getUseAbilityCooldownTimer().getTime() >
       Constants.ENEMY_USE_ABILITY_COOLDOWN_TIMER) {
 
       creature.getParams().setLastTimeUsedSkill(game.getGameState().getTime());
@@ -195,18 +195,18 @@ public class EnemyAutoControlsUpdater {
       game.getGameState().accessCreatures()
         .handleCreatureUseRandomSkillAtTarget(creature.getParams().getId(), vectorTowardsTarget, distanceToTarget,
           game);
-      creature.getParams().getEnemyParams().getUseAbilityCooldownTimer().restart();
+      creature.getEnemyParams().getUseAbilityCooldownTimer().restart();
     }
   }
 
   public void handleTargetLost(CreatureId creatureId, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
-    creature.getParams().getEnemyParams().setAggroedCreatureId(null);
-    creature.getParams().getEnemyParams().setTargetCreatureId(null);
-    creature.getParams().getEnemyParams().setJustAttackedByCreatureId(null);
-    creature.getParams().getEnemyParams().setLastFoundTargetId(null);
-    creature.getParams().getEnemyParams().setAutoControlsState(EnemyAutoControlsState.RESTING);
+    creature.getEnemyParams().setAggroedCreatureId(null);
+    creature.getEnemyParams().setTargetCreatureId(null);
+    creature.getEnemyParams().setJustAttackedByCreatureId(null);
+    creature.getEnemyParams().setLastFoundTargetId(null);
+    creature.getEnemyParams().setAutoControlsState(EnemyAutoControlsState.RESTING);
 
     creature.stopMoving();
   }

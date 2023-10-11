@@ -39,7 +39,7 @@ public class Enemy extends Creature {
     params.setEnemyParams(EnemyParams.of());
     params.getEnemyParams().setFindTargetCooldown(0.5f + Math.abs(params.getRandomGenerator().nextFloat()));
     params.getEnemyParams().setPathCalculationCooldown(4f + 2f * Math.abs(params.getRandomGenerator().nextFloat()));
-    params.getEnemyParams().setAutoControlsStateTime(0f);
+    params.getEnemyParams().setAutoControlsStateProcessorTime(0f);
 
     params.setRespawnTime(120f);
 
@@ -65,7 +65,7 @@ public class Enemy extends Creature {
     getParams().getEnemyParams().getPathCalculationCooldownTimer().update(delta);
     getParams().getEnemyParams().getAggroTimer().update(delta);
     getParams().getEnemyParams().getFindTargetTimer().update(delta);
-    getParams().getEnemyParams().getAutoControlsStateTimer().update(delta);
+    getParams().getEnemyParams().getAutoControlsStateProcessorTimer().update(delta);
     getParams().getEnemyParams().getUseAbilityCooldownTimer().update(delta);
     getParams().getEnemyParams().getJustAttackedFromRangeTimer().update(delta);
     getParams().getEnemyParams().getMovingTowardsSpawnPointPathCalculationTimer().update(delta);
@@ -162,8 +162,8 @@ public class Enemy extends Creature {
   }
 
   private void makeAggressiveAfterHitByAbility(Ability ability) {
-    getParams().getEnemyParams().setAutoControlsStateTime(1f + Math.abs(getParams().getRandomGenerator().nextFloat()));
-    getParams().getEnemyParams().getAutoControlsStateTimer().restart();
+    getParams().getEnemyParams().setAutoControlsStateProcessorTime(1f + Math.abs(getParams().getRandomGenerator().nextFloat()));
+    getParams().getEnemyParams().getAutoControlsStateProcessorTimer().restart();
     getParams().getEnemyParams().setAutoControlsState(EnemyAutoControlsState.AGGRESSIVE);
     getParams().getStats().setSpeed(getParams().getStats().getBaseSpeed());
     getParams().getEnemyParams().setAggroedCreatureId(ability.getParams().getCreatureId());

@@ -5,6 +5,7 @@ import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.ability.AbilityState;
 import com.easternsauce.actionrpg.model.area.AreaId;
+import com.easternsauce.actionrpg.model.creature.enemy.EnemyParams;
 import com.easternsauce.actionrpg.model.creature.enemy.EnemyTemplate;
 import com.easternsauce.actionrpg.model.item.EquipmentSlotType;
 import com.easternsauce.actionrpg.model.item.Item;
@@ -181,6 +182,10 @@ public abstract class Creature implements Entity {
   }
 
   public abstract CreatureParams getParams();
+
+  public EnemyParams getEnemyParams() {
+    return getParams().getEnemyParams();
+  }
 
   public Integer getCapability() {
     Float width = getAnimationConfig().getSpriteWidth();
