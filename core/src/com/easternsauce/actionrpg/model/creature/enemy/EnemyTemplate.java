@@ -49,7 +49,7 @@ public class EnemyTemplate {
         EnemySkillUseEntry.of(SkillType.MAGE_TELEPORT_COMBO, 20f, 25f)
 
       )), null);
-  public static EnemyTemplate minos = EnemyTemplate.of(EnemyType.MINOS, false, 2300f, 6f, 16f,
+  public static EnemyTemplate minos = EnemyTemplate.of(EnemyType.MINOS, false, 2300f, 12f, 16f,
     new ConcurrentSkipListSet<>(
       Arrays.asList(DropTableEntry.of(ItemDrop.bossTierThreeMagicLeatherArmorDrop, 0.3f),
         DropTableEntry.of(ItemDrop.bossTierTwoMagicRingmailGreavesDrop, 0.3f),
@@ -115,7 +115,7 @@ public class EnemyTemplate {
         DropTableEntry.of(ItemDrop.manaPotionDrop, 0.5f))),
     new ConcurrentSkipListSet<>(Collections.singletonList(EnemySkillUseEntry.of(SkillType.LITTLE_BITE, 6f, 300f))),
     null);
-  public static EnemyTemplate taurus = EnemyTemplate.of(EnemyType.TAURUS, true, 5000f, 5f, 12f,
+  public static EnemyTemplate taurus = EnemyTemplate.of(EnemyType.TAURUS, true, 5000f, 9f, 12f,
     new ConcurrentSkipListSet<>(
       Arrays.asList(DropTableEntry.of(ItemDrop.lifePotionDrop, 0.5f),
         DropTableEntry.of(ItemDrop.manaPotionDrop, 0.5f))),

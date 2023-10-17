@@ -20,10 +20,10 @@ public class Charge extends AttachedAbility {
 
     Charge ability = Charge.of();
 
-    ability.params = abilityParams.setWidth(5.5f).setHeight(5.5f).setChannelTime(0f).setActiveTime(0.7f)
+    ability.params = abilityParams.setWidth(5.5f).setHeight(5.5f).setChannelTime(0f).setActiveTime(1.7f)
       .setTextureName("smoke").setBaseDamage(0f).setChannelAnimationLooping(false).setActiveAnimationLooping(false)
       .setPos(creature.getParams().getPos()).setStartingRange(0.8f).setDirectionalAttachedAbilityRotationShift(180f)
-      .setFlipY(Charge.calculateFlip(flipValue)).setRotationShift(180f);
+      .setFlipY(Charge.calculateFlip(flipValue)).setRotationShift(180f).setDelayedActionTime(1f);
 
     return ability;
   }
@@ -49,17 +49,26 @@ public class Charge extends AttachedAbility {
 
   @Override
   public void onStarted(CoreGame game) {
-    Creature creature = game.getCreature(getParams().getCreatureId());
-
-    creature.getParams().getMovementParams().setDashing(true);
-    creature.getParams().getMovementParams().setDashingVector(getParams().getDirVector());
-    creature.getParams().getMovementParams().setDashingVelocity(30f);
-
     game.chainAnotherAbility(this, AbilityType.CHARGE_BODY, getParams().getDirVector(), ChainAbilityParams.of());
   }
 
   @Override
+  public void onDelayedAction(CoreGame game) {
+    Creature creature = game.getCreature(getParams().getCreatureId());
+
+    creature.stopMoving();
+    creature.getParams().getMovementParams().setDashing(true);
+    creature.getParams().getMovementParams().setDashingVector(getParams().getDirVector());
+    creature.getParams().getMovementParams().setDashingVelocity(30f);
+  }
+
+  @Override
   protected void onActiveUpdate(float delta, CoreGame game) {
+    if (!getParams().getDelayedActionCompleted()) {
+      Creature creature = game.getCreature(getParams().getCreatureId());
+
+      creature.stopMoving();
+    }
     updateAttachedAbilityPosition(game);
   }
 

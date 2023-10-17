@@ -3,11 +3,15 @@ package com.easternsauce.actionrpg.model.ability.ringoffire;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class RingOfFire extends RingOfFireBase {
+  @Getter
+  protected AbilityParams params;
+
   public static RingOfFireBase of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
     RingOfFire ability = RingOfFire.of();
 

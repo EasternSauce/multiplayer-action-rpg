@@ -16,7 +16,7 @@ public class ChargeBody extends RingOfFireBase {
   public static ChargeBody of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
     ChargeBody ability = ChargeBody.of();
 
-    ability.params = abilityParams.setWidth(7f).setHeight(7f).setChannelTime(0f).setActiveTime(0.5f)
+    ability.params = abilityParams.setWidth(7f).setHeight(7f).setChannelTime(0f).setActiveTime(1.5f)
       .setBaseDamage(28f).setTextureName("fast_ring_of_fire")
       .setActiveAnimationLooping(true).setAttackWithoutMoving(true);
 

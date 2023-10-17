@@ -8,24 +8,31 @@ import com.easternsauce.actionrpg.util.Constants;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-public class EnemyAutoControlsStateLogicProcessor {
-  public void processStateLogic(CreatureId creatureId, CoreGame game) {
+public class EnemyAutoControlsStateProcessor {
+  public void process(CreatureId creatureId, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
-    if (creature.getEnemyParams().getTargetCreatureId() == null) {
-      return;
-    }
-    if (creature.getEnemyParams().getAutoControlsState() == EnemyAutoControlsState.ALERTED) {
-      processAlerted(game, creature);
-    } else if (creature.getEnemyParams().getAutoControlsState() == EnemyAutoControlsState.AGGRESSIVE) {
-      processAggressive(creature);
-    } else if (creature.getEnemyParams().getAutoControlsState() == EnemyAutoControlsState.KEEP_DISTANCE) {
-      processKeepDistance(game, creature);
-    }
+    if (creature.getEnemyParams().getAutoControlsStateProcessorTimer().getTime() >
+      creature.getEnemyParams().getAutoControlsStateProcessorTime()) {
 
+      creature.getEnemyParams().getAutoControlsStateProcessorTimer().restart();
+
+      if (creature.getEnemyParams().getTargetCreatureId() != null) {
+        if (creature.getEnemyParams().getAutoControlsState() == EnemyAutoControlsState.ALERTED) {
+          handleAlerted(game, creature);
+        } else if (creature.getEnemyParams().getAutoControlsState() == EnemyAutoControlsState.AGGRESSIVE) {
+          handleAggressive(creature);
+        } else if (creature.getEnemyParams().getAutoControlsState() == EnemyAutoControlsState.KEEP_DISTANCE) {
+          handleKeepDistance(game, creature);
+        }
+      }
+
+      float randomTime = 1f + Math.abs(creature.getParams().getRandomGenerator().nextFloat());
+      creature.getEnemyParams().setAutoControlsStateProcessorTime(randomTime);
+    }
   }
 
-  private void processAggressive(Creature creature) {
+  private void handleAggressive(Creature creature) {
     if (!creature.getEnemyParams().isBossEnemy() &&
       Math.abs(creature.getParams().getRandomGenerator().nextFloat()) < 0.35f) {
       creature.getEnemyParams().setAutoControlsState(EnemyAutoControlsState.KEEP_DISTANCE);
@@ -33,7 +40,7 @@ public class EnemyAutoControlsStateLogicProcessor {
     }
   }
 
-  private void processKeepDistance(CoreGame game, Creature creature) {
+  private void handleKeepDistance(CoreGame game, Creature creature) {
     Vector2 targetPos = game.getCreaturePos(creature.getEnemyParams().getTargetCreatureId());
 
     if (targetPos != null) {
@@ -52,7 +59,7 @@ public class EnemyAutoControlsStateLogicProcessor {
     }
   }
 
-  private void processAlerted(CoreGame game, Creature creature) {
+  private void handleAlerted(CoreGame game, Creature creature) {
     Vector2 targetPos = game.getCreaturePos(creature.getEnemyParams().getTargetCreatureId());
 
     if (targetPos != null) {
@@ -70,26 +77,4 @@ public class EnemyAutoControlsStateLogicProcessor {
     }
   }
 
-  public void processDistanceLogic(CreatureId creatureId, Creature potentialTarget, CoreGame game) {
-    Creature creature = game.getCreature(creatureId);
-
-    Float distanceToTarget = creature.getParams().getPos().distance(potentialTarget.getParams().getPos());
-
-    if (creature.getEnemyParams().getJustAttackedFromRangeTimer().getTime() >=
-      Constants.JUST_ATTACKED_FROM_RANGE_AGGRESSION_TIME) {
-      if ((creature.getEnemyParams().getAutoControlsState() == EnemyAutoControlsState.AGGRESSIVE ||
-        creature.getEnemyParams().getAutoControlsState() == EnemyAutoControlsState.KEEP_DISTANCE) &&
-        distanceToTarget > Constants.TURN_ALERTED_DISTANCE) {
-        if (creature.getEnemyParams().isBossEnemy()) {
-          creature.getEnemyParams().setAutoControlsState(EnemyAutoControlsState.AGGRESSIVE);
-        } else {
-          creature.getEnemyParams().setAutoControlsState(EnemyAutoControlsState.ALERTED);
-        }
-
-      } else if (creature.getEnemyParams().getAutoControlsState() == EnemyAutoControlsState.ALERTED &&
-        distanceToTarget < Constants.TURN_AGGRESSIVE_DISTANCE) {
-        creature.getEnemyParams().setAutoControlsState(EnemyAutoControlsState.AGGRESSIVE);
-      }
-    }
-  }
 }
