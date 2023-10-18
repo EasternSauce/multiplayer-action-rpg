@@ -4,7 +4,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.assets.Assets;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullCreatureId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
 import com.easternsauce.actionrpg.util.Constants;
@@ -13,11 +14,11 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 public class CreatureRenderer {
-  private CreatureId creatureId;
+  private EntityId<Creature> creatureId = NullCreatureId.of();
   @Getter
   private CreatureSprite creatureSprite;
 
-  public static CreatureRenderer of(CreatureId creatureId) {
+  public static CreatureRenderer of(EntityId<Creature> creatureId) {
     CreatureRenderer creatureRenderer = new CreatureRenderer();
 
     creatureRenderer.creatureId = creatureId;

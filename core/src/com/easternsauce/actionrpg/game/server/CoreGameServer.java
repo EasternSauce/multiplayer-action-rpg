@@ -3,12 +3,12 @@ package com.easternsauce.actionrpg.game.server;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.InitialStateLoader;
 import com.easternsauce.actionrpg.game.gamestate.ServerGameState;
-import com.easternsauce.actionrpg.model.id.AbilityId;
+import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.ability.AbilityState;
 import com.easternsauce.actionrpg.model.action.ActionsHolder;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.physics.world.PhysicsWorld;
 import com.easternsauce.actionrpg.util.Constants;
 import com.easternsauce.actionrpg.util.MapUtils;
@@ -71,7 +71,7 @@ public class CoreGameServer extends CoreGame {
     Connection[] connections = getEndPoint().getConnections();
     for (Connection connection : connections) {
       if (clientIds.contains(connection.getID())) { // don't update until player is initialized
-        Map<CreatureId, Creature> creatures = getAllCreatures();
+        Map<EntityId<Creature>, Creature> creatures = getAllCreatures();
         if (getClientPlayers().containsKey(connection.getID()) &&
           creatures.containsKey(getClientPlayers().get(connection.getID()))) {
           Creature player = creatures.get(getClientPlayers().get(connection.getID()));
@@ -87,7 +87,7 @@ public class CoreGameServer extends CoreGame {
     gameState.getOnTickActions().clear();
   }
 
-  public Map<Integer, CreatureId> getClientPlayers() {
+  public Map<Integer, EntityId<Creature>> getClientPlayers() {
     return getGameState().getClientPlayers();
   }
 
@@ -130,7 +130,7 @@ public class CoreGameServer extends CoreGame {
   }
 
   @Override
-  public Set<AbilityId> getAbilitiesToUpdate() {
+  public Set<EntityId<Ability>> getAbilitiesToUpdate() {
     return getGameState().accessAbilities().getAbilities().keySet();
   }
 
@@ -175,7 +175,7 @@ public class CoreGameServer extends CoreGame {
   }
 
   @Override
-  public void forceDisconnectForPlayer(CreatureId creatureId) {
+  public void forceDisconnectForPlayer(EntityId<Creature> creatureId) {
     Integer clientId = MapUtils.getKeyByValue(getClientPlayers(), creatureId);
 
     if (clientId != null) {

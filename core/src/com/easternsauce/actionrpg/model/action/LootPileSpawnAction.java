@@ -2,9 +2,9 @@ package com.easternsauce.actionrpg.model.action;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.entity.Entity;
-import com.easternsauce.actionrpg.model.area.AreaId;
+import com.easternsauce.actionrpg.model.area.Area;
 import com.easternsauce.actionrpg.model.area.LootPile;
-import com.easternsauce.actionrpg.model.id.LootPileId;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.EqualsAndHashCode;
@@ -17,12 +17,12 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class LootPileSpawnAction extends GameStateAction {
-  private AreaId areaId;
+  private EntityId<Area> areaId;
 
   private Vector2 pos;
   private Set<Item> items;
 
-  public static LootPileSpawnAction of(AreaId areaId, Vector2 pos, Set<Item> items) {
+  public static LootPileSpawnAction of(EntityId<Area> areaId, Vector2 pos, Set<Item> items) {
     LootPileSpawnAction action = LootPileSpawnAction.of();
     action.areaId = areaId;
     action.pos = pos;
@@ -32,7 +32,7 @@ public class LootPileSpawnAction extends GameStateAction {
 
   @Override
   public void applyToGame(CoreGame game) {
-    LootPileId lootPileId = LootPileId.of("LootPile_" + (int) (Math.random() * 10000000)); // TODO: use seeded rng
+    EntityId<LootPile> lootPileId = EntityId.of("LootPile_" + (int) (Math.random() * 10000000)); // TODO: use seeded rng
 
     Set<Item> lootPileItems = items.stream().map(
       item -> Item.of().setTemplate(item.getTemplate()).setQuantity(item.getQuantity())
@@ -57,7 +57,7 @@ public class LootPileSpawnAction extends GameStateAction {
   }
 
   @Override
-  protected AreaId getOverrideAreaId() {
+  protected EntityId<Area> getOverrideAreaId() {
     return areaId;
   }
 }

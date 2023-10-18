@@ -8,10 +8,10 @@ import com.easternsauce.actionrpg.game.command.ConnectionInitCommand;
 import com.easternsauce.actionrpg.game.command.OnDemandBroadcastAskCommand;
 import com.easternsauce.actionrpg.game.command.PlayerInitCommand;
 import com.easternsauce.actionrpg.game.gamestate.ClientGameState;
-import com.easternsauce.actionrpg.model.id.AbilityId;
+import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.action.CreatureChangeAimDirectionAction;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.util.TeleportEvent;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.util.Constants;
@@ -107,7 +107,7 @@ public class CoreGameClient extends CoreGame {
   }
 
   @Override
-  public Set<AbilityId> getAbilitiesToUpdate() {
+  public Set<EntityId<Ability>> getAbilitiesToUpdate() {
     Creature player = getCreature(getGameState().getThisClientPlayerId());
 
     if (player.isNull()) {
@@ -125,7 +125,7 @@ public class CoreGameClient extends CoreGame {
 
   @Override
   public void initializePlayer(String playerName) {
-    gameState.setThisClientPlayerId(CreatureId.of(playerName));
+    gameState.setThisClientPlayerId(EntityId.of(playerName));
     getEndPoint().sendTCP(PlayerInitCommand.of(getGameState().getThisClientPlayerId()));
 
     getEndPoint().sendTCP(OnDemandBroadcastAskCommand.of());
@@ -173,7 +173,7 @@ public class CoreGameClient extends CoreGame {
   }
 
   @Override
-  public void forceDisconnectForPlayer(CreatureId creatureId) {
+  public void forceDisconnectForPlayer(EntityId<Creature> creatureId) {
 
   }
 

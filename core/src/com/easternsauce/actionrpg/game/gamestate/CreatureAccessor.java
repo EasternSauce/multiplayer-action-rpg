@@ -6,15 +6,16 @@ import com.easternsauce.actionrpg.model.action.CreatureHitByDamageOverTimeAction
 import com.easternsauce.actionrpg.model.action.CreatureMovingVectorSetAction;
 import com.easternsauce.actionrpg.model.action.SkillTryPerformAction;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.id.CreatureId;
 import com.easternsauce.actionrpg.model.creature.NullCreature;
 import com.easternsauce.actionrpg.model.creature.enemy.EnemySkillUseEntry;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.skill.SkillType;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.util.Constants;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -55,7 +56,7 @@ public class CreatureAccessor {
     return pickedSkillType.get();
   }
 
-  public Set<CreatureId> getActiveCreatureIds() {
+  public Set<EntityId<Creature>> getActiveCreatureIds() {
     return getData().getActiveCreatureIds();
   }
 
@@ -63,14 +64,14 @@ public class CreatureAccessor {
     return dataHolder.getData();
   }
 
-  public Vector2 getCreaturePos(CreatureId creatureId) {
+  public Vector2 getCreaturePos(EntityId<Creature> creatureId) {
     if (!getData().getCreatures().containsKey(creatureId)) {
       return null;
     }
     return getData().getCreatures().get(creatureId).getParams().getPos();
   }
 
-  public Set<CreatureId> getCreaturesToUpdateForPlayerCreatureId(CreatureId playerCreatureId, CoreGame game) {
+  public Set<EntityId<Creature>> getCreaturesToUpdateForPlayerCreatureId(EntityId<Creature> playerCreatureId, CoreGame game) {
     Creature player = getData().getCreatures().get(playerCreatureId);
 
     if (player.isNull()) {
@@ -90,7 +91,7 @@ public class CreatureAccessor {
 
   }
 
-  public void setCreatureMovingVector(CreatureId creatureId, Vector2 dirVector) {
+  public void setCreatureMovingVector(EntityId<Creature> creatureId, Vector2 dirVector) {
     CreatureMovingVectorSetAction action = CreatureMovingVectorSetAction.of(creatureId, dirVector);
 
     gameState.scheduleServerSideAction(action);
@@ -100,7 +101,7 @@ public class CreatureAccessor {
     gameState.accessCreatures().getCreatures().values().stream().filter(Creature::isAlive).forEach(creatureAction);
   }
 
-  public Map<CreatureId, Creature> getCreatures() {
+  public Map<EntityId<Creature>, Creature> getCreatures() {
     return getData().getCreatures();
   }
 
@@ -110,7 +111,7 @@ public class CreatureAccessor {
   }
 
   // TODO: move to enemy?
-  public void handleCreatureUseRandomSkillAtTarget(CreatureId creatureId, Vector2 vectorTowardsTarget, Float distanceToTarget, CoreGame game) {
+  public void handleCreatureUseRandomSkillAtTarget(EntityId<Creature> creatureId, Vector2 vectorTowardsTarget, Float distanceToTarget, CoreGame game) {
     Creature creature = gameState.accessCreatures().getCreature(creatureId);
 
     SkillType pickedSkillType;
@@ -126,15 +127,15 @@ public class CreatureAccessor {
     }
   }
 
-  public Creature getCreature(CreatureId creatureId) {
-    if (creatureId == null || !getData().getCreatures().containsKey(creatureId)) {
+  public Creature getCreature(EntityId<Creature> creatureId) {
+    if (creatureId.isNull() || !getData().getCreatures().containsKey(creatureId)) {
       return NullCreature.of();
     }
     return getData().getCreatures().get(creatureId);
   }
 
-  public CreatureId getAliveCreatureIdClosestTo(Vector2 pos, float maxRange, Set<CreatureId> excluded, CoreGame game) {
-    AtomicReference<CreatureId> minCreatureId = new AtomicReference<>(null);
+  public EntityId<Creature> getAliveCreatureIdClosestTo(Vector2 pos, float maxRange, Set<EntityId<Creature>> excluded, CoreGame game) {
+    AtomicReference<EntityId<Creature>> minCreatureId = new AtomicReference<>(null);
     AtomicReference<Float> minDistance = new AtomicReference<>(Float.MAX_VALUE);
 
     gameState.getCreaturesToUpdate(game).forEach(creatureId -> {
@@ -149,7 +150,7 @@ public class CreatureAccessor {
     return minCreatureId.get();
   }
 
-  public void creatureTakeDamageOverTime(CreatureId attackerId, CreatureId targetId, Float damage) {
+  public void creatureTakeDamageOverTime(EntityId<Creature> attackerId, EntityId<Creature> targetId, Float damage) {
     CreatureHitByDamageOverTimeAction action = CreatureHitByDamageOverTimeAction.of(attackerId, targetId, damage);
     gameState.scheduleServerSideAction(action);
   }

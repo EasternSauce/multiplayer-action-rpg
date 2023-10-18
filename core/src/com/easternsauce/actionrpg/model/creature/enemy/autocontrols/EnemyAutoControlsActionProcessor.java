@@ -2,7 +2,7 @@ package com.easternsauce.actionrpg.model.creature.enemy.autocontrols;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.util.Constants;
 import lombok.NoArgsConstructor;
@@ -14,13 +14,13 @@ import java.util.List;
 public class EnemyAutoControlsActionProcessor {
   private final EnemyAutoControlsMovementProcessor movementLogicProcessor = EnemyAutoControlsMovementProcessor.of();
 
-  public void process(CreatureId creatureId, Vector2 potentialTargetPos, Vector2 vectorTowardsTarget, CoreGame game) {
+  public void process(EntityId<Creature> creatureId, Vector2 potentialTargetPos, Vector2 vectorTowardsTarget, CoreGame game) {
     handleMovement(creatureId, potentialTargetPos, game);
     handleAimDirectionAdjustment(creatureId, vectorTowardsTarget, game);
     handleUseRandomSkillAtTarget(creatureId, potentialTargetPos, vectorTowardsTarget,
       game);
   }
-  public void handleUseRandomSkillAtTarget(CreatureId creatureId, Vector2 potentialTargetPos, Vector2 vectorTowardsTarget, CoreGame game) {
+  public void handleUseRandomSkillAtTarget(EntityId<Creature> creatureId, Vector2 potentialTargetPos, Vector2 vectorTowardsTarget, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
 
@@ -38,13 +38,13 @@ public class EnemyAutoControlsActionProcessor {
     }
   }
 
-  private void handleAimDirectionAdjustment(CreatureId creatureId, Vector2 vectorTowardsTarget, CoreGame game) {
+  private void handleAimDirectionAdjustment(EntityId<Creature> creatureId, Vector2 vectorTowardsTarget, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
     creature.getParams().getMovementParams().setAimDirection(vectorTowardsTarget.normalized());
   }
 
-  public void handleMovement(CreatureId creatureId, Vector2 potentialTargetPos, CoreGame game) {
+  public void handleMovement(EntityId<Creature> creatureId, Vector2 potentialTargetPos, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
     Float distance = creature.getParams().getPos().distance(potentialTargetPos);
@@ -57,7 +57,7 @@ public class EnemyAutoControlsActionProcessor {
     }
   }
 
-  public void followPathToTarget(CreatureId creatureId, CoreGame game, Creature creature) {
+  public void followPathToTarget(EntityId<Creature> creatureId, CoreGame game, Creature creature) {
     List<Vector2> path = creature.getEnemyParams().getPathTowardsTarget();
     Vector2 nextNodeOnPath = path.get(0);
     if (creature.getParams().getPos().distance(nextNodeOnPath) < 1f) {

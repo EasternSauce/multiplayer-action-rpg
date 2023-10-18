@@ -1,9 +1,10 @@
 package com.easternsauce.actionrpg.model.ability;
 
 import com.easternsauce.actionrpg.game.entity.EntityParams;
-import com.easternsauce.actionrpg.model.area.AreaId;
-import com.easternsauce.actionrpg.model.id.AbilityId;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.area.Area;
+import com.easternsauce.actionrpg.model.creature.Creature;
+import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullCreatureId;
 import com.easternsauce.actionrpg.model.skill.SkillType;
 import com.easternsauce.actionrpg.model.util.CreaturesHitCounter;
 import com.easternsauce.actionrpg.model.util.RandomGenerator;
@@ -21,9 +22,9 @@ import java.util.concurrent.ConcurrentSkipListMap;
 public class AbilityParams implements EntityParams {
   Vector2 chainToPos;
   @NonNull
-  private AbilityId id;
+  private EntityId<Ability> id;
   @NonNull
-  private AreaId areaId;
+  private EntityId<Area> areaId;
   @NonNull
   private AbilityState state = AbilityState.INACTIVE;
   private Vector2 pos;
@@ -32,7 +33,7 @@ public class AbilityParams implements EntityParams {
   @NonNull
   private Float height;
   @NonNull
-  private CreatureId creatureId;
+  private EntityId<Creature> creatureId = NullCreatureId.of();
   @NonNull
   private SimpleTimer stateTimer = SimpleTimer.getExpiredTimer();
   @NonNull
@@ -52,7 +53,7 @@ public class AbilityParams implements EntityParams {
   @NonNull
   private Float startingRange = 0f;
   @NonNull
-  private Map<CreatureId, Float> creaturesAlreadyHit = new ConcurrentSkipListMap<>();
+  private Map<EntityId<Creature>, Float> creaturesAlreadyHit = new ConcurrentSkipListMap<>();
   @NonNull
   private CreaturesHitCounter damagingHitCreaturesHitCounter = CreaturesHitCounter.of();
   @NonNull

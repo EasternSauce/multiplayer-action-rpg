@@ -3,14 +3,14 @@ package com.easternsauce.actionrpg.model.creature.enemy;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.ability.AbilityState;
-import com.easternsauce.actionrpg.model.area.AreaId;
+import com.easternsauce.actionrpg.model.area.Area;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
-import com.easternsauce.actionrpg.model.id.CreatureId;
 import com.easternsauce.actionrpg.model.creature.CreatureParams;
 import com.easternsauce.actionrpg.model.creature.enemy.autocontrols.EnemyAutoControlsState;
 import com.easternsauce.actionrpg.model.creature.enemy.autocontrols.EnemyAutoControlsUpdater;
-import com.easternsauce.actionrpg.model.id.EnemyRallyPointId;
+import com.easternsauce.actionrpg.model.enemyrallypoint.EnemyRallyPoint;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.skill.Skill;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.model.util.WorldDirection;
@@ -28,7 +28,7 @@ public class Enemy extends Creature {
   @Getter
   private CreatureParams params;
 
-  public static Enemy of(CreatureId creatureId, AreaId areaId, Vector2 pos, EnemyTemplate enemyTemplate, EnemyRallyPointId enemyRallyPointId, int rngSeed) {
+  public static Enemy of(EntityId<Creature> creatureId, EntityId<Area> areaId, Vector2 pos, EnemyTemplate enemyTemplate, EntityId<EnemyRallyPoint> enemyRallyPointId, int rngSeed) {
     CreatureParams params = CreatureParams.of(creatureId, areaId, pos, enemyTemplate, rngSeed);
 
     params.setDropTable(enemyTemplate.getDropTable());
@@ -132,8 +132,8 @@ public class Enemy extends Creature {
     if (getParams().getEnemyParams() != null) {
       getParams().getEnemyParams().setJustAttackedByCreatureId(ability.getParams().getCreatureId());
 
-      CreatureId aggroedCreatureId = getParams().getEnemyParams().getAggroedCreatureId();
-      if (aggroedCreatureId == null || !aggroedCreatureId.equals(ability.getParams().getCreatureId())) {
+      EntityId<Creature> aggroedCreatureId = getParams().getEnemyParams().getAggroedCreatureId();
+      if (aggroedCreatureId.isNull() || !aggroedCreatureId.equals(ability.getParams().getCreatureId())) {
         Creature aggroedCreature = game.getCreature(aggroedCreatureId);
 
         if (!aggroedCreature.isNull() && aggroedCreature.isCurrentlyActive(game)) {
@@ -145,7 +145,7 @@ public class Enemy extends Creature {
 
   @Override
   protected void processRegenerationOverTime(CoreGame game) {
-    if (getParams().getEnemyParams().getTargetCreatureId() == null) {
+    if (getParams().getEnemyParams().getTargetCreatureId().isNull()) {
       if (getParams().getEffectParams().getLifeRegenerationOverTimeTimer().getTime() > 0.333f) {
         regenerateLife(getParams().getStats().getMaxLife() / 30f);
       }

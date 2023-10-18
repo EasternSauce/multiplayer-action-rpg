@@ -4,8 +4,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.Ability;
-import com.easternsauce.actionrpg.model.id.AbilityId;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.creature.Creature;
+import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullCreatureId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.physics.world.PhysicsWorld;
 import lombok.Getter;
@@ -16,9 +17,9 @@ import lombok.NoArgsConstructor;
 public class AbilityBody {
   private final Sprite sprite = new Sprite(); // only used for calculating vertices
   @Getter
-  private AbilityId abilityId;
+  private EntityId<Ability> abilityId;
   @Getter
-  private CreatureId creatureId;
+  private EntityId<Creature> creatureId = NullCreatureId.of();
   @Getter
   private Body b2body = null;
   private PhysicsWorld world;
@@ -26,7 +27,7 @@ public class AbilityBody {
   @Getter
   private Boolean bodyInitialized = false;
 
-  public static AbilityBody of(AbilityId abilityId) {
+  public static AbilityBody of(EntityId<Ability> abilityId) {
     AbilityBody abilityBody = new AbilityBody();
     abilityBody.abilityId = abilityId;
     return abilityBody;

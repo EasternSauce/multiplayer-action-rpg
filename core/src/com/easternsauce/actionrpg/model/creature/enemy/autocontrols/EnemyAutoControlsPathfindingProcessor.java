@@ -2,9 +2,9 @@ package com.easternsauce.actionrpg.model.creature.enemy.autocontrols;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.id.CreatureId;
 import com.easternsauce.actionrpg.model.creature.enemy.Enemy;
 import com.easternsauce.actionrpg.model.creature.enemy.EnemyParams;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.physics.pathing.Astar;
 import com.easternsauce.actionrpg.physics.pathing.AstarResult;
@@ -17,7 +17,7 @@ import java.util.function.Predicate;
 
 @NoArgsConstructor(staticName = "of")
 public class EnemyAutoControlsPathfindingProcessor {
-    public void process(CreatureId creatureId, CoreGame game) {
+    public void process(EntityId<Creature> creatureId, CoreGame game) {
         Creature creature = game.getCreature(creatureId);
 
         if (creature.getEnemyParams().getTargetCreatureId() != null) {
@@ -43,7 +43,7 @@ public class EnemyAutoControlsPathfindingProcessor {
         }
     }
 
-    private void processPathfindingTowardsTarget(CreatureId creatureId, CoreGame game, Creature creature) {
+    private void processPathfindingTowardsTarget(EntityId<Creature> creatureId, CoreGame game, Creature creature) {
         boolean creaturePathfindingAllowed = game.isPathfindingCalculatedForCreature(creature) &&
                 (creature.getEnemyParams().getForcePathCalculation() ||
                         creature.getEnemyParams().getPathCalculationCooldownTimer().getTime() >
@@ -81,7 +81,7 @@ public class EnemyAutoControlsPathfindingProcessor {
         }
     }
 
-    private List<Vector2> mirrorPathFromNearbyCreature(CreatureId creatureId, CreatureId targetId, CoreGame game) { // TODO: check if this properly serves its purpose, it may be useless
+    private List<Vector2> mirrorPathFromNearbyCreature(EntityId<Creature> creatureId, EntityId<Creature> targetId, CoreGame game) { // TODO: check if this properly serves its purpose, it may be useless
         Creature creature = game.getCreature(creatureId);
         if (creature.isNull()) {
             return new LinkedList<>();

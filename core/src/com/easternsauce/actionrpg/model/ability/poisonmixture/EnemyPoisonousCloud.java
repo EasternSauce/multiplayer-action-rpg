@@ -4,7 +4,7 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
@@ -24,7 +24,7 @@ public class EnemyPoisonousCloud extends PoisonousCloudBase {
   }
 
   @Override
-  public void onCreatureHit(CreatureId creatureId, CoreGame game) {
+  public void onCreatureHit(EntityId<Creature> creatureId, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
     creature.applyEffect(CreatureEffect.SLOW, 1.3f, game);

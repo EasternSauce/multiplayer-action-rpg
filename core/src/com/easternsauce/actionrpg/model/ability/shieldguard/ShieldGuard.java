@@ -7,7 +7,7 @@ import com.easternsauce.actionrpg.model.ability.ricochetbullet.RicochetBullet;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.Player;
 import com.easternsauce.actionrpg.model.creature.enemy.Enemy;
-import com.easternsauce.actionrpg.model.id.AbilityId;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -67,7 +67,7 @@ public class ShieldGuard extends AttachedAbility {
   }
 
   @Override
-  public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
+  public void onOtherAbilityHit(EntityId<Ability> otherAbilityId, CoreGame game) {
     Ability otherAbility = game.getAbility(otherAbilityId);
 
     Creature creature = game.getCreature(getParams().getCreatureId());

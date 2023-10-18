@@ -2,7 +2,7 @@ package com.easternsauce.actionrpg.renderer.creature;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.renderer.AnimationRenderer;
 import com.easternsauce.actionrpg.renderer.AnimationSpec;
@@ -23,7 +23,7 @@ public class CreatureHitAnimationRenderer {
         "circle_explosion", false));
   }
 
-  public void render(CreatureId creatureId, float timeSinceStarted, Vector2 vectorTowardsContactPoint, RenderingLayer renderingLayer, CoreGame game) {
+  public void render(EntityId<Creature> creatureId, float timeSinceStarted, Vector2 vectorTowardsContactPoint, RenderingLayer renderingLayer, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
     float posX = creature.getParams().getPos().getX() - animationRenderer.getAnimationSpec().getRealWidth() / 2f +

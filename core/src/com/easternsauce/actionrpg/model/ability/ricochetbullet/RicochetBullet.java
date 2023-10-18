@@ -3,7 +3,8 @@ package com.easternsauce.actionrpg.model.ability.ricochetbullet;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import com.easternsauce.actionrpg.model.ability.Projectile;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.creature.Creature;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -40,7 +41,7 @@ public class RicochetBullet extends Projectile {
   }
 
   @Override
-  public void onCreatureHit(CreatureId creatureId, CoreGame game) {
+  public void onCreatureHit(EntityId<Creature> creatureId, CoreGame game) {
     params.setDamageMultiplier(params.getDamageMultiplier() * 3 / 5f);
   }
 

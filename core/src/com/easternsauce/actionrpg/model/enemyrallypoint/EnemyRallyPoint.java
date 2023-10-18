@@ -1,12 +1,13 @@
 package com.easternsauce.actionrpg.model.enemyrallypoint;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.game.entity.Entity;
+import com.easternsauce.actionrpg.game.entity.EntityParams;
 import com.easternsauce.actionrpg.model.action.EnemySpawnAction;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.id.CreatureId;
 import com.easternsauce.actionrpg.model.creature.Player;
 import com.easternsauce.actionrpg.model.creature.enemy.EnemyTemplate;
-import com.easternsauce.actionrpg.model.id.EnemyRallyPointId;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.util.SimpleTimer;
 import com.easternsauce.actionrpg.util.Constants;
 import lombok.Getter;
@@ -17,15 +18,15 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
-public class EnemyRallyPoint {
+public class EnemyRallyPoint implements Entity {
   @Getter
   private final SimpleTimer respawnTimer = SimpleTimer.getExpiredTimer();
   @Getter
-  private EnemyRallyPointId id;
+  private EntityId<EnemyRallyPoint> id;
   @Getter
   private EnemyRallyPointInfo rallyPointInfo;
 
-  public static EnemyRallyPoint of(EnemyRallyPointId id, EnemyRallyPointInfo rallyPointInfo) {
+  public static EnemyRallyPoint of(EntityId<EnemyRallyPoint> id, EnemyRallyPointInfo rallyPointInfo) {
     EnemyRallyPoint enemyRallyPoint = EnemyRallyPoint.of();
 
     enemyRallyPoint.id = id;
@@ -53,7 +54,7 @@ public class EnemyRallyPoint {
       if (playersNearby.isEmpty()) {
         if (enemiesToSpawn > 0) {
           for (int i = 0; i < enemiesToSpawn; i++) {
-            CreatureId enemyId = CreatureId.of("Enemy_" + (int) (Math.random() * 10000000));
+            EntityId<Creature> enemyId = EntityId.of("Enemy_" + (int) (Math.random() * 10000000));
 
             EnemyTemplate randomEnemyTemplate = getRandomEnemyTemplate(game);
 
@@ -85,5 +86,10 @@ public class EnemyRallyPoint {
       randValue.updateAndGet(value -> value - weight);
     });
     return randomEnemyTemplate.get();
+  }
+
+  @Override
+  public EntityParams getParams() {
+    return null; // TODO: move params to here?
   }
 }

@@ -4,7 +4,8 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.command.*;
 import com.easternsauce.actionrpg.model.action.PlayerJoinAction;
 import com.easternsauce.actionrpg.model.action.PlayerLeaveAction;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.creature.Creature;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import lombok.AllArgsConstructor;
@@ -17,7 +18,7 @@ public class CoreGameServerListener extends Listener {
 
   @Override
   public void disconnected(Connection connection) {
-    CreatureId disconnectedCreatureId = game.getClientPlayers().get(connection.getID());
+    EntityId<Creature> disconnectedCreatureId = game.getClientPlayers().get(connection.getID());
 
     PlayerLeaveAction playerLeaveAction = PlayerLeaveAction.of(disconnectedCreatureId);
     game.getGameState().scheduleServerSideAction(playerLeaveAction);
@@ -64,7 +65,7 @@ public class CoreGameServerListener extends Listener {
 
   }
 
-  private void disconnectExistingPlayer(CreatureId playerId, CoreGame game) {
+  private void disconnectExistingPlayer(EntityId<Creature> playerId, CoreGame game) {
 
     game.forceDisconnectForPlayer(playerId);
 

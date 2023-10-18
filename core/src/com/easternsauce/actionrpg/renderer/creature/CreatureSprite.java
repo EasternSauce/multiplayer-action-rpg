@@ -4,7 +4,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullCreatureId;
 import com.easternsauce.actionrpg.model.util.WorldDirection;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
 import com.easternsauce.actionrpg.renderer.game.CreatureModelAnimation;
@@ -13,9 +14,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 public class CreatureSprite {
   private final Sprite sprite = new Sprite();
-  private CreatureId creatureId;
+  private EntityId<Creature> creatureId = NullCreatureId.of();
 
-  public static CreatureSprite of(CreatureId creatureId) {
+  public static CreatureSprite of(EntityId<Creature> creatureId) {
     CreatureSprite creatureSprite = CreatureSprite.of();
     creatureSprite.creatureId = creatureId;
     return creatureSprite;

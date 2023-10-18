@@ -3,7 +3,8 @@ package com.easternsauce.actionrpg.renderer.hud.checkpointmenu;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.command.ActionPerformCommand;
 import com.easternsauce.actionrpg.model.action.CheckpointSetAction;
-import com.easternsauce.actionrpg.model.id.CheckpointId;
+import com.easternsauce.actionrpg.model.area.Checkpoint;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;
 import com.easternsauce.actionrpg.renderer.CheckpointRenderer;
 import com.easternsauce.actionrpg.renderer.util.Rect;
@@ -31,7 +32,7 @@ public class CheckpointMenuController {
 
         if (rect.contains(x, y)) {
           isSuccessful.set(true);
-          Map<CheckpointId, CheckpointRenderer> checkpointRenderers = game.getEntityManager().getGameEntityRenderer()
+          Map<EntityId<Checkpoint>, CheckpointRenderer> checkpointRenderers = game.getEntityManager().getGameEntityRenderer()
             .getCheckpointRenderers();
           if (checkpointRenderers.containsKey(checkpointId)) {
             checkpointRenderers.get(checkpointId).setLastCheckpointSetTime(game.getGameState().getTime());

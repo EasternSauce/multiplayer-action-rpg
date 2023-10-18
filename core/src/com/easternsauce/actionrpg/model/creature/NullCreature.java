@@ -3,7 +3,7 @@ package com.easternsauce.actionrpg.model.creature;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.creature.enemy.EnemyParams;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.skill.Skill;
 import com.easternsauce.actionrpg.model.skill.SkillType;
@@ -80,7 +80,7 @@ public class NullCreature extends Creature {
   }
 
   @Override
-  public CreatureId getId() {
+  public EntityId<Creature> getId() {
     return null;
   }
 

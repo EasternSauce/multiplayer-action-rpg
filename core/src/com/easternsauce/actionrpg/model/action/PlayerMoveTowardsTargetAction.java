@@ -3,7 +3,8 @@ package com.easternsauce.actionrpg.model.action;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullCreatureId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -11,11 +12,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class PlayerMoveTowardsTargetAction extends GameStateAction {
-  private CreatureId playerId;
+  private EntityId<Creature> playerId = NullCreatureId.of();
 
   private Vector2 mousePos;
 
-  public static PlayerMoveTowardsTargetAction of(CreatureId playerId, Vector2 mousePos) {
+  public static PlayerMoveTowardsTargetAction of(EntityId<Creature> playerId, Vector2 mousePos) {
     PlayerMoveTowardsTargetAction action = PlayerMoveTowardsTargetAction.of();
     action.playerId = playerId;
     action.mousePos = mousePos;

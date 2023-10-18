@@ -6,7 +6,7 @@ import com.easternsauce.actionrpg.model.ability.AbilityState;
 import com.easternsauce.actionrpg.model.ability.AttachedAbility;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -62,7 +62,7 @@ public class PoisonBite extends AttachedAbility {
   }
 
   @Override
-  public void onCreatureHit(CreatureId creatureId, CoreGame game) {
+  public void onCreatureHit(EntityId<Creature> creatureId, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
     creature.applyEffect(CreatureEffect.SLOW, 0.75f, game);

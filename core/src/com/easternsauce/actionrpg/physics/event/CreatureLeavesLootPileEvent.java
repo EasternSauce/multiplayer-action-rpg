@@ -1,7 +1,9 @@
 package com.easternsauce.actionrpg.physics.event;
 
-import com.easternsauce.actionrpg.model.id.LootPileId;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.area.LootPile;
+import com.easternsauce.actionrpg.model.creature.Creature;
+import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullCreatureId;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(staticName = "of")
 public class CreatureLeavesLootPileEvent implements PhysicsEvent {
   @Getter
-  private CreatureId creatureId;
+  private EntityId<Creature> creatureId = NullCreatureId.of();
   @Getter
-  private LootPileId lootPileId;
+  private EntityId<LootPile> lootPileId;
 }

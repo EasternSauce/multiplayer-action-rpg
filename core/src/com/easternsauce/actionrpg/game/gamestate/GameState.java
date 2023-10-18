@@ -4,6 +4,7 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.GameStateData;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
 import com.easternsauce.actionrpg.model.area.*;
+import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.id.*;
 import com.easternsauce.actionrpg.model.enemyrallypoint.EnemyRallyPoint;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;
@@ -22,7 +23,7 @@ public abstract class GameState {
     return creatureAccessor;
   }
 
-  public void initPlayerConfig(CreatureId playerId) {
+  public void initPlayerConfig(EntityId<Creature> playerId) {
     getData().getPlayerConfig().put(playerId, PlayerConfig.of());
   }
 
@@ -30,34 +31,34 @@ public abstract class GameState {
     return dataHolder.getData();
   }
 
-  public PlayerConfig getPlayerConfig(CreatureId creatureId) {
-    if (creatureId != null) {
+  public PlayerConfig getPlayerConfig(EntityId<Creature> creatureId) {
+    if (!creatureId.isNull()) {
       return getData().getPlayerConfig().get(creatureId);
     }
     return null;
   }
 
-  public LootPile getLootPile(LootPileId lootPileId) {
+  public LootPile getLootPile(EntityId<LootPile> lootPileId) {
     return getData().getLootPiles().get(lootPileId);
   }
 
-  public Map<LootPileId, LootPile> getLootPiles() {
+  public Map<EntityId<LootPile>, LootPile> getLootPiles() {
     return getData().getLootPiles();
   }
 
-  public AreaGate getAreaGate(AreaGateId areaGateId) {
+  public AreaGate getAreaGate(EntityId<AreaGate> areaGateId) {
     return getData().getAreaGates().get(areaGateId);
   }
 
-  public Map<AreaGateId, AreaGate> getAreaGates() {
+  public Map<EntityId<AreaGate>, AreaGate> getAreaGates() {
     return getData().getAreaGates();
   }
 
-  public Checkpoint getCheckpoint(CheckpointId checkpointId) {
+  public Checkpoint getCheckpoint(EntityId<Checkpoint> checkpointId) {
     return getData().getCheckpoints().get(checkpointId);
   }
 
-  public Map<CheckpointId, Checkpoint> getCheckpoints() {
+  public Map<EntityId<Checkpoint>, Checkpoint> getCheckpoints() {
     return getData().getCheckpoints();
   }
 
@@ -73,18 +74,18 @@ public abstract class GameState {
     getData().getGeneralTimer().update(delta);
   }
 
-  public AreaId getDefaultAreaId() {
+  public EntityId<Area> getDefaultAreaId() {
     return getData().getDefaultAreaId();
   }
 
-  public abstract Set<CreatureId> getCreaturesToUpdate(CoreGame game);
+  public abstract Set<EntityId<Creature>> getCreaturesToUpdate(CoreGame game);
 
   public abstract void scheduleServerSideAction(GameStateAction action);
 
   @SuppressWarnings("SameReturnValue")
-  public abstract CreatureId getThisClientPlayerId();
+  public abstract EntityId<Creature> getThisClientPlayerId();
 
-  public abstract AreaId getCurrentAreaId();
+  public abstract EntityId<Area> getCurrentAreaId();
 
   public RandomGenerator getRandomGenerator() {
     return getData().getRandomGenerator();
@@ -94,11 +95,11 @@ public abstract class GameState {
     getData().setRandomGenerator(randomGenerator);
   }
 
-  public Map<EnemyRallyPointId, EnemyRallyPoint> getEnemyRallyPoints() {
+  public Map<EntityId<EnemyRallyPoint>, EnemyRallyPoint> getEnemyRallyPoints() {
     return getData().getEnemyRallyPoints();
   }
 
-  public EnemyRallyPoint getEnemyRallyPoint(EnemyRallyPointId enemyRallyPointId) {
+  public EnemyRallyPoint getEnemyRallyPoint(EntityId<EnemyRallyPoint> enemyRallyPointId) {
     if (enemyRallyPointId == null || !getData().getEnemyRallyPoints().containsKey(enemyRallyPointId)) {
       return null;
     }

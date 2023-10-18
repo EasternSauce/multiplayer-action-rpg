@@ -5,8 +5,7 @@ import com.easternsauce.actionrpg.model.GameStateData;
 import com.easternsauce.actionrpg.model.ability.*;
 import com.easternsauce.actionrpg.model.action.CreatureHitByAbilityAction;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.id.AbilityId;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.skill.SkillType;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.util.Constants;
@@ -28,7 +27,7 @@ public class AbilityAccessor {
   @Getter
   private GameStateDataHolder dataHolder;
 
-  public Ability getAbilityBySkillType(CreatureId creatureId, SkillType skillType) {
+  public Ability getAbilityBySkillType(EntityId<Creature> creatureId, SkillType skillType) {
     Optional<Ability> first = getData().getAbilities().values().stream().filter(
       ability -> ability.getParams().getCreatureId().equals(creatureId) &&
         ability.getParams().getSkillType() == skillType).findFirst();
@@ -40,7 +39,7 @@ public class AbilityAccessor {
     return dataHolder.getData();
   }
 
-  public Set<AbilityId> getAbilitiesWithinRange(Creature player) {
+  public Set<EntityId<Ability>> getAbilitiesWithinRange(Creature player) {
     return getAbilities().keySet().stream().filter(abilityId -> {
       Ability ability = getAbility(abilityId);
       if (player.getParams().getPos() != null && ability.getParams().getPos() != null) {
@@ -50,7 +49,7 @@ public class AbilityAccessor {
     }).collect(Collectors.toSet());
   }
 
-  public Map<AbilityId, Ability> getAbilities() {
+  public Map<EntityId<Ability>, Ability> getAbilities() {
     return getData().getAbilities();
   }
 
@@ -58,9 +57,9 @@ public class AbilityAccessor {
     Creature creature = game.getCreature(chainFromAbility.getParams().getCreatureId());
 
     if ((creature.isAlive() || chainFromAbility.isAbleToChainAfterCreatureDeath())) {
-      AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
+      EntityId<Ability> abilityId = EntityId.of("Ability_" + (int) (Math.random() * 10000000));
 
-      Map<CreatureId, Float> creaturesAlreadyHit = new ConcurrentSkipListMap<>(
+      Map<EntityId<Creature>, Float> creaturesAlreadyHit = new ConcurrentSkipListMap<>(
         chainFromAbility.getParams().getCreaturesAlreadyHit());
 
       Vector2 chainFromPos = chainFromAbility.getParams().getPos();
@@ -102,7 +101,7 @@ public class AbilityAccessor {
     creature.onAbilityPerformed(ability);
   }
 
-  public void onAbilityHitsCreature(CreatureId attackerId, CreatureId targetId, AbilityId abilityId, Vector2 contactPoint, CoreGame game) {
+  public void onAbilityHitsCreature(EntityId<Creature> attackerId, EntityId<Creature> targetId, EntityId<Ability> abilityId, Vector2 contactPoint, CoreGame game) {
     Ability ability = game.getAbility(abilityId);
 
     ability.onCreatureHit(targetId, game);
@@ -116,7 +115,7 @@ public class AbilityAccessor {
     gameState.scheduleServerSideAction(action);
   }
 
-  public Ability getAbility(AbilityId abilityId) {
+  public Ability getAbility(EntityId<Ability> abilityId) {
     if (abilityId == null || !getData().getAbilities().containsKey(abilityId)) {
       return NullAbility.of();
     } else {

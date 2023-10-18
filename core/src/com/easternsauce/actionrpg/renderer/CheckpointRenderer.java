@@ -3,9 +3,9 @@ package com.easternsauce.actionrpg.renderer;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.area.AreaId;
+import com.easternsauce.actionrpg.model.area.Area;
 import com.easternsauce.actionrpg.model.area.Checkpoint;
-import com.easternsauce.actionrpg.model.id.CheckpointId;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor(staticName = "of")
 public class CheckpointRenderer {
   @Getter
-  private CheckpointId checkpointId;
+  private EntityId<Checkpoint> checkpointId;
 
   @Getter
   private Sprite regularSprite;
@@ -24,7 +24,7 @@ public class CheckpointRenderer {
   @Setter
   private float lastCheckpointSetTime;
 
-  public static CheckpointRenderer of(CheckpointId checkpointId) {
+  public static CheckpointRenderer of(EntityId<Checkpoint> checkpointId) {
     CheckpointRenderer checkpointRenderer = CheckpointRenderer.of();
     checkpointRenderer.checkpointId = checkpointId;
     return checkpointRenderer;
@@ -49,7 +49,7 @@ public class CheckpointRenderer {
   }
 
   public void render(RenderingLayer renderingLayer, CoreGame game) {
-    AreaId currentAreaId = game.getCurrentAreaId();
+    EntityId<Area> currentAreaId = game.getCurrentAreaId();
 
     Checkpoint checkpoint = game.getGameState().getCheckpoint(checkpointId);
 

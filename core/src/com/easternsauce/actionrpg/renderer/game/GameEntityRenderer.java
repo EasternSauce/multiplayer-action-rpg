@@ -5,15 +5,15 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.id.AbilityId;
-import com.easternsauce.actionrpg.model.id.AreaGateId;
-import com.easternsauce.actionrpg.model.area.AreaId;
-import com.easternsauce.actionrpg.model.id.CheckpointId;
-import com.easternsauce.actionrpg.model.id.LootPileId;
+import com.easternsauce.actionrpg.model.ability.Ability;
+import com.easternsauce.actionrpg.model.area.Area;
+import com.easternsauce.actionrpg.model.area.AreaGate;
+import com.easternsauce.actionrpg.model.area.Checkpoint;
+import com.easternsauce.actionrpg.model.area.LootPile;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
-import com.easternsauce.actionrpg.model.id.CreatureId;
 import com.easternsauce.actionrpg.model.creature.Player;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.renderer.*;
 import com.easternsauce.actionrpg.renderer.animationconfig.CreatureAnimationConfig;
@@ -33,15 +33,15 @@ import java.util.stream.Collectors;
 public class GameEntityRenderer {
   private final TmxMapLoader mapLoader = new TmxMapLoader();
   @Getter
-  private final Map<CreatureId, CreatureRenderer> creatureRenderers = new HashMap<>();
+  private final Map<EntityId<Creature>, CreatureRenderer> creatureRenderers = new HashMap<>();
   @Getter
-  private final Map<AbilityId, AbilityRenderer> abilityRenderers = new HashMap<>();
+  private final Map<EntityId<Ability>, AbilityRenderer> abilityRenderers = new HashMap<>();
   @Getter
-  private final Map<AreaGateId, AreaGateRenderer> areaGateRenderers = new HashMap<>();
+  private final Map<EntityId<AreaGate>, AreaGateRenderer> areaGateRenderers = new HashMap<>();
   @Getter
-  private final Map<CheckpointId, CheckpointRenderer> checkpointRenderers = new HashMap<>();
+  private final Map<EntityId<Checkpoint>, CheckpointRenderer> checkpointRenderers = new HashMap<>();
   @Getter
-  private final Map<LootPileId, LootPileRenderer> lootPileRenderers = new HashMap<>();
+  private final Map<EntityId<LootPile>, LootPileRenderer> lootPileRenderers = new HashMap<>();
   @Getter
   private final Set<DamageNumber> damageNumbers = ConcurrentHashMap.newKeySet();
   @Getter
@@ -59,7 +59,7 @@ public class GameEntityRenderer {
 
   private float mapScale;
   @Getter
-  private Map<AreaId, AreaRenderer> areaRenderers = new HashMap<>();
+  private Map<EntityId<Area>, AreaRenderer> areaRenderers = new HashMap<>();
   private TextureRegion poisonedIcon = null;
   @Getter
   private Boolean areasLoaded = false;
@@ -83,7 +83,7 @@ public class GameEntityRenderer {
     });
   }
 
-  public void loadAreaRenderers(Map<AreaId, TiledMap> maps, @SuppressWarnings("unused") CoreGame game) {
+  public void loadAreaRenderers(Map<EntityId<Area>, TiledMap> maps, @SuppressWarnings("unused") CoreGame game) {
     areaRenderers = new HashMap<>();
     areaRenderers.putAll(maps.keySet().stream().collect(Collectors.toMap(areaId -> areaId, AreaRenderer::of)));
     areaRenderers.forEach((areaId, areaRenderer) -> areaRenderer.init(maps.get(areaId), mapScale));
@@ -115,14 +115,14 @@ public class GameEntityRenderer {
     creatureRenderers.get(creature.getId()).render(renderingLayer);
   }
 
-  private void renderCreatureStunnedAnimation(CreatureId creatureId, RenderingLayer renderingLayer, CoreGame game) {
+  private void renderCreatureStunnedAnimation(EntityId<Creature> creatureId, RenderingLayer renderingLayer, CoreGame game) {
     CreatureRenderer creatureRenderer = creatureRenderers.get(creatureId);
     float spriteWidth = creatureRenderer.getCreatureSprite().getWidth();
     getCreatureStunnedAnimationRenderer().render(creatureId, spriteWidth, renderingLayer, game);
 
   }
 
-  private void renderCreatureSlowedAnimation(CreatureId creatureId, RenderingLayer renderingLayer, CoreGame game) {
+  private void renderCreatureSlowedAnimation(EntityId<Creature> creatureId, RenderingLayer renderingLayer, CoreGame game) {
     CreatureRenderer creatureRenderer = creatureRenderers.get(creatureId);
     float spriteWidth = creatureRenderer.getCreatureSprite().getWidth();
     getCreatureSlowedAnimationRenderer().render(creatureId, spriteWidth, renderingLayer, game);
@@ -204,7 +204,7 @@ public class GameEntityRenderer {
     creatureHitAnimations.removeAll(toRemove);
   }
 
-  public void showDamageNumber(float actualDamageTaken, Vector2 pos, AreaId areaId, CoreGame game) {
+  public void showDamageNumber(float actualDamageTaken, Vector2 pos, EntityId<Area> areaId, CoreGame game) {
     Float currentTime = game.getGameState().getTime();
 
     float xNoise = ((float) Math.random() * 2f - 1f) * 0.7f;
@@ -217,7 +217,7 @@ public class GameEntityRenderer {
 
   }
 
-  public void startCreatureHitAnimation(CreatureId creatureId, Vector2 vectorTowardsContactPoint, AreaId areaId, CoreGame game) {
+  public void startCreatureHitAnimation(EntityId<Creature> creatureId, Vector2 vectorTowardsContactPoint, EntityId<Area> areaId, CoreGame game) {
     Float currentTime = game.getGameState().getTime();
 
     CreatureHitAnimation animation = CreatureHitAnimation.of(creatureId, vectorTowardsContactPoint, areaId,

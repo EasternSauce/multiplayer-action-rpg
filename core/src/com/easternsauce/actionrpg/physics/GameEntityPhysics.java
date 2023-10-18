@@ -3,12 +3,13 @@ package com.easternsauce.actionrpg.physics;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.physics.box2d.*;
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.id.AbilityId;
-import com.easternsauce.actionrpg.model.id.AreaGateId;
-import com.easternsauce.actionrpg.model.area.AreaId;
-import com.easternsauce.actionrpg.model.id.CheckpointId;
-import com.easternsauce.actionrpg.model.id.LootPileId;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.ability.Ability;
+import com.easternsauce.actionrpg.model.area.Area;
+import com.easternsauce.actionrpg.model.area.AreaGate;
+import com.easternsauce.actionrpg.model.area.Checkpoint;
+import com.easternsauce.actionrpg.model.area.LootPile;
+import com.easternsauce.actionrpg.model.creature.Creature;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.physics.body.*;
 import com.easternsauce.actionrpg.physics.event.*;
@@ -27,18 +28,18 @@ public class GameEntityPhysics {
   @Getter
   private final List<PhysicsEvent> physicsEventQueue = Collections.synchronizedList(new ArrayList<>());
   @Getter
-  private Map<AreaId, PhysicsWorld> physicsWorlds;
+  private Map<EntityId<Area>, PhysicsWorld> physicsWorlds;
   @Getter
-  private Map<CreatureId, CreatureBody> creatureBodies = new HashMap<>();
+  private Map<EntityId<Creature>, CreatureBody> creatureBodies = new HashMap<>();
   @Getter
-  private Map<AbilityId, AbilityBody> abilityBodies = new HashMap<>();
+  private Map<EntityId<Ability>, AbilityBody> abilityBodies = new HashMap<>();
   @Getter
-  private Map<AreaGateId, AreaGateBody> areaGateBodies = new HashMap<>();
+  private Map<EntityId<AreaGate>, AreaGateBody> areaGateBodies = new HashMap<>();
   @Getter
-  private Map<CheckpointId, CheckpointBody> checkpointBodies = new HashMap<>();
+  private Map<EntityId<Checkpoint>, CheckpointBody> checkpointBodies = new HashMap<>();
 
   @Getter
-  private Map<LootPileId, LootPileBody> lootPileBodies = new HashMap<>();
+  private Map<EntityId<LootPile>, LootPileBody> lootPileBodies = new HashMap<>();
 
   @Getter
   @Setter
@@ -47,7 +48,7 @@ public class GameEntityPhysics {
   @Setter
   private Boolean forceUpdateBodyPositions = false;
 
-  public void init(Map<AreaId, TiledMap> maps, CoreGame game) {
+  public void init(Map<EntityId<Area>, TiledMap> maps, CoreGame game) {
     physicsWorlds = maps.entrySet().stream()
       .collect(Collectors.toMap(Map.Entry::getKey, entry -> PhysicsWorld.of(entry.getValue())));
 

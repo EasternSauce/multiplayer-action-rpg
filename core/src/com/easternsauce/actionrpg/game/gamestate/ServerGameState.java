@@ -4,17 +4,15 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.marshalling.InterfaceAdapter;
 import com.easternsauce.actionrpg.model.GameStateData;
 import com.easternsauce.actionrpg.model.ability.Ability;
-import com.easternsauce.actionrpg.model.id.AbilityId;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
 import com.easternsauce.actionrpg.model.action.LootPileDespawnAction;
 import com.easternsauce.actionrpg.model.action.PlayerRespawnAction;
-import com.easternsauce.actionrpg.model.area.AreaId;
+import com.easternsauce.actionrpg.model.area.Area;
 import com.easternsauce.actionrpg.model.area.Checkpoint;
 import com.easternsauce.actionrpg.model.area.LootPile;
-import com.easternsauce.actionrpg.model.id.LootPileId;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.id.CreatureId;
 import com.easternsauce.actionrpg.model.creature.Player;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.util.GameStateBroadcast;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.util.Constants;
@@ -36,18 +34,18 @@ public class ServerGameState extends GameState {
   private final List<GameStateAction> onTickActions = Collections.synchronizedList(new ArrayList<>());
 
   @Getter
-  private final Map<Integer, CreatureId> clientPlayers = new ConcurrentSkipListMap<>();
+  private final Map<Integer, EntityId<Creature>> clientPlayers = new ConcurrentSkipListMap<>();
 
   private final Gson gson = new GsonBuilder().enableComplexMapKeySerialization()
     .registerTypeAdapter(Creature.class, new InterfaceAdapter<Creature>())
     .registerTypeAdapter(Ability.class, new InterfaceAdapter<Ability>()).setPrettyPrinting().create();
 
   @Override
-  public Set<CreatureId> getCreaturesToUpdate(CoreGame game) {
-    Set<CreatureId> creaturesToUpdate = new HashSet<>();
+  public Set<EntityId<Creature>> getCreaturesToUpdate(CoreGame game) {
+    Set<EntityId<Creature>> creaturesToUpdate = new HashSet<>();
 
-    for (CreatureId clientCreatureId : getClientPlayers().values()) {
-      Set<CreatureId> creaturesToAdd = accessCreatures().getCreaturesToUpdateForPlayerCreatureId(clientCreatureId,
+    for (EntityId<Creature> clientCreatureId : getClientPlayers().values()) {
+      Set<EntityId<Creature>> creaturesToAdd = accessCreatures().getCreaturesToUpdateForPlayerCreatureId(clientCreatureId,
         game);
 
       creaturesToUpdate.addAll(creaturesToAdd);
@@ -71,14 +69,14 @@ public class ServerGameState extends GameState {
   }
 
   @Override
-  public CreatureId getThisClientPlayerId() {
+  public EntityId<Creature> getThisClientPlayerId() {
     Optional<Creature> any = accessCreatures().getCreatures().values().stream()
       .filter(creature -> creature instanceof Player).findAny();
     return any.map(Creature::getId).orElse(null);
   }
 
   @Override
-  public AreaId getCurrentAreaId() {
+  public EntityId<Area> getCurrentAreaId() {
     Optional<Creature> any = accessCreatures().getCreatures().values().stream()
       .filter(creature -> creature instanceof Player).findAny();
     return any.map(creature -> creature.getParams().getAreaId()).orElse(getDefaultAreaId());
@@ -89,20 +87,20 @@ public class ServerGameState extends GameState {
 
     // TODO: also add ALL data about creatures that own abilities within range!
 
-    ConcurrentSkipListMap<CreatureId, Creature> personalizedCreatures = new ConcurrentSkipListMap<>(
+    ConcurrentSkipListMap<EntityId<Creature>, Creature> personalizedCreatures = new ConcurrentSkipListMap<>(
       accessCreatures().getCreatures().entrySet().stream().filter(
           entry -> entry.getValue().getParams().getAreaId().equals(player.getParams().getAreaId()) &&
             entry.getValue().getParams().getPos().distance(player.getParams().getPos()) <
               Constants.CLIENT_GAME_UPDATE_RANGE).filter(entry -> entry.getValue().isCurrentlyActive(game))
         .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
 
-    ConcurrentSkipListMap<AbilityId, Ability> personalizedAbilities = new ConcurrentSkipListMap<>(
+    ConcurrentSkipListMap<EntityId<Ability>, Ability> personalizedAbilities = new ConcurrentSkipListMap<>(
       accessAbilities().getAbilities().entrySet().stream().filter(
         entry -> entry.getValue().getParams().getAreaId().equals(player.getParams().getAreaId()) &&
           entry.getValue().getParams().getPos().distance(player.getParams().getPos()) <
             Constants.CLIENT_GAME_UPDATE_RANGE).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
 
-    ConcurrentSkipListMap<LootPileId, LootPile> personalizedLootPiles = new ConcurrentSkipListMap<>(
+    ConcurrentSkipListMap<EntityId<LootPile>, LootPile> personalizedLootPiles = new ConcurrentSkipListMap<>(
       getLootPiles().entrySet().stream().filter(
           entry -> entry.getValue().getParams().getAreaId().equals(player.getParams().getAreaId()) && entry.getValue()
 
@@ -132,7 +130,7 @@ public class ServerGameState extends GameState {
 
           PlayerRespawnAction action;
           if (creature.getParams().getCurrentCheckpointId() == null) {
-            action = PlayerRespawnAction.of(creatureId, Vector2.of(28f, 12f), AreaId.of("Area1"));
+            action = PlayerRespawnAction.of(creatureId, Vector2.of(28f, 12f), EntityId.of("Area1"));
           } else {
             Checkpoint checkpoint = getCheckpoints().get(creature.getParams().getCurrentCheckpointId());
             action = PlayerRespawnAction.of(creatureId, checkpoint.getPos(), checkpoint.getAreaId());

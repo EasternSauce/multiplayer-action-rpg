@@ -2,9 +2,10 @@ package com.easternsauce.actionrpg.model.action;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.entity.Entity;
-import com.easternsauce.actionrpg.model.area.AreaId;
+import com.easternsauce.actionrpg.model.area.Area;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullCreatureId;
 import com.easternsauce.actionrpg.model.util.TeleportEvent;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.EqualsAndHashCode;
@@ -13,11 +14,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class PlayerRespawnAction extends GameStateAction {
-  private CreatureId playerId;
+  private EntityId<Creature> playerId = NullCreatureId.of();
   private Vector2 pos;
-  private AreaId areaId;
+  private EntityId<Area> areaId;
 
-  public static PlayerRespawnAction of(CreatureId playerId, Vector2 pos, AreaId areaId) {
+  public static PlayerRespawnAction of(EntityId<Creature> playerId, Vector2 pos, EntityId<Area> areaId) {
     PlayerRespawnAction action = PlayerRespawnAction.of();
     action.playerId = playerId;
     action.pos = pos;

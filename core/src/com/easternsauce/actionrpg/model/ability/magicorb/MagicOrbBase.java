@@ -6,9 +6,9 @@ import com.easternsauce.actionrpg.model.ability.Projectile;
 import com.easternsauce.actionrpg.model.ability.util.AbilityRotationUtils;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
-import com.easternsauce.actionrpg.model.id.CreatureId;
 import com.easternsauce.actionrpg.model.creature.Player;
 import com.easternsauce.actionrpg.model.creature.enemy.Enemy;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Getter;
 
@@ -83,7 +83,7 @@ public abstract class MagicOrbBase extends Projectile {
   }
 
   @Override
-  public void onCreatureHit(CreatureId creatureId, CoreGame game) {
+  public void onCreatureHit(EntityId<Creature> creatureId, CoreGame game) {
     deactivate();
   }
 

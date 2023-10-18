@@ -1,6 +1,7 @@
 package com.easternsauce.actionrpg.physics.event;
 
-import com.easternsauce.actionrpg.model.id.AbilityId;
+import com.easternsauce.actionrpg.model.ability.Ability;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,8 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(staticName = "of")
 public class AbilityHitsAbilityEvent implements PhysicsEvent {
   @Getter
-  private AbilityId abilityA_Id;
+  private EntityId<Ability> abilityA_Id;
   @Getter
-  private AbilityId abilityB_Id;
+  private EntityId<Ability> abilityB_Id;
 
 }

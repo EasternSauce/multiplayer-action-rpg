@@ -3,7 +3,8 @@ package com.easternsauce.actionrpg.model.action;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullCreatureId;
 import com.easternsauce.actionrpg.model.item.EquipmentSlotType;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;
@@ -16,12 +17,12 @@ import java.util.concurrent.ConcurrentSkipListSet;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class InventoryAndEquipmentSwapSlotItemsAction extends GameStateAction {
-  private CreatureId playerId;
+  private EntityId<Creature> playerId = NullCreatureId.of();
 
   private Integer inventoryIndex;
   private Integer equipmentIndex;
 
-  public static InventoryAndEquipmentSwapSlotItemsAction of(CreatureId playerId, Integer inventoryIndex, Integer equipmentIndex) {
+  public static InventoryAndEquipmentSwapSlotItemsAction of(EntityId<Creature> playerId, Integer inventoryIndex, Integer equipmentIndex) {
     InventoryAndEquipmentSwapSlotItemsAction action = InventoryAndEquipmentSwapSlotItemsAction.of();
     action.playerId = playerId;
     action.inventoryIndex = inventoryIndex;

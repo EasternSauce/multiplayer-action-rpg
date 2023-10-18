@@ -9,7 +9,7 @@ import com.easternsauce.actionrpg.model.action.PlayerMoveTowardsTargetAction;
 import com.easternsauce.actionrpg.model.action.PotionMenuItemUseAction;
 import com.easternsauce.actionrpg.model.action.SkillTryPerformAction;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.item.EquipmentSlotType;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.skill.SkillType;
@@ -215,7 +215,7 @@ public class CoreGameClientInputHandler {
   }
 
   private void handleDebugInformationQueryInput(CoreGameClient game) {
-    CreatureId creatureId = game.getActiveCreatures().keySet().stream()
+    EntityId<Creature> creatureId = game.getActiveCreatures().keySet().stream()
       .filter(cId -> cId.getValue().startsWith("kamil")).collect(Collectors.toList()).get(0);
     Vector2 pos = game.getGameState().accessCreatures().getCreature(creatureId).getParams().getPos();
     System.out.println("Vector2.of(" + pos.getX() + "f, " + pos.getY() + "f),");

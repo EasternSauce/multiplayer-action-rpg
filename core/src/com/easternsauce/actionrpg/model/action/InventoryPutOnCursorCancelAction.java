@@ -2,7 +2,9 @@ package com.easternsauce.actionrpg.model.action;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.entity.Entity;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.creature.Creature;
+import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullCreatureId;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -10,9 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class InventoryPutOnCursorCancelAction extends GameStateAction {
-  private CreatureId playerId;
+  private EntityId<Creature> playerId = NullCreatureId.of();
 
-  public static InventoryPutOnCursorCancelAction of(CreatureId playerId) {
+  public static InventoryPutOnCursorCancelAction of(EntityId<Creature> playerId) {
     InventoryPutOnCursorCancelAction action = InventoryPutOnCursorCancelAction.of();
     action.playerId = playerId;
     return action;

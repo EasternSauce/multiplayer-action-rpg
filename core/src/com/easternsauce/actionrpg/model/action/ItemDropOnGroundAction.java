@@ -3,9 +3,9 @@ package com.easternsauce.actionrpg.model.action;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.area.LootPile;
-import com.easternsauce.actionrpg.model.id.LootPileId;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullCreatureId;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;
 import lombok.EqualsAndHashCode;
@@ -18,9 +18,9 @@ import java.util.concurrent.ConcurrentSkipListSet;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class ItemDropOnGroundAction extends GameStateAction {
-  private CreatureId playerId;
+  private EntityId<Creature> playerId = NullCreatureId.of();
 
-  public static ItemDropOnGroundAction of(CreatureId playerId) {
+  public static ItemDropOnGroundAction of(EntityId<Creature> playerId) {
     ItemDropOnGroundAction action = ItemDropOnGroundAction.of();
     action.playerId = playerId;
     return action;
@@ -54,7 +54,7 @@ public class ItemDropOnGroundAction extends GameStateAction {
         throw new RuntimeException("impossible state");
       }
 
-      LootPileId lootPileId = LootPileId.of("LootPile_" + (int) (Math.random() * 10000000)); // TODO: use seeded rng
+      EntityId<LootPile> lootPileId = EntityId.of("LootPile_" + (int) (Math.random() * 10000000)); // TODO: use seeded rng
 
       Set<Item> lootPileItems = new ConcurrentSkipListSet<>();
       lootPileItems.add(item.copy().setLootPileId(lootPileId));

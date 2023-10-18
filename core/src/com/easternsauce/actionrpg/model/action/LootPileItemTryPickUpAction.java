@@ -4,7 +4,8 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.area.LootPile;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullCreatureId;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.renderer.hud.inventorywindow.InventoryWindowConsts;
 import lombok.EqualsAndHashCode;
@@ -15,11 +16,11 @@ import java.util.Map;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class LootPileItemTryPickUpAction extends GameStateAction {
-  private CreatureId playerId;
+  private EntityId<Creature> playerId = NullCreatureId.of();
 
   private Item item;
 
-  public static LootPileItemTryPickUpAction of(CreatureId playerId, Item item) {
+  public static LootPileItemTryPickUpAction of(EntityId<Creature> playerId, Item item) {
     LootPileItemTryPickUpAction action = LootPileItemTryPickUpAction.of();
     action.playerId = playerId;
     action.item = item;

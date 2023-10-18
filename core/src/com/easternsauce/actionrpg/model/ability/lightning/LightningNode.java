@@ -6,7 +6,7 @@ import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import com.easternsauce.actionrpg.model.ability.AbilityType;
 import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -50,7 +50,7 @@ public class LightningNode extends Ability {
   @Override
   public void onDelayedAction(CoreGame game) {
     // find the closest enemy, and if they are within distance, and haven't been hit yet, then start node over them
-    Set<CreatureId> excluded = new HashSet<>(getParams().getCreaturesAlreadyHit().keySet());
+    Set<EntityId<Creature>> excluded = new HashSet<>(getParams().getCreaturesAlreadyHit().keySet());
     excluded.add(getParams().getCreatureId());
 
     Creature targetCreature = game.getCreature(

@@ -1,6 +1,7 @@
 package com.easternsauce.actionrpg.model.item;
 
-import com.easternsauce.actionrpg.model.id.LootPileId;
+import com.easternsauce.actionrpg.model.area.LootPile;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.skill.SkillType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,7 @@ public class Item implements Comparable<Item> {
   private Float qualityModifier = 1f;
   private Map<SkillType, Integer> grantedSkills = new ConcurrentSkipListMap<>();
 
-  private LootPileId lootPileId;
+  private EntityId<LootPile> lootPileId;
 
   @SuppressWarnings("StringConcatenationInsideStringBufferAppend")
   public String getInfoText() {

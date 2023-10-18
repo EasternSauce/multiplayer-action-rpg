@@ -2,10 +2,11 @@ package com.easternsauce.actionrpg.physics.body;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.area.AreaId;
+import com.easternsauce.actionrpg.model.area.Area;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullCreatureId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.physics.world.PhysicsWorld;
 import lombok.Getter;
@@ -13,7 +14,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 public class CreatureBody {
-  private CreatureId creatureId;
+  private EntityId<Creature> creatureId = NullCreatureId.of();
 
   private Body b2body;
 
@@ -22,11 +23,11 @@ public class CreatureBody {
   private PhysicsWorld world;
 
   @Getter
-  private AreaId areaId;
+  private EntityId<Area> areaId;
 
   private Boolean isActive = true;
 
-  public static CreatureBody of(CreatureId creatureId) {
+  public static CreatureBody of(EntityId<Creature> creatureId) {
     CreatureBody creatureBody = new CreatureBody();
     creatureBody.creatureId = creatureId;
     return creatureBody;
@@ -109,11 +110,11 @@ public class CreatureBody {
     }
   }
 
-  public CreatureId getCreatureId() {
+  public EntityId<Creature> getCreatureId() {
     return creatureId;
   }
 
-  public void moveBodyToNewArea(AreaId areaId, CoreGame game) {
+  public void moveBodyToNewArea(EntityId<Area> areaId, CoreGame game) {
     onRemove();
     init(areaId, game);
   }
@@ -122,7 +123,7 @@ public class CreatureBody {
     world.getB2world().destroyBody(b2body);
   }
 
-  public void init(AreaId areaId, CoreGame game) {
+  public void init(EntityId<Area> areaId, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
     this.world = game.getPhysicsWorld(areaId);

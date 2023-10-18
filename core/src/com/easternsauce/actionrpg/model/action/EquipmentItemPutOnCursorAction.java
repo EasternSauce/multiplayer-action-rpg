@@ -2,7 +2,9 @@ package com.easternsauce.actionrpg.model.action;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.entity.Entity;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.creature.Creature;
+import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullCreatureId;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -10,11 +12,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class EquipmentItemPutOnCursorAction extends GameStateAction {
-  private CreatureId playerId;
+  private EntityId<Creature> playerId = NullCreatureId.of();
 
   private Integer slotIndex;
 
-  public static EquipmentItemPutOnCursorAction of(CreatureId playerId, Integer slotIndex) {
+  public static EquipmentItemPutOnCursorAction of(EntityId<Creature> playerId, Integer slotIndex) {
     EquipmentItemPutOnCursorAction action = EquipmentItemPutOnCursorAction.of();
     action.playerId = playerId;
     action.slotIndex = slotIndex;

@@ -3,9 +3,8 @@ package com.easternsauce.actionrpg.model.ability;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.id.AbilityId;
-import com.easternsauce.actionrpg.model.id.CreatureId;
 import com.easternsauce.actionrpg.model.creature.Player;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.util.RandomGenerator;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.renderer.animationconfig.AbilityAnimationConfig;
@@ -150,7 +149,7 @@ public abstract class Ability implements Entity {
     getParams().getStateTimer().setTime(activeDuration + 1f);
   }
 
-  public void onCreatureHit(CreatureId creatureId, CoreGame game) {
+  public void onCreatureHit(EntityId<Creature> creatureId, CoreGame game) {
   }
 
   public void onSelfCreatureHit(CoreGame game) {
@@ -159,7 +158,7 @@ public abstract class Ability implements Entity {
   public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
   }
 
-  public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
+  public void onOtherAbilityHit(EntityId<Ability> otherAbilityId, CoreGame game) {
 
   }
 
@@ -227,7 +226,7 @@ public abstract class Ability implements Entity {
     return true;
   }
 
-  public int maximumCreatureHitCount(CreatureId creatureId, CoreGame game) {
+  public int maximumCreatureHitCount(EntityId<Creature> creatureId, CoreGame game) {
     return Integer.MAX_VALUE;
   }
 

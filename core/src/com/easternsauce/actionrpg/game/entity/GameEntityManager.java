@@ -35,8 +35,8 @@ public class GameEntityManager {
   @Getter
   private final GameEntityPhysics gameEntityPhysics = GameEntityPhysics.of();
 
-  public void createCreatureEntity(CreatureId creatureId, CoreGame game) {
-    if (creatureId != null) {
+  public void createCreatureEntity(EntityId<Creature> creatureId, CoreGame game) {
+    if (!creatureId.isNull()) {
       Creature creature = game.getCreature(creatureId);
 
       if (!gameEntityRenderer.getCreatureRenderers().containsKey(creatureId)) {
@@ -51,7 +51,7 @@ public class GameEntityManager {
     }
   }
 
-  public void createAbilityEntity(AbilityId abilityId, TextureAtlas atlas, CoreGame game) {
+  public void createAbilityEntity(EntityId<Ability> abilityId, TextureAtlas atlas, CoreGame game) {
     Ability ability = game.getAbility(abilityId);
 
     if (ability.usesEntityModel()) {
@@ -71,7 +71,7 @@ public class GameEntityManager {
 
   }
 
-  public void activateAbility(AbilityId abilityId, CoreGame game) {
+  public void activateAbility(EntityId<Ability> abilityId, CoreGame game) {
     Ability ability = game.getAbility(abilityId);
 
     if (gameEntityPhysics.getAbilityBodies().containsKey(ability.getParams().getId()) &&
@@ -81,7 +81,7 @@ public class GameEntityManager {
     }
   }
 
-  public void createLootPileEntity(LootPileId lootPileId, TextureAtlas atlas, CoreGame game) {
+  public void createLootPileEntity(EntityId<LootPile> lootPileId, TextureAtlas atlas, CoreGame game) {
     LootPile lootPile = game.getGameState().getLootPile(lootPileId);
 
     if (lootPile != null) {
@@ -98,8 +98,8 @@ public class GameEntityManager {
     }
   }
 
-  public void removeCreatureEntity(CreatureId creatureId, @SuppressWarnings("unused") CoreGame game) {
-    if (creatureId != null) {
+  public void removeCreatureEntity(EntityId<Creature> creatureId, @SuppressWarnings("unused") CoreGame game) {
+    if (!creatureId.isNull()) {
       getGameEntityRenderer().getCreatureRenderers().remove(creatureId);
 
       if (gameEntityPhysics.getCreatureBodies().containsKey(creatureId)) {
@@ -109,7 +109,7 @@ public class GameEntityManager {
     }
   }
 
-  public void removeAbilityEntity(AbilityId abilityId, CoreGame game) {
+  public void removeAbilityEntity(EntityId<Ability> abilityId, CoreGame game) {
     if (abilityId != null) {
       game.getAbilities().remove(abilityId);
 
@@ -122,7 +122,7 @@ public class GameEntityManager {
     }
   }
 
-  public void removeLootPileEntity(LootPileId lootPileId, CoreGame game) {
+  public void removeLootPileEntity(EntityId<LootPile> lootPileId, CoreGame game) {
     if (lootPileId != null) {
 
       game.getGameState().getLootPiles().remove(lootPileId);
@@ -136,7 +136,7 @@ public class GameEntityManager {
     }
   }
 
-  public void spawnEnemy(CreatureId creatureId, AreaId areaId, Vector2 pos, EnemyTemplate enemyTemplate, int rngSeed, CoreGame game) {
+  public void spawnEnemy(EntityId<Creature> creatureId, EntityId<Area> areaId, Vector2 pos, EnemyTemplate enemyTemplate, int rngSeed, CoreGame game) {
     Enemy enemy = Enemy.of(creatureId, areaId, pos, enemyTemplate, null, rngSeed);
 
     game.getAllCreatures().put(creatureId, enemy);
@@ -145,7 +145,7 @@ public class GameEntityManager {
   }
 
   public void updateCreatures(float delta, CoreGame game) {
-    Set<CreatureId> creaturesToUpdate = game.getGameState().getCreaturesToUpdate(game);
+    Set<EntityId<Creature>> creaturesToUpdate = game.getGameState().getCreaturesToUpdate(game);
 
     creaturesToUpdate.forEach(creatureId -> {
       if (getGameEntityPhysics().getCreatureBodies().containsKey(creatureId)) {
@@ -189,7 +189,7 @@ public class GameEntityManager {
   }
 
   public void updateAbilities(float delta, CoreGame game) {
-    Set<AbilityId> abilitiesToUpdate = new ConcurrentSkipListSet<>(game.getAbilitiesToUpdate());
+    Set<EntityId<Ability>> abilitiesToUpdate = new ConcurrentSkipListSet<>(game.getAbilitiesToUpdate());
 
     abilitiesToUpdate.forEach(abilityId -> {
       if (abilityId != null && game.getAbilities().containsKey(abilityId) &&
@@ -200,7 +200,7 @@ public class GameEntityManager {
       }
     });
 
-    Map<AbilityId, Ability> abilities = new ConcurrentSkipListMap<>(game.getAbilities());
+    Map<EntityId<Ability>, Ability> abilities = new ConcurrentSkipListMap<>(game.getAbilities());
 
     abilities.forEach((abilityId, ability) -> {
       if (abilityId != null && abilities.containsKey(abilityId) &&
@@ -238,14 +238,14 @@ public class GameEntityManager {
 
     creature.getParams().getMovementParams().setDashing(false);
 
-    if (teleportEvent.getCreatureId() != null && !teleportEvent.getUsedGate() && teleportEvent.getToAreaId().getValue()
+    if (!teleportEvent.getCreatureId().isNull() && !teleportEvent.getUsedGate() && teleportEvent.getToAreaId().getValue()
       .equals(game.getCreature(teleportEvent.getCreatureId()).getParams().getAreaId().getValue()) &&
       teleportEvent.getToAreaId().getValue()
         .equals(game.getCreatureBodies().get(teleportEvent.getCreatureId()).getAreaId().getValue())) {
       getGameEntityPhysics().getCreatureBodies().get(teleportEvent.getCreatureId())
         .forceSetTransform(teleportEvent.getPos());
     } else {
-      if (teleportEvent.getCreatureId() != null) {
+      if (!teleportEvent.getCreatureId().isNull()) {
         creature.getParams().setAreaId(teleportEvent.getToAreaId());
 
         creature.getParams().setPos(teleportEvent.getPos());
@@ -268,7 +268,7 @@ public class GameEntityManager {
     }
   }
 
-  public void createAreaGateEntity(AreaGateId areaGateId, TextureAtlas atlas, CoreGame game) {
+  public void createAreaGateEntity(EntityId<AreaGate> areaGateId, TextureAtlas atlas, CoreGame game) {
     AreaGate areaGate = game.getGameState().getAreaGate(areaGateId);
 
     if (areaGate != null) {
@@ -285,7 +285,7 @@ public class GameEntityManager {
     }
   }
 
-  public void removeAreaGateEntity(AreaGateId areaGateId, CoreGame game) {
+  public void removeAreaGateEntity(EntityId<AreaGate> areaGateId, CoreGame game) {
     if (areaGateId != null) {
 
       game.getGameState().getAreaGates().remove(areaGateId);
@@ -299,7 +299,7 @@ public class GameEntityManager {
     }
   }
 
-  public void createCheckpointEntity(CheckpointId checkpointId, TextureAtlas atlas, CoreGame game) {
+  public void createCheckpointEntity(EntityId<Checkpoint> checkpointId, TextureAtlas atlas, CoreGame game) {
     Checkpoint checkpoint = game.getGameState().getCheckpoint(checkpointId);
 
     if (checkpoint != null) {
@@ -316,7 +316,7 @@ public class GameEntityManager {
     }
   }
 
-  public void removeCheckpointEntity(CheckpointId checkpointId, CoreGame game) {
+  public void removeCheckpointEntity(EntityId<Checkpoint> checkpointId, CoreGame game) {
     if (checkpointId != null) {
       game.getGameState().getCheckpoints().remove(checkpointId);
 

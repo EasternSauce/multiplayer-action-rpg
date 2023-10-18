@@ -3,9 +3,9 @@ package com.easternsauce.actionrpg.renderer;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.area.Area;
 import com.easternsauce.actionrpg.model.area.AreaGate;
-import com.easternsauce.actionrpg.model.id.AreaGateId;
-import com.easternsauce.actionrpg.model.area.AreaId;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,12 +13,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 public class AreaGateRenderer {
   @Getter
-  private AreaGateId areaGateId;
+  private EntityId<AreaGate> areaGateId;
 
   @Getter
   private Sprite sprite;
 
-  public static AreaGateRenderer of(AreaGateId areaGateId) {
+  public static AreaGateRenderer of(EntityId<AreaGate> areaGateId) {
 
     AreaGateRenderer areaGateRenderer = AreaGateRenderer.of();
     areaGateRenderer.areaGateId = areaGateId;
@@ -38,7 +38,7 @@ public class AreaGateRenderer {
   }
 
   public void render(RenderingLayer renderingLayer, CoreGame game) {
-    AreaId currentAreaId = game.getCurrentAreaId();
+    EntityId<Area> currentAreaId = game.getCurrentAreaId();
 
     AreaGate areaGate = game.getGameState().getAreaGate(areaGateId);
 

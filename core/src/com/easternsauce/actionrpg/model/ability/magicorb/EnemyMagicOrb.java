@@ -4,6 +4,7 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import com.easternsauce.actionrpg.model.ability.util.AbilityRotationUtils;
 import com.easternsauce.actionrpg.model.creature.Creature;
+import com.easternsauce.actionrpg.model.creature.NullCreature;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -28,7 +29,7 @@ public class EnemyMagicOrb extends MagicOrbBase {
     onProjectileTravelUpdate();
 
     if (getParams().getTickActionTimer().getTime() > 0.015f) {
-      Creature minimumDistanceCreature = null;
+      Creature minimumDistanceCreature = NullCreature.of();
       float minimumDistance = Float.MAX_VALUE;
 
       Creature thisCreature = game.getCreature(getParams().getCreatureId());
@@ -44,7 +45,7 @@ public class EnemyMagicOrb extends MagicOrbBase {
         }
       }
 
-      if (minimumDistanceCreature != null) {
+      if (!minimumDistanceCreature.isNull()) {
         Vector2 vectorTowards = getParams().getPos().vectorTowards(minimumDistanceCreature.getParams().getPos());
         float targetAngleDeg = vectorTowards.angleDeg();
 

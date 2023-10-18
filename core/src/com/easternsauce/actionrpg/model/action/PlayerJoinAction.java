@@ -2,10 +2,10 @@ package com.easternsauce.actionrpg.model.action;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.entity.Entity;
-import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.id.CreatureId;
 import com.easternsauce.actionrpg.model.creature.Player;
+import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullCreatureId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -15,9 +15,9 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class PlayerJoinAction extends GameStateAction {
   @Getter
-  private CreatureId playerId;
+  private EntityId<Creature> playerId = NullCreatureId.of();
 
-  public static PlayerJoinAction of(CreatureId playerId) {
+  public static PlayerJoinAction of(EntityId<Creature> playerId) {
     PlayerJoinAction action = PlayerJoinAction.of();
     action.playerId = playerId;
     return action;
@@ -57,7 +57,7 @@ public class PlayerJoinAction extends GameStateAction {
 
     int rngSeed = game.getGameState().getRandomGenerator().nextInt();
 
-    return Player.of(playerId, AreaId.of("Area4"), pos, textureName, rngSeed);
+    return Player.of(playerId, EntityId.of("Area4"), pos, textureName, rngSeed);
   }
 
   @Override

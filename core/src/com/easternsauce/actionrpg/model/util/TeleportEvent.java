@@ -1,7 +1,9 @@
 package com.easternsauce.actionrpg.model.util;
 
-import com.easternsauce.actionrpg.model.area.AreaId;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.area.Area;
+import com.easternsauce.actionrpg.model.creature.Creature;
+import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullCreatureId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,9 +12,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(staticName = "of")
 @Data
 public class TeleportEvent {
-  private CreatureId creatureId;
+  private EntityId<Creature> creatureId = NullCreatureId.of();
   private Vector2 pos;
-  private AreaId fromAreaId;
-  private AreaId toAreaId;
+  private EntityId<Area> fromAreaId;
+  private EntityId<Area> toAreaId;
   private Boolean usedGate;
 }

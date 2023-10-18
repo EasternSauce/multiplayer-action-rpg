@@ -2,14 +2,14 @@ package com.easternsauce.actionrpg.model.creature.enemy.autocontrols;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.id.CreatureId;
 import com.easternsauce.actionrpg.model.creature.enemy.EnemyParams;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 public class EnemyAutoControlsMovementProcessor {
-  public void process(CreatureId creatureId, Vector2 potentialTargetPos, Float distance, CoreGame game) {
+  public void process(EntityId<Creature> creatureId, Vector2 potentialTargetPos, Float distance, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
     EnemyParams enemyParams = creature.getEnemyParams();
@@ -24,21 +24,21 @@ public class EnemyAutoControlsMovementProcessor {
     }
   }
 
-  private void processKeepDistance(CreatureId creatureId, CoreGame game, Creature creature, EnemyParams enemyParams) {
+  private void processKeepDistance(EntityId<Creature> creatureId, CoreGame game, Creature creature, EnemyParams enemyParams) {
     creature.getParams().getStats().setSpeed(creature.getParams().getStats().getBaseSpeed() / 2);
     if (enemyParams.getCurrentDefensivePos() != null) {
       goToPos(creatureId, enemyParams.getCurrentDefensivePos(), game);
     }
   }
 
-  private void processAlerted(CreatureId creatureId, CoreGame game, Creature creature, EnemyParams enemyParams) {
+  private void processAlerted(EntityId<Creature> creatureId, CoreGame game, Creature creature, EnemyParams enemyParams) {
     creature.getParams().getStats().setSpeed(creature.getParams().getStats().getBaseSpeed() / 3);
     if (enemyParams.getCurrentDefensivePos() != null) {
       goToPos(creatureId, enemyParams.getCurrentDefensivePos(), game);
     }
   }
 
-  private void processAggressive(CreatureId creatureId, Vector2 potentialTargetPos, Float distance, CoreGame game, Creature creature, EnemyParams enemyParams) {
+  private void processAggressive(EntityId<Creature> creatureId, Vector2 potentialTargetPos, Float distance, CoreGame game, Creature creature, EnemyParams enemyParams) {
     System.out.println(distance + "  < " + (enemyParams.getWalkUpRange() - 1f));
     if (distance > enemyParams.getWalkUpRange() - 1f) {
       creature.getParams().getStats().setSpeed(creature.getParams().getStats().getBaseSpeed());
@@ -50,7 +50,7 @@ public class EnemyAutoControlsMovementProcessor {
     }
   }
 
-  public void goToPos(CreatureId creatureId, Vector2 pos, CoreGame game) {
+  public void goToPos(EntityId<Creature> creatureId, Vector2 pos, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
     creature.getParams().setLastTimeMoved(game.getGameState().getTime());

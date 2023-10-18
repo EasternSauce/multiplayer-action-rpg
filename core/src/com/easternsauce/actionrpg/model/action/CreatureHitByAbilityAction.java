@@ -5,8 +5,9 @@ import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
-import com.easternsauce.actionrpg.model.id.CreatureId;
 import com.easternsauce.actionrpg.model.creature.Player;
+import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullCreatureId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -14,13 +15,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class CreatureHitByAbilityAction extends CreatureHitAction {
-  private CreatureId attackerId;
-  private CreatureId targetId;
+  private EntityId<Creature> attackerId = NullCreatureId.of();
+  private EntityId<Creature> targetId = NullCreatureId.of();
   private Ability ability;
   private Integer hitCount;
   private Vector2 contactPoint;
 
-  public static CreatureHitByAbilityAction of(CreatureId attackerId, CreatureId targetId, Ability ability, Integer hitCount, Vector2 contactPoint) {
+  public static CreatureHitByAbilityAction of(EntityId<Creature> attackerId, EntityId<Creature> targetId, Ability ability, Integer hitCount, Vector2 contactPoint) {
     CreatureHitByAbilityAction action = CreatureHitByAbilityAction.of();
     action.attackerId = attackerId;
     action.targetId = targetId;

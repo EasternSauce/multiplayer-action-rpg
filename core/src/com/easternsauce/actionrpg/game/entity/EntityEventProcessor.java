@@ -2,11 +2,12 @@ package com.easternsauce.actionrpg.game.entity;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.id.AbilityId;
-import com.easternsauce.actionrpg.model.id.AreaGateId;
-import com.easternsauce.actionrpg.model.id.CheckpointId;
-import com.easternsauce.actionrpg.model.id.LootPileId;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.ability.Ability;
+import com.easternsauce.actionrpg.model.area.AreaGate;
+import com.easternsauce.actionrpg.model.area.Checkpoint;
+import com.easternsauce.actionrpg.model.area.LootPile;
+import com.easternsauce.actionrpg.model.creature.Creature;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.util.TeleportEvent;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,29 +19,29 @@ import java.util.List;
 @NoArgsConstructor(staticName = "of")
 public class EntityEventProcessor {
   @Getter
-  private final List<CreatureId> creatureModelsToBeRemoved = Collections.synchronizedList(new ArrayList<>());
+  private final List<EntityId<Creature>> creatureModelsToBeRemoved = Collections.synchronizedList(new ArrayList<>());
   @Getter
-  private final List<AbilityId> abilityModelsToBeRemoved = Collections.synchronizedList(new ArrayList<>());
+  private final List<EntityId<Ability>> abilityModelsToBeRemoved = Collections.synchronizedList(new ArrayList<>());
   @Getter
-  private final List<LootPileId> lootPileModelsToBeRemoved = Collections.synchronizedList(new ArrayList<>());
+  private final List<EntityId<LootPile>> lootPileModelsToBeRemoved = Collections.synchronizedList(new ArrayList<>());
   @Getter
-  private final List<AreaGateId> areaGateModelsToBeRemoved = Collections.synchronizedList(new ArrayList<>());
+  private final List<EntityId<AreaGate>> areaGateModelsToBeRemoved = Collections.synchronizedList(new ArrayList<>());
   @Getter
-  private final List<CheckpointId> checkpointModelsToBeRemoved = Collections.synchronizedList(new ArrayList<>());
+  private final List<EntityId<Checkpoint>> checkpointModelsToBeRemoved = Collections.synchronizedList(new ArrayList<>());
 
   @Getter
-  private final List<CreatureId> creatureModelsToBeCreated = Collections.synchronizedList(new ArrayList<>());
+  private final List<EntityId<Creature>> creatureModelsToBeCreated = Collections.synchronizedList(new ArrayList<>());
   @Getter
-  private final List<AbilityId> abilityModelsToBeCreated = Collections.synchronizedList(new ArrayList<>());
+  private final List<EntityId<Ability>> abilityModelsToBeCreated = Collections.synchronizedList(new ArrayList<>());
   @Getter
-  private final List<LootPileId> lootPileModelsToBeCreated = Collections.synchronizedList(new ArrayList<>());
+  private final List<EntityId<LootPile>> lootPileModelsToBeCreated = Collections.synchronizedList(new ArrayList<>());
   @Getter
-  private final List<AreaGateId> areaGateModelsToBeCreated = Collections.synchronizedList(new ArrayList<>());
+  private final List<EntityId<AreaGate>> areaGateModelsToBeCreated = Collections.synchronizedList(new ArrayList<>());
   @Getter
-  private final List<CheckpointId> checkpointModelsToBeCreated = Collections.synchronizedList(new ArrayList<>());
+  private final List<EntityId<Checkpoint>> checkpointModelsToBeCreated = Collections.synchronizedList(new ArrayList<>());
 
   @Getter
-  private final List<AbilityId> abilityModelsToBeActivated = Collections.synchronizedList(new ArrayList<>());
+  private final List<EntityId<Ability>> abilityModelsToBeActivated = Collections.synchronizedList(new ArrayList<>());
 
   @Getter
   private final List<TeleportEvent> teleportEvents = Collections.synchronizedList(new ArrayList<>());

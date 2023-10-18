@@ -1,8 +1,8 @@
 package com.easternsauce.actionrpg.model.creature;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.area.AreaId;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.area.Area;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -14,7 +14,7 @@ public class Player extends Creature {
   @Getter
   CreatureParams params;
 
-  public static Player of(CreatureId playerId, AreaId areaId, Vector2 pos, String textureName, int rngSeed) {
+  public static Player of(EntityId<Creature> playerId, EntityId<Area> areaId, Vector2 pos, String textureName, int rngSeed) {
     CreatureParams params = CreatureParams.of(playerId, areaId, pos, textureName, rngSeed);
     // TODO fix later
     params.getStats().setLife(200f);

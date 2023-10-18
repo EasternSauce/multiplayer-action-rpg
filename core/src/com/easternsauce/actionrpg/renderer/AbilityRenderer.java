@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.Ability;
-import com.easternsauce.actionrpg.model.id.AbilityId;
 import com.easternsauce.actionrpg.model.ability.AbilityState;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.renderer.animationconfig.AbilityAnimationConfig;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 public class AbilityRenderer {
   @Getter
-  private AbilityId abilityId;
+  private EntityId<Ability> abilityId;
 
   @Getter
   private Sprite sprite;
@@ -30,7 +30,7 @@ public class AbilityRenderer {
   @Getter
   private TextureRegion activeTextureRegion;
 
-  public static AbilityRenderer of(AbilityId abilityId) {
+  public static AbilityRenderer of(EntityId<Ability> abilityId) {
     AbilityRenderer abilityRenderer = new AbilityRenderer();
 
     abilityRenderer.abilityId = abilityId;

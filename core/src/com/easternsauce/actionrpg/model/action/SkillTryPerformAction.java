@@ -3,7 +3,8 @@ package com.easternsauce.actionrpg.model.action;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullCreatureId;
 import com.easternsauce.actionrpg.model.skill.Skill;
 import com.easternsauce.actionrpg.model.skill.SkillType;
 import com.easternsauce.actionrpg.model.util.Vector2;
@@ -14,7 +15,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class SkillTryPerformAction extends GameStateAction {
 
-  private CreatureId creatureId;
+  private EntityId<Creature> creatureId = NullCreatureId.of();
   private SkillType skillType;
 
   private Vector2 startingPos;
@@ -22,7 +23,7 @@ public class SkillTryPerformAction extends GameStateAction {
 
   private Float damage;
 
-  public static SkillTryPerformAction of(CreatureId creatureId, SkillType skillType, Vector2 startingPos, Vector2 dirVector) {
+  public static SkillTryPerformAction of(EntityId<Creature> creatureId, SkillType skillType, Vector2 startingPos, Vector2 dirVector) {
     SkillTryPerformAction action = SkillTryPerformAction.of();
     action.creatureId = creatureId;
     action.skillType = skillType;
@@ -31,7 +32,7 @@ public class SkillTryPerformAction extends GameStateAction {
     return action;
   }
 
-  public static SkillTryPerformAction of(CreatureId creatureId, SkillType skillType, Vector2 startingPos, Vector2 dirVector, Float damage) {
+  public static SkillTryPerformAction of(EntityId<Creature> creatureId, SkillType skillType, Vector2 startingPos, Vector2 dirVector, Float damage) {
     SkillTryPerformAction action = SkillTryPerformAction.of();
     action.creatureId = creatureId;
     action.skillType = skillType;

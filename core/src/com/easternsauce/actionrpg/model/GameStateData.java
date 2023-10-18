@@ -19,31 +19,31 @@ import java.util.concurrent.ConcurrentSkipListSet;
 @NoArgsConstructor(staticName = "of")
 @Data
 public class GameStateData {
-  private Map<CreatureId, Creature> creatures = new ConcurrentSkipListMap<>();
-  private Set<CreatureId> activeCreatureIds = new ConcurrentSkipListSet<>();
+  private Map<EntityId<Creature>, Creature> creatures = new ConcurrentSkipListMap<>();
+  private Set<EntityId<Creature>> activeCreatureIds = new ConcurrentSkipListSet<>();
 
-  private Map<AbilityId, Ability> abilities = new ConcurrentSkipListMap<>();
+  private Map<EntityId<Ability>, Ability> abilities = new ConcurrentSkipListMap<>();
 
-  private Map<AreaId, Area> areas = new ConcurrentSkipListMap<>();
+  private Map<EntityId<Area>, Area> areas = new ConcurrentSkipListMap<>();
 
-  private AreaId defaultAreaId = AreaId.of("Area1");
+  private EntityId<Area> defaultAreaId = EntityId.of("Area1");
   private SimpleTimer generalTimer = SimpleTimer.getStartedTimer();
 
-  private Map<CreatureId, PlayerConfig> playerConfig = new ConcurrentSkipListMap<>();
+  private Map<EntityId<Creature>, PlayerConfig> playerConfig = new ConcurrentSkipListMap<>();
 
-  private Map<LootPileId, LootPile> lootPiles = new ConcurrentSkipListMap<>();
+  private Map<EntityId<LootPile>, LootPile> lootPiles = new ConcurrentSkipListMap<>();
 
-  private Map<AreaGateId, AreaGate> areaGates = new ConcurrentSkipListMap<>();
+  private Map<EntityId<AreaGate>, AreaGate> areaGates = new ConcurrentSkipListMap<>();
 
-  private Map<CheckpointId, Checkpoint> checkpoints = new ConcurrentSkipListMap<>();
+  private Map<EntityId<Checkpoint>, Checkpoint> checkpoints = new ConcurrentSkipListMap<>();
 
-  private Map<EnemyRallyPointId, EnemyRallyPoint> enemyRallyPoints = new ConcurrentSkipListMap<>();
+  private Map<EntityId<EnemyRallyPoint>, EnemyRallyPoint> enemyRallyPoints = new ConcurrentSkipListMap<>();
 
   private RandomGenerator randomGenerator;
 
   private boolean isStub = false;
 
-  public static GameStateData of(GameStateData gameStateData, Map<CreatureId, Creature> creatures, Map<AbilityId, Ability> abilities, Map<LootPileId, LootPile> lootPiles, Map<AreaGateId, AreaGate> areaGates, Map<CheckpointId, Checkpoint> checkpoints) {
+  public static GameStateData of(GameStateData gameStateData, Map<EntityId<Creature>, Creature> creatures, Map<EntityId<Ability>, Ability> abilities, Map<EntityId<LootPile>, LootPile> lootPiles, Map<EntityId<AreaGate>, AreaGate> areaGates, Map<EntityId<Checkpoint>, Checkpoint> checkpoints) {
     GameStateData newGameStateData = GameStateData.of();
     newGameStateData.setCreatures(creatures);
     newGameStateData.setActiveCreatureIds(new ConcurrentSkipListSet<>(gameStateData.getActiveCreatureIds()));

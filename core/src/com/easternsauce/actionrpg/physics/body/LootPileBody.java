@@ -3,7 +3,7 @@ package com.easternsauce.actionrpg.physics.body;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.area.LootPile;
-import com.easternsauce.actionrpg.model.id.LootPileId;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.physics.world.PhysicsWorld;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,12 +11,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 public class LootPileBody {
   @Getter
-  private LootPileId lootPileId;
+  private EntityId<LootPile> lootPileId;
   private Body b2body;
 
   private PhysicsWorld world;
 
-  public static LootPileBody of(LootPileId lootPileId) {
+  public static LootPileBody of(EntityId<LootPile> lootPileId) {
     LootPileBody lootPileBody = LootPileBody.of();
     lootPileBody.lootPileId = lootPileId;
     return lootPileBody;

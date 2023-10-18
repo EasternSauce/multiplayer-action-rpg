@@ -4,11 +4,10 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.ability.AbilityState;
 import com.easternsauce.actionrpg.model.area.LootPile;
-import com.easternsauce.actionrpg.model.id.LootPileId;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.id.CreatureId;
 import com.easternsauce.actionrpg.model.creature.DropTableEntry;
 import com.easternsauce.actionrpg.model.enemyrallypoint.EnemyRallyPoint;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.skill.SkillType;
 
@@ -49,7 +48,7 @@ public abstract class CreatureHitAction extends GameStateAction {
     }
   }
 
-  private void spawnDrops(CreatureId targetId, CoreGame game) {
+  private void spawnDrops(EntityId<Creature> targetId, CoreGame game) {
     Creature creature = game.getCreature(targetId);
 
     Set<Item> items = new ConcurrentSkipListSet<>();
@@ -114,7 +113,7 @@ public abstract class CreatureHitAction extends GameStateAction {
       return;
     }
 
-    LootPileId lootPileId = LootPileId.of("LootPile_" + (int) (Math.random() * 10000000)); // TODO: use seeded rng
+    EntityId<LootPile> lootPileId = EntityId.of("LootPile_" + (int) (Math.random() * 10000000)); // TODO: use seeded rng
 
     Set<Item> lootPileItems = items.stream().map(
       item -> Item.of().setTemplate(item.getTemplate()).setQuantity(item.getQuantity())

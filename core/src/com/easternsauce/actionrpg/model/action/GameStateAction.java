@@ -2,7 +2,8 @@ package com.easternsauce.actionrpg.model.action;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.entity.Entity;
-import com.easternsauce.actionrpg.model.area.AreaId;
+import com.easternsauce.actionrpg.model.area.Area;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 
 // actions are sent to clients immediately once they happen on server side to be applied to client game state
@@ -27,7 +28,7 @@ public abstract class GameStateAction {
 
   public abstract Entity getEntity(CoreGame game);
 
-  public final AreaId getActionObjectAreaId(CoreGame game) {
+  public final EntityId<Area> getActionObjectAreaId(CoreGame game) {
     if (getOverrideAreaId() != null) {
       return getOverrideAreaId();
     }
@@ -38,7 +39,7 @@ public abstract class GameStateAction {
     return getEntity(game).getParams().getAreaId();
   }
 
-  protected AreaId getOverrideAreaId() {
+  protected EntityId<Area> getOverrideAreaId() {
     return null;
   }
 

@@ -11,12 +11,11 @@ import com.easternsauce.actionrpg.game.screen.ConnectScreen;
 import com.easternsauce.actionrpg.game.screen.GameplayScreen;
 import com.easternsauce.actionrpg.game.screen.MenuScreen;
 import com.easternsauce.actionrpg.model.ability.Ability;
-import com.easternsauce.actionrpg.model.id.AbilityId;
 import com.easternsauce.actionrpg.model.ability.AbilityType;
 import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
-import com.easternsauce.actionrpg.model.area.AreaId;
+import com.easternsauce.actionrpg.model.area.Area;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.util.TeleportEvent;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.physics.body.AbilityBody;
@@ -102,20 +101,20 @@ public abstract class CoreGame extends Game {
 
   abstract public void initState();
 
-  public abstract Set<AbilityId> getAbilitiesToUpdate();
+  public abstract Set<EntityId<Ability>> getAbilitiesToUpdate();
 
-  public PhysicsWorld getPhysicsWorld(AreaId areaId) {
+  public PhysicsWorld getPhysicsWorld(EntityId<Area> areaId) {
     return entityManager.getGameEntityPhysics().getPhysicsWorlds().get(areaId);
   }
 
   abstract public void performPhysicsWorldStep();
 
-  public boolean isLineBetweenPointsObstructedByTerrain(AreaId areaId, Vector2 fromPos, Vector2 toPos) {
+  public boolean isLineBetweenPointsObstructedByTerrain(EntityId<Area> areaId, Vector2 fromPos, Vector2 toPos) {
     return entityManager.getGameEntityPhysics().getPhysicsWorlds().get(areaId)
       .isLineBetweenPointsObstructedByTerrain(fromPos, toPos);
   }
 
-  public boolean isRectCollidingWithTerrain(AreaId areaId, Rect rect) {
+  public boolean isRectCollidingWithTerrain(EntityId<Area> areaId, Rect rect) {
     return entityManager.getGameEntityPhysics().getPhysicsWorlds().get(areaId)
       .isRectCollidingWithTerrain(rect);
   }
@@ -132,11 +131,11 @@ public abstract class CoreGame extends Game {
     return entityManager.getGameEntityPhysics().getPhysicsEventQueue();
   }
 
-  public Map<CreatureId, CreatureBody> getCreatureBodies() {
+  public Map<EntityId<Creature>, CreatureBody> getCreatureBodies() {
     return entityManager.getGameEntityPhysics().getCreatureBodies();
   }
 
-  public Map<AbilityId, AbilityBody> getAbilityBodies() {
+  public Map<EntityId<Ability>, AbilityBody> getAbilityBodies() {
     return entityManager.getGameEntityPhysics().getAbilityBodies();
   }
 
@@ -170,33 +169,33 @@ public abstract class CoreGame extends Game {
 
   public abstract GameState getGameState();
 
-  public Map<AbilityId, Ability> getAbilities() {
+  public Map<EntityId<Ability>, Ability> getAbilities() {
     return getGameState().accessAbilities().getAbilities();
   }
 
-  public Ability getAbility(AbilityId abilityId) {
+  public Ability getAbility(EntityId<Ability> abilityId) {
     return getGameState().accessAbilities().getAbility(abilityId);
   }
 
-  public Map<CreatureId, Creature> getAllCreatures() {
+  public Map<EntityId<Creature>, Creature> getAllCreatures() {
     return getGameState().accessCreatures().getCreatures();
   }
 
-  public Map<CreatureId, Creature> getActiveCreatures() {
+  public Map<EntityId<Creature>, Creature> getActiveCreatures() {
     return getGameState().accessCreatures().getCreatures().entrySet().stream()
       .filter(entry -> entry.getValue().isCurrentlyActive(this))
       .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
   }
 
-  public Creature getCreature(CreatureId creatureId) {
+  public Creature getCreature(EntityId<Creature> creatureId) {
     return getGameState().accessCreatures().getCreature(creatureId);
   }
 
-  public Vector2 getCreaturePos(CreatureId creatureId) {
+  public Vector2 getCreaturePos(EntityId<Creature> creatureId) {
     return getGameState().accessCreatures().getCreaturePos(creatureId);
   }
 
-  public AreaId getCurrentAreaId() {
+  public EntityId<Area> getCurrentAreaId() {
     return getGameState().getCurrentAreaId();
   }
 
@@ -206,5 +205,5 @@ public abstract class CoreGame extends Game {
 
   public abstract void askForBroadcast();
 
-  public abstract void forceDisconnectForPlayer(CreatureId creatureId);
+  public abstract void forceDisconnectForPlayer(EntityId<Creature> creatureId);
 }

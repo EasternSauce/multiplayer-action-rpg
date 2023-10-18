@@ -3,7 +3,8 @@ package com.easternsauce.actionrpg.renderer;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.easternsauce.actionrpg.model.area.AreaId;
+import com.easternsauce.actionrpg.model.area.Area;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.util.Constants;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,11 +14,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(staticName = "of")
 public class AreaRenderer {
   @Getter
-  private AreaId id;
+  private EntityId<Area> id;
   @Getter
   private OrthogonalTiledMapRenderer tiledMapRenderer;
 
-  public static AreaRenderer of(AreaId id) {
+  public static AreaRenderer of(EntityId<Area> id) {
     AreaRenderer areaRenderer = AreaRenderer.of();
     areaRenderer.id = id;
     return areaRenderer;

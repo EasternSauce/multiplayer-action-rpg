@@ -1,12 +1,13 @@
 package com.easternsauce.actionrpg.model.creature;
 
 import com.easternsauce.actionrpg.game.entity.EntityParams;
-import com.easternsauce.actionrpg.model.area.AreaId;
-import com.easternsauce.actionrpg.model.id.CheckpointId;
+import com.easternsauce.actionrpg.model.area.Area;
+import com.easternsauce.actionrpg.model.area.Checkpoint;
 import com.easternsauce.actionrpg.model.creature.enemy.EnemyParams;
 import com.easternsauce.actionrpg.model.creature.enemy.EnemyTemplate;
-import com.easternsauce.actionrpg.model.id.EnemyRallyPointId;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.enemyrallypoint.EnemyRallyPoint;
+import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullCreatureId;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.item.ItemTemplate;
 import com.easternsauce.actionrpg.model.skill.Skill;
@@ -40,16 +41,16 @@ public class CreatureParams implements EntityParams {
   private EnemyParams enemyParams;
 
   @NonNull
-  private CreatureId id;
+  private EntityId<Creature> id = NullCreatureId.of();
 
   private Vector2 pos;
   @NonNull
-  private AreaId areaId;
+  private EntityId<Area> areaId;
 
   @NonNull
   private Vector2 initialPos;
   @NonNull
-  private AreaId initialAreaId;
+  private EntityId<Area> initialAreaId;
 
   @NonNull
   private SimpleTimer animationTimer = SimpleTimer.getStartedTimer();
@@ -89,7 +90,7 @@ public class CreatureParams implements EntityParams {
   @NonNull
   private SimpleTimer minimumSkillPerformCooldownTimer = SimpleTimer.getExpiredTimer();
 
-  private EnemyRallyPointId enemyRallyPointId; // TODO: move to enemy params?
+  private EntityId<EnemyRallyPoint> enemyRallyPointId; // TODO: move to enemy params?
 
   private RandomGenerator randomGenerator;
 
@@ -100,16 +101,16 @@ public class CreatureParams implements EntityParams {
   @NonNull
   private Float lastTimeUsedSkill = -Float.MAX_VALUE;
 
-  private CheckpointId currentCheckpointId = null;
+  private EntityId<Checkpoint> currentCheckpointId = null;
 
   private Integer stunResistance = 0;
   private SimpleTimer stunResistanceReductionTimer = SimpleTimer.getExpiredTimer();
 
-  public static CreatureParams of(CreatureId creatureId, AreaId areaId, Vector2 pos, EnemyTemplate enemyTemplate, int rngSeed) {
+  public static CreatureParams of(EntityId<Creature> creatureId, EntityId<Area> areaId, Vector2 pos, EnemyTemplate enemyTemplate, int rngSeed) {
     return produceCreatureParams(creatureId, areaId, pos, enemyTemplate.getEnemyType().textureName, rngSeed);
   }
 
-  private static CreatureParams produceCreatureParams(CreatureId creatureId, AreaId areaId, Vector2 enemySpawn, String textureName, int rngSeed) {
+  private static CreatureParams produceCreatureParams(EntityId<Creature> creatureId, EntityId<Area> areaId, Vector2 enemySpawn, String textureName, int rngSeed) {
     CreatureParams params = CreatureParams.of();
     params.id = creatureId;
     params.areaId = areaId;
@@ -134,7 +135,7 @@ public class CreatureParams implements EntityParams {
     return params;
   }
 
-  public static CreatureParams of(CreatureId creatureId, AreaId areaId, Vector2 pos, String textureName, int rngSeed) {
+  public static CreatureParams of(EntityId<Creature> creatureId, EntityId<Area> areaId, Vector2 pos, String textureName, int rngSeed) {
     // TODO remove later
     Map<Integer, Item> potionMenuItems = new ConcurrentSkipListMap<>();
     potionMenuItems.put(0, Item.of().setTemplate(ItemTemplate.templates.get("lifePotion")));

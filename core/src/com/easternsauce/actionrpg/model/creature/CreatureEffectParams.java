@@ -1,6 +1,7 @@
 package com.easternsauce.actionrpg.model.creature;
 
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullCreatureId;
 import com.easternsauce.actionrpg.model.util.SimpleTimer;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,7 +29,7 @@ public class CreatureEffectParams {
   private SimpleTimer manaRegenerationOverTimeTimer = SimpleTimer.getExpiredTimer();
   @NonNull
   private Float currentDamageOverTimeTaken = 0f;
-  private CreatureId currentDamageOverTimeDealerCreatureId = null;
+  private EntityId<Creature> currentDamageOverTimeDealerCreatureId = NullCreatureId.of();
   @NonNull
   private Float currentSlowMagnitude = 0f;
 }

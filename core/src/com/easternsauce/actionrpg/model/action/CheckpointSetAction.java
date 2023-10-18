@@ -2,19 +2,20 @@ package com.easternsauce.actionrpg.model.action;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.entity.Entity;
-import com.easternsauce.actionrpg.model.id.CheckpointId;
+import com.easternsauce.actionrpg.model.area.Checkpoint;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullCreatureId;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class CheckpointSetAction extends GameStateAction {
-  private CreatureId playerId;
-  private CheckpointId checkpointId;
+  private EntityId<Creature> playerId = NullCreatureId.of();
+  private EntityId<Checkpoint> checkpointId;
 
-  public static CheckpointSetAction of(CreatureId playerId, CheckpointId checkpointId) {
+  public static CheckpointSetAction of(EntityId<Creature> playerId, EntityId<Checkpoint> checkpointId) {
     CheckpointSetAction action = CheckpointSetAction.of();
     action.playerId = playerId;
     action.checkpointId = checkpointId;

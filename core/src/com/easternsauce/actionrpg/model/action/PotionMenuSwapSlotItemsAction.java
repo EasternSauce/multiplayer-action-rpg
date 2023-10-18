@@ -3,7 +3,8 @@ package com.easternsauce.actionrpg.model.action;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullCreatureId;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;
 import lombok.EqualsAndHashCode;
@@ -14,12 +15,12 @@ import java.util.Objects;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class PotionMenuSwapSlotItemsAction extends GameStateAction {
-  private CreatureId playerId;
+  private EntityId<Creature> playerId = NullCreatureId.of();
 
   private Integer fromSlotIndex;
   private Integer toSlotIndex;
 
-  public static PotionMenuSwapSlotItemsAction of(CreatureId playerId, Integer fromSlotIndex, Integer toSlotIndex) {
+  public static PotionMenuSwapSlotItemsAction of(EntityId<Creature> playerId, Integer fromSlotIndex, Integer toSlotIndex) {
     PotionMenuSwapSlotItemsAction action = PotionMenuSwapSlotItemsAction.of();
     action.playerId = playerId;
     action.fromSlotIndex = fromSlotIndex;

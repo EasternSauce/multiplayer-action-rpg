@@ -1,7 +1,9 @@
 package com.easternsauce.actionrpg.physics.event;
 
-import com.easternsauce.actionrpg.model.id.AbilityId;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.ability.Ability;
+import com.easternsauce.actionrpg.model.creature.Creature;
+import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullCreatureId;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,9 +12,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(staticName = "of")
 public class AbilityHitsCreatureEvent implements PhysicsEvent {
   @Getter
-  private CreatureId sourceCreatureId;
+  private EntityId<Creature> sourceCreatureId = NullCreatureId.of();
   @Getter
-  private CreatureId destinationCreatureId;
+  private EntityId<Creature> destinationCreatureId = NullCreatureId.of();
   @Getter
-  private AbilityId abilityId;
+  private EntityId<Ability> abilityId;
 }

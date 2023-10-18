@@ -4,10 +4,10 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.ability.AbilityState;
-import com.easternsauce.actionrpg.model.area.AreaId;
+import com.easternsauce.actionrpg.model.area.Area;
 import com.easternsauce.actionrpg.model.creature.enemy.EnemyParams;
 import com.easternsauce.actionrpg.model.creature.enemy.EnemyTemplate;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.item.EquipmentSlotType;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.skill.Skill;
@@ -254,14 +254,14 @@ public abstract class Creature implements Entity {
     if (getParams().getOnDeathAction() == OnDeathAction.SPAWN_SPIDERS) {
       Creature creature = game.getCreature(getId());
 
-      AreaId areaId = creature.getParams().getAreaId();
+      EntityId<Area> areaId = creature.getParams().getAreaId();
       Vector2 pos = creature.getParams().getPos();
 
       for (int i = 0; i < 6; i++) {
         float x = pos.getX() + (float) Math.sin(Math.PI / 3 * i) * 3f;
         float y = pos.getY() + (float) Math.cos(Math.PI / 3 * i) * 3f;
 
-        CreatureId enemyId = CreatureId.of(
+        EntityId<Creature> enemyId = EntityId.of(
           "Enemy_" + (int) (Math.abs(game.getGameState().getRandomGenerator().nextFloat()) *
             10000000)); // TODO: move to enemy spawn method?
 
@@ -274,7 +274,7 @@ public abstract class Creature implements Entity {
     }
   }
 
-  public CreatureId getId() {
+  public EntityId<Creature> getId() {
     return getParams().getId();
   }
 

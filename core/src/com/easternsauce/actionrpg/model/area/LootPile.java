@@ -1,7 +1,7 @@
 package com.easternsauce.actionrpg.model.area;
 
 import com.easternsauce.actionrpg.game.entity.Entity;
-import com.easternsauce.actionrpg.model.id.LootPileId;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Getter;
@@ -18,7 +18,7 @@ public class LootPile implements Entity {
   @Getter
   private LootPileParams params;
 
-  public static LootPile of(LootPileId id, AreaId areaId, Vector2 pos, Set<Item> items) {
+  public static LootPile of(EntityId<LootPile> id, EntityId<Area> areaId, Vector2 pos, Set<Item> items) {
     LootPileParams params = LootPileParams.of();
     params.setId(id);
     params.setAreaId(areaId);

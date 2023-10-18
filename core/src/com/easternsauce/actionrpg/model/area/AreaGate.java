@@ -1,6 +1,8 @@
 package com.easternsauce.actionrpg.model.area;
 
-import com.easternsauce.actionrpg.model.id.AreaGateId;
+import com.easternsauce.actionrpg.game.entity.Entity;
+import com.easternsauce.actionrpg.game.entity.EntityParams;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,9 +10,9 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
-public class AreaGate {
+public class AreaGate implements Entity {
   @Getter
-  private AreaGateId areaGateId;
+  private EntityId<AreaGate> areaGateId;
   @Getter
   private Float width;
   @Getter
@@ -18,7 +20,12 @@ public class AreaGate {
   @Getter
   private Vector2 pos;
   @Getter
-  private AreaId areaId;
+  private EntityId<Area> areaId;
   @Getter
-  private AreaGateId leadingToAreaGateId;
+  private EntityId<AreaGate> leadingToAreaGateId;
+
+  @Override
+  public EntityParams getParams() {
+    return null; // TODO: move params here?
+  }
 }

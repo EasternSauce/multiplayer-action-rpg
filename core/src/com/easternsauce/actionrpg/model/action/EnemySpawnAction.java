@@ -2,13 +2,13 @@ package com.easternsauce.actionrpg.model.action;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.entity.Entity;
-import com.easternsauce.actionrpg.model.area.AreaId;
+import com.easternsauce.actionrpg.model.area.Area;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.id.CreatureId;
 import com.easternsauce.actionrpg.model.creature.enemy.Enemy;
 import com.easternsauce.actionrpg.model.creature.enemy.EnemyTemplate;
 import com.easternsauce.actionrpg.model.enemyrallypoint.EnemyRallyPoint;
-import com.easternsauce.actionrpg.model.id.EnemyRallyPointId;
+import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullCreatureId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -18,9 +18,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class EnemySpawnAction extends GameStateAction {
-  private CreatureId creatureId;
-  private AreaId areaId;
-  private EnemyRallyPointId enemyRallyPointId;
+  private EntityId<Creature> creatureId = NullCreatureId.of();
+  private EntityId<Area> areaId;
+  private EntityId<EnemyRallyPoint> enemyRallyPointId;
   private EnemyTemplate enemyTemplate;
 
   public void applyToGame(CoreGame game) {

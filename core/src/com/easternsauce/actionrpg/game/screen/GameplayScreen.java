@@ -7,8 +7,9 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.area.AreaId;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.area.Area;
+import com.easternsauce.actionrpg.model.creature.Creature;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.util.RandomGenerator;
 import com.easternsauce.actionrpg.physics.util.PhysicsEventQueueProcessor;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
@@ -27,7 +28,7 @@ public class GameplayScreen implements Screen {
   private final GameplayRenderer gameplayRenderer = GameplayRenderer.of();
 
   private CoreGame game;
-  private Map<AreaId, TiledMap> maps;
+  private Map<EntityId<Area>, TiledMap> maps;
   private TextureAtlas atlas;
 
   private static void clearScreen() {
@@ -66,12 +67,12 @@ public class GameplayScreen implements Screen {
 
   }
 
-  private Map<AreaId, TiledMap> loadMaps() {
-    Map<AreaId, String> mapsToLoad = new ConcurrentSkipListMap<>();
-    mapsToLoad.put(AreaId.of("Area1"), "assets/areas/area1");
-    mapsToLoad.put(AreaId.of("Area2"), "assets/areas/area2");
-    mapsToLoad.put(AreaId.of("Area3"), "assets/areas/area3");
-    mapsToLoad.put(AreaId.of("Area4"), "assets/areas/area4");
+  private Map<EntityId<Area>, TiledMap> loadMaps() {
+    Map<EntityId<Area>, String> mapsToLoad = new ConcurrentSkipListMap<>();
+    mapsToLoad.put(EntityId.of("Area1"), "assets/areas/area1");
+    mapsToLoad.put(EntityId.of("Area2"), "assets/areas/area2");
+    mapsToLoad.put(EntityId.of("Area3"), "assets/areas/area3");
+    mapsToLoad.put(EntityId.of("Area4"), "assets/areas/area4");
 
     return mapsToLoad.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
       entry -> game.getEntityManager().getGameEntityRenderer().loadMap(entry.getValue() + "/tile_map.tmx")));
@@ -95,7 +96,7 @@ public class GameplayScreen implements Screen {
     clearScreen();
 
     if (game.isGameplayRunning()) {
-      if (game.getGameState().getThisClientPlayerId() == null) {
+      if (game.getGameState().getThisClientPlayerId().isNull()) {
         game.renderServerRunningMessage();
       } else {
         if (game.getEntityManager().getGameEntityRenderer().getAreaRenderers()
@@ -138,9 +139,9 @@ public class GameplayScreen implements Screen {
 
       processPhysicsEventQueueProcessor.process(game);
 
-      CreatureId thisClientPlayerId = game.getGameState().getThisClientPlayerId();
+      EntityId<Creature> thisClientPlayerId = game.getGameState().getThisClientPlayerId();
 
-      if (thisClientPlayerId != null && game.getCreature(thisClientPlayerId) != null) {
+      if (!thisClientPlayerId.isNull() && !game.getCreature(thisClientPlayerId).isNull()) {
         game.updateCameraPositions();
       }
 

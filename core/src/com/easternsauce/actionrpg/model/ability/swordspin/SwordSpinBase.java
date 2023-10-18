@@ -4,7 +4,8 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import com.easternsauce.actionrpg.model.ability.AbilityState;
 import com.easternsauce.actionrpg.model.ability.AttachedAbility;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.creature.Creature;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import lombok.Getter;
 
 import java.util.HashSet;
@@ -37,7 +38,7 @@ public abstract class SwordSpinBase extends AttachedAbility {
       getParams().getTickActionTimer().restart();
     }
 
-    Set<CreatureId> creaturesHitRemove = new HashSet<>();
+    Set<EntityId<Creature>> creaturesHitRemove = new HashSet<>();
 
     getParams().getCreaturesAlreadyHit().forEach((creatureId, time) -> {
       if (time < getParams().getStateTimer().getTime() - 0.4f) {

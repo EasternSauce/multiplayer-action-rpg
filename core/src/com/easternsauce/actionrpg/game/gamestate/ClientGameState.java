@@ -3,13 +3,15 @@ package com.easternsauce.actionrpg.game.gamestate;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.entity.EntityEventProcessor;
 import com.easternsauce.actionrpg.model.GameStateData;
-import com.easternsauce.actionrpg.model.id.AbilityId;
+import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.action.GameStateAction;
-import com.easternsauce.actionrpg.model.id.AreaGateId;
-import com.easternsauce.actionrpg.model.area.AreaId;
-import com.easternsauce.actionrpg.model.id.CheckpointId;
-import com.easternsauce.actionrpg.model.id.LootPileId;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.area.Area;
+import com.easternsauce.actionrpg.model.area.AreaGate;
+import com.easternsauce.actionrpg.model.area.Checkpoint;
+import com.easternsauce.actionrpg.model.area.LootPile;
+import com.easternsauce.actionrpg.model.creature.Creature;
+import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullCreatureId;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,10 +23,10 @@ import java.util.Set;
 public class ClientGameState extends GameState {
   @Getter
   @Setter
-  private CreatureId thisClientPlayerId;
+  private EntityId<Creature> thisClientPlayerId = NullCreatureId.of();
 
   @Override
-  public Set<CreatureId> getCreaturesToUpdate(CoreGame game) {
+  public Set<EntityId<Creature>> getCreaturesToUpdate(CoreGame game) {
     return accessCreatures().getCreaturesToUpdateForPlayerCreatureId(getThisClientPlayerId(), game);
   }
 
@@ -34,7 +36,7 @@ public class ClientGameState extends GameState {
   }
 
   @Override
-  public AreaId getCurrentAreaId() {
+  public EntityId<Area> getCurrentAreaId() {
     if (!accessCreatures().getCreatures().containsKey(getThisClientPlayerId())) {
       return getDefaultAreaId();
     }
@@ -45,45 +47,45 @@ public class ClientGameState extends GameState {
   public void createEventsFromReceivedGameStateData(GameStateData newGameStateData, EntityEventProcessor eventProcessor) {
     GameStateData oldGameStateData = dataHolder.getData();
 
-    Set<CreatureId> oldCreatureIds = oldGameStateData.getCreatures().keySet();
-    Set<CreatureId> newCreatureIds = newGameStateData.getCreatures().keySet();
-    Set<AbilityId> oldAbilityIds = oldGameStateData.getAbilities().keySet();
-    Set<AbilityId> newAbilityIds = newGameStateData.getAbilities().keySet();
-    Set<LootPileId> oldLootPileIds = oldGameStateData.getLootPiles().keySet();
-    Set<LootPileId> newLootPileIds = newGameStateData.getLootPiles().keySet();
-    Set<AreaGateId> oldAreaGateIds = oldGameStateData.getAreaGates().keySet();
-    Set<AreaGateId> newAreaGateIds = newGameStateData.getAreaGates().keySet();
-    Set<CheckpointId> oldCheckpointIds = oldGameStateData.getCheckpoints().keySet();
-    Set<CheckpointId> newCheckpointIds = newGameStateData.getCheckpoints().keySet();
+    Set<EntityId<Creature>> oldCreatureIds = oldGameStateData.getCreatures().keySet();
+    Set<EntityId<Creature>> newCreatureIds = newGameStateData.getCreatures().keySet();
+    Set<EntityId<Ability>> oldAbilityIds = oldGameStateData.getAbilities().keySet();
+    Set<EntityId<Ability>> newAbilityIds = newGameStateData.getAbilities().keySet();
+    Set<EntityId<LootPile>> oldLootPileIds = oldGameStateData.getLootPiles().keySet();
+    Set<EntityId<LootPile>> newLootPileIds = newGameStateData.getLootPiles().keySet();
+    Set<EntityId<AreaGate>> oldAreaGateIds = oldGameStateData.getAreaGates().keySet();
+    Set<EntityId<AreaGate>> newAreaGateIds = newGameStateData.getAreaGates().keySet();
+    Set<EntityId<Checkpoint>> oldCheckpointIds = oldGameStateData.getCheckpoints().keySet();
+    Set<EntityId<Checkpoint>> newCheckpointIds = newGameStateData.getCheckpoints().keySet();
 
-    Set<CreatureId> creaturesAddedSinceLastUpdate = new HashSet<>(newCreatureIds);
+    Set<EntityId<Creature>> creaturesAddedSinceLastUpdate = new HashSet<>(newCreatureIds);
     creaturesAddedSinceLastUpdate.removeAll(oldCreatureIds);
 
-    Set<CreatureId> creaturesRemovedSinceLastUpdate = new HashSet<>(oldCreatureIds);
+    Set<EntityId<Creature>> creaturesRemovedSinceLastUpdate = new HashSet<>(oldCreatureIds);
     creaturesRemovedSinceLastUpdate.removeAll(newCreatureIds);
 
-    Set<AbilityId> abilitiesAddedSinceLastUpdate = new HashSet<>(newAbilityIds);
+    Set<EntityId<Ability>> abilitiesAddedSinceLastUpdate = new HashSet<>(newAbilityIds);
     abilitiesAddedSinceLastUpdate.removeAll(oldAbilityIds);
 
-    Set<AbilityId> abilitiesRemovedSinceLastUpdate = new HashSet<>(oldAbilityIds);
+    Set<EntityId<Ability>> abilitiesRemovedSinceLastUpdate = new HashSet<>(oldAbilityIds);
     abilitiesRemovedSinceLastUpdate.removeAll(newAbilityIds);
 
-    Set<LootPileId> lootPilesAddedSinceLastUpdate = new HashSet<>(newLootPileIds);
+    Set<EntityId<LootPile>> lootPilesAddedSinceLastUpdate = new HashSet<>(newLootPileIds);
     lootPilesAddedSinceLastUpdate.removeAll(oldLootPileIds);
 
-    Set<LootPileId> lootPilesRemovedSinceLastUpdate = new HashSet<>(oldLootPileIds);
+    Set<EntityId<LootPile>> lootPilesRemovedSinceLastUpdate = new HashSet<>(oldLootPileIds);
     lootPilesRemovedSinceLastUpdate.removeAll(newLootPileIds);
 
-    Set<AreaGateId> areaGatesAddedSinceLastUpdate = new HashSet<>(newAreaGateIds);
+    Set<EntityId<AreaGate>> areaGatesAddedSinceLastUpdate = new HashSet<>(newAreaGateIds);
     areaGatesAddedSinceLastUpdate.removeAll(oldAreaGateIds);
 
-    Set<AreaGateId> areaGatesRemovedSinceLastUpdate = new HashSet<>(oldAreaGateIds);
+    Set<EntityId<AreaGate>> areaGatesRemovedSinceLastUpdate = new HashSet<>(oldAreaGateIds);
     areaGatesRemovedSinceLastUpdate.removeAll(newAreaGateIds);
 
-    Set<CheckpointId> checkpointsAddedSinceLastUpdate = new HashSet<>(newCheckpointIds);
+    Set<EntityId<Checkpoint>> checkpointsAddedSinceLastUpdate = new HashSet<>(newCheckpointIds);
     checkpointsAddedSinceLastUpdate.removeAll(oldCheckpointIds);
 
-    Set<CheckpointId> checkpointsRemovedSinceLastUpdate = new HashSet<>(oldCheckpointIds);
+    Set<EntityId<Checkpoint>> checkpointsRemovedSinceLastUpdate = new HashSet<>(oldCheckpointIds);
     checkpointsRemovedSinceLastUpdate.removeAll(newCheckpointIds);
 
     eventProcessor.getCreatureModelsToBeCreated().addAll(creaturesAddedSinceLastUpdate);

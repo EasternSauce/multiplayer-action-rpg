@@ -2,8 +2,8 @@ package com.easternsauce.actionrpg.model.creature.enemy.autocontrols;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.id.CreatureId;
 import com.easternsauce.actionrpg.model.creature.Player;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.util.Constants;
 import lombok.NoArgsConstructor;
@@ -12,12 +12,12 @@ import lombok.NoArgsConstructor;
 public class EnemyAutoControlsTargetProcessor {
   private final EnemyAutoControlsActionProcessor actionProcessor = EnemyAutoControlsActionProcessor.of();
 
-  public void process(CreatureId creatureId, CoreGame game) {
+  public void process(EntityId<Creature> creatureId, CoreGame game) {
     lookForPotentialTarget(creatureId, game);
     reactToPotentialTarget(creatureId, game);
   }
 
-  private void reactToPotentialTarget(CreatureId creatureId, CoreGame game) {
+  private void reactToPotentialTarget(EntityId<Creature> creatureId, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
     Creature potentialTarget;
@@ -57,10 +57,10 @@ public class EnemyAutoControlsTargetProcessor {
     }
   }
 
-  private void lookForPotentialTarget(CreatureId creatureId, CoreGame game) {
+  private void lookForPotentialTarget(EntityId<Creature> creatureId, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
-    CreatureId justAttackedByCreatureId = creature.getEnemyParams().getJustAttackedByCreatureId();
+    EntityId<Creature> justAttackedByCreatureId = creature.getEnemyParams().getJustAttackedByCreatureId();
 
     boolean justAttackedByPlayer = justAttackedByCreatureId != null &&
       game.getCreature(justAttackedByCreatureId) instanceof Player;
@@ -68,7 +68,7 @@ public class EnemyAutoControlsTargetProcessor {
     if (justAttackedByPlayer) {
       creature.getEnemyParams().setAggroedCreatureId(justAttackedByCreatureId);
     } else { // if not attacked, search around for targets
-      CreatureId foundTargetId;
+      EntityId<Creature> foundTargetId;
       if (creature.getEnemyParams().getFindTargetTimer().getTime() >
         creature.getEnemyParams().getFindTargetCooldown()) {
         foundTargetId = findTarget(creatureId, game);
@@ -78,7 +78,7 @@ public class EnemyAutoControlsTargetProcessor {
       }
 
       if (foundTargetId != null) {
-        if (creature.getEnemyParams().getLastFoundTargetId() == null ||
+        if (creature.getEnemyParams().getLastFoundTargetId().isNull() ||
           !creature.getEnemyParams().getLastFoundTargetId().equals(foundTargetId)) {
           if (creature.getEnemyParams().isBossEnemy()) {
             creature.getEnemyParams().setAutoControlsState(EnemyAutoControlsState.AGGRESSIVE);
@@ -95,7 +95,7 @@ public class EnemyAutoControlsTargetProcessor {
   }
 
 
-  public void processDistanceLogic(CreatureId creatureId, Creature potentialTarget, CoreGame game) {
+  public void processDistanceLogic(EntityId<Creature> creatureId, Creature potentialTarget, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
     Float distanceToTarget = creature.getParams().getPos().distance(potentialTarget.getParams().getPos());
@@ -118,13 +118,13 @@ public class EnemyAutoControlsTargetProcessor {
     }
   }
 
-  public CreatureId findTarget(CreatureId creatureId, CoreGame game) {
+  public EntityId<Creature> findTarget(EntityId<Creature> creatureId, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
     if (creature.isNull()) {
       return null;
     } else {
       Float minDistance = Float.MAX_VALUE;
-      CreatureId minCreatureId = null;
+      EntityId<Creature> minCreatureId = null;
       for (Creature otherCreature : game.getActiveCreatures().values()) {
         boolean condition = otherCreature.isAlive() &&
           otherCreature.getParams().getAreaId().getValue().equals(creature.getParams().getAreaId().getValue()) &&
@@ -143,10 +143,10 @@ public class EnemyAutoControlsTargetProcessor {
     }
   }
 
-  public void handleNewTarget(CreatureId creatureId, CreatureId potentialTargetId, CoreGame game) {
+  public void handleNewTarget(EntityId<Creature> creatureId, EntityId<Creature> potentialTargetId, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
-    if (creature.getEnemyParams().getTargetCreatureId() == null ||
+    if (creature.getEnemyParams().getTargetCreatureId().isNull() ||
       !creature.getEnemyParams().getTargetCreatureId().equals(potentialTargetId)) {
       creature.getEnemyParams().setForcePathCalculation(true);
       creature.getEnemyParams().setTargetCreatureId(potentialTargetId);
@@ -154,7 +154,7 @@ public class EnemyAutoControlsTargetProcessor {
     }
   }
 
-  public void followCurrentPath(CreatureId creatureId, CoreGame game) {
+  public void followCurrentPath(EntityId<Creature> creatureId, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
     if (creature.getEnemyParams().getPathTowardsTarget() != null &&
@@ -164,7 +164,7 @@ public class EnemyAutoControlsTargetProcessor {
   }
 
 
-  public void handleTargetLost(CreatureId creatureId, CoreGame game) {
+  public void handleTargetLost(EntityId<Creature> creatureId, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
     creature.getEnemyParams().setAggroedCreatureId(null);

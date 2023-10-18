@@ -1,11 +1,12 @@
 package com.easternsauce.actionrpg.model.skill;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.id.AbilityId;
+import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import com.easternsauce.actionrpg.model.ability.AbilityType;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullCreatureId;
 import com.easternsauce.actionrpg.model.util.SimpleTimer;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.util.Constants;
@@ -18,7 +19,7 @@ import lombok.NoArgsConstructor;
 public class Skill {
   @Getter
   private SkillType skillType;
-  private CreatureId creatureId;
+  private EntityId<Creature> creatureId = NullCreatureId.of();
   private AbilityType startingAbilityType;
   @Getter
   private SimpleTimer performTimer;
@@ -29,7 +30,7 @@ public class Skill {
   @Getter
   private Float manaCost;
 
-  public static Skill of(SkillType skillType, CreatureId creatureId) {
+  public static Skill of(SkillType skillType, EntityId<Creature> creatureId) {
     Skill skill = Skill.of();
     skill.skillType = skillType;
     skill.creatureId = creatureId;
@@ -44,7 +45,7 @@ public class Skill {
   public void perform(Vector2 startingPos, Vector2 dirVector, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
-    AbilityId abilityId = AbilityId.of("Ability_" + (int) (Math.random() * 10000000));
+    EntityId<Ability> abilityId = EntityId.of("Ability_" + (int) (Math.random() * 10000000));
     AbilityParams abilityParams = AbilityParams.of().setId(abilityId).setAreaId(creature.getParams().getAreaId())
       .setCreatureId(creatureId).setDirVector(dirVector).setVectorTowardsTarget(dirVector).setSkillStartPos(startingPos)
       .setSkillType(skillType);

@@ -1,6 +1,7 @@
 package com.easternsauce.actionrpg.model.creature;
 
-import com.easternsauce.actionrpg.model.area.AreaId;
+import com.easternsauce.actionrpg.model.area.Area;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.util.SimpleTimer;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Data;
@@ -37,7 +38,7 @@ public class CreatureMovementParams {
   @NonNull
   private Boolean stillInsideGateAfterTeleport = false;
   @NonNull
-  private AreaId areaWhenEnteredGate;
+  private EntityId<Area> areaWhenEnteredGate;
   @NonNull
   private Vector2 aimDirection = Vector2.of(0f, 0f);
   @NonNull

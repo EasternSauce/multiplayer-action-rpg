@@ -1,11 +1,12 @@
 package com.easternsauce.actionrpg.model.ability.util;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.area.AreaId;
+import com.easternsauce.actionrpg.model.area.Area;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 
 public class PointTargetedAbilityUtils {
-  public static Vector2 calculatePos(Vector2 targetPos, Vector2 creaturePos, AreaId areaId, float maxRange, CoreGame game) {
+  public static Vector2 calculatePos(Vector2 targetPos, Vector2 creaturePos, EntityId<Area> areaId, float maxRange, CoreGame game) {
     Vector2 vectorTowards = creaturePos.vectorTowards(targetPos);
 
     Vector2 destinationPos = creaturePos;

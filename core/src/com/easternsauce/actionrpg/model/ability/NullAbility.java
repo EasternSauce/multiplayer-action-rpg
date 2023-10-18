@@ -1,8 +1,8 @@
 package com.easternsauce.actionrpg.model.ability;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.id.AbilityId;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.creature.Creature;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.renderer.animationconfig.AbilityAnimationConfig;
 
@@ -85,7 +85,7 @@ public class NullAbility extends Ability {
   }
 
   @Override
-  public void onCreatureHit(CreatureId creatureId, CoreGame game) {
+  public void onCreatureHit(EntityId<Creature> creatureId, CoreGame game) {
 
   }
 
@@ -100,7 +100,7 @@ public class NullAbility extends Ability {
   }
 
   @Override
-  public void onOtherAbilityHit(AbilityId otherAbilityId, CoreGame game) {
+  public void onOtherAbilityHit(EntityId<Ability> otherAbilityId, CoreGame game) {
 
   }
 
@@ -165,7 +165,7 @@ public class NullAbility extends Ability {
   }
 
   @Override
-  public int maximumCreatureHitCount(CreatureId creatureId, CoreGame game) {
+  public int maximumCreatureHitCount(EntityId<Creature> creatureId, CoreGame game) {
     return 0;
   }
 

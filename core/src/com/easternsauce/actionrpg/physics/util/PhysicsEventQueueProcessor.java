@@ -3,11 +3,12 @@ package com.easternsauce.actionrpg.physics.util;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.ability.AbilityState;
+import com.easternsauce.actionrpg.model.area.Area;
 import com.easternsauce.actionrpg.model.area.AreaGate;
-import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
 import com.easternsauce.actionrpg.model.creature.Player;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;
 import com.easternsauce.actionrpg.model.util.TeleportEvent;
 import com.easternsauce.actionrpg.model.util.Vector2;
@@ -66,8 +67,8 @@ public class PhysicsEventQueueProcessor {
           AreaGate areaGate = game.getGameState().getAreaGate(event.getAreaGateId());
           AreaGate leadingToAreaGate = game.getGameState().getAreaGate(areaGate.getLeadingToAreaGateId());
 
-          AreaId fromAreaId = areaGate.getAreaId();
-          AreaId toAreaId = leadingToAreaGate.getAreaId();
+          EntityId<Area> fromAreaId = areaGate.getAreaId();
+          EntityId<Area> toAreaId = leadingToAreaGate.getAreaId();
           Vector2 pos = leadingToAreaGate.getPos();
 
           game.addTeleportEvent(TeleportEvent.of(event.getCreatureId(), pos, fromAreaId, toAreaId, true));

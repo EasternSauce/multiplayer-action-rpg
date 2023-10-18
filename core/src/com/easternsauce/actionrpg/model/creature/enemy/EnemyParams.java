@@ -1,7 +1,9 @@
 package com.easternsauce.actionrpg.model.creature.enemy;
 
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.enemy.autocontrols.EnemyAutoControlsState;
+import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullCreatureId;
 import com.easternsauce.actionrpg.model.util.SimpleTimer;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Data;
@@ -14,7 +16,7 @@ import java.util.Set;
 @NoArgsConstructor(staticName = "of")
 @Data
 public class EnemyParams {
-  private CreatureId targetCreatureId = null;
+  private EntityId<Creature> targetCreatureId = NullCreatureId.of();
   @NonNull
   private Boolean forcePathCalculation = false;
   @NonNull
@@ -25,9 +27,9 @@ public class EnemyParams {
   @NonNull
   private Float loseAggroTime = 3f;
   @SuppressWarnings("SpellCheckingInspection")
-  private CreatureId aggroedCreatureId = null;
-  private CreatureId justAttackedByCreatureId = null;
-  private CreatureId lastFoundTargetId = null;
+  private EntityId<Creature> aggroedCreatureId = NullCreatureId.of();
+  private EntityId<Creature> justAttackedByCreatureId = NullCreatureId.of();
+  private EntityId<Creature> lastFoundTargetId = NullCreatureId.of();
   @NonNull
   private SimpleTimer findTargetTimer = SimpleTimer.getExpiredTimer();
   @NonNull

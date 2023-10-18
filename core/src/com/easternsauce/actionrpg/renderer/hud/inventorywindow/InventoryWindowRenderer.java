@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.assets.Assets;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.id.CreatureId;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.item.EquipmentSlotType;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;
@@ -93,7 +93,7 @@ public class InventoryWindowRenderer {
   }
 
   public void renderDescription(RenderingLayer renderingLayer, CoreGame game) {
-    CreatureId thisClientPlayerId = game.getGameState().getThisClientPlayerId();
+    EntityId<Creature> thisClientPlayerId = game.getGameState().getThisClientPlayerId();
     Creature player = game.getCreature(thisClientPlayerId);
     PlayerConfig playerConfig = game.getGameState().getPlayerConfig(thisClientPlayerId);
 

@@ -2,9 +2,9 @@ package com.easternsauce.actionrpg.physics.body;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.area.Area;
 import com.easternsauce.actionrpg.model.area.AreaGate;
-import com.easternsauce.actionrpg.model.id.AreaGateId;
-import com.easternsauce.actionrpg.model.area.AreaId;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.physics.world.PhysicsWorld;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,9 +16,9 @@ public class AreaGateBody {
   private PhysicsWorld world;
 
   @Getter
-  private AreaGateId areaGateId;
+  private EntityId<AreaGate> areaGateId;
 
-  public static AreaGateBody of(AreaGateId areaGateId) {
+  public static AreaGateBody of(EntityId<AreaGate> areaGateId) {
     AreaGateBody areaGateBody = AreaGateBody.of();
     areaGateBody.areaGateId = areaGateId;
 
@@ -28,7 +28,7 @@ public class AreaGateBody {
   public void init(CoreGame game) {
     AreaGate areaGate = game.getGameState().getAreaGates().get(areaGateId);
 
-    AreaId areaId = areaGate.getAreaId();
+    EntityId<Area> areaId = areaGate.getAreaId();
     world = game.getEntityManager().getGameEntityPhysics().getPhysicsWorlds().get(areaId);
 
     b2body = B2BodyFactory.createAreaGateB2body(world, this, areaGate.getPos(), areaGate.getWidth(),
