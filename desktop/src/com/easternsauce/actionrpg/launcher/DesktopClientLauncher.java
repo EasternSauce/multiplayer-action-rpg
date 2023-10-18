@@ -12,6 +12,6 @@ public class DesktopClientLauncher {
         config.setWindowedMode(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
         config.setTitle("My GDX Game");
 
-        new Lwjgl3Application(CoreGameClient.getInstance(), config);
+        new Lwjgl3Application(CoreGameClient.of(), config);
     }
 }

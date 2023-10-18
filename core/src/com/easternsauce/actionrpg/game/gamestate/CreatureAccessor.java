@@ -6,7 +6,7 @@ import com.easternsauce.actionrpg.model.action.CreatureHitByDamageOverTimeAction
 import com.easternsauce.actionrpg.model.action.CreatureMovingVectorSetAction;
 import com.easternsauce.actionrpg.model.action.SkillTryPerformAction;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.creature.CreatureId;
+import com.easternsauce.actionrpg.model.id.CreatureId;
 import com.easternsauce.actionrpg.model.creature.NullCreature;
 import com.easternsauce.actionrpg.model.creature.enemy.EnemySkillUseEntry;
 import com.easternsauce.actionrpg.model.skill.SkillType;
@@ -73,20 +73,21 @@ public class CreatureAccessor {
   public Set<CreatureId> getCreaturesToUpdateForPlayerCreatureId(CreatureId playerCreatureId, CoreGame game) {
     Creature player = getData().getCreatures().get(playerCreatureId);
 
-    if (player == null) {
+    if (player.isNull()) {
       return new HashSet<>();
+    } else {
+      return getData().getCreatures().keySet().stream().filter(creatureId -> {
+        Creature creature = getCreature(creatureId);
+        if (creature.isCurrentlyActive(game)) {
+          return player.getParams().getAreaId().equals(creature.getParams().getAreaId()) &&
+                  creature.getParams().getPos().distance(player.getParams().getPos()) < Constants.CLIENT_GAME_UPDATE_RANGE;
+        } else {
+          return false;
+        }
+      }).collect(Collectors.toSet());
     }
 
-    return getData().getCreatures().keySet().stream().filter(creatureId -> {
-      Creature creature = getCreature(creatureId);
-      if (creature.isCurrentlyActive(game)) {
-        return player.getParams().getAreaId().equals(creature.getParams().getAreaId()) &&
-          creature.getParams().getPos().distance(player.getParams().getPos()) < Constants.CLIENT_GAME_UPDATE_RANGE;
-      }
 
-      return false;
-
-    }).collect(Collectors.toSet());
   }
 
   public void setCreatureMovingVector(CreatureId creatureId, Vector2 dirVector) {

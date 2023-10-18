@@ -7,6 +7,7 @@ import com.easternsauce.actionrpg.model.ability.AbilityState;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.creature.enemy.EnemyParams;
 import com.easternsauce.actionrpg.model.creature.enemy.EnemyTemplate;
+import com.easternsauce.actionrpg.model.id.CreatureId;
 import com.easternsauce.actionrpg.model.item.EquipmentSlotType;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.skill.Skill;
@@ -434,5 +435,9 @@ public abstract class Creature implements Entity {
 
   public int getNextRandom() {
     return getParams().getRandomGenerator().nextInt();
+  }
+
+  public boolean isNull() {
+    return false;
   }
 }

@@ -9,7 +9,7 @@ import com.easternsauce.actionrpg.model.action.PlayerMoveTowardsTargetAction;
 import com.easternsauce.actionrpg.model.action.PotionMenuItemUseAction;
 import com.easternsauce.actionrpg.model.action.SkillTryPerformAction;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.creature.CreatureId;
+import com.easternsauce.actionrpg.model.id.CreatureId;
 import com.easternsauce.actionrpg.model.item.EquipmentSlotType;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.skill.SkillType;

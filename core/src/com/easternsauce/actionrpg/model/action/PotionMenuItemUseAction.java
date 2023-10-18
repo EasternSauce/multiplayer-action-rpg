@@ -4,7 +4,7 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
-import com.easternsauce.actionrpg.model.creature.CreatureId;
+import com.easternsauce.actionrpg.model.id.CreatureId;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;
 import lombok.EqualsAndHashCode;
@@ -31,19 +31,17 @@ public class PotionMenuItemUseAction extends GameStateAction {
     if (playerConfig != null && slotIndex != null) {
       Creature creature = game.getCreature(playerId);
 
-      if (creature == null) {
-        return;
-      }
+      if (!creature.isNull()) {
+        Item item = creature.getParams().getPotionMenuItems().get(slotIndex);
 
-      Item item = creature.getParams().getPotionMenuItems().get(slotIndex);
+        if (item != null && item.getTemplate().getConsumable()) {
+          processUseItem(creature, item, game);
 
-      if (item != null && item.getTemplate().getConsumable()) {
-        processUseItem(creature, item, game);
-
-        if (item.getQuantity() == 1) {
-          creature.getParams().getPotionMenuItems().remove(slotIndex);
-        } else {
-          item.setQuantity(item.getQuantity() - 1);
+          if (item.getQuantity() == 1) {
+            creature.getParams().getPotionMenuItems().remove(slotIndex);
+          } else {
+            item.setQuantity(item.getQuantity() - 1);
+          }
         }
       }
     }

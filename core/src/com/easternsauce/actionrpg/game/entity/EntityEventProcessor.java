@@ -2,11 +2,11 @@ package com.easternsauce.actionrpg.game.entity;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.ability.AbilityId;
-import com.easternsauce.actionrpg.model.area.AreaGateId;
-import com.easternsauce.actionrpg.model.area.CheckpointId;
-import com.easternsauce.actionrpg.model.area.LootPileId;
-import com.easternsauce.actionrpg.model.creature.CreatureId;
+import com.easternsauce.actionrpg.model.id.AbilityId;
+import com.easternsauce.actionrpg.model.id.AreaGateId;
+import com.easternsauce.actionrpg.model.id.CheckpointId;
+import com.easternsauce.actionrpg.model.id.LootPileId;
+import com.easternsauce.actionrpg.model.id.CreatureId;
 import com.easternsauce.actionrpg.model.util.TeleportEvent;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

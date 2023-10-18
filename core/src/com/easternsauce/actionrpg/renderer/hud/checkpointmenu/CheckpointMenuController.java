@@ -3,7 +3,7 @@ package com.easternsauce.actionrpg.renderer.hud.checkpointmenu;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.command.ActionPerformCommand;
 import com.easternsauce.actionrpg.model.action.CheckpointSetAction;
-import com.easternsauce.actionrpg.model.area.CheckpointId;
+import com.easternsauce.actionrpg.model.id.CheckpointId;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;
 import com.easternsauce.actionrpg.renderer.CheckpointRenderer;
 import com.easternsauce.actionrpg.renderer.util.Rect;

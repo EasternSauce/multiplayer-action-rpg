@@ -1,7 +1,7 @@
 package com.easternsauce.actionrpg.renderer.game;
 
 import com.easternsauce.actionrpg.model.area.AreaId;
-import com.easternsauce.actionrpg.model.creature.CreatureId;
+import com.easternsauce.actionrpg.model.id.CreatureId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.AllArgsConstructor;
 import lombok.Data;

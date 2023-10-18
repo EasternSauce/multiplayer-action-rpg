@@ -1,6 +1,6 @@
 package com.easternsauce.actionrpg.model.util;
 
-import com.easternsauce.actionrpg.model.creature.CreatureId;
+import com.easternsauce.actionrpg.model.id.CreatureId;
 import lombok.NoArgsConstructor;
 
 import java.util.Map;

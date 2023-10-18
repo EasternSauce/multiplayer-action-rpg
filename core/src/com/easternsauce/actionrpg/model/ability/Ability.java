@@ -3,7 +3,8 @@ package com.easternsauce.actionrpg.model.ability;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.creature.CreatureId;
+import com.easternsauce.actionrpg.model.id.AbilityId;
+import com.easternsauce.actionrpg.model.id.CreatureId;
 import com.easternsauce.actionrpg.model.creature.Player;
 import com.easternsauce.actionrpg.model.util.RandomGenerator;
 import com.easternsauce.actionrpg.model.util.Vector2;
@@ -15,7 +16,6 @@ import java.util.concurrent.ConcurrentSkipListMap;
 
 @SuppressWarnings("SpellCheckingInspection")
 public abstract class Ability implements Entity {
-
   public static Vector2 calculatePosition(@NonNull Vector2 creaturePos, @NonNull Vector2 dirVector, float startingRange) {
     float shiftPosX = dirVector.normalized().getX() * startingRange;
     float shiftPosY = dirVector.normalized().getY() * startingRange;
@@ -193,7 +193,7 @@ public abstract class Ability implements Entity {
   public Integer getSkillLevel(CoreGame game) {
     Creature creature = game.getCreature(getParams().getCreatureId());
 
-    if (creature == null || !creature.availableSkills().containsKey(getParams().getSkillType())) {
+    if (creature.isNull() || !creature.availableSkills().containsKey(getParams().getSkillType())) {
       return 1;
     }
     return creature.availableSkills().get(getParams().getSkillType());
@@ -237,5 +237,9 @@ public abstract class Ability implements Entity {
     if (pos != null) {
       getParams().setPos(pos.copy());
     }
+  }
+
+  public boolean isNull() {
+    return false;
   }
 }

@@ -6,11 +6,11 @@ import com.easternsauce.actionrpg.model.ability.AbilityState;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
-import com.easternsauce.actionrpg.model.creature.CreatureId;
+import com.easternsauce.actionrpg.model.id.CreatureId;
 import com.easternsauce.actionrpg.model.creature.CreatureParams;
 import com.easternsauce.actionrpg.model.creature.enemy.autocontrols.EnemyAutoControlsState;
 import com.easternsauce.actionrpg.model.creature.enemy.autocontrols.EnemyAutoControlsUpdater;
-import com.easternsauce.actionrpg.model.enemyrallypoint.EnemyRallyPointId;
+import com.easternsauce.actionrpg.model.id.EnemyRallyPointId;
 import com.easternsauce.actionrpg.model.skill.Skill;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.model.util.WorldDirection;
@@ -136,7 +136,7 @@ public class Enemy extends Creature {
       if (aggroedCreatureId == null || !aggroedCreatureId.equals(ability.getParams().getCreatureId())) {
         Creature aggroedCreature = game.getCreature(aggroedCreatureId);
 
-        if (aggroedCreature != null && aggroedCreature.isCurrentlyActive(game)) {
+        if (!aggroedCreature.isNull() && aggroedCreature.isCurrentlyActive(game)) {
           makeAggressiveAfterHitByAbility(ability);
         }
       }

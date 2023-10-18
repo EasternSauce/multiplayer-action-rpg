@@ -7,6 +7,7 @@ import com.easternsauce.actionrpg.model.ability.ricochetbullet.RicochetBullet;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.Player;
 import com.easternsauce.actionrpg.model.creature.enemy.Enemy;
+import com.easternsauce.actionrpg.model.id.AbilityId;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

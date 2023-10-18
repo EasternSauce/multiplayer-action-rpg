@@ -3,8 +3,10 @@ package com.easternsauce.actionrpg.game;
 import com.easternsauce.actionrpg.model.area.*;
 import com.easternsauce.actionrpg.model.creature.enemy.EnemyTemplate;
 import com.easternsauce.actionrpg.model.enemyrallypoint.EnemyRallyPoint;
-import com.easternsauce.actionrpg.model.enemyrallypoint.EnemyRallyPointId;
+import com.easternsauce.actionrpg.model.id.CheckpointId;
+import com.easternsauce.actionrpg.model.id.EnemyRallyPointId;
 import com.easternsauce.actionrpg.model.enemyrallypoint.EnemyRallyPointInfo;
+import com.easternsauce.actionrpg.model.id.AreaGateId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.NoArgsConstructor;
 

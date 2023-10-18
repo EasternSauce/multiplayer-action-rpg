@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.area.Checkpoint;
-import com.easternsauce.actionrpg.model.area.CheckpointId;
+import com.easternsauce.actionrpg.model.id.CheckpointId;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

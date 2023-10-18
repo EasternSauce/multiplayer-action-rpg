@@ -1,5 +1,6 @@
 package com.easternsauce.actionrpg.model.creature;
 
+import com.easternsauce.actionrpg.model.id.CreatureId;
 import com.easternsauce.actionrpg.model.util.SimpleTimer;
 import lombok.Data;
 import lombok.NoArgsConstructor;

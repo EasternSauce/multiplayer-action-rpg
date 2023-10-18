@@ -1,7 +1,7 @@
 package com.easternsauce.actionrpg.game.command;
 
 import com.easternsauce.actionrpg.model.area.AreaId;
-import com.easternsauce.actionrpg.model.creature.CreatureId;
+import com.easternsauce.actionrpg.model.id.CreatureId;
 import com.easternsauce.actionrpg.model.creature.enemy.EnemyTemplate;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.AllArgsConstructor;

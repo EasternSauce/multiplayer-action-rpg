@@ -1,12 +1,10 @@
 package com.easternsauce.actionrpg.model;
 
 import com.easternsauce.actionrpg.model.ability.Ability;
-import com.easternsauce.actionrpg.model.ability.AbilityId;
+import com.easternsauce.actionrpg.model.id.*;
 import com.easternsauce.actionrpg.model.area.*;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.creature.CreatureId;
 import com.easternsauce.actionrpg.model.enemyrallypoint.EnemyRallyPoint;
-import com.easternsauce.actionrpg.model.enemyrallypoint.EnemyRallyPointId;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;
 import com.easternsauce.actionrpg.model.util.RandomGenerator;
 import com.easternsauce.actionrpg.model.util.SimpleTimer;

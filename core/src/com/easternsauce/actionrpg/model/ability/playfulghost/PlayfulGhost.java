@@ -65,7 +65,7 @@ public class PlayfulGhost extends Projectile {
     }
 
     if (getParams().getTickActionTimer().getTime() > 0.015f) {
-      if (minCreature != null) {
+      if (!minCreature.isNull()) {
         Vector2 vectorTowards = getParams().getPos().vectorTowards(minCreature.getParams().getPos());
         float targetAngleDeg = vectorTowards.angleDeg();
 

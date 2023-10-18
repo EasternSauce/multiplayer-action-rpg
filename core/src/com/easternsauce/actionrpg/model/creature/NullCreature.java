@@ -3,19 +3,27 @@ package com.easternsauce.actionrpg.model.creature;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.creature.enemy.EnemyParams;
+import com.easternsauce.actionrpg.model.id.CreatureId;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.skill.Skill;
 import com.easternsauce.actionrpg.model.skill.SkillType;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.model.util.WorldDirection;
 import com.easternsauce.actionrpg.renderer.animationconfig.CreatureAnimationConfig;
-import lombok.NoArgsConstructor;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
 
-@NoArgsConstructor(staticName = "of")
 public class NullCreature extends Creature {
+  private static NullCreature instance;
+
+  public static NullCreature of() {
+    if (instance == null) {
+      instance = new NullCreature();
+    }
+    return instance;
+  }
+
   @Override
   public CreatureParams getParams() {
     return CreatureParams.of().setEnemyParams(EnemyParams.of()).setPos(Vector2.of(0, 0));
@@ -157,5 +165,10 @@ public class NullCreature extends Creature {
   @Override
   public int getNextRandom() {
     return 0;
+  }
+
+  @Override
+  public boolean isNull() {
+    return true;
   }
 }

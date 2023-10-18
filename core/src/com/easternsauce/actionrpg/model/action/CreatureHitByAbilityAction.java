@@ -5,7 +5,7 @@ import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
-import com.easternsauce.actionrpg.model.creature.CreatureId;
+import com.easternsauce.actionrpg.model.id.CreatureId;
 import com.easternsauce.actionrpg.model.creature.Player;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.EqualsAndHashCode;
@@ -35,7 +35,7 @@ public class CreatureHitByAbilityAction extends CreatureHitAction {
     Creature targetCreature = game.getCreature(targetId);
     Creature attackerCreature = game.getCreature(attackerId);
 
-    if (targetCreature == null || attackerCreature == null) {
+    if (targetCreature.isNull() || attackerCreature.isNull()) {
       return;
     }
 

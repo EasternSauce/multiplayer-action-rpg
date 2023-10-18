@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.Ability;
-import com.easternsauce.actionrpg.model.ability.AbilityId;
+import com.easternsauce.actionrpg.model.id.AbilityId;
 import com.easternsauce.actionrpg.model.ability.AbilityState;
 import com.easternsauce.actionrpg.renderer.animationconfig.AbilityAnimationConfig;
 import lombok.Getter;
@@ -43,7 +43,7 @@ public class AbilityRenderer {
 
     Ability ability = game.getAbility(abilityId);
 
-    if (ability == null) {
+    if (ability.isNull()) {
       return;
     }
 
@@ -84,7 +84,6 @@ public class AbilityRenderer {
   }
 
   public void update(CoreGame game) {
-
     Ability ability = game.getAbility(abilityId);
 
     if (ability.getParams().getChannelTime() > 0f && ability.getParams().getState() == AbilityState.CHANNEL) {
@@ -103,22 +102,19 @@ public class AbilityRenderer {
   private void updateSprite(TextureRegion texture, CoreGame game) {
 
     Ability ability = game.getAbility(abilityId);
-    if (ability == null) {
-      return;
+    if (!ability.isNull()) {
+      sprite.setRegion(texture);
+      if (ability.getParams().getOverrideScale() != null) {
+        sprite.setSize(ability.getParams().getWidth() * ability.getParams().getOverrideScale(),
+                ability.getParams().getHeight() * ability.getParams().getOverrideScale());
+      } else {
+        sprite.setSize(ability.getParams().getWidth(), ability.getParams().getHeight());
+      }
+      sprite.setCenter(ability.getParams().getPos().getX(), ability.getParams().getPos().getY());
+      sprite.setOriginCenter();
+      sprite.setRotation(ability.getParams().getRotationAngle() + ability.getParams().getRotationShift());
+      sprite.setFlip(ability.getParams().getFlipX(), ability.getParams().getFlipY());
     }
-
-    sprite.setRegion(texture);
-    if (ability.getParams().getOverrideScale() != null) {
-      sprite.setSize(ability.getParams().getWidth() * ability.getParams().getOverrideScale(),
-        ability.getParams().getHeight() * ability.getParams().getOverrideScale());
-    } else {
-      sprite.setSize(ability.getParams().getWidth(), ability.getParams().getHeight());
-    }
-    sprite.setCenter(ability.getParams().getPos().getX(), ability.getParams().getPos().getY());
-    sprite.setOriginCenter();
-    sprite.setRotation(ability.getParams().getRotationAngle() + ability.getParams().getRotationShift());
-    sprite.setFlip(ability.getParams().getFlipX(), ability.getParams().getFlipY());
-
   }
 
   public void render(RenderingLayer renderingLayer, CoreGame game) {

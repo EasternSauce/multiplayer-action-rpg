@@ -40,7 +40,7 @@ public class PotionMenuRenderer {
 
     PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
 
-    if (player == null || playerConfig == null) {
+    if (player.isNull() || playerConfig == null) {
       return;
     }
 

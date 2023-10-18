@@ -1,16 +1,23 @@
 package com.easternsauce.actionrpg.model.ability;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.creature.CreatureId;
+import com.easternsauce.actionrpg.model.id.AbilityId;
+import com.easternsauce.actionrpg.model.id.CreatureId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.renderer.animationconfig.AbilityAnimationConfig;
-import lombok.NoArgsConstructor;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
 
-@NoArgsConstructor(staticName = "of")
 public class NullAbility extends Ability {
+  private static NullAbility instance;
+
+  public static NullAbility of() {
+    if (instance == null) {
+      instance = new NullAbility();
+    }
+    return instance;
+  }
   @Override
   public Boolean isPositionChangedOnUpdate() {
     return false;
@@ -160,5 +167,10 @@ public class NullAbility extends Ability {
   @Override
   public int maximumCreatureHitCount(CreatureId creatureId, CoreGame game) {
     return 0;
+  }
+
+  @Override
+  public boolean isNull() {
+    return true;
   }
 }

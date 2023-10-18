@@ -1,6 +1,7 @@
 package com.easternsauce.actionrpg.model.area;
 
 import com.easternsauce.actionrpg.game.entity.Entity;
+import com.easternsauce.actionrpg.model.id.LootPileId;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Getter;

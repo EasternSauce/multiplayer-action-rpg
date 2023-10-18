@@ -8,10 +8,10 @@ import com.easternsauce.actionrpg.game.command.ConnectionInitCommand;
 import com.easternsauce.actionrpg.game.command.OnDemandBroadcastAskCommand;
 import com.easternsauce.actionrpg.game.command.PlayerInitCommand;
 import com.easternsauce.actionrpg.game.gamestate.ClientGameState;
-import com.easternsauce.actionrpg.model.ability.AbilityId;
+import com.easternsauce.actionrpg.model.id.AbilityId;
 import com.easternsauce.actionrpg.model.action.CreatureChangeAimDirectionAction;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.creature.CreatureId;
+import com.easternsauce.actionrpg.model.id.CreatureId;
 import com.easternsauce.actionrpg.model.util.TeleportEvent;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.util.Constants;
@@ -47,7 +47,7 @@ public class CoreGameClient extends CoreGame {
   private CoreGameClient() {
   }
 
-  public static CoreGameClient getInstance() {
+  public static CoreGameClient of() {
     if (instance == null) {
       instance = new CoreGameClient();
     }
@@ -110,7 +110,7 @@ public class CoreGameClient extends CoreGame {
   public Set<AbilityId> getAbilitiesToUpdate() {
     Creature player = getCreature(getGameState().getThisClientPlayerId());
 
-    if (player == null) {
+    if (player.isNull()) {
       return new ConcurrentSkipListSet<>();
     }
 

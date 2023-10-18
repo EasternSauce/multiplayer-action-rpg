@@ -8,8 +8,7 @@ import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
 import com.easternsauce.actionrpg.model.ability.util.PointTargetedAbilityUtils;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
-import com.easternsauce.actionrpg.model.creature.CreatureId;
-import com.easternsauce.actionrpg.model.creature.NullCreature;
+import com.easternsauce.actionrpg.model.id.CreatureId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -74,7 +73,7 @@ public class LightningSpark extends Ability {
     Creature targetCreature = game.getCreature(
       game.getGameState().accessCreatures().getAliveCreatureIdClosestTo(getParams().getPos(), 13f, excluded, game));
 
-    if (!(targetCreature instanceof NullCreature)) {
+    if (!(targetCreature.isNull())) {
       Vector2 pos = getParams().getPos();
       Vector2 pos1 = targetCreature.getParams().getPos();
 

@@ -4,7 +4,7 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.command.*;
 import com.easternsauce.actionrpg.model.action.PlayerJoinAction;
 import com.easternsauce.actionrpg.model.action.PlayerLeaveAction;
-import com.easternsauce.actionrpg.model.creature.CreatureId;
+import com.easternsauce.actionrpg.model.id.CreatureId;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import lombok.AllArgsConstructor;

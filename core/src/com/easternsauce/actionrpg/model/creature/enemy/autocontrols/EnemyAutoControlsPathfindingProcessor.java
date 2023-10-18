@@ -2,7 +2,7 @@ package com.easternsauce.actionrpg.model.creature.enemy.autocontrols;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.creature.CreatureId;
+import com.easternsauce.actionrpg.model.id.CreatureId;
 import com.easternsauce.actionrpg.model.creature.enemy.Enemy;
 import com.easternsauce.actionrpg.model.creature.enemy.EnemyParams;
 import com.easternsauce.actionrpg.model.util.Vector2;
@@ -83,7 +83,7 @@ public class EnemyAutoControlsPathfindingProcessor {
 
     private List<Vector2> mirrorPathFromNearbyCreature(CreatureId creatureId, CreatureId targetId, CoreGame game) { // TODO: check if this properly serves its purpose, it may be useless
         Creature creature = game.getCreature(creatureId);
-        if (creature == null) {
+        if (creature.isNull()) {
             return new LinkedList<>();
         } else {
             Predicate<Creature> creaturePredicate = otherCreature -> {

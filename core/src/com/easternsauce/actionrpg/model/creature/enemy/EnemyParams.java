@@ -1,6 +1,6 @@
 package com.easternsauce.actionrpg.model.creature.enemy;
 
-import com.easternsauce.actionrpg.model.creature.CreatureId;
+import com.easternsauce.actionrpg.model.id.CreatureId;
 import com.easternsauce.actionrpg.model.creature.enemy.autocontrols.EnemyAutoControlsState;
 import com.easternsauce.actionrpg.model.util.SimpleTimer;
 import com.easternsauce.actionrpg.model.util.Vector2;
@@ -14,7 +14,7 @@ import java.util.Set;
 @NoArgsConstructor(staticName = "of")
 @Data
 public class EnemyParams {
-  private CreatureId targetCreatureId;
+  private CreatureId targetCreatureId = null;
   @NonNull
   private Boolean forcePathCalculation = false;
   @NonNull
@@ -25,9 +25,9 @@ public class EnemyParams {
   @NonNull
   private Float loseAggroTime = 3f;
   @SuppressWarnings("SpellCheckingInspection")
-  private CreatureId aggroedCreatureId;
-  private CreatureId justAttackedByCreatureId;
-  private CreatureId lastFoundTargetId;
+  private CreatureId aggroedCreatureId = null;
+  private CreatureId justAttackedByCreatureId = null;
+  private CreatureId lastFoundTargetId = null;
   @NonNull
   private SimpleTimer findTargetTimer = SimpleTimer.getExpiredTimer();
   @NonNull

@@ -1,7 +1,7 @@
 package com.easternsauce.actionrpg.physics.event;
 
-import com.easternsauce.actionrpg.model.area.CheckpointId;
-import com.easternsauce.actionrpg.model.creature.CreatureId;
+import com.easternsauce.actionrpg.model.id.CheckpointId;
+import com.easternsauce.actionrpg.model.id.CreatureId;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

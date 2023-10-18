@@ -3,7 +3,7 @@ package com.easternsauce.actionrpg.physics.body;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.area.LootPile;
-import com.easternsauce.actionrpg.model.area.LootPileId;
+import com.easternsauce.actionrpg.model.id.LootPileId;
 import com.easternsauce.actionrpg.physics.world.PhysicsWorld;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.area.AreaId;
 import com.easternsauce.actionrpg.model.area.LootPile;
-import com.easternsauce.actionrpg.model.area.LootPileId;
+import com.easternsauce.actionrpg.model.id.LootPileId;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

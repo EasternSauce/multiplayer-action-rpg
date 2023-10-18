@@ -6,8 +6,7 @@ import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import com.easternsauce.actionrpg.model.ability.AbilityType;
 import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.creature.CreatureId;
-import com.easternsauce.actionrpg.model.creature.NullCreature;
+import com.easternsauce.actionrpg.model.id.CreatureId;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -57,7 +56,7 @@ public class LightningNode extends Ability {
     Creature targetCreature = game.getCreature(
       game.getGameState().accessCreatures().getAliveCreatureIdClosestTo(getParams().getPos(), 13f, excluded, game));
 
-    if (!(targetCreature instanceof NullCreature)) {
+    if (!(targetCreature.isNull())) {
 
       if (getParams().getCreaturesAlreadyHit().size() <= 10 &&
         !game.isLineBetweenPointsObstructedByTerrain(getParams().getAreaId(), getParams().getPos(),
