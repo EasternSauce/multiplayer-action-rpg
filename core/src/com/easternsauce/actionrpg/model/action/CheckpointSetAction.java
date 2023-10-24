@@ -5,6 +5,7 @@ import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.area.Checkpoint;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullCheckpointId;
 import com.easternsauce.actionrpg.model.id.NullCreatureId;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class CheckpointSetAction extends GameStateAction {
   private EntityId<Creature> playerId = NullCreatureId.of();
-  private EntityId<Checkpoint> checkpointId;
+  private EntityId<Checkpoint> checkpointId = NullCheckpointId.of();
 
   public static CheckpointSetAction of(EntityId<Creature> playerId, EntityId<Checkpoint> checkpointId) {
     CheckpointSetAction action = CheckpointSetAction.of();

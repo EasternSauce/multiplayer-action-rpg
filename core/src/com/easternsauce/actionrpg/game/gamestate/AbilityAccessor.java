@@ -116,7 +116,7 @@ public class AbilityAccessor {
   }
 
   public Ability getAbility(EntityId<Ability> abilityId) {
-    if (abilityId == null || !getData().getAbilities().containsKey(abilityId)) {
+    if (abilityId.isNull() || !getData().getAbilities().containsKey(abilityId)) {
       return NullAbility.of();
     } else {
       return getData().getAbilities().get(abilityId);

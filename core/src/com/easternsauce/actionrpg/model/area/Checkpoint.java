@@ -3,6 +3,8 @@ package com.easternsauce.actionrpg.model.area;
 import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.game.entity.EntityParams;
 import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullAreaId;
+import com.easternsauce.actionrpg.model.id.NullCheckpointId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,9 +20,9 @@ public class Checkpoint implements Entity {
   @Getter
   private final Float height = 2f;
   @Getter
-  private EntityId<Checkpoint> checkpointId;
+  private EntityId<Checkpoint> checkpointId = NullCheckpointId.of();
   @Getter
-  private EntityId<Area> areaId;
+  private EntityId<Area> areaId = NullAreaId.of();
   @Getter
   private Vector2 pos;
 

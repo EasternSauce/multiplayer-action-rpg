@@ -2,6 +2,7 @@ package com.easternsauce.actionrpg.model.area;
 
 import com.easternsauce.actionrpg.game.entity.EntityParams;
 import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullAreaId;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.AllArgsConstructor;
@@ -17,7 +18,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
 public class LootPileParams implements EntityParams {
   private EntityId<LootPile> id;
 
-  private EntityId<Area> areaId;
+  private EntityId<Area> areaId = NullAreaId.of();
 
   private Vector2 pos;
   private Set<Item> items = new ConcurrentSkipListSet<>();

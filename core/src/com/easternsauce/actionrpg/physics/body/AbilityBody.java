@@ -6,6 +6,7 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullAbilityId;
 import com.easternsauce.actionrpg.model.id.NullCreatureId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.physics.world.PhysicsWorld;
@@ -17,7 +18,7 @@ import lombok.NoArgsConstructor;
 public class AbilityBody {
   private final Sprite sprite = new Sprite(); // only used for calculating vertices
   @Getter
-  private EntityId<Ability> abilityId;
+  private EntityId<Ability> abilityId = NullAbilityId.of();
   @Getter
   private EntityId<Creature> creatureId = NullCreatureId.of();
   @Getter

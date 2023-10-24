@@ -13,7 +13,7 @@ public class EnemySkillUseEntry implements Comparable<EnemySkillUseEntry> {
   @Getter
   Float skillUseRange;
   @Getter
-  Float weight;
+  Integer weight;
 
   @Override
   public int compareTo(EnemySkillUseEntry o) {

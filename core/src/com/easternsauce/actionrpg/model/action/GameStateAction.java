@@ -29,7 +29,7 @@ public abstract class GameStateAction {
   public abstract Entity getEntity(CoreGame game);
 
   public final EntityId<Area> getActionObjectAreaId(CoreGame game) {
-    if (getOverrideAreaId() != null) {
+    if (!getOverrideAreaId().isNull()) {
       return getOverrideAreaId();
     }
     Entity entity = getEntity(game);
@@ -44,6 +44,6 @@ public abstract class GameStateAction {
   }
 
   public boolean isActionObjectValid(CoreGame game) {
-    return (getEntity(game) != null) || (getOverridePos() != null && getOverrideAreaId() != null);
+    return (getEntity(game) != null) || (getOverridePos() != null && !getOverrideAreaId().isNull());
   }
 }

@@ -7,6 +7,8 @@ import com.easternsauce.actionrpg.model.creature.enemy.EnemyParams;
 import com.easternsauce.actionrpg.model.creature.enemy.EnemyTemplate;
 import com.easternsauce.actionrpg.model.enemyrallypoint.EnemyRallyPoint;
 import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullAreaId;
+import com.easternsauce.actionrpg.model.id.NullCheckpointId;
 import com.easternsauce.actionrpg.model.id.NullCreatureId;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.item.ItemTemplate;
@@ -45,12 +47,12 @@ public class CreatureParams implements EntityParams {
 
   private Vector2 pos;
   @NonNull
-  private EntityId<Area> areaId;
+  private EntityId<Area> areaId = NullAreaId.of();
 
   @NonNull
   private Vector2 initialPos;
   @NonNull
-  private EntityId<Area> initialAreaId;
+  private EntityId<Area> initialAreaId = NullAreaId.of();
 
   @NonNull
   private SimpleTimer animationTimer = SimpleTimer.getStartedTimer();
@@ -101,7 +103,7 @@ public class CreatureParams implements EntityParams {
   @NonNull
   private Float lastTimeUsedSkill = -Float.MAX_VALUE;
 
-  private EntityId<Checkpoint> currentCheckpointId = null;
+  private EntityId<Checkpoint> currentCheckpointId = NullCheckpointId.of();
 
   private Integer stunResistance = 0;
   private SimpleTimer stunResistanceReductionTimer = SimpleTimer.getExpiredTimer();

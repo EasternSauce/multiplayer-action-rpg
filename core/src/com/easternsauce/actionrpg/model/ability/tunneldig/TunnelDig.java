@@ -7,6 +7,7 @@ import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
 import com.easternsauce.actionrpg.model.ability.Projectile;
 import com.easternsauce.actionrpg.model.ability.util.AbilityRotationUtils;
 import com.easternsauce.actionrpg.model.creature.Creature;
+import com.easternsauce.actionrpg.model.creature.NullCreature;
 import com.easternsauce.actionrpg.model.creature.Player;
 import com.easternsauce.actionrpg.model.creature.enemy.Enemy;
 import com.easternsauce.actionrpg.model.id.EntityId;
@@ -52,7 +53,7 @@ public class TunnelDig extends Projectile {
     Creature thisCreature = game.getCreature(getParams().getCreatureId());
 
     if (getParams().getTickActionTimer().getTime() > 0.015f) {
-      Creature minimumDistanceCreature = null;
+      Creature minimumDistanceCreature = NullCreature.of();
       float minimumDistance = Float.MAX_VALUE;
 
       for (Creature creature : game.getActiveCreatures().values().stream().filter(targetCreature ->
@@ -66,7 +67,7 @@ public class TunnelDig extends Projectile {
         }
       }
 
-      if (!minimumDistanceCreature.isNull()) { // TODO!!!!!
+      if (!minimumDistanceCreature.isNull()) {
         float incrementFactor = 2f;
 
         float increment;

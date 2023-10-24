@@ -8,6 +8,7 @@ import com.easternsauce.actionrpg.model.creature.enemy.Enemy;
 import com.easternsauce.actionrpg.model.creature.enemy.EnemyTemplate;
 import com.easternsauce.actionrpg.model.enemyrallypoint.EnemyRallyPoint;
 import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullAreaId;
 import com.easternsauce.actionrpg.model.id.NullCreatureId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.AllArgsConstructor;
@@ -19,7 +20,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class EnemySpawnAction extends GameStateAction {
   private EntityId<Creature> creatureId = NullCreatureId.of();
-  private EntityId<Area> areaId;
+  private EntityId<Area> areaId = NullAreaId.of();
   private EntityId<EnemyRallyPoint> enemyRallyPointId;
   private EnemyTemplate enemyTemplate;
 

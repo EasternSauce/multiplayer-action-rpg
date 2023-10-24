@@ -4,6 +4,8 @@ import com.easternsauce.actionrpg.game.entity.EntityParams;
 import com.easternsauce.actionrpg.model.area.Area;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullAbilityId;
+import com.easternsauce.actionrpg.model.id.NullAreaId;
 import com.easternsauce.actionrpg.model.id.NullCreatureId;
 import com.easternsauce.actionrpg.model.skill.SkillType;
 import com.easternsauce.actionrpg.model.util.CreaturesHitCounter;
@@ -22,9 +24,9 @@ import java.util.concurrent.ConcurrentSkipListMap;
 public class AbilityParams implements EntityParams {
   Vector2 chainToPos;
   @NonNull
-  private EntityId<Ability> id;
+  private EntityId<Ability> id = NullAbilityId.of();
   @NonNull
-  private EntityId<Area> areaId;
+  private EntityId<Area> areaId = NullAreaId.of();
   @NonNull
   private AbilityState state = AbilityState.INACTIVE;
   private Vector2 pos;

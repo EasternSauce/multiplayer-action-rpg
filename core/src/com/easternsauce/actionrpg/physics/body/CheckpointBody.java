@@ -5,6 +5,7 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.area.Area;
 import com.easternsauce.actionrpg.model.area.Checkpoint;
 import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullCheckpointId;
 import com.easternsauce.actionrpg.physics.world.PhysicsWorld;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,7 @@ public class CheckpointBody {
   private PhysicsWorld world;
 
   @Getter
-  private EntityId<Checkpoint> checkpointId;
+  private EntityId<Checkpoint> checkpointId = NullCheckpointId.of();
 
   public static CheckpointBody of(EntityId<Checkpoint> checkpointId) {
     CheckpointBody checkpointBody = CheckpointBody.of();

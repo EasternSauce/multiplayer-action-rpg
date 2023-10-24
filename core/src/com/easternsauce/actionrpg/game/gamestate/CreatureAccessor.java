@@ -12,6 +12,7 @@ import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.skill.SkillType;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.util.Constants;
+import com.easternsauce.actionrpg.util.MapUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,27 +34,13 @@ public class CreatureAccessor {
   private GameStateDataHolder dataHolder;
 
   private static SkillType pickRandomSkillToUse(Set<EnemySkillUseEntry> skillUseEntries, Float distanceToTarget, CoreGame game) {
-    AtomicReference<Float> totalWeight = new AtomicReference<>((float) 0);
-
     Set<EnemySkillUseEntry> filteredSkillUseEntries = skillUseEntries.stream()
       .filter(enemySkillUseEntry -> enemySkillUseEntry.getSkillUseRange() > distanceToTarget)
       .collect(Collectors.toSet());
 
-    filteredSkillUseEntries.forEach(skillUseEntry -> totalWeight.set(totalWeight.get() + skillUseEntry.getWeight()));
+    Map<EnemySkillUseEntry, Integer> map = filteredSkillUseEntries.stream().collect(Collectors.toMap(e -> e, EnemySkillUseEntry::getWeight));
 
-    float randFloat = Math.abs(game.getGameState().getRandomGenerator().nextFloat());
-    AtomicReference<Float> randValue = new AtomicReference<>(randFloat * totalWeight.get());
-
-    AtomicReference<SkillType> pickedSkillType = new AtomicReference<>(null);
-
-    filteredSkillUseEntries.forEach(skillUseEntry -> {
-      if (pickedSkillType.get() == null && randValue.get() < skillUseEntry.getWeight()) {
-        pickedSkillType.set(skillUseEntry.getSkillType());
-      }
-      randValue.set(randValue.get() - skillUseEntry.getWeight());
-    });
-
-    return pickedSkillType.get();
+    return MapUtils.getRandomElementOfWeightedMap(map, game.getGameState().getRandomGenerator().nextFloat()).getSkillType();
   }
 
   public Set<EntityId<Creature>> getActiveCreatureIds() {

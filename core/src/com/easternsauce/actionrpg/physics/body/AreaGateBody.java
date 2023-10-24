@@ -5,6 +5,7 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.area.Area;
 import com.easternsauce.actionrpg.model.area.AreaGate;
 import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullAreaGateId;
 import com.easternsauce.actionrpg.physics.world.PhysicsWorld;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,7 @@ public class AreaGateBody {
   private PhysicsWorld world;
 
   @Getter
-  private EntityId<AreaGate> areaGateId;
+  private EntityId<AreaGate> areaGateId = NullAreaGateId.of();
 
   public static AreaGateBody of(EntityId<AreaGate> areaGateId) {
     AreaGateBody areaGateBody = AreaGateBody.of();

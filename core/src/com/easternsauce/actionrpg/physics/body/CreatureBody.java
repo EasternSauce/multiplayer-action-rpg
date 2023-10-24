@@ -6,6 +6,7 @@ import com.easternsauce.actionrpg.model.area.Area;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
 import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullAreaId;
 import com.easternsauce.actionrpg.model.id.NullCreatureId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.physics.world.PhysicsWorld;
@@ -23,7 +24,7 @@ public class CreatureBody {
   private PhysicsWorld world;
 
   @Getter
-  private EntityId<Area> areaId;
+  private EntityId<Area> areaId = NullAreaId.of();
 
   private Boolean isActive = true;
 

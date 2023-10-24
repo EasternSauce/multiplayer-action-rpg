@@ -110,7 +110,7 @@ public class GameEntityManager {
   }
 
   public void removeAbilityEntity(EntityId<Ability> abilityId, CoreGame game) {
-    if (abilityId != null) {
+    if (!abilityId.isNull()) {
       game.getAbilities().remove(abilityId);
 
       getGameEntityRenderer().getAbilityRenderers().remove(abilityId);
@@ -123,7 +123,7 @@ public class GameEntityManager {
   }
 
   public void removeLootPileEntity(EntityId<LootPile> lootPileId, CoreGame game) {
-    if (lootPileId != null) {
+    if (!lootPileId.isNull()) {
 
       game.getGameState().getLootPiles().remove(lootPileId);
 
@@ -192,8 +192,8 @@ public class GameEntityManager {
     Set<EntityId<Ability>> abilitiesToUpdate = new ConcurrentSkipListSet<>(game.getAbilitiesToUpdate());
 
     abilitiesToUpdate.forEach(abilityId -> {
-      if (abilityId != null && game.getAbilities().containsKey(abilityId) &&
-        game.getAbility(abilityId) != null) {
+      if (!abilityId.isNull() && game.getAbilities().containsKey(abilityId) &&
+        !game.getAbility(abilityId).isNull()) {
         Ability ability = game.getAbility(abilityId);
 
         ability.onUpdateState(delta, game);
@@ -203,8 +203,8 @@ public class GameEntityManager {
     Map<EntityId<Ability>, Ability> abilities = new ConcurrentSkipListMap<>(game.getAbilities());
 
     abilities.forEach((abilityId, ability) -> {
-      if (abilityId != null && abilities.containsKey(abilityId) &&
-        game.getAbility(abilityId) != null) {
+      if (!abilityId.isNull() && abilities.containsKey(abilityId) &&
+        !game.getAbility(abilityId).isNull()) {
         ability.update(delta, game);
       }
     });
@@ -286,8 +286,7 @@ public class GameEntityManager {
   }
 
   public void removeAreaGateEntity(EntityId<AreaGate> areaGateId, CoreGame game) {
-    if (areaGateId != null) {
-
+    if (!areaGateId.isNull()) {
       game.getGameState().getAreaGates().remove(areaGateId);
 
       getGameEntityRenderer().getAreaGateRenderers().remove(areaGateId);
@@ -317,7 +316,7 @@ public class GameEntityManager {
   }
 
   public void removeCheckpointEntity(EntityId<Checkpoint> checkpointId, CoreGame game) {
-    if (checkpointId != null) {
+    if (!checkpointId.isNull()) {
       game.getGameState().getCheckpoints().remove(checkpointId);
 
       getGameEntityRenderer().getCheckpointRenderers().remove(checkpointId);

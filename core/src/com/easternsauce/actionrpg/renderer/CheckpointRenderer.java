@@ -6,6 +6,7 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.area.Area;
 import com.easternsauce.actionrpg.model.area.Checkpoint;
 import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullCheckpointId;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,7 +14,7 @@ import lombok.Setter;
 @NoArgsConstructor(staticName = "of")
 public class CheckpointRenderer {
   @Getter
-  private EntityId<Checkpoint> checkpointId;
+  private EntityId<Checkpoint> checkpointId = NullCheckpointId.of();
 
   @Getter
   private Sprite regularSprite;

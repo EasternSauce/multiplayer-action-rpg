@@ -5,6 +5,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.easternsauce.actionrpg.model.area.Area;
 import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullAreaId;
 import com.easternsauce.actionrpg.util.Constants;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(staticName = "of")
 public class AreaRenderer {
   @Getter
-  private EntityId<Area> id;
+  private EntityId<Area> id = NullAreaId.of();
   @Getter
   private OrthogonalTiledMapRenderer tiledMapRenderer;
 

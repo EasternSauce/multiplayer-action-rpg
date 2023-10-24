@@ -8,6 +8,7 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.ability.AbilityState;
 import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullAbilityId;
 import com.easternsauce.actionrpg.renderer.animationconfig.AbilityAnimationConfig;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 public class AbilityRenderer {
   @Getter
-  private EntityId<Ability> abilityId;
+  private EntityId<Ability> abilityId = NullAbilityId.of();
 
   @Getter
   private Sprite sprite;
