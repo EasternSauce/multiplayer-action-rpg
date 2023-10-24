@@ -16,7 +16,6 @@ import com.easternsauce.actionrpg.util.MapUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -68,7 +67,7 @@ public class CreatureAccessor {
         Creature creature = getCreature(creatureId);
         if (creature.isCurrentlyActive(game)) {
           return player.getParams().getAreaId().equals(creature.getParams().getAreaId()) &&
-                  creature.getParams().getPos().distance(player.getParams().getPos()) < Constants.CLIENT_GAME_UPDATE_RANGE;
+            creature.getParams().getPos().distance(player.getParams().getPos()) < Constants.CLIENT_GAME_UPDATE_RANGE;
         } else {
           return false;
         }

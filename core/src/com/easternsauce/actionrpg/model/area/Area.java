@@ -6,8 +6,8 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 public class Area implements Entity {
-    @Override
-    public EntityParams getParams() {
-        return null;
-    }
+  @Override
+  public EntityParams getParams() {
+    return null;
+  }
 }

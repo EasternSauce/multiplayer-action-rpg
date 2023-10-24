@@ -60,7 +60,7 @@ public class ItemDropOnGroundAction extends GameStateAction {
       lootPileItems.add(item.copy().setLootPileId(lootPileId));
 
       LootPile lootPile = LootPile.of(lootPileId, player.getParams().getAreaId(), player.getParams().getPos(),
-              lootPileItems);
+        lootPileItems);
 
       game.getGameState().getLootPiles().put(lootPile.getParams().getId(), lootPile);
 

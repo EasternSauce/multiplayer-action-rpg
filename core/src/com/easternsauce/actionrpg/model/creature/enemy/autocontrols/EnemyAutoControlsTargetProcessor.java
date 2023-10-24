@@ -23,7 +23,7 @@ public class EnemyAutoControlsTargetProcessor {
     Creature potentialTarget;
     if (creature.getEnemyParams().getAggroedCreatureId() != null) {
       potentialTarget = game.getCreature(creature.getEnemyParams().getAggroedCreatureId());
-    }else {
+    } else {
       potentialTarget = null;
     }
 

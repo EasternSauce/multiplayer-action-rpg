@@ -1,6 +1,8 @@
 package com.easternsauce.actionrpg.game;
 
-import com.easternsauce.actionrpg.model.area.*;
+import com.easternsauce.actionrpg.model.area.Area;
+import com.easternsauce.actionrpg.model.area.AreaGate;
+import com.easternsauce.actionrpg.model.area.Checkpoint;
 import com.easternsauce.actionrpg.model.creature.enemy.EnemyTemplate;
 import com.easternsauce.actionrpg.model.enemyrallypoint.EnemyRallyPoint;
 import com.easternsauce.actionrpg.model.enemyrallypoint.EnemyRallyPointInfo;

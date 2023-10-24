@@ -18,6 +18,7 @@ public class NullAbility extends Ability {
     }
     return instance;
   }
+
   @Override
   public Boolean isPositionChangedOnUpdate() {
     return false;

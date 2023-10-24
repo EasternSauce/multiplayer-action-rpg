@@ -1,7 +1,10 @@
 package com.easternsauce.actionrpg.model.ability.shieldguard;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.ability.*;
+import com.easternsauce.actionrpg.model.ability.Ability;
+import com.easternsauce.actionrpg.model.ability.AbilityParams;
+import com.easternsauce.actionrpg.model.ability.AbilityState;
+import com.easternsauce.actionrpg.model.ability.AttachedAbility;
 import com.easternsauce.actionrpg.model.ability.boomerang.Boomerang;
 import com.easternsauce.actionrpg.model.ability.ricochetbullet.RicochetBullet;
 import com.easternsauce.actionrpg.model.creature.Creature;
