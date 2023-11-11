@@ -4,6 +4,7 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.Player;
 import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullCreatureId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.util.Constants;
 import lombok.NoArgsConstructor;
@@ -167,10 +168,10 @@ public class EnemyAutoControlsTargetProcessor {
   public void handleTargetLost(EntityId<Creature> creatureId, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
-    creature.getEnemyParams().setAggroedCreatureId(null);
-    creature.getEnemyParams().setTargetCreatureId(null);
-    creature.getEnemyParams().setJustAttackedByCreatureId(null);
-    creature.getEnemyParams().setLastFoundTargetId(null);
+    creature.getEnemyParams().setAggroedCreatureId(NullCreatureId.of());
+    creature.getEnemyParams().setTargetCreatureId(NullCreatureId.of());
+    creature.getEnemyParams().setJustAttackedByCreatureId(NullCreatureId.of());
+    creature.getEnemyParams().setLastFoundTargetId(NullCreatureId.of());
     creature.getEnemyParams().setAutoControlsState(EnemyAutoControlsState.RESTING);
 
     creature.stopMoving();

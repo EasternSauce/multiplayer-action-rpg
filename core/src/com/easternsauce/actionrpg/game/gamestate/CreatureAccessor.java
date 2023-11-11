@@ -13,13 +13,14 @@ import com.easternsauce.actionrpg.model.skill.SkillType;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.util.Constants;
 import com.easternsauce.actionrpg.util.MapUtils;
+import com.easternsauce.actionrpg.util.OrderedMap;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -37,9 +38,15 @@ public class CreatureAccessor {
       .filter(enemySkillUseEntry -> enemySkillUseEntry.getSkillUseRange() > distanceToTarget)
       .collect(Collectors.toSet());
 
-    Map<EnemySkillUseEntry, Integer> map = filteredSkillUseEntries.stream().collect(Collectors.toMap(e -> e, EnemySkillUseEntry::getWeight));
+    if (filteredSkillUseEntries.isEmpty()) {
+      return null;
+    } else {
+      Map<EnemySkillUseEntry, Integer> map = filteredSkillUseEntries.stream().collect(Collectors.toMap(e -> e, EnemySkillUseEntry::getWeight, (o1, o2) -> o1, OrderedMap::new));
 
-    return MapUtils.getRandomElementOfWeightedMap(map, game.getGameState().getRandomGenerator().nextFloat()).getSkillType();
+      EnemySkillUseEntry randomElementOfWeightedMap = MapUtils.getRandomElementOfWeightedMap(map, game.getGameState().getRandomGenerator().nextFloat());
+
+      return randomElementOfWeightedMap.getSkillType();
+    }
   }
 
   public Set<EntityId<Creature>> getActiveCreatureIds() {
@@ -61,7 +68,7 @@ public class CreatureAccessor {
     Creature player = getData().getCreatures().get(playerCreatureId);
 
     if (player.isNull()) {
-      return new HashSet<>();
+      return new ConcurrentSkipListSet<>();
     } else {
       return getData().getCreatures().keySet().stream().filter(creatureId -> {
         Creature creature = getCreature(creatureId);
@@ -71,7 +78,7 @@ public class CreatureAccessor {
         } else {
           return false;
         }
-      }).collect(Collectors.toSet());
+      }).collect(Collectors.toCollection(ConcurrentSkipListSet::new));
     }
 
 

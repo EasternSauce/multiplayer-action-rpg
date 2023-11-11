@@ -32,6 +32,8 @@ public class AreaGateBody {
     EntityId<Area> areaId = areaGate.getAreaId();
     world = game.getEntityManager().getGameEntityPhysics().getPhysicsWorlds().get(areaId);
 
+    if (world == null) throw new RuntimeException("wot");
+
     b2body = B2BodyFactory.createAreaGateB2body(world, this, areaGate.getPos(), areaGate.getWidth(),
       areaGate.getHeight());
   }

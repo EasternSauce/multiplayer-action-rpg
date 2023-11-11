@@ -27,4 +27,13 @@ public class EntityId<T extends Entity> implements Comparable<EntityId<T>> {
   public boolean isNull() {
     return false;
   }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof EntityId<?>)) {
+      return false;
+    }
+
+    return value.equals(((EntityId<?>) obj).value);
+  }
 }

@@ -3,7 +3,10 @@ package com.easternsauce.actionrpg.renderer.util;
 import com.badlogic.gdx.graphics.Color;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.assets.Assets;
+import com.easternsauce.actionrpg.model.area.Area;
+import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.util.Vector2;
+import com.easternsauce.actionrpg.renderer.AreaRenderer;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
 import com.easternsauce.actionrpg.renderer.game.GameEntityRenderer;
 import com.easternsauce.actionrpg.renderer.physics.PhysicsDebugRenderer;
@@ -12,6 +15,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @NoArgsConstructor(staticName = "of")
 public class GameplayRenderer {
@@ -40,8 +44,12 @@ public class GameplayRenderer {
 
   private void renderAreaLayers(GameEntityRenderer renderer, List<Integer> layers, CoreGame game) {
     int[] layersArray = layers.stream().mapToInt(Integer::intValue).toArray();
-    if (renderer.getAreaRenderers().containsKey(game.getCurrentAreaId())) {
-      renderer.getAreaRenderers().get(game.getCurrentAreaId()).render(layersArray);
+
+    EntityId<Area> currentAreaId = game.getCurrentAreaId();
+    Map<EntityId<Area>, AreaRenderer> areaRenderers = renderer.getAreaRenderers();
+
+    if (areaRenderers.containsKey(currentAreaId)) {
+      areaRenderers.get(currentAreaId).render(layersArray);
     }
   }
 

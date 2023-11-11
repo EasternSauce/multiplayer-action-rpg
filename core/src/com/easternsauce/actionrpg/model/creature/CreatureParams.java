@@ -17,6 +17,7 @@ import com.easternsauce.actionrpg.model.skill.SkillType;
 import com.easternsauce.actionrpg.model.util.RandomGenerator;
 import com.easternsauce.actionrpg.model.util.SimpleTimer;
 import com.easternsauce.actionrpg.model.util.Vector2;
+import com.easternsauce.actionrpg.util.OrderedMap;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -25,7 +26,6 @@ import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -74,17 +74,17 @@ public class CreatureParams implements EntityParams {
   private Boolean awaitingRespawn = false;
 
   @NonNull
-  private Map<SkillType, Skill> skills = new ConcurrentSkipListMap<>();
+  private Map<SkillType, Skill> skills = new OrderedMap<>();
 
   @NonNull
   private Set<DropTableEntry> dropTable = new ConcurrentSkipListSet<>();
 
   @NonNull
-  private Map<Integer, Item> equipmentItems = new ConcurrentSkipListMap<>();
+  private Map<Integer, Item> equipmentItems = new OrderedMap<>();
   @NonNull
-  private Map<Integer, Item> inventoryItems = new ConcurrentSkipListMap<>();
+  private Map<Integer, Item> inventoryItems = new OrderedMap<>();
   @NonNull
-  private Map<Integer, Item> potionMenuItems = new ConcurrentSkipListMap<>();
+  private Map<Integer, Item> potionMenuItems = new OrderedMap<>();
 
   @NonNull
   private Float dropRngSeed = (float) Math.random(); // TODO: use random generator
@@ -122,15 +122,15 @@ public class CreatureParams implements EntityParams {
     params.textureName = textureName;
 
     Map<SkillType, Skill> allPossibleSkills = Arrays.stream(SkillType.values())
-      .collect(Collectors.toMap(Function.identity(), skillType -> Skill.of(skillType, creatureId)));
+      .collect(Collectors.toMap(Function.identity(), skillType -> Skill.of(skillType, creatureId), (o1, o2) -> o1, OrderedMap::new));
 
     // TODO: should we restrict which creature can perform which skill?
-    params.skills = new ConcurrentSkipListMap<>(allPossibleSkills);
+    params.skills = new OrderedMap<>(allPossibleSkills);
 
     Map<CreatureEffect, CreatureEffectState> allPossibleEffects = Arrays.stream(CreatureEffect.values())
-      .collect(Collectors.toMap(effect -> effect, effect -> CreatureEffectState.of()));
+      .collect(Collectors.toMap(effect -> effect, effect -> CreatureEffectState.of(), (o1, o2) -> o1, OrderedMap::new));
 
-    params.getEffectParams().setEffects(new ConcurrentSkipListMap<>(allPossibleEffects));
+    params.getEffectParams().setEffects(new OrderedMap<>(allPossibleEffects));
 
     params.setRandomGenerator(RandomGenerator.of(rngSeed));
 
@@ -139,11 +139,11 @@ public class CreatureParams implements EntityParams {
 
   public static CreatureParams of(EntityId<Creature> creatureId, EntityId<Area> areaId, Vector2 pos, String textureName, int rngSeed) {
     // TODO remove later
-    Map<Integer, Item> potionMenuItems = new ConcurrentSkipListMap<>();
+    Map<Integer, Item> potionMenuItems = new OrderedMap<>();
     potionMenuItems.put(0, Item.of().setTemplate(ItemTemplate.templates.get("lifePotion")));
     potionMenuItems.put(1, Item.of().setTemplate(ItemTemplate.templates.get("lifePotion")));
 
-    Map<Integer, Item> inventoryItems = new ConcurrentSkipListMap<>();
+    Map<Integer, Item> inventoryItems = new OrderedMap<>();
     inventoryItems.put(2, Item.of().setTemplate(ItemTemplate.templates.get("lifePotion")));
     inventoryItems.put(4, Item.of().setTemplate(ItemTemplate.templates.get("topazRing")));
     inventoryItems.put(5, Item.of().setTemplate(ItemTemplate.templates.get("rubyRing")));
@@ -152,7 +152,7 @@ public class CreatureParams implements EntityParams {
           new AbstractMap.SimpleEntry<>(SkillType.MAGIC_ORB, 1),
           new AbstractMap.SimpleEntry<>(SkillType.VOLATILE_BUBBLE, 1),
           new AbstractMap.SimpleEntry<>(SkillType.SUMMON_GHOSTS, 1))
-        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue))));
+        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue, (o1, o2) -> o1, OrderedMap::new))));
     // TODO
 
     return produceCreatureParams(creatureId, areaId, pos, textureName, rngSeed).setPotionMenuItems(potionMenuItems)

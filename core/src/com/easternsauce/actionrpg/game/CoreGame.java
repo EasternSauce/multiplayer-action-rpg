@@ -28,6 +28,7 @@ import com.easternsauce.actionrpg.renderer.hud.HudRenderer;
 import com.easternsauce.actionrpg.renderer.physics.PhysicsDebugRenderer;
 import com.easternsauce.actionrpg.renderer.util.Rect;
 import com.easternsauce.actionrpg.util.Constants;
+import com.easternsauce.actionrpg.util.OrderedMap;
 import com.esotericsoftware.kryonet.EndPoint;
 import lombok.Getter;
 import lombok.Setter;
@@ -184,7 +185,7 @@ public abstract class CoreGame extends Game {
   public Map<EntityId<Creature>, Creature> getActiveCreatures() {
     return getGameState().accessCreatures().getCreatures().entrySet().stream()
       .filter(entry -> entry.getValue().isCurrentlyActive(this))
-      .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+      .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (o1, o2) -> o1, OrderedMap::new));
   }
 
   public Creature getCreature(EntityId<Creature> creatureId) {

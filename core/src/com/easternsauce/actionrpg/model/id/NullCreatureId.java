@@ -1,7 +1,9 @@
 package com.easternsauce.actionrpg.model.id;
 
 import com.easternsauce.actionrpg.model.creature.Creature;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true)
 public class NullCreatureId extends EntityId<Creature> {
   private static NullCreatureId instance;
 

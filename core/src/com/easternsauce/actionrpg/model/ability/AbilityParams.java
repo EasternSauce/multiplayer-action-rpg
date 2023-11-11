@@ -12,12 +12,12 @@ import com.easternsauce.actionrpg.model.util.CreaturesHitCounter;
 import com.easternsauce.actionrpg.model.util.RandomGenerator;
 import com.easternsauce.actionrpg.model.util.SimpleTimer;
 import com.easternsauce.actionrpg.model.util.Vector2;
+import com.easternsauce.actionrpg.util.OrderedMap;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import java.util.Map;
-import java.util.concurrent.ConcurrentSkipListMap;
 
 @NoArgsConstructor(staticName = "of")
 @Data
@@ -55,7 +55,7 @@ public class AbilityParams implements EntityParams {
   @NonNull
   private Float startingRange = 0f;
   @NonNull
-  private Map<EntityId<Creature>, Float> creaturesAlreadyHit = new ConcurrentSkipListMap<>();
+  private Map<EntityId<Creature>, Float> creaturesAlreadyHit = new OrderedMap<>();
   @NonNull
   private CreaturesHitCounter damagingHitCreaturesHitCounter = CreaturesHitCounter.of();
   @NonNull

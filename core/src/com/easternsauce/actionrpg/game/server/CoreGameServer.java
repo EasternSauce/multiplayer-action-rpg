@@ -78,6 +78,7 @@ public class CoreGameServer extends CoreGame {
 
           List<GameStateAction> personalizedTickActions = onTickActions.stream()
             .filter(action -> isActionRelevantForPlayer(player, action)).collect(Collectors.toList());
+
           connection.sendTCP(ActionsHolder.of(personalizedTickActions));
         }
       }

@@ -1,10 +1,7 @@
 package com.easternsauce.actionrpg.physics.body;
 
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.MassData;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.physics.shape.BodyShape;
@@ -28,7 +25,9 @@ public class B2BodyFactory {
     bodyDef.type = bodyType;
     bodyDef.position.set(pos.getX(), pos.getY());
 
-    Body b2body = world.getB2world().createBody(bodyDef);
+    World b2world = world.getB2world();
+
+    Body b2body = b2world.createBody(bodyDef);
 
     b2body.setUserData(userData);
 

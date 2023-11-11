@@ -3,12 +3,12 @@ package com.easternsauce.actionrpg.model.item;
 import com.easternsauce.actionrpg.model.creature.CreatureConstantEffect;
 import com.easternsauce.actionrpg.model.skill.SkillType;
 import com.easternsauce.actionrpg.model.util.Vector2Int;
+import com.easternsauce.actionrpg.util.OrderedMap;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -72,7 +72,7 @@ public class ItemTemplate {
       ironSword, woodenShield, crossbow, lifePotion, manaPotion, topazRing, rubyRing);
 
     List<ItemTemplate> list = new ArrayList<>(templates);
-    ItemTemplate.templates = new ConcurrentSkipListMap<>(
+    ItemTemplate.templates = new OrderedMap<>(
       list.stream().collect(Collectors.toMap(ItemTemplate::getId, itemTemplate -> itemTemplate)));
   }
 

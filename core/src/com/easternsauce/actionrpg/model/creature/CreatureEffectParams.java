@@ -3,18 +3,18 @@ package com.easternsauce.actionrpg.model.creature;
 import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.id.NullCreatureId;
 import com.easternsauce.actionrpg.model.util.SimpleTimer;
+import com.easternsauce.actionrpg.util.OrderedMap;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import java.util.Map;
-import java.util.concurrent.ConcurrentSkipListMap;
 
 @NoArgsConstructor(staticName = "of")
 @Data
 public class CreatureEffectParams {
   @NonNull
-  private Map<CreatureEffect, CreatureEffectState> effects = new ConcurrentSkipListMap<>();
+  private Map<CreatureEffect, CreatureEffectState> effects = new OrderedMap<>();
   @NonNull
   private SimpleTimer staminaRegenerationTimer = SimpleTimer.getStartedTimer();
   @NonNull

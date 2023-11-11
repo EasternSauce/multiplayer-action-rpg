@@ -5,14 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentSkipListMap;
 
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 @Data
 public class CreatureAnimationConfig {
-  public static Map<String, CreatureAnimationConfig> configs = new ConcurrentSkipListMap<>();
+  public static Map<String, CreatureAnimationConfig> configs = new HashMap<>();
 
   static { // TODO: move sprite width/height to enemy template?
     configs.put("male1",
@@ -63,7 +63,7 @@ public class CreatureAnimationConfig {
 
   @SuppressWarnings("SameParameterValue")
   private static Map<WorldDirection, Integer> textureDirMap(int up, int down, int left, int right) {
-    Map<WorldDirection, Integer> textureDirMap = new ConcurrentSkipListMap<>();
+    Map<WorldDirection, Integer> textureDirMap = new HashMap<>();
     textureDirMap.put(WorldDirection.UP, up);
     textureDirMap.put(WorldDirection.DOWN, down);
     textureDirMap.put(WorldDirection.LEFT, left);

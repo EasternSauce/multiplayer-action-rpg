@@ -4,6 +4,7 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.area.Area;
 import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullAreaId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 
 // actions are sent to clients immediately once they happen on server side to be applied to client game state
@@ -40,7 +41,7 @@ public abstract class GameStateAction {
   }
 
   protected EntityId<Area> getOverrideAreaId() {
-    return null;
+    return NullAreaId.of();
   }
 
   public boolean isActionObjectValid(CoreGame game) {

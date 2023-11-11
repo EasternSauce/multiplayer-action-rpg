@@ -6,11 +6,11 @@ import com.easternsauce.actionrpg.model.ability.Projectile;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.util.Vector2;
+import com.easternsauce.actionrpg.util.OrderedMap;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.concurrent.ConcurrentSkipListMap;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
@@ -23,7 +23,7 @@ public class EmeraldSpin extends Projectile {
     ability.params = abilityParams.setWidth(0.8f).setHeight(0.8f).setChannelTime(0f).setActiveTime(3f)
       .setStartingRange(0f).setTextureName("green_whirl").setBaseDamage(13f).setChannelAnimationLooping(false)
       .setActiveAnimationLooping(true).setDelayedActionTime(0.001f).setSpeed(30f)
-      .setCreaturesAlreadyHit(new ConcurrentSkipListMap<>()).setMaximumRange(22f);
+      .setCreaturesAlreadyHit(new OrderedMap<>()).setMaximumRange(22f);
 
     return ability;
   }

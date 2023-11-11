@@ -20,6 +20,7 @@ import com.easternsauce.actionrpg.renderer.animationconfig.CreatureAnimationConf
 import com.easternsauce.actionrpg.renderer.creature.*;
 import com.easternsauce.actionrpg.renderer.icons.IconRetriever;
 import com.easternsauce.actionrpg.util.Constants;
+import com.easternsauce.actionrpg.util.OrderedMap;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -33,15 +34,15 @@ import java.util.stream.Collectors;
 public class GameEntityRenderer {
   private final TmxMapLoader mapLoader = new TmxMapLoader();
   @Getter
-  private final Map<EntityId<Creature>, CreatureRenderer> creatureRenderers = new HashMap<>();
+  private final Map<EntityId<Creature>, CreatureRenderer> creatureRenderers = new OrderedMap<>();
   @Getter
-  private final Map<EntityId<Ability>, AbilityRenderer> abilityRenderers = new HashMap<>();
+  private final Map<EntityId<Ability>, AbilityRenderer> abilityRenderers = new OrderedMap<>();
   @Getter
-  private final Map<EntityId<AreaGate>, AreaGateRenderer> areaGateRenderers = new HashMap<>();
+  private final Map<EntityId<AreaGate>, AreaGateRenderer> areaGateRenderers = new OrderedMap<>();
   @Getter
-  private final Map<EntityId<Checkpoint>, CheckpointRenderer> checkpointRenderers = new HashMap<>();
+  private final Map<EntityId<Checkpoint>, CheckpointRenderer> checkpointRenderers = new OrderedMap<>();
   @Getter
-  private final Map<EntityId<LootPile>, LootPileRenderer> lootPileRenderers = new HashMap<>();
+  private final Map<EntityId<LootPile>, LootPileRenderer> lootPileRenderers = new OrderedMap<>();
   @Getter
   private final Set<DamageNumber> damageNumbers = ConcurrentHashMap.newKeySet();
   @Getter
@@ -59,7 +60,7 @@ public class GameEntityRenderer {
 
   private float mapScale;
   @Getter
-  private Map<EntityId<Area>, AreaRenderer> areaRenderers = new HashMap<>();
+  private Map<EntityId<Area>, AreaRenderer> areaRenderers = new OrderedMap<>();
   private TextureRegion poisonedIcon = null;
   @Getter
   private Boolean areasLoaded = false;
@@ -84,7 +85,7 @@ public class GameEntityRenderer {
   }
 
   public void loadAreaRenderers(Map<EntityId<Area>, TiledMap> maps, @SuppressWarnings("unused") CoreGame game) {
-    areaRenderers = new HashMap<>();
+    areaRenderers = new OrderedMap<>();
     areaRenderers.putAll(maps.keySet().stream().collect(Collectors.toMap(areaId -> areaId, AreaRenderer::of)));
     areaRenderers.forEach((areaId, areaRenderer) -> areaRenderer.init(maps.get(areaId), mapScale));
     areasLoaded = true;

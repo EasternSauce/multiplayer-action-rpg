@@ -10,9 +10,9 @@ import com.easternsauce.actionrpg.model.skill.SkillType;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.model.util.WorldDirection;
 import com.easternsauce.actionrpg.renderer.animationconfig.CreatureAnimationConfig;
+import com.easternsauce.actionrpg.util.OrderedMap;
 
 import java.util.Map;
-import java.util.concurrent.ConcurrentSkipListMap;
 
 public class NullCreature extends Creature {
   private static NullCreature instance;
@@ -86,7 +86,7 @@ public class NullCreature extends Creature {
 
   @Override
   public Map<SkillType, Integer> availableSkills() {
-    return new ConcurrentSkipListMap<>();
+    return new OrderedMap<>();
   }
 
   @Override

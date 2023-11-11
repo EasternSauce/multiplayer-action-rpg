@@ -10,14 +10,14 @@ import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
 import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.util.Vector2;
+import com.easternsauce.actionrpg.util.OrderedMap;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 @SuppressWarnings("SpellCheckingInspection")
 @NoArgsConstructor(staticName = "of")
@@ -67,7 +67,7 @@ public class LightningSpark extends Ability {
   @Override
   public void onDelayedAction(CoreGame game) {
     // find the closest enemy, and if they are within distance, and haven't been hit yet, then put node over them
-    Set<EntityId<Creature>> excluded = new HashSet<>(getParams().getCreaturesAlreadyHit().keySet());
+    Set<EntityId<Creature>> excluded = new ConcurrentSkipListSet<>(getParams().getCreaturesAlreadyHit().keySet());
     excluded.add(getParams().getCreatureId());
 
     Creature targetCreature = game.getCreature(
@@ -107,7 +107,7 @@ public class LightningSpark extends Ability {
 
   @Override
   public Map<Integer, Float> levelScalings() {
-    ConcurrentSkipListMap<Integer, Float> scalings = new ConcurrentSkipListMap<>();
+    OrderedMap<Integer, Float> scalings = new OrderedMap<>();
     scalings.put(1, 1.0f);
     scalings.put(2, 1.1f);
     scalings.put(3, 1.2f);

@@ -3,11 +3,11 @@ package com.easternsauce.actionrpg.model.item;
 import com.easternsauce.actionrpg.model.area.LootPile;
 import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.skill.SkillType;
+import com.easternsauce.actionrpg.util.OrderedMap;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Map;
-import java.util.concurrent.ConcurrentSkipListMap;
 
 @NoArgsConstructor(staticName = "of")
 @Data
@@ -15,7 +15,7 @@ public class Item implements Comparable<Item> {
   private ItemTemplate template;
   private Integer quantity = 1;
   private Float qualityModifier = 1f;
-  private Map<SkillType, Integer> grantedSkills = new ConcurrentSkipListMap<>();
+  private Map<SkillType, Integer> grantedSkills = new OrderedMap<>();
 
   private EntityId<LootPile> lootPileId;
 
@@ -63,6 +63,6 @@ public class Item implements Comparable<Item> {
 
   public Item copy() {
     return Item.of().setTemplate(template).setQuantity(quantity).setQualityModifier(qualityModifier)
-      .setGrantedSkills(new ConcurrentSkipListMap<>(grantedSkills));
+      .setGrantedSkills(new OrderedMap<>(grantedSkills));
   }
 }

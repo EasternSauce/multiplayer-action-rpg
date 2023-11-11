@@ -9,6 +9,7 @@ import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.skill.SkillType;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.util.Constants;
+import com.easternsauce.actionrpg.util.OrderedMap;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,6 @@ import lombok.NoArgsConstructor;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
@@ -59,7 +59,7 @@ public class AbilityAccessor {
     if ((creature.isAlive() || chainFromAbility.isAbleToChainAfterCreatureDeath())) {
       EntityId<Ability> abilityId = EntityId.of("Ability_" + (int) (Math.random() * 10000000));
 
-      Map<EntityId<Creature>, Float> creaturesAlreadyHit = new ConcurrentSkipListMap<>(
+      Map<EntityId<Creature>, Float> creaturesAlreadyHit = new OrderedMap<>(
         chainFromAbility.getParams().getCreaturesAlreadyHit());
 
       Vector2 chainFromPos = chainFromAbility.getParams().getPos();

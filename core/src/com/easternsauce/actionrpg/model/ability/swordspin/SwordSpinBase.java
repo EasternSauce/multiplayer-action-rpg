@@ -8,8 +8,8 @@ import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.id.EntityId;
 import lombok.Getter;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 public abstract class SwordSpinBase extends AttachedAbility {
   @Getter
@@ -38,7 +38,7 @@ public abstract class SwordSpinBase extends AttachedAbility {
       getParams().getTickActionTimer().restart();
     }
 
-    Set<EntityId<Creature>> creaturesHitRemove = new HashSet<>();
+    Set<EntityId<Creature>> creaturesHitRemove = new ConcurrentSkipListSet<>();
 
     getParams().getCreaturesAlreadyHit().forEach((creatureId, time) -> {
       if (time < getParams().getStateTimer().getTime() - 0.4f) {

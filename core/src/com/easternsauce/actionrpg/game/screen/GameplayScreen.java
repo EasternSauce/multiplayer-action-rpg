@@ -15,11 +15,11 @@ import com.easternsauce.actionrpg.physics.util.PhysicsEventQueueProcessor;
 import com.easternsauce.actionrpg.renderer.RenderingLayer;
 import com.easternsauce.actionrpg.renderer.util.GameplayRenderer;
 import com.easternsauce.actionrpg.util.Constants;
+import com.easternsauce.actionrpg.util.OrderedMap;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 import java.util.Map;
-import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
@@ -68,14 +68,14 @@ public class GameplayScreen implements Screen {
   }
 
   private Map<EntityId<Area>, TiledMap> loadMaps() {
-    Map<EntityId<Area>, String> mapsToLoad = new ConcurrentSkipListMap<>();
+    Map<EntityId<Area>, String> mapsToLoad = new OrderedMap<>();
     mapsToLoad.put(EntityId.of("Area1"), "assets/areas/area1");
     mapsToLoad.put(EntityId.of("Area2"), "assets/areas/area2");
     mapsToLoad.put(EntityId.of("Area3"), "assets/areas/area3");
     mapsToLoad.put(EntityId.of("Area4"), "assets/areas/area4");
 
     return mapsToLoad.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
-      entry -> game.getEntityManager().getGameEntityRenderer().loadMap(entry.getValue() + "/tile_map.tmx")));
+      entry -> game.getEntityManager().getGameEntityRenderer().loadMap(entry.getValue() + "/tile_map.tmx"), (o1, o2) -> o1, OrderedMap::new));
   }
 
   private void initializeRenderingLayers(CoreGame game) {

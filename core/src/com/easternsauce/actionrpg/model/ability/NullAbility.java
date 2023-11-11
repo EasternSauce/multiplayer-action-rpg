@@ -5,9 +5,9 @@ import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.renderer.animationconfig.AbilityAnimationConfig;
+import com.easternsauce.actionrpg.util.OrderedMap;
 
 import java.util.Map;
-import java.util.concurrent.ConcurrentSkipListMap;
 
 public class NullAbility extends Ability {
   private static NullAbility instance;
@@ -122,7 +122,7 @@ public class NullAbility extends Ability {
 
   @Override
   public Map<Integer, Float> levelScalings() {
-    return new ConcurrentSkipListMap<>();
+    return new OrderedMap<>();
   }
 
   @Override

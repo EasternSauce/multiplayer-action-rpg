@@ -11,36 +11,36 @@ import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.util.PlayerConfig;
 import com.easternsauce.actionrpg.model.util.RandomGenerator;
 import com.easternsauce.actionrpg.model.util.SimpleTimer;
+import com.easternsauce.actionrpg.util.OrderedMap;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 @NoArgsConstructor(staticName = "of")
 @Data
 public class GameStateData {
-  private Map<EntityId<Creature>, Creature> creatures = new ConcurrentSkipListMap<>();
+  private Map<EntityId<Creature>, Creature> creatures = new OrderedMap<>();
   private Set<EntityId<Creature>> activeCreatureIds = new ConcurrentSkipListSet<>();
 
-  private Map<EntityId<Ability>, Ability> abilities = new ConcurrentSkipListMap<>();
+  private Map<EntityId<Ability>, Ability> abilities = new OrderedMap<>();
 
-  private Map<EntityId<Area>, Area> areas = new ConcurrentSkipListMap<>();
+  private Map<EntityId<Area>, Area> areas = new OrderedMap<>();
 
   private EntityId<Area> defaultAreaId = EntityId.of("Area1");
   private SimpleTimer generalTimer = SimpleTimer.getStartedTimer();
 
-  private Map<EntityId<Creature>, PlayerConfig> playerConfig = new ConcurrentSkipListMap<>();
+  private Map<EntityId<Creature>, PlayerConfig> playerConfig = new OrderedMap<>();
 
-  private Map<EntityId<LootPile>, LootPile> lootPiles = new ConcurrentSkipListMap<>();
+  private Map<EntityId<LootPile>, LootPile> lootPiles = new OrderedMap<>();
 
-  private Map<EntityId<AreaGate>, AreaGate> areaGates = new ConcurrentSkipListMap<>();
+  private Map<EntityId<AreaGate>, AreaGate> areaGates = new OrderedMap<>();
 
-  private Map<EntityId<Checkpoint>, Checkpoint> checkpoints = new ConcurrentSkipListMap<>();
+  private Map<EntityId<Checkpoint>, Checkpoint> checkpoints = new OrderedMap<>();
 
-  private Map<EntityId<EnemyRallyPoint>, EnemyRallyPoint> enemyRallyPoints = new ConcurrentSkipListMap<>();
+  private Map<EntityId<EnemyRallyPoint>, EnemyRallyPoint> enemyRallyPoints = new OrderedMap<>();
 
   private RandomGenerator randomGenerator;
 
@@ -54,10 +54,10 @@ public class GameStateData {
     newGameStateData.setLootPiles(lootPiles);
     newGameStateData.setAreaGates(areaGates);
     newGameStateData.setCheckpoints(checkpoints);
-    newGameStateData.setAreas(new ConcurrentSkipListMap<>(gameStateData.getAreas()));
+    newGameStateData.setAreas(new OrderedMap<>(gameStateData.getAreas()));
     newGameStateData.setDefaultAreaId(gameStateData.getDefaultAreaId());
     newGameStateData.setGeneralTimer(gameStateData.getGeneralTimer());
-    newGameStateData.setPlayerConfig(new ConcurrentSkipListMap<>(gameStateData.getPlayerConfig()));
+    newGameStateData.setPlayerConfig(new OrderedMap<>(gameStateData.getPlayerConfig()));
     newGameStateData.setRandomGenerator(gameStateData.getRandomGenerator());
     newGameStateData.setEnemyRallyPoints(gameStateData.getEnemyRallyPoints());
 
@@ -66,16 +66,16 @@ public class GameStateData {
 
   public static GameStateData copyAsStub(GameStateData gameStateData) {
     GameStateData newGameStateData = GameStateData.of();
-    newGameStateData.setCreatures(new ConcurrentSkipListMap<>());
+    newGameStateData.setCreatures(new OrderedMap<>());
     newGameStateData.setActiveCreatureIds(new ConcurrentSkipListSet<>(gameStateData.getActiveCreatureIds()));
-    newGameStateData.setAbilities(new ConcurrentSkipListMap<>());
-    newGameStateData.setLootPiles(new ConcurrentSkipListMap<>());
-    newGameStateData.setAreaGates(new ConcurrentSkipListMap<>());
-    newGameStateData.setCheckpoints(new ConcurrentSkipListMap<>());
-    newGameStateData.setAreas(new ConcurrentSkipListMap<>(gameStateData.getAreas()));
+    newGameStateData.setAbilities(new OrderedMap<>());
+    newGameStateData.setLootPiles(new OrderedMap<>());
+    newGameStateData.setAreaGates(new OrderedMap<>());
+    newGameStateData.setCheckpoints(new OrderedMap<>());
+    newGameStateData.setAreas(new OrderedMap<>(gameStateData.getAreas()));
     newGameStateData.setDefaultAreaId(gameStateData.getDefaultAreaId());
     newGameStateData.setGeneralTimer(gameStateData.getGeneralTimer());
-    newGameStateData.setPlayerConfig(new ConcurrentSkipListMap<>(gameStateData.getPlayerConfig()));
+    newGameStateData.setPlayerConfig(new OrderedMap<>(gameStateData.getPlayerConfig()));
     newGameStateData.setRandomGenerator(gameStateData.getRandomGenerator());
     newGameStateData.setEnemyRallyPoints(gameStateData.getEnemyRallyPoints());
 

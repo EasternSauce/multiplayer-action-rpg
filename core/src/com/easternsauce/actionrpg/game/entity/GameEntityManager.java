@@ -22,12 +22,12 @@ import com.easternsauce.actionrpg.renderer.CheckpointRenderer;
 import com.easternsauce.actionrpg.renderer.LootPileRenderer;
 import com.easternsauce.actionrpg.renderer.creature.CreatureRenderer;
 import com.easternsauce.actionrpg.renderer.game.GameEntityRenderer;
+import com.easternsauce.actionrpg.util.OrderedMap;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 @SuppressWarnings({"GrazieInspection", "SpellCheckingInspection"})
@@ -203,7 +203,7 @@ public class GameEntityManager {
       }
     });
 
-    Map<EntityId<Ability>, Ability> abilities = new ConcurrentSkipListMap<>(game.getAbilities());
+    Map<EntityId<Ability>, Ability> abilities = new OrderedMap<>(game.getAbilities());
 
     abilities.forEach((abilityId, ability) -> {
       if (!abilityId.isNull() && abilities.containsKey(abilityId) &&

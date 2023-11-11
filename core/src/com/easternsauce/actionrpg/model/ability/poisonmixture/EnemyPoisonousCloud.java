@@ -5,10 +5,10 @@ import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
 import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.util.OrderedMap;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.concurrent.ConcurrentSkipListMap;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
@@ -18,7 +18,7 @@ public class EnemyPoisonousCloud extends PoisonousCloudBase {
     ability.params = abilityParams.setWidth(9f).setHeight(9f).setChannelTime(0f).setActiveTime(8f)
       .setTextureName("poison_cloud").setBaseDamage(0f).setChannelAnimationLooping(false)
       .setActiveAnimationLooping(true).setAttackWithoutMoving(true)
-      .setCreaturesAlreadyHit(new ConcurrentSkipListMap<>());
+      .setCreaturesAlreadyHit(new OrderedMap<>());
 
     return ability;
   }

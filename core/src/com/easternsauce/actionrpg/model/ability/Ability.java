@@ -8,10 +8,10 @@ import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.util.RandomGenerator;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.renderer.animationconfig.AbilityAnimationConfig;
+import com.easternsauce.actionrpg.util.OrderedMap;
 import lombok.NonNull;
 
 import java.util.Map;
-import java.util.concurrent.ConcurrentSkipListMap;
 
 @SuppressWarnings("SpellCheckingInspection")
 public abstract class Ability implements Entity {
@@ -186,7 +186,7 @@ public abstract class Ability implements Entity {
   }
 
   public Map<Integer, Float> levelScalings() {
-    return new ConcurrentSkipListMap<>();
+    return new OrderedMap<>();
   }
 
   public Integer getSkillLevel(CoreGame game) {

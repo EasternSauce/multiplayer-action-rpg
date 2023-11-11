@@ -3,11 +3,11 @@ package com.easternsauce.actionrpg.model.ability.explosion;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.ability.AbilityParams;
+import com.easternsauce.actionrpg.util.OrderedMap;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.concurrent.ConcurrentSkipListMap;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
@@ -19,7 +19,7 @@ public class Explosion extends Ability {
     Explosion ability = Explosion.of();
     ability.params = abilityParams.setWidth(9f).setHeight(9f).setChannelTime(0f).setActiveTime(0.35f)
       .setTextureName("explosion").setBaseDamage(25f).setChannelAnimationLooping(false).setActiveAnimationLooping(false)
-      .setAttackWithoutMoving(true).setCreaturesAlreadyHit(new ConcurrentSkipListMap<>());
+      .setAttackWithoutMoving(true).setCreaturesAlreadyHit(new OrderedMap<>());
 
     return ability;
   }

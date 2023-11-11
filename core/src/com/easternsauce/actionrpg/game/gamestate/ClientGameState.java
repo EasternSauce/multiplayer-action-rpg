@@ -16,8 +16,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 @NoArgsConstructor(staticName = "of")
 public class ClientGameState extends GameState {
@@ -58,34 +58,34 @@ public class ClientGameState extends GameState {
     Set<EntityId<Checkpoint>> oldCheckpointIds = oldGameStateData.getCheckpoints().keySet();
     Set<EntityId<Checkpoint>> newCheckpointIds = newGameStateData.getCheckpoints().keySet();
 
-    Set<EntityId<Creature>> creaturesAddedSinceLastUpdate = new HashSet<>(newCreatureIds);
+    Set<EntityId<Creature>> creaturesAddedSinceLastUpdate = new ConcurrentSkipListSet<>(newCreatureIds);
     creaturesAddedSinceLastUpdate.removeAll(oldCreatureIds);
 
-    Set<EntityId<Creature>> creaturesRemovedSinceLastUpdate = new HashSet<>(oldCreatureIds);
+    Set<EntityId<Creature>> creaturesRemovedSinceLastUpdate = new ConcurrentSkipListSet<>(oldCreatureIds);
     creaturesRemovedSinceLastUpdate.removeAll(newCreatureIds);
 
-    Set<EntityId<Ability>> abilitiesAddedSinceLastUpdate = new HashSet<>(newAbilityIds);
+    Set<EntityId<Ability>> abilitiesAddedSinceLastUpdate = new ConcurrentSkipListSet<>(newAbilityIds);
     abilitiesAddedSinceLastUpdate.removeAll(oldAbilityIds);
 
-    Set<EntityId<Ability>> abilitiesRemovedSinceLastUpdate = new HashSet<>(oldAbilityIds);
+    Set<EntityId<Ability>> abilitiesRemovedSinceLastUpdate = new ConcurrentSkipListSet<>(oldAbilityIds);
     abilitiesRemovedSinceLastUpdate.removeAll(newAbilityIds);
 
-    Set<EntityId<LootPile>> lootPilesAddedSinceLastUpdate = new HashSet<>(newLootPileIds);
+    Set<EntityId<LootPile>> lootPilesAddedSinceLastUpdate = new ConcurrentSkipListSet<>(newLootPileIds);
     lootPilesAddedSinceLastUpdate.removeAll(oldLootPileIds);
 
-    Set<EntityId<LootPile>> lootPilesRemovedSinceLastUpdate = new HashSet<>(oldLootPileIds);
+    Set<EntityId<LootPile>> lootPilesRemovedSinceLastUpdate = new ConcurrentSkipListSet<>(oldLootPileIds);
     lootPilesRemovedSinceLastUpdate.removeAll(newLootPileIds);
 
-    Set<EntityId<AreaGate>> areaGatesAddedSinceLastUpdate = new HashSet<>(newAreaGateIds);
+    Set<EntityId<AreaGate>> areaGatesAddedSinceLastUpdate = new ConcurrentSkipListSet<>(newAreaGateIds);
     areaGatesAddedSinceLastUpdate.removeAll(oldAreaGateIds);
 
-    Set<EntityId<AreaGate>> areaGatesRemovedSinceLastUpdate = new HashSet<>(oldAreaGateIds);
+    Set<EntityId<AreaGate>> areaGatesRemovedSinceLastUpdate = new ConcurrentSkipListSet<>(oldAreaGateIds);
     areaGatesRemovedSinceLastUpdate.removeAll(newAreaGateIds);
 
-    Set<EntityId<Checkpoint>> checkpointsAddedSinceLastUpdate = new HashSet<>(newCheckpointIds);
+    Set<EntityId<Checkpoint>> checkpointsAddedSinceLastUpdate = new ConcurrentSkipListSet<>(newCheckpointIds);
     checkpointsAddedSinceLastUpdate.removeAll(oldCheckpointIds);
 
-    Set<EntityId<Checkpoint>> checkpointsRemovedSinceLastUpdate = new HashSet<>(oldCheckpointIds);
+    Set<EntityId<Checkpoint>> checkpointsRemovedSinceLastUpdate = new ConcurrentSkipListSet<>(oldCheckpointIds);
     checkpointsRemovedSinceLastUpdate.removeAll(newCheckpointIds);
 
     eventProcessor.getCreatureModelsToBeCreated().addAll(creaturesAddedSinceLastUpdate);

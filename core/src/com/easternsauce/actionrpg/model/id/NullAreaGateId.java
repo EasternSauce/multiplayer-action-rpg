@@ -1,7 +1,9 @@
 package com.easternsauce.actionrpg.model.id;
 
 import com.easternsauce.actionrpg.model.area.AreaGate;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true)
 public class NullAreaGateId extends EntityId<AreaGate> {
   private static NullAreaGateId instance;
 

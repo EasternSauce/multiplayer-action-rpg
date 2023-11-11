@@ -1,7 +1,9 @@
 package com.easternsauce.actionrpg.model.id;
 
 import com.easternsauce.actionrpg.model.ability.Ability;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true)
 public class NullAbilityId extends EntityId<Ability> {
   private static NullAbilityId instance;
 

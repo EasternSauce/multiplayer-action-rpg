@@ -1,13 +1,14 @@
 package com.easternsauce.actionrpg.model.item;
 
+import com.easternsauce.actionrpg.util.OrderedMap;
+
 import java.util.Map;
-import java.util.concurrent.ConcurrentSkipListMap;
 
 public enum EquipmentSlotType {
   PRIMARY_WEAPON(0), SECONDARY_WEAPON(1), HELMET(2), BODY(3), GLOVES(4), RING(5), BOOTS(6);
 
-  public static final Map<Integer, String> equipmentSlotNames = new ConcurrentSkipListMap<>();
-  public static final Map<Integer, EquipmentSlotType> equipmentSlotTypes = new ConcurrentSkipListMap<>();
+  public static final Map<Integer, String> equipmentSlotNames = new OrderedMap<>();
+  public static final Map<Integer, EquipmentSlotType> equipmentSlotTypes = new OrderedMap<>();
 
   static {
     equipmentSlotNames.put(0, "Primary Weapon");

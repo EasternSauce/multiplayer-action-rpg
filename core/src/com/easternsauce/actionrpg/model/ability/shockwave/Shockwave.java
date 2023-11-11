@@ -3,11 +3,11 @@ package com.easternsauce.actionrpg.model.ability.shockwave;
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.Ability;
 import com.easternsauce.actionrpg.model.ability.AbilityParams;
+import com.easternsauce.actionrpg.util.OrderedMap;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.concurrent.ConcurrentSkipListMap;
 
 @SuppressWarnings("SpellCheckingInspection")
 @NoArgsConstructor(staticName = "of")
@@ -22,7 +22,7 @@ public class Shockwave extends Ability {
     ability.params = abilityParams.setWidth(10f).setHeight(10f).setChannelTime(0.17f).setActiveTime(0.306f)
       .setBaseDamage(45f).setTextureName("holy_explosion").setChannelAnimationLooping(false)
       .setActiveAnimationLooping(false).setAttackWithoutMoving(true)
-      .setCreaturesAlreadyHit(new ConcurrentSkipListMap<>());
+      .setCreaturesAlreadyHit(new OrderedMap<>());
 
     return ability;
   }

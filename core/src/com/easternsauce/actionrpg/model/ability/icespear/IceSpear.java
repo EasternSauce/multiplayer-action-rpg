@@ -7,11 +7,11 @@ import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
 import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.util.Vector2;
+import com.easternsauce.actionrpg.util.OrderedMap;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.concurrent.ConcurrentSkipListMap;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
@@ -24,7 +24,7 @@ public class IceSpear extends Projectile {
     ability.params = abilityParams.setWidth(2.1f).setHeight(0.75f).setChannelTime(0f).setActiveTime(3f)
       .setStartingRange(3f).setTextureName("ice_shard").setBaseDamage(15f).setChannelAnimationLooping(false)
       .setActiveAnimationLooping(true).setDelayedActionTime(0.001f).setSpeed(18f)
-      .setCreaturesAlreadyHit(new ConcurrentSkipListMap<>()).setMaximumRange(6.5f);
+      .setCreaturesAlreadyHit(new OrderedMap<>()).setMaximumRange(6.5f);
 
     return ability;
   }

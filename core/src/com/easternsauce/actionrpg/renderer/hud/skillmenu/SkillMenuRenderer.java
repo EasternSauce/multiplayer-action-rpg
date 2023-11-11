@@ -39,12 +39,13 @@ public class SkillMenuRenderer {
       renderingLayer.getShapeDrawer()
         .filledRectangle(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(), Color.BLACK);
 
-      SkillType skillType = playerConfig.getSkillMenuSlots().get(i.get());
+      if (playerConfig.getSkillMenuSlots().containsKey(i.get())) {
+        SkillType skillType = playerConfig.getSkillMenuSlots().get(i.get());
 
-      if (skillType != null) {
         Assets.renderMediumFont(renderingLayer, getSkillNameInitials(skillType.getPrettyName()),
           Vector2.of(rect.getX() + 5f, rect.getY() + 24f), Color.GOLD);
       }
+
       Assets.renderVerySmallFont(renderingLayer, keys.get(i.get()),
         Vector2.of(rect.getX() + SkillMenuConsts.SLOT_SIZE - 14f, rect.getY() + SkillMenuConsts.SLOT_SIZE - 5f),
         Color.CYAN);

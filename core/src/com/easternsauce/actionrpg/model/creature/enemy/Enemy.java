@@ -145,7 +145,11 @@ public class Enemy extends Creature {
 
   @Override
   protected void processRegenerationOverTime(CoreGame game) {
-    if (getParams().getEnemyParams().getTargetCreatureId().isNull()) {
+    EnemyParams enemyParams = getParams().getEnemyParams();
+
+    EntityId<Creature> targetCreatureId = enemyParams.getTargetCreatureId();
+
+    if (targetCreatureId.isNull()) {
       if (getParams().getEffectParams().getLifeRegenerationOverTimeTimer().getTime() > 0.333f) {
         regenerateLife(getParams().getStats().getMaxLife() / 30f);
       }

@@ -14,12 +14,16 @@ import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.physics.body.*;
 import com.easternsauce.actionrpg.physics.event.*;
 import com.easternsauce.actionrpg.physics.world.PhysicsWorld;
+import com.easternsauce.actionrpg.util.OrderedMap;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
@@ -28,18 +32,17 @@ public class GameEntityPhysics {
   @Getter
   private final List<PhysicsEvent> physicsEventQueue = Collections.synchronizedList(new ArrayList<>());
   @Getter
-  private Map<EntityId<Area>, PhysicsWorld> physicsWorlds;
+  private Map<EntityId<Area>, PhysicsWorld> physicsWorlds = new OrderedMap<>();
   @Getter
-  private Map<EntityId<Creature>, CreatureBody> creatureBodies = new HashMap<>();
+  private Map<EntityId<Creature>, CreatureBody> creatureBodies = new OrderedMap<>();
   @Getter
-  private Map<EntityId<Ability>, AbilityBody> abilityBodies = new HashMap<>();
+  private Map<EntityId<Ability>, AbilityBody> abilityBodies = new OrderedMap<>();
   @Getter
-  private Map<EntityId<AreaGate>, AreaGateBody> areaGateBodies = new HashMap<>();
+  private Map<EntityId<AreaGate>, AreaGateBody> areaGateBodies = new OrderedMap<>();
   @Getter
-  private Map<EntityId<Checkpoint>, CheckpointBody> checkpointBodies = new HashMap<>();
-
+  private Map<EntityId<Checkpoint>, CheckpointBody> checkpointBodies = new OrderedMap<>();
   @Getter
-  private Map<EntityId<LootPile>, LootPileBody> lootPileBodies = new HashMap<>();
+  private Map<EntityId<LootPile>, LootPileBody> lootPileBodies = new OrderedMap<>();
 
   @Getter
   @Setter
@@ -50,7 +53,7 @@ public class GameEntityPhysics {
 
   public void init(Map<EntityId<Area>, TiledMap> maps, CoreGame game) {
     physicsWorlds = maps.entrySet().stream()
-      .collect(Collectors.toMap(Map.Entry::getKey, entry -> PhysicsWorld.of(entry.getValue())));
+      .collect(Collectors.toMap(Map.Entry::getKey, entry -> PhysicsWorld.of(entry.getValue()), (o1, o2) -> o1, OrderedMap::new));
 
     physicsWorlds.forEach((areaId, physicsWorld) -> { // TODO: do this dynamically
       physicsWorld.init();
@@ -59,13 +62,13 @@ public class GameEntityPhysics {
 
     this.areaGateBodies = game // TODO: do this dynamically
       .getGameState().getAreaGates().keySet().stream()
-      .collect(Collectors.toMap(areaGateId -> areaGateId, AreaGateBody::of));
+      .collect(Collectors.toMap(areaGateId -> areaGateId, AreaGateBody::of, (o1, o2) -> o1, OrderedMap::new));
 
     this.areaGateBodies.values().forEach(areaGateBody -> areaGateBody.init(game));
 
     this.checkpointBodies = game
       .getGameState().getCheckpoints().keySet().stream()
-      .collect(Collectors.toMap(checkpointId -> checkpointId, CheckpointBody::of));
+      .collect(Collectors.toMap(checkpointId -> checkpointId, CheckpointBody::of, (o1, o2) -> o1, OrderedMap::new));
 
     this.checkpointBodies.values().forEach(checkpointBody -> checkpointBody.init(game));
 

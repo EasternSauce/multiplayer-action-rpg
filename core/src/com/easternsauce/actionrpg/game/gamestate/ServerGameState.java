@@ -13,9 +13,11 @@ import com.easternsauce.actionrpg.model.area.LootPile;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.Player;
 import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullCreatureId;
 import com.easternsauce.actionrpg.model.util.GameStateBroadcast;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.util.Constants;
+import com.easternsauce.actionrpg.util.OrderedMap;
 import com.esotericsoftware.kryonet.Connection;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -24,7 +26,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.*;
 import java.util.*;
-import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
@@ -34,7 +36,7 @@ public class ServerGameState extends GameState {
   private final List<GameStateAction> onTickActions = Collections.synchronizedList(new ArrayList<>());
 
   @Getter
-  private final Map<Integer, EntityId<Creature>> clientPlayers = new ConcurrentSkipListMap<>();
+  private final Map<Integer, EntityId<Creature>> clientPlayers = new OrderedMap<>();
 
   private final Gson gson = new GsonBuilder().enableComplexMapKeySerialization()
     .registerTypeAdapter(Creature.class, new InterfaceAdapter<Creature>())
@@ -42,7 +44,7 @@ public class ServerGameState extends GameState {
 
   @Override
   public Set<EntityId<Creature>> getCreaturesToUpdate(CoreGame game) {
-    Set<EntityId<Creature>> creaturesToUpdate = new HashSet<>();
+    Set<EntityId<Creature>> creaturesToUpdate = new ConcurrentSkipListSet<>();
 
     for (EntityId<Creature> clientCreatureId : getClientPlayers().values()) {
       Set<EntityId<Creature>> creaturesToAdd = accessCreatures().getCreaturesToUpdateForPlayerCreatureId(clientCreatureId,
@@ -72,7 +74,7 @@ public class ServerGameState extends GameState {
   public EntityId<Creature> getThisClientPlayerId() {
     Optional<Creature> any = accessCreatures().getCreatures().values().stream()
       .filter(creature -> creature instanceof Player).findAny();
-    return any.map(Creature::getId).orElse(null);
+    return any.map(Creature::getId).orElse(NullCreatureId.of());
   }
 
   @Override
@@ -87,20 +89,20 @@ public class ServerGameState extends GameState {
 
     // TODO: also add ALL data about creatures that own abilities within range!
 
-    ConcurrentSkipListMap<EntityId<Creature>, Creature> personalizedCreatures = new ConcurrentSkipListMap<>(
+    OrderedMap<EntityId<Creature>, Creature> personalizedCreatures = new OrderedMap<>(
       accessCreatures().getCreatures().entrySet().stream().filter(
           entry -> entry.getValue().getParams().getAreaId().equals(player.getParams().getAreaId()) &&
             entry.getValue().getParams().getPos().distance(player.getParams().getPos()) <
               Constants.CLIENT_GAME_UPDATE_RANGE).filter(entry -> entry.getValue().isCurrentlyActive(game))
         .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
 
-    ConcurrentSkipListMap<EntityId<Ability>, Ability> personalizedAbilities = new ConcurrentSkipListMap<>(
+    OrderedMap<EntityId<Ability>, Ability> personalizedAbilities = new OrderedMap<>(
       accessAbilities().getAbilities().entrySet().stream().filter(
         entry -> entry.getValue().getParams().getAreaId().equals(player.getParams().getAreaId()) &&
           entry.getValue().getParams().getPos().distance(player.getParams().getPos()) <
             Constants.CLIENT_GAME_UPDATE_RANGE).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
 
-    ConcurrentSkipListMap<EntityId<LootPile>, LootPile> personalizedLootPiles = new ConcurrentSkipListMap<>(
+    OrderedMap<EntityId<LootPile>, LootPile> personalizedLootPiles = new OrderedMap<>(
       getLootPiles().entrySet().stream().filter(
           entry -> entry.getValue().getParams().getAreaId().equals(player.getParams().getAreaId()) && entry.getValue()
 

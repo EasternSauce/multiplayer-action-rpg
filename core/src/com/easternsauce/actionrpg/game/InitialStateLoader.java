@@ -28,8 +28,8 @@ public class InitialStateLoader {
   }
 
   public void setupInitialState(CoreGame game) {
-    //        Map<SkillType, Integer> grantedSkills = new ConcurrentSkipListMap<>();
-    //        Map<SkillType, Integer> grantedSkills2 = new ConcurrentSkipListMap<>();
+    //        Map<SkillType, Integer> grantedSkills = new OrderedMap<>();
+    //        Map<SkillType, Integer> grantedSkills2 = new OrderedMap<>();
     //        grantedSkills.put(SkillType.METEOR, 1);
     //        grantedSkills2.put(SkillType.VOLATILE_BUBBLE, 1);
     //        Item leatherArmor = Item

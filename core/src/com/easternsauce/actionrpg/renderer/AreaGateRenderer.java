@@ -43,7 +43,7 @@ public class AreaGateRenderer {
 
     AreaGate areaGate = game.getGameState().getAreaGate(areaGateId);
 
-    if (currentAreaId.equals(areaGate.getAreaId())) {
+    if (areaGate != null && currentAreaId.equals(areaGate.getAreaId())) { // TODO: add NullAreaGate?
       sprite.draw(renderingLayer.getSpriteBatch());
     }
   }

@@ -19,7 +19,7 @@ public class CreatureBody {
 
   private Body b2body;
 
-  private Boolean bodyCreated;
+  private Boolean bodyCreated = false;
 
   private PhysicsWorld world;
 
@@ -41,14 +41,20 @@ public class CreatureBody {
 
     Creature creature = game.getCreature(creatureId);
 
-
     setSensor(!creature.isAlive());
 
     float v = creature.getParams().getStats().getSpeed();
 
+    if (!creatureId.getValue().startsWith("Enemy")) {
+      System.out.println("println");
+    }
+
     if (bodyCreated) {
+      if (!creatureId.getValue().startsWith("Enemy")) System.out.println("body was created!");
       if (!creature.getParams().getMovementParams().getDashing()) {
         if (creature.getParams().getMovementParams().getMoving()) {
+          if (!creatureId.getValue().startsWith("Enemy")) System.out.println("is moving!");
+
           Vector2 normalizedMovingVector;
 
           if (creature.isEffectActive(CreatureEffect.SLOW, game) ||
@@ -125,6 +131,7 @@ public class CreatureBody {
   }
 
   public void init(EntityId<Area> areaId, CoreGame game) {
+    System.out.println("init " + creatureId.getValue());
     Creature creature = game.getCreature(creatureId);
 
     this.world = game.getPhysicsWorld(areaId);

@@ -31,7 +31,7 @@ public class Constants {
   public static final float DAMAGE_ANIMATION_DURATION = 0.35f;
   public static final float ENEMY_RESPAWN_TIME = 120f;
 
-  public static final boolean DEBUG_ENABLED = false;
+  public static final boolean DEBUG_ENABLED = true;
   public static final float TIME_BETWEEN_GAMESTATE_BROADCASTS = 1f;
   public static final float TIME_BETWEEN_GAMESTATE_SNAPSHOTS = 5f;
   public static final float KEEP_UPDATING_CREATURE_AFTER_INACTIVITY_TIME = 20f;

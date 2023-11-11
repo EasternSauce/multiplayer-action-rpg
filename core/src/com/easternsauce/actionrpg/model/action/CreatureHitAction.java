@@ -11,10 +11,10 @@ import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.item.Item;
 import com.easternsauce.actionrpg.model.skill.SkillType;
 import com.easternsauce.actionrpg.util.MapUtils;
+import com.easternsauce.actionrpg.util.OrderedMap;
 
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.stream.Collectors;
 
@@ -66,7 +66,7 @@ public abstract class CreatureHitAction extends GameStateAction {
           randomSkillType = null;
         }
 
-        Map<SkillType, Integer> grantedSkills = new ConcurrentSkipListMap<>();
+        Map<SkillType, Integer> grantedSkills = new OrderedMap<>();
 
         if (randomSkillType != null) {
           //                    float randValue = Math.abs(game.getGameState().getRandomGenerator().nextFloat());

@@ -29,6 +29,11 @@ public class MapUtils {
       }
       randValue.updateAndGet(value -> value - weight);
     });
+
+    if (pickedRandomElement.get() == null) {
+      throw new RuntimeException("impossible result!");
+    }
+
     return pickedRandomElement.get();
   }
 

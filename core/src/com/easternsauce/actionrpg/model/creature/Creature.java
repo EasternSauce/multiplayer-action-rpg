@@ -16,10 +16,10 @@ import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.model.util.WorldDirection;
 import com.easternsauce.actionrpg.renderer.animationconfig.CreatureAnimationConfig;
 import com.easternsauce.actionrpg.renderer.util.Rect;
+import com.easternsauce.actionrpg.util.OrderedMap;
 
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.stream.Collectors;
 
@@ -279,7 +279,7 @@ public abstract class Creature implements Entity {
   }
 
   public Map<SkillType, Integer> availableSkills() {
-    Map<SkillType, Integer> skills = new ConcurrentSkipListMap<>();
+    Map<SkillType, Integer> skills = new OrderedMap<>();
     getParams().getEquipmentItems().forEach((integer, item) -> skills.putAll(item.getGrantedSkills()));
     return skills;
   }
@@ -412,7 +412,7 @@ public abstract class Creature implements Entity {
   }
 
   public Item getCurrentWeapon() {
-    return getParams().getEquipmentItems().get(EquipmentSlotType.PRIMARY_WEAPON.getSequenceNumber());
+    return getParams().getEquipmentItems().getOrDefault(EquipmentSlotType.PRIMARY_WEAPON.getSequenceNumber(), null); // TODO: make NullItem?
   }
 
   public boolean isStunned(CoreGame game) {

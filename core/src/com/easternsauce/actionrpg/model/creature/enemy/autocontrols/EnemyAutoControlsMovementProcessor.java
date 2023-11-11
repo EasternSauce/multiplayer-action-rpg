@@ -39,13 +39,10 @@ public class EnemyAutoControlsMovementProcessor {
   }
 
   private void processAggressive(EntityId<Creature> creatureId, Vector2 potentialTargetPos, Float distance, CoreGame game, Creature creature, EnemyParams enemyParams) {
-    System.out.println(distance + "  < " + (enemyParams.getWalkUpRange() - 1f));
     if (distance > enemyParams.getWalkUpRange() - 1f) {
       creature.getParams().getStats().setSpeed(creature.getParams().getStats().getBaseSpeed());
       goToPos(creatureId, potentialTargetPos, game);
-      System.out.println("goto pos");
     } else { // if no path or distance is small, then stop moving
-      System.out.println("stop moving");
       creature.stopMoving();
     }
   }

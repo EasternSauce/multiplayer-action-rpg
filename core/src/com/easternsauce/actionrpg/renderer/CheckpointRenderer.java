@@ -54,8 +54,7 @@ public class CheckpointRenderer {
 
     Checkpoint checkpoint = game.getGameState().getCheckpoint(checkpointId);
 
-
-    if (currentAreaId.equals(checkpoint.getAreaId())) {
+    if (checkpoint != null && currentAreaId.equals(checkpoint.getAreaId())) { // TODO: add NullCheckpoint?
       if (lastCheckpointSetTime + 5f > game.getGameState().getTime()) {
         litSprite.draw(renderingLayer.getSpriteBatch());
       } else {
