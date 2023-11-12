@@ -18,7 +18,7 @@ public class EnemyMagicOrb extends MagicOrbBase {
   public static EnemyMagicOrb of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
     EnemyMagicOrb ability = EnemyMagicOrb.of();
     ability.params = abilityParams.setWidth(1.5f).setHeight(1.5f).setChannelTime(0f).setActiveTime(30f)
-      .setStartingRange(0.5f).setTextureName("magic_orb").setBaseDamage(40f).setChannelAnimationLooping(false)
+      .setStartingRange(0.5f).setTextureName("magic_orb").setBaseDamage(0f).setChannelAnimationLooping(false)
       .setActiveAnimationLooping(true).setDelayedActionTime(0.001f).setSpeed(13f);
 
     return ability;

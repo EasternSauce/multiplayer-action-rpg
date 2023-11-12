@@ -48,10 +48,10 @@ public class Fireball extends Projectile {
     //projectile speeds up over time
     onProjectileTravelUpdate();
 
-    if (getParams().getStateTimer().getTime() < 1.5f) {
-      getParams().setSpeed(10f + (getParams().getStateTimer().getTime() / 1.5f) * 70f);
+    if (getParams().getStateTimer().getTime() < 2f) {
+      getParams().setSpeed(10f + (getParams().getStateTimer().getTime() / 2f) * 50f);
     } else {
-      getParams().setSpeed(80f);
+      getParams().setSpeed(50f);
     }
   }
 
@@ -83,5 +83,10 @@ public class Fireball extends Projectile {
     scalings.put(2, 1.1f);
     scalings.put(3, 1.2f);
     return scalings;
+  }
+
+  @Override
+  public Float getStunDuration() {
+    return 0.4f;
   }
 }

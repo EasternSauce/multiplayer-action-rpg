@@ -9,6 +9,7 @@ import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.NullCreature;
 import com.easternsauce.actionrpg.model.creature.enemy.EnemySkillUseEntry;
 import com.easternsauce.actionrpg.model.id.EntityId;
+import com.easternsauce.actionrpg.model.id.NullCreatureId;
 import com.easternsauce.actionrpg.model.skill.SkillType;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.util.Constants;
@@ -124,13 +125,13 @@ public class CreatureAccessor {
     boolean creaturesContainCreatureId = !getData().getCreatures().containsKey(creatureId);
     boolean creatureIdNull = creatureId.isNull();
     if (creatureIdNull || creaturesContainCreatureId) {
-      return NullCreature.of(); // czemu !constainsKey jest spelnione mimo tego, ze klucz jest w mapie?????
+      return NullCreature.of();
     }
     return getData().getCreatures().get(creatureId);
   }
 
   public EntityId<Creature> getAliveCreatureIdClosestTo(Vector2 pos, float maxRange, Set<EntityId<Creature>> excluded, CoreGame game) {
-    AtomicReference<EntityId<Creature>> minCreatureId = new AtomicReference<>(null);
+    AtomicReference<EntityId<Creature>> minCreatureId = new AtomicReference<>(NullCreatureId.of());
     AtomicReference<Float> minDistance = new AtomicReference<>(Float.MAX_VALUE);
 
     gameState.getCreaturesToUpdate(game).forEach(creatureId -> {

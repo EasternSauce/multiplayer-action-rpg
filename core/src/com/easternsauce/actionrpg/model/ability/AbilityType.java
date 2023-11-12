@@ -24,6 +24,7 @@ import com.easternsauce.actionrpg.model.ability.lightning.LightningSpark;
 import com.easternsauce.actionrpg.model.ability.mageteleportcombo.MageTeleportCombo;
 import com.easternsauce.actionrpg.model.ability.magicorb.EnemyMagicOrb;
 import com.easternsauce.actionrpg.model.ability.magicorb.MagicOrb;
+import com.easternsauce.actionrpg.model.ability.magicorb.MagicOrbBlast;
 import com.easternsauce.actionrpg.model.ability.meteor.Meteor;
 import com.easternsauce.actionrpg.model.ability.playfulghost.PlayfulGhost;
 import com.easternsauce.actionrpg.model.ability.playfulghost.PlayfulGhostControl;
@@ -117,8 +118,9 @@ public enum AbilityType {
 
   FIST_SLAM(FistSlam::of), FIST_SLAM_COMBO(FistSlamCombo::of),
 
-  CHARGE(Charge::of), CHARGE_BODY(ChargeBody::of);
+  CHARGE(Charge::of), CHARGE_BODY(ChargeBody::of),
 
+  MAGIC_ORB_BLAST(MagicOrbBlast::of);
 
   @Getter
   private BiFunction<AbilityParams, CoreGame, Ability> factoryMapping;

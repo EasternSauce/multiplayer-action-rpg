@@ -75,8 +75,8 @@ public class FistSlam extends Projectile {
   @Override
   public void onCompleted(CoreGame game) {
     game.chainAnotherAbility(this, AbilityType.SHOCKWAVE, getParams().getDirVector(),
-      ChainAbilityParams.of().setChainToPos(getParams().getPos()).setOverrideStunDuration(0.05f)
-        .setOverrideScale(0.4f * getParams().getOverrideScale()).setOverrideDamage(40f));
+      ChainAbilityParams.of().setChainToPos(destinationPos).setOverrideStunDuration(0.05f)
+        .setOverrideScale(0.35f * getParams().getOverrideScale()).setOverrideDamage(40f));
   }
 
   @Override

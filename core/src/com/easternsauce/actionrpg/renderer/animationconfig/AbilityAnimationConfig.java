@@ -76,6 +76,8 @@ public class AbilityAnimationConfig {
 
     configs.put("fist_slam", AbilityAnimationConfig.of(40, 40, "fist_slam", "fist_slam", 0, 1, 0f, 1f, 1f));
 
+    configs.put("magic_blast", AbilityAnimationConfig.of(64, 64, "magic_blast", "magic_blast", 0, 5, 0f, 0.042f, 1.7f));
+
   }
 
   private Integer textureWidth;

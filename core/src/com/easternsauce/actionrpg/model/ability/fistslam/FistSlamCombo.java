@@ -87,7 +87,7 @@ public class FistSlamCombo extends Ability {
       lastSlamDirVector = dirVector;
 
       game.chainAnotherAbility(this, AbilityType.FIST_SLAM, dirVector.rotateDeg(slamShifts[currentSlam]),
-        ChainAbilityParams.of().setOverrideDamage(40f).setOverrideScale(slamScales[currentSlam]));
+        ChainAbilityParams.of().setOverrideScale(slamScales[currentSlam]));
 
       currentSlam += 1;
     }

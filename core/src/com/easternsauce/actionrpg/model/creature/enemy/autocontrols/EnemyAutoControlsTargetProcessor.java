@@ -19,7 +19,6 @@ public class EnemyAutoControlsTargetProcessor {
   }
 
   private void reactToPotentialTarget(EntityId<Creature> creatureId, CoreGame game) {
-    System.out.println("reactToPotentialTarget");
     Creature creature = game.getCreature(creatureId);
 
     Creature potentialTarget;
@@ -30,7 +29,6 @@ public class EnemyAutoControlsTargetProcessor {
     }
 
     if (potentialTarget != null && potentialTarget.isCurrentlyActive(game)) {
-      System.out.println("here123");
       Float distance = creature.getParams().getPos().distance(potentialTarget.getParams().getPos());
 
       if (distance < Constants.LOSE_AGGRO_DISTANCE) {
@@ -43,7 +41,6 @@ public class EnemyAutoControlsTargetProcessor {
       potentialTarget.isAlive() && creature.isAlive();
 
     if (potentialTargetFound) {
-      System.out.println("here456");
       Vector2 vectorTowardsTarget = creature.getParams().getPos().vectorTowards(potentialTarget.getParams().getPos());
 
       processDistanceLogic(creatureId, potentialTarget, game);
@@ -53,11 +50,9 @@ public class EnemyAutoControlsTargetProcessor {
         game);
 
     } else { // if aggro timed out and out of range
-      System.out.println("here789");
       if (potentialTarget != null) {
         handleTargetLost(creatureId, game);
       } else {
-        System.out.println("here100101");
         followCurrentPath(creatureId, game);
       }
     }
@@ -163,10 +158,8 @@ public class EnemyAutoControlsTargetProcessor {
   public void followCurrentPath(EntityId<Creature> creatureId, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
-    System.out.println("trying to follow path");
     if (creature.getEnemyParams().getPathTowardsTarget() != null &&
       !creature.getEnemyParams().getPathTowardsTarget().isEmpty()) { // path is available
-      System.out.println("following...");
       actionProcessor.followPathToTarget(creatureId, game, creature);
     }
   }

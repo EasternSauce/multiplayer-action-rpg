@@ -2,6 +2,8 @@ package com.easternsauce.actionrpg.model.ability.magicorb;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.AbilityParams;
+import com.easternsauce.actionrpg.model.ability.AbilityType;
+import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
 import com.easternsauce.actionrpg.model.ability.Projectile;
 import com.easternsauce.actionrpg.model.ability.util.AbilityRotationUtils;
 import com.easternsauce.actionrpg.model.creature.Creature;
@@ -80,6 +82,13 @@ public abstract class MagicOrbBase extends Projectile {
       getParams().getTickActionTimer().restart();
     }
 
+  }
+
+  @Override
+  public void onCompleted(CoreGame game) {
+    game.chainAnotherAbility(this, AbilityType.MAGIC_ORB_BLAST, getParams().getDirVector(),
+      ChainAbilityParams.of().setChainToPos(getParams().getPos()).setOverrideStunDuration(0.05f)
+        .setOverrideScale(0.8f).setOverrideDamage(30f));
   }
 
   @Override

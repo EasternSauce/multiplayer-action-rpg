@@ -39,14 +39,6 @@ public class EnemyAutoControlsPathfindingProcessor {
         false);
       List<Vector2> path = result.getPath();
 
-      System.out.println("calc path from " + creature.getParams().getPos() + " to " + creature.getParams().getInitialPos());
-
-      System.out.println("setting path for " + creature.getParams().getEnemyParams().isBossEnemy());
-
-      if (creature.getParams().getEnemyParams().getPathTowardsTarget() != null) {
-        System.out.println("path len is  " + creature.getParams().getEnemyParams().getPathTowardsTarget().size());
-      }
-
       creature.getEnemyParams().setPathTowardsTarget(path);
     }
   }

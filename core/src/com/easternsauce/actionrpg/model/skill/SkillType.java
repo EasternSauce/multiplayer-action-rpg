@@ -9,7 +9,7 @@ public enum SkillType {
   SWORD_SLASH("Sword Slash", true, AbilityType.SWORD_SLASH, 0.6f, 20f, 0f),
   ENEMY_SWORD_SLASH("Sword Slash (mob only)", true, AbilityType.ENEMY_SWORD_SLASH, 0.8f, 20f, 0f),
   BOSS_ENEMY_SWORD_SLASH("Sword Slash (boss only)", true, AbilityType.BOSS_ENEMY_SWORD_SLASH, 0.6f, 20f, 0f),
-  FIREBALL("Fireball", true, AbilityType.FIREBALL, 1.5f, 30f, 20f),
+  FIREBALL("Fireball", true, AbilityType.FIREBALL, 1f, 10f, 7f),
   LIGHTNING("Lightning", true, AbilityType.LIGHTNING_SPARK, 0.35f, 5f, 4f),
   CROSSBOW_SHOT("Crossbow Shot", true, AbilityType.CROSSBOW_SHOT, 2f, 25f, 0f),
   ENEMY_CROSSBOW_SHOT("Crossbow Shot (mob only)", true, AbilityType.ENEMY_CROSSBOW_SHOT, 2f, 25f, 0f),
@@ -30,7 +30,7 @@ public enum SkillType {
   SHIELD_GUARD("Shield Guard", false, AbilityType.SHIELD_GUARD, 6f, 25f, 0f),
   ENEMY_SHIELD_GUARD("Shield Guard (mob only)", false, AbilityType.ENEMY_SHIELD_GUARD, 10f, 25f, 0f),
 
-  SWORD_SPIN("Sword Spin", true, AbilityType.SWORD_SPIN, 4f, 30f, 0f),
+  SWORD_SPIN("Sword Spin", true, AbilityType.SWORD_SPIN, 4f, 10f, 0f),
 
   BOSS_ENEMY_SWORD_SPIN("Sword Spin (boss only)", true, AbilityType.BOSS_ENEMY_SWORD_SPIN, 4f, 30f, 0f),
 
