@@ -26,6 +26,7 @@ import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -80,9 +81,9 @@ public class CreatureParams implements EntityParams {
   private Set<DropTableEntry> dropTable = new ConcurrentSkipListSet<>();
 
   @NonNull
-  private Map<Integer, Item> equipmentItems = new OrderedMap<>();
+  private Map<Integer, Item> equipmentItems = new ConcurrentSkipListMap<>(); // TODO: use orderedmap, and introduce nullitem
   @NonNull
-  private Map<Integer, Item> inventoryItems = new OrderedMap<>();
+  private Map<Integer, Item> inventoryItems = new ConcurrentSkipListMap<>();
   @NonNull
   private Map<Integer, Item> potionMenuItems = new OrderedMap<>();
 
@@ -143,7 +144,7 @@ public class CreatureParams implements EntityParams {
     potionMenuItems.put(0, Item.of().setTemplate(ItemTemplate.templates.get("lifePotion")));
     potionMenuItems.put(1, Item.of().setTemplate(ItemTemplate.templates.get("lifePotion")));
 
-    Map<Integer, Item> inventoryItems = new OrderedMap<>();
+    Map<Integer, Item> inventoryItems = new ConcurrentSkipListMap<>(); // TODO: fix later
     inventoryItems.put(2, Item.of().setTemplate(ItemTemplate.templates.get("lifePotion")));
     inventoryItems.put(4, Item.of().setTemplate(ItemTemplate.templates.get("topazRing")));
     inventoryItems.put(5, Item.of().setTemplate(ItemTemplate.templates.get("rubyRing")));
@@ -151,7 +152,9 @@ public class CreatureParams implements EntityParams {
       Stream.of(new AbstractMap.SimpleEntry<>(SkillType.FIST_SLAM_COMBO, 1),
           new AbstractMap.SimpleEntry<>(SkillType.MAGIC_ORB, 1),
           new AbstractMap.SimpleEntry<>(SkillType.VOLATILE_BUBBLE, 1),
-          new AbstractMap.SimpleEntry<>(SkillType.SUMMON_GHOSTS, 1))
+          new AbstractMap.SimpleEntry<>(SkillType.SUMMON_GHOSTS, 1),
+          new AbstractMap.SimpleEntry<>(SkillType.POISONOUS_MIXTURE, 1),
+          new AbstractMap.SimpleEntry<>(SkillType.FIREBALL, 1))
         .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue, (o1, o2) -> o1, OrderedMap::new))));
     // TODO
 

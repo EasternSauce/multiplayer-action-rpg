@@ -18,13 +18,15 @@ public class CoreGameServerListener extends Listener {
 
   @Override
   public void disconnected(Connection connection) {
-    EntityId<Creature> disconnectedCreatureId = game.getClientPlayers().get(connection.getID());
+    if (game.getClientPlayers().containsKey(connection.getID())) {
+      EntityId<Creature> disconnectedCreatureId = game.getClientPlayers().get(connection.getID());
 
-    PlayerLeaveAction playerLeaveAction = PlayerLeaveAction.of(disconnectedCreatureId);
-    game.getGameState().scheduleServerSideAction(playerLeaveAction);
+      PlayerLeaveAction playerLeaveAction = PlayerLeaveAction.of(disconnectedCreatureId);
+      game.getGameState().scheduleServerSideAction(playerLeaveAction);
 
-    game.getClientIds().remove(connection.getID());
-    game.getClientPlayers().remove(connection.getID());
+      game.getClientIds().remove(connection.getID());
+      game.getClientPlayers().remove(connection.getID());
+    }
   }
 
   @Override

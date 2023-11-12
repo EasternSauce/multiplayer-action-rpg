@@ -16,4 +16,8 @@ public class EnemySwordSlash extends SwordSlashBase {
     return ability;
   }
 
+  @Override
+  public Float getStunDuration() {
+    return 0.35f;
+  }
 }

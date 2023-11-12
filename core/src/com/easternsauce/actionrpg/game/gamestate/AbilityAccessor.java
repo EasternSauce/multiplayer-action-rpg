@@ -84,7 +84,6 @@ public class AbilityAccessor {
   public void spawnAbility(AbilityType abilityType, AbilityParams abilityParams, CoreGame game) {
     Creature creature = gameState.accessCreatures().getCreature(abilityParams.getCreatureId());
 
-
     Ability ability = abilityType.getFactoryMapping().apply(abilityParams, game);
 
     initializeAbility(creature, ability, game);

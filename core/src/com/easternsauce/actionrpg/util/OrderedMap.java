@@ -25,6 +25,7 @@ public class OrderedMap<K, V> extends ConcurrentSkipListMap<K, V> {
     @Override
     public V get(Object key) {
         if (!containsKey(key)) throw new NoSuchElementException();
+        if (key == null) throw new NullPointerException();
         return super.get(key);
     }
 

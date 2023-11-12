@@ -31,16 +31,13 @@ public abstract class GameStateAction {
 
   public final EntityId<Area> getActionObjectAreaId(CoreGame game) {
     if (!getOverrideAreaId().isNull()) {
-      System.out.println("1");
       return getOverrideAreaId();
     }
     Entity entity = getEntity(game);
     if (entity == null) {
       throw new RuntimeException("calling action on non-existent object");
     }
-    System.out.println("2");
-    EntityId<Area> areaId = getEntity(game).getParams().getAreaId();
-    return areaId;
+    return getEntity(game).getParams().getAreaId();
   }
 
   protected EntityId<Area> getOverrideAreaId() {

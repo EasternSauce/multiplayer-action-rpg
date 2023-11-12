@@ -13,7 +13,7 @@ public class Constants {
   public static final float CLIENT_GAME_UPDATE_RANGE = 42f;
 
   public static final float MAP_SCALE = 4.0f;
-  public static final float MOVEMENT_COMMAND_COOLDOWN = 0.05f;
+  public static final float MOVEMENT_COMMAND_COOLDOWN = 0.0f;
   public static final float CHANGE_AIM_DIRECTION_COMMAND_COOLDOWN = 0.05f;
   public static final float LOSE_AGGRO_DISTANCE = 32f;
   public static final float DEFENSIVE_POS_DISTANCE = 22f;
@@ -31,7 +31,7 @@ public class Constants {
   public static final float DAMAGE_ANIMATION_DURATION = 0.35f;
   public static final float ENEMY_RESPAWN_TIME = 120f;
 
-  public static final boolean DEBUG_ENABLED = true;
+  public static final boolean DEBUG_ENABLED = false;
   public static final float TIME_BETWEEN_GAMESTATE_BROADCASTS = 1f;
   public static final float TIME_BETWEEN_GAMESTATE_SNAPSHOTS = 5f;
   public static final float KEEP_UPDATING_CREATURE_AFTER_INACTIVITY_TIME = 20f;

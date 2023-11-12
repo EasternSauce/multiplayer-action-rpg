@@ -39,9 +39,9 @@ public class GameEntityManager {
   private final GameEntityPhysics gameEntityPhysics = GameEntityPhysics.of();
 
   public void createCreatureEntity(EntityId<Creature> creatureId, CoreGame game) {
-    if (!creatureId.isNull()) {
-      Creature creature = game.getCreature(creatureId);
+    Creature creature = game.getCreature(creatureId);
 
+    if (!creature.isNull()) {
       if (!gameEntityRenderer.getCreatureRenderers().containsKey(creatureId)) {
         CreatureRenderer creatureRenderer = CreatureRenderer.of(creatureId);
         gameEntityRenderer.getCreatureRenderers().put(creatureId, creatureRenderer);
@@ -195,8 +195,7 @@ public class GameEntityManager {
     Set<EntityId<Ability>> abilitiesToUpdate = new ConcurrentSkipListSet<>(game.getAbilitiesToUpdate());
 
     abilitiesToUpdate.forEach(abilityId -> {
-      if (!abilityId.isNull() && game.getAbilities().containsKey(abilityId) &&
-        !game.getAbility(abilityId).isNull()) {
+      if (game.getAbilities().containsKey(abilityId) && !game.getAbility(abilityId).isNull()) {
         Ability ability = game.getAbility(abilityId);
 
         ability.onUpdateState(delta, game);
@@ -206,8 +205,7 @@ public class GameEntityManager {
     Map<EntityId<Ability>, Ability> abilities = new OrderedMap<>(game.getAbilities());
 
     abilities.forEach((abilityId, ability) -> {
-      if (!abilityId.isNull() && abilities.containsKey(abilityId) &&
-        !game.getAbility(abilityId).isNull()) {
+      if (abilities.containsKey(abilityId) && !game.getAbility(abilityId).isNull()) {
         ability.update(delta, game);
       }
     });

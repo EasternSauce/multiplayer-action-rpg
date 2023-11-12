@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 public class EnemyTemplate {
-  public static EnemyTemplate skeleton = EnemyTemplate.of(EnemyType.SKELETON, false, 200f, 4f, 10.5f,
+  public static EnemyTemplate skeleton = EnemyTemplate.of(EnemyType.SKELETON, false, 130f, 4f, 10.5f,
     new ConcurrentSkipListSet<>(
       Arrays.asList(DropTableEntry.of(ItemDrop.leatherArmorDrop, 0.1f),
         DropTableEntry.of(ItemDrop.hideGlovesDrop, 0.1f), DropTableEntry.of(ItemDrop.ringmailGreavesDrop, 0.1f),

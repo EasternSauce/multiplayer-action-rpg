@@ -58,8 +58,8 @@ public class Charge extends AttachedAbility {
 
     creature.stopMoving();
     creature.getParams().getMovementParams().setDashing(true);
-    creature.getParams().getMovementParams().setDashingVector(getParams().getDirVector());
-    creature.getParams().getMovementParams().setDashingVelocity(30f);
+    creature.getParams().getMovementParams().setDashingVector(creature.getParams().getMovementParams().getAimDirection());
+    creature.getParams().getMovementParams().setDashingVelocity(35f);
   }
 
   @Override

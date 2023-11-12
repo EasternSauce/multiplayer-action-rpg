@@ -35,7 +35,7 @@ public abstract class GameState {
   }
 
   public PlayerConfig getPlayerConfig(EntityId<Creature> creatureId) {
-    if (!creatureId.isNull()) {
+    if (!creatureId.isNull() && getData().getPlayerConfig().containsKey(creatureId)) {
       return getData().getPlayerConfig().get(creatureId);
     }
     return null; // TODO: NullPLayerConfig?

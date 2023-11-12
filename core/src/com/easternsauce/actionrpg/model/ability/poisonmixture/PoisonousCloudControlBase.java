@@ -25,13 +25,11 @@ public class PoisonousCloudControlBase extends Ability {
 
   @Override
   protected void onActiveUpdate(float delta, CoreGame game) {
-    centerPositionOnPlayer(game);
+    float[] cloudSetSpawnTimes = {0f, 0.4f, 1.2f};
 
-    float[] cloudSetSpawnTimes = {0f, 0.4f, 0.8f, 1.6f, 2.4f};
+    float[] cloudSetSpawnCounts = {3, 7, 11};
 
-    float[] cloudSetSpawnCounts = {3, 5, 7, 9, 11};
-
-    float[] cloudSetDistances = {1f, 2f, 3f, 4f, 5f};
+    float[] cloudSetDistances = {1f, 3f, 5f};
 
     float totalDuration = 3.2f;
 
