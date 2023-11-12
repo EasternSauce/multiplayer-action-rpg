@@ -5,6 +5,7 @@ import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import com.easternsauce.actionrpg.model.ability.Projectile;
 import com.easternsauce.actionrpg.model.ability.util.AbilityRotationUtils;
 import com.easternsauce.actionrpg.model.creature.Creature;
+import com.easternsauce.actionrpg.model.creature.NullCreature;
 import com.easternsauce.actionrpg.model.creature.Player;
 import com.easternsauce.actionrpg.model.creature.enemy.Enemy;
 import com.easternsauce.actionrpg.model.util.Vector2;
@@ -45,7 +46,7 @@ public class PlayfulGhost extends Projectile {
     onProjectileTravelUpdate();
     getParams().setFlipY(getParams().getRotationAngle() >= 90 && getParams().getRotationAngle() < 270);
 
-    Creature minCreature = null;
+    Creature minCreature = NullCreature.of();
     float minDistance = Float.MAX_VALUE;
 
     Creature thisCreature = game.getCreature(getParams().getCreatureId());

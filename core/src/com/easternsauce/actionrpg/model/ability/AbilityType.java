@@ -26,6 +26,8 @@ import com.easternsauce.actionrpg.model.ability.magicorb.EnemyMagicOrb;
 import com.easternsauce.actionrpg.model.ability.magicorb.MagicOrb;
 import com.easternsauce.actionrpg.model.ability.magicorb.MagicOrbBlast;
 import com.easternsauce.actionrpg.model.ability.meteor.Meteor;
+import com.easternsauce.actionrpg.model.ability.meteor.MeteorCall;
+import com.easternsauce.actionrpg.model.ability.meteor.SummonMeteor;
 import com.easternsauce.actionrpg.model.ability.playfulghost.PlayfulGhost;
 import com.easternsauce.actionrpg.model.ability.playfulghost.PlayfulGhostControl;
 import com.easternsauce.actionrpg.model.ability.poisonbite.PoisonBite;
@@ -120,7 +122,11 @@ public enum AbilityType {
 
   CHARGE(Charge::of), CHARGE_BODY(ChargeBody::of),
 
-  MAGIC_ORB_BLAST(MagicOrbBlast::of);
+  MAGIC_ORB_BLAST(MagicOrbBlast::of),
+
+  METEOR_CALL(MeteorCall::of),
+
+  SUMMON_METEOR(SummonMeteor::of);
 
   @Getter
   private BiFunction<AbilityParams, CoreGame, Ability> factoryMapping;

@@ -120,7 +120,7 @@ public class EnemyTemplate {
       Arrays.asList(DropTableEntry.of(ItemDrop.lifePotionDrop, 0.5f),
         DropTableEntry.of(ItemDrop.manaPotionDrop, 0.5f))),
     new ConcurrentSkipListSet<>(Arrays.asList(EnemySkillUseEntry.of(SkillType.FIST_SLAM_COMBO, 10f,
-      300), EnemySkillUseEntry.of(SkillType.CHARGE, 15f, 300))),
+      300), EnemySkillUseEntry.of(SkillType.CHARGE, 15f, 300), EnemySkillUseEntry.of(SkillType.METEOR_CALL, 10f, 300))),
     null);
 
   @Getter

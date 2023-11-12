@@ -5,9 +5,6 @@ import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import com.easternsauce.actionrpg.model.ability.AbilityType;
 import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
 import com.easternsauce.actionrpg.model.ability.Projectile;
-import com.easternsauce.actionrpg.model.ability.util.PointTargetedAbilityUtils;
-import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.creature.CreatureEffect;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -23,19 +20,12 @@ public class Meteor extends Projectile {
   private Vector2 destinationPos;
 
   public static Meteor of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-    Creature creature = game.getCreature(abilityParams.getCreatureId());
-
     Meteor ability = Meteor.of();
-
-    ability.destinationPos = PointTargetedAbilityUtils.calculatePos(
-      creature.getParams().getPos().add(abilityParams.getDirVector()),
-      creature.getParams().getPos(), creature.getParams().getAreaId(), 17f, game);
-    ability.startingPos = Vector2.of(ability.destinationPos.getX() + 12f, ability.destinationPos.getY() + 12f);
 
     ability.params = abilityParams.setWidth(2.474f).setHeight(2f).setChannelTime(0f).setActiveTime(5f)
       .setRotationAllowed(false)
       .setTextureName("meteor").setBaseDamage(0f).setChannelAnimationLooping(false).setActiveAnimationLooping(false)
-      .setPos(ability.startingPos).setDontOverridePos(true).setDirVector(Vector2.of(-1, -1));
+      .setDontOverridePos(true).setDirVector(Vector2.of(-1, -1));
 
     return ability;
   }
@@ -52,9 +42,11 @@ public class Meteor extends Projectile {
 
   @Override
   public void onStarted(CoreGame game) {
-    Creature creature = game.getCreature(getParams().getCreatureId());
-    creature.applyEffect(CreatureEffect.SELF_STUN, 0.2f, game);
-    creature.stopMoving();
+    destinationPos = getParams().getPos();
+
+    startingPos = Vector2.of(destinationPos.getX() + 12f, destinationPos.getY() + 12f);
+
+    getParams().setPos(startingPos); // TODO: we are changing the meaning of ability pos mid logic...
 
     game.chainAnotherAbility(this, AbilityType.VISUAL_TARGET, getParams().getDirVector(),
       ChainAbilityParams.of().setChainToPos(destinationPos));

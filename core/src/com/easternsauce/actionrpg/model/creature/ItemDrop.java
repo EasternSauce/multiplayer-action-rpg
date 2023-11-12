@@ -33,7 +33,7 @@ public class ItemDrop {
   public static ItemDrop leatherArmorDrop = ItemDrop.of(ItemTemplate.templates.get("leatherArmor"),
     0f, new OrderedMap<>());
   public static ItemDrop tierOneMagicLeatherArmorDrop = ItemDrop.of(
-    ItemTemplate.templates.get("leatherArmor"), 1f, Stream.of(new AbstractMap.SimpleEntry<>(SkillType.METEOR, 100),
+    ItemTemplate.templates.get("leatherArmor"), 1f, Stream.of(new AbstractMap.SimpleEntry<>(SkillType.SUMMON_METEOR, 100),
         new AbstractMap.SimpleEntry<>(SkillType.EMERALD_SPIN, 100),
         new AbstractMap.SimpleEntry<>(SkillType.RING_OF_FIRE, 100),
         new AbstractMap.SimpleEntry<>(SkillType.POISONOUS_MIXTURE, 100))

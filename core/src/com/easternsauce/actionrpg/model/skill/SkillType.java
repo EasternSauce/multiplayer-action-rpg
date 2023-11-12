@@ -63,10 +63,12 @@ public enum SkillType {
 
   EMERALD_SPIN("Emerald Spin", true, AbilityType.EMERALD_SPIN_CONTROL, 0.5f, 7f, 7f),
 
-  METEOR("Meteor", true, AbilityType.METEOR, 0.8f, 7f, 7f),
+  SUMMON_METEOR("Summon Meteor", true, AbilityType.SUMMON_METEOR, 0.8f, 7f, 7f),
 
   FIST_SLAM_COMBO("Fist Slam Combo", true, AbilityType.FIST_SLAM_COMBO, 12f, 7f, 0f),
   CHARGE("Charge", true, AbilityType.CHARGE, 6f, 7f, 0f),
+
+  METEOR_CALL("Meteor Call", true, AbilityType.METEOR_CALL, 4f, 7f, 0f),
   ;
 
   @Getter

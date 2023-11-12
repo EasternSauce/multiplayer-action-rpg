@@ -156,6 +156,8 @@ public class CreatureParams implements EntityParams {
           new AbstractMap.SimpleEntry<>(SkillType.POISONOUS_MIXTURE, 1),
           new AbstractMap.SimpleEntry<>(SkillType.LIGHTNING, 1),
           new AbstractMap.SimpleEntry<>(SkillType.DASH, 1),
+          new AbstractMap.SimpleEntry<>(SkillType.METEOR_CALL, 1),
+          new AbstractMap.SimpleEntry<>(SkillType.SUMMON_METEOR, 1),
           new AbstractMap.SimpleEntry<>(SkillType.FIREBALL, 1))
         .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue, (o1, o2) -> o1, OrderedMap::new))));
     // TODO
