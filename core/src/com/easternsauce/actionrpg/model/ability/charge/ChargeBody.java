@@ -50,11 +50,16 @@ public class ChargeBody extends RingOfFireBase {
 
   @Override
   public Float getStunDuration() {
-    return 2f;
+    return 1.5f;
   }
 
   @Override
   public boolean isBlockable() {
     return false;
+  }
+
+  @Override
+  public boolean isDamagingSkillNotAllowedWhenActive() {
+    return true;
   }
 }

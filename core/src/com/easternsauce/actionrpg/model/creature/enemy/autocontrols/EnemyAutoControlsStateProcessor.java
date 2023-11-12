@@ -17,7 +17,7 @@ public class EnemyAutoControlsStateProcessor {
 
       creature.getEnemyParams().getAutoControlsStateProcessorTimer().restart();
 
-      if (creature.getEnemyParams().getTargetCreatureId() != null) {
+      if (!creature.getEnemyParams().getTargetCreatureId().isNull()) {
         if (creature.getEnemyParams().getAutoControlsState() == EnemyAutoControlsState.ALERTED) {
           handleAlerted(game, creature);
         } else if (creature.getEnemyParams().getAutoControlsState() == EnemyAutoControlsState.AGGRESSIVE) {

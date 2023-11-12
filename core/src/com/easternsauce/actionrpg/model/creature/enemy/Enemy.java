@@ -74,7 +74,7 @@ public class Enemy extends Creature {
   @Override
   public WorldDirection getFacingDirection(CoreGame game) {
     float deg;
-    if (getParams().getEnemyParams().getTargetCreatureId() != null) {
+    if (!getParams().getEnemyParams().getTargetCreatureId().isNull()) {
       Vector2 targetPos = game.getCreaturePos(getParams().getEnemyParams().getTargetCreatureId());
       if (targetPos != null) {
         deg = this.getParams().getPos().vectorTowards(targetPos).angleDeg();

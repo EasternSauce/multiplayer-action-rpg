@@ -63,7 +63,7 @@ public class FistSlamCombo extends Ability {
     if (creature.getEnemyParams() != null) {
       creature.getEnemyParams().setAutoControlsState(EnemyAutoControlsState.AGGRESSIVE);
 
-      if (creature.getEnemyParams().getTargetCreatureId() != null) {
+      if (!creature.getEnemyParams().getTargetCreatureId().isNull()) {
         targetCreature = game.getCreature(creature.getEnemyParams().getTargetCreatureId());
       }
     }

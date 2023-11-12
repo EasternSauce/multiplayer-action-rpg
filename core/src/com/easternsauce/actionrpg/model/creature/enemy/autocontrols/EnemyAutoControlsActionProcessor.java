@@ -24,9 +24,7 @@ public class EnemyAutoControlsActionProcessor {
   public void handleUseRandomSkillAtTarget(EntityId<Creature> creatureId, Vector2 potentialTargetPos, Vector2 vectorTowardsTarget, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
-
-    if (creature.getEnemyParams().getUseAbilityCooldownTimer().getTime() >
-      Constants.ENEMY_USE_ABILITY_COOLDOWN_TIMER) {
+    if (creature.getEnemyParams().getUseAbilityCooldownTimer().getTime() > Constants.ENEMY_USE_ABILITY_COOLDOWN_TIMER) {
 
       creature.getParams().setLastTimeUsedSkill(game.getGameState().getTime());
 

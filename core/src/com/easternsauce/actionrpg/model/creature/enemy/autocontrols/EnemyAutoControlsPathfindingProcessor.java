@@ -20,7 +20,7 @@ public class EnemyAutoControlsPathfindingProcessor {
   public void process(EntityId<Creature> creatureId, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
-    if (creature.getEnemyParams().getTargetCreatureId() != null) {
+    if (!creature.getEnemyParams().getTargetCreatureId().isNull()) {
       processPathfindingTowardsTarget(creatureId, game, creature);
     } else {
       processPathfindingTowardsSpawnPoint(game, creature);
@@ -38,6 +38,14 @@ public class EnemyAutoControlsPathfindingProcessor {
         creature.getCapability(),
         false);
       List<Vector2> path = result.getPath();
+
+      System.out.println("calc path from " + creature.getParams().getPos() + " to " + creature.getParams().getInitialPos());
+
+      System.out.println("setting path for " + creature.getParams().getEnemyParams().isBossEnemy());
+
+      if (creature.getParams().getEnemyParams().getPathTowardsTarget() != null) {
+        System.out.println("path len is  " + creature.getParams().getEnemyParams().getPathTowardsTarget().size());
+      }
 
       creature.getEnemyParams().setPathTowardsTarget(path);
     }
@@ -90,7 +98,7 @@ public class EnemyAutoControlsPathfindingProcessor {
         EnemyParams enemyParams = otherCreature.getEnemyParams();
 
         if (enemyParams != null) {
-          boolean sameCreatureTarget = enemyParams.getTargetCreatureId() != null &&
+          boolean sameCreatureTarget = !enemyParams.getTargetCreatureId().isNull() &&
             enemyParams.getTargetCreatureId().equals(targetId);
           boolean creatureNearby = otherCreature.getParams().getPos().distance(creature.getParams().getPos()) < 4f;
           boolean creatureEnemy = otherCreature instanceof Enemy;

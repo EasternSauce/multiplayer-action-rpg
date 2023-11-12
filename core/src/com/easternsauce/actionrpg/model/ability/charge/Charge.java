@@ -101,4 +101,9 @@ public class Charge extends AttachedAbility {
   public boolean canStun() {
     return false;
   }
+
+  @Override
+  public boolean isDamagingSkillNotAllowedWhenActive() {
+    return true;
+  }
 }
