@@ -55,11 +55,11 @@ public class GameStateData {
     newGameStateData.setAreaGates(areaGates);
     newGameStateData.setCheckpoints(checkpoints);
     newGameStateData.setAreas(new OrderedMap<>(gameStateData.getAreas()));
-    newGameStateData.setDefaultAreaId(gameStateData.getDefaultAreaId());
-    newGameStateData.setGeneralTimer(gameStateData.getGeneralTimer());
+    newGameStateData.setDefaultAreaId(EntityId.of(gameStateData.getDefaultAreaId()));
+    newGameStateData.setGeneralTimer(SimpleTimer.of(gameStateData.getGeneralTimer()));
     newGameStateData.setPlayerConfig(new OrderedMap<>(gameStateData.getPlayerConfig()));
-    newGameStateData.setRandomGenerator(gameStateData.getRandomGenerator());
-    newGameStateData.setEnemyRallyPoints(gameStateData.getEnemyRallyPoints());
+    newGameStateData.setRandomGenerator(RandomGenerator.of(gameStateData.getRandomGenerator()));
+    newGameStateData.setEnemyRallyPoints(new OrderedMap<>(gameStateData.getEnemyRallyPoints()));
 
     return newGameStateData;
   }
@@ -73,11 +73,11 @@ public class GameStateData {
     newGameStateData.setAreaGates(new OrderedMap<>());
     newGameStateData.setCheckpoints(new OrderedMap<>());
     newGameStateData.setAreas(new OrderedMap<>(gameStateData.getAreas()));
-    newGameStateData.setDefaultAreaId(gameStateData.getDefaultAreaId());
-    newGameStateData.setGeneralTimer(gameStateData.getGeneralTimer());
+    newGameStateData.setDefaultAreaId(EntityId.of(gameStateData.getDefaultAreaId()));
+    newGameStateData.setGeneralTimer(SimpleTimer.of(gameStateData.getGeneralTimer()));
     newGameStateData.setPlayerConfig(new OrderedMap<>(gameStateData.getPlayerConfig()));
-    newGameStateData.setRandomGenerator(gameStateData.getRandomGenerator());
-    newGameStateData.setEnemyRallyPoints(gameStateData.getEnemyRallyPoints());
+    newGameStateData.setRandomGenerator(RandomGenerator.of(gameStateData.getRandomGenerator()));
+    newGameStateData.setEnemyRallyPoints(new OrderedMap<>(gameStateData.getEnemyRallyPoints()));
 
     return newGameStateData;
   }

@@ -26,6 +26,15 @@ public class SimpleTimer {
     return simpleTimer;
   }
 
+  public static SimpleTimer of(SimpleTimer other) {
+    SimpleTimer simpleTimer = SimpleTimer.of();
+
+    simpleTimer.time = other.time;
+    simpleTimer.running = other.running;
+
+    return simpleTimer;
+  }
+
   @SuppressWarnings("unused")
   public void start() {
     running = true;

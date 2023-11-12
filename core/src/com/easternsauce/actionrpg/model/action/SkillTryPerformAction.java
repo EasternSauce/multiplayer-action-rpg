@@ -46,12 +46,14 @@ public class SkillTryPerformAction extends GameStateAction {
   public void applyToGame(CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
-    Skill skill = creature.getParams().getSkills().get(skillType);
 
     creature.getParams().setLastTimeUsedSkill(game.getGameState().getTime());
 
-    if (skill != null && skill.canPerform(game)) {
-      skill.perform(startingPos, dirVector, game);
+    if (creature.getParams().getSkills().containsKey(skillType)) {
+      Skill skill = creature.getParams().getSkills().get(skillType);
+      if (skill.canPerform(game)) {
+        skill.perform(startingPos, dirVector, game);
+      }
     }
   }
 

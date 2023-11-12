@@ -4,15 +4,16 @@ import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.game.entity.Entity;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.id.EntityId;
-import com.easternsauce.actionrpg.model.id.NullCreatureId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.Map;
+
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class PlayerMoveTowardsTargetAction extends GameStateAction {
-  private EntityId<Creature> playerId = NullCreatureId.of();
+  private EntityId<Creature> playerId;
 
   private Vector2 mousePos;
 
@@ -41,6 +42,8 @@ public class PlayerMoveTowardsTargetAction extends GameStateAction {
 
   @Override
   public Entity getEntity(CoreGame game) {
-    return game.getCreature(playerId);
+    Map<EntityId<Creature>, Creature> allCreatures = game.getAllCreatures();
+    Creature creature = game.getCreature(playerId);
+    return creature;
   }
 }

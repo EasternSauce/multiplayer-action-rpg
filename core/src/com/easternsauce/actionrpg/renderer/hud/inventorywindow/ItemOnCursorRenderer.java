@@ -20,7 +20,7 @@ public class ItemOnCursorRenderer {
 
     PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
 
-    if (!player.isNull()) {
+    if (playerConfig != null && !player.isNull()) {
       Map<Integer, Item> inventoryItems = player.getParams().getInventoryItems();
       Map<Integer, Item> equipmentItems = player.getParams().getEquipmentItems();
       Map<Integer, Item> potionMenuItems = player.getParams().getPotionMenuItems();
@@ -28,9 +28,9 @@ public class ItemOnCursorRenderer {
       float mouseX = game.hudMousePos().getX();
       float mouseY = game.hudMousePos().getY();
 
-      if (playerConfig.getInventoryItemBeingMoved() != null &&
-        inventoryItems.containsKey(playerConfig.getInventoryItemBeingMoved())) {
+      Integer inventoryItemBeingMoved = playerConfig.getInventoryItemBeingMoved();
 
+      if (inventoryItemBeingMoved != null && inventoryItems.containsKey(inventoryItemBeingMoved)) {
         renderInventoryItemBeingMovedOnCursor(mouseX, mouseY, inventoryItems, iconRetriever, playerConfig,
           renderingLayer);
       }

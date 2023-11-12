@@ -14,6 +14,15 @@ public class RandomGenerator {
     return randomGenerator;
   }
 
+  public static RandomGenerator of(RandomGenerator other) {
+    RandomGenerator randomGenerator = RandomGenerator.of();
+
+    randomGenerator.startingSeed = other.startingSeed;
+    randomGenerator.counter = other.counter;
+
+    return randomGenerator;
+  }
+
   public static int hash(int a) {
     a ^= (a << 13);
     a ^= (a >>> 17);

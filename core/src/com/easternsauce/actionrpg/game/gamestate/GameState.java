@@ -38,7 +38,7 @@ public abstract class GameState {
     if (!creatureId.isNull()) {
       return getData().getPlayerConfig().get(creatureId);
     }
-    return null;
+    return null; // TODO: NullPLayerConfig?
   }
 
   public LootPile getLootPile(EntityId<LootPile> lootPileId) {

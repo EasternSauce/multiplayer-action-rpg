@@ -31,6 +31,8 @@ public class CoreGameClientListener extends Listener {
 
       List<GameStateAction> actions = actionsHolder.getActions();
 
+      System.out.println("received " + actions.size() + " actions");
+
       actions.forEach(gameStateAction -> gameStateAction.applyToGame(game));
 
     } else if (object instanceof GameStateBroadcast) {

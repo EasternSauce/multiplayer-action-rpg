@@ -207,6 +207,7 @@ public class CoreGameClientInputHandler {
 
       if (player.getParams().getMovementParams().getMovementActionsPerSecondLimiterTimer().getTime() >
         Constants.MOVEMENT_COMMAND_COOLDOWN && game.getGameState().getTime() > menuClickTime + 0.1f) {
+        System.out.println("sending move action");
         game.getEndPoint().sendTCP(ActionPerformCommand.of(
           PlayerMoveTowardsTargetAction.of(game.getGameState().getThisClientPlayerId(), mousePos)));
       }

@@ -121,8 +121,10 @@ public class CreatureAccessor {
   }
 
   public Creature getCreature(EntityId<Creature> creatureId) {
-    if (creatureId.isNull() || !getData().getCreatures().containsKey(creatureId)) {
-      return NullCreature.of();
+    boolean creaturesContainCreatureId = !getData().getCreatures().containsKey(creatureId);
+    boolean creatureIdNull = creatureId.isNull();
+    if (creatureIdNull || creaturesContainCreatureId) {
+      return NullCreature.of(); // czemu !constainsKey jest spelnione mimo tego, ze klucz jest w mapie?????
     }
     return getData().getCreatures().get(creatureId);
   }

@@ -105,7 +105,6 @@ public class ServerGameState extends GameState {
     OrderedMap<EntityId<LootPile>, LootPile> personalizedLootPiles = new OrderedMap<>(
       getLootPiles().entrySet().stream().filter(
           entry -> entry.getValue().getParams().getAreaId().equals(player.getParams().getAreaId()) && entry.getValue()
-
             .getParams().getPos().distance(player.getParams().getPos()) < Constants.CLIENT_GAME_UPDATE_RANGE)
         .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
 

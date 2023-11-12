@@ -79,6 +79,9 @@ public class CoreGameServer extends CoreGame {
           List<GameStateAction> personalizedTickActions = onTickActions.stream()
             .filter(action -> isActionRelevantForPlayer(player, action)).collect(Collectors.toList());
 
+          System.out.println("on tick: " + onTickActions.size());
+          System.out.println("personalized: " + personalizedTickActions.size());
+
           connection.sendTCP(ActionsHolder.of(personalizedTickActions));
         }
       }
@@ -93,9 +96,14 @@ public class CoreGameServer extends CoreGame {
   }
 
   private boolean isActionRelevantForPlayer(Creature player, GameStateAction action) {
-    return action.isActionObjectValid(this) &&
-      action.getActionObjectAreaId(this).getValue().equals(player.getParams().getAreaId().getValue()) &&
-      action.getActionObjectPos(this).distance(player.getParams().getPos()) < Constants.CLIENT_GAME_UPDATE_RANGE;
+    boolean actionObjectValid = action.isActionObjectValid(this);
+    String actionAreaId = action.getActionObjectAreaId(this).getValue();
+    String playerAreaId = player.getParams().getAreaId().getValue();
+    System.out.println(actionAreaId + " " + playerAreaId + " " + action.getClass());
+    boolean actionAreaSameAsPlayerArea = actionAreaId.equals(playerAreaId);
+    boolean withinUpdateRange = action.getActionObjectPos(this).distance(player.getParams().getPos()) < Constants.CLIENT_GAME_UPDATE_RANGE;
+    System.out.println(actionObjectValid + " " + actionAreaSameAsPlayerArea + " " + withinUpdateRange);
+    return actionObjectValid && actionAreaSameAsPlayerArea && withinUpdateRange;
   }
 
   @Override
