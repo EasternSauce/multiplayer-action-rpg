@@ -1,6 +1,7 @@
 package com.easternsauce.actionrpg.model.ability.swordspin;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.ability.AbilityContext;
 import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import com.easternsauce.actionrpg.model.ability.AbilityState;
 import com.easternsauce.actionrpg.model.ability.AttachedAbility;
@@ -14,6 +15,8 @@ import java.util.concurrent.ConcurrentSkipListSet;
 public abstract class SwordSpinBase extends AttachedAbility {
   @Getter
   protected AbilityParams params;
+  @Getter
+  protected AbilityContext context;
 
   @Override
   public Boolean isPositionChangedOnUpdate() {

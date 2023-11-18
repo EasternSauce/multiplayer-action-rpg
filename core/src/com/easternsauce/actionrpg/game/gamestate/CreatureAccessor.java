@@ -60,7 +60,7 @@ public class CreatureAccessor {
 
   public Vector2 getCreaturePos(EntityId<Creature> creatureId) {
     if (!getData().getCreatures().containsKey(creatureId)) {
-      return null;
+      return null; // TODO: null pos object?
     }
     return getData().getCreatures().get(creatureId).getParams().getPos();
   }

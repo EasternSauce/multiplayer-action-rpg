@@ -1,6 +1,7 @@
 package com.easternsauce.actionrpg.model.ability.crossbowbolt;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.ability.AbilityContext;
 import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import com.easternsauce.actionrpg.model.ability.Projectile;
 import com.easternsauce.actionrpg.model.creature.Creature;
@@ -15,12 +16,16 @@ import lombok.NoArgsConstructor;
 public class CrossbowBolt extends Projectile {
   @Getter
   protected AbilityParams params;
+  @Getter
+  protected AbilityContext context;
 
-  public static CrossbowBolt of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+  public static CrossbowBolt of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
     CrossbowBolt ability = CrossbowBolt.of();
     ability.params = abilityParams.setWidth(1.5f).setHeight(1.5f).setChannelTime(0f).setActiveTime(30f)
       .setStartingRange(1.5f).setTextureName("arrow").setBaseDamage(10f).setChannelAnimationLooping(true)
       .setActiveAnimationLooping(true).setSpeed(30f);
+
+    ability.context = abilityContext;
 
     return ability;
   }

@@ -12,9 +12,11 @@ import lombok.NoArgsConstructor;
 public class Charge extends AttachedAbility {
   @Getter
   protected AbilityParams params;
+  @Getter
+  protected AbilityContext context;
 
-  public static Charge of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-    Creature creature = game.getCreature(abilityParams.getCreatureId());
+  public static Charge of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
+    Creature creature = game.getCreature(abilityContext.getCreatureId());
 
     float flipValue = abilityParams.getDirVector().angleDeg();
 
@@ -24,6 +26,8 @@ public class Charge extends AttachedAbility {
       .setTextureName("smoke").setBaseDamage(0f).setChannelAnimationLooping(false).setActiveAnimationLooping(false)
       .setPos(creature.getParams().getPos()).setStartingRange(0.8f).setDirectionalAttachedAbilityRotationShift(180f)
       .setFlipY(Charge.calculateFlip(flipValue)).setRotationShift(180f).setDelayedActionTime(1f);
+
+    ability.context = abilityContext;
 
     return ability;
   }
@@ -54,7 +58,7 @@ public class Charge extends AttachedAbility {
 
   @Override
   public void onDelayedAction(CoreGame game) {
-    Creature creature = game.getCreature(getParams().getCreatureId());
+    Creature creature = game.getCreature(getContext().getCreatureId());
 
     creature.stopMoving();
     creature.getParams().getMovementParams().setDashing(true);
@@ -65,7 +69,7 @@ public class Charge extends AttachedAbility {
   @Override
   protected void onActiveUpdate(float delta, CoreGame game) {
     if (!getParams().getDelayedActionCompleted()) {
-      Creature creature = game.getCreature(getParams().getCreatureId());
+      Creature creature = game.getCreature(getContext().getCreatureId());
 
       creature.stopMoving();
     }
@@ -74,7 +78,7 @@ public class Charge extends AttachedAbility {
 
   @Override
   public void onCompleted(CoreGame game) {
-    Creature creature = game.getCreature(getParams().getCreatureId());
+    Creature creature = game.getCreature(getContext().getCreatureId());
 
     creature.getParams().getMovementParams().setDashing(false);
   }

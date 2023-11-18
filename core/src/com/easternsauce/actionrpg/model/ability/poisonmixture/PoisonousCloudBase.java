@@ -2,6 +2,7 @@ package com.easternsauce.actionrpg.model.ability.poisonmixture;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.Ability;
+import com.easternsauce.actionrpg.model.ability.AbilityContext;
 import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
@@ -11,6 +12,8 @@ import lombok.Getter;
 public abstract class PoisonousCloudBase extends Ability {
   @Getter
   protected AbilityParams params;
+  @Getter
+  protected AbilityContext context;
 
   @Override
   public Boolean isRanged() {
@@ -37,7 +40,7 @@ public abstract class PoisonousCloudBase extends Ability {
     if (!creature.isEffectActive(CreatureEffect.POISON, game)) {
       creature.applyEffect(CreatureEffect.POISON, 10f, game);
       creature.getParams().getEffectParams().setCurrentDamageOverTimeTaken(8f);
-      creature.getParams().getEffectParams().setCurrentDamageOverTimeDealerCreatureId(getParams().getCreatureId());
+      creature.getParams().getEffectParams().setCurrentDamageOverTimeDealerCreatureId(getContext().getCreatureId());
     }
 
   }

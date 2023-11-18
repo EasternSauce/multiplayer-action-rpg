@@ -1,6 +1,7 @@
 package com.easternsauce.actionrpg.model.ability.poisonmixture;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.ability.AbilityContext;
 import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import com.easternsauce.actionrpg.model.ability.AbilityType;
 import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
@@ -13,9 +14,11 @@ import lombok.NoArgsConstructor;
 public class EnemyPoisonousCloudControl extends PoisonousCloudControlBase {
   int currentCloudSet = 0;
 
-  public static EnemyPoisonousCloudControl of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+  public static EnemyPoisonousCloudControl of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
     EnemyPoisonousCloudControl ability = EnemyPoisonousCloudControl.of();
     ability.params = abilityParams.setChannelTime(0f).setActiveTime(10f);
+
+    ability.context = abilityContext;
 
     return ability;
   }

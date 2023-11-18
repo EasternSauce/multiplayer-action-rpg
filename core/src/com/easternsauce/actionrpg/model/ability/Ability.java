@@ -82,6 +82,8 @@ public abstract class Ability implements Entity {
 
   public abstract AbilityParams getParams();
 
+  public abstract AbilityContext getContext();
+
   abstract protected void onChannelUpdate(CoreGame game);
 
   private void activate(CoreGame game) {
@@ -111,7 +113,7 @@ public abstract class Ability implements Entity {
     getParams().getStateTimer().restart();
     getParams().getTickActionTimer().restart();
 
-    Creature creature = game.getCreature(getParams().getCreatureId());
+    Creature creature = game.getCreature(getContext().getCreatureId());
 
     if (getParams().getChainToPos() != null) {
       getParams().setPos(getParams().getChainToPos());
@@ -190,7 +192,7 @@ public abstract class Ability implements Entity {
   }
 
   public Integer getSkillLevel(CoreGame game) {
-    Creature creature = game.getCreature(getParams().getCreatureId());
+    Creature creature = game.getCreature(getContext().getCreatureId());
 
     if (creature.isNull() || !creature.availableSkills().containsKey(getParams().getSkillType())) {
       return 1;
@@ -231,7 +233,7 @@ public abstract class Ability implements Entity {
   }
 
   protected void centerPositionOnPlayer(CoreGame game) {
-    Vector2 pos = game.getCreaturePos(getParams().getCreatureId());
+    Vector2 pos = game.getCreaturePos(getContext().getCreatureId());
 
     if (pos != null) {
       getParams().setPos(pos.copy());

@@ -1,10 +1,7 @@
 package com.easternsauce.actionrpg.model.ability.fireball;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.ability.AbilityParams;
-import com.easternsauce.actionrpg.model.ability.AbilityType;
-import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
-import com.easternsauce.actionrpg.model.ability.Projectile;
+import com.easternsauce.actionrpg.model.ability.*;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.util.Vector2;
@@ -21,14 +18,18 @@ import java.util.Map;
 public class Fireball extends Projectile {
   @Getter
   protected AbilityParams params;
+  @Getter
+  protected AbilityContext context;
 
-  public static Fireball of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-    Creature creature = game.getCreature(abilityParams.getCreatureId());
+  public static Fireball of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
+    Creature creature = game.getCreature(abilityContext.getCreatureId());
 
     Fireball ability = Fireball.of();
     ability.params = abilityParams.setWidth(2.5f).setHeight(2.5f).setChannelTime(0f).setActiveTime(30f)
       .setStartingRange(2.5f).setTextureName("fireball").setBaseDamage(20f).setChannelAnimationLooping(false)
       .setActiveAnimationLooping(true).setDelayedActionTime(0.001f).setPos(creature.getParams().getPos());
+
+    ability.context = abilityContext;
 
     return ability;
   }

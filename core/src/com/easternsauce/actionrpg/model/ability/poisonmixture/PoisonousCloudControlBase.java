@@ -1,16 +1,15 @@
 package com.easternsauce.actionrpg.model.ability.poisonmixture;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.ability.Ability;
-import com.easternsauce.actionrpg.model.ability.AbilityParams;
-import com.easternsauce.actionrpg.model.ability.AbilityType;
-import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
+import com.easternsauce.actionrpg.model.ability.*;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.Getter;
 
 public class PoisonousCloudControlBase extends Ability {
   @Getter
   protected AbilityParams params;
+  @Getter
+  protected AbilityContext context;
   int currentCloudSet = 0;
 
   @Override

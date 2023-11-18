@@ -1,6 +1,7 @@
 package com.easternsauce.actionrpg.model.ability.bite;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.ability.AbilityContext;
 import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import com.easternsauce.actionrpg.model.ability.AbilityState;
 import com.easternsauce.actionrpg.model.ability.AttachedAbility;
@@ -16,8 +17,10 @@ import lombok.NoArgsConstructor;
 public class Bite extends AttachedAbility {
   @Getter
   protected AbilityParams params;
+  @Getter
+  protected AbilityContext context;
 
-  public static Bite of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+  public static Bite of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
     float flipValue = abilityParams.getDirVector().angleDeg();
 
     Bite ability = Bite.of();
@@ -25,6 +28,8 @@ public class Bite extends AttachedAbility {
     ability.params = abilityParams.setWidth(1.3f).setHeight(1.3f).setChannelTime(0f).setActiveTime(0.18f)
       .setStartingRange(1.8f).setTextureName("teeth").setBaseDamage(37f).setChannelAnimationLooping(false)
       .setActiveAnimationLooping(false).setFlipY(Bite.calculateFlip(flipValue));
+
+    ability.context = abilityContext;
 
     return ability;
   }

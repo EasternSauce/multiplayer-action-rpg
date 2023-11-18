@@ -51,7 +51,7 @@ public class AbilityBody {
     if (!skipCreatingBody) {
       world = game.getPhysicsWorld(ability.getParams().getAreaId());
 
-      creatureId = ability.getParams().getCreatureId();
+      creatureId = ability.getContext().getCreatureId();
 
       b2body = B2BodyFactory.createAbilityB2Body(world, this, ability.getParams().getPos(), hitboxVertices(ability));
 

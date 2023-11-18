@@ -1,6 +1,7 @@
 package com.easternsauce.actionrpg.model.ability.poisonbite;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.ability.AbilityContext;
 import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import com.easternsauce.actionrpg.model.ability.AbilityState;
 import com.easternsauce.actionrpg.model.ability.AttachedAbility;
@@ -16,8 +17,10 @@ import lombok.NoArgsConstructor;
 public class PoisonBite extends AttachedAbility {
   @Getter
   protected AbilityParams params;
+  @Getter
+  protected AbilityContext context;
 
-  public static PoisonBite of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+  public static PoisonBite of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
     float flipValue = abilityParams.getDirVector().angleDeg();
 
     PoisonBite ability = PoisonBite.of();
@@ -25,6 +28,8 @@ public class PoisonBite extends AttachedAbility {
     ability.params = abilityParams.setWidth(1.3f).setHeight(1.3f).setChannelTime(0f).setActiveTime(0.18f)
       .setStartingRange(1.8f).setTextureName("teeth").setBaseDamage(30f).setChannelAnimationLooping(false)
       .setActiveAnimationLooping(false).setFlipY(PoisonBite.calculateFlip(flipValue));
+
+    ability.context = abilityContext;
 
     return ability;
   }
@@ -71,7 +76,7 @@ public class PoisonBite extends AttachedAbility {
     if (!creature.isEffectActive(CreatureEffect.POISON, game)) {
       creature.applyEffect(CreatureEffect.POISON, 10f, game);
       creature.getParams().getEffectParams().setCurrentDamageOverTimeTaken(18f);
-      creature.getParams().getEffectParams().setCurrentDamageOverTimeDealerCreatureId(getParams().getCreatureId());
+      creature.getParams().getEffectParams().setCurrentDamageOverTimeDealerCreatureId(getContext().getCreatureId());
     }
   }
 

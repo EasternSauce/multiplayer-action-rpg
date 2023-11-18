@@ -1,10 +1,7 @@
 package com.easternsauce.actionrpg.model.ability.fistslam;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.ability.Ability;
-import com.easternsauce.actionrpg.model.ability.AbilityParams;
-import com.easternsauce.actionrpg.model.ability.AbilityType;
-import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
+import com.easternsauce.actionrpg.model.ability.*;
 import com.easternsauce.actionrpg.model.ability.util.AbilityRotationUtils;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
@@ -19,12 +16,16 @@ import lombok.NoArgsConstructor;
 public class FistSlamCombo extends Ability {
   @Getter
   protected AbilityParams params;
+  @Getter
+  protected AbilityContext context;
   private int currentSlam = 0;
   private Vector2 lastSlamDirVector;
 
-  public static FistSlamCombo of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+  public static FistSlamCombo of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
     FistSlamCombo ability = FistSlamCombo.of();
     ability.params = abilityParams.setChannelTime(0f).setActiveTime(10f);
+
+    ability.context = abilityContext;
 
     return ability;
   }
@@ -41,7 +42,7 @@ public class FistSlamCombo extends Ability {
 
   @Override
   public void onStarted(CoreGame game) {
-    Creature creature = game.getCreature(getParams().getCreatureId());
+    Creature creature = game.getCreature(getContext().getCreatureId());
     creature.applyEffect(CreatureEffect.SELF_SLOW, 7f, game);
     creature.getParams().getEffectParams().setCurrentSlowMagnitude(0.5f);
 
@@ -56,7 +57,7 @@ public class FistSlamCombo extends Ability {
     float[] slamShifts = {-15f, 15f, -15f, 15f, -15f, 15f, -15f, 0f, 0f, 0f};
     float[] slamScales = {1f, 1f, 1f, 1f, 1f, 1f, 1f, 1.4f, 1.6f, 1.8f};
 
-    Creature creature = game.getCreature(getParams().getCreatureId());
+    Creature creature = game.getCreature(getContext().getCreatureId());
 
     Creature targetCreature = null;
 

@@ -1,6 +1,7 @@
 package com.easternsauce.actionrpg.model.ability.dash;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.ability.AbilityContext;
 import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import com.easternsauce.actionrpg.model.ability.AbilityState;
 import com.easternsauce.actionrpg.model.ability.AttachedAbility;
@@ -14,9 +15,11 @@ import lombok.NoArgsConstructor;
 public class Dash extends AttachedAbility {
   @Getter
   protected AbilityParams params;
+  @Getter
+  protected AbilityContext context;
 
-  public static Dash of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-    Creature creature = game.getCreature(abilityParams.getCreatureId());
+  public static Dash of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
+    Creature creature = game.getCreature(abilityContext.getCreatureId());
 
     float flipValue = abilityParams.getDirVector().angleDeg();
 
@@ -26,6 +29,8 @@ public class Dash extends AttachedAbility {
       .setTextureName("smoke").setBaseDamage(0f).setChannelAnimationLooping(false).setActiveAnimationLooping(false)
       .setPos(creature.getParams().getPos()).setStartingRange(0.8f).setDirectionalAttachedAbilityRotationShift(180f)
       .setFlipY(Dash.calculateFlip(flipValue)).setRotationShift(180f);
+
+    ability.context = abilityContext;
 
     return ability;
   }
@@ -51,7 +56,7 @@ public class Dash extends AttachedAbility {
 
   @Override
   public void onStarted(CoreGame game) {
-    Creature creature = game.getCreature(getParams().getCreatureId());
+    Creature creature = game.getCreature(getContext().getCreatureId());
 
     creature.getParams().getMovementParams().setDashing(true);
     creature.getParams().getMovementParams().setDashingVector(getParams().getDirVector());
@@ -65,7 +70,7 @@ public class Dash extends AttachedAbility {
 
   @Override
   public void onCompleted(CoreGame game) {
-    Creature creature = game.getCreature(getParams().getCreatureId());
+    Creature creature = game.getCreature(getContext().getCreatureId());
 
     creature.getParams().getMovementParams().setDashing(false);
   }

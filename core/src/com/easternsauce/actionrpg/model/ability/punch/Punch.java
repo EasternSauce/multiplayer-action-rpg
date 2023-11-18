@@ -1,6 +1,7 @@
 package com.easternsauce.actionrpg.model.ability.punch;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.ability.AbilityContext;
 import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import com.easternsauce.actionrpg.model.ability.AbilityState;
 import com.easternsauce.actionrpg.model.ability.AttachedAbility;
@@ -13,12 +14,17 @@ import lombok.NoArgsConstructor;
 public class Punch extends AttachedAbility {
   @Getter
   protected AbilityParams params;
+  @Getter
+  protected AbilityContext context;
 
-  public static Punch of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+  public static Punch of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
     Punch ability = Punch.of();
     ability.params = abilityParams.setWidth(1.5f).setHeight(1.5f).setChannelTime(0f).setActiveTime(0.18f)
       .setStartingRange(1.2f).setTextureName("punch").setBaseDamage(18f).setChannelAnimationLooping(false)
       .setActiveAnimationLooping(false);
+
+    ability.context = abilityContext;
+
     return ability;
   }
 

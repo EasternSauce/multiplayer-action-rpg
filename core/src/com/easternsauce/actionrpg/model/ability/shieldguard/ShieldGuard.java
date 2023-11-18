@@ -1,10 +1,7 @@
 package com.easternsauce.actionrpg.model.ability.shieldguard;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.ability.Ability;
-import com.easternsauce.actionrpg.model.ability.AbilityParams;
-import com.easternsauce.actionrpg.model.ability.AbilityState;
-import com.easternsauce.actionrpg.model.ability.AttachedAbility;
+import com.easternsauce.actionrpg.model.ability.*;
 import com.easternsauce.actionrpg.model.ability.boomerang.Boomerang;
 import com.easternsauce.actionrpg.model.ability.ricochetbullet.RicochetBullet;
 import com.easternsauce.actionrpg.model.creature.Creature;
@@ -20,8 +17,10 @@ import lombok.NoArgsConstructor;
 public class ShieldGuard extends AttachedAbility {
   @Getter
   protected AbilityParams params;
+  @Getter
+  protected AbilityContext context;
 
-  public static ShieldGuard of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+  public static ShieldGuard of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
     float flipValue = abilityParams.getDirVector().angleDeg();
 
     ShieldGuard ability = ShieldGuard.of();
@@ -29,6 +28,8 @@ public class ShieldGuard extends AttachedAbility {
     ability.params = abilityParams.setWidth(2f).setHeight(2f).setChannelTime(0f).setActiveTime(3f)
       .setStartingRange(1.2f).setTextureName("shield").setBaseDamage(0f).setChannelAnimationLooping(false)
       .setActiveAnimationLooping(false).setFlipY(ShieldGuard.calculateFlip(flipValue));
+
+    ability.context = abilityContext;
 
     return ability;
   }
@@ -73,8 +74,8 @@ public class ShieldGuard extends AttachedAbility {
   public void onOtherAbilityHit(EntityId<Ability> otherAbilityId, CoreGame game) {
     Ability otherAbility = game.getAbility(otherAbilityId);
 
-    Creature creature = game.getCreature(getParams().getCreatureId());
-    Creature abilityOwner = game.getCreature(otherAbility.getParams().getCreatureId());
+    Creature creature = game.getCreature(getContext().getCreatureId());
+    Creature abilityOwner = game.getCreature(otherAbility.getContext().getCreatureId());
 
     if ((creature instanceof Player && abilityOwner instanceof Enemy ||
       creature instanceof Enemy && abilityOwner instanceof Player) && otherAbility.isRanged()) {
@@ -86,7 +87,7 @@ public class ShieldGuard extends AttachedAbility {
         otherAbility.onTerrainHit(otherAbility.getParams().getPos(), getParams().getPos());
 
       } else if (otherAbility instanceof Boomerang) {
-        otherAbility.onCreatureHit(getParams().getCreatureId(), game);
+        otherAbility.onCreatureHit(getContext().getCreatureId(), game);
       } else {
         if (!(abilityOwner instanceof Player)) {
           otherAbility.deactivate();

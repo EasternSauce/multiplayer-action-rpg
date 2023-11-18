@@ -1,6 +1,7 @@
 package com.easternsauce.actionrpg.model.ability.charge;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.ability.AbilityContext;
 import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import com.easternsauce.actionrpg.model.ability.ringoffire.RingOfFireBase;
 import lombok.EqualsAndHashCode;
@@ -12,13 +13,17 @@ import lombok.NoArgsConstructor;
 public class ChargeBody extends RingOfFireBase {
   @Getter
   protected AbilityParams params;
+  @Getter
+  protected AbilityContext context;
 
-  public static ChargeBody of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+  public static ChargeBody of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
     ChargeBody ability = ChargeBody.of();
 
     ability.params = abilityParams.setWidth(7f).setHeight(7f).setChannelTime(0f).setActiveTime(1.5f)
       .setBaseDamage(28f).setTextureName("fast_ring_of_fire")
       .setActiveAnimationLooping(true).setAttackWithoutMoving(true);
+
+    ability.context = abilityContext;
 
     return ability;
   }

@@ -2,6 +2,7 @@ package com.easternsauce.actionrpg.model.ability.lightning;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.Ability;
+import com.easternsauce.actionrpg.model.ability.AbilityContext;
 import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import com.easternsauce.actionrpg.model.ability.AbilityState;
 import com.easternsauce.actionrpg.model.util.Vector2;
@@ -14,8 +15,10 @@ import lombok.NoArgsConstructor;
 public class LightningChain extends Ability {
   @Getter
   protected AbilityParams params;
+  @Getter
+  protected AbilityContext context;
 
-  public static LightningChain of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+  public static LightningChain of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
     LightningChain ability = LightningChain.of();
     ability.params = abilityParams.setWidth(1f)
       .setHeight(abilityParams.getChainFromPos().distance(abilityParams.getChainToPos())).setChannelTime(0f)
@@ -25,6 +28,8 @@ public class LightningChain extends Ability {
       .setRotationAngle(
         LightningChain.calculateRotationAngle(abilityParams.getChainToPos(), abilityParams.getChainFromPos()))
       .setSkipCreatingBody(true).setRotationShift(90f);
+
+    ability.context = abilityContext;
 
     return ability;
   }

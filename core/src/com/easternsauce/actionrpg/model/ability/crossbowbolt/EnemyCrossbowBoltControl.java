@@ -1,10 +1,7 @@
 package com.easternsauce.actionrpg.model.ability.crossbowbolt;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.ability.Ability;
-import com.easternsauce.actionrpg.model.ability.AbilityParams;
-import com.easternsauce.actionrpg.model.ability.AbilityType;
-import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
+import com.easternsauce.actionrpg.model.ability.*;
 import com.easternsauce.actionrpg.model.ability.util.AbilityRotationUtils;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.util.MathHelper;
@@ -17,9 +14,11 @@ import lombok.NoArgsConstructor;
 public class EnemyCrossbowBoltControl extends CrossbowBoltControlBase {
   Vector2 previousDirVector = null;
 
-  public static EnemyCrossbowBoltControl of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+  public static EnemyCrossbowBoltControl of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
     EnemyCrossbowBoltControl ability = EnemyCrossbowBoltControl.of();
     ability.params = abilityParams.setChannelTime(0f).setActiveTime(2f);
+
+    ability.context = abilityContext;
 
     return ability;
   }
@@ -37,7 +36,7 @@ public class EnemyCrossbowBoltControl extends CrossbowBoltControlBase {
       currentDirVector = getParams().getDirVector();
     }
 
-    Creature creature = game.getCreature(getParams().getCreatureId());
+    Creature creature = game.getCreature(getContext().getCreatureId());
 
     if (currentBoltToFire < boltFireTimes.length &&
       getParams().getStateTimer().getTime() > boltFireTimes[currentBoltToFire]) {

@@ -1,10 +1,7 @@
 package com.easternsauce.actionrpg.model.ability.magicorb;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.ability.AbilityParams;
-import com.easternsauce.actionrpg.model.ability.AbilityType;
-import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
-import com.easternsauce.actionrpg.model.ability.Projectile;
+import com.easternsauce.actionrpg.model.ability.*;
 import com.easternsauce.actionrpg.model.ability.util.AbilityRotationUtils;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
@@ -20,6 +17,8 @@ import java.util.stream.Collectors;
 public abstract class MagicOrbBase extends Projectile {
   @Getter
   protected AbilityParams params;
+  @Getter
+  protected AbilityContext context;
 
   @Override
   public Boolean isRanged() {
@@ -33,7 +32,7 @@ public abstract class MagicOrbBase extends Projectile {
 
   @Override
   public void onStarted(CoreGame game) {
-    Creature creature = game.getCreature(getParams().getCreatureId());
+    Creature creature = game.getCreature(getContext().getCreatureId());
     creature.applyEffect(CreatureEffect.SELF_STUN, 0.1f, game);
     creature.stopMoving();
   }
@@ -46,11 +45,11 @@ public abstract class MagicOrbBase extends Projectile {
       Creature minimumDistanceCreature = null;
       float minimumDistance = Float.MAX_VALUE;
 
-      Creature thisCreature = game.getCreature(getParams().getCreatureId());
+      Creature thisCreature = game.getCreature(getContext().getCreatureId());
 
       for (Creature creature : game.getActiveCreatures().values().stream().filter(targetCreature ->
         Objects.equals(targetCreature.getParams().getAreaId().getValue(), getParams().getAreaId().getValue()) &&
-          !targetCreature.getId().equals(getParams().getCreatureId()) && targetCreature.isAlive() &&
+          !targetCreature.getId().equals(getContext().getCreatureId()) && targetCreature.isAlive() &&
           isTargetingAllowed(thisCreature, targetCreature) &&
           targetCreature.getParams().getPos().distance(getParams().getPos()) < 20f).collect(Collectors.toSet())) {
         if (creature.getParams().getPos().distance(getParams().getPos()) < minimumDistance) {

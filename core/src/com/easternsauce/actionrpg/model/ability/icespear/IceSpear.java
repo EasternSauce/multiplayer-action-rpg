@@ -1,6 +1,7 @@
 package com.easternsauce.actionrpg.model.ability.icespear;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.ability.AbilityContext;
 import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import com.easternsauce.actionrpg.model.ability.Projectile;
 import com.easternsauce.actionrpg.model.creature.Creature;
@@ -18,13 +19,17 @@ import lombok.NoArgsConstructor;
 public class IceSpear extends Projectile {
   @Getter
   protected AbilityParams params;
+  @Getter
+  protected AbilityContext context;
 
-  public static IceSpear of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+  public static IceSpear of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
     IceSpear ability = IceSpear.of();
     ability.params = abilityParams.setWidth(2.1f).setHeight(0.75f).setChannelTime(0f).setActiveTime(3f)
       .setStartingRange(3f).setTextureName("ice_shard").setBaseDamage(15f).setChannelAnimationLooping(false)
       .setActiveAnimationLooping(true).setDelayedActionTime(0.001f).setSpeed(18f)
       .setCreaturesAlreadyHit(new OrderedMap<>()).setMaximumRange(6.5f);
+
+    ability.context = abilityContext;
 
     return ability;
   }

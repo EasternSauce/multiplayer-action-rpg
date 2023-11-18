@@ -119,7 +119,7 @@ public abstract class CreatureHitAction extends GameStateAction {
   private void deactivateCreatureAbilities(Creature targetCreature, CoreGame game) {
     Set<Ability> creatureActiveAbilities = game.getGameState().accessAbilities().getAbilities().values().stream()
       .filter(
-        ability -> ability.canBeDeactivated() && ability.getParams().getCreatureId().equals(targetCreature.getId()) &&
+        ability -> ability.canBeDeactivated() && ability.getContext().getCreatureId().equals(targetCreature.getId()) &&
           (ability.getParams().getState() == AbilityState.CHANNEL ||
             ability.getParams().getState() == AbilityState.ACTIVE)).collect(Collectors.toSet());
 

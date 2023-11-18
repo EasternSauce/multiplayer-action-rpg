@@ -1,10 +1,7 @@
 package com.easternsauce.actionrpg.model.ability.teleport;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.ability.Ability;
-import com.easternsauce.actionrpg.model.ability.AbilityParams;
-import com.easternsauce.actionrpg.model.ability.AbilityType;
-import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
+import com.easternsauce.actionrpg.model.ability.*;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
 import lombok.EqualsAndHashCode;
@@ -16,14 +13,18 @@ import lombok.NoArgsConstructor;
 public class EnemyTeleportSource extends Ability {
   @Getter
   protected AbilityParams params;
+  @Getter
+  protected AbilityContext context;
 
-  public static EnemyTeleportSource of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-    Creature creature = game.getCreature(abilityParams.getCreatureId());
+  public static EnemyTeleportSource of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
+    Creature creature = game.getCreature(abilityContext.getCreatureId());
 
     EnemyTeleportSource ability = EnemyTeleportSource.of();
     ability.params = abilityParams.setWidth(4.5f).setHeight(4.5f).setChannelTime(0f).setActiveTime(1f)
       .setTextureName("warp").setBaseDamage(0f).setChannelAnimationLooping(false).setActiveAnimationLooping(false)
       .setPos(creature.getParams().getPos()).setDelayedActionTime(0.3f);
+
+    ability.context = abilityContext;
 
     return ability;
   }
@@ -40,7 +41,7 @@ public class EnemyTeleportSource extends Ability {
 
   @Override
   public void onStarted(CoreGame game) {
-    Creature creature = game.getCreature(getParams().getCreatureId());
+    Creature creature = game.getCreature(getContext().getCreatureId());
     creature.applyEffect(CreatureEffect.SELF_STUN, 0.5f, game);
     creature.stopMoving();
   }

@@ -1,10 +1,7 @@
 package com.easternsauce.actionrpg.model.ability.tunneldig;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.ability.AbilityParams;
-import com.easternsauce.actionrpg.model.ability.AbilityType;
-import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
-import com.easternsauce.actionrpg.model.ability.Projectile;
+import com.easternsauce.actionrpg.model.ability.*;
 import com.easternsauce.actionrpg.model.ability.util.AbilityRotationUtils;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.NullCreature;
@@ -24,14 +21,18 @@ import java.util.stream.Collectors;
 public class TunnelDig extends Projectile {
   @Getter
   protected AbilityParams params;
+  @Getter
+  protected AbilityContext context;
 
   private int currentSplash = 0;
 
-  public static TunnelDig of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+  public static TunnelDig of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
     TunnelDig ability = TunnelDig.of();
     ability.params = abilityParams.setNoTexture(true).setWidth(1.5f).setHeight(1.5f).setChannelTime(0f)
       .setActiveTime(30f).setBaseDamage(0f).setStartingRange(0.5f).setChannelAnimationLooping(false)
       .setActiveAnimationLooping(true).setDelayedActionTime(0.001f).setSpeed(9f).setMaximumRange(30f);
+
+    ability.context = abilityContext;
 
     return ability;
   }
@@ -50,7 +51,7 @@ public class TunnelDig extends Projectile {
   protected void onActiveUpdate(float delta, CoreGame game) {
     onProjectileTravelUpdate();
 
-    Creature thisCreature = game.getCreature(getParams().getCreatureId());
+    Creature thisCreature = game.getCreature(getContext().getCreatureId());
 
     if (getParams().getTickActionTimer().getTime() > 0.015f) {
       Creature minimumDistanceCreature = NullCreature.of();
@@ -58,7 +59,7 @@ public class TunnelDig extends Projectile {
 
       for (Creature creature : game.getActiveCreatures().values().stream().filter(targetCreature ->
         Objects.equals(targetCreature.getParams().getAreaId().getValue(), getParams().getAreaId().getValue()) &&
-          !targetCreature.getId().equals(getParams().getCreatureId()) && targetCreature.isAlive() &&
+          !targetCreature.getId().equals(getContext().getCreatureId()) && targetCreature.isAlive() &&
           isTargetingAllowed(thisCreature, targetCreature) &&
           targetCreature.getParams().getPos().distance(getParams().getPos()) < 20f).collect(Collectors.toSet())) {
         if (creature.getParams().getPos().distance(getParams().getPos()) < minimumDistance) {
@@ -113,7 +114,7 @@ public class TunnelDig extends Projectile {
 
   @Override
   public void onCompleted(CoreGame game) {
-    Creature creature = game.getCreature(getParams().getCreatureId());
+    Creature creature = game.getCreature(getContext().getCreatureId());
 
     game.chainAnotherAbility(this, AbilityType.SHOCKWAVE,
       creature.getParams().getMovementParams().getFacingVector(),

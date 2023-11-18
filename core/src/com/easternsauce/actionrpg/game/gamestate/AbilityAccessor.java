@@ -29,7 +29,7 @@ public class AbilityAccessor {
 
   public Ability getAbilityBySkillType(EntityId<Creature> creatureId, SkillType skillType) {
     Optional<Ability> first = getData().getAbilities().values().stream().filter(
-      ability -> ability.getParams().getCreatureId().equals(creatureId) &&
+      ability -> ability.getContext().getCreatureId().equals(creatureId) &&
         ability.getParams().getSkillType() == skillType).findFirst();
 
     return first.orElse(null);
@@ -54,7 +54,7 @@ public class AbilityAccessor {
   }
 
   public void chainAnotherAbility(Ability chainFromAbility, AbilityType abilityType, Vector2 dirVector, ChainAbilityParams chainAbilityParams, CoreGame game) {
-    Creature creature = game.getCreature(chainFromAbility.getParams().getCreatureId());
+    Creature creature = game.getCreature(chainFromAbility.getContext().getCreatureId());
 
     if ((creature.isAlive() || chainFromAbility.isAbleToChainAfterCreatureDeath())) {
       EntityId<Ability> abilityId = EntityId.of("Ability_" + (int) (Math.random() * 10000000));
@@ -65,9 +65,9 @@ public class AbilityAccessor {
       Vector2 chainFromPos = chainFromAbility.getParams().getPos();
 
       AbilityParams abilityParams = AbilityParams.of().setId(abilityId)
-        .setAreaId(chainFromAbility.getParams().getAreaId()).setCreatureId(chainFromAbility.getParams().getCreatureId())
+        .setAreaId(chainFromAbility.getParams().getAreaId())
         .setCreaturesAlreadyHit(creaturesAlreadyHit).setChainFromPos(chainFromPos)
-        .setChainToPos(chainAbilityParams.getChainToPos()).setDirVector(dirVector).setVectorTowardsTarget(dirVector)
+        .setChainToPos(chainAbilityParams.getChainToPos()).setDirVector(dirVector)
         .setOverrideScale(chainAbilityParams.getOverrideScale())
         .setOverrideActiveDuration(chainAbilityParams.getOverrideDuration())
         .setOverrideDamage(chainAbilityParams.getOverrideDamage())
@@ -77,14 +77,14 @@ public class AbilityAccessor {
         .setSkillType(chainFromAbility.getParams().getSkillType()).setSkillStartPos(chainFromPos)
         .setDamagingHitCreaturesHitCounter(chainFromAbility.getParams().getDamagingHitCreaturesHitCounter());
 
-      spawnAbility(abilityType, abilityParams, game);
+      spawnAbility(abilityType, abilityParams, chainFromAbility.getContext(), game);
     }
   }
 
-  public void spawnAbility(AbilityType abilityType, AbilityParams abilityParams, CoreGame game) {
-    Creature creature = gameState.accessCreatures().getCreature(abilityParams.getCreatureId());
+  public void spawnAbility(AbilityType abilityType, AbilityParams abilityParams, AbilityContext abilityContext, CoreGame game) {
+    Creature creature = gameState.accessCreatures().getCreature(abilityContext.getCreatureId());
 
-    Ability ability = abilityType.getFactoryMapping().apply(abilityParams, game);
+    Ability ability = abilityType.getFactoryMapping().apply(abilityParams, abilityContext, game);
 
     initializeAbility(creature, ability, game);
 

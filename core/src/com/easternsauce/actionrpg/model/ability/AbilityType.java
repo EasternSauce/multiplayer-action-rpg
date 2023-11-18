@@ -53,10 +53,9 @@ import com.easternsauce.actionrpg.model.ability.tunneldig.TunnelDig;
 import com.easternsauce.actionrpg.model.ability.tunneldig.TunnelDigSplash;
 import com.easternsauce.actionrpg.model.ability.volatilebubble.EnemyVolatileBubble;
 import com.easternsauce.actionrpg.model.ability.volatilebubble.VolatileBubble;
+import com.easternsauce.actionrpg.util.TriFunction;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.function.BiFunction;
 
 @NoArgsConstructor
 public enum AbilityType {
@@ -129,9 +128,9 @@ public enum AbilityType {
   SUMMON_METEOR(SummonMeteor::of);
 
   @Getter
-  private BiFunction<AbilityParams, CoreGame, Ability> factoryMapping;
+  private TriFunction<AbilityParams, AbilityContext, CoreGame, Ability> factoryMapping;
 
-  AbilityType(BiFunction<AbilityParams, CoreGame, Ability> factoryMapping) {
+  AbilityType(TriFunction<AbilityParams, AbilityContext, CoreGame, Ability> factoryMapping) {
     this.factoryMapping = factoryMapping;
   }
 }

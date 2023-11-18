@@ -1,10 +1,7 @@
 package com.easternsauce.actionrpg.model.ability.fistslam;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.ability.AbilityParams;
-import com.easternsauce.actionrpg.model.ability.AbilityType;
-import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
-import com.easternsauce.actionrpg.model.ability.Projectile;
+import com.easternsauce.actionrpg.model.ability.*;
 import com.easternsauce.actionrpg.model.ability.util.PointTargetedAbilityUtils;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.util.Vector2;
@@ -17,12 +14,14 @@ import lombok.NoArgsConstructor;
 public class FistSlam extends Projectile {
   @Getter
   protected AbilityParams params;
+  @Getter
+  protected AbilityContext context;
 
   private Vector2 startingPos;
   private Vector2 destinationPos;
 
-  public static FistSlam of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-    Creature creature = game.getCreature(abilityParams.getCreatureId());
+  public static FistSlam of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
+    Creature creature = game.getCreature(abilityContext.getCreatureId());
 
     FistSlam ability = FistSlam.of();
 
@@ -38,6 +37,8 @@ public class FistSlam extends Projectile {
       .setRotationAllowed(false)
       .setTextureName("fist_slam").setBaseDamage(0f).setChannelAnimationLooping(false).setActiveAnimationLooping(false)
       .setPos(ability.startingPos).setDontOverridePos(true).setDirVector(Vector2.of(0, -1));
+
+    ability.context = abilityContext;
 
     return ability;
   }

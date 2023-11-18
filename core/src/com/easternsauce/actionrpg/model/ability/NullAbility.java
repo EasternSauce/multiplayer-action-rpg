@@ -41,6 +41,11 @@ public class NullAbility extends Ability {
   }
 
   @Override
+  public AbilityContext getContext() {
+    return AbilityContext.of();
+  }
+
+  @Override
   protected void onChannelUpdate(CoreGame game) {
 
   }

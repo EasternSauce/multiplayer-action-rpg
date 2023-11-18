@@ -1,10 +1,7 @@
 package com.easternsauce.actionrpg.model.ability.meteor;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.ability.AbilityParams;
-import com.easternsauce.actionrpg.model.ability.AbilityType;
-import com.easternsauce.actionrpg.model.ability.AttachedAbility;
-import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
+import com.easternsauce.actionrpg.model.ability.*;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.EqualsAndHashCode;
@@ -20,10 +17,14 @@ import java.util.Optional;
 public class MeteorCall extends AttachedAbility {
   @Getter
   protected AbilityParams params;
+  @Getter
+  protected AbilityContext context;
 
-  public static MeteorCall of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+  public static MeteorCall of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
     MeteorCall ability = MeteorCall.of();
     ability.params = abilityParams.setChannelTime(0f).setActiveTime(1f);
+
+    ability.context = abilityContext;
 
     return ability;
   }
@@ -42,7 +43,7 @@ public class MeteorCall extends AttachedAbility {
   protected void onActiveUpdate(float delta, CoreGame game) {
     centerPositionOnPlayer(game);
 
-    Creature creature = game.getCreature(getParams().getCreatureId());
+    Creature creature = game.getCreature(getContext().getCreatureId());
 
     creature.stopMoving();
 
@@ -51,7 +52,7 @@ public class MeteorCall extends AttachedAbility {
 
   @Override
   public void onStarted(CoreGame game) {
-    Creature creature = game.getCreature(getParams().getCreatureId());
+    Creature creature = game.getCreature(getContext().getCreatureId());
     Vector2 creaturePos = creature.getParams().getPos();
 
     List<Vector2> positions = new LinkedList<>();

@@ -316,7 +316,7 @@ public abstract class Creature implements Entity {
     if (skill.getSkillType().getDamaging()) {
       Set<Ability> damagingSkillNotAllowedAbilities = game.getAbilities().values().stream().filter(
         ability -> ability.isDamagingSkillNotAllowedWhenActive() &&
-          ability.getParams().getCreatureId().equals(this.getParams().getId()) &&
+          ability.getContext().getCreatureId().equals(this.getParams().getId()) &&
           ability.getParams().getState() == AbilityState.ACTIVE).collect(Collectors.toSet());
 
       if (!damagingSkillNotAllowedAbilities.isEmpty()) {

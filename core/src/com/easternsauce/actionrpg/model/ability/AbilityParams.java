@@ -6,7 +6,6 @@ import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.id.NullAbilityId;
 import com.easternsauce.actionrpg.model.id.NullAreaId;
-import com.easternsauce.actionrpg.model.id.NullCreatureId;
 import com.easternsauce.actionrpg.model.skill.SkillType;
 import com.easternsauce.actionrpg.model.util.CreaturesHitCounter;
 import com.easternsauce.actionrpg.model.util.RandomGenerator;
@@ -35,13 +34,9 @@ public class AbilityParams implements EntityParams {
   @NonNull
   private Float height;
   @NonNull
-  private EntityId<Creature> creatureId = NullCreatureId.of();
-  @NonNull
   private SimpleTimer stateTimer = SimpleTimer.getExpiredTimer();
   @NonNull
   private Vector2 dirVector = Vector2.of(0f, 0f);
-  @NonNull
-  private Vector2 vectorTowardsTarget = Vector2.of(0f, 0f);
   @NonNull
   private String textureName;
   @NonNull

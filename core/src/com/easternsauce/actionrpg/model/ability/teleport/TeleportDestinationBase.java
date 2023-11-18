@@ -2,6 +2,7 @@ package com.easternsauce.actionrpg.model.ability.teleport;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.Ability;
+import com.easternsauce.actionrpg.model.ability.AbilityContext;
 import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
@@ -11,6 +12,8 @@ import lombok.Getter;
 public abstract class TeleportDestinationBase extends Ability {
   @Getter
   protected AbilityParams params;
+  @Getter
+  protected AbilityContext context;
 
   @Override
   public Boolean isRanged() {
@@ -24,9 +27,9 @@ public abstract class TeleportDestinationBase extends Ability {
 
   @Override
   public void onStarted(CoreGame game) {
-    Creature creature = game.getCreature(getParams().getCreatureId());
+    Creature creature = game.getCreature(getContext().getCreatureId());
     creature.applyEffect(CreatureEffect.SELF_STUN, 0.3f, game);
-    game.addTeleportEvent(TeleportEvent.of(getParams().getCreatureId(), getParams().getPos(), getParams().getAreaId(),
+    game.addTeleportEvent(TeleportEvent.of(getContext().getCreatureId(), getParams().getPos(), getParams().getAreaId(),
       getParams().getAreaId(), false));
   }
 

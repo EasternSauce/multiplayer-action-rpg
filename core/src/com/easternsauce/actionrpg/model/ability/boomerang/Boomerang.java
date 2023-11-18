@@ -1,6 +1,7 @@
 package com.easternsauce.actionrpg.model.ability.boomerang;
 
 import com.easternsauce.actionrpg.game.CoreGame;
+import com.easternsauce.actionrpg.model.ability.AbilityContext;
 import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import com.easternsauce.actionrpg.model.ability.Projectile;
 import com.easternsauce.actionrpg.model.creature.Creature;
@@ -17,12 +18,16 @@ import lombok.NoArgsConstructor;
 public class Boomerang extends Projectile {
   @Getter
   protected AbilityParams params;
+  @Getter
+  protected AbilityContext context;
 
-  public static Boomerang of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+  public static Boomerang of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
     Boomerang ability = Boomerang.of();
     ability.params = abilityParams.setWidth(1.3f).setHeight(1.3f).setChannelTime(0f).setActiveTime(10f)
       .setStartingRange(0.5f).setTextureName("boomerang").setBaseDamage(22f).setChannelAnimationLooping(true)
       .setActiveAnimationLooping(true).setSpeed(22f);
+
+    ability.context = abilityContext;
 
     return ability;
   }
@@ -41,7 +46,7 @@ public class Boomerang extends Projectile {
   protected void onActiveUpdate(float delta, CoreGame game) {
     onProjectileTravelUpdate();
 
-    Creature creature = game.getCreature(getParams().getCreatureId());
+    Creature creature = game.getCreature(getContext().getCreatureId());
 
 
     if (!getParams().getComingBack() && getParams().getStateTimer().getTime() > 1f) {
@@ -82,7 +87,7 @@ public class Boomerang extends Projectile {
   @Override
   public void onSelfCreatureHit(CoreGame game) {
     if (getParams().getComingBack()) {
-      Creature creature = game.getCreature(getParams().getCreatureId());
+      Creature creature = game.getCreature(getContext().getCreatureId());
       Skill skill = creature.getParams().getSkills().get(getParams().getSkillType());
 
       skill.resetCooldown();

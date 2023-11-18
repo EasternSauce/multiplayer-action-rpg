@@ -1,10 +1,7 @@
 package com.easternsauce.actionrpg.model.ability.icespear;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.ability.AbilityParams;
-import com.easternsauce.actionrpg.model.ability.AbilityType;
-import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
-import com.easternsauce.actionrpg.model.ability.Projectile;
+import com.easternsauce.actionrpg.model.ability.*;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
 import com.easternsauce.actionrpg.model.util.Vector2;
@@ -22,11 +19,15 @@ public class IceSpearRampage extends Projectile {
   private final List<Float> times = new LinkedList<>();
   @Getter
   protected AbilityParams params;
+  @Getter
+  protected AbilityContext context;
   private int currentAbility = 0;
 
-  public static IceSpearRampage of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+  public static IceSpearRampage of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
     IceSpearRampage ability = IceSpearRampage.of();
     ability.params = abilityParams.setChannelTime(0f).setActiveTime(5f);
+
+    ability.context = abilityContext;
 
     return ability;
   }
@@ -48,7 +49,7 @@ public class IceSpearRampage extends Projectile {
       times.add(i * 0.04f);
     }
 
-    Creature creature = game.getCreature(getParams().getCreatureId());
+    Creature creature = game.getCreature(getContext().getCreatureId());
     creature.applyEffect(CreatureEffect.SELF_STUN, 3.5f, game);
     creature.stopMoving();
 
@@ -56,7 +57,7 @@ public class IceSpearRampage extends Projectile {
 
   @Override
   protected void onActiveUpdate(float delta, CoreGame game) {
-    Creature creature = game.getCreature(getParams().getCreatureId());
+    Creature creature = game.getCreature(getContext().getCreatureId());
 
     if (currentAbility < times.size() && getParams().getStateTimer().getTime() > times.get(currentAbility)) {
       Vector2 facingVector = creature.getParams().getMovementParams().getFacingVector();

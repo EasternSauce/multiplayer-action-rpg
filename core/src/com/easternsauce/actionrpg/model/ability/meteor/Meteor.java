@@ -1,10 +1,7 @@
 package com.easternsauce.actionrpg.model.ability.meteor;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.ability.AbilityParams;
-import com.easternsauce.actionrpg.model.ability.AbilityType;
-import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
-import com.easternsauce.actionrpg.model.ability.Projectile;
+import com.easternsauce.actionrpg.model.ability.*;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -15,17 +12,21 @@ import lombok.NoArgsConstructor;
 public class Meteor extends Projectile {
   @Getter
   protected AbilityParams params;
+  @Getter
+  protected AbilityContext context;
 
   private Vector2 startingPos;
   private Vector2 destinationPos;
 
-  public static Meteor of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+  public static Meteor of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
     Meteor ability = Meteor.of();
 
     ability.params = abilityParams.setWidth(2.474f).setHeight(2f).setChannelTime(0f).setActiveTime(5f)
       .setRotationAllowed(false)
       .setTextureName("meteor").setBaseDamage(0f).setChannelAnimationLooping(false).setActiveAnimationLooping(false)
       .setDontOverridePos(true).setDirVector(Vector2.of(-1, -1));
+
+    ability.context = abilityContext;
 
     return ability;
   }

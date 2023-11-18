@@ -2,6 +2,7 @@ package com.easternsauce.actionrpg.model.skill;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.Ability;
+import com.easternsauce.actionrpg.model.ability.AbilityContext;
 import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import com.easternsauce.actionrpg.model.ability.AbilityType;
 import com.easternsauce.actionrpg.model.creature.Creature;
@@ -47,10 +48,12 @@ public class Skill {
 
     EntityId<Ability> abilityId = EntityId.of("Ability_" + (int) (Math.random() * 10000000));
     AbilityParams abilityParams = AbilityParams.of().setId(abilityId).setAreaId(creature.getParams().getAreaId())
-      .setCreatureId(creatureId).setDirVector(dirVector).setVectorTowardsTarget(dirVector).setSkillStartPos(startingPos)
+      .setDirVector(dirVector).setSkillStartPos(startingPos)
       .setSkillType(skillType);
 
-    game.getGameState().accessAbilities().spawnAbility(startingAbilityType, abilityParams, game);
+    AbilityContext abilityContext = AbilityContext.of().setCreatureId(creatureId);
+
+    game.getGameState().accessAbilities().spawnAbility(startingAbilityType, abilityParams, abilityContext, game);
 
     creature.onPerformSkill(this);
     performTimer.restart();

@@ -1,10 +1,7 @@
 package com.easternsauce.actionrpg.model.ability.crossbowbolt;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.ability.Ability;
-import com.easternsauce.actionrpg.model.ability.AbilityParams;
-import com.easternsauce.actionrpg.model.ability.AbilityType;
-import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
+import com.easternsauce.actionrpg.model.ability.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
@@ -12,6 +9,9 @@ import lombok.Getter;
 public abstract class CrossbowBoltControlBase extends Ability {
   @Getter
   protected AbilityParams params;
+  @Getter
+  protected AbilityContext context;
+
   protected int currentBoltToFire = 0;
 
   @Override

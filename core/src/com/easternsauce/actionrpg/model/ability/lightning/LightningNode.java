@@ -1,10 +1,7 @@
 package com.easternsauce.actionrpg.model.ability.lightning;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.ability.Ability;
-import com.easternsauce.actionrpg.model.ability.AbilityParams;
-import com.easternsauce.actionrpg.model.ability.AbilityType;
-import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
+import com.easternsauce.actionrpg.model.ability.*;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.util.OrderedMap;
@@ -22,12 +19,16 @@ import java.util.concurrent.ConcurrentSkipListSet;
 public class LightningNode extends Ability {
   @Getter
   protected AbilityParams params;
+  @Getter
+  protected AbilityContext context;
 
-  public static LightningNode of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+  public static LightningNode of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
     LightningNode ability = LightningNode.of();
     ability.params = abilityParams.setWidth(3f).setHeight(3f).setChannelTime(0f).setActiveTime(0.4f)
       .setTextureName("lightning").setBaseDamage(11f).setActiveAnimationLooping(true).setAttackWithoutMoving(true)
       .setSkipCreatingBody(true).setDelayedActionTime(0.05f);
+
+    ability.context = abilityContext;
 
     return ability;
   }
@@ -51,7 +52,7 @@ public class LightningNode extends Ability {
   public void onDelayedAction(CoreGame game) {
     // find the closest enemy, and if they are within distance, and haven't been hit yet, then start node over them
     Set<EntityId<Creature>> excluded = new ConcurrentSkipListSet<>(getParams().getCreaturesAlreadyHit().keySet());
-    excluded.add(getParams().getCreatureId());
+    excluded.add(getContext().getCreatureId());
 
     Creature targetCreature = game.getCreature(
       game.getGameState().accessCreatures().getAliveCreatureIdClosestTo(getParams().getPos(), 13f, excluded, game));
@@ -63,7 +64,7 @@ public class LightningNode extends Ability {
           targetCreature.getParams().getPos())) {
 
         game.getGameState().accessAbilities()
-          .onAbilityHitsCreature(getParams().getCreatureId(), targetCreature.getId(), getParams().getId(),
+          .onAbilityHitsCreature(getContext().getCreatureId(), targetCreature.getId(), getParams().getId(),
             targetCreature.getParams().getPos(), game);
 
         getParams().getCreaturesAlreadyHit().put(targetCreature.getId(), getParams().getStateTimer().getTime());

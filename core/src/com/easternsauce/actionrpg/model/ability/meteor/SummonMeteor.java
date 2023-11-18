@@ -1,10 +1,7 @@
 package com.easternsauce.actionrpg.model.ability.meteor;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.ability.AbilityParams;
-import com.easternsauce.actionrpg.model.ability.AbilityType;
-import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
-import com.easternsauce.actionrpg.model.ability.Projectile;
+import com.easternsauce.actionrpg.model.ability.*;
 import com.easternsauce.actionrpg.model.ability.util.PointTargetedAbilityUtils;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
@@ -18,10 +15,14 @@ import lombok.NoArgsConstructor;
 public class SummonMeteor extends Projectile {
   @Getter
   protected AbilityParams params;
+  @Getter
+  protected AbilityContext context;
 
-  public static SummonMeteor of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+  public static SummonMeteor of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
     SummonMeteor ability = SummonMeteor.of();
     ability.params = abilityParams.setChannelTime(0f).setActiveTime(5f);
+
+    ability.context = abilityContext;
 
     return ability;
   }
@@ -43,7 +44,7 @@ public class SummonMeteor extends Projectile {
 
   @Override
   public void onStarted(CoreGame game) {
-    Creature creature = game.getCreature(getParams().getCreatureId());
+    Creature creature = game.getCreature(getContext().getCreatureId());
     creature.applyEffect(CreatureEffect.SELF_STUN, 0.2f, game);
     creature.stopMoving();
 

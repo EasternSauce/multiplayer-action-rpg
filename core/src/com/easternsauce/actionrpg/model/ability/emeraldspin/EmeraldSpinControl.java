@@ -1,10 +1,7 @@
 package com.easternsauce.actionrpg.model.ability.emeraldspin;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.ability.Ability;
-import com.easternsauce.actionrpg.model.ability.AbilityParams;
-import com.easternsauce.actionrpg.model.ability.AbilityType;
-import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
+import com.easternsauce.actionrpg.model.ability.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,10 +11,14 @@ import lombok.NoArgsConstructor;
 public class EmeraldSpinControl extends Ability {
   @Getter
   protected AbilityParams params;
+  @Getter
+  protected AbilityContext context;
 
-  public static EmeraldSpinControl of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+  public static EmeraldSpinControl of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
     EmeraldSpinControl ability = EmeraldSpinControl.of();
     ability.params = abilityParams.setChannelTime(0f).setActiveTime(0f);
+
+    ability.context = abilityContext;
 
     return ability;
   }

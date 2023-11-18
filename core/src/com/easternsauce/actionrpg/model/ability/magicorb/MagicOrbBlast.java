@@ -2,6 +2,7 @@ package com.easternsauce.actionrpg.model.ability.magicorb;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.Ability;
+import com.easternsauce.actionrpg.model.ability.AbilityContext;
 import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import com.easternsauce.actionrpg.util.OrderedMap;
 import lombok.EqualsAndHashCode;
@@ -14,12 +15,16 @@ import lombok.NoArgsConstructor;
 public class MagicOrbBlast extends Ability {
   @Getter
   protected AbilityParams params;
+  @Getter
+  protected AbilityContext context;
 
-  public static MagicOrbBlast of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+  public static MagicOrbBlast of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
     MagicOrbBlast ability = MagicOrbBlast.of();
     ability.params = abilityParams.setWidth(4f).setHeight(4f).setChannelTime(0f).setActiveTime(0.21f)
       .setTextureName("magic_blast").setBaseDamage(45f).setChannelAnimationLooping(false).setActiveAnimationLooping(false)
       .setAttackWithoutMoving(true).setCreaturesAlreadyHit(new OrderedMap<>());
+
+    ability.context = abilityContext;
 
     return ability;
   }

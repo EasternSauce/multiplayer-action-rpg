@@ -1,10 +1,7 @@
 package com.easternsauce.actionrpg.model.ability.mageteleportcombo;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.ability.Ability;
-import com.easternsauce.actionrpg.model.ability.AbilityParams;
-import com.easternsauce.actionrpg.model.ability.AbilityType;
-import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
+import com.easternsauce.actionrpg.model.ability.*;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
 import lombok.EqualsAndHashCode;
@@ -16,11 +13,15 @@ import lombok.NoArgsConstructor;
 public class MageTeleportCombo extends Ability {
   @Getter
   protected AbilityParams params;
+  @Getter
+  protected AbilityContext context;
   int currentFireRingToProc = 0;
 
-  public static MageTeleportCombo of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+  public static MageTeleportCombo of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
     MageTeleportCombo ability = MageTeleportCombo.of();
     ability.params = abilityParams.setChannelTime(0f).setActiveTime(3.5f);
+
+    ability.context = abilityContext;
 
     return ability;
   }
@@ -37,7 +38,7 @@ public class MageTeleportCombo extends Ability {
 
   @Override
   public void onStarted(CoreGame game) {
-    Creature creature = game.getCreature(getParams().getCreatureId());
+    Creature creature = game.getCreature(getContext().getCreatureId());
     creature.applyEffect(CreatureEffect.SELF_STUN, 3.5f, game);
     creature.stopMoving();
 

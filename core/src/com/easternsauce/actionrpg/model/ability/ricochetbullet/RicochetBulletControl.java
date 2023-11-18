@@ -1,10 +1,7 @@
 package com.easternsauce.actionrpg.model.ability.ricochetbullet;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.ability.Ability;
-import com.easternsauce.actionrpg.model.ability.AbilityParams;
-import com.easternsauce.actionrpg.model.ability.AbilityType;
-import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
+import com.easternsauce.actionrpg.model.ability.*;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -15,11 +12,15 @@ import lombok.NoArgsConstructor;
 public class RicochetBulletControl extends Ability {
   @Getter
   protected AbilityParams params;
+  @Getter
+  protected AbilityContext context;
 
-  public static RicochetBulletControl of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
+  public static RicochetBulletControl of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
     RicochetBulletControl ability = RicochetBulletControl.of();
 
     ability.params = abilityParams.setChannelTime(0f).setActiveTime(0f);
+
+    ability.context = abilityContext;
 
     return ability;
   }

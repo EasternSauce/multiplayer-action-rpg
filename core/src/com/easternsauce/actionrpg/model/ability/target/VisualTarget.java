@@ -2,6 +2,7 @@ package com.easternsauce.actionrpg.model.ability.target;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.ability.Ability;
+import com.easternsauce.actionrpg.model.ability.AbilityContext;
 import com.easternsauce.actionrpg.model.ability.AbilityParams;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import lombok.EqualsAndHashCode;
@@ -13,14 +14,18 @@ import lombok.NoArgsConstructor;
 public class VisualTarget extends Ability {
   @Getter
   protected AbilityParams params;
+  @Getter
+  protected AbilityContext context;
 
-  public static VisualTarget of(AbilityParams abilityParams, @SuppressWarnings("unused") CoreGame game) {
-    Creature creature = game.getCreature(abilityParams.getCreatureId());
+  public static VisualTarget of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
+    Creature creature = game.getCreature(abilityContext.getCreatureId());
 
     VisualTarget ability = VisualTarget.of();
     ability.params = abilityParams.setWidth(3f).setHeight(3f).setChannelTime(0f).setActiveTime(0.8f)
       .setTextureName("meteor_aim").setBaseDamage(0f).setChannelAnimationLooping(false).setActiveAnimationLooping(false)
       .setPos(creature.getParams().getPos());
+
+    ability.context = abilityContext;
 
     return ability;
   }

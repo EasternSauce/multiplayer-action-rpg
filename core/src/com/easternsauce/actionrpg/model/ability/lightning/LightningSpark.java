@@ -1,10 +1,7 @@
 package com.easternsauce.actionrpg.model.ability.lightning;
 
 import com.easternsauce.actionrpg.game.CoreGame;
-import com.easternsauce.actionrpg.model.ability.Ability;
-import com.easternsauce.actionrpg.model.ability.AbilityParams;
-import com.easternsauce.actionrpg.model.ability.AbilityType;
-import com.easternsauce.actionrpg.model.ability.ChainAbilityParams;
+import com.easternsauce.actionrpg.model.ability.*;
 import com.easternsauce.actionrpg.model.ability.util.PointTargetedAbilityUtils;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
@@ -25,9 +22,11 @@ import java.util.concurrent.ConcurrentSkipListSet;
 public class LightningSpark extends Ability {
   @Getter
   protected AbilityParams params;
+  @Getter
+  protected AbilityContext context;
 
-  public static LightningSpark of(AbilityParams abilityParams, CoreGame game) {
-    Creature creature = game.getCreature(abilityParams.getCreatureId());
+  public static LightningSpark of(AbilityParams abilityParams, AbilityContext abilityContext, CoreGame game) {
+    Creature creature = game.getCreature(abilityContext.getCreatureId());
 
     LightningSpark ability = LightningSpark.of();
 
@@ -38,6 +37,8 @@ public class LightningSpark extends Ability {
     ability.params = abilityParams.setWidth(3f).setHeight(3f).setChannelTime(0f).setActiveTime(0.4f)
       .setTextureName("lightning").setBaseDamage(11f).setActiveAnimationLooping(true).setAttackWithoutMoving(true)
       .setSkipCreatingBody(true).setDelayedActionTime(0.001f).setPos(pos).setDontOverridePos(true);
+
+    ability.context = abilityContext;
 
     return ability;
   }
@@ -54,7 +55,7 @@ public class LightningSpark extends Ability {
 
   @Override
   public void onStarted(CoreGame game) {
-    Creature creature = game.getCreature(getParams().getCreatureId());
+    Creature creature = game.getCreature(getContext().getCreatureId());
     creature.applyEffect(CreatureEffect.SELF_STUN, 0.1f, game);
     creature.stopMoving();
   }
@@ -68,7 +69,7 @@ public class LightningSpark extends Ability {
   public void onDelayedAction(CoreGame game) {
     // find the closest enemy, and if they are within distance, and haven't been hit yet, then put node over them
     Set<EntityId<Creature>> excluded = new ConcurrentSkipListSet<>(getParams().getCreaturesAlreadyHit().keySet());
-    excluded.add(getParams().getCreatureId());
+    excluded.add(getContext().getCreatureId());
 
     Creature targetCreature = game.getCreature(
       game.getGameState().accessCreatures().getAliveCreatureIdClosestTo(getParams().getPos(), 13f, excluded, game));
@@ -83,7 +84,7 @@ public class LightningSpark extends Ability {
           pos1)) {
 
         game.getGameState().accessAbilities()
-          .onAbilityHitsCreature(getParams().getCreatureId(), targetCreature.getId(), getParams().getId(),
+          .onAbilityHitsCreature(getContext().getCreatureId(), targetCreature.getId(), getParams().getId(),
             targetCreature.getParams().getPos(), game);
 
         getParams().getCreaturesAlreadyHit().put(targetCreature.getId(), getParams().getStateTimer().getTime());

@@ -116,7 +116,7 @@ public class Enemy extends Creature {
     if (skill.getSkillType().getDamaging()) {
       Set<Ability> damagingSkillNotAllowedAbilities = game.getAbilities().values().stream().filter(
         ability -> ability.isDamagingSkillNotAllowedWhenActive() &&
-          ability.getParams().getCreatureId().equals(this.getParams().getId()) &&
+          ability.getContext().getCreatureId().equals(this.getParams().getId()) &&
 
           ability.getParams().getState() == AbilityState.ACTIVE).collect(Collectors.toSet());
 
@@ -130,10 +130,10 @@ public class Enemy extends Creature {
   @Override
   public void onBeingHit(Ability ability, CoreGame game) {
     if (getParams().getEnemyParams() != null) {
-      getParams().getEnemyParams().setJustAttackedByCreatureId(ability.getParams().getCreatureId());
+      getParams().getEnemyParams().setJustAttackedByCreatureId(ability.getContext().getCreatureId());
 
       EntityId<Creature> aggroedCreatureId = getParams().getEnemyParams().getAggroedCreatureId();
-      if (aggroedCreatureId.isNull() || !aggroedCreatureId.equals(ability.getParams().getCreatureId())) {
+      if (aggroedCreatureId.isNull() || !aggroedCreatureId.equals(ability.getContext().getCreatureId())) {
         Creature aggroedCreature = game.getCreature(aggroedCreatureId);
 
         if (!aggroedCreature.isNull() && aggroedCreature.isCurrentlyActive(game)) {
@@ -170,7 +170,7 @@ public class Enemy extends Creature {
     getParams().getEnemyParams().getAutoControlsStateProcessorTimer().restart();
     getParams().getEnemyParams().setAutoControlsState(EnemyAutoControlsState.AGGRESSIVE);
     getParams().getStats().setSpeed(getParams().getStats().getBaseSpeed());
-    getParams().getEnemyParams().setAggroedCreatureId(ability.getParams().getCreatureId());
+    getParams().getEnemyParams().setAggroedCreatureId(ability.getContext().getCreatureId());
 
     if (ability.isRanged()) {
       getParams().getEnemyParams().getJustAttackedFromRangeTimer().restart();
