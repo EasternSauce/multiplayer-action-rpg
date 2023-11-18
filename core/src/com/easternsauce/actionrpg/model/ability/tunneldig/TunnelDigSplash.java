@@ -22,7 +22,7 @@ public class TunnelDigSplash extends Ability {
   public static TunnelDigSplash of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
     TunnelDigSplash ability = TunnelDigSplash.of();
     ability.params = abilityParams.setWidth(2.5f).setHeight(2.5f).setChannelTime(0f).setActiveTime(0.5f)
-      .setTextureName("dig").setBaseDamage(0f).setChannelAnimationLooping(false).setActiveAnimationLooping(false)
+      .setTextureName("dig").setChannelAnimationLooping(false).setActiveAnimationLooping(false)
       .setDelayedActionTime(0.3f);
 
     ability.context = abilityContext;

@@ -29,7 +29,7 @@ public class TunnelDig extends Projectile {
   public static TunnelDig of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
     TunnelDig ability = TunnelDig.of();
     ability.params = abilityParams.setNoTexture(true).setWidth(1.5f).setHeight(1.5f).setChannelTime(0f)
-      .setActiveTime(30f).setBaseDamage(0f).setStartingRange(0.5f).setChannelAnimationLooping(false)
+      .setActiveTime(30f).setStartingRange(0.5f).setChannelAnimationLooping(false)
       .setActiveAnimationLooping(true).setDelayedActionTime(0.001f).setSpeed(9f).setMaximumRange(30f);
 
     ability.context = abilityContext;

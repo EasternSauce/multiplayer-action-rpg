@@ -15,11 +15,11 @@ public class EnemyPoisonousMixture extends PoisonousMixtureBase {
 
     EnemyPoisonousMixture ability = EnemyPoisonousMixture.of();
     ability.params = abilityParams.setWidth(1.5f).setHeight(1.5f).setChannelTime(0f).setActiveTime(30f)
-      .setTextureName("green_potion_throw").setBaseDamage(22f).setChannelAnimationLooping(false)
+      .setTextureName("green_potion_throw").setChannelAnimationLooping(false)
       .setActiveAnimationLooping(true).setDelayedActionTime(0.001f).setPos(creature.getParams().getPos())
       .setMaximumRange(18f);
 
-    ability.context = abilityContext;
+    ability.context = abilityContext.setBaseDamage(22f);
 
     return ability;
   }

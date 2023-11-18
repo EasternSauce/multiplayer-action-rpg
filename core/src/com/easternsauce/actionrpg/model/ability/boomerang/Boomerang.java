@@ -24,10 +24,10 @@ public class Boomerang extends Projectile {
   public static Boomerang of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
     Boomerang ability = Boomerang.of();
     ability.params = abilityParams.setWidth(1.3f).setHeight(1.3f).setChannelTime(0f).setActiveTime(10f)
-      .setStartingRange(0.5f).setTextureName("boomerang").setBaseDamage(22f).setChannelAnimationLooping(true)
+      .setStartingRange(0.5f).setTextureName("boomerang").setChannelAnimationLooping(true)
       .setActiveAnimationLooping(true).setSpeed(22f);
 
-    ability.context = abilityContext;
+    ability.context = abilityContext.setBaseDamage(22f);
 
     return ability;
   }
@@ -88,7 +88,7 @@ public class Boomerang extends Projectile {
   public void onSelfCreatureHit(CoreGame game) {
     if (getParams().getComingBack()) {
       Creature creature = game.getCreature(getContext().getCreatureId());
-      Skill skill = creature.getParams().getSkills().get(getParams().getSkillType());
+      Skill skill = creature.getParams().getSkills().get(getContext().getSkillType());
 
       skill.resetCooldown();
 

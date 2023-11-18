@@ -30,7 +30,7 @@ public class AbilityAccessor {
   public Ability getAbilityBySkillType(EntityId<Creature> creatureId, SkillType skillType) {
     Optional<Ability> first = getData().getAbilities().values().stream().filter(
       ability -> ability.getContext().getCreatureId().equals(creatureId) &&
-        ability.getParams().getSkillType() == skillType).findFirst();
+        ability.getContext().getSkillType() == skillType).findFirst();
 
     return first.orElse(null);
   }
@@ -70,11 +70,9 @@ public class AbilityAccessor {
         .setChainToPos(chainAbilityParams.getChainToPos()).setDirVector(dirVector)
         .setOverrideScale(chainAbilityParams.getOverrideScale())
         .setOverrideActiveDuration(chainAbilityParams.getOverrideDuration())
-        .setOverrideDamage(chainAbilityParams.getOverrideDamage())
         .setOverrideMaximumRange(chainAbilityParams.getOverrideMaximumRange())
         .setOverrideSpeed(chainAbilityParams.getOverrideSpeed())
         .setOverrideStunDuration(chainAbilityParams.getOverrideStunDuration())
-        .setSkillType(chainFromAbility.getParams().getSkillType()).setSkillStartPos(chainFromPos)
         .setDamagingHitCreaturesHitCounter(chainFromAbility.getParams().getDamagingHitCreaturesHitCounter());
 
       spawnAbility(abilityType, abilityParams, chainFromAbility.getContext(), game);
@@ -111,6 +109,7 @@ public class AbilityAccessor {
 
     CreatureHitByAbilityAction action = CreatureHitByAbilityAction.of(attackerId, targetId, ability,
       ability.getParams().getDamagingHitCreaturesHitCounter().getCount(targetId), contactPoint);
+
     gameState.scheduleServerSideAction(action);
   }
 

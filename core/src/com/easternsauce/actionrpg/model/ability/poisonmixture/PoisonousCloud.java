@@ -14,7 +14,7 @@ public class PoisonousCloud extends PoisonousCloudBase {
   public static PoisonousCloudBase of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
     PoisonousCloud ability = PoisonousCloud.of();
     ability.params = abilityParams.setWidth(3f).setHeight(3f).setChannelTime(0f).setActiveTime(8f)
-      .setTextureName("poison_cloud").setBaseDamage(0f).setChannelAnimationLooping(false)
+      .setTextureName("poison_cloud").setChannelAnimationLooping(false)
       .setActiveAnimationLooping(true).setAttackWithoutMoving(true)
       .setCreaturesAlreadyHit(new OrderedMap<>());
 

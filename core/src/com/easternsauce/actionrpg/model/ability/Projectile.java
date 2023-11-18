@@ -26,7 +26,7 @@ public abstract class Projectile extends Ability {
       maximumRange = getParams().getMaximumRange();
     }
 
-    if (maximumRange != null && getParams().getPos().distance(getParams().getSkillStartPos()) > maximumRange) {
+    if (maximumRange != null && getParams().getPos().distance(getContext().getPos()) > maximumRange) {
       deactivate();
     }
   }

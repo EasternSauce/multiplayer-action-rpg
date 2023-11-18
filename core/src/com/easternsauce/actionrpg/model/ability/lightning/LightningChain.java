@@ -22,7 +22,7 @@ public class LightningChain extends Ability {
     LightningChain ability = LightningChain.of();
     ability.params = abilityParams.setWidth(1f)
       .setHeight(abilityParams.getChainFromPos().distance(abilityParams.getChainToPos())).setChannelTime(0f)
-      .setActiveTime(0.4f).setTextureName("lightning_chain").setBaseDamage(0f).setActiveAnimationLooping(true)
+      .setActiveTime(0.4f).setTextureName("lightning_chain").setActiveAnimationLooping(true)
       .setAttackWithoutMoving(true)
       .setPos(LightningChain.calculatePos(abilityParams.getChainToPos(), abilityParams.getChainFromPos()))
       .setRotationAngle(

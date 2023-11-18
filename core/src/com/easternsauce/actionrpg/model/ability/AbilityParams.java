@@ -6,7 +6,6 @@ import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.id.NullAbilityId;
 import com.easternsauce.actionrpg.model.id.NullAreaId;
-import com.easternsauce.actionrpg.model.skill.SkillType;
 import com.easternsauce.actionrpg.model.util.CreaturesHitCounter;
 import com.easternsauce.actionrpg.model.util.RandomGenerator;
 import com.easternsauce.actionrpg.model.util.SimpleTimer;
@@ -58,8 +57,6 @@ public class AbilityParams implements EntityParams {
   @NonNull
   private Float speed = 0f;
   @NonNull
-  private Float baseDamage;
-  @NonNull
   private Float weaponDamage;
   @NonNull
   private Float damageMultiplier = 1.0f;
@@ -90,8 +87,6 @@ public class AbilityParams implements EntityParams {
   private Boolean foundTarget = false;
   @NonNull
   private Vector2 chainFromPos;
-  @NonNull
-  private Vector2 skillStartPos;
 
   @NonNull
   private Float wallBounceCount = 0f;
@@ -100,16 +95,12 @@ public class AbilityParams implements EntityParams {
   private Boolean comingBack = false;
 
   @NonNull
-  private SkillType skillType;
-
-  @NonNull
   private Boolean markedAsShielded = false;
 
   private Float directionalAttachedAbilityRotationShift = null;
 
   private Float overrideScale;
   private Float overrideActiveDuration;
-  private Float overrideDamage;
   private Float overrideMaximumRange;
   private Float overrideSpeed;
   private Float overrideStunDuration;

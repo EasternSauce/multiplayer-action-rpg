@@ -21,10 +21,10 @@ public class MagicOrbBlast extends Ability {
   public static MagicOrbBlast of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
     MagicOrbBlast ability = MagicOrbBlast.of();
     ability.params = abilityParams.setWidth(4f).setHeight(4f).setChannelTime(0f).setActiveTime(0.21f)
-      .setTextureName("magic_blast").setBaseDamage(45f).setChannelAnimationLooping(false).setActiveAnimationLooping(false)
+      .setTextureName("magic_blast").setChannelAnimationLooping(false).setActiveAnimationLooping(false)
       .setAttackWithoutMoving(true).setCreaturesAlreadyHit(new OrderedMap<>());
 
-    ability.context = abilityContext;
+    ability.context = abilityContext.setBaseDamage(45f);
 
     return ability;
   }

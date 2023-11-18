@@ -95,4 +95,5 @@ public class MeteorCall extends AttachedAbility {
   public boolean isDamagingSkillNotAllowedWhenActive() {
     return true;
   }
+
 }

@@ -12,10 +12,10 @@ public class BossEnemySwordSlash extends SwordSlashBase {
   public static BossEnemySwordSlash of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
     BossEnemySwordSlash ability = BossEnemySwordSlash.of();
     ability.params = abilityParams.setWidth(4.5f).setHeight(4.5f).setChannelTime(0.15f).setActiveTime(0.3f)
-      .setStartingRange(4f).setTextureName("slash").setBaseDamage(35f).setChannelAnimationLooping(false)
+      .setStartingRange(4f).setTextureName("slash").setChannelAnimationLooping(false)
       .setActiveAnimationLooping(false);
 
-    ability.context = abilityContext;
+    ability.context = abilityContext.setBaseDamage(35f);
 
     return ability;
   }

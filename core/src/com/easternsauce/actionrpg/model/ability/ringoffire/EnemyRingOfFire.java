@@ -19,10 +19,10 @@ public class EnemyRingOfFire extends RingOfFireBase {
     EnemyRingOfFire ability = EnemyRingOfFire.of();
 
     ability.params = abilityParams.setWidth(20f).setHeight(20f).setChannelTime(0.4f).setActiveTime(0.16f)
-      .setBaseDamage(28f).setTextureName("ring_of_fire").setChannelAnimationLooping(false)
+      .setTextureName("ring_of_fire").setChannelAnimationLooping(false)
       .setActiveAnimationLooping(false).setAttackWithoutMoving(true);
 
-    ability.context = abilityContext;
+    ability.context = abilityContext.setBaseDamage(28f);
 
     return ability;
   }

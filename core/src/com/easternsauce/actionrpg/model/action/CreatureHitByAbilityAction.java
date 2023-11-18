@@ -42,6 +42,13 @@ public class CreatureHitByAbilityAction extends CreatureHitAction {
 
     Float damage = ability.getDamage(game);
 
+    if (damage == null) return; // TODO: temporary measure, to be fixed
+
+    dealDamageToCreature(attackerCreature, targetCreature, damage, game);
+
+  }
+
+  private void dealDamageToCreature(Creature attackerCreature, Creature targetCreature, Float damage, CoreGame game) {
     boolean meleeAbilityShielded = targetCreature.isMeleeAbilityShielded(ability, game);
     boolean markedAsShielded = ability.getParams().getMarkedAsShielded();
     boolean isShielded = markedAsShielded || meleeAbilityShielded;
@@ -81,7 +88,6 @@ public class CreatureHitByAbilityAction extends CreatureHitAction {
     }
 
     handleCreatureDeath(targetCreature, attackerCreature, game);
-
   }
 
   @Override

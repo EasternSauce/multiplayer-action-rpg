@@ -20,10 +20,10 @@ public class ChargeBody extends RingOfFireBase {
     ChargeBody ability = ChargeBody.of();
 
     ability.params = abilityParams.setWidth(7f).setHeight(7f).setChannelTime(0f).setActiveTime(1.5f)
-      .setBaseDamage(28f).setTextureName("fast_ring_of_fire")
+      .setTextureName("fast_ring_of_fire")
       .setActiveAnimationLooping(true).setAttackWithoutMoving(true);
 
-    ability.context = abilityContext;
+    ability.context = abilityContext.setBaseDamage(28f);
 
     return ability;
   }

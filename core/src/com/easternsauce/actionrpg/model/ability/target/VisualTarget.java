@@ -22,7 +22,7 @@ public class VisualTarget extends Ability {
 
     VisualTarget ability = VisualTarget.of();
     ability.params = abilityParams.setWidth(3f).setHeight(3f).setChannelTime(0f).setActiveTime(0.8f)
-      .setTextureName("meteor_aim").setBaseDamage(0f).setChannelAnimationLooping(false).setActiveAnimationLooping(false)
+      .setTextureName("meteor_aim").setChannelAnimationLooping(false).setActiveAnimationLooping(false)
       .setPos(creature.getParams().getPos());
 
     ability.context = abilityContext;

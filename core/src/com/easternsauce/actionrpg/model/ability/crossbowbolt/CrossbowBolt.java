@@ -22,10 +22,10 @@ public class CrossbowBolt extends Projectile {
   public static CrossbowBolt of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
     CrossbowBolt ability = CrossbowBolt.of();
     ability.params = abilityParams.setWidth(1.5f).setHeight(1.5f).setChannelTime(0f).setActiveTime(30f)
-      .setStartingRange(1.5f).setTextureName("arrow").setBaseDamage(10f).setChannelAnimationLooping(true)
+      .setStartingRange(1.5f).setTextureName("arrow").setChannelAnimationLooping(true)
       .setActiveAnimationLooping(true).setSpeed(30f);
 
-    ability.context = abilityContext;
+    ability.context = abilityContext.setBaseDamage(10f);
 
     return ability;
   }

@@ -12,7 +12,7 @@ public class EnemyVolatileBubble extends VolatileBubbleBase {
   public static EnemyVolatileBubble of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
     EnemyVolatileBubble ability = EnemyVolatileBubble.of();
     ability.params = abilityParams.setWidth(2f).setHeight(2f).setChannelTime(0f).setActiveTime(30f)
-      .setStartingRange(1.5f).setTextureName("bubble").setBaseDamage(0f).setChannelAnimationLooping(false)
+      .setStartingRange(1.5f).setTextureName("bubble").setChannelAnimationLooping(false)
       .setActiveAnimationLooping(true).setDelayedActionTime(0.001f).setSpeed(18f).setMaximumRange(17f);
 
     ability.context = abilityContext;

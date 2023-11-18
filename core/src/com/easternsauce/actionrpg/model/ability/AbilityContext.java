@@ -17,4 +17,8 @@ public class AbilityContext {
   private EntityId<Area> areaId = NullAreaId.of();
   private SkillType skillType;
   private Vector2 dirVector;
+  private Vector2 pos;
+  private Float baseDamage;
+  private Float speed;
+  private Float stunDuration;
 }

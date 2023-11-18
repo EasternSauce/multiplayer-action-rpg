@@ -65,5 +65,4 @@ public class SummonMeteor extends Projectile {
   public boolean usesEntityModel() {
     return false;
   }
-
 }

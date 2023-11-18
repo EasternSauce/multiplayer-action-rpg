@@ -16,9 +16,6 @@ public abstract class AttachedAbility extends Ability {
       }
     }
 
-    System.out.println("is context null?" + (getContext() == null));
-    System.out.println("is null?" + getContext().getCreatureId().isNull());
-
     Vector2 creaturePos = game.getCreaturePos(getContext().getCreatureId());
 
     if (creaturePos != null) {

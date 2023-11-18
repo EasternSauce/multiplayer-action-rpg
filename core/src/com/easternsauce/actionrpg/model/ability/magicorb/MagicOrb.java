@@ -12,7 +12,7 @@ public class MagicOrb extends MagicOrbBase {
   public static MagicOrbBase of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
     MagicOrb ability = MagicOrb.of();
     ability.params = abilityParams.setWidth(2f).setHeight(2f).setChannelTime(0f).setActiveTime(30f)
-      .setStartingRange(0.5f).setTextureName("magic_orb").setBaseDamage(0f).setChannelAnimationLooping(false)
+      .setStartingRange(0.5f).setTextureName("magic_orb").setChannelAnimationLooping(false)
       .setActiveAnimationLooping(true).setDelayedActionTime(0.001f).setSpeed(17f);
 
     ability.context = abilityContext;

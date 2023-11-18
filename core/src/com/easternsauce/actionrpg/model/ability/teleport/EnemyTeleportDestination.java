@@ -21,7 +21,7 @@ public class EnemyTeleportDestination extends TeleportDestinationBase {
 
     EnemyTeleportDestination ability = EnemyTeleportDestination.of();
     ability.params = abilityParams.setWidth(4.5f).setHeight(4.5f).setChannelTime(0f).setActiveTime(1f)
-      .setTextureName("warp").setBaseDamage(0f).setChannelAnimationLooping(false).setActiveAnimationLooping(false)
+      .setTextureName("warp").setChannelAnimationLooping(false).setActiveAnimationLooping(false)
       .setPos(teleportPos).setChainToPos(teleportPos);
 
     ability.context = abilityContext;

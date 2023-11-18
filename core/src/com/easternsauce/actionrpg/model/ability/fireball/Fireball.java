@@ -26,10 +26,10 @@ public class Fireball extends Projectile {
 
     Fireball ability = Fireball.of();
     ability.params = abilityParams.setWidth(2.5f).setHeight(2.5f).setChannelTime(0f).setActiveTime(30f)
-      .setStartingRange(2.5f).setTextureName("fireball").setBaseDamage(20f).setChannelAnimationLooping(false)
+      .setStartingRange(2.5f).setTextureName("fireball").setChannelAnimationLooping(false)
       .setActiveAnimationLooping(true).setDelayedActionTime(0.001f).setPos(creature.getParams().getPos());
 
-    ability.context = abilityContext;
+    ability.context = abilityContext.setBaseDamage(20f);
 
     return ability;
   }

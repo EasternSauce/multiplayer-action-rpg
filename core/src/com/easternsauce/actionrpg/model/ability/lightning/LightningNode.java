@@ -25,10 +25,10 @@ public class LightningNode extends Ability {
   public static LightningNode of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
     LightningNode ability = LightningNode.of();
     ability.params = abilityParams.setWidth(3f).setHeight(3f).setChannelTime(0f).setActiveTime(0.4f)
-      .setTextureName("lightning").setBaseDamage(11f).setActiveAnimationLooping(true).setAttackWithoutMoving(true)
+      .setTextureName("lightning").setActiveAnimationLooping(true).setAttackWithoutMoving(true)
       .setSkipCreatingBody(true).setDelayedActionTime(0.05f);
 
-    ability.context = abilityContext;
+    ability.context = abilityContext.setBaseDamage(11f);
 
     return ability;
   }

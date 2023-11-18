@@ -15,10 +15,10 @@ public class SwordSpin extends SwordSpinBase {
   public static SwordSpinBase of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
     SwordSpin ability = SwordSpin.of();
     ability.params = abilityParams.setWidth(3.5f).setHeight(3.5f).setChannelTime(0f).setActiveTime(3f)
-      .setStartingRange(2f).setTextureName("sword").setBaseDamage(23f).setChannelAnimationLooping(false)
+      .setStartingRange(2f).setTextureName("sword").setChannelAnimationLooping(false)
       .setActiveAnimationLooping(false).setDirVector(abilityParams.getDirVector().withRotatedDegAngle(90));
 
-    ability.context = abilityContext;
+    ability.context = abilityContext.setBaseDamage(23f);
 
     return ability;
   }

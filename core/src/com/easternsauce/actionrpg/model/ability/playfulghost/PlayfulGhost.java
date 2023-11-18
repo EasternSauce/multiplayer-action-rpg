@@ -28,10 +28,10 @@ public class PlayfulGhost extends Projectile {
   public static PlayfulGhost of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
     PlayfulGhost ability = PlayfulGhost.of();
     ability.params = abilityParams.setWidth(1.5f).setHeight(1.5f).setChannelTime(0f).setActiveTime(10f)
-      .setTextureName("ghost").setBaseDamage(15f).setChannelAnimationLooping(false).setActiveAnimationLooping(true)
+      .setTextureName("ghost").setChannelAnimationLooping(false).setActiveAnimationLooping(true)
       .setDelayedActionTime(0.001f).setSpeed(5f);
 
-    ability.context = abilityContext;
+    ability.context = abilityContext.setBaseDamage(15f);
 
     return ability;
   }

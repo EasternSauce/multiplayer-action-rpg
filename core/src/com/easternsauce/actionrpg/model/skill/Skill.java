@@ -48,10 +48,14 @@ public class Skill {
 
     EntityId<Ability> abilityId = EntityId.of("Ability_" + (int) (Math.random() * 10000000));
     AbilityParams abilityParams = AbilityParams.of().setId(abilityId).setAreaId(creature.getParams().getAreaId())
-      .setDirVector(dirVector).setSkillStartPos(startingPos)
-      .setSkillType(skillType);
+      .setDirVector(dirVector);
 
-    AbilityContext abilityContext = AbilityContext.of().setCreatureId(creatureId);
+    AbilityContext abilityContext = AbilityContext.of()
+      .setCreatureId(creatureId)
+      .setSkillType(skillType)
+      .setAreaId(creature.getParams().getAreaId())
+      .setDirVector(dirVector)
+      .setPos(startingPos);
 
     game.getGameState().accessAbilities().spawnAbility(startingAbilityType, abilityParams, abilityContext, game);
 

@@ -26,7 +26,7 @@ public class ShieldGuard extends AttachedAbility {
     ShieldGuard ability = ShieldGuard.of();
 
     ability.params = abilityParams.setWidth(2f).setHeight(2f).setChannelTime(0f).setActiveTime(3f)
-      .setStartingRange(1.2f).setTextureName("shield").setBaseDamage(0f).setChannelAnimationLooping(false)
+      .setStartingRange(1.2f).setTextureName("shield").setChannelAnimationLooping(false)
       .setActiveAnimationLooping(false).setFlipY(ShieldGuard.calculateFlip(flipValue));
 
     ability.context = abilityContext;

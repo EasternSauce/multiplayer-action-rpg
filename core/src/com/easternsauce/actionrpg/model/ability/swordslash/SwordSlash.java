@@ -13,10 +13,10 @@ public class SwordSlash extends SwordSlashBase {
     SwordSlash ability = SwordSlash.of();
 
     ability.params = abilityParams.setWidth(2.5f).setHeight(2.5f).setChannelTime(0.15f).setActiveTime(0.3f)
-      .setStartingRange(1.8f).setTextureName("slash").setBaseDamage(22f).setChannelAnimationLooping(false)
+      .setStartingRange(1.8f).setTextureName("slash").setChannelAnimationLooping(false)
       .setActiveAnimationLooping(false);
 
-    ability.context = abilityContext;
+    ability.context = abilityContext.setBaseDamage(22f);
 
     return ability;
   }

@@ -165,11 +165,9 @@ public abstract class Ability implements Entity {
   }
 
   public Float getDamage(CoreGame game) {
-    float damage = getParams().getBaseDamage();
+    Float damage = getContext().getBaseDamage();
 
-    if (getParams().getOverrideDamage() != null) {
-      damage = getParams().getOverrideDamage();
-    }
+    if (damage == null) return null; // TODO: temporary
 
     if (getParams().getPlayerAbility() && isWeaponAttack()) {
       return getParams().getWeaponDamage() * getParams().getDamageMultiplier();
@@ -194,10 +192,10 @@ public abstract class Ability implements Entity {
   public Integer getSkillLevel(CoreGame game) {
     Creature creature = game.getCreature(getContext().getCreatureId());
 
-    if (creature.isNull() || !creature.availableSkills().containsKey(getParams().getSkillType())) {
+    if (creature.isNull() || !creature.availableSkills().containsKey(getContext().getSkillType())) {
       return 1;
     }
-    return creature.availableSkills().get(getParams().getSkillType());
+    return creature.availableSkills().get(getContext().getSkillType());
   }
 
   public Float getStunDuration() {

@@ -26,10 +26,10 @@ public class LittleBite extends AttachedAbility {
     LittleBite ability = LittleBite.of();
 
     ability.params = abilityParams.setWidth(0.9f).setHeight(0.9f).setChannelTime(0f).setActiveTime(0.18f)
-      .setStartingRange(1.2f).setTextureName("teeth").setBaseDamage(37f).setChannelAnimationLooping(false)
+      .setStartingRange(1.2f).setTextureName("teeth").setChannelAnimationLooping(false)
       .setActiveAnimationLooping(false).setFlipY(LittleBite.calculateFlip(flipValue));
 
-    ability.context = abilityContext;
+    ability.context = abilityContext.setBaseDamage(37f);
 
     return ability;
   }

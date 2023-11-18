@@ -15,7 +15,7 @@ public class TeleportSource extends TeleportSourceBase {
 
     TeleportSource ability = TeleportSource.of();
     ability.params = abilityParams.setWidth(4.5f).setHeight(4.5f).setChannelTime(0f).setActiveTime(1f)
-      .setTextureName("warp").setBaseDamage(0f).setChannelAnimationLooping(false).setActiveAnimationLooping(false)
+      .setTextureName("warp").setChannelAnimationLooping(false).setActiveAnimationLooping(false)
       .setPos(creature.getParams().getPos()).setDelayedActionTime(0.3f);
 
     ability.context = abilityContext;

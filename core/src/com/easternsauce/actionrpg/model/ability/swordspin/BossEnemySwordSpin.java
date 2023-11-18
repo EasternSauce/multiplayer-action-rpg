@@ -12,10 +12,10 @@ public class BossEnemySwordSpin extends SwordSpinBase {
   public static BossEnemySwordSpin of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
     BossEnemySwordSpin ability = BossEnemySwordSpin.of();
     ability.params = abilityParams.setWidth(6f).setHeight(6f).setChannelTime(0f).setActiveTime(4f).setStartingRange(4f)
-      .setTextureName("sword").setBaseDamage(42f).setChannelAnimationLooping(false).setActiveAnimationLooping(false)
+      .setTextureName("sword").setChannelAnimationLooping(false).setActiveAnimationLooping(false)
       .setDirVector(abilityParams.getDirVector().withRotatedDegAngle(90));
 
-    ability.context = abilityContext;
+    ability.context = abilityContext.setBaseDamage(42f);
 
     return ability;
   }

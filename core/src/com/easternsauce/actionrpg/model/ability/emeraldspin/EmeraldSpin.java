@@ -24,11 +24,11 @@ public class EmeraldSpin extends Projectile {
   public static EmeraldSpin of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
     EmeraldSpin ability = EmeraldSpin.of();
     ability.params = abilityParams.setWidth(0.8f).setHeight(0.8f).setChannelTime(0f).setActiveTime(3f)
-      .setStartingRange(0f).setTextureName("green_whirl").setBaseDamage(13f).setChannelAnimationLooping(false)
+      .setStartingRange(0f).setTextureName("green_whirl").setChannelAnimationLooping(false)
       .setActiveAnimationLooping(true).setDelayedActionTime(0.001f).setSpeed(30f)
       .setCreaturesAlreadyHit(new OrderedMap<>()).setMaximumRange(22f);
 
-    ability.context = abilityContext;
+    ability.context = abilityContext.setBaseDamage(13f);
 
     return ability;
   }

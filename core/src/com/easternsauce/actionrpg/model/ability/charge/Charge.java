@@ -23,7 +23,7 @@ public class Charge extends AttachedAbility {
     Charge ability = Charge.of();
 
     ability.params = abilityParams.setWidth(5.5f).setHeight(5.5f).setChannelTime(0f).setActiveTime(1.7f)
-      .setTextureName("smoke").setBaseDamage(0f).setChannelAnimationLooping(false).setActiveAnimationLooping(false)
+      .setTextureName("smoke").setChannelAnimationLooping(false).setActiveAnimationLooping(false)
       .setPos(creature.getParams().getPos()).setStartingRange(0.8f).setDirectionalAttachedAbilityRotationShift(180f)
       .setFlipY(Charge.calculateFlip(flipValue)).setRotationShift(180f).setDelayedActionTime(1f);
 
@@ -106,8 +106,4 @@ public class Charge extends AttachedAbility {
     return false;
   }
 
-  @Override
-  public boolean isDamagingSkillNotAllowedWhenActive() {
-    return true;
-  }
 }

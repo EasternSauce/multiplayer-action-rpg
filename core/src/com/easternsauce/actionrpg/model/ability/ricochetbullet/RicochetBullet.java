@@ -22,10 +22,10 @@ public class RicochetBullet extends Projectile {
   public static RicochetBullet of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
     RicochetBullet ability = RicochetBullet.of();
     ability.params = abilityParams.setWidth(0.8f).setHeight(0.8f).setChannelTime(0f).setActiveTime(10f)
-      .setTextureName("fireball").setBaseDamage(30f).setChannelAnimationLooping(false).setActiveAnimationLooping(true)
+      .setTextureName("fireball").setChannelAnimationLooping(false).setActiveAnimationLooping(true)
       .setDelayedActionTime(0.001f).setSpeed(25f);
 
-    ability.context = abilityContext;
+    ability.context = abilityContext.setBaseDamage(30f);
 
     return ability;
   }

@@ -23,11 +23,11 @@ public class Shockwave extends Ability {
     Shockwave ability = Shockwave.of();
 
     ability.params = abilityParams.setWidth(10f).setHeight(10f).setChannelTime(0.17f).setActiveTime(0.306f)
-      .setBaseDamage(45f).setTextureName("holy_explosion").setChannelAnimationLooping(false)
+      .setTextureName("holy_explosion").setChannelAnimationLooping(false)
       .setActiveAnimationLooping(false).setAttackWithoutMoving(true)
       .setCreaturesAlreadyHit(new OrderedMap<>());
 
-    ability.context = abilityContext;
+    ability.context = abilityContext.setBaseDamage(45f);
 
     return ability;
   }
