@@ -176,7 +176,7 @@ public class NullAbility extends Ability {
   }
 
   @Override
-  public boolean isNull() {
+  public boolean isEmpty() {
     return true;
   }
 }

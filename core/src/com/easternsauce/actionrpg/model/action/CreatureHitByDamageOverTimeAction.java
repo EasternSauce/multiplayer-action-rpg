@@ -28,7 +28,7 @@ public class CreatureHitByDamageOverTimeAction extends CreatureHitAction {
     Creature targetCreature = game.getCreature(targetId);
     Creature attackerCreature = game.getCreature(attackerId);
 
-    if (targetCreature.isNull() || attackerCreature.isNull()) {
+    if (targetCreature.isEmpty() || attackerCreature.isEmpty()) {
       return;
     }
 

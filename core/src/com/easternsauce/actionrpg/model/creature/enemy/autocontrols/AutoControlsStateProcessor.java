@@ -2,40 +2,41 @@ package com.easternsauce.actionrpg.model.creature.enemy.autocontrols;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.creature.Creature;
+import com.easternsauce.actionrpg.model.creature.enemy.EnemyParams;
 import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.util.Constants;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-public class EnemyAutoControlsStateProcessor {
+public class AutoControlsStateProcessor {
   public void process(EntityId<Creature> creatureId, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
-    if (creature.getEnemyParams().getAutoControlsStateProcessorTimer().getTime() >
-      creature.getEnemyParams().getAutoControlsStateProcessorTime()) {
+    EnemyParams enemyParams = creature.getEnemyParams();
 
-      creature.getEnemyParams().getAutoControlsStateProcessorTimer().restart();
+    if (enemyParams.getAutoControlsStateProcessorTimer().getTime() > enemyParams.getAutoControlsStateProcessorTime()) {
+      enemyParams.getAutoControlsStateProcessorTimer().restart();
 
-      if (!creature.getEnemyParams().getTargetCreatureId().isNull()) {
-        if (creature.getEnemyParams().getAutoControlsState() == EnemyAutoControlsState.ALERTED) {
+      if (!enemyParams.getTargetCreatureId().isEmpty()) {
+        if (enemyParams.getAutoControlsState() == AutoControlsState.ALERTED) {
           handleAlerted(game, creature);
-        } else if (creature.getEnemyParams().getAutoControlsState() == EnemyAutoControlsState.AGGRESSIVE) {
+        } else if (enemyParams.getAutoControlsState() == AutoControlsState.AGGRESSIVE) {
           handleAggressive(creature);
-        } else if (creature.getEnemyParams().getAutoControlsState() == EnemyAutoControlsState.KEEP_DISTANCE) {
+        } else if (enemyParams.getAutoControlsState() == AutoControlsState.KEEP_DISTANCE) {
           handleKeepDistance(game, creature);
         }
       }
 
       float randomTime = 1f + Math.abs(creature.getParams().getRandomGenerator().nextFloat());
-      creature.getEnemyParams().setAutoControlsStateProcessorTime(randomTime);
+      enemyParams.setAutoControlsStateProcessorTime(randomTime);
     }
   }
 
   private void handleAggressive(Creature creature) {
     if (!creature.getEnemyParams().isBossEnemy() &&
       Math.abs(creature.getParams().getRandomGenerator().nextFloat()) < 0.35f) {
-      creature.getEnemyParams().setAutoControlsState(EnemyAutoControlsState.KEEP_DISTANCE);
+      creature.getEnemyParams().setAutoControlsState(AutoControlsState.KEEP_DISTANCE);
 
     }
   }
@@ -54,7 +55,7 @@ public class EnemyAutoControlsStateProcessor {
           backUpPos.getY() + creature.getParams().getRandomGenerator().nextFloat()));
 
       if (Math.abs(creature.getParams().getRandomGenerator().nextFloat()) < 0.7f) {
-        creature.getEnemyParams().setAutoControlsState(EnemyAutoControlsState.AGGRESSIVE);
+        creature.getEnemyParams().setAutoControlsState(AutoControlsState.AGGRESSIVE);
       }
     }
   }
@@ -73,7 +74,7 @@ public class EnemyAutoControlsStateProcessor {
     }
 
     if (Math.abs(creature.getParams().getRandomGenerator().nextFloat()) < 0.5f) {
-      creature.getEnemyParams().setAutoControlsState(EnemyAutoControlsState.AGGRESSIVE);
+      creature.getEnemyParams().setAutoControlsState(AutoControlsState.AGGRESSIVE);
     }
   }
 

@@ -48,7 +48,7 @@ public class EnemyMagicOrb extends MagicOrbBase {
         }
       }
 
-      if (!minimumDistanceCreature.isNull()) {
+      if (!minimumDistanceCreature.isEmpty()) {
         Vector2 vectorTowards = getParams().getPos().vectorTowards(minimumDistanceCreature.getParams().getPos());
         float targetAngleDeg = vectorTowards.angleDeg();
 

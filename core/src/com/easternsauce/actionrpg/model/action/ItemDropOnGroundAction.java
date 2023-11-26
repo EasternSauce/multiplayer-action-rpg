@@ -32,7 +32,7 @@ public class ItemDropOnGroundAction extends GameStateAction {
 
     Creature player = game.getCreature(playerId);
 
-    if (!player.isNull()) {
+    if (!player.isEmpty()) {
       Map<Integer, Item> inventoryItems = player.getParams().getInventoryItems();
       Map<Integer, Item> equipmentItems = player.getParams().getEquipmentItems();
       Map<Integer, Item> potionMenuItems = player.getParams().getPotionMenuItems();

@@ -6,10 +6,10 @@ import com.easternsauce.actionrpg.model.id.EntityId;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-public class EnemyAutoControlsUpdater {
-  private final EnemyAutoControlsStateProcessor stateProcessor = EnemyAutoControlsStateProcessor.of();
-  private final EnemyAutoControlsPathfindingProcessor pathfindingProcessor = EnemyAutoControlsPathfindingProcessor.of();
-  private final EnemyAutoControlsTargetProcessor targetProcessor = EnemyAutoControlsTargetProcessor.of();
+public class AutoControlsUpdater {
+  private final AutoControlsStateProcessor stateProcessor = AutoControlsStateProcessor.of();
+  private final AutoControlsPathfindingProcessor pathfindingProcessor = AutoControlsPathfindingProcessor.of();
+  private final AutoControlsTargetProcessor targetProcessor = AutoControlsTargetProcessor.of();
 
   public void update(EntityId<Creature> creatureId, CoreGame game) {
     Creature creature = game.getCreature(creatureId);

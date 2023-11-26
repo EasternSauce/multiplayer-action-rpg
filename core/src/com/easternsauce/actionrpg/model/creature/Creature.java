@@ -437,7 +437,7 @@ public abstract class Creature implements Entity {
     return getParams().getRandomGenerator().nextInt();
   }
 
-  public boolean isNull() {
+  public boolean isEmpty() {
     return false;
   }
 }

@@ -15,7 +15,7 @@ public class NullCreatureId extends EntityId<Creature> {
   }
 
   @Override
-  public boolean isNull() {
+  public boolean isEmpty() {
     return true;
   }
 }

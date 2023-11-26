@@ -5,7 +5,7 @@ import com.easternsauce.actionrpg.model.ability.*;
 import com.easternsauce.actionrpg.model.ability.util.AbilityRotationUtils;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
-import com.easternsauce.actionrpg.model.creature.enemy.autocontrols.EnemyAutoControlsState;
+import com.easternsauce.actionrpg.model.creature.enemy.autocontrols.AutoControlsState;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -62,9 +62,9 @@ public class FistSlamCombo extends Ability {
     Creature targetCreature = null;
 
     if (creature.getEnemyParams() != null) {
-      creature.getEnemyParams().setAutoControlsState(EnemyAutoControlsState.AGGRESSIVE);
+      creature.getEnemyParams().setAutoControlsState(AutoControlsState.AGGRESSIVE);
 
-      if (!creature.getEnemyParams().getTargetCreatureId().isNull()) {
+      if (!creature.getEnemyParams().getTargetCreatureId().isEmpty()) {
         targetCreature = game.getCreature(creature.getEnemyParams().getTargetCreatureId());
       }
     }

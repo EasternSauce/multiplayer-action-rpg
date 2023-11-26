@@ -16,11 +16,11 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 @NoArgsConstructor(staticName = "of")
-public class EnemyAutoControlsPathfindingProcessor {
+public class AutoControlsPathfindingProcessor {
   public void process(EntityId<Creature> creatureId, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
-    if (!creature.getEnemyParams().getTargetCreatureId().isNull()) {
+    if (!creature.getEnemyParams().getTargetCreatureId().isEmpty()) {
       processPathfindingTowardsTarget(creatureId, game, creature);
     } else {
       processPathfindingTowardsSpawnPoint(game, creature);
@@ -83,14 +83,14 @@ public class EnemyAutoControlsPathfindingProcessor {
 
   private List<Vector2> mirrorPathFromNearbyCreature(EntityId<Creature> creatureId, EntityId<Creature> targetId, CoreGame game) { // TODO: check if this properly serves its purpose, it may be useless
     Creature creature = game.getCreature(creatureId);
-    if (creature.isNull()) {
+    if (creature.isEmpty()) {
       return new LinkedList<>();
     } else {
       Predicate<Creature> creaturePredicate = otherCreature -> {
         EnemyParams enemyParams = otherCreature.getEnemyParams();
 
         if (enemyParams != null) {
-          boolean sameCreatureTarget = !enemyParams.getTargetCreatureId().isNull() &&
+          boolean sameCreatureTarget = !enemyParams.getTargetCreatureId().isEmpty() &&
             enemyParams.getTargetCreatureId().equals(targetId);
           boolean creatureNearby = otherCreature.getParams().getPos().distance(creature.getParams().getPos()) < 4f;
           boolean creatureEnemy = otherCreature instanceof Enemy;

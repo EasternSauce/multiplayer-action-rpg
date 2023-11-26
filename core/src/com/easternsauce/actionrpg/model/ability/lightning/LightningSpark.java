@@ -74,7 +74,7 @@ public class LightningSpark extends Ability {
     Creature targetCreature = game.getCreature(
       game.getGameState().accessCreatures().getAliveCreatureIdClosestTo(getParams().getPos(), 13f, excluded, game));
 
-    if (!(targetCreature.isNull())) {
+    if (!(targetCreature.isEmpty())) {
       Vector2 pos = getParams().getPos();
       Vector2 pos1 = targetCreature.getParams().getPos();
 

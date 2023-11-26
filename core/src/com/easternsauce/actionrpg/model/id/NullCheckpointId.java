@@ -15,7 +15,7 @@ public class NullCheckpointId extends EntityId<Checkpoint> {
   }
 
   @Override
-  public boolean isNull() {
+  public boolean isEmpty() {
     return true;
   }
 }

@@ -3,6 +3,6 @@ package com.easternsauce.actionrpg.model.creature.enemy.autocontrols;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-public enum EnemyAutoControlsState {
+public enum AutoControlsState {
   RESTING, ALERTED, AGGRESSIVE, KEEP_DISTANCE
 }

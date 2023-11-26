@@ -68,7 +68,7 @@ public class CreatureAccessor {
   public Set<EntityId<Creature>> getCreaturesToUpdateForPlayerCreatureId(EntityId<Creature> playerCreatureId, CoreGame game) {
     Creature player = getData().getCreatures().get(playerCreatureId);
 
-    if (player.isNull()) {
+    if (player.isEmpty()) {
       return new ConcurrentSkipListSet<>();
     } else {
       return getData().getCreatures().keySet().stream().filter(creatureId -> {
@@ -123,7 +123,7 @@ public class CreatureAccessor {
 
   public Creature getCreature(EntityId<Creature> creatureId) {
     boolean creaturesContainCreatureId = !getData().getCreatures().containsKey(creatureId);
-    boolean creatureIdNull = creatureId.isNull();
+    boolean creatureIdNull = creatureId.isEmpty();
     if (creatureIdNull || creaturesContainCreatureId) {
       return NullCreature.of();
     }

@@ -8,16 +8,16 @@ import com.easternsauce.actionrpg.model.util.Vector2;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-public class EnemyAutoControlsMovementProcessor {
+public class AutoControlsMovementProcessor {
   public void process(EntityId<Creature> creatureId, Vector2 potentialTargetPos, Float distance, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
     EnemyParams enemyParams = creature.getEnemyParams();
-    if (enemyParams.getAutoControlsState() == EnemyAutoControlsState.AGGRESSIVE) {
+    if (enemyParams.getAutoControlsState() == AutoControlsState.AGGRESSIVE) {
       processAggressive(creatureId, potentialTargetPos, distance, game, creature, enemyParams);
-    } else if (enemyParams.getAutoControlsState() == EnemyAutoControlsState.ALERTED) {
+    } else if (enemyParams.getAutoControlsState() == AutoControlsState.ALERTED) {
       processAlerted(creatureId, game, creature, enemyParams);
-    } else if (enemyParams.getAutoControlsState() == EnemyAutoControlsState.KEEP_DISTANCE) {
+    } else if (enemyParams.getAutoControlsState() == AutoControlsState.KEEP_DISTANCE) {
       processKeepDistance(creatureId, game, creature, enemyParams);
     } else {
       creature.stopMoving();

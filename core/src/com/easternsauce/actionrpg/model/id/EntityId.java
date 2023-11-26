@@ -30,7 +30,7 @@ public class EntityId<T extends Entity> implements Comparable<EntityId<T>> {
     return getValue().compareTo(o.getValue());
   }
 
-  public boolean isNull() {
+  public boolean isEmpty() {
     return false;
   }
 

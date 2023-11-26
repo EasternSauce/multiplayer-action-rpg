@@ -15,7 +15,7 @@ public class NullAbilityId extends EntityId<Ability> {
   }
 
   @Override
-  public boolean isNull() {
+  public boolean isEmpty() {
     return true;
   }
 }

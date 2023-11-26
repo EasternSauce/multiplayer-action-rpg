@@ -7,8 +7,8 @@ import com.easternsauce.actionrpg.model.area.Area;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
 import com.easternsauce.actionrpg.model.creature.CreatureParams;
-import com.easternsauce.actionrpg.model.creature.enemy.autocontrols.EnemyAutoControlsState;
-import com.easternsauce.actionrpg.model.creature.enemy.autocontrols.EnemyAutoControlsUpdater;
+import com.easternsauce.actionrpg.model.creature.enemy.autocontrols.AutoControlsState;
+import com.easternsauce.actionrpg.model.creature.enemy.autocontrols.AutoControlsUpdater;
 import com.easternsauce.actionrpg.model.enemyrallypoint.EnemyRallyPoint;
 import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.skill.Skill;
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class Enemy extends Creature {
-  private final EnemyAutoControlsUpdater autoControlsUpdater = EnemyAutoControlsUpdater.of();
+  private final AutoControlsUpdater autoControlsUpdater = AutoControlsUpdater.of();
   @Getter
   private CreatureParams params;
 
@@ -74,7 +74,7 @@ public class Enemy extends Creature {
   @Override
   public WorldDirection getFacingDirection(CoreGame game) {
     float deg;
-    if (!getParams().getEnemyParams().getTargetCreatureId().isNull()) {
+    if (!getParams().getEnemyParams().getTargetCreatureId().isEmpty()) {
       Vector2 targetPos = game.getCreaturePos(getParams().getEnemyParams().getTargetCreatureId());
       if (targetPos != null) {
         deg = this.getParams().getPos().vectorTowards(targetPos).angleDeg();
@@ -133,10 +133,10 @@ public class Enemy extends Creature {
       getParams().getEnemyParams().setJustAttackedByCreatureId(ability.getContext().getCreatureId());
 
       EntityId<Creature> aggroedCreatureId = getParams().getEnemyParams().getAggroedCreatureId();
-      if (aggroedCreatureId.isNull() || !aggroedCreatureId.equals(ability.getContext().getCreatureId())) {
+      if (aggroedCreatureId.isEmpty() || !aggroedCreatureId.equals(ability.getContext().getCreatureId())) {
         Creature aggroedCreature = game.getCreature(aggroedCreatureId);
 
-        if (!aggroedCreature.isNull() && aggroedCreature.isCurrentlyActive(game)) {
+        if (!aggroedCreature.isEmpty() && aggroedCreature.isCurrentlyActive(game)) {
           makeAggressiveAfterHitByAbility(ability);
         }
       }
@@ -149,7 +149,7 @@ public class Enemy extends Creature {
 
     EntityId<Creature> targetCreatureId = enemyParams.getTargetCreatureId();
 
-    if (targetCreatureId.isNull()) {
+    if (targetCreatureId.isEmpty()) {
       if (getParams().getEffectParams().getLifeRegenerationOverTimeTimer().getTime() > 0.333f) {
         regenerateLife(getParams().getStats().getMaxLife() / 30f);
       }
@@ -168,7 +168,7 @@ public class Enemy extends Creature {
   private void makeAggressiveAfterHitByAbility(Ability ability) {
     getParams().getEnemyParams().setAutoControlsStateProcessorTime(1f + Math.abs(getParams().getRandomGenerator().nextFloat()));
     getParams().getEnemyParams().getAutoControlsStateProcessorTimer().restart();
-    getParams().getEnemyParams().setAutoControlsState(EnemyAutoControlsState.AGGRESSIVE);
+    getParams().getEnemyParams().setAutoControlsState(AutoControlsState.AGGRESSIVE);
     getParams().getStats().setSpeed(getParams().getStats().getBaseSpeed());
     getParams().getEnemyParams().setAggroedCreatureId(ability.getContext().getCreatureId());
 

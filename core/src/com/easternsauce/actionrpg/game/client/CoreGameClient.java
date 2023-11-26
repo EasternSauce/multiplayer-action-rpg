@@ -110,7 +110,7 @@ public class CoreGameClient extends CoreGame {
   public Set<EntityId<Ability>> getAbilitiesToUpdate() {
     Creature player = getCreature(getGameState().getThisClientPlayerId());
 
-    if (player.isNull()) {
+    if (player.isEmpty()) {
       return new ConcurrentSkipListSet<>();
     }
 

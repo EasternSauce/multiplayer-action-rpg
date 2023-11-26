@@ -15,7 +15,7 @@ public class NullAreaId extends EntityId<Area> {
   }
 
   @Override
-  public boolean isNull() {
+  public boolean isEmpty() {
     return true;
   }
 }

@@ -23,7 +23,7 @@ public class Meteor extends Projectile {
 
     ability.params = abilityParams.setWidth(2.474f).setHeight(2f).setChannelTime(0f).setActiveTime(5f)
       .setRotationAllowed(false)
-      .setTextureName("meteor").setBaseDamage(0f).setChannelAnimationLooping(false).setActiveAnimationLooping(false)
+      .setTextureName("meteor").setChannelAnimationLooping(false).setActiveAnimationLooping(false)
       .setDontOverridePos(true).setDirVector(Vector2.of(-1, -1));
 
     ability.context = abilityContext;
@@ -84,5 +84,4 @@ public class Meteor extends Projectile {
   public boolean canStun() {
     return false;
   }
-
 }

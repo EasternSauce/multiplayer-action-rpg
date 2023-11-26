@@ -192,7 +192,7 @@ public abstract class Ability implements Entity {
   public Integer getSkillLevel(CoreGame game) {
     Creature creature = game.getCreature(getContext().getCreatureId());
 
-    if (creature.isNull() || !creature.availableSkills().containsKey(getContext().getSkillType())) {
+    if (creature.isEmpty() || !creature.availableSkills().containsKey(getContext().getSkillType())) {
       return 1;
     }
     return creature.availableSkills().get(getContext().getSkillType());
@@ -238,7 +238,7 @@ public abstract class Ability implements Entity {
     }
   }
 
-  public boolean isNull() {
+  public boolean isEmpty() {
     return false;
   }
 }

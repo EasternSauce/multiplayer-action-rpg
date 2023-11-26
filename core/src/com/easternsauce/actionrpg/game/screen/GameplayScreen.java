@@ -96,7 +96,7 @@ public class GameplayScreen implements Screen {
     clearScreen();
 
     if (game.isGameplayRunning()) {
-      if (game.getGameState().getThisClientPlayerId().isNull()) {
+      if (game.getGameState().getThisClientPlayerId().isEmpty()) {
         game.renderServerRunningMessage();
       } else {
         if (game.getEntityManager().getGameEntityRenderer().getAreaRenderers()
@@ -141,7 +141,7 @@ public class GameplayScreen implements Screen {
 
       EntityId<Creature> thisClientPlayerId = game.getGameState().getThisClientPlayerId();
 
-      if (!thisClientPlayerId.isNull() && !game.getCreature(thisClientPlayerId).isNull()) {
+      if (!thisClientPlayerId.isEmpty() && !game.getCreature(thisClientPlayerId).isEmpty()) {
         game.updateCameraPositions();
       }
 

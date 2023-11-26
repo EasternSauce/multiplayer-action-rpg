@@ -11,8 +11,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 @NoArgsConstructor(staticName = "of")
-public class EnemyAutoControlsActionProcessor {
-  private final EnemyAutoControlsMovementProcessor movementLogicProcessor = EnemyAutoControlsMovementProcessor.of();
+public class AutoControlsActionProcessor {
+  private final AutoControlsMovementProcessor movementLogicProcessor = AutoControlsMovementProcessor.of();
 
   public void process(EntityId<Creature> creatureId, Vector2 potentialTargetPos, Vector2 vectorTowardsTarget, CoreGame game) {
     handleMovement(creatureId, potentialTargetPos, game);

@@ -1,7 +1,7 @@
 package com.easternsauce.actionrpg.model.creature.enemy;
 
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.creature.enemy.autocontrols.EnemyAutoControlsState;
+import com.easternsauce.actionrpg.model.creature.enemy.autocontrols.AutoControlsState;
 import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.id.NullCreatureId;
 import com.easternsauce.actionrpg.model.util.SimpleTimer;
@@ -35,7 +35,7 @@ public class EnemyParams {
   @NonNull
   private Float findTargetCooldown;
   @NonNull
-  private EnemyAutoControlsState autoControlsState;
+  private AutoControlsState autoControlsState;
   @NonNull
   private SimpleTimer autoControlsStateProcessorTimer = SimpleTimer.getExpiredTimer();
   @NonNull

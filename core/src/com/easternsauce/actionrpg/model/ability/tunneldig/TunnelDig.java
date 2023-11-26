@@ -68,7 +68,7 @@ public class TunnelDig extends Projectile {
         }
       }
 
-      if (!minimumDistanceCreature.isNull()) {
+      if (!minimumDistanceCreature.isEmpty()) {
         float incrementFactor = 2f;
 
         float increment;

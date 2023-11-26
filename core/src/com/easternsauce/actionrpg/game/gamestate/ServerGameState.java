@@ -130,7 +130,7 @@ public class ServerGameState extends GameState {
         if (creature instanceof Player) {
 
           PlayerRespawnAction action;
-          if (creature.getParams().getCurrentCheckpointId().isNull()) {
+          if (creature.getParams().getCurrentCheckpointId().isEmpty()) {
             action = PlayerRespawnAction.of(creatureId, Vector2.of(28f, 12f), EntityId.of("Area1"));
           } else {
             Checkpoint checkpoint = getCheckpoints().get(creature.getParams().getCurrentCheckpointId());

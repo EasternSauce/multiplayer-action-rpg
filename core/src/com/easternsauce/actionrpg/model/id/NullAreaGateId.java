@@ -15,7 +15,7 @@ public class NullAreaGateId extends EntityId<AreaGate> {
   }
 
   @Override
-  public boolean isNull() {
+  public boolean isEmpty() {
     return true;
   }
 }

@@ -20,7 +20,7 @@ public class ItemOnCursorRenderer {
 
     PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
 
-    if (playerConfig != null && !player.isNull()) {
+    if (playerConfig != null && !player.isEmpty()) {
       Map<Integer, Item> inventoryItems = player.getParams().getInventoryItems();
       Map<Integer, Item> equipmentItems = player.getParams().getEquipmentItems();
       Map<Integer, Item> potionMenuItems = player.getParams().getPotionMenuItems();

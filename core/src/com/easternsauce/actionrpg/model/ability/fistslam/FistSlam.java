@@ -35,7 +35,7 @@ public class FistSlam extends Projectile {
     ability.params = abilityParams.setWidth(2f).setHeight(2f).setChannelTime(0f).setActiveTime(5f).setSpeed(20f)
       .setFlipX(FistSlam.calculateFlip(flipValue))
       .setRotationAllowed(false)
-      .setTextureName("fist_slam").setBaseDamage(0f).setChannelAnimationLooping(false).setActiveAnimationLooping(false)
+      .setTextureName("fist_slam").setChannelAnimationLooping(false).setActiveAnimationLooping(false)
       .setPos(ability.startingPos).setDontOverridePos(true).setDirVector(Vector2.of(0, -1));
 
     ability.context = abilityContext;
@@ -89,5 +89,4 @@ public class FistSlam extends Projectile {
   public boolean canStun() {
     return false;
   }
-
 }

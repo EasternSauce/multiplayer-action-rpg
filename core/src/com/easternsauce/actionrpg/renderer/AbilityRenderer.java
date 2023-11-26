@@ -44,7 +44,7 @@ public class AbilityRenderer {
 
     Ability ability = game.getAbility(abilityId);
 
-    if (ability.isNull()) {
+    if (ability.isEmpty()) {
       return;
     }
 
@@ -103,7 +103,7 @@ public class AbilityRenderer {
   private void updateSprite(TextureRegion texture, CoreGame game) {
 
     Ability ability = game.getAbility(abilityId);
-    if (!ability.isNull()) {
+    if (!ability.isEmpty()) {
       sprite.setRegion(texture);
       if (ability.getParams().getOverrideScale() != null) {
         sprite.setSize(ability.getParams().getWidth() * ability.getParams().getOverrideScale(),

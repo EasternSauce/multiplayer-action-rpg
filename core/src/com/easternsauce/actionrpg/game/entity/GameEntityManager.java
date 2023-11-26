@@ -41,7 +41,7 @@ public class GameEntityManager {
   public void createCreatureEntity(EntityId<Creature> creatureId, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
-    if (!creature.isNull()) {
+    if (!creature.isEmpty()) {
       if (!gameEntityRenderer.getCreatureRenderers().containsKey(creatureId)) {
         CreatureRenderer creatureRenderer = CreatureRenderer.of(creatureId);
         gameEntityRenderer.getCreatureRenderers().put(creatureId, creatureRenderer);
@@ -102,7 +102,7 @@ public class GameEntityManager {
   }
 
   public void removeCreatureEntity(EntityId<Creature> creatureId, @SuppressWarnings("unused") CoreGame game) {
-    if (!creatureId.isNull()) {
+    if (!creatureId.isEmpty()) {
       getGameEntityRenderer().getCreatureRenderers().remove(creatureId);
 
       if (gameEntityPhysics.getCreatureBodies().containsKey(creatureId)) {
@@ -113,7 +113,7 @@ public class GameEntityManager {
   }
 
   public void removeAbilityEntity(EntityId<Ability> abilityId, CoreGame game) {
-    if (!abilityId.isNull()) {
+    if (!abilityId.isEmpty()) {
       game.getAbilities().remove(abilityId);
 
       getGameEntityRenderer().getAbilityRenderers().remove(abilityId);
@@ -126,7 +126,7 @@ public class GameEntityManager {
   }
 
   public void removeLootPileEntity(EntityId<LootPile> lootPileId, CoreGame game) {
-    if (!lootPileId.isNull()) {
+    if (!lootPileId.isEmpty()) {
 
       game.getGameState().getLootPiles().remove(lootPileId);
 
@@ -195,7 +195,7 @@ public class GameEntityManager {
     Set<EntityId<Ability>> abilitiesToUpdate = new ConcurrentSkipListSet<>(game.getAbilitiesToUpdate());
 
     abilitiesToUpdate.forEach(abilityId -> {
-      if (game.getAbilities().containsKey(abilityId) && !game.getAbility(abilityId).isNull()) {
+      if (game.getAbilities().containsKey(abilityId) && !game.getAbility(abilityId).isEmpty()) {
         Ability ability = game.getAbility(abilityId);
 
         ability.onUpdateState(delta, game);
@@ -205,7 +205,7 @@ public class GameEntityManager {
     Map<EntityId<Ability>, Ability> abilities = new OrderedMap<>(game.getAbilities());
 
     abilities.forEach((abilityId, ability) -> {
-      if (abilities.containsKey(abilityId) && !game.getAbility(abilityId).isNull()) {
+      if (abilities.containsKey(abilityId) && !game.getAbility(abilityId).isEmpty()) {
         ability.update(delta, game);
       }
     });
@@ -239,14 +239,14 @@ public class GameEntityManager {
 
     creature.getParams().getMovementParams().setDashing(false);
 
-    if (!teleportEvent.getCreatureId().isNull() && !teleportEvent.getUsedGate() && teleportEvent.getToAreaId().getValue()
+    if (!teleportEvent.getCreatureId().isEmpty() && !teleportEvent.getUsedGate() && teleportEvent.getToAreaId().getValue()
       .equals(game.getCreature(teleportEvent.getCreatureId()).getParams().getAreaId().getValue()) &&
       teleportEvent.getToAreaId().getValue()
         .equals(game.getCreatureBodies().get(teleportEvent.getCreatureId()).getAreaId().getValue())) {
       getGameEntityPhysics().getCreatureBodies().get(teleportEvent.getCreatureId())
         .forceSetTransform(teleportEvent.getPos());
     } else {
-      if (!teleportEvent.getCreatureId().isNull()) {
+      if (!teleportEvent.getCreatureId().isEmpty()) {
         creature.getParams().setAreaId(teleportEvent.getToAreaId());
 
         creature.getParams().setPos(teleportEvent.getPos());
@@ -287,7 +287,7 @@ public class GameEntityManager {
   }
 
   public void removeAreaGateEntity(EntityId<AreaGate> areaGateId, CoreGame game) {
-    if (!areaGateId.isNull()) {
+    if (!areaGateId.isEmpty()) {
       game.getGameState().getAreaGates().remove(areaGateId);
 
       getGameEntityRenderer().getAreaGateRenderers().remove(areaGateId);
@@ -317,7 +317,7 @@ public class GameEntityManager {
   }
 
   public void removeCheckpointEntity(EntityId<Checkpoint> checkpointId, CoreGame game) {
-    if (!checkpointId.isNull()) {
+    if (!checkpointId.isEmpty()) {
       game.getGameState().getCheckpoints().remove(checkpointId);
 
       getGameEntityRenderer().getCheckpointRenderers().remove(checkpointId);
