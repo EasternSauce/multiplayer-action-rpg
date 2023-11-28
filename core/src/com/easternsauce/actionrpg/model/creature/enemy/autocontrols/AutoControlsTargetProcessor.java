@@ -132,7 +132,7 @@ public class AutoControlsTargetProcessor {
       return NullCreatureId.of();
     } else {
       Float minDistance = Float.MAX_VALUE;
-      EntityId<Creature> minCreatureId = null;
+      EntityId<Creature> minCreatureId = NullCreatureId.of();
       for (Creature otherCreature : game.getActiveCreatures().values()) {
         boolean condition = otherCreature.isAlive() && otherCreature.getParams().getAreaId().getValue().equals(creature.getParams().getAreaId().getValue())
           && otherCreature instanceof Player && otherCreature.getParams().getPos().distance(creature.getParams().getPos()) < Constants.ENEMY_SEARCH_DISTANCE &&

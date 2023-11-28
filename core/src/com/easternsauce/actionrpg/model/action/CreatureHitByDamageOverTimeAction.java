@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
-public class CreatureHitByDamageOverTimeAction extends CreatureHitAction {
+public class CreatureHitByDamageOverTimeAction extends GameStateAction {
   private EntityId<Creature> attackerId = NullCreatureId.of();
   private EntityId<Creature> targetId = NullCreatureId.of();
   private Float damage;
@@ -34,7 +34,7 @@ public class CreatureHitByDamageOverTimeAction extends CreatureHitAction {
 
     targetCreature.takeLifeDamage(damage, targetCreature.getParams().getPos(), game);
 
-    handleCreatureDeath(targetCreature, attackerCreature, game);
+    game.handleCreatureDeath(targetCreature, attackerCreature, game);
   }
 
   @Override
