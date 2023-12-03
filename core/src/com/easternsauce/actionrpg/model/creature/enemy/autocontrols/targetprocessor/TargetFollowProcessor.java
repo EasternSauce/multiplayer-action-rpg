@@ -16,19 +16,19 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @NoArgsConstructor(staticName = "of")
-public class TargetProcessor extends EnemyRetriever {
+public class TargetFollowProcessor extends EnemyRetriever {
   @Getter(value = AccessLevel.PROTECTED)
   private EntityId<Creature> enemyId;
 
   private ActionProcessor actionProcessor;
 
-  public static TargetProcessor of(EntityId<Creature> enemyId) {
-    TargetProcessor targetProcessor = TargetProcessor.of();
+  public static TargetFollowProcessor of(EntityId<Creature> enemyId) {
+    TargetFollowProcessor targetFollowProcessor = TargetFollowProcessor.of();
 
-    targetProcessor.enemyId = enemyId;
-    targetProcessor.actionProcessor = ActionProcessor.of(enemyId);
+    targetFollowProcessor.enemyId = enemyId;
+    targetFollowProcessor.actionProcessor = ActionProcessor.of(enemyId);
 
-    return targetProcessor;
+    return targetFollowProcessor;
   }
 
   public void process(CoreGame game) {

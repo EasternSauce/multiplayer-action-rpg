@@ -18,21 +18,16 @@ public class TargetSearchProcessor extends EnemyRetriever {
   @Getter(value = AccessLevel.PROTECTED)
   private EntityId<Creature> enemyId;
 
-  private TargetProcessor targetProcessor;
-
   public static TargetSearchProcessor of(EntityId<Creature> enemyId) {
     TargetSearchProcessor targetSearchProcessor = TargetSearchProcessor.of();
 
     targetSearchProcessor.enemyId = enemyId;
-    targetSearchProcessor.targetProcessor = TargetProcessor.of(enemyId);
 
     return targetSearchProcessor;
   }
 
   public void process(CoreGame game) {
     lookForPotentialTarget(game);
-
-    targetProcessor.process(game);
   }
 
   private void lookForPotentialTarget(CoreGame game) {
