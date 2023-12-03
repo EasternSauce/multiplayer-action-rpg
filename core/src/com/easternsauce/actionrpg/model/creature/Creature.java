@@ -440,4 +440,8 @@ public abstract class Creature implements Entity {
   public boolean isEmpty() {
     return false;
   }
+
+  public boolean isNotEmpty() {
+    return !isEmpty();
+  }
 }

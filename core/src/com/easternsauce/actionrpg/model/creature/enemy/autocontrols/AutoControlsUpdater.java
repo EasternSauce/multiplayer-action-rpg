@@ -2,6 +2,7 @@ package com.easternsauce.actionrpg.model.creature.enemy.autocontrols;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.creature.Creature;
+import com.easternsauce.actionrpg.model.creature.enemy.autocontrols.targetprocessor.AutoControlsTargetProcessor;
 import com.easternsauce.actionrpg.model.id.EntityId;
 import lombok.NoArgsConstructor;
 

@@ -41,7 +41,7 @@ public class GameEntityManager {
   public void createCreatureEntity(EntityId<Creature> creatureId, CoreGame game) {
     Creature creature = game.getCreature(creatureId);
 
-    if (!creature.isEmpty()) {
+    if (creature.isNotEmpty()) {
       if (!gameEntityRenderer.getCreatureRenderers().containsKey(creatureId)) {
         CreatureRenderer creatureRenderer = CreatureRenderer.of(creatureId);
         gameEntityRenderer.getCreatureRenderers().put(creatureId, creatureRenderer);
@@ -102,7 +102,7 @@ public class GameEntityManager {
   }
 
   public void removeCreatureEntity(EntityId<Creature> creatureId, @SuppressWarnings("unused") CoreGame game) {
-    if (!creatureId.isEmpty()) {
+    if (creatureId.isNotEmpty()) {
       getGameEntityRenderer().getCreatureRenderers().remove(creatureId);
 
       if (gameEntityPhysics.getCreatureBodies().containsKey(creatureId)) {
@@ -113,7 +113,7 @@ public class GameEntityManager {
   }
 
   public void removeAbilityEntity(EntityId<Ability> abilityId, CoreGame game) {
-    if (!abilityId.isEmpty()) {
+    if (abilityId.isNotEmpty()) {
       game.getAbilities().remove(abilityId);
 
       getGameEntityRenderer().getAbilityRenderers().remove(abilityId);
@@ -126,8 +126,7 @@ public class GameEntityManager {
   }
 
   public void removeLootPileEntity(EntityId<LootPile> lootPileId, CoreGame game) {
-    if (!lootPileId.isEmpty()) {
-
+    if (lootPileId.isNotEmpty()) {
       game.getGameState().getLootPiles().remove(lootPileId);
 
       getGameEntityRenderer().getLootPileRenderers().remove(lootPileId);

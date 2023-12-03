@@ -34,6 +34,10 @@ public class EntityId<T extends Entity> implements Comparable<EntityId<T>> {
     return false;
   }
 
+  public boolean isNotEmpty() {
+    return !isEmpty();
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
