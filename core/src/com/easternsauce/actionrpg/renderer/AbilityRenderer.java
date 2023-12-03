@@ -101,7 +101,6 @@ public class AbilityRenderer {
   }
 
   private void updateSprite(TextureRegion texture, CoreGame game) {
-
     Ability ability = game.getAbility(abilityId);
     if (!ability.isEmpty()) {
       sprite.setRegion(texture);

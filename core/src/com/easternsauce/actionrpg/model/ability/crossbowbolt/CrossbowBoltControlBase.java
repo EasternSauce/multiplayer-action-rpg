@@ -21,7 +21,6 @@ public abstract class CrossbowBoltControlBase extends Ability {
 
   @Override
   protected void onChannelUpdate(CoreGame game) {
-
   }
 
   @Override
@@ -32,7 +31,6 @@ public abstract class CrossbowBoltControlBase extends Ability {
 
     if (currentBoltToFire < boltFireTimes.length &&
       getParams().getStateTimer().getTime() > boltFireTimes[currentBoltToFire]) {
-
       game.chainAnotherAbility(this, AbilityType.CROSSBOW_BOLT, getParams().getDirVector(), ChainAbilityParams.of());
 
       currentBoltToFire += 1;

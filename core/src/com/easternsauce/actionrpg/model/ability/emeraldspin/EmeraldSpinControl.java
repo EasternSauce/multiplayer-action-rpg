@@ -30,7 +30,6 @@ public class EmeraldSpinControl extends Ability {
 
   @Override
   protected void onChannelUpdate(CoreGame game) {
-
   }
 
   @Override

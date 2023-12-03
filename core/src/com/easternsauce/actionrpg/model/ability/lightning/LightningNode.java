@@ -40,12 +40,10 @@ public class LightningNode extends Ability {
 
   @Override
   protected void onChannelUpdate(CoreGame game) {
-
   }
 
   @Override
   protected void onActiveUpdate(float delta, CoreGame game) {
-
   }
 
   @Override
@@ -58,11 +56,9 @@ public class LightningNode extends Ability {
       game.getGameState().accessCreatures().getAliveCreatureIdClosestTo(getParams().getPos(), 13f, excluded, game));
 
     if (!(targetCreature.isEmpty())) {
-
       if (getParams().getCreaturesAlreadyHit().size() <= 10 &&
         !game.isLineBetweenPointsObstructedByTerrain(getParams().getAreaId(), getParams().getPos(),
           targetCreature.getParams().getPos())) {
-
         game.getGameState().accessAbilities()
           .onAbilityHitsCreature(getContext().getCreatureId(), targetCreature.getId(), getParams().getId(),
             targetCreature.getParams().getPos(), game);

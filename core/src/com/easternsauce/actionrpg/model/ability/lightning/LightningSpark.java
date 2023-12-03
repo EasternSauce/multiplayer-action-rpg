@@ -50,7 +50,6 @@ public class LightningSpark extends Ability {
 
   @Override
   protected void onChannelUpdate(CoreGame game) {
-
   }
 
   @Override
@@ -62,7 +61,6 @@ public class LightningSpark extends Ability {
 
   @Override
   protected void onActiveUpdate(float delta, CoreGame game) {
-
   }
 
   @Override
@@ -82,7 +80,6 @@ public class LightningSpark extends Ability {
       if (
         !game.isLineBetweenPointsObstructedByTerrain(getParams().getAreaId(), pos,
           pos1)) {
-
         game.getGameState().accessAbilities()
           .onAbilityHitsCreature(getContext().getCreatureId(), targetCreature.getId(), getParams().getId(),
             targetCreature.getParams().getPos(), game);

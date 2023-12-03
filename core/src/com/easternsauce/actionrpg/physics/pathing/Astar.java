@@ -24,7 +24,6 @@ public class Astar {
 
     for (int y = 0; y < world.heightInTiles(); y++) {
       for (int x = 0; x < world.widthInTiles(); x++) {
-
         tryAddEdge(pathingNodes, world, Vector2Int.of(x, y), Vector2Int.of(x - 1, y), straightWeight);
         tryAddEdge(pathingNodes, world, Vector2Int.of(x, y), Vector2Int.of(x + 1, y), straightWeight);
         tryAddEdge(pathingNodes, world, Vector2Int.of(x, y), Vector2Int.of(x, y - 1), straightWeight);

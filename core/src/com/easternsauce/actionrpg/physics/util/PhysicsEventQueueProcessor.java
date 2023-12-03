@@ -75,14 +75,12 @@ public class PhysicsEventQueueProcessor {
 
         }
       } else if (physicsEvent instanceof CreatureLeavesAreaGateEvent) {
-
         CreatureLeavesAreaGateEvent event = (CreatureLeavesAreaGateEvent) physicsEvent;
 
         Creature creature = game.getCreature(event.getCreatureId());
 
         if (creature instanceof Player && creature.getParams().getMovementParams().getStillInsideGateAfterTeleport() &&
           creature.getParams().getMovementParams().getAreaWhenEnteredGate().equals(creature.getParams().getAreaId())) {
-
           creature.getParams().getMovementParams().setStillInsideGateAfterTeleport(false);
 
         }
@@ -136,7 +134,6 @@ public class PhysicsEventQueueProcessor {
 
       if ((sourceCreature instanceof Player || destinationCreature instanceof Player) &&
         !ability.getParams().getCreaturesAlreadyHit().containsKey(event.getDestinationCreatureId())) {
-
         game.getGameState().accessAbilities()
           .onAbilityHitsCreature(event.getSourceCreatureId(), event.getDestinationCreatureId(),
             ability.getParams().getId(), contactPoint, game);

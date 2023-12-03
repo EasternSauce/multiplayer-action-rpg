@@ -122,6 +122,8 @@ public class CreatureAccessor {
   }
 
   public Creature getCreature(EntityId<Creature> creatureId) {
+    if (creatureId == null) throw new RuntimeException("trying to retrieve creature of null id");
+
     boolean creaturesContainCreatureId = !getData().getCreatures().containsKey(creatureId);
     boolean creatureIdNull = creatureId.isEmpty();
     if (creatureIdNull || creaturesContainCreatureId) {

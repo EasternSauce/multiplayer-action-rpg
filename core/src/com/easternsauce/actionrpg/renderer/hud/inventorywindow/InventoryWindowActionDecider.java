@@ -145,7 +145,6 @@ public class InventoryWindowActionDecider {
   }
 
   private static GameStateAction getMoveItemFromPotionMenuToInventoryAction(InventoryWindowState inventoryWindowState, CoreGame game) {
-
     Creature player = game.getCreature(game.getGameState().getThisClientPlayerId());
 
     Item itemFrom = null;

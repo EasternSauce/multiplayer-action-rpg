@@ -145,12 +145,10 @@ public class CoreGameServer extends CoreGame {
 
   @Override
   public void initializePlayer(String playerName) {
-
   }
 
   @Override
   public void setChatInputProcessor() {
-
   }
 
   @Override
@@ -175,7 +173,6 @@ public class CoreGameServer extends CoreGame {
 
   @Override
   public void askForBroadcast() {
-
   }
 
   @Override

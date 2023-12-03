@@ -54,7 +54,6 @@ public class FistSlam extends Projectile {
 
   @Override
   protected void onChannelUpdate(CoreGame game) {
-
   }
 
   @Override

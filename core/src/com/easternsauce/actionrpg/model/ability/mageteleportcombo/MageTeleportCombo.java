@@ -33,7 +33,6 @@ public class MageTeleportCombo extends Ability {
 
   @Override
   protected void onChannelUpdate(CoreGame game) {
-
   }
 
   @Override

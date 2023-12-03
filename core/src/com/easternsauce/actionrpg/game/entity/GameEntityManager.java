@@ -159,7 +159,6 @@ public class GameEntityManager {
     creaturesToUpdate.forEach(creatureId -> {
       if (game.getActiveCreatures().containsKey(creatureId) &&
         getGameEntityPhysics().getCreatureBodies().containsKey(creatureId)) {
-
         game.getCreature(creatureId).getParams()
           .setPos(getGameEntityPhysics().getCreatureBodies().get(creatureId).getBodyPos());
 

@@ -32,7 +32,6 @@ public class RicochetBulletControl extends Ability {
 
   @Override
   protected void onChannelUpdate(CoreGame game) {
-
   }
 
   @Override

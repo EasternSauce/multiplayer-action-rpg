@@ -37,7 +37,6 @@ public class FistSlamCombo extends Ability {
 
   @Override
   protected void onChannelUpdate(CoreGame game) {
-
   }
 
   @Override
@@ -71,7 +70,6 @@ public class FistSlamCombo extends Ability {
 
     if (currentSlam < slamTimes.length &&
       getParams().getStateTimer().getTime() > slamTimes[currentSlam]) {
-
       Vector2 dirVector;
       if (targetCreature != null) {
         Vector2 vectorTowardsTarget = creature.getParams().getPos().vectorTowards(targetCreature.getParams().getPos());

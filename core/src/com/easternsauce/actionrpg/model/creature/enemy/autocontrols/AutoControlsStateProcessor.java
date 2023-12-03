@@ -6,29 +6,36 @@ import com.easternsauce.actionrpg.model.creature.enemy.EnemyParams;
 import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.util.Constants;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-public class AutoControlsStateProcessor {
-  public void process(EntityId<Creature> creatureId, CoreGame game) {
-    Creature creature = game.getCreature(creatureId);
+@AllArgsConstructor(staticName = "of")
+public class AutoControlsStateProcessor extends EnemyRetriever {
+  @Getter(value = AccessLevel.PROTECTED)
+  private EntityId<Creature> enemyId;
 
-    EnemyParams enemyParams = creature.getEnemyParams();
+  public void process(CoreGame game) {
+    Creature enemy = getEnemy(game);
+
+    EnemyParams enemyParams = enemy.getEnemyParams();
 
     if (enemyParams.getAutoControlsStateProcessorTimer().getTime() > enemyParams.getAutoControlsStateProcessorTime()) {
       enemyParams.getAutoControlsStateProcessorTimer().restart();
 
       if (!enemyParams.getTargetCreatureId().isEmpty()) {
         if (enemyParams.getAutoControlsState() == AutoControlsState.ALERTED) {
-          handleAlerted(game, creature);
+          handleAlerted(game, enemy);
         } else if (enemyParams.getAutoControlsState() == AutoControlsState.AGGRESSIVE) {
-          handleAggressive(creature);
+          handleAggressive(enemy);
         } else if (enemyParams.getAutoControlsState() == AutoControlsState.KEEP_DISTANCE) {
-          handleKeepDistance(game, creature);
+          handleKeepDistance(game, enemy);
         }
       }
 
-      float randomTime = 1f + Math.abs(creature.getParams().getRandomGenerator().nextFloat());
+      float randomTime = 1f + Math.abs(enemy.getParams().getRandomGenerator().nextFloat());
       enemyParams.setAutoControlsStateProcessorTime(randomTime);
     }
   }

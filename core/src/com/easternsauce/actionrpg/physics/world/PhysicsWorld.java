@@ -53,7 +53,6 @@ public class PhysicsWorld {
   }
 
   public Vector2 getTileCenter(Vector2Int pos) {
-
     return Vector2.of(pos.getX() * tileWidth + tileWidth / 2, pos.getY() * tileHeight + tileHeight / 2);
   }
 
@@ -155,7 +154,6 @@ public class PhysicsWorld {
   }
 
   public void createBorders() {
-
     for (int x = 0; x < widthInTiles(); x++) {
       TerrainTileBody tile1 = TerrainTileBody.of(Vector2Int.of(x, -1), tileWidth, tileHeight, 0, false);
       tile1.init(this);
@@ -200,7 +198,6 @@ public class PhysicsWorld {
     int currentLevel = 2;
 
     while (traversables.values().stream().filter(isTraversable -> isTraversable).count() != clearances.size()) {
-
       final int level = currentLevel;
 
       List<Vector2Int> lowerLevelClearances = clearances.entrySet().stream()

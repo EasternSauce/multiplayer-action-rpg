@@ -31,7 +31,6 @@ public class NullAbility extends Ability {
 
   @Override
   public void onUpdateState(Float delta, CoreGame game) {
-
   }
 
   @Override
@@ -47,37 +46,30 @@ public class NullAbility extends Ability {
 
   @Override
   protected void onChannelUpdate(CoreGame game) {
-
   }
 
   @Override
   public void onStarted(CoreGame game) {
-
   }
 
   @Override
   protected void onActiveUpdate(float delta, CoreGame game) {
-
   }
 
   @Override
   public void onDelayedAction(CoreGame game) {
-
   }
 
   @Override
   public void onCompleted(CoreGame game) {
-
   }
 
   @Override
   public void updateTimers(float delta) {
-
   }
 
   @Override
   public void init(CoreGame game) {
-
   }
 
   @Override
@@ -87,27 +79,22 @@ public class NullAbility extends Ability {
 
   @Override
   public void deactivate() {
-
   }
 
   @Override
   public void onCreatureHit(EntityId<Creature> creatureId, CoreGame game) {
-
   }
 
   @Override
   public void onSelfCreatureHit(CoreGame game) {
-
   }
 
   @Override
   public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
-
   }
 
   @Override
   public void onOtherAbilityHit(EntityId<Ability> otherAbilityId, CoreGame game) {
-
   }
 
   @Override

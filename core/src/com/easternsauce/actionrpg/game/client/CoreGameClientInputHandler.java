@@ -231,7 +231,6 @@ public class CoreGameClientInputHandler {
 
   private void handleAttackButtonHoldInput(PlayerConfig playerConfig, CoreGameClient game) {
     if (!playerConfig.getInventoryVisible()) {
-
       Creature player = game.getGameState().accessCreatures().getCreature(game.getGameState().getThisClientPlayerId());
 
       Vector2 dirVector = game.getMousePositionRetriever().mousePosRelativeToCenter(game);
@@ -260,7 +259,6 @@ public class CoreGameClientInputHandler {
     Vector2 dirVector = game.getMousePositionRetriever().mousePosRelativeToCenter(game);
 
     if (playerConfig.getSkillMenuSlots().containsKey(abilitySequenceNumber)) {
-
       game.getEndPoint().sendTCP(ActionPerformCommand.of(
         SkillTryPerformAction.of(game.getGameState().getThisClientPlayerId(),
           playerConfig.getSkillMenuSlots().get(abilitySequenceNumber), player.getParams().getPos(), dirVector)));

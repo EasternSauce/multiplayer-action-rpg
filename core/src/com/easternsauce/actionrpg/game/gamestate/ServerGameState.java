@@ -31,7 +31,6 @@ import java.util.stream.Collectors;
 
 @NoArgsConstructor(staticName = "of")
 public class ServerGameState extends GameState {
-
   @Getter
   private final List<GameStateAction> onTickActions = Collections.synchronizedList(new ArrayList<>());
 
@@ -128,7 +127,6 @@ public class ServerGameState extends GameState {
         // handle respawns server side
         creature.getParams().getTimeSinceDeathTimer().getTime() > creature.getParams().getRespawnTime()) {
         if (creature instanceof Player) {
-
           PlayerRespawnAction action;
           if (creature.getParams().getCurrentCheckpointId().isEmpty()) {
             action = PlayerRespawnAction.of(creatureId, Vector2.of(28f, 12f), EntityId.of("Area1"));

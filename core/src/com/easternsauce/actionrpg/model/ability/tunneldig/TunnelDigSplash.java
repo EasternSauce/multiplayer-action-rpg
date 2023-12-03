@@ -37,7 +37,6 @@ public class TunnelDigSplash extends Ability {
 
   @Override
   protected void onChannelUpdate(CoreGame game) {
-
   }
 
   @Override
@@ -52,7 +51,6 @@ public class TunnelDigSplash extends Ability {
 
   @Override
   protected void onActiveUpdate(float delta, CoreGame game) {
-
   }
 
   @Override

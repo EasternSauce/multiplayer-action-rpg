@@ -57,7 +57,6 @@ public abstract class Creature implements Entity {
   }
 
   protected void updateEnemyTimers(float delta) {
-
   }
 
   protected void processRegenerationOverTime(CoreGame game) {
@@ -205,7 +204,6 @@ public abstract class Creature implements Entity {
   }
 
   public void updateAutoControls(CoreGame game) {
-
   }
 
   public void stopMoving() {
@@ -360,7 +358,6 @@ public abstract class Creature implements Entity {
   }
 
   public void onAfterPerformSkill() {
-
   }
 
   public float getTimeSinceStarted(CreatureEffect effect, CoreGame game) {
@@ -426,7 +423,6 @@ public abstract class Creature implements Entity {
   }
 
   public void onBeingHit(Ability ability, CoreGame game) {
-
   }
 
   public boolean isCurrentlyActive(CoreGame game) {

@@ -39,7 +39,6 @@ public class IceSpearRampage extends Projectile {
 
   @Override
   protected void onChannelUpdate(CoreGame game) {
-
   }
 
   @Override

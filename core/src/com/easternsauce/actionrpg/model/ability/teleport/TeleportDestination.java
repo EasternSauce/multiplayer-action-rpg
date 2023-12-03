@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class TeleportDestination extends TeleportDestinationBase {
-
   public static TeleportDestinationBase of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
     Creature creature = game.getCreature(abilityContext.getCreatureId());
 

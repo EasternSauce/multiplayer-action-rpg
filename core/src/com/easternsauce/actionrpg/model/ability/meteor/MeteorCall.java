@@ -36,7 +36,6 @@ public class MeteorCall extends AttachedAbility {
 
   @Override
   protected void onChannelUpdate(CoreGame game) {
-
   }
 
   @Override

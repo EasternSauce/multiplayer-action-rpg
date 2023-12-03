@@ -5,55 +5,68 @@ import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.enemy.EnemyParams;
 import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.util.Vector2;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
-public class AutoControlsMovementProcessor {
-  public void process(EntityId<Creature> creatureId, Vector2 potentialTargetPos, Float distance, CoreGame game) {
-    Creature creature = game.getCreature(creatureId);
+@AllArgsConstructor(staticName = "of")
+public class AutoControlsMovementProcessor extends EnemyRetriever {
+  @Getter(value = AccessLevel.PROTECTED)
+  private EntityId<Creature> enemyId;
 
-    EnemyParams enemyParams = creature.getEnemyParams();
+  public void process( Vector2 potentialTargetPos, Float distance, CoreGame game) {
+    Creature enemy = getEnemy(game);
+
+    EnemyParams enemyParams = enemy.getEnemyParams();
     if (enemyParams.getAutoControlsState() == AutoControlsState.AGGRESSIVE) {
-      processAggressive(creatureId, potentialTargetPos, distance, game, creature, enemyParams);
+      processAggressive(potentialTargetPos, distance, game);
     } else if (enemyParams.getAutoControlsState() == AutoControlsState.ALERTED) {
-      processAlerted(creatureId, game, creature, enemyParams);
+      processAlerted(game);
     } else if (enemyParams.getAutoControlsState() == AutoControlsState.KEEP_DISTANCE) {
-      processKeepDistance(creatureId, game, creature, enemyParams);
+      processKeepDistance(game);
     } else {
-      creature.stopMoving();
+      enemy.stopMoving();
     }
   }
 
-  private void processKeepDistance(EntityId<Creature> creatureId, CoreGame game, Creature creature, EnemyParams enemyParams) {
-    creature.getParams().getStats().setSpeed(creature.getParams().getStats().getBaseSpeed() / 2);
-    if (enemyParams.getCurrentDefensivePos() != null) {
-      goToPos(creatureId, enemyParams.getCurrentDefensivePos(), game);
+  private void processKeepDistance( CoreGame game) {
+    Creature enemy = getEnemy(game);
+
+    enemy.getParams().getStats().setSpeed(enemy.getParams().getStats().getBaseSpeed() / 2);
+    if (enemy.getEnemyParams().getCurrentDefensivePos() != null) {
+      goToPos(enemy.getEnemyParams().getCurrentDefensivePos(), game);
     }
   }
 
-  private void processAlerted(EntityId<Creature> creatureId, CoreGame game, Creature creature, EnemyParams enemyParams) {
-    creature.getParams().getStats().setSpeed(creature.getParams().getStats().getBaseSpeed() / 3);
-    if (enemyParams.getCurrentDefensivePos() != null) {
-      goToPos(creatureId, enemyParams.getCurrentDefensivePos(), game);
+  private void processAlerted( CoreGame game) {
+    Creature enemy = getEnemy(game);
+
+    enemy.getParams().getStats().setSpeed(enemy.getParams().getStats().getBaseSpeed() / 3);
+    if (enemy.getEnemyParams().getCurrentDefensivePos() != null) {
+      goToPos(enemy.getEnemyParams().getCurrentDefensivePos(), game);
     }
   }
 
-  private void processAggressive(EntityId<Creature> creatureId, Vector2 potentialTargetPos, Float distance, CoreGame game, Creature creature, EnemyParams enemyParams) {
-    if (distance > enemyParams.getWalkUpRange() - 1f) {
-      creature.getParams().getStats().setSpeed(creature.getParams().getStats().getBaseSpeed());
-      goToPos(creatureId, potentialTargetPos, game);
+  private void processAggressive( Vector2 potentialTargetPos, Float distance, CoreGame game) {
+    Creature enemy = getEnemy(game);
+
+    if (distance > enemy.getEnemyParams().getWalkUpRange() - 1f) {
+      enemy.getParams().getStats().setSpeed(enemy.getParams().getStats().getBaseSpeed());
+      goToPos(potentialTargetPos, game);
     } else { // if no path or distance is small, then stop moving
-      creature.stopMoving();
+      enemy.stopMoving();
     }
   }
 
-  public void goToPos(EntityId<Creature> creatureId, Vector2 pos, CoreGame game) {
-    Creature creature = game.getCreature(creatureId);
+  public void goToPos( Vector2 pos, CoreGame game) {
+    Creature enemy = getEnemy(game);
 
-    creature.getParams().setLastTimeMoved(game.getGameState().getTime());
+    enemy.getParams().setLastTimeMoved(game.getGameState().getTime());
 
-    if (!creature.isStunned(game)) {
-      creature.moveTowards(pos);
+    if (!enemy.isStunned(game)) {
+      enemy.moveTowards(pos);
     }
   }
 }

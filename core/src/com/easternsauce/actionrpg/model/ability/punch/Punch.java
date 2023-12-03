@@ -51,7 +51,6 @@ public class Punch extends AttachedAbility {
 
   @Override
   public void init(CoreGame game) {
-
     getParams().setState(AbilityState.CHANNEL);
     getParams().getStateTimer().restart();
 

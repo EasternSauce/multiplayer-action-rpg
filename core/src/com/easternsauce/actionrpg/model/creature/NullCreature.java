@@ -31,17 +31,14 @@ public class NullCreature extends Creature {
 
   @Override
   public void update(float delta, CoreGame game) {
-
   }
 
   @Override
   protected void updateEnemyTimers(float delta) {
-
   }
 
   @Override
   public void updateTimers(float delta) {
-
   }
 
   @Override
@@ -154,7 +151,6 @@ public class NullCreature extends Creature {
 
   @Override
   public void onBeingHit(Ability ability, CoreGame game) {
-
   }
 
   @Override

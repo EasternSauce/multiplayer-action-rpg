@@ -19,7 +19,6 @@ public class PoisonousCloudControlBase extends Ability {
 
   @Override
   protected void onChannelUpdate(CoreGame game) {
-
   }
 
   @Override
@@ -34,7 +33,6 @@ public class PoisonousCloudControlBase extends Ability {
 
     if (currentCloudSet < cloudSetSpawnTimes.length &&
       getParams().getStateTimer().getTime() > cloudSetSpawnTimes[currentCloudSet]) {
-
       for (int i = 0; i < cloudSetSpawnCounts[currentCloudSet]; i++) {
         float x = getParams().getPos().getX() +
           (float) Math.sin(2 * Math.PI / cloudSetSpawnCounts[currentCloudSet] * i) * cloudSetDistances[currentCloudSet];

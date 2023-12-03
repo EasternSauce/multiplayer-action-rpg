@@ -2,69 +2,87 @@ package com.easternsauce.actionrpg.model.creature.enemy.autocontrols;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.creature.Creature;
+import com.easternsauce.actionrpg.model.creature.enemy.autocontrols.targetprocessor.AutoControlsTargetProcessor;
 import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.util.Constants;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.LinkedList;
 import java.util.List;
 
 @NoArgsConstructor(staticName = "of")
-public class AutoControlsActionProcessor {
-  private final AutoControlsMovementProcessor movementLogicProcessor = AutoControlsMovementProcessor.of();
+@AllArgsConstructor(staticName = "of")
+public class AutoControlsActionProcessor extends EnemyRetriever {
+  @Getter(value = AccessLevel.PROTECTED)
+  private EntityId<Creature> enemyId;
 
-  public void process(EntityId<Creature> creatureId, Vector2 potentialTargetPos, Vector2 vectorTowardsTarget, CoreGame game) {
-    handleMovement(creatureId, potentialTargetPos, game);
-    handleAimDirectionAdjustment(creatureId, vectorTowardsTarget, game);
-    handleUseRandomSkillAtTarget(creatureId, potentialTargetPos, vectorTowardsTarget,
+  private AutoControlsMovementProcessor movementLogicProcessor;
+
+  public static AutoControlsActionProcessor of(EntityId<Creature> enemyId) {
+    AutoControlsActionProcessor autoControlsActionProcessor = AutoControlsActionProcessor.of();
+
+    autoControlsActionProcessor.enemyId = enemyId;
+    autoControlsActionProcessor.movementLogicProcessor = AutoControlsMovementProcessor.of(enemyId);
+
+    return autoControlsActionProcessor;
+  }
+
+  public void process(Vector2 potentialTargetPos, Vector2 vectorTowardsTarget, CoreGame game) {
+    handleMovement(potentialTargetPos, game);
+    handleAimDirectionAdjustment(vectorTowardsTarget, game);
+    handleUseRandomSkillAtTarget(potentialTargetPos, vectorTowardsTarget,
       game);
   }
 
-  public void handleUseRandomSkillAtTarget(EntityId<Creature> creatureId, Vector2 potentialTargetPos, Vector2 vectorTowardsTarget, CoreGame game) {
-    Creature creature = game.getCreature(creatureId);
+  public void handleUseRandomSkillAtTarget( Vector2 potentialTargetPos, Vector2 vectorTowardsTarget, CoreGame game) {
+    Creature enemy = getEnemy(game);
 
-    if (creature.getEnemyParams().getUseAbilityCooldownTimer().getTime() > Constants.ENEMY_USE_ABILITY_COOLDOWN_TIMER) {
+    if (enemy.getEnemyParams().getUseAbilityCooldownTimer().getTime() > Constants.ENEMY_USE_ABILITY_COOLDOWN_TIMER) {
+      enemy.getParams().setLastTimeUsedSkill(game.getGameState().getTime());
 
-      creature.getParams().setLastTimeUsedSkill(game.getGameState().getTime());
-
-      Float distanceToTarget = potentialTargetPos.distance(creature.getParams().getPos());
+      Float distanceToTarget = potentialTargetPos.distance(enemy.getParams().getPos());
 
       game.getGameState().accessCreatures()
-        .handleCreatureUseRandomSkillAtTarget(creature.getParams().getId(), vectorTowardsTarget, distanceToTarget,
+        .handleCreatureUseRandomSkillAtTarget(enemy.getParams().getId(), vectorTowardsTarget, distanceToTarget,
           game);
-      creature.getEnemyParams().getUseAbilityCooldownTimer().restart();
+      enemy.getEnemyParams().getUseAbilityCooldownTimer().restart();
     }
   }
 
-  private void handleAimDirectionAdjustment(EntityId<Creature> creatureId, Vector2 vectorTowardsTarget, CoreGame game) {
-    Creature creature = game.getCreature(creatureId);
+  private void handleAimDirectionAdjustment( Vector2 vectorTowardsTarget, CoreGame game) {
+    Creature enemy = getEnemy(game);
 
-    creature.getParams().getMovementParams().setAimDirection(vectorTowardsTarget.normalized());
+    enemy.getParams().getMovementParams().setAimDirection(vectorTowardsTarget.normalized());
   }
 
-  public void handleMovement(EntityId<Creature> creatureId, Vector2 potentialTargetPos, CoreGame game) {
-    Creature creature = game.getCreature(creatureId);
+  public void handleMovement(Vector2 potentialTargetPos, CoreGame game) {
+    Creature enemy = getEnemy(game);
 
-    Float distance = creature.getParams().getPos().distance(potentialTargetPos);
+    Float distance = enemy.getParams().getPos().distance(potentialTargetPos);
 
-    if (creature.getEnemyParams().getPathTowardsTarget() != null &&
-      !creature.getEnemyParams().getPathTowardsTarget().isEmpty()) { // path is available
-      followPathToTarget(creatureId, game, creature);
+    if (enemy.getEnemyParams().getPathTowardsTarget() != null &&
+      !enemy.getEnemyParams().getPathTowardsTarget().isEmpty()) { // path is available
+      followPathToTarget( game);
     } else {
-      movementLogicProcessor.process(creatureId, potentialTargetPos, distance, game);
+      movementLogicProcessor.process( potentialTargetPos, distance, game);
     }
   }
 
-  public void followPathToTarget(EntityId<Creature> creatureId, CoreGame game, Creature creature) {
-    List<Vector2> path = creature.getEnemyParams().getPathTowardsTarget();
+  public void followPathToTarget( CoreGame game) {
+    Creature enemy = getEnemy(game);
+
+    List<Vector2> path = enemy.getEnemyParams().getPathTowardsTarget();
     Vector2 nextNodeOnPath = path.get(0);
-    if (creature.getParams().getPos().distance(nextNodeOnPath) < 1f) {
+    if (enemy.getParams().getPos().distance(nextNodeOnPath) < 1f) {
       List<Vector2> changedPath = new LinkedList<>(path);
       changedPath.remove(0);
-      creature.getEnemyParams().setPathTowardsTarget(changedPath);
+      enemy.getEnemyParams().setPathTowardsTarget(changedPath);
     } else {
-      movementLogicProcessor.goToPos(creatureId, nextNodeOnPath, game);
+      movementLogicProcessor.goToPos( nextNodeOnPath, game);
     }
   }
 }

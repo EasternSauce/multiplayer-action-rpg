@@ -37,7 +37,6 @@ public class EnemyPoisonousCloudControl extends PoisonousCloudControlBase {
 
     if (currentCloudSet < cloudSetSpawnTimes.length &&
       getParams().getStateTimer().getTime() > cloudSetSpawnTimes[currentCloudSet]) {
-
       for (int i = 0; i < cloudSetSpawnCounts[currentCloudSet]; i++) {
         float x = getParams().getPos().getX() +
           (float) Math.sin(2 * Math.PI / cloudSetSpawnCounts[currentCloudSet] * i) * cloudSetDistances[currentCloudSet];

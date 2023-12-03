@@ -38,7 +38,6 @@ public class Meteor extends Projectile {
 
   @Override
   protected void onChannelUpdate(CoreGame game) {
-
   }
 
   @Override

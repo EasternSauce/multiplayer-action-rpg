@@ -96,7 +96,6 @@ public abstract class Ability implements Entity {
   abstract protected void onActiveUpdate(float delta, CoreGame game);
 
   public void onDelayedAction(CoreGame game) {
-
   }
 
   public void onCompleted(CoreGame game) {
@@ -161,7 +160,6 @@ public abstract class Ability implements Entity {
   }
 
   public void onOtherAbilityHit(EntityId<Ability> otherAbilityId, CoreGame game) {
-
   }
 
   public Float getDamage(CoreGame game) {

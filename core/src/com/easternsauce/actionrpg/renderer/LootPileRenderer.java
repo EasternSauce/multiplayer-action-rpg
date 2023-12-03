@@ -23,7 +23,6 @@ public class LootPileRenderer {
   }
 
   public void init(TextureAtlas atlas, CoreGame game) {
-
     LootPile lootPile = game.getGameState().getLootPiles().get(lootPileId);
 
     sprite = new Sprite();

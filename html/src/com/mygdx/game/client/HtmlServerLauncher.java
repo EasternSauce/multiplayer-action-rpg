@@ -6,7 +6,6 @@ import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
 import com.mygdx.game.game.MyGdxGameServer;
 
 public class HtmlServerLauncher extends GwtApplication {
-
     @Override
     public GwtApplicationConfiguration getConfig() {
         // Resizable application, uses available space in browser

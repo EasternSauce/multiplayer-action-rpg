@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class SkillTryPerformAction extends GameStateAction {
-
   private EntityId<Creature> creatureId = NullCreatureId.of();
   private SkillType skillType;
 

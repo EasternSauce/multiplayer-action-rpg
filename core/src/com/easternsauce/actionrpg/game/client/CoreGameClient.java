@@ -103,7 +103,6 @@ public class CoreGameClient extends CoreGame {
 
   @Override
   public void initState() {
-
   }
 
   @Override
@@ -154,7 +153,6 @@ public class CoreGameClient extends CoreGame {
 
   @Override
   public void renderServerRunningMessage() {
-
   }
 
   @Override
@@ -174,7 +172,6 @@ public class CoreGameClient extends CoreGame {
 
   @Override
   public void forceDisconnectForPlayer(EntityId<Creature> creatureId) {
-
   }
 
   @Override

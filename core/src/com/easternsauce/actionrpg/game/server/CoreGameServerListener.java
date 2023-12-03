@@ -68,9 +68,7 @@ public class CoreGameServerListener extends Listener {
   }
 
   private void disconnectExistingPlayer(EntityId<Creature> playerId, CoreGame game) {
-
     game.forceDisconnectForPlayer(playerId);
-
   }
 
 }

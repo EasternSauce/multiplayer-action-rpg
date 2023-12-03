@@ -227,7 +227,6 @@ public abstract class CoreGame extends Game {
 
     if (hitCount <= ability.maximumCreatureHitCount(targetCreature.getId(), game) &&
       !(isShielded && targetCreature instanceof Player) && damage > 0f) {
-
       float realDamage;
 
       if (isShielded) {
@@ -300,7 +299,6 @@ public abstract class CoreGame extends Game {
 
     dropTable.forEach(entry -> {
       if (Math.abs(game.getGameState().getRandomGenerator().nextFloat()) < entry.getDropChance()) {
-
         SkillType randomSkillType;
         if (Math.abs(game.getGameState().getRandomGenerator().nextFloat()) <
           entry.getItemDrop().getGrantedSkillChance()) {

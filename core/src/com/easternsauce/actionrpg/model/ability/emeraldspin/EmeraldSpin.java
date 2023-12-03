@@ -50,7 +50,6 @@ public class EmeraldSpin extends Projectile {
 
   @Override
   public void onCreatureHit(EntityId<Creature> creatureId, CoreGame game) {
-
   }
 
   @Override

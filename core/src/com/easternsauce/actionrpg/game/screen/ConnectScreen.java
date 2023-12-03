@@ -63,7 +63,6 @@ public class ConnectScreen implements Screen {
 
     if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
       if (isNameValid(messageHolder.getCurrentMessage())) {
-
         game.initializePlayer(messageHolder.getCurrentMessage());
 
         game.askForBroadcast();
@@ -73,7 +72,6 @@ public class ConnectScreen implements Screen {
     }
 
     if (Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)) {
-
       if (holdingBackspace) {
         if (!messageHolder.getCurrentMessage().isEmpty() && timer.getTime() > holdBackspaceTime + 0.3f) {
           messageHolder.setCurrentMessage(
@@ -114,26 +112,21 @@ public class ConnectScreen implements Screen {
 
   @Override
   public void resize(int width, int height) {
-
   }
 
   @Override
   public void pause() {
-
   }
 
   @Override
   public void resume() {
-
   }
 
   @Override
   public void hide() {
-
   }
 
   @Override
   public void dispose() {
-
   }
 }

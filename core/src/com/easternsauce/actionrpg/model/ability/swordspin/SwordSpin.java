@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
 public class SwordSpin extends SwordSpinBase {
-
   public static SwordSpinBase of(AbilityParams abilityParams, AbilityContext abilityContext, @SuppressWarnings("unused") CoreGame game) {
     SwordSpin ability = SwordSpin.of();
     ability.params = abilityParams.setWidth(3.5f).setHeight(3.5f).setChannelTime(0f).setActiveTime(3f)

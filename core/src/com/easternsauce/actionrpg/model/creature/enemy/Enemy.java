@@ -8,12 +8,13 @@ import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
 import com.easternsauce.actionrpg.model.creature.CreatureParams;
 import com.easternsauce.actionrpg.model.creature.enemy.autocontrols.AutoControlsState;
-import com.easternsauce.actionrpg.model.creature.enemy.autocontrols.AutoControlsUpdater;
+import com.easternsauce.actionrpg.model.creature.enemy.autocontrols.AutoControls;
 import com.easternsauce.actionrpg.model.enemyrallypoint.EnemyRallyPoint;
 import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.skill.Skill;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.model.util.WorldDirection;
+import com.esotericsoftware.kryo.serializers.FieldSerializer;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,12 +22,13 @@ import lombok.NoArgsConstructor;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@NoArgsConstructor(staticName = "of")
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor(staticName = "of")
 public class Enemy extends Creature {
-  private final AutoControlsUpdater autoControlsUpdater = AutoControlsUpdater.of();
   @Getter
   private CreatureParams params;
+
+  private AutoControls autoControls;
 
   public static Enemy of(EntityId<Creature> creatureId, EntityId<Area> areaId, Vector2 pos, EnemyTemplate enemyTemplate, EntityId<EnemyRallyPoint> enemyRallyPointId, int rngSeed) {
     CreatureParams params = CreatureParams.of(creatureId, areaId, pos, enemyTemplate, rngSeed);
@@ -57,6 +59,8 @@ public class Enemy extends Creature {
 
     Enemy enemy = Enemy.of();
     enemy.params = params;
+    enemy.autoControls = AutoControls.of(creatureId);
+
     return enemy;
   }
 
@@ -100,7 +104,7 @@ public class Enemy extends Creature {
 
   @Override
   public void updateAutoControls(CoreGame game) {
-    autoControlsUpdater.update(getId(), game);
+    autoControls.update(game);
   }
 
   @Override

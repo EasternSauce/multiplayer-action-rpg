@@ -22,7 +22,6 @@ public abstract class TeleportDestinationBase extends Ability {
 
   @Override
   protected void onChannelUpdate(CoreGame game) {
-
   }
 
   @Override
@@ -35,7 +34,6 @@ public abstract class TeleportDestinationBase extends Ability {
 
   @Override
   protected void onActiveUpdate(float delta, CoreGame game) {
-
   }
 
   @Override

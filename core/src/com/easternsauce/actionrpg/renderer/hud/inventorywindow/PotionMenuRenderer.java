@@ -35,7 +35,6 @@ public class PotionMenuRenderer {
   }
 
   public void render(RenderingLayer renderingLayer, CoreGame game) {
-
     Creature player = game.getCreature(game.getGameState().getThisClientPlayerId());
 
     PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());

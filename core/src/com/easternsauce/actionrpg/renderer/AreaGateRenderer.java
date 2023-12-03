@@ -20,7 +20,6 @@ public class AreaGateRenderer {
   private Sprite sprite;
 
   public static AreaGateRenderer of(EntityId<AreaGate> areaGateId) {
-
     AreaGateRenderer areaGateRenderer = AreaGateRenderer.of();
     areaGateRenderer.areaGateId = areaGateId;
     return areaGateRenderer;
