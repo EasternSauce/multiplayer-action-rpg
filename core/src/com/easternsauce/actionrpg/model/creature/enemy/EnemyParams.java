@@ -39,7 +39,7 @@ public class EnemyParams {
   @NonNull
   private SimpleTimer autoControlsStateProcessorTimer = SimpleTimer.getExpiredTimer();
   @NonNull
-  private Float autoControlsStateProcessorTime;
+  private Float autoControlsStateProcessorTimerLimit;
   private Vector2 currentDefensivePos;
   @NonNull
   private SimpleTimer justAttackedFromRangeTimer = SimpleTimer.getExpiredTimer();
@@ -61,7 +61,7 @@ public class EnemyParams {
 
   @NonNull
   private SimpleTimer movingTowardsSpawnPointPathCalculationTimer = SimpleTimer.getExpiredTimer();
-  private float timeBetweenMovingTowardsSpawnPointPathCalculation = 10f;
+  private float movingTowardsSpawnPointPathCalculationTimerLimit = 10f;
 
   private boolean bossEnemy = false;
 

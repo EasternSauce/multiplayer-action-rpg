@@ -19,7 +19,7 @@ import java.util.function.Predicate;
 
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
-public class AutoControlsPathfindingProcessor extends EnemyRetriever {
+public class PathfindingProcessor extends EnemyRetriever {
   @Getter(value = AccessLevel.PROTECTED)
   private EntityId<Creature> enemyId;
 
@@ -37,43 +37,54 @@ public class AutoControlsPathfindingProcessor extends EnemyRetriever {
   private void processPathfindingTowardsTarget(CoreGame game) {
     Creature enemy = getEnemy(game);
 
-    boolean creaturePathfindingAllowed = game.isPathfindingCalculatedForCreature(enemy) && (enemy.getEnemyParams().getForcePathCalculation() || enemy.getEnemyParams().getPathCalculationCooldownTimer().getTime() > enemy.getEnemyParams().getPathCalculationCooldown());
+    boolean pathfindingCalculatedForCreature = game.isPathfindingCalculatedForCreature(enemy);
+    boolean forcePathCalculation = enemy.getEnemyParams().getForcePathCalculation();
+    boolean pathCalculationOnCooldown = enemy.getEnemyParams().getPathCalculationCooldownTimer().getTime() < enemy.getEnemyParams().getPathCalculationCooldown();
+
+    boolean creaturePathfindingAllowed = pathfindingCalculatedForCreature && (forcePathCalculation || !pathCalculationOnCooldown);
 
     if (creaturePathfindingAllowed) {
       Creature target = game.getCreature(enemy.getEnemyParams().getTargetCreatureId());
 
-      if (target != null && game.isLineBetweenPointsObstructedByTerrain(enemy.getParams().getAreaId(), enemy.getParams().getPos(), target.getParams().getPos())) {
-        List<Vector2> mirroredPath = mirrorPathFromNearbyCreature(enemy.getEnemyParams().getTargetCreatureId(), game);
+      boolean lineTowardsTargetUnobstructed = game.isLineBetweenPointsObstructedByTerrain(enemy.getParams().getAreaId(), enemy.getParams().getPos(), target.getParams().getPos());
 
-        List<Vector2> path;
-
-        if (mirroredPath != null) {
-          path = mirroredPath;
-          enemy.getEnemyParams().setPathMirrored(true);
-        } else {
-          AstarResult result = Astar.findPath(game.getPhysicsWorld(enemy.getParams().getAreaId()), enemy.getParams().getPos(), target.getParams().getPos(), enemy.getCapability(), true);
-          path = result.getPath();
-
-          enemy.getEnemyParams().setPathMirrored(false);
-        }
-
-        enemy.getEnemyParams().setPathTowardsTarget(path);
-
-        enemy.getEnemyParams().getPathCalculationCooldownTimer().restart();
-        enemy.getEnemyParams().setForcePathCalculation(false);
+      if (target.isNotEmpty() && lineTowardsTargetUnobstructed) {
+        findPathTowardsTarget(enemy, target, game);
       } else {
         enemy.getEnemyParams().setPathTowardsTarget(null);
       }
     }
   }
 
+  private void findPathTowardsTarget(Creature enemy, Creature target, CoreGame game) {
+    List<Vector2> mirroredPath = mirrorPathFromNearbyCreature(enemy.getEnemyParams().getTargetCreatureId(), game);
+
+    List<Vector2> path;
+
+    if (mirroredPath != null) {
+      path = mirroredPath;
+      enemy.getEnemyParams().setPathMirrored(true);
+    } else {
+      AstarResult result = Astar.findPath(game.getPhysicsWorld(enemy.getParams().getAreaId()), enemy.getParams().getPos(), target.getParams().getPos(), enemy.getCapability(), true);
+      path = result.getPath();
+
+      enemy.getEnemyParams().setPathMirrored(false);
+    }
+
+    enemy.getEnemyParams().setPathTowardsTarget(path);
+
+    enemy.getEnemyParams().getPathCalculationCooldownTimer().restart();
+    enemy.getEnemyParams().setForcePathCalculation(false);
+  }
+
   private void processPathfindingTowardsSpawnPoint(CoreGame game) {
     Creature enemy = getEnemy(game);
 
-    if (enemy.getEnemyParams().getMovingTowardsSpawnPointPathCalculationTimer().getTime() > enemy.getEnemyParams().getTimeBetweenMovingTowardsSpawnPointPathCalculation()) {
+    if (enemy.getEnemyParams().getMovingTowardsSpawnPointPathCalculationTimer().getTime() > enemy.getEnemyParams().getMovingTowardsSpawnPointPathCalculationTimerLimit()) {
       enemy.getEnemyParams().getMovingTowardsSpawnPointPathCalculationTimer().restart();
 
       AstarResult result = Astar.findPath(game.getPhysicsWorld(enemy.getParams().getAreaId()), enemy.getParams().getPos(), enemy.getEnemyParams().getSpawnedPos(), enemy.getCapability(), false);
+
       List<Vector2> path = result.getPath();
 
       enemy.getEnemyParams().setPathTowardsTarget(path);

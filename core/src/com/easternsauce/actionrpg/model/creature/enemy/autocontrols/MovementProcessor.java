@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
-public class AutoControlsMovementProcessor extends EnemyRetriever {
+public class MovementProcessor extends EnemyRetriever {
   @Getter(value = AccessLevel.PROTECTED)
   private EntityId<Creature> enemyId;
 

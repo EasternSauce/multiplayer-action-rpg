@@ -40,7 +40,7 @@ public class Enemy extends Creature {
     params.setEnemyParams(EnemyParams.of());
     params.getEnemyParams().setFindTargetCooldown(0.5f + Math.abs(params.getRandomGenerator().nextFloat()));
     params.getEnemyParams().setPathCalculationCooldown(4f + 2f * Math.abs(params.getRandomGenerator().nextFloat()));
-    params.getEnemyParams().setAutoControlsStateProcessorTime(0f);
+    params.getEnemyParams().setAutoControlsStateProcessorTimerLimit(0f);
 
     params.setRespawnTime(120f);
 
@@ -65,20 +65,20 @@ public class Enemy extends Creature {
 
   @Override
   protected void updateEnemyTimers(float delta) {
-    getParams().getEnemyParams().getPathCalculationCooldownTimer().update(delta);
-    getParams().getEnemyParams().getAggroTimer().update(delta);
-    getParams().getEnemyParams().getFindTargetTimer().update(delta);
-    getParams().getEnemyParams().getAutoControlsStateProcessorTimer().update(delta);
-    getParams().getEnemyParams().getUseAbilityCooldownTimer().update(delta);
-    getParams().getEnemyParams().getJustAttackedFromRangeTimer().update(delta);
-    getParams().getEnemyParams().getMovingTowardsSpawnPointPathCalculationTimer().update(delta);
+    getEnemyParams().getPathCalculationCooldownTimer().update(delta);
+    getEnemyParams().getAggroTimer().update(delta);
+    getEnemyParams().getFindTargetTimer().update(delta);
+    getEnemyParams().getAutoControlsStateProcessorTimer().update(delta);
+    getEnemyParams().getUseAbilityCooldownTimer().update(delta);
+    getEnemyParams().getJustAttackedFromRangeTimer().update(delta);
+    getEnemyParams().getMovingTowardsSpawnPointPathCalculationTimer().update(delta);
   }
 
   @Override
   public WorldDirection getFacingDirection(CoreGame game) {
     float deg;
-    if (!getParams().getEnemyParams().getTargetCreatureId().isEmpty()) {
-      Vector2 targetPos = game.getCreaturePos(getParams().getEnemyParams().getTargetCreatureId());
+    if (!getEnemyParams().getTargetCreatureId().isEmpty()) {
+      Vector2 targetPos = game.getCreaturePos(getEnemyParams().getTargetCreatureId());
       if (targetPos != null) {
         deg = this.getParams().getPos().vectorTowards(targetPos).angleDeg();
       } else {
@@ -132,10 +132,10 @@ public class Enemy extends Creature {
   @SuppressWarnings("SpellCheckingInspection")
   @Override
   public void onBeingHit(Ability ability, CoreGame game) {
-    if (getParams().getEnemyParams() != null) {
-      getParams().getEnemyParams().setJustAttackedByCreatureId(ability.getContext().getCreatureId());
+    if (getEnemyParams() != null) {
+      getEnemyParams().setJustAttackedByCreatureId(ability.getContext().getCreatureId());
 
-      EntityId<Creature> aggroedCreatureId = getParams().getEnemyParams().getAggroedCreatureId();
+      EntityId<Creature> aggroedCreatureId = getEnemyParams().getAggroedCreatureId();
       if (aggroedCreatureId.isEmpty() || !aggroedCreatureId.equals(ability.getContext().getCreatureId())) {
         Creature aggroedCreature = game.getCreature(aggroedCreatureId);
 
@@ -147,20 +147,20 @@ public class Enemy extends Creature {
   }
 
   private void makeAggressiveAfterHitByAbility(Ability ability) {
-    getParams().getEnemyParams().setAutoControlsStateProcessorTime(1f + Math.abs(getParams().getRandomGenerator().nextFloat()));
-    getParams().getEnemyParams().getAutoControlsStateProcessorTimer().restart();
-    getParams().getEnemyParams().setAutoControlsState(AutoControlsState.AGGRESSIVE);
+    getEnemyParams().setAutoControlsStateProcessorTimerLimit(1f + Math.abs(getParams().getRandomGenerator().nextFloat()));
+    getEnemyParams().getAutoControlsStateProcessorTimer().restart();
+    getEnemyParams().setAutoControlsState(AutoControlsState.AGGRESSIVE);
     getParams().getStats().setSpeed(getParams().getStats().getBaseSpeed());
-    getParams().getEnemyParams().setAggroedCreatureId(ability.getContext().getCreatureId());
+    getEnemyParams().setAggroedCreatureId(ability.getContext().getCreatureId());
 
     if (ability.isRanged()) {
-      getParams().getEnemyParams().getJustAttackedFromRangeTimer().restart();
+      getEnemyParams().getJustAttackedFromRangeTimer().restart();
     }
   }
 
   @Override
   protected void processRegenerationOverTime(CoreGame game) {
-    EnemyParams enemyParams = getParams().getEnemyParams();
+    EnemyParams enemyParams = getEnemyParams();
 
     EntityId<Creature> targetCreatureId = enemyParams.getTargetCreatureId();
 

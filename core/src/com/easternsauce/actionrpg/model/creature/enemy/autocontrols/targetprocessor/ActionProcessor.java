@@ -1,12 +1,13 @@
-package com.easternsauce.actionrpg.model.creature.enemy.autocontrols;
+package com.easternsauce.actionrpg.model.creature.enemy.autocontrols.targetprocessor;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.creature.Creature;
+import com.easternsauce.actionrpg.model.creature.enemy.autocontrols.EnemyRetriever;
+import com.easternsauce.actionrpg.model.creature.enemy.autocontrols.MovementProcessor;
 import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.util.Constants;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,20 +15,19 @@ import java.util.LinkedList;
 import java.util.List;
 
 @NoArgsConstructor(staticName = "of")
-@AllArgsConstructor(staticName = "of")
-public class AutoControlsActionProcessor extends EnemyRetriever {
+public class ActionProcessor extends EnemyRetriever {
   @Getter(value = AccessLevel.PROTECTED)
   private EntityId<Creature> enemyId;
 
-  private AutoControlsMovementProcessor movementLogicProcessor;
+  private MovementProcessor movementLogicProcessor;
 
-  public static AutoControlsActionProcessor of(EntityId<Creature> enemyId) {
-    AutoControlsActionProcessor autoControlsActionProcessor = AutoControlsActionProcessor.of();
+  public static ActionProcessor of(EntityId<Creature> enemyId) {
+    ActionProcessor actionProcessor = ActionProcessor.of();
 
-    autoControlsActionProcessor.enemyId = enemyId;
-    autoControlsActionProcessor.movementLogicProcessor = AutoControlsMovementProcessor.of(enemyId);
+    actionProcessor.enemyId = enemyId;
+    actionProcessor.movementLogicProcessor = MovementProcessor.of(enemyId);
 
-    return autoControlsActionProcessor;
+    return actionProcessor;
   }
 
   public void process(Vector2 potentialTargetPos, Vector2 vectorTowardsTarget, CoreGame game) {

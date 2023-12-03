@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
-public class AutoControlsStateProcessor extends EnemyRetriever {
+public class StateProcessor extends EnemyRetriever {
   @Getter(value = AccessLevel.PROTECTED)
   private EntityId<Creature> enemyId;
 
@@ -22,7 +22,7 @@ public class AutoControlsStateProcessor extends EnemyRetriever {
 
     EnemyParams enemyParams = enemy.getEnemyParams();
 
-    if (enemyParams.getAutoControlsStateProcessorTimer().getTime() > enemyParams.getAutoControlsStateProcessorTime()) {
+    if (enemyParams.getAutoControlsStateProcessorTimer().getTime() > enemyParams.getAutoControlsStateProcessorTimerLimit()) {
       enemyParams.getAutoControlsStateProcessorTimer().restart();
 
       if (!enemyParams.getTargetCreatureId().isEmpty()) {
@@ -36,7 +36,7 @@ public class AutoControlsStateProcessor extends EnemyRetriever {
       }
 
       float randomTime = 1f + Math.abs(enemy.getParams().getRandomGenerator().nextFloat());
-      enemyParams.setAutoControlsStateProcessorTime(randomTime);
+      enemyParams.setAutoControlsStateProcessorTimerLimit(randomTime);
     }
   }
 
