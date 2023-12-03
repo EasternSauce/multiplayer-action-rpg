@@ -2,7 +2,7 @@ package com.easternsauce.actionrpg.model.creature.enemy.autocontrols;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.creature.enemy.autocontrols.targetprocessor.TargetProcessor;
+import com.easternsauce.actionrpg.model.creature.enemy.autocontrols.targetprocessor.TargetSearchProcessor;
 import com.easternsauce.actionrpg.model.id.EntityId;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -15,7 +15,7 @@ public class AutoControls extends EnemyRetriever {
 
   private StateProcessor stateProcessor;
   private PathfindingProcessor pathfindingProcessor;
-  private TargetProcessor targetProcessor;
+  private TargetSearchProcessor targetSearchProcessor;
 
   public static AutoControls of(EntityId<Creature> enemyId) {
     AutoControls autoControls = AutoControls.of();
@@ -23,7 +23,7 @@ public class AutoControls extends EnemyRetriever {
     autoControls.enemyId = enemyId;
     autoControls.stateProcessor = StateProcessor.of(enemyId);
     autoControls.pathfindingProcessor = PathfindingProcessor.of(enemyId);
-    autoControls.targetProcessor = TargetProcessor.of(enemyId);
+    autoControls.targetSearchProcessor = TargetSearchProcessor.of(enemyId);
 
     return autoControls;
   }
@@ -33,7 +33,7 @@ public class AutoControls extends EnemyRetriever {
 
     if (enemy.isAlive()) {
       stateProcessor.process(game);
-      targetProcessor.process(game);
+      targetSearchProcessor.process(game);
       pathfindingProcessor.process(game);
     }
   }
