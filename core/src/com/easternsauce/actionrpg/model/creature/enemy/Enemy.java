@@ -7,14 +7,13 @@ import com.easternsauce.actionrpg.model.area.Area;
 import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.CreatureEffect;
 import com.easternsauce.actionrpg.model.creature.CreatureParams;
-import com.easternsauce.actionrpg.model.creature.enemy.autocontrols.AutoControlsState;
 import com.easternsauce.actionrpg.model.creature.enemy.autocontrols.AutoControls;
+import com.easternsauce.actionrpg.model.creature.enemy.autocontrols.AutoControlsState;
 import com.easternsauce.actionrpg.model.enemyrallypoint.EnemyRallyPoint;
 import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.skill.Skill;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.model.util.WorldDirection;
-import com.esotericsoftware.kryo.serializers.FieldSerializer;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -147,6 +146,18 @@ public class Enemy extends Creature {
     }
   }
 
+  private void makeAggressiveAfterHitByAbility(Ability ability) {
+    getParams().getEnemyParams().setAutoControlsStateProcessorTime(1f + Math.abs(getParams().getRandomGenerator().nextFloat()));
+    getParams().getEnemyParams().getAutoControlsStateProcessorTimer().restart();
+    getParams().getEnemyParams().setAutoControlsState(AutoControlsState.AGGRESSIVE);
+    getParams().getStats().setSpeed(getParams().getStats().getBaseSpeed());
+    getParams().getEnemyParams().setAggroedCreatureId(ability.getContext().getCreatureId());
+
+    if (ability.isRanged()) {
+      getParams().getEnemyParams().getJustAttackedFromRangeTimer().restart();
+    }
+  }
+
   @Override
   protected void processRegenerationOverTime(CoreGame game) {
     EnemyParams enemyParams = getParams().getEnemyParams();
@@ -166,18 +177,6 @@ public class Enemy extends Creature {
       if (getParams().getEffectParams().getManaRegenerationOverTimeTimer().getTime() > 0.333f) {
         regenerateMana(8f);
       }
-    }
-  }
-
-  private void makeAggressiveAfterHitByAbility(Ability ability) {
-    getParams().getEnemyParams().setAutoControlsStateProcessorTime(1f + Math.abs(getParams().getRandomGenerator().nextFloat()));
-    getParams().getEnemyParams().getAutoControlsStateProcessorTimer().restart();
-    getParams().getEnemyParams().setAutoControlsState(AutoControlsState.AGGRESSIVE);
-    getParams().getStats().setSpeed(getParams().getStats().getBaseSpeed());
-    getParams().getEnemyParams().setAggroedCreatureId(ability.getContext().getCreatureId());
-
-    if (ability.isRanged()) {
-      getParams().getEnemyParams().getJustAttackedFromRangeTimer().restart();
     }
   }
 }

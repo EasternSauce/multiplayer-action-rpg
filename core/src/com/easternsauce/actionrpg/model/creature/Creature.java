@@ -239,15 +239,6 @@ public abstract class Creature implements Entity {
       .reduce(0, ((acc, item) -> acc + item.getArmor()), Integer::sum);
   }
 
-  private Set<CreatureConstantEffect> getConstantEffects() {
-    Set<CreatureConstantEffect> constantEffects = new ConcurrentSkipListSet<>();
-
-    getParams().getEquipmentItems().values()
-      .forEach(item -> constantEffects.addAll(item.getTemplate().getConstantEffects()));
-
-    return constantEffects;
-  }
-
   public void onDeath(@SuppressWarnings("unused") Creature attackerCreature, CoreGame game) {
     if (getParams().getOnDeathAction() == OnDeathAction.SPAWN_SPIDERS) {
       Creature creature = game.getCreature(getId());
@@ -382,6 +373,15 @@ public abstract class Creature implements Entity {
     }
   }
 
+  private Set<CreatureConstantEffect> getConstantEffects() {
+    Set<CreatureConstantEffect> constantEffects = new ConcurrentSkipListSet<>();
+
+    getParams().getEquipmentItems().values()
+      .forEach(item -> constantEffects.addAll(item.getTemplate().getConstantEffects()));
+
+    return constantEffects;
+  }
+
   private void recoverLifeOnKill() {
     float missingLifePercent = 1f - getParams().getStats().getLife() / getParams().getStats().getMaxLife();
 
@@ -433,11 +433,11 @@ public abstract class Creature implements Entity {
     return getParams().getRandomGenerator().nextInt();
   }
 
-  public boolean isEmpty() {
-    return false;
-  }
-
   public boolean isNotEmpty() {
     return !isEmpty();
+  }
+
+  public boolean isEmpty() {
+    return false;
   }
 }

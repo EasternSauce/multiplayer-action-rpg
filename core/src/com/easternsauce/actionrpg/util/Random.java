@@ -138,10 +138,6 @@ public abstract class Random implements java.io.Serializable {
     }
   }
 
-  private static long initialScramble(long seed) {
-    return (seed ^ multiplier) & mask;
-  }
-
   /**
    * Sets the seed of this random number generator using a single
    * {@code long} seed. The general contract of {@code setSeed} is
@@ -164,6 +160,10 @@ public abstract class Random implements java.io.Serializable {
   synchronized public void setSeed(long seed) {
     this.seed.set(initialScramble(seed));
     haveNextNextGaussian = false;
+  }
+
+  private static long initialScramble(long seed) {
+    return (seed ^ multiplier) & mask;
   }
 
   /**

@@ -34,22 +34,6 @@ public class CreatureAccessor {
   @Getter
   private GameStateDataHolder dataHolder;
 
-  private static SkillType pickRandomSkillToUse(Set<EnemySkillUseEntry> skillUseEntries, Float distanceToTarget, CoreGame game) {
-    Set<EnemySkillUseEntry> filteredSkillUseEntries = skillUseEntries.stream()
-      .filter(enemySkillUseEntry -> enemySkillUseEntry.getSkillUseRange() > distanceToTarget)
-      .collect(Collectors.toSet());
-
-    if (filteredSkillUseEntries.isEmpty()) {
-      return null;
-    } else {
-      Map<EnemySkillUseEntry, Integer> map = filteredSkillUseEntries.stream().collect(Collectors.toMap(e -> e, EnemySkillUseEntry::getWeight, (o1, o2) -> o1, OrderedMap::new));
-
-      EnemySkillUseEntry randomElementOfWeightedMap = MapUtils.getRandomElementOfWeightedMap(map, game.getGameState().getRandomGenerator().nextFloat());
-
-      return randomElementOfWeightedMap.getSkillType();
-    }
-  }
-
   public Set<EntityId<Creature>> getActiveCreatureIds() {
     return getData().getActiveCreatureIds();
   }
@@ -83,6 +67,17 @@ public class CreatureAccessor {
     }
 
 
+  }
+
+  public Creature getCreature(EntityId<Creature> creatureId) {
+    if (creatureId == null) throw new RuntimeException("trying to retrieve creature of null id");
+
+    boolean creaturesContainCreatureId = !getData().getCreatures().containsKey(creatureId);
+    boolean creatureIdNull = creatureId.isEmpty();
+    if (creatureIdNull || creaturesContainCreatureId) {
+      return NullCreature.of();
+    }
+    return getData().getCreatures().get(creatureId);
   }
 
   public void setCreatureMovingVector(EntityId<Creature> creatureId, Vector2 dirVector) {
@@ -121,15 +116,20 @@ public class CreatureAccessor {
     }
   }
 
-  public Creature getCreature(EntityId<Creature> creatureId) {
-    if (creatureId == null) throw new RuntimeException("trying to retrieve creature of null id");
+  private static SkillType pickRandomSkillToUse(Set<EnemySkillUseEntry> skillUseEntries, Float distanceToTarget, CoreGame game) {
+    Set<EnemySkillUseEntry> filteredSkillUseEntries = skillUseEntries.stream()
+      .filter(enemySkillUseEntry -> enemySkillUseEntry.getSkillUseRange() > distanceToTarget)
+      .collect(Collectors.toSet());
 
-    boolean creaturesContainCreatureId = !getData().getCreatures().containsKey(creatureId);
-    boolean creatureIdNull = creatureId.isEmpty();
-    if (creatureIdNull || creaturesContainCreatureId) {
-      return NullCreature.of();
+    if (filteredSkillUseEntries.isEmpty()) {
+      return null;
+    } else {
+      Map<EnemySkillUseEntry, Integer> map = filteredSkillUseEntries.stream().collect(Collectors.toMap(e -> e, EnemySkillUseEntry::getWeight, (o1, o2) -> o1, OrderedMap::new));
+
+      EnemySkillUseEntry randomElementOfWeightedMap = MapUtils.getRandomElementOfWeightedMap(map, game.getGameState().getRandomGenerator().nextFloat());
+
+      return randomElementOfWeightedMap.getSkillType();
     }
-    return getData().getCreatures().get(creatureId);
   }
 
   public EntityId<Creature> getAliveCreatureIdClosestTo(Vector2 pos, float maxRange, Set<EntityId<Creature>> excluded, CoreGame game) {

@@ -32,11 +32,6 @@ public class EnemySpawnAction extends GameStateAction {
     game.getEventProcessor().getCreatureModelsToBeCreated().add(creatureId);
   }
 
-  @Override
-  public Entity getEntity(CoreGame game) {
-    return game.getCreature(creatureId);
-  }
-
   @SuppressWarnings("PointlessArithmeticExpression")
   private Creature createNewEnemy(CoreGame game) {
     EnemyRallyPoint enemyRallyPoint = game.getGameState().getEnemyRallyPoint(enemyRallyPointId);
@@ -49,5 +44,10 @@ public class EnemySpawnAction extends GameStateAction {
     int rngSeed = game.getGameState().getRandomGenerator().nextInt();
 
     return Enemy.of(creatureId, areaId, pos, enemyTemplate, enemyRallyPointId, rngSeed);
+  }
+
+  @Override
+  public Entity getEntity(CoreGame game) {
+    return game.getCreature(creatureId);
   }
 }

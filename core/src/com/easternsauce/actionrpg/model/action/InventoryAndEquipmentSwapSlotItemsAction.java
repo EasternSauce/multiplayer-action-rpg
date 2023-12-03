@@ -46,11 +46,6 @@ public class InventoryAndEquipmentSwapSlotItemsAction extends GameStateAction {
     finalizeItemSwap(player, playerConfig);
   }
 
-  @Override
-  public Entity getEntity(CoreGame game) {
-    return game.getCreature(playerId);
-  }
-
   private boolean checkInventoryItemSlotTypeMatchesEquipmentSlot(Item inventoryItem) {
     return inventoryItem == null ||
       inventoryItem.getTemplate().getEquipmentSlotType() == EquipmentSlotType.equipmentSlotTypes.get(equipmentIndex);
@@ -91,5 +86,10 @@ public class InventoryAndEquipmentSwapSlotItemsAction extends GameStateAction {
       }
     });
     slotsToRemove.forEach(slotIndex -> playerConfig.getSkillMenuSlots().remove(slotIndex));
+  }
+
+  @Override
+  public Entity getEntity(CoreGame game) {
+    return game.getCreature(playerId);
   }
 }

@@ -48,11 +48,6 @@ public class PotionMenuItemUseAction extends GameStateAction {
     }
   }
 
-  @Override
-  public Entity getEntity(CoreGame game) {
-    return game.getCreature(playerId);
-  }
-
   // TODO: make common method
   private void processUseItem(Creature creature, Item item, CoreGame game) {
     if (item.getTemplate().getId().equals("lifePotion")) {
@@ -60,5 +55,10 @@ public class PotionMenuItemUseAction extends GameStateAction {
     } else if (item.getTemplate().getId().equals("manaPotion")) {
       creature.applyEffect(CreatureEffect.MANA_REGENERATION, 3f, game);
     }
+  }
+
+  @Override
+  public Entity getEntity(CoreGame game) {
+    return game.getCreature(playerId);
   }
 }

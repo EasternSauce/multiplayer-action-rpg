@@ -34,19 +34,6 @@ public class AutoControlsPathfindingProcessor extends EnemyRetriever {
 
   }
 
-  private void processPathfindingTowardsSpawnPoint(CoreGame game) {
-    Creature enemy = getEnemy(game);
-
-    if (enemy.getEnemyParams().getMovingTowardsSpawnPointPathCalculationTimer().getTime() > enemy.getEnemyParams().getTimeBetweenMovingTowardsSpawnPointPathCalculation()) {
-      enemy.getEnemyParams().getMovingTowardsSpawnPointPathCalculationTimer().restart();
-
-      AstarResult result = Astar.findPath(game.getPhysicsWorld(enemy.getParams().getAreaId()), enemy.getParams().getPos(), enemy.getEnemyParams().getSpawnedPos(), enemy.getCapability(), false);
-      List<Vector2> path = result.getPath();
-
-      enemy.getEnemyParams().setPathTowardsTarget(path);
-    }
-  }
-
   private void processPathfindingTowardsTarget(CoreGame game) {
     Creature enemy = getEnemy(game);
 
@@ -80,6 +67,19 @@ public class AutoControlsPathfindingProcessor extends EnemyRetriever {
     }
   }
 
+  private void processPathfindingTowardsSpawnPoint(CoreGame game) {
+    Creature enemy = getEnemy(game);
+
+    if (enemy.getEnemyParams().getMovingTowardsSpawnPointPathCalculationTimer().getTime() > enemy.getEnemyParams().getTimeBetweenMovingTowardsSpawnPointPathCalculation()) {
+      enemy.getEnemyParams().getMovingTowardsSpawnPointPathCalculationTimer().restart();
+
+      AstarResult result = Astar.findPath(game.getPhysicsWorld(enemy.getParams().getAreaId()), enemy.getParams().getPos(), enemy.getEnemyParams().getSpawnedPos(), enemy.getCapability(), false);
+      List<Vector2> path = result.getPath();
+
+      enemy.getEnemyParams().setPathTowardsTarget(path);
+    }
+  }
+
   private List<Vector2> mirrorPathFromNearbyCreature(EntityId<Creature> targetId, CoreGame game) { // TODO: check if this properly serves its purpose, it may be useless
     Creature enemy = getEnemy(game);
 
@@ -98,11 +98,11 @@ public class AutoControlsPathfindingProcessor extends EnemyRetriever {
       }
     };
 
-      Optional<Creature> otherCreature = game.getGameState().accessCreatures().getCreatures().values().stream()
-        .filter(creaturePredicate).findFirst();
+    Optional<Creature> otherCreature = game.getGameState().accessCreatures().getCreatures().values().stream()
+      .filter(creaturePredicate).findFirst();
 
-      return otherCreature.map(thatCreature -> thatCreature.getEnemyParams().getPathTowardsTarget())
-        .orElse(null);
+    return otherCreature.map(thatCreature -> thatCreature.getEnemyParams().getPathTowardsTarget())
+      .orElse(null);
 
   }
 }

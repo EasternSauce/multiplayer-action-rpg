@@ -45,11 +45,6 @@ public class InventoryAndPotionMenuSwapSlotItemsAction extends GameStateAction {
     finalizeItemSwap(player, playerConfig);
   }
 
-  @Override
-  public Entity getEntity(CoreGame game) {
-    return game.getCreature(playerId);
-  }
-
   private boolean checkPotionMenuSlotAcceptsItemType(Item inventoryItem) {
     return inventoryItem == null || inventoryItem.getTemplate().getConsumable();
   }
@@ -89,5 +84,10 @@ public class InventoryAndPotionMenuSwapSlotItemsAction extends GameStateAction {
       }
     });
     slotsToRemove.forEach(slotIndex -> playerConfig.getSkillMenuSlots().remove(slotIndex));
+  }
+
+  @Override
+  public Entity getEntity(CoreGame game) {
+    return game.getCreature(playerId);
   }
 }

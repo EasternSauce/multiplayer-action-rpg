@@ -198,10 +198,6 @@ public abstract class CoreGame extends Game {
       .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (o1, o2) -> o1, OrderedMap::new));
   }
 
-  public Creature getCreature(EntityId<Creature> creatureId) {
-    return getGameState().accessCreatures().getCreature(creatureId);
-  }
-
   public Vector2 getCreaturePos(EntityId<Creature> creatureId) {
     return getGameState().accessCreatures().getCreaturePos(creatureId);
   }
@@ -365,5 +361,9 @@ public abstract class CoreGame extends Game {
             ability.getParams().getState() == AbilityState.ACTIVE)).collect(Collectors.toSet());
 
     creatureActiveAbilities.forEach(Ability::deactivate);
+  }
+
+  public Creature getCreature(EntityId<Creature> creatureId) {
+    return getGameState().accessCreatures().getCreature(creatureId);
   }
 }

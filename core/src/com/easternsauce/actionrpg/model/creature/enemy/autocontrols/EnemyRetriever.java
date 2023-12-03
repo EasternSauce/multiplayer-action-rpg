@@ -6,8 +6,6 @@ import com.easternsauce.actionrpg.model.creature.enemy.Enemy;
 import com.easternsauce.actionrpg.model.id.EntityId;
 
 public abstract class EnemyRetriever {
-  protected abstract EntityId<Creature> getEnemyId();
-
   public Creature getEnemy(CoreGame game) {
     Creature creature = game.getCreature(getEnemyId());
 
@@ -15,4 +13,6 @@ public abstract class EnemyRetriever {
 
     return creature;
   }
+
+  protected abstract EntityId<Creature> getEnemyId();
 }

@@ -92,16 +92,6 @@ public class PlayfulGhost extends Projectile {
     }
   }
 
-  @Override
-  public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
-    deactivate();
-  }
-
-  @Override
-  protected boolean isWeaponAttack() {
-    return false;
-  }
-
   private boolean isTargetingAllowed(Creature thisCreature, Creature targetCreature) {
     if (thisCreature instanceof Enemy) {
       return targetCreature instanceof Player;
@@ -111,6 +101,16 @@ public class PlayfulGhost extends Projectile {
     if (thisCreature instanceof Player) {
       return true;
     }
+    return false;
+  }
+
+  @Override
+  public void onTerrainHit(Vector2 abilityPos, Vector2 tilePos) {
+    deactivate();
+  }
+
+  @Override
+  protected boolean isWeaponAttack() {
     return false;
   }
 }

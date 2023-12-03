@@ -40,6 +40,24 @@ public class AutoControlsStateProcessor extends EnemyRetriever {
     }
   }
 
+  private void handleAlerted(CoreGame game, Creature creature) {
+    Vector2 targetPos = game.getCreaturePos(creature.getEnemyParams().getTargetCreatureId());
+
+    if (targetPos != null) {
+      Vector2 vectorTowards = targetPos.vectorTowards(creature.getParams().getPos());
+
+      Vector2 defensivePos = targetPos.add(vectorTowards.normalized().multiplyBy(Constants.DEFENSIVE_POS_DISTANCE));
+
+      creature.getEnemyParams().setCurrentDefensivePos(
+        Vector2.of(defensivePos.getX() + 4f * creature.getParams().getRandomGenerator().nextFloat(),
+          defensivePos.getY() + 4f * creature.getParams().getRandomGenerator().nextFloat()));
+    }
+
+    if (Math.abs(creature.getParams().getRandomGenerator().nextFloat()) < 0.5f) {
+      creature.getEnemyParams().setAutoControlsState(AutoControlsState.AGGRESSIVE);
+    }
+  }
+
   private void handleAggressive(Creature creature) {
     if (!creature.getEnemyParams().isBossEnemy() &&
       Math.abs(creature.getParams().getRandomGenerator().nextFloat()) < 0.35f) {
@@ -64,24 +82,6 @@ public class AutoControlsStateProcessor extends EnemyRetriever {
       if (Math.abs(creature.getParams().getRandomGenerator().nextFloat()) < 0.7f) {
         creature.getEnemyParams().setAutoControlsState(AutoControlsState.AGGRESSIVE);
       }
-    }
-  }
-
-  private void handleAlerted(CoreGame game, Creature creature) {
-    Vector2 targetPos = game.getCreaturePos(creature.getEnemyParams().getTargetCreatureId());
-
-    if (targetPos != null) {
-      Vector2 vectorTowards = targetPos.vectorTowards(creature.getParams().getPos());
-
-      Vector2 defensivePos = targetPos.add(vectorTowards.normalized().multiplyBy(Constants.DEFENSIVE_POS_DISTANCE));
-
-      creature.getEnemyParams().setCurrentDefensivePos(
-        Vector2.of(defensivePos.getX() + 4f * creature.getParams().getRandomGenerator().nextFloat(),
-          defensivePos.getY() + 4f * creature.getParams().getRandomGenerator().nextFloat()));
-    }
-
-    if (Math.abs(creature.getParams().getRandomGenerator().nextFloat()) < 0.5f) {
-      creature.getEnemyParams().setAutoControlsState(AutoControlsState.AGGRESSIVE);
     }
   }
 

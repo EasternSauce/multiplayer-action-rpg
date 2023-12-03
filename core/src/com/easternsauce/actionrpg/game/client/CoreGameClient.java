@@ -102,6 +102,11 @@ public class CoreGameClient extends CoreGame {
   }
 
   @Override
+  public ClientGameState getGameState() {
+    return gameState;
+  }
+
+  @Override
   public void initState() {
   }
 
@@ -158,11 +163,6 @@ public class CoreGameClient extends CoreGame {
   @Override
   public boolean isPathfindingCalculatedForCreature(Creature creature) {
     return creature.getParams().getAreaId().equals(getCurrentAreaId());
-  }
-
-  @Override
-  public ClientGameState getGameState() {
-    return gameState;
   }
 
   @Override

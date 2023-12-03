@@ -37,16 +37,16 @@ public class Item implements Comparable<Item> {
     return builder.toString();
   }
 
+  public String getDescription() {
+    return template.getDescription();
+  }
+
   public Integer getDamage() {
     return (int) (template.getDamage() * qualityModifier);
   }
 
   public Integer getArmor() {
     return (int) (template.getArmor() * qualityModifier);
-  }
-
-  public String getDescription() {
-    return template.getDescription();
   }
 
   public Integer getWorth() {

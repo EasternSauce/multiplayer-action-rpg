@@ -31,19 +31,6 @@ public class GameplayScreen implements Screen {
   private Map<EntityId<Area>, TiledMap> maps;
   private TextureAtlas atlas;
 
-  private static void clearScreen() {
-    Gdx.gl.glClearColor(0, 0, 0, 1);
-
-    int coverageBuffer;
-    if (Gdx.graphics.getBufferFormat().coverageSampling) {
-      coverageBuffer = GL20.GL_COVERAGE_BUFFER_BIT_NV;
-    } else {
-      coverageBuffer = 0;
-    }
-
-    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | coverageBuffer);
-  }
-
   public void init(TextureAtlas atlas, CoreGame game) {
     this.game = game;
     this.atlas = atlas;
@@ -150,6 +137,19 @@ public class GameplayScreen implements Screen {
         game.getEntityManager().getGameEntityRenderer().loadAreaRenderers(maps, game);
       }
     }
+  }
+
+  private static void clearScreen() {
+    Gdx.gl.glClearColor(0, 0, 0, 1);
+
+    int coverageBuffer;
+    if (Gdx.graphics.getBufferFormat().coverageSampling) {
+      coverageBuffer = GL20.GL_COVERAGE_BUFFER_BIT_NV;
+    } else {
+      coverageBuffer = 0;
+    }
+
+    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | coverageBuffer);
   }
 
   public void setProjectionMatrices(CoreGame game) {

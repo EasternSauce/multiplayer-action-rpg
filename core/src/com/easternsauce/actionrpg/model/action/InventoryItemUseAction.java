@@ -45,16 +45,16 @@ public class InventoryItemUseAction extends GameStateAction {
     }
   }
 
-  @Override
-  public Entity getEntity(CoreGame game) {
-    return game.getCreature(playerId);
-  }
-
   private void processUseItem(Creature creature, Item item, CoreGame game) {
     if (item.getTemplate().getId().equals("lifePotion")) {
       creature.applyEffect(CreatureEffect.LIFE_REGENERATION, 3f, game);
     } else if (item.getTemplate().getId().equals("manaPotion")) {
       creature.applyEffect(CreatureEffect.MANA_REGENERATION, 3f, game);
     }
+  }
+
+  @Override
+  public Entity getEntity(CoreGame game) {
+    return game.getCreature(playerId);
   }
 }

@@ -65,11 +65,6 @@ public class ServerGameState extends GameState {
   }
 
   @Override
-  public void scheduleServerSideAction(GameStateAction action) {
-    onTickActions.add(action);
-  }
-
-  @Override
   public EntityId<Creature> getThisClientPlayerId() {
     Optional<Creature> any = accessCreatures().getCreatures().values().stream()
       .filter(creature -> creature instanceof Player).findAny();
@@ -139,6 +134,11 @@ public class ServerGameState extends GameState {
         }
       }
     });
+  }
+
+  @Override
+  public void scheduleServerSideAction(GameStateAction action) {
+    onTickActions.add(action);
   }
 
   public void handleExpiredLootPiles() {

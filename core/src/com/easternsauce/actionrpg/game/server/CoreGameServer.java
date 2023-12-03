@@ -102,6 +102,11 @@ public class CoreGameServer extends CoreGame {
   }
 
   @Override
+  public ServerGameState getGameState() {
+    return gameState;
+  }
+
+  @Override
   public void initState() {
     String fileName = "./gamestate.json";
 
@@ -164,11 +169,6 @@ public class CoreGameServer extends CoreGame {
   @Override
   public Boolean getFirstNonStubBroadcastReceived() {
     return true;
-  }
-
-  @Override
-  public ServerGameState getGameState() {
-    return gameState;
   }
 
   @Override

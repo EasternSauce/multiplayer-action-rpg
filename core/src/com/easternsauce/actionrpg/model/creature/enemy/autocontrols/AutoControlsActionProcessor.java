@@ -2,7 +2,6 @@ package com.easternsauce.actionrpg.model.creature.enemy.autocontrols;
 
 import com.easternsauce.actionrpg.game.CoreGame;
 import com.easternsauce.actionrpg.model.creature.Creature;
-import com.easternsauce.actionrpg.model.creature.enemy.autocontrols.targetprocessor.AutoControlsTargetProcessor;
 import com.easternsauce.actionrpg.model.id.EntityId;
 import com.easternsauce.actionrpg.model.util.Vector2;
 import com.easternsauce.actionrpg.util.Constants;
@@ -38,7 +37,26 @@ public class AutoControlsActionProcessor extends EnemyRetriever {
       game);
   }
 
-  public void handleUseRandomSkillAtTarget( Vector2 potentialTargetPos, Vector2 vectorTowardsTarget, CoreGame game) {
+  public void handleMovement(Vector2 potentialTargetPos, CoreGame game) {
+    Creature enemy = getEnemy(game);
+
+    Float distance = enemy.getParams().getPos().distance(potentialTargetPos);
+
+    if (enemy.getEnemyParams().getPathTowardsTarget() != null &&
+      !enemy.getEnemyParams().getPathTowardsTarget().isEmpty()) { // path is available
+      followPathToTarget(game);
+    } else {
+      movementLogicProcessor.process(potentialTargetPos, distance, game);
+    }
+  }
+
+  private void handleAimDirectionAdjustment(Vector2 vectorTowardsTarget, CoreGame game) {
+    Creature enemy = getEnemy(game);
+
+    enemy.getParams().getMovementParams().setAimDirection(vectorTowardsTarget.normalized());
+  }
+
+  public void handleUseRandomSkillAtTarget(Vector2 potentialTargetPos, Vector2 vectorTowardsTarget, CoreGame game) {
     Creature enemy = getEnemy(game);
 
     if (enemy.getEnemyParams().getUseAbilityCooldownTimer().getTime() > Constants.ENEMY_USE_ABILITY_COOLDOWN_TIMER) {
@@ -53,26 +71,7 @@ public class AutoControlsActionProcessor extends EnemyRetriever {
     }
   }
 
-  private void handleAimDirectionAdjustment( Vector2 vectorTowardsTarget, CoreGame game) {
-    Creature enemy = getEnemy(game);
-
-    enemy.getParams().getMovementParams().setAimDirection(vectorTowardsTarget.normalized());
-  }
-
-  public void handleMovement(Vector2 potentialTargetPos, CoreGame game) {
-    Creature enemy = getEnemy(game);
-
-    Float distance = enemy.getParams().getPos().distance(potentialTargetPos);
-
-    if (enemy.getEnemyParams().getPathTowardsTarget() != null &&
-      !enemy.getEnemyParams().getPathTowardsTarget().isEmpty()) { // path is available
-      followPathToTarget( game);
-    } else {
-      movementLogicProcessor.process( potentialTargetPos, distance, game);
-    }
-  }
-
-  public void followPathToTarget( CoreGame game) {
+  public void followPathToTarget(CoreGame game) {
     Creature enemy = getEnemy(game);
 
     List<Vector2> path = enemy.getEnemyParams().getPathTowardsTarget();
@@ -82,7 +81,7 @@ public class AutoControlsActionProcessor extends EnemyRetriever {
       changedPath.remove(0);
       enemy.getEnemyParams().setPathTowardsTarget(changedPath);
     } else {
-      movementLogicProcessor.goToPos( nextNodeOnPath, game);
+      movementLogicProcessor.goToPos(nextNodeOnPath, game);
     }
   }
 }

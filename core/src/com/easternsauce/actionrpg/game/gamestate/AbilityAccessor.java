@@ -53,6 +53,14 @@ public class AbilityAccessor {
     return getData().getAbilities();
   }
 
+  public Ability getAbility(EntityId<Ability> abilityId) {
+    if (abilityId.isEmpty() || !getData().getAbilities().containsKey(abilityId)) {
+      return NullAbility.of();
+    } else {
+      return getData().getAbilities().get(abilityId);
+    }
+  }
+
   public void chainAnotherAbility(Ability chainFromAbility, AbilityType abilityType, Vector2 dirVector, ChainAbilityParams chainAbilityParams, CoreGame game) {
     Creature creature = game.getCreature(chainFromAbility.getContext().getCreatureId());
 
@@ -111,14 +119,6 @@ public class AbilityAccessor {
       ability.getParams().getDamagingHitCreaturesHitCounter().getCount(targetId), contactPoint);
 
     gameState.scheduleServerSideAction(action);
-  }
-
-  public Ability getAbility(EntityId<Ability> abilityId) {
-    if (abilityId.isEmpty() || !getData().getAbilities().containsKey(abilityId)) {
-      return NullAbility.of();
-    } else {
-      return getData().getAbilities().get(abilityId);
-    }
   }
 
 }

@@ -23,17 +23,17 @@ public class RandomGenerator {
     return randomGenerator;
   }
 
+  public int nextInt() {
+    RandomHolder.getRandom().setSeed(hash(startingSeed - counter));
+    counter = counter + 1;
+    return RandomHolder.getRandom().nextInt();
+  }
+
   public static int hash(int a) {
     a ^= (a << 13);
     a ^= (a >>> 17);
     a ^= (a << 5);
     return a;
-  }
-
-  public int nextInt() {
-    RandomHolder.getRandom().setSeed(hash(startingSeed - counter));
-    counter = counter + 1;
-    return RandomHolder.getRandom().nextInt();
   }
 
   public float nextFloat() {

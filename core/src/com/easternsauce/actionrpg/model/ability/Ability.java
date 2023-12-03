@@ -15,16 +15,6 @@ import java.util.Map;
 
 @SuppressWarnings("SpellCheckingInspection")
 public abstract class Ability implements Entity {
-  public static Vector2 calculatePosition(@NonNull Vector2 creaturePos, @NonNull Vector2 dirVector, float startingRange) {
-    float shiftPosX = dirVector.normalized().getX() * startingRange;
-    float shiftPosY = dirVector.normalized().getY() * startingRange;
-
-    float attackRectX = creaturePos.getX() + shiftPosX;
-    float attackRectY = creaturePos.getY() + shiftPosY;
-
-    return Vector2.of(attackRectX, attackRectY);
-  }
-
   public Boolean isPositionChangedOnUpdate() {
     return false;
   }
@@ -57,6 +47,22 @@ public abstract class Ability implements Entity {
     }
   }
 
+  public abstract AbilityParams getParams();
+
+  abstract protected void onChannelUpdate(CoreGame game);
+
+  private void activate(CoreGame game) {
+    game.getEventProcessor().getAbilityModelsToBeActivated().add(getParams().getId());
+  }
+
+  public void onStarted(CoreGame game) {
+  }
+
+  abstract protected void onActiveUpdate(float delta, CoreGame game);
+
+  public void onDelayedAction(CoreGame game) {
+  }
+
   public void update(Float delta, CoreGame game) {
     AbilityState state = getParams().getState();
 
@@ -78,24 +84,6 @@ public abstract class Ability implements Entity {
     }
 
     updateTimers(delta);
-  }
-
-  public abstract AbilityParams getParams();
-
-  public abstract AbilityContext getContext();
-
-  abstract protected void onChannelUpdate(CoreGame game);
-
-  private void activate(CoreGame game) {
-    game.getEventProcessor().getAbilityModelsToBeActivated().add(getParams().getId());
-  }
-
-  public void onStarted(CoreGame game) {
-  }
-
-  abstract protected void onActiveUpdate(float delta, CoreGame game);
-
-  public void onDelayedAction(CoreGame game) {
   }
 
   public void onCompleted(CoreGame game) {
@@ -131,6 +119,18 @@ public abstract class Ability implements Entity {
 
     getParams().setRandomGenerator(RandomGenerator.of(creature.getNextRandom()));
 
+  }
+
+  public abstract AbilityContext getContext();
+
+  public static Vector2 calculatePosition(@NonNull Vector2 creaturePos, @NonNull Vector2 dirVector, float startingRange) {
+    float shiftPosX = dirVector.normalized().getX() * startingRange;
+    float shiftPosY = dirVector.normalized().getY() * startingRange;
+
+    float attackRectX = creaturePos.getX() + shiftPosX;
+    float attackRectY = creaturePos.getY() + shiftPosY;
+
+    return Vector2.of(attackRectX, attackRectY);
   }
 
   public AbilityAnimationConfig animationConfig() {

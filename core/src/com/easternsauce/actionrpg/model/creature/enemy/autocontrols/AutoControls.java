@@ -5,7 +5,6 @@ import com.easternsauce.actionrpg.model.creature.Creature;
 import com.easternsauce.actionrpg.model.creature.enemy.autocontrols.targetprocessor.AutoControlsTargetProcessor;
 import com.easternsauce.actionrpg.model.id.EntityId;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

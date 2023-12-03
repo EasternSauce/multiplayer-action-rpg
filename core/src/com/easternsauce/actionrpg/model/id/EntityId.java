@@ -30,12 +30,12 @@ public class EntityId<T extends Entity> implements Comparable<EntityId<T>> {
     return getValue().compareTo(o.getValue());
   }
 
-  public boolean isEmpty() {
-    return false;
-  }
-
   public boolean isNotEmpty() {
     return !isEmpty();
+  }
+
+  public boolean isEmpty() {
+    return false;
   }
 
   @Override

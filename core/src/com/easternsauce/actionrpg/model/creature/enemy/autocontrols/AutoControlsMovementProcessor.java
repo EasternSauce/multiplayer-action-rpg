@@ -16,7 +16,7 @@ public class AutoControlsMovementProcessor extends EnemyRetriever {
   @Getter(value = AccessLevel.PROTECTED)
   private EntityId<Creature> enemyId;
 
-  public void process( Vector2 potentialTargetPos, Float distance, CoreGame game) {
+  public void process(Vector2 potentialTargetPos, Float distance, CoreGame game) {
     Creature enemy = getEnemy(game);
 
     EnemyParams enemyParams = enemy.getEnemyParams();
@@ -31,25 +31,7 @@ public class AutoControlsMovementProcessor extends EnemyRetriever {
     }
   }
 
-  private void processKeepDistance( CoreGame game) {
-    Creature enemy = getEnemy(game);
-
-    enemy.getParams().getStats().setSpeed(enemy.getParams().getStats().getBaseSpeed() / 2);
-    if (enemy.getEnemyParams().getCurrentDefensivePos() != null) {
-      goToPos(enemy.getEnemyParams().getCurrentDefensivePos(), game);
-    }
-  }
-
-  private void processAlerted( CoreGame game) {
-    Creature enemy = getEnemy(game);
-
-    enemy.getParams().getStats().setSpeed(enemy.getParams().getStats().getBaseSpeed() / 3);
-    if (enemy.getEnemyParams().getCurrentDefensivePos() != null) {
-      goToPos(enemy.getEnemyParams().getCurrentDefensivePos(), game);
-    }
-  }
-
-  private void processAggressive( Vector2 potentialTargetPos, Float distance, CoreGame game) {
+  private void processAggressive(Vector2 potentialTargetPos, Float distance, CoreGame game) {
     Creature enemy = getEnemy(game);
 
     if (distance > enemy.getEnemyParams().getWalkUpRange() - 1f) {
@@ -60,7 +42,25 @@ public class AutoControlsMovementProcessor extends EnemyRetriever {
     }
   }
 
-  public void goToPos( Vector2 pos, CoreGame game) {
+  private void processAlerted(CoreGame game) {
+    Creature enemy = getEnemy(game);
+
+    enemy.getParams().getStats().setSpeed(enemy.getParams().getStats().getBaseSpeed() / 3);
+    if (enemy.getEnemyParams().getCurrentDefensivePos() != null) {
+      goToPos(enemy.getEnemyParams().getCurrentDefensivePos(), game);
+    }
+  }
+
+  private void processKeepDistance(CoreGame game) {
+    Creature enemy = getEnemy(game);
+
+    enemy.getParams().getStats().setSpeed(enemy.getParams().getStats().getBaseSpeed() / 2);
+    if (enemy.getEnemyParams().getCurrentDefensivePos() != null) {
+      goToPos(enemy.getEnemyParams().getCurrentDefensivePos(), game);
+    }
+  }
+
+  public void goToPos(Vector2 pos, CoreGame game) {
     Creature enemy = getEnemy(game);
 
     enemy.getParams().setLastTimeMoved(game.getGameState().getTime());

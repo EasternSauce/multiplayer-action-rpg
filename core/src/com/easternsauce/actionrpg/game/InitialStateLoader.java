@@ -17,16 +17,6 @@ import java.util.stream.Stream;
 
 @NoArgsConstructor(staticName = "of")
 public class InitialStateLoader {
-  private static void addEnemyRallyPoint(Map<EntityId<EnemyRallyPoint>, EnemyRallyPoint> enemyRallyPoints, EntityId<Area> areaId, Vector2 pos, Map<EnemyTemplate, Integer> enemyTemplateWeights, int enemiesTotal) {
-    EntityId<EnemyRallyPoint> rallyPointId = EntityId.of("EnemyRallyPoint_" + (int) (Math.random() * 10000000));
-
-    EnemyRallyPointInfo rallyPointInfo = EnemyRallyPointInfo.of(pos, areaId, enemyTemplateWeights, enemiesTotal);
-
-    EnemyRallyPoint enemyRallyPoint = EnemyRallyPoint.of(rallyPointId, rallyPointInfo);
-
-    enemyRallyPoints.put(rallyPointId, enemyRallyPoint);
-  }
-
   public void setupInitialState(CoreGame game) {
     //        Map<SkillType, Integer> grantedSkills = new OrderedMap<>();
     //        Map<SkillType, Integer> grantedSkills2 = new OrderedMap<>();
@@ -305,5 +295,15 @@ public class InitialStateLoader {
 
       ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)), 1);
 
+  }
+
+  private static void addEnemyRallyPoint(Map<EntityId<EnemyRallyPoint>, EnemyRallyPoint> enemyRallyPoints, EntityId<Area> areaId, Vector2 pos, Map<EnemyTemplate, Integer> enemyTemplateWeights, int enemiesTotal) {
+    EntityId<EnemyRallyPoint> rallyPointId = EntityId.of("EnemyRallyPoint_" + (int) (Math.random() * 10000000));
+
+    EnemyRallyPointInfo rallyPointInfo = EnemyRallyPointInfo.of(pos, areaId, enemyTemplateWeights, enemiesTotal);
+
+    EnemyRallyPoint enemyRallyPoint = EnemyRallyPoint.of(rallyPointId, rallyPointInfo);
+
+    enemyRallyPoints.put(rallyPointId, enemyRallyPoint);
   }
 }

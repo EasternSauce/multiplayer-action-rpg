@@ -19,6 +19,11 @@ import java.util.regex.Pattern;
 
 @NoArgsConstructor(staticName = "of")
 public class SkillMenuRenderer {
+  public void render(RenderingLayer renderingLayer, CoreGame game) {
+    renderMenu(renderingLayer, game);
+    renderPicker(renderingLayer, game);
+  }
+
   private void renderMenu(RenderingLayer renderingLayer, CoreGame game) {
     PlayerConfig playerConfig = game.getGameState().getPlayerConfig(game.getGameState().getThisClientPlayerId());
 
@@ -54,16 +59,6 @@ public class SkillMenuRenderer {
     });
   }
 
-  private String getSkillNameInitials(String input) {
-    Pattern p = Pattern.compile("((^| )[A-Za-z])");
-    Matcher m = p.matcher(input);
-    StringBuilder initials = new StringBuilder();
-    while (m.find()) {
-      initials.append(m.group().trim());
-    }
-    return initials.toString().toUpperCase();
-  }
-
   private void renderPicker(RenderingLayer renderingLayer, CoreGame game) {
     Creature player = game.getCreature(game.getGameState().getThisClientPlayerId());
 
@@ -83,6 +78,16 @@ public class SkillMenuRenderer {
       .forEach((skillType, level) -> renderPickerOption(renderingLayer, x, y, i, skillType.getPrettyName()));
   }
 
+  private String getSkillNameInitials(String input) {
+    Pattern p = Pattern.compile("((^| )[A-Za-z])");
+    Matcher m = p.matcher(input);
+    StringBuilder initials = new StringBuilder();
+    while (m.find()) {
+      initials.append(m.group().trim());
+    }
+    return initials.toString().toUpperCase();
+  }
+
   public void renderPickerOption(RenderingLayer renderingLayer, float mouseX, float mouseY, AtomicInteger i, String skillName) {
     Rect rect = SkillMenuConsts.getSkillPickerRect(i.get());
     renderingLayer.getShapeDrawer().filledRectangle(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(),
@@ -94,10 +99,5 @@ public class SkillMenuRenderer {
 
     Assets.renderSmallFont(renderingLayer, skillName, Vector2.of(rect.getX() + 40f, rect.getY() + 17f), Color.GOLD);
     i.getAndIncrement();
-  }
-
-  public void render(RenderingLayer renderingLayer, CoreGame game) {
-    renderMenu(renderingLayer, game);
-    renderPicker(renderingLayer, game);
   }
 }

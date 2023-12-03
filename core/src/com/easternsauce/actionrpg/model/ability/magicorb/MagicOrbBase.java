@@ -83,6 +83,21 @@ public abstract class MagicOrbBase extends Projectile {
 
   }
 
+  protected boolean isTargetingAllowed(Creature thisCreature, Creature targetCreature) {
+    if (thisCreature instanceof Enemy) {
+      return targetCreature instanceof Player;
+    }
+    //noinspection RedundantIfStatement
+    if (thisCreature instanceof Player) {
+      return true;
+    }
+    return false;
+  }
+
+  protected float getIncrementFactor() {
+    return 1f;
+  }
+
   @Override
   public void onCompleted(CoreGame game) {
     game.chainAnotherAbility(this, AbilityType.MAGIC_ORB_BLAST, getParams().getDirVector(),
@@ -110,20 +125,5 @@ public abstract class MagicOrbBase extends Projectile {
   @Override
   public Float getStunDuration() {
     return 0.25f;
-  }
-
-  protected boolean isTargetingAllowed(Creature thisCreature, Creature targetCreature) {
-    if (thisCreature instanceof Enemy) {
-      return targetCreature instanceof Player;
-    }
-    //noinspection RedundantIfStatement
-    if (thisCreature instanceof Player) {
-      return true;
-    }
-    return false;
-  }
-
-  protected float getIncrementFactor() {
-    return 1f;
   }
 }
