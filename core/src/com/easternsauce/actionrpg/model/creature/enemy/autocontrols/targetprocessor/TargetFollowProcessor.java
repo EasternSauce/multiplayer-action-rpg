@@ -36,40 +36,42 @@ public class TargetFollowProcessor extends EnemyRetriever {
 
     EnemyParams enemyParams = enemy.getEnemyParams();
 
-    Creature potentialTarget = game.getCreature(enemyParams.getAggroedCreatureId());
+    Creature target = game.getCreature(enemyParams.getAggroedCreatureId());
 
     boolean aggroTimedOut = enemyParams.getAggroTimer().getTime() > enemyParams.getLoseAggroTime();
 
-    if (potentialTarget.isNotEmpty()) {
-      if (potentialTarget.isCurrentlyActive(game)) {
-        Float distance = enemy.getParams().getPos().distance(potentialTarget.getParams().getPos());
+    if (target.isNotEmpty()) {
+      if (target.isCurrentlyActive(game)) {
+        Float distance = enemy.getParams().getPos().distance(target.getParams().getPos());
 
         if (distance < Constants.LOSE_AGGRO_DISTANCE) {
           enemyParams.getAggroTimer().restart();
         }
       }
 
-      if (!aggroTimedOut && potentialTarget.isAlive() && enemy.isAlive()) {
-        Vector2 vectorTowardsTarget = enemy.getParams().getPos().vectorTowards(potentialTarget.getParams().getPos());
+      if (!aggroTimedOut && target.isAlive() && enemy.isAlive()) {
+        Vector2 vectorTowardsTarget = enemy.getParams().getPos().vectorTowards(target.getParams().getPos());
 
-        processDistanceLogic(potentialTarget, game);
-        handleNewTarget(potentialTarget.getParams().getId(), game);
+        processDistanceLogic(target.getId(), game);
+        handleNewTarget(target.getParams().getId(), game);
 
-        actionProcessor.process(potentialTarget.getParams().getPos(), vectorTowardsTarget, game);
+        actionProcessor.process(target.getParams().getPos(), vectorTowardsTarget, game);
       } else {
         handleTargetLost(game);
       }
     }
 
-    if (aggroTimedOut || potentialTarget.isEmpty() || !potentialTarget.isAlive() || !enemy.isAlive()) {
+    if (aggroTimedOut || target.isEmpty() || !target.isAlive() || !enemy.isAlive()) {
       followCurrentPath(game);
     }
   }
 
-  public void processDistanceLogic(Creature potentialTarget, CoreGame game) {
+  public void processDistanceLogic(EntityId<Creature> targetId, CoreGame game) {
     Creature enemy = getEnemy(game);
 
-    Float distanceToTarget = enemy.getParams().getPos().distance(potentialTarget.getParams().getPos());
+    Creature target = game.getCreature(targetId);
+
+    Float distanceToTarget = enemy.getParams().getPos().distance(target.getParams().getPos());
 
     EnemyParams enemyParams = enemy.getEnemyParams();
 
@@ -87,14 +89,14 @@ public class TargetFollowProcessor extends EnemyRetriever {
     }
   }
 
-  public void handleNewTarget(EntityId<Creature> potentialTargetId, CoreGame game) {
+  public void handleNewTarget(EntityId<Creature> targetId, CoreGame game) {
     Creature enemy = getEnemy(game);
 
     EnemyParams enemyParams = enemy.getEnemyParams();
 
-    if (enemyParams.getTargetCreatureId().isEmpty() || !enemyParams.getTargetCreatureId().equals(potentialTargetId)) {
+    if (enemyParams.getTargetCreatureId().isEmpty() || !enemyParams.getTargetCreatureId().equals(targetId)) {
       enemyParams.setForcePathCalculation(true);
-      enemyParams.setTargetCreatureId(potentialTargetId);
+      enemyParams.setTargetCreatureId(targetId);
       enemyParams.setPathTowardsTarget(null);
     }
   }
